@@ -43,6 +43,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
                 CheckEqual(expected, actual, 1e-10);
             }
 
+            [Test]
+            public void TestLineWithRepeatedPointIntersection()
+            {
+                var a = Read("LINESTRING (100 100, 200 200, 200 200, 200 200, 200 200, 300 300, 400 200)");
+                var b = Read("LINESTRING (190 110, 120 180)");
+                var expected = Read("POINT (150 150)");
+                var actual = Intersection(a, b);
+                CheckEqual(expected, actual, 1e-10);
+            }
+
             /**
              * Tests a case where ring clipping causes an incorrect result.
              * <p>

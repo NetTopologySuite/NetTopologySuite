@@ -231,79 +231,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             AddEdge(pts, info);
         }
 
-        private static int ComputeDepthDelta(LinearRing ring, bool isHole)
-        {
-            /*
-             * Compute the orientation of the ring, to
-             * allow assigning side interior/exterior labels correctly.
-             * JTS canonical orientation is that shells are CW, holes are CCW.
-             * 
-             * It is important to compute orientation on the original ring,
-             * since topology collapse can make the orientation computation give the wrong answer.
-             */
-            bool isCCW = Orientation.IsCCW(ring.CoordinateSequence);
-            /*
-             * Compute whether ring is in canonical orientation or not.
-             * Canonical orientation for the overlay process is
-             * Shells : CW, Holes: CCW
-             */
-            bool isOriented;
-            if (!isHole)
-                isOriented = !isCCW;
-            else
-                isOriented = isCCW;
-            /*
-             * Depth delta can now be computed. 
-             * Canonical depth delta is 1 (Exterior on L, Interior on R).
-             * It is flipped to -1 if the ring is oppositely oriented.
-             */
-            int depthDelta = isOriented ? 1 : -1;
-            return depthDelta;
-        }
-
-        private void AddLine(LineString line, int geomIndex)
-        {
-            // don't add empty lines
-            if (line.IsEmpty) return;
-
-            if (IsClippedCompletely(line.EnvelopeInternal))
-                return;
-
-            if (IsToBeLimited(line))
-            {
-                var sections = Limit(line);
-                foreach (var pts in sections)
-                {
-                    AddLine(pts, geomIndex);
-                }
-            }
-            else
-            {
-                AddLine(line.Coordinates, geomIndex);
-            }
-        }
-
-        private void AddLine(Coordinate[] pts, int geomIndex)
-        {
-            /*
-             * Don't add edges that collapse to a point
-             */
-            if (pts.Length < 2)
-            {
-                return;
-            }
-
-            var info = new EdgeSourceInfo(geomIndex);
-            AddEdge(pts, info);
-        }
-
-        private void AddEdge(Coordinate[] pts, EdgeSourceInfo info)
-        {
-            var ss = new NodedSegmentString(pts, info);
-            _segStrings.Add(ss);
-        }
-
-
         /// <summary>
         /// Tests whether a geometry (represented by its envelope)
         /// lies completely outside the clip extent(if any).
@@ -339,10 +266,99 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             if (_clipper == null || _clipEnv.Covers(env))
             {
-                var ptsNoRepeat = CoordinateArrays.RemoveRepeatedPoints(pts);
-                return ptsNoRepeat;
+                return RemoveRepeatedPoints(ring);
             }
             return _clipper.Clip(pts);
+        }
+
+        /// <summary>
+        /// Removes any repeated points from a linear component.
+        /// This is required so that noding can be computed correctly.
+        /// </summary>
+        /// <param name="line">The line to process</param>
+        /// <returns>The points of the line with repeated points removed</returns>
+        private static Coordinate[] RemoveRepeatedPoints(LineString line)
+        {
+            var pts = line.Coordinates;
+            return CoordinateArrays.RemoveRepeatedPoints(pts);
+        }
+        private static int ComputeDepthDelta(LinearRing ring, bool isHole)
+        {
+            /*
+             * Compute the orientation of the ring, to
+             * allow assigning side interior/exterior labels correctly.
+             * JTS canonical orientation is that shells are CW, holes are CCW.
+             * 
+             * It is important to compute orientation on the original ring,
+             * since topology collapse can make the orientation computation give the wrong answer.
+             */
+            bool isCCW = Orientation.IsCCW(ring.CoordinateSequence);
+            /*
+             * Compute whether ring is in canonical orientation or not.
+             * Canonical orientation for the overlay process is
+             * Shells : CW, Holes: CCW
+             */
+            bool isOriented;
+            if (!isHole)
+                isOriented = !isCCW;
+            else
+                isOriented = isCCW;
+            /*
+             * Depth delta can now be computed. 
+             * Canonical depth delta is 1 (Exterior on L, Interior on R).
+             * It is flipped to -1 if the ring is oppositely oriented.
+             */
+            int depthDelta = isOriented ? 1 : -1;
+            return depthDelta;
+        }
+
+        /// <summary>
+        /// Adds a line geometry, limiting it if enabled,
+        /// and otherwise removing repeated points.
+        /// </summary>
+        /// <param name="line">The line to add</param>
+        /// <param name="geomIndex">The index of the parent geometry</param>
+        private void AddLine(LineString line, int geomIndex)
+        {
+            // don't add empty lines
+            if (line.IsEmpty) return;
+
+            if (IsClippedCompletely(line.EnvelopeInternal))
+                return;
+
+            if (IsToBeLimited(line))
+            {
+                var sections = Limit(line);
+                foreach (var pts in sections)
+                {
+                    AddLine(pts, geomIndex);
+                }
+            }
+            else
+            {
+                var ptsNoRepeat = RemoveRepeatedPoints(line);
+                AddLine(ptsNoRepeat, geomIndex);
+            }
+        }
+
+        private void AddLine(Coordinate[] pts, int geomIndex)
+        {
+            /*
+             * Don't add edges that collapse to a point
+             */
+            if (pts.Length < 2)
+            {
+                return;
+            }
+
+            var info = new EdgeSourceInfo(geomIndex);
+            AddEdge(pts, info);
+        }
+
+        private void AddEdge(Coordinate[] pts, EdgeSourceInfo info)
+        {
+            var ss = new NodedSegmentString(pts, info);
+            _segStrings.Add(ss);
         }
 
         /// <summary>
