@@ -7,6 +7,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
     public class OverlayNGTest : GeometryTestCase
     {
         [Test]
+        public void TestEmptyGCBothIntersection()
+        {
+            var a = Read("GEOMETRYCOLLECTION EMPTY");
+            var b = Read("GEOMETRYCOLLECTION EMPTY");
+            var expected = Read("GEOMETRYCOLLECTION EMPTY");
+            var actual = Intersection(a, b, 1);
+            CheckEqual(expected, actual);
+        }
+
+        [Test]
         public void TestEmptyAPolygonIntersection()
         {
             var a = Read("POLYGON EMPTY");

@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             if (overlapEnv == null)
                 return null;
 
-            Envelope clipEnv = RobustClipEnvelopeComputer.GetEnvelope(
+            var clipEnv = RobustClipEnvelopeComputer.GetEnvelope(
                 inputGeom.GetGeometry(0),
                 inputGeom.GetGeometry(1),
                 overlapEnv);
@@ -159,17 +159,9 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <summary>
         /// Creates an empty result geometry of the appropriate dimension,
         /// based on the given overlay operation and the dimensions of the inputs.
-        /// The created geometry is always an atomic geometry, 
-        /// not a collection.
-        /// <para/>
-        /// The empty result is constructed using the following rules:
-        /// <list type="bullet">
-        /// <item><term><see cref="SpatialFunction.Intersection"/></term><description>result has the dimension of the lowest input dimension</description></item>
-        /// <item><term><see cref="SpatialFunction.Union"/></term><description>result has the dimension of the highest input dimension</description></item>
-        /// <item><term><see cref="SpatialFunction.Difference"/></term><description>result has the dimension of the left-hand input</description></item>
-        /// <item><term><see cref="SpatialFunction.SymDifference"/></term><description>result has the dimension of the highest input dimension
-        /// (since the Symmetric Difference is the Union of the Differences).</description></item>
-        /// </list>
+        /// The created geometry is an atomic geometry,
+        /// not a collection(unless the dimension is <see cref="Dimension.Unknown"/>,
+        /// in which case a <c>GEOMETRYCOLLECTION EMPTY</c> is created.
         /// </summary>
         /// <param name="dim">The dimension of the empty geometry</param>
         /// <param name="geomFact">The geometry factory being used for the operation</param>
@@ -188,6 +180,9 @@ namespace NetTopologySuite.Operation.OverlayNg
                 case Dimension.Surface:
                     result = geomFact.CreatePolygon();
                     break;
+                case Dimension.Unknown:
+                    result = geomFact.CreateGeometryCollection();
+                    break;
                 default:
                     Assert.ShouldNeverReachHere("Unable to determine overlay result geometry dimension");
                     break;
@@ -195,11 +190,21 @@ namespace NetTopologySuite.Operation.OverlayNg
             return result;
         }
 
+
         /// <summary>
         /// Computes the dimension of the result of
         /// applying the given operation to inputs
         /// with the given dimensions.
         /// This assumes that complete collapse does not occur.
+        /// <para/>
+        /// The result dimension is computed using the following rules:
+        /// <list type="bullet">
+        /// <item><term><see cref="SpatialFunction.Intersection"/></term><description>result has the dimension of the lowest input dimension</description></item>
+        /// <item><term><see cref="SpatialFunction.Union"/></term><description>result has the dimension of the highest input dimension</description></item>
+        /// <item><term><see cref="SpatialFunction.Difference"/></term><description>result has the dimension of the left-hand input</description></item>
+        /// <item><term><see cref="SpatialFunction.SymDifference"/></term><description>result has the dimension of the highest input dimension
+        /// (since the Symmetric Difference is the Union of the Differences).</description></item>
+        /// </list>
         /// </summary>
         /// <param name="opCode">The overlay operation</param>
         /// <param name="dim0">Dimension of the LH input</param>
