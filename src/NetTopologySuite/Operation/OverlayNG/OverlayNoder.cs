@@ -331,17 +331,16 @@ namespace NetTopologySuite.Operation.OverlayNg
         private Coordinate[] Clip(LinearRing ring)
         {
             var pts = ring.Coordinates;
-            if (_clipper == null)
-            {
-                return pts;
-            }
             var env = ring.EnvelopeInternal;
+
             /*
-             * If line is completely contained then no need to clip
+             * If no clipper or ring is completely contained then no need to clip.
+             * But repeated points must be removed to ensure correct noding.
              */
-            if (_clipEnv.Covers(env))
+            if (_clipper == null || _clipEnv.Covers(env))
             {
-                return pts;
+                var ptsNoRepeat = CoordinateArrays.RemoveRepeatedPoints(pts);
+                return ptsNoRepeat;
             }
             return _clipper.Clip(pts);
         }
