@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {

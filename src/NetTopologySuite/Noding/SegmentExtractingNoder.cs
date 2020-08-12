@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Noding;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// A noder which extracts all line segments 
@@ -17,7 +16,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// or the input must be precision-reduced beforehand.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class SegmentExtractingNoder : INoder
+    public class SegmentExtractingNoder : INoder
     {
         private List<ISegmentString> _segList;
 
