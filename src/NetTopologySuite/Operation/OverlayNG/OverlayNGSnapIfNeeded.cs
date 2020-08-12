@@ -3,6 +3,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snap;
 using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.Union;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
@@ -52,7 +53,14 @@ namespace NetTopologySuite.Operation.OverlayNg
             return Overlay(g0, g1, OverlayNG.SYMDIFFERENCE);
         }
 
-        private static readonly PrecisionModel PmFloat = new PrecisionModel();
+        public static Geometry Union(Geometry a)
+        {
+            var unionSRFun = new UnionStrategy((g0, g1) => Overlay(g0, g1, SpatialFunction.Union), true);
+            var op = new UnaryUnionOp(a) {UnionStrategy = unionSRFun};
+            return op.Union();
+        }
+
+    private static readonly PrecisionModel PmFloat = new PrecisionModel();
 
         public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
         {
