@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
@@ -22,6 +23,30 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         }
 
         [Test]
+        public void TestBadNoding()
+        {
+            string wkt = "MULTILINESTRING ((0 3, 3 3, 3 0, 0 0, 0 3), (1 1.2, 1 1.1, 2.3 1.1, 1 1.2), (1 1, 2 1, 2 0, 1 0, 1 1))";
+            string expected = "MULTILINESTRING ((0 3, 3 3, 3 0, 2 0), (2 0, 1 0), (1 0, 0 0, 0 3), (1 1, 2 1), (2 1, 1 1), (1 1, 2 1), (2 1, 2 0), (2 0, 1 0), (1 0, 1 1))";
+            CheckRounding(wkt, 1, expected);
+        }
+
+        [Test, Ignore("")]
+        public void TestPreventAddingVertexNodesWithSnapping()
+        {
+            string wkt = "MULTILINESTRING ((5 0, 5 10.2, 10 10), (0 3, 10 3))";
+            string expected = "MULTILINESTRING ((0 3, 5 3), (5 0, 5 3), (5 3, 5 10, 10 10), (5 3, 10 3))";
+            CheckRounding(wkt, 1, expected);
+        }
+
+        [Test, Ignore("")]
+        public void TestPreventAddingVertexNodes()
+        {
+            string wkt = "MULTILINESTRING ((5 0, 5 10, 10 10), (0 3, 10 3))";
+            string expected = "MULTILINESTRING ((0 3, 5 3), (5 0, 5 3), (5 3, 5 10, 10 10), (5 3, 10 3))";
+            CheckRounding(wkt, 1, expected);
+        }
+
+        [Test, Ignore("")]
         public void TestSlantAndHorizontalLineWithMiddleNode()
         {
             string wkt =

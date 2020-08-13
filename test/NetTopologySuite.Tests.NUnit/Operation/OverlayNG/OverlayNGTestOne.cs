@@ -6,8 +6,25 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
     public class OverlayNGTestOne : GeometryTestCase
     {
 
-
         [Test]
+        public void TestBoxHoleCollapseAlongBEdgeDifference()
+        {
+            var a = Read("POLYGON ((0 3, 3 3, 3 0, 0 0, 0 3), (1 1.2, 1 1.1, 2.3 1.1, 1 1.2))");
+            var b = Read("POLYGON ((1 1, 2 1, 2 0, 1 0, 1 1))");
+            var expected = Read("POLYGON EMPTY");
+            CheckEqual(expected, OverlayNGTest.Difference(b, a, 1));
+        }
+
+        [Test, Ignore("")]
+        public void TestBoxHoleCollapseAlongBEdgeUnion()
+        {
+            var a = Read("POLYGON ((0 3, 3 3, 3 0, 0 0, 0 3), (1 1.2, 1 1.1, 2.3 1.1, 1 1.2))");
+            var b = Read("POLYGON ((1 1, 2 1, 2 0, 1 0, 1 1))");
+            var expected = Read("POLYGON ((0 0, 0 3, 3 3, 3 0, 2 0, 1 0, 0 0))");
+            CheckEqual(expected, OverlayNGTest.Union(b, a, 1));
+        }
+
+        [Test, Ignore("")]
         public void TestRoundedBoxesIntersection()
         {
             var a = Read("POLYGON ((0.6 0.1, 0.6 1.9, 2.9 1.9, 2.9 0.1, 0.6 0.1))");

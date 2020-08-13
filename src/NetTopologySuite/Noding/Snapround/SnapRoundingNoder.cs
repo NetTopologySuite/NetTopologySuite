@@ -1,25 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
+using NetTopologySuite.Noding.Snap;
 
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// Uses Snap Rounding to compute a rounded,
     /// fully noded arrangement from a set of <see cref="ISegmentString"/>s,
-    /// in a performant way.
+    /// in a performant way, and avoiding unnecessary noding.
     /// <para/>
     /// Implements the Snap Rounding technique described in 
     /// the papers by Hobby, Guibas &amp; Marimont, and Goodrich et al.
     /// Snap Rounding enforces that all output vertices lie on a uniform grid,
-    /// which is determined by the provided {@link PrecisionModel}.
-    /// Input vertices do not have to be rounded to the grid; 
+    /// which is determined by the provided <see cref="PrecisionModel"/>.
+    /// <para/>
+    /// Input vertices do not have to be rounded to the grid beforehand; 
     /// this is done during the snap-rounding process.
     /// In fact, rounding cannot be done a priori,
-    /// since rounding vertices alone can distort the rounded topology
-    /// of the arrangement (by moving segments away from hot pixels
+    /// since rounding vertices by themselves can distort the rounded topology
+    /// of the arrangement (i.e. by moving segments away from hot pixels
     /// that would otherwise intersect them, or by moving vertices
     /// across segments).
+    /// <para/>
+    /// To minimize the number of introduced nodes,
+    /// the Snap-Rounding Noder avoids creating nodes
+    /// at edge vertices if there is no intersection or snap at that location.
+    /// However, if two different input edges contain identical segments,
+    /// each of the segment vertices will be noded.
+    /// This still provides fully-noded output.
+    /// This is the same behaviour provided by other noders,
+    /// such as <see cref="MCIndexNoder"/>
+    /// and <see cref="SnappingNoder"/>.
     /// </summary>
     /// <version>1.17</version>
     public class SnapRoundingNoder : INoder
@@ -43,68 +56,56 @@ namespace NetTopologySuite.Noding.Snapround
             return NodedSegmentString.GetNodedSubstrings(_snappedResult);
         }
 
+        /// <summary>
+        /// Computes the nodes in the snap-rounding line arrangement.
+        /// The nodes are added to the <see cref="NodedSegmentString"/>s provided as the input.
+        /// </summary>
         /// <param name="inputSegmentStrings">A Collection of NodedSegmentStrings</param>
         public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
         {
-            /*
-             * Determine intersections at full precision.  
-             * Rounding happens during Hot Pixel creation.
-             */
             _snappedResult = SnapRound(inputSegmentStrings);
-
-            // testing purposes only - remove in final version
-            //checkCorrectness(inputSegmentStrings);
-            //if (Debug.isDebugging()) dumpNodedLines(inputSegmentStrings);
-            //if (Debug.isDebugging()) dumpNodedLines(snappedResult);
         }
-
-        /*
-        private void dumpNodedLines(Collection<NodedSegmentString> segStrings) {
-          for (NodedSegmentString nss : segStrings) {
-            Debug.println( WKTWriter.toLineString(nss.getNodeList().getSplitCoordinates()));
-          }
-        }
-    
-        private void checkValidNoding(Collection inputSegmentStrings)
-        {
-          Collection resultSegStrings = NodedSegmentString.getNodedSubstrings(inputSegmentStrings);
-          NodingValidator nv = new NodingValidator(resultSegStrings);
-          try {
-            nv.checkValid();
-          } catch (Exception ex) {
-            ex.printStackTrace();
-          }
-        }
-        */
 
         private List<NodedSegmentString> SnapRound(IList<ISegmentString> segStrings)
         {
-            var inputSS = CreateNodedStrings(segStrings);
             /*
              * Determine hot pixels for intersections and vertices.
              * This is done BEFORE the input lines are rounded,
              * to avoid distorting the line arrangement 
              * (rounding can cause vertices to move across edges).
              */
-            var intersections = FindInteriorIntersections(inputSS);
-            _pixelIndex.Add(intersections);
+            AddIntersectionPixels(segStrings);
+
             AddVertexPixels(segStrings);
 
-            var snapped = computeSnaps(inputSS);
+            var snapped = ComputeSnaps(segStrings);
             return snapped;
         }
 
-        private static IList<ISegmentString> CreateNodedStrings(IEnumerable<ISegmentString> segStrings)
+        /// <summary>
+        /// Detects interior intersections in the collection of {@link SegmentString}s,
+        /// and adds nodes for them to the segment strings.
+        /// Also creates HotPixel nodes for the intersection points.
+        /// </summary>
+        /// <param name="segStrings">The input NodedSegmentStrings</param>
+        private void AddIntersectionPixels(IList<ISegmentString> segStrings)
         {
-            var nodedStrings = new List<ISegmentString>();
-            foreach (var ss in segStrings)
-            {
-                nodedStrings.Add(new NodedSegmentString(ss));
-            }
-
-            return nodedStrings;
+            var intAdder = new SnapRoundingIntersectionAdder(_pm);
+            var noder = new MCIndexNoder(intAdder);
+            //noder.SegmentIntersector = intAdder;
+            noder.ComputeNodes(segStrings);
+            var intPts = intAdder.Intersections;
+            _pixelIndex.AddNodes(intPts);
         }
 
+        /// <summary>
+        /// Creates HotPixels for each vertex in the input segStrings.
+        /// The HotPixels are not marked as nodes, since they will
+        /// only be nodes in the final line arrangement
+        /// if they interact with other segments(or they are already
+        /// created as intersection nodes).
+        /// </summary>
+        /// <param name="segStrings">The input NodedSegmentStrings</param>
         private void AddVertexPixels(IEnumerable<ISegmentString> segStrings)
         {
             foreach (var nss in segStrings)
@@ -140,44 +141,35 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// Computes all interior intersections in the collection of {@link SegmentString}s,
-        /// and returns their <see cref="Coordinate"/>s.
-        /// <para/>
-        /// Also adds the intersection nodes to the segments.
-        /// </summary>
-        /// <returns>
-        /// A list of Coordinates for the intersections
-        /// </returns>
-        private List<Coordinate> FindInteriorIntersections(IList<ISegmentString> inputSS)
-        {
-            var intAdder = new SnapRoundingIntersectionAdder(_pm);
-            var noder = new MCIndexNoder();
-            noder.SegmentIntersector = intAdder;
-            noder.ComputeNodes(inputSS);
-            return intAdder.Intersections;
-        }
-
-        /// <summary>
         /// Computes new segment strings which are rounded and contain
-        /// any intersections added as a result of snapping segments to snap points (hot pixels).
+        /// intersections added as a result of snapping segments to snap points (hot pixels).
         /// </summary>
         /// <param name="segStrings">Segments to snap</param>
         /// <returns>The snapped segment strings</returns>
-        private List<NodedSegmentString> computeSnaps(IEnumerable<ISegmentString> segStrings)
+        private List<NodedSegmentString> ComputeSnaps(IEnumerable<ISegmentString> segStrings)
         {
             var snapped = new List<NodedSegmentString>();
             foreach (var ss in segStrings)
             {
-                var snappedSS = ComputeSnaps((NodedSegmentString)ss);
+                var snappedSS = ComputeSegmentSnaps((NodedSegmentString) ss);
                 if (snappedSS != null)
                     snapped.Add(snappedSS);
+            }
+
+            /*
+             * Some intersection hot pixels may have been marked as nodes in the previous
+             * loop, so add nodes for them.
+             */
+            foreach (var ss in snapped)
+            {
+                AddVertexNodeSnaps(ss);
             }
 
             return snapped;
         }
 
         /// <summary>
-        /// Add snapped vertices to a segemnt string.
+        /// Add snapped vertices to a segment string.
         /// If the segment string collapses completely due to rounding,
         /// null is returned.
         /// </summary>
@@ -185,7 +177,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>
         /// The snapped segment string, or null if it collapses completely
         /// </returns>
-        private NodedSegmentString ComputeSnaps(NodedSegmentString ss)
+        private NodedSegmentString ComputeSegmentSnaps(NodedSegmentString ss)
         {
             //Coordinate[] pts = ss.getCoordinates();
             /*
@@ -240,36 +232,102 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="segIndex">The index of the segment/</param>
         private void SnapSegment(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex)
         {
-            _pixelIndex.Query(p0, p1, visitor: new KdNodeVisitor(p0, p1, ss, segIndex));
+            _pixelIndex.Query(p0, p1, visitor: new SnapSegmentVisitor(p0, p1, ss, segIndex));
         }
 
         // TODO. HotPixelIndexVisitor ?
-        private class KdNodeVisitor : IKdNodeVisitor<HotPixel>
+        private abstract class KdNodeVisitor : IKdNodeVisitor<HotPixel>
         {
-            private readonly Coordinate _p0, _p1;
-            private readonly NodedSegmentString _ss;
-            private readonly int _segIndex;
+            protected readonly Coordinate P0, P1;
+            protected readonly NodedSegmentString SS;
+            protected readonly int SegIndex;
 
-            public KdNodeVisitor(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex)
+            protected KdNodeVisitor(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex)
             {
-                _p0 = p0;
-                _p1 = p1;
-                _ss = ss;
-                _segIndex = segIndex;
+                P0 = p0;
+                P1 = p1;
+                SS = ss;
+                SegIndex = segIndex;
             }
 
-            public void Visit(KdNode<HotPixel> node)
+            public abstract void Visit(KdNode<HotPixel> node);
+        }
+
+        private sealed class SnapSegmentVisitor : KdNodeVisitor
+        {
+            public SnapSegmentVisitor(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex)
+                : base(p0, p1, ss, segIndex)
             {
-                // TODO Auto-generated method stub
+            }
+
+            public override void Visit(KdNode<HotPixel> node)
+            {
                 var hp = node.Data;
-                if (hp.Intersects(_p0, _p1))
+                /*
+                 * If the hot pixel is not a node, and it contains one of the segment vertices,
+                 * then that vertex is the source for the hot pixel.
+                 * To avoid over-noding a node is not added at this point. 
+                 * The hot pixel may be subsequently marked as a node,
+                 * in which case the intersection will be added during the final vertex noding phase.
+                 */
+                if (!hp.IsNode)
+                {
+                    if (hp.Intersects(P0) || hp.Intersects(P1))
+                        return;
+                }
+                /*
+                 * Add a node if the segment intersects the pixel.
+                 * Mark the HotPixel as a node (since it may not have been one before).
+                 * This ensures the vertex for it is added as a node during the final vertex noding phase.
+                 */
+
+                if (hp.Intersects(P0, P1))
                 {
                     //System.out.println("Added intersection: " + hp.getCoordinate());
-                    _ss.AddIntersection(hp.Coordinate, _segIndex);
+                    SS.AddIntersection(hp.Coordinate, SegIndex);
+                    hp.IsNode = true;
                 }
-
             }
         }
 
+        /// <summary>
+        /// Add nodes for any vertices in hot pixels that were
+        /// added as nodes during segment noding.
+        /// </summary>
+        /// <param name="ss">A noded segment string</param>
+        private void AddVertexNodeSnaps(NodedSegmentString ss)
+        {
+            var pts = ss.Coordinates;
+            for (int i = 1; i < pts.Length - 1; i++)
+            {
+                var p0 = pts[i];
+                SnapVertexNode(p0, ss, i);
+            }
+        }
+
+        private void SnapVertexNode(Coordinate p0, NodedSegmentString ss, int segIndex)
+        {
+            _pixelIndex.Query(p0, p0, new SnapVertexVisitor(p0, ss, segIndex));
+        }
+
+        private sealed class SnapVertexVisitor : KdNodeVisitor
+        {
+            public SnapVertexVisitor(Coordinate p0, NodedSegmentString ss, int segIndex) :
+                base(p0, null, ss, segIndex)
+            {
+            }
+
+            public override void Visit(KdNode<HotPixel> node)
+            {
+                var hp = node.Data;
+                /*
+                 * If vertex pixel is a node, add it.
+                 */
+                if (hp.IsNode && hp.Coordinate.Equals2D(P0))
+                {
+                    SS.AddIntersection(P0, SegIndex);
+                }
+            }
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string wkt =
                 "MULTILINESTRING ((0.1565552 49.5277405, 0.1579285 49.5277405, 0.1593018 49.5277405), (0.1568985 49.5280838, 0.1589584 49.5273972))";
             string expected =
-                "MULTILINESTRING ((0.156555 49.527741, 0.157928 49.527741), (0.156899 49.528084, 0.157928 49.527741), (0.157928 49.527741, 0.157929 49.527741), (0.157928 49.527741, 0.158958 49.527397), (0.157929 49.527741, 0.159302 49.527741))";
+                "MULTILINESTRING ((0.156555 49.527741, 0.157928 49.527741), (0.156899 49.528084, 0.157928 49.527741), (0.157928 49.527741, 0.157929 49.527741, 0.159302 49.527741), (0.157928 49.527741, 0.158958 49.527397))";
             CheckRounding(wkt, 1_000_000.0, expected);
         }
 
@@ -185,6 +185,14 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 "MULTILINESTRING ((2.4829102 48.8726807, 2.4830818249999997 48.873195575, 2.4839401 48.8723373), ( 2.4829102 48.8726807, 2.4832535 48.8737106 ))";
             string expected = null;
             CheckRounding(wkt, 100000000, expected);
+        }
+
+        [Test, Ignore("Investigate")]
+        public void TestLoopBackCreatesNode()
+        {
+            string wkt = "LINESTRING (2 2, 5 2, 8 4, 5 6, 4.8 2.3, 2 5)";
+            string expected = "MULTILINESTRING ((2 2, 5 2), (5 2, 8 4, 5 6, 5 2), (5 2, 2 5))";
+            CheckRounding(wkt, 1, expected);
         }
 
         private void CheckRounding(string wkt, double scale, string expectedWKT)

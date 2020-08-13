@@ -6,7 +6,8 @@ Contains classes that perform vector overlay to compute boolean set-theoretic sp
 Overlay operations are used in spatial analysis for computing set-theoretic operations (boolean combinations) of input <xref href="NetTopologySuite.Geometries.Geometry">Geometry</xref> s.
 
 The <xref href="NetTopologySuite.Operation.OverlayNG.OverlayNG">OverlayNG</xref> class provides the standard Simple Features
-boolean set-theoretic overlay operations, including:
+boolean set-theoretic overlay operations.  
+These are:
 * **Intersection** - all points which lie in both geometries
 * **Union** - all points which lie in at least one geometry
 * **Difference** - all points which lie in the first geometry but not the second
@@ -21,7 +22,7 @@ Additional operations include:
 * <xref href="NetTopologySuite.Operation.OverlayNG.PrecisionReducer">PrecisionReducer</xref> allows reducing the precision of a geometry in a topologically-valid way
 
 ## Semantics
-##### The semantics of inputs are:
+The requirements for overlay input are:
 * Input geometries may have different dimension.
 * Collections must be homogeneous   
   (all elements must have the same dimension).
@@ -30,11 +31,13 @@ Additional operations include:
   * rings which self-touch at discrete points (sometimes called inverted shells and exverted holes).
   * rings which touch along line segments (i.e. topology collapse).
 
-##### The semantics of operation output are:
+The semantics of overlay output are:
 * Results are always valid geometries.  
   In particular, result `MultiPolygon`s are valid.
 * Repeated vertices are removed
-* Linear results are merged node-to-node (e.g. are of maximal length)
+* Linear results include all nodes (endpoints) present in the input.
+  In some cases more nodes will be present.
+  (If merged lines are required see <xref href="NetTopologySuite.Operation.Linemerge.LineMerger">LineMerger</xref>.)
 * Polygon edges which collapse completely due to rounding are not output
 * The `intersection` operation produces a homogeneous result.  
   The result contains the components of highest dimension in the intersection.
@@ -48,9 +51,9 @@ Additional operations include:
 * Homogeneous results are output as `Multi` geometries.
 * Heterogeneous results are output as a `GeometryCollection`
   containing a set of atomic geometries.  
-  This provides backwards compatibility
-  with the original JTS overlay implementation.
-  (However, this loses the information that the polygonal results 
+  (This provides backwards compatibility
+  with the original NTS overlay implementation.
+  However, it loses the information that the polygonal results 
   have valid `MultiPolygon` topology.)
 * Empty results are atomic `EMPTY` geometries of dimension appropriate 
   to the operation.

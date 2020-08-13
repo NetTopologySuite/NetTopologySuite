@@ -535,7 +535,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             var a = Read("LINESTRING (0 0, 1 1)");
             var b = Read("LINESTRING (1 1, 2 2)");
-            var expected = Read("LINESTRING (0 0, 1 1, 2 2)");
+            var expected = Read("MULTILINESTRING ((0 0, 1 1), (1 1, 2 2))");
             var actual = Union(a, b, 1);
             CheckEqual(expected, actual);
         }
@@ -575,7 +575,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             var a = Read("LINESTRING (5 1, 2 2, 5 3, 2 4, 5 5)");
             var b = Read("LINESTRING (5 1, 8 2, 5 3, 8 4, 5 5)");
-            var expected = Read("MULTILINESTRING ((5 3, 2 2, 5 1, 8 2, 5 3), (5 3, 2 4, 5 5, 8 4, 5 3))");
+            var expected = Read("MULTILINESTRING ((5 1, 2 2, 5 3), (5 1, 8 2, 5 3), (5 3, 2 4, 5 5), (5 3, 8 4, 5 5))");
             var actual = Union(a, b, 1);
             CheckEqual(expected, actual);
         }
@@ -585,7 +585,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             var a = Read("LINESTRING (1 1, 5 5, 9 1)");
             var b = Read("LINESTRING (1 1, 9 1)");
-            var expected = Read("LINESTRING (1 1, 5 5, 9 1, 1 1)");
+            var expected = Read("MULTILINESTRING ((1 1, 5 5, 9 1), (1 1, 9 1))");
             var actual = Union(a, b, 1);
             CheckEqual(expected, actual);
         }

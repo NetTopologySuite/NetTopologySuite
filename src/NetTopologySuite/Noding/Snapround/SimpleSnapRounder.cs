@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
@@ -27,6 +25,7 @@ namespace NetTopologySuite.Noding.Snapround
     /// results are not 100% guaranteed to be correctly noded.
     /// 
     /// </summary>
+    [Obsolete]
     public class SimpleSnapRounder : INoder
     {
         private readonly PrecisionModel _pm;

@@ -4,27 +4,28 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding.Snapround
 {
-    /**
-     * Finds intersections between line segments which will be snap-rounded,
-     * and adds them as nodes.
-     * <p>
-     * Intersections are detected and computed using full precision.
-     * Snapping takes place in a subsequent phase.
-     * To avoid robustness issues with vertices which lie very close to line segments,
-     * the following heuristic is used:
-     * nodes are created if a vertex lies within a tolerance distance
-     * of the interior of a segment.
-     * The tolerance distance is chosen to be significantly below the snap-rounding grid size.
-     * This has empirically proven to eliminate noding failures.
-     *
-     * @version 1.17
-     */
+    /// <summary>
+    /// Finds intersections between line segments which will be snap-rounded,
+    /// and adds them as nodes to the segments.
+    /// <para/>
+    /// Intersections are detected and computed using full precision.
+    /// Snapping takes place in a subsequent phase.
+    /// <para/>
+    /// The intersection points are recorded, so that HotPixels can be created for them.
+    /// <para/>
+    /// To avoid robustness issues with vertices which lie very close to line segments
+    /// a heuristic is used:
+    /// nodes are created if a vertex lies within a tolerance distance
+    /// of the interior of a segment.
+    /// The tolerance distance is chosen to be significantly below the snap-rounding grid size.
+    /// This has empirically proven to eliminate noding failures.
+    /// </summary>
     public class SnapRoundingIntersectionAdder : ISegmentIntersector
     {
-        /**
-   * The division factor used to determine
-   * nearness distance tolerance for interior intersection detection.
-   */
+        /// <summary>
+        /// The division factor used to determine
+        /// nearness distance tolerance for interior intersection detection.
+        /// </summary>
         private const int NearnessFactor = 100;
 
         private readonly LineIntersector _li;
@@ -32,46 +33,44 @@ namespace NetTopologySuite.Noding.Snapround
         private readonly PrecisionModel _precModel;
         private readonly double _nearnessTol;
 
-
-        /**
-     * Creates an intersector which finds all snapped interior intersections,
-     * and adds them as nodes.
-     *
-     * @param pm the precision mode to use
-     */
+        /// <summary>
+        /// Creates an intersector which finds all snapped interior intersections,
+        /// and adds them as nodes.
+        /// </summary>
+        /// <param name="pm">the precision mode to use</param>
         public SnapRoundingIntersectionAdder(PrecisionModel pm)
         {
             _precModel = pm;
-            /**
-         * Nearness distance tolerance is a small fraction of the snap grid size
-         */
+            /*
+             * Nearness distance tolerance is a small fraction of the snap grid size
+             */
             double snapGridSize = 1.0 / _precModel.Scale;
             _nearnessTol = snapGridSize / NearnessFactor;
 
-            /**
-         * Intersections are detected and computed using full precision.
-         * They are snapped in a subsequent phase.
-         */
+            /*
+             * Intersections are detected and computed using full precision.
+             * They are snapped in a subsequent phase.
+             */
             _li = new RobustLineIntersector();
             _intersections = new List<Coordinate>();
         }
 
-        /**
-     * Gets the created intersection nodes, 
-     * so they can be processed as hot pixels.
-     * 
-     * @return a list of the intersection points
-     */
-        public List<Coordinate> Intersections { get => _intersections; }
+        /// <summary>
+        /// Gets the created intersection nodes,
+        /// so they can be processed as hot pixels.
+        /// </summary>
+        /// <returns>A list of intersection points</returns>
+        public IList<Coordinate> Intersections { get => _intersections; }
 
-        /**
-     * This method is called by clients
-     * of the {@link SegmentIntersector} class to process
-     * intersections for two segments of the {@link SegmentString}s being intersected.
-     * Note that some clients (such as <c>MonotoneChain</c>s) may optimize away
-     * this call for segment pairs which they have determined do not intersect
-     * (e.g. by an disjoint envelope test).
-     */
+        /// <summary>
+        /// This method is called by clients
+        /// of the <see cref="ISegmentIntersector"/> class to process
+        /// intersections for two segments of the <see cref="ISegmentString"/>
+        /// s being intersected.
+        /// Note that some clients (such as <c>MonotoneChain</c> s) may optimize away
+        /// this call for segment pairs which they have determined do not intersect
+        /// (e.g.by an disjoint envelope test).
+        /// </summary>
         public void ProcessIntersections(
             ISegmentString e0, int segIndex0,
             ISegmentString e1, int segIndex1
@@ -102,45 +101,38 @@ namespace NetTopologySuite.Noding.Snapround
                 }
             }
 
-            /**
-         * Segments did not actually intersect, within the limits of orientation index robustness.
-         * 
-         * To avoid certain robustness issues in snap-rounding, 
-         * also treat very near vertex-segment situations as intersections.
-         */
+            /*
+             * Segments did not actually intersect, within the limits of orientation index robustness.
+             * 
+             * To avoid certain robustness issues in snap-rounding, 
+             * also treat very near vertex-segment situations as intersections.
+             */
             ProcessNearVertex(p00, e1, segIndex1, p10, p11);
             ProcessNearVertex(p01, e1, segIndex1, p10, p11);
             ProcessNearVertex(p10, e0, segIndex0, p00, p01);
             ProcessNearVertex(p11, e0, segIndex0, p00, p01);
         }
 
-        /**
-     * If an endpoint of one segment is near 
-     * the <i>interior</i> of the other segment, add it as an intersection.
-     * EXCEPT if the endpoint is also close to a segment endpoint
-     * (since this can introduce "zigs" in the linework).
-     * <p>
-     * This resolves situations where
-     * a segment A endpoint is extremely close to another segment B,
-     * but is not quite crossing.  Due to robustness issues
-     * in orientation detection, this can 
-     * result in the snapped segment A crossing segment B
-     * without a node being introduced.
-     * 
-     * @param p
-     * @param edge
-     * @param segIndex
-     * @param p0
-     * @param p1
-     */
+        /// <summary>
+        /// If an endpoint of one segment is near
+        /// the <i>interior</i> of the other segment, add it as an intersection.
+        /// EXCEPT if the endpoint is also close to a segment endpoint
+        /// (since this can introduce "zigs" in the linework).
+        /// <para/>
+        /// This resolves situations where
+        /// a segment A endpoint is extremely close to another segment B,
+        /// but is not quite crossing.Due to robustness issues
+        /// in orientation detection, this can
+        /// result in the snapped segment A crossing segment B
+        /// without a node being introduced.
+        /// </summary>
         private void ProcessNearVertex(Coordinate p, ISegmentString edge, int segIndex, Coordinate p0, Coordinate p1)
         {
-
-            /**
-         * Don't add intersection if candidate vertex is near endpoints of segment.
-         * This avoids creating "zig-zag" linework
-         * (since the vertex could actually be outside the segment envelope).
-         */
+            /*
+             * Don't add intersection if candidate vertex is near endpoints of segment.
+             * This avoids creating "zig-zag" linework
+             * (since the vertex could actually be outside the segment envelope).
+             */
             if (p.Distance(p0) < _nearnessTol) return;
             if (p.Distance(p1) < _nearnessTol) return;
 
@@ -152,11 +144,10 @@ namespace NetTopologySuite.Noding.Snapround
             }
         }
 
-        /**
-     * Always process all intersections
-     * 
-     * @return false always
-     */
+        /// <summary>
+        /// Always process all intersections
+        /// </summary>
+        /// <returns>Always <c>false</c></returns>
         public bool IsDone { get => false; }
 
     }

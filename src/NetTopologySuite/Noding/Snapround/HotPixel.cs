@@ -3,8 +3,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
-//using NetTopologySuite.IO;
-
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
@@ -21,6 +19,10 @@ namespace NetTopologySuite.Noding.Snapround
     /// <para/>
     /// The hot pixel operations are all computed in the integer domain
     /// to avoid rounding problems.
+    /// <para/>
+    /// Hot Pixels support being marked as nodes.
+    /// This is used to prevent introducing nodes at line vertices
+    /// which do not have other lines snapped to them.
     /// </summary>
     public class HotPixel
     {
@@ -29,32 +31,36 @@ namespace NetTopologySuite.Noding.Snapround
         private readonly Coordinate _ptHot;
         private readonly Coordinate _originalPt;
 
+        /// <summary>
+        /// Indicates if this hot pixel must be a node in the output
+        /// </summary>
+        private bool _isNode = false;
+
+
         private readonly double _scaleFactor;
 
-        private double _minx;
-        private double _maxx;
-        private double _miny;
-        private double _maxy;
-
-        /*
-         * The corners of the hot pixel, in the order:
-         *  10
-         *  23
-         */
-        private readonly Coordinate[] _corner = new Coordinate[4];
-
-        private Envelope _safeEnv;
+        private readonly double _minx;
+        private readonly double _maxx;
+        private readonly double _miny;
+        private readonly double _maxy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HotPixel"/> class.
         /// </summary>
         /// <param name="pt">The coordinate at the center of the hot pixel</param>
         /// <param name="scaleFactor">The scale factor determining the pixel size</param>
-        /// <param name="li">THe intersector to use for testing intersection with line segments</param>
+        /// <param name="li">The intersector to use for testing intersection with line segments</param>
         [Obsolete]
         public HotPixel(Coordinate pt, double scaleFactor, LineIntersector li)
             :this(pt, scaleFactor)
-        {}
+        { }
+
+        /// <summary>
+        /// Creates a new hot pixel, using a given scale factor.
+        /// The scale factor must be strictly positive(non-zero).
+        /// </summary>
+        /// <param name="pt">The coordinate at the center of the hot pixel</param>
+        /// <param name="scaleFactor">The scale factor determining the pixel size</param>
         public HotPixel(Coordinate pt, double scaleFactor)
         {
             _originalPt = pt;
@@ -95,6 +101,15 @@ namespace NetTopologySuite.Noding.Snapround
             get => 1.0d / _scaleFactor;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this pixel has been marked as a node.
+        /// </summary>
+        /// <returns><c>true</c> if the pixel is marked as a node</returns>
+        public bool IsNode
+        {
+            get => _isNode;
+            set => _isNode = value;
+        }
 
         private double ScaleRound(double val)
         {
@@ -129,15 +144,29 @@ namespace NetTopologySuite.Noding.Snapround
         [Obsolete("Moved to MCIndexPointSnapper")]
         public Envelope GetSafeEnvelope()
         {
-            if (_safeEnv == null)
-            {
-                double safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
-                _safeEnv = new Envelope(_originalPt.X - safeTolerance, _originalPt.X + safeTolerance,
-                                       _originalPt.Y - safeTolerance, _originalPt.Y + safeTolerance);
-            }
-            return _safeEnv;
+            double safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
+            return new Envelope(_originalPt.X - safeTolerance, _originalPt.X + safeTolerance,
+                                _originalPt.Y - safeTolerance, _originalPt.Y + safeTolerance);
         }
 
+        /// <summary>
+        /// Tests whether a coordinate lies in (intersects) this hot pixel.
+        /// </summary>
+        /// <param name="p">The coordinate to test</param>
+        /// <returns><c>true</c> if the coordinate intersects this hot pixel</returns>
+        public bool Intersects(Coordinate p)
+        {
+            double x = Scale(p.X);
+            double y = Scale(p.Y);
+            if (x >= _maxx) return false;
+            // check Left side
+            if (x < _minx) return false;
+            // check Top side
+            if (y >= _maxy) return false;
+            // check Bottom side
+            if (y < _miny) return false;
+            return true;
+        }
         /// <summary>
         /// Tests whether the line segment (p0-p1)
         /// intersects this hot pixel.

@@ -4,31 +4,29 @@ using NetTopologySuite.Operation.Overlay;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Finds and builds overlay result lines from the overlay graph.
-     * Output linework has the following semantics:
-     * <ol>
-     * <li>Linework is fully noded
-     * <li>Lines are as long as possible between nodes
-     * </ol>
-     * 
-     * Various strategies are possible for how to 
-     * merge graph edges into lines.
-     * This implementation uses the approach
-     * of having output lines run contiguously from node to node.
-     * For rings a node point is chosen arbitrarily.
-     * <p>
-     * Another possible strategy would be to preserve input linework 
-     * as far as possible (i.e. any sections of input lines which are not 
-     * coincident with other linework would be preserved).
-     * <p>
-     * It would also be possible to output LinearRings, 
-     * if the input is a LinearRing and is unchanged.
-     * This will require additional info from the input linework.
-     * 
-     * @author Martin Davis
-     *
-     */
+
+    /// <summary>
+    /// Finds and builds overlay result lines from the overlay graph.
+    /// Output linework has the following semantics:
+    /// <list type="number">
+    /// <item><description>Linework is fully noded</description></item>
+    /// <item><description>Lines are as long as possible between nodes</description></item>
+    /// </list>
+    /// Various strategies are possible for how to
+    /// merge graph edges into lines.
+    /// This implementation uses the approach
+    /// of having output lines run contiguously from node to node.
+    /// For rings a node point is chosen arbitrarily.
+    /// <para/>
+    /// Another possible strategy would be to preserve input linework
+    /// as far as possible (i.e.any sections of input lines which are not
+    /// coincident with other linework would be preserved).
+    /// <para/>
+    /// It would also be possible to output LinearRings,
+    /// if the input is a LinearRing and is unchanged.
+    /// This will require additional info from the input linework.
+    /// </summary>
+    /// <author>Martin Davis</author>
     class LineBuilder
     {
 
@@ -39,16 +37,15 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly bool _hasResultArea;
         private readonly List<LineString> _lines = new List<LineString>();
 
-        /**
-         * Creates a builder for linear elements which may be present 
-         * in the overlay result.
-         * 
-         * @param inputGeom the input geometries
-         * @param graph the topology graph
-         * @param hasResultArea true if an area has been generated for the result
-         * @param opCode the overlay operation code
-         * @param geomFact the output geometry factory
-         */
+        /// <summary>
+        /// Creates a builder for linear elements which may be present
+        /// in the overlay result.
+        /// </summary>
+        /// <param name="inputGeom">The input geometries</param>
+        /// <param name="graph">The topology graph</param>
+        /// <param name="hasResultArea"><c>true</c> if an area has been generated for the result</param>
+        /// <param name="opCode">The overlay operation code</param>
+        /// <param name="geomFact">The output geometry factory</param>
         public LineBuilder(InputGeometry inputGeom, OverlayGraph graph, bool hasResultArea, SpatialFunction opCode, GeometryFactory geomFact)
         {
             _graph = graph;
@@ -80,32 +77,30 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /**
-         * If the edge linework is already in the result, 
-         * this edge does not need to be included as a line.
-         * 
-         * @param edge an edge of the topology graph
-         * @return true if the edge linework is already in the result
-         */
+        /// <summary>
+        /// If the edge linework is already in the result,
+        /// this edge does not need to be included as a line.
+        /// </summary>
+        /// <param name="edge">An edge of the topology graph</param>
+        /// <returns><c>true</c> if the edge linework is already in the result</returns>
         private static bool IsInResult(OverlayEdge edge)
         {
             return edge.IsInResult || edge.SymOE.IsInResult;
         }
 
-        /**
-         * Checks if the topology indicated by an edge label
-         * determines that this edge should be part of a result line.
-         * <p>
-         * Note that the logic here relies on the semantic
-         * that for intersection lines are only returned if
-         * there is no result area components.
-         * 
-         * @param lbl the label for an edge
-         * @return true if the edge should be included in the result
-         */
+        /// <summary>
+        /// Checks if the topology indicated by an edge label
+        /// determines that this edge should be part of a result line.
+        /// <para/>
+        /// Note that the logic here relies on the semantic
+        /// that for intersection lines are only returned if
+        /// there is no result area components.
+        /// </summary>
+        /// <param name="lbl">The label for an edge</param>
+        /// <returns><c>true</c> if the edge should be included in the result</returns>
         private bool IsResultLine(OverlayLabel lbl)
         {
-            /**
+            /*
              * Edges which are just collapses along boundaries
              * are not output.
              * In other words, an edge must be from a source line
@@ -113,7 +108,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             if (lbl.IsBoundaryCollapse) return false;
 
-            /**
+            /*
              * Skip edges that are inside result area, if there is one.
              * It is sufficient to check against an input area rather 
              * than the result area, since 
@@ -133,20 +128,19 @@ namespace NetTopologySuite.Operation.OverlayNg
             return isInResult;
         }
 
-        /**
-         * Determines the effective location for a line,
-         * for the purpose of overlay operation evaluation.
-         * Line edges and Collapses are reported as INTERIOR
-         * so they may be included in the result
-         * if warranted by the effect of the operation
-         * on the two edges.
-         * (For instance, the intersection of line edge and a collapsed boundary
-         * is included in the result).
-         * 
-         * @param geomIndex index of parent geometry
-         * @param lbl label of line
-         * @return the effective location of the line
-         */
+        /// <summary>
+        /// Determines the effective location for a line,
+        /// for the purpose of overlay operation evaluation.
+        /// Line edges and Collapses are reported as INTERIOR
+        /// so they may be included in the result
+        /// if warranted by the effect of the operation
+        /// on the two edges.
+        /// (For instance, the intersection of line edge and a collapsed boundary
+        /// is included in the result).
+        /// </summary>
+        /// <param name="geomIndex">The index of parent geometry</param>
+        /// <param name="lbl">The label of line</param>
+        /// <returns>The effective location of the line</returns>
         private static Location EffectiveLocation(int geomIndex, OverlayLabel lbl)
         {
             if (lbl.IsCollapse(geomIndex))
@@ -156,23 +150,48 @@ namespace NetTopologySuite.Operation.OverlayNg
             return lbl.GetLineLocation(geomIndex);
         }
 
-        //----  Maximal line extraction methods
-
         private void AddResultLines()
+        {
+            var edges = _graph.Edges;
+            foreach (var edge in edges)
+            {
+                if (!edge.IsInResultLine) continue;
+                if (edge.IsVisited) continue;
+      
+                _lines.Add(ToLine(edge ));
+                edge.MarkVisitedBoth();
+            }
+        }
+
+        private LineString ToLine(OverlayEdge edge)
+        {
+            bool isForward = edge.IsForward;
+            var pts = new CoordinateList();
+            pts.Add(edge.Orig, false);
+            edge.AddCoordinates(pts);
+
+            var ptsOut = pts.ToCoordinateArray(isForward);
+            var line = _geometryFactory.CreateLineString(ptsOut);
+            return line;
+        }
+
+        //-----------------------------------------------
+        //----  Maximal line extraction logic
+        //-----------------------------------------------
+
+        /*
+         * NOT USED currently.
+         * Instead the raw noded edges are output.
+         * This matches the original overlay semantics.
+         * It is also faster.
+         */
+
+        // FUTURE: enable merging via an option switch on OverlayNG
+        private void AddResultLinesMerged()
         {
             AddResultLinesForNodes();
             AddResultLinesRings();
         }
-
-        /**
-         * FUTURE: To implement a strategy preserving input lines,
-         * the label must carry an id for each input LineString.
-         * The ids are zeroed out whenever two input edges are merged.
-         * Additional result nodes are created where there are changes in id
-         * at degree-2 nodes.
-         * (degree>=3 nodes must be kept as nodes to ensure 
-         * output linework is fully noded.
-         */
 
         private void AddResultLinesForNodes()
         {
@@ -196,9 +215,9 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /**
-         * Adds lines which form rings (i.e. have only degree-2 vertices).
-         */
+        /// <summary>
+        /// Adds lines which form rings (i.e. have only degree-2 vertices).
+        /// </summary>
         private void AddResultLinesRings()
         {
             // TODO: an ordering could be imposed on the endpoints to make this more repeatable
@@ -215,26 +234,21 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /**
-         * Traverses edges from edgeStart which
-         * lie in a single line (have degree = 2).
-         * 
-         * The direction of the linework is preserved as far as possible.
-         * Specifically, the direction of the line is determined 
-         * by the start edge direction. This implies
-         * that if all edges are reversed, the created line
-         * will be reversed to match.
-         * (Other more complex strategies would be possible.
-         * E.g. using the direction of the majority of segments,
-         * or preferring the direction of the A edges.)
-         * 
-         * @param node
-         * @return 
-         */
+        /// <summary>
+        /// Traverses edges from edgeStart which
+        /// lie in a single line (have degree = 2).
+        /// <para/>
+        /// The direction of the linework is preserved as far as possible.
+        /// Specifically, the direction of the line is determined
+        /// by the start edge direction. This implies
+        /// that if all edges are reversed, the created line
+        /// will be reversed to match.
+        /// (Other more complex strategies would be possible.
+        /// E.g. using the direction of the majority of segments,
+        /// or preferring the direction of the A edges.)
+        /// </summary>
         private LineString BuildLine(OverlayEdge node)
         {
-            // assert: edgeStart degree = 1
-            // assert: edgeStart direction = forward
             var pts = new CoordinateList();
             pts.Add(node.Orig, false);
 
@@ -262,13 +276,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             return line;
         }
 
-        /**
-         * Finds the next edge around a node which forms
-         * part of a result line.
-         * 
-         * @param node a line edge originating at the node to be scanned
-         * @return the next line edge, or null if there is none
-         */
+        /// <summary>
+        /// Finds the next edge around a node which forms
+        /// part of a result line.
+        /// </summary>
+        /// <param name="node">A line edge originating at the node to be scanned</param>
+        /// <returns>The next line edge, or null if there is none
+        /// </returns>
         private static OverlayEdge NextLineEdgeUnvisited(OverlayEdge node)
         {
             var e = node;
@@ -284,11 +298,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             return null;
         }
 
-        /**
-         * Computes the degree of the line edges incident on a node
-         * @param node node to compute degree for
-         * @return degree of the node line edges
-         */
+        /// <summary>
+        /// Computes the degree of the line edges incident on a node
+        /// </summary>
+        /// <param name="node">Node to compute degree for</param>
+        /// <returns>Degree of the node line edges</returns>
         private static int DegreeOfLines(OverlayEdge node)
         {
             int degree = 0;
@@ -303,7 +317,5 @@ namespace NetTopologySuite.Operation.OverlayNg
             } while (e != node);
             return degree;
         }
-
-
     }
 }
