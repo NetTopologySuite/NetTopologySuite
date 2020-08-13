@@ -261,7 +261,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             var a = Read("POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200))");
             var b = Read("LINESTRING (50 150, 150 150)");
-            var expected = Read("GEOMETRYCOLLECTION (LINESTRING (50 150, 100 150), POLYGON ((100 200, 200 200, 200 100, 100 100, 100 150, 100 200)))");
+            var expected = Read("GEOMETRYCOLLECTION (POLYGON ((200 200, 200 100, 100 100, 100 150, 100 200, 200 200)), LINESTRING (50 150, 100 150))");
             var actual = Union(a, b, 1);
             CheckEqual(expected, actual);
         }
