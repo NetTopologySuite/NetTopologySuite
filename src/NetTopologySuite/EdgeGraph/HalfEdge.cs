@@ -2,7 +2,6 @@
 using System.Text;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 
@@ -161,12 +160,10 @@ namespace NetTopologySuite.EdgeGraph
         }
 
         /// <summary>
-        /// Gets the next edge CCW around the
-        /// destination vertex of this edge,
-        /// with the dest vertex as its origin.
-        /// If the vertex has degree 1 then this is the <b>Sym</b> edge.
+        /// Gets the next edge CCW around the destination vertex of this edge.
+        /// If the destination vertex has degree <c>1</c> then this is the <c>Sym</c> edge.
         /// </summary>
-        /// <returns>The next edge</returns>
+        /// <returns>The next outgoing edge CCW around the destination vertex</returns>
         public HalfEdge Next
         {
             get => _next;
@@ -174,14 +171,17 @@ namespace NetTopologySuite.EdgeGraph
         }
 
         /// <summary>
-        /// Returns the edge previous to this one
-        /// (with dest being the same as this orig).
+        /// Gets the previous edge CW around the origin
+        /// vertex of this edge,
+        /// with that vertex being its destination.
         /// </summary>
+        /// <returns>The previous edge CW around the origin vertex</returns>
         public HalfEdge Prev => Sym.Next.Sym;
 
         /// <summary>
         /// Gets the next edge CCW around the origin of this edge,
-        /// with the same origin.
+        /// with the same origin.<br/>
+        /// If the origin vertex has degree <c>1</c> then this is the edge itself.
         /// </summary>
         /// <returns>The next edge around the origin</returns>
         public HalfEdge ONext => Sym.Next;
@@ -238,8 +238,7 @@ namespace NetTopologySuite.EdgeGraph
                 return;
             }
 
-            // Scan edges
-            // until insertion point is found
+            // Scan edges until insertion point is found
             var ePrev = InsertionEdge(eAdd);
             ePrev.InsertAfter(eAdd);
         }
@@ -258,7 +257,7 @@ namespace NetTopologySuite.EdgeGraph
             do
             {
                 var eNext = ePrev.ONext;
-                /**
+                /*
                  * Case 1: General case,
                  * with eNext higher than ePrev.
                  * 
@@ -270,7 +269,7 @@ namespace NetTopologySuite.EdgeGraph
                 {
                     return ePrev;
                 }
-                /**
+                /*
                  * Case 2: Origin-crossing case,
                  * indicated by eNext <= ePrev.
                  * 
@@ -432,6 +431,14 @@ namespace NetTopologySuite.EdgeGraph
             return string.Format("HE({0} {1}, {2} {3})", Orig.X, Orig.Y, Sym.Orig.X, Sym.Orig.Y);
         }
 
+        /// <summary>
+        /// Provides a string representation of the edges around
+        /// the origin node of this edge.
+        /// </summary>
+        /// <remarks>
+        /// Uses the subclass representation for each edge.
+        /// </remarks>
+        /// <returns>A string showing the edges around the origin</returns>
         public string ToStringNode()
         {
             var orig = Orig;
@@ -446,11 +453,6 @@ namespace NetTopologySuite.EdgeGraph
                 e = e.Next;
             } while (e != this);
             return sb.ToString();
-        }
-
-        private string ToStringNodeEdge()
-        {
-            return $"  -> ( {WKTWriter.Format(Dest)} )";
         }
 
         /// <summary>

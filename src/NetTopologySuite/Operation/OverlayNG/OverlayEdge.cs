@@ -56,9 +56,9 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <c>false</c> is reverse direction<br/>
         /// The label must be interpreted accordingly.
         /// </summary>
-        private bool _direction;
-        private Coordinate _dirPt;
-        private OverlayLabel _label;
+        private readonly bool _direction;
+        private readonly Coordinate _dirPt;
+        private readonly OverlayLabel _label;
 
         private bool _isInResultArea;
         private bool _isInResultLine;
@@ -165,11 +165,23 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// ets the symmetric pair edge of this edge.
+        /// </summary>
+        /// <returns>The symmetric pair edge</returns>
         public OverlayEdge SymOE
         {
             get => (OverlayEdge)Sym;
         }
 
+        /// <summary>
+        /// Gets the next edge CCW around the origin of this edge,
+        /// with the same origin.<br/>
+        /// If the origin vertex has degree 1 then this is the edge itself.
+        /// </summary>
+        /// <returns>
+        /// The next edge around the origin
+        /// </returns>
         public OverlayEdge ONextOE
         {
             get => (OverlayEdge)ONext;
@@ -220,25 +232,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => IsInResultArea || IsInResultLine;
         }
 
-        [Obsolete("Use NextResult property", true)]
-        public OverlayEdge ResultNext
-        {
-            get => NextResult;
-            set => NextResult = value;
-        }
-        [Obsolete("Use NextResult property", true)]
-        public void setResultNext(OverlayEdge e)
-        {
-            // Assert: e.orig() == this.dest();
-            _nextResultEdge = e;
-        }
-        [Obsolete("Use NextResult property", true)]
-        public OverlayEdge nextResult()
-        {
-            return _nextResultEdge;
-        }
-
-
         public OverlayEdge NextResult
         {
             get => _nextResultEdge;
@@ -249,13 +242,6 @@ namespace NetTopologySuite.Operation.OverlayNg
         public bool IsResultLinked
         {
             get => _nextResultEdge != null;
-        }
-
-        [Obsolete("Use NextResultMax property", true)]
-        internal void setResultNextMax(OverlayEdge e)
-        {
-            // Assert: e.orig() == this.dest();
-            _nextResultMaxEdge = e;
         }
 
         public OverlayEdge NextResultMax
@@ -275,12 +261,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             set => _isVisited = value;
         }
 
-        [Obsolete("Use IsVisited property")]
-        private void MarkVisited()
-        {
-            IsVisited = true;
-        }
-
         public void MarkVisitedBoth()
         {
             IsVisited = true;
@@ -293,31 +273,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             set => _edgeRing = value;
         }
 
-        [Obsolete("Use EdgeRing property", true)]
-        public void setEdgeRing(OverlayEdgeRing edgeRing)
-        {
-            EdgeRing = edgeRing;
-        }
-
-        [Obsolete("Use EdgeRing property", true)]
-        public OverlayEdgeRing getEdgeRing()
-        {
-            return EdgeRing;
-        }
-
         public MaximalEdgeRing MaxEdgeRing { get => _maxEdgeRing; set => _maxEdgeRing = value; }
-
-        [Obsolete("Use MaxEdgeRing property", true)]
-        public MaximalEdgeRing getEdgeRingMax()
-        {
-            return _maxEdgeRing;
-        }
-
-        [Obsolete("Use MaxEdgeRing property", true)]
-        public void setEdgeRingMax(MaximalEdgeRing maximalEdgeRing)
-        {
-            _maxEdgeRing = maximalEdgeRing;
-        }
 
         public override string ToString()
         {
