@@ -1,8 +1,5 @@
 ﻿using NetTopologySuite.Operation.OverlayNg;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {
@@ -38,23 +35,23 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         }
 
         /**
-         * Overlapping lines are merged
+         * Sequential lines are still noded
          */
         [Test]
         public void TestLinesSequential()
         {
             CheckUnion("MULTILINESTRING ((1 1, 5 1), (9 1, 5 1))",
-                "LINESTRING (9 1, 5 1, 1 1)");
+                "MULTILINESTRING ((1 1, 5 1), (5 1, 9 1))");
         }
 
         /**
-         * Overlapping lines are merged
+         * Overlapping lines are noded with common portions merged 
          */
         [Test]
         public void TestLinesOverlapping()
         {
             CheckUnion("MULTILINESTRING ((1 1, 2 1, 3 1), (4 1, 3 1, 2 1))",
-                "LINESTRING (1 1, 2 1, 3 1, 4 1)");
+                "MULTILINESTRING ((1 1, 2 1), (2 1, 3 1), (3 1, 4 1))");
         }
 
         /**
@@ -64,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         public void TestLinesNetwork()
         {
             CheckUnion("MULTILINESTRING ((1 9, 3.1 8, 5 7, 7 8, 9 9), (5 7, 5 3, 4 3, 2 3), (9 5, 7 4, 5 3, 8 1))",
-                "MULTILINESTRING ((9 5, 7 4, 5 3), (5 7, 7 8, 9 9), (5 7, 5 3), (5 3, 8 1), (1 9, 3.1 8, 5 7), (5 3, 4 3, 2 3))");
+                "MULTILINESTRING ((1 9, 3.1 8), (2 3, 4 3), (3.1 8, 5 7), (4 3, 5 3), (5 3, 5 7), (5 3, 7 4), (5 3, 8 1), (5 7, 7 8), (7 4, 9 5), (7 8, 9 9))");
         }
 
         private void CheckUnion(string wkt, string wktExpected)
