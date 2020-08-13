@@ -6,95 +6,33 @@ using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * A label for a pair of {@link OverlayEdge}s which records
-     * the topological information for the edge
-     * in the {@link OverlayGraph} containing it.
-     * The label is shared between both OverlayEdges
-     * of a symmetric pair. 
-     * Accessors for orientation-sensitive information
-     * require the orientation of the containing OverlayEdge.
-     * <p>
-     * A label contains the topological {@link Location}s for 
-     * the two overlay input geometries.
-     * A labelled input geometry may be either a Line or an Area.
-     * In both cases, the label locations are populated
-     * with the locations for the edge {@link Position}s
-     * once they are computed by topological evaluation.
-     * The label also records the dimension of each geometry,
-     * and in the case of area boundary edges, the role
-     * of the originating ring (which allows
-     * determination of the edge role in collapse cases).
-     * <p>
-     * For each input geometry, the label indicates that an edge is in one of the following states
-     * (denoted by the <c>dim</c> field).
-     * Each state has some additional information about the edge.
-     * <ul>
-     * <li>A <b>Boundary</b> edge of an input Area (polygon)
-     *   <ul>
-     *   <li><c>dim</c> = DIM_BOUNDARY</li>
-     *   <li><c>locLeft, locRight</c> : the locations of the edge sides for the input Area</li>
-     *   <li><c>isHole</c> : whether the 
-     * edge was in a shell or a hole</li>
-     *   </ul>
-     * </li>
-     * <li>A <b>Collapsed</b> edge of an input Area 
-     * (which had two or more parent edges)
-     *   <ul>
-     *   <li><c>dim</c> = DIM_COLLAPSE</li>
-     *   <li><c>locLine</c> : the location of the 
-     * edge relative to the input Area</li>
-     *   <li><c>isHole</c> : whether some 
-     * contributing edge was in a shell (<c>false</c>), 
-     * or otherwise that all were in holes</li> (<c>true</c>)
-     *   </ul>
-     * </li>
-     * <li>An edge from an input <b>Line</b>
-     *   <ul>
-     *   <li><c>dim</c> = DIM_LINE</li>
-     *   <li><c>locLine</c> : initialized to LOC_UNKNOWN, 
-     *          to simplify logic.</li>
-     *   </ul>
-     * </li>
-     * <li>An edge which is <b>Not Part</b> of an input geometry
-     * (and thus must be part of the other geometry).
-     *   <ul>
-     *   <li><c>dim</c> = NOT_PART</li>
-     *   </ul>
-     * </li>
-     * </ul>
-     * Note that:
-     * <ul>
-     * <li>an edge cannot be both a Collapse edge and a Line edge in the same input geometry, 
-     * because each input geometry must be homogeneous.
-     * <li>an edge may be an Boundary edge in one input geometry 
-     * and a Line or Collapse edge in the other input.
-     * </ul>
-     * 
-     * @author Martin Davis
-     *
-     */
     /// <summary>
-    /// A label for a pair of <see cref="OverlayEdge"/>s which records
-    /// the topological information for the edge
-    /// in the <see cref="OverlayGraph"/>containing it.
-    /// The label is shared between both OverlayEdges
+    /// A structure recording the topological situation
+    /// for an edge in a topology graph
+    /// used during overlay processing.
+    /// </summary>
+    /// <remarks>
+    /// A label contains the topological <see cref="Location"/> for
+    /// one or two input geometries to an overlay operation.
+    /// An input geometry may be either a Line or an Area.
+    /// The label locations for each input geometry are populated
+    /// with the <see cref="Location"/>
+    /// for the edge <see cref="Position"/>s
+    /// when they are created or once they are computed by topological evaluation.
+    /// A label also records the(effective) dimension of each input geometry.
+    /// For area edges the role(shell or hole)
+    /// of the originating ring is recorded, to allow
+    /// determination of edge handling in collapse cases.
+    /// <para/>
+    /// In an <see cref="OverlayGraph"/>
+    /// a single label is shared between
+    /// the two oppositely-oriented <see cref="OverlayEdge"/>s
     /// of a symmetric pair. 
     /// Accessors for orientation-sensitive information
-    /// require the orientation of the containing OverlayEdge.
+    /// are parameterized by the orientation of the containing edge.
     /// <para/>
-    /// A label contains the topological <see cref="Location"/>s for 
-    /// the two overlay input geometries.
-    /// A labelled input geometry may be either a Line or an Area.
-    /// In both cases, the label locations are populated
-    /// with the locations for the edge <see cref="Position"/>s
-    /// once they are computed by topological evaluation.
-    /// The label also records the dimension of each geometry,
-    /// and in the case of area boundary edges, the role
-    /// of the originating ring (which allows
-    /// determination of the edge role in collapse cases).
-    /// <para/>
-    /// For each input geometry, the label indicates that an edge is in one of the following states
+    /// For each input geometry, the label records
+    /// that an edge is in one of the following states
     /// (denoted by the<c>dim</c> field).
     /// Each state has some additional information about the edge.
     /// <list type="bullet">
@@ -102,7 +40,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     ///   <list type="bullet">
     ///     <item><description><c>dim</c> = DIM_BOUNDARY</description></item>
     ///     <item><description><c>locLeft, locRight</c> : the locations of the edge sides for the input Area</description></item>
-    ///     <item><description><c>isHole</c> : whether the edge was in a shell or a hole</description></item>
+    ///     <item><description><c>isHole</c> : whether the edge was in a shell or a hole (the ring role)</description></item>
     ///   </list>
     ///   </description>
     /// </item>
@@ -115,10 +53,11 @@ namespace NetTopologySuite.Operation.OverlayNg
     ///     
     ///   </list></description>
     /// </item>
-    /// <item><description>An edge from an input <b>Line</b>
+    /// <item><description>A <b>Line</b> edge from an input line
     ///   <list type="bullet">
     ///   <item><description><c>dim</c> = DIM_LINE</description></item>
-    ///   <item><description><c>locLine </c> : initialized to LOC_UNKNOWN, to simplify logic.</description></item>
+    ///   <item><description><c>locLine </c> : the location of the edge relative to the input Line.
+    ///   Initialized to LOC_UNKNOWN to simplify logic.</description></item>
     ///   </list></description>
     /// </item>
     /// <item><description>An edge which is <b>Not Part</b> of an input geometry
@@ -135,7 +74,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <item><description>an edge may be an Boundary edge in one input geometry
     /// and a Line or Collapse edge in the other input.</description></item>
     /// </list>
-    /// </summary>
+    /// </remarks>
     /// <author>Martin Davis</author>
     internal class OverlayLabel
     {
@@ -145,13 +84,34 @@ namespace NetTopologySuite.Operation.OverlayNg
         private const char SYM_COLLAPSE = 'C';
         private const char SYM_LINE = 'L';
 
+        /// <summary>
+        /// The dimension of an input geometry which is not known
+        /// </summary>
         public const Dimension DIM_UNKNOWN = Geometries.Dimension.Unknown;
+
+        /// <summary>
+        /// The dimension of an edge which is not part of a specified input geometry
+        /// </summary>
         public const Dimension DIM_NOT_PART = DIM_UNKNOWN;
+
+        /// <summary>
+        /// The dimension of an edge which is a line
+        /// </summary>
         public const Dimension DIM_LINE = Geometries.Dimension.Curve;
+
+        /// <summary>
+        /// The dimension for an edge which is part of an input Area geometry boundary
+        /// </summary>
         public const Dimension DIM_BOUNDARY = Geometries.Dimension.Surface;
+
+        /// <summary>
+        /// The dimension for an edge which is a collapsed part of an input Area geometry boundary
+        /// </summary>
         public const Dimension DIM_COLLAPSE = Geometries.Dimension.Collapse;
 
-        /// <summary>Indicates that the location is currently unknown</summary>
+        /// <summary>
+        /// Indicates that the location is currently unknown
+        /// </summary>
         public const Location LOC_UNKNOWN = Location.Null;
 
 
@@ -167,21 +127,38 @@ namespace NetTopologySuite.Operation.OverlayNg
         private Location _bLocRight = LOC_UNKNOWN;
         private Location _bLocLine = LOC_UNKNOWN;
 
-
+        /// <summary>
+        /// Creates a label for an Area edge
+        /// </summary>
+        /// <param name="index">The input index of the parent geometry</param>
+        /// <param name="locLeft">The location of the left side of the edge</param>
+        /// <param name="locRight">The location of the right side of the edge</param>
+        /// <param name="isHole">Whether the edge role is a hole or a shell</param>
         public OverlayLabel(int index, Location locLeft, Location locRight, bool isHole)
         {
             InitBoundary(index, locLeft, locRight, isHole);
         }
 
+        /// <summary>
+        /// Creates a label for a Line edge
+        /// </summary>
+        /// <param name="index">The input index of the parent geometry</param>
         public OverlayLabel(int index)
         {
             InitLine(index);
         }
 
+        /// <summary>
+        /// Creates an uninitialized label
+        /// </summary>
         public OverlayLabel()
         {
         }
 
+        /// <summary>
+        /// Creates a label which is a copy of another label.
+        /// </summary>
+        /// <param name="lbl">The template label</param>
         public OverlayLabel(OverlayLabel lbl)
         {
             _aLocLeft = lbl._aLocLeft;
@@ -197,6 +174,16 @@ namespace NetTopologySuite.Operation.OverlayNg
             _bIsHole = lbl._bIsHole;
         }
 
+        /// <summary>
+        /// Gets the effective dimension of the given input geometry.
+        /// </summary>
+        /// <param name="index">The input index of the parent geometry</param>
+        /// <returns>The dimension</returns>
+        /// <seealso cref="DIM_UNKNOWN"/>
+        /// <seealso cref="DIM_NOT_PART"/>
+        /// <seealso cref="DIM_LINE"/>
+        /// <seealso cref="DIM_BOUNDARY"/>
+        /// <seealso cref="DIM_COLLAPSE"/>
         public Dimension Dimension(int index)
         {
             if (index == 0)
@@ -204,6 +191,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bDim;
         }
 
+        /// <summary>
+        /// Initializes the label for an input geometry which is an Area boundary.
+        /// </summary>
+        /// <param name="index">The input index of the parent geometry</param>
+        /// <param name="locLeft">The location of the left side of the edge</param>
+        /// <param name="locRight">The location of the right side of the edge</param>
+        /// <param name="isHole">Whether the edge role is a hole or a shell</param>
         public void InitBoundary(int index, Location locLeft, Location locRight, bool isHole)
         {
             if (index == 0)
@@ -224,6 +218,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// Initializes the label for an edge which is the collapse of
+        /// part of the boundary of an Area input geometry.
+        /// </summary>
+        /// <param name="index">The index of the parent input geometry</param>
+        /// <param name="isHole">Whether the dominant edge role is a hole or a shell</param>
         public void InitCollapse(int index, bool isHole)
         {
             if (index == 0)
@@ -238,6 +238,10 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// Initializes the label for an input geometry which is a Line.
+        /// </summary>
+        /// <param name="index">The index of the parent input geometry</param>
         public void InitLine(int index)
         {
             if (index == 0)
@@ -252,6 +256,10 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// Initializes the label for an edge which is not part of an input geometry.
+        /// </summary>
+        /// <param name="index">The index of the parent input geometry</param>
         public void InitNotPart(int index)
         {
             // this assumes locations are initialized to UNKNOWN
@@ -265,46 +273,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /*
-        public void initAsLine(int index, int locInArea) {
-          int loc = normalizeLocation(locInArea);
-          if (index == 0) {
-            aDim = DIM_LINE;
-            aLocLine = loc;
-          }
-          else {
-            bDim = DIM_LINE;
-            bLocLine = loc;
-          }
-        }
-        */
-
-        /*
-         // Not needed so far
-        public void setToNonPart(int index, int locInArea) {
-          int loc = normalizeLocation(locInArea);
-          if (index == 0) {
-            aDim = DIM_NOT_PART;
-            aLocInArea = loc;
-            aLocLeft = loc;
-            aLocRight = loc;
-          }
-          else {
-            bDim = DIM_NOT_PART;
-            bLocInArea = loc;
-            aLocLeft = loc;
-            aLocRight = loc;
-          }
-        }
-        */
-
         /// <summary>
         /// Sets the line location.
         /// <br/>
         /// This is used to set the locations for linear edges 
         /// encountered during area label propagation.
         /// </summary>
-        /// <param name="index">Source to update</param>
+        /// <param name="index">The index of the input geometry</param>
         /// <param name="loc">Location to set</param>
         public void SetLocationLine(int index, Location loc)
         {
@@ -318,6 +293,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// Sets the location of all postions for a given input.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <param name="loc">The location to set</param>
         public void SetLocationAll(int index, Location loc)
         {
             if (index == 0)
@@ -334,6 +314,15 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// Sets the location for a collapsed edge (the Line position)
+        /// for an input geometry,
+        /// depending on the ring role recorded in the label.
+        /// If the input geometry edge is from a shell,
+        /// the location is <see cref="Location.Exterior"/>, if it is a hole
+        /// it is <see cref="Location.Interior"/>.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
         public void SetLocationCollapse(int index)
         {
             var loc = IsHole(index) ? Location.Interior : Location.Exterior;
@@ -356,6 +345,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => _aDim == DIM_LINE || _bDim == DIM_LINE;
         }
 
+        /// <summary>
+        /// Tests whether a source is a Line.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the input is a Line</returns>
         public bool IsLineAt(int index)
         {
             if (index == 0)
@@ -365,6 +359,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bDim == DIM_LINE;
         }
 
+        /// <summary>
+        /// Tests whether an edge is linear (a Line or a Collapse) in an input geometry.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the edge is linear</returns>
         public bool IsLinear(int index)
         {
             if (index == 0)
@@ -374,6 +373,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bDim == DIM_LINE || _bDim == DIM_COLLAPSE;
         }
 
+        /// <summary>
+        /// Tests whether a source is known.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the source is known</returns>
         public bool IsKnown(int index)
         {
             if (index == 0)
@@ -383,6 +387,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bDim != DIM_UNKNOWN;
         }
 
+        /// <summary>
+        /// Tests whether a label is for an edge which is not part
+        /// of a given input geometry.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the edge is not part of the geometry</returns>
         public bool IsNotPart(int index)
         {
             if (index == 0)
@@ -392,11 +402,19 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bDim == DIM_NOT_PART;
         }
 
+        /// <summary>
+        /// Gets a value indicating if a label is for an edge which is in the boundary of either source geometry.
+        /// </summary>
+        /// <returns><c>true</c> if the label is a boundary for either source</returns>
         public bool IsBoundaryEither
         {
             get => _aDim == DIM_BOUNDARY || _bDim == DIM_BOUNDARY;
         }
 
+        /// <summary>
+        /// Gets a value indicating if a label is for an edge which is in the boundary of both source geometries.
+        /// </summary>
+        /// <returns><c>true</c> if the label is a boundary for both sources</returns>
         public bool IsBoundaryBoth
         {
             get => _aDim == DIM_BOUNDARY && _bDim == DIM_BOUNDARY;
@@ -417,6 +435,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// Tests if a label is for an edge which is in the boundary of a source geometry.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the label is a boundary for the source</returns>
         public bool IsBoundary(int index)
         {
             if (index == 0)
@@ -426,6 +449,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bDim == DIM_BOUNDARY;
         }
 
+        /// <summary>
+        /// Tests if the line location for a source is unknown.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the line location is unknown</returns>
         public bool IsLineLocationUnknown(int index)
         {
             if (index == 0)
@@ -439,8 +467,11 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Tests if a line edge is inside 
+        /// Tests if a line edge is inside a source geometry
+        /// (i.e.it has location <see cref="Location.Interior"/>).
         /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the line is inside the source geometry</returns>
         public bool IsLineInArea(int index)
         {
             if (index == 0)
@@ -450,6 +481,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bLocLine == Location.Interior;
         }
 
+        /// <summary>
+        /// Tests if the ring role of an edge is a hole.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the ring role is a hole</returns>
         public bool IsHole(int index)
         {
             if (index == 0)
@@ -462,11 +498,21 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        /// <summary>
+        /// Tests if an edge is a Collapse for a source geometry.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if the label indicates the edge is a collapse for the source</returns>
         public bool IsCollapse(int index)
         {
             return Dimension(index) == DIM_COLLAPSE;
         }
 
+        /// <summary>
+        /// Gets the line location for a source geometry.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns>The line location for the source</returns>
         public Location GetLineLocation(int index)
         {
             if (index == 0)
@@ -482,7 +528,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <summary>
         /// Tests if a line is in the interior of a source geometry.
         /// </summary>
-        /// <param name="index">Source index</param>
+        /// <param name="index">The index of the source geometry</param>
         /// <returns><c>true</c> if the label is a line and is interior</returns>
         public bool IsLineInterior(int index)
         {
@@ -493,10 +539,14 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bLocLine == Location.Interior;
         }
 
-        [Obsolete("Use GetLocation(int, Geometries.Position")]
-        public Location GetLocation(int index, Positions position, bool isForward)
-            => GetLocation(index, (Position) position, isForward);
-
+        /// <summary>
+        /// Gets the location for a <see cref="Position"/> of an edge of a source
+        /// for an edge with given orientation.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <param name="position">The position to get the location for</param>
+        /// <param name="isForward"><c>true</c> if the orientation of the containing edge is forward</param>
+        /// <returns>The location of the oriented position in the source</returns>
         public Location GetLocation(int index, Position position, bool isForward)
         {
             if (index == 0)
@@ -508,6 +558,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                     case Position.On: return _aLocLine;
                 }
             }
+            // index == 1
             switch (position)
             {
                 case Position.Left: return isForward ? _bLocLeft : _bLocRight;
@@ -553,7 +604,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <summary>
         /// Gets the linear location for the given source.
         /// </summary>
-        /// <param name="index">The source index</param>
+        /// <param name="index">The source geometry index</param>
         /// <returns>The linear location for the source</returns>
         public Location GetLocation(int index)
         {
@@ -564,6 +615,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bLocLine;
         }
 
+        /// <summary>
+        /// Tests whether this label has side position information
+        /// for a source geometry.
+        /// </summary>
+        /// <param name="index">The index of the input geometry</param>
+        /// <returns><c>true</c> if at least one side position is known</returns>
         public bool HasSides(int index)
         {
             if (index == 0)
@@ -575,11 +632,19 @@ namespace NetTopologySuite.Operation.OverlayNg
                 || _bLocRight != LOC_UNKNOWN;
         }
 
+        /// <summary>
+        /// Creates a copy of this label
+        /// </summary>
+        /// <returns>A copy of this label</returns>
         public OverlayLabel Copy()
         {
             return new OverlayLabel(this);
         }
 
+        /// <summary>
+        /// Creates a flipped copy of this label.
+        /// </summary>
+        /// <returns>A flipped copy of the label</returns>
         public OverlayLabel CopyFlip()
         {
             var lbl = new OverlayLabel();
