@@ -38,7 +38,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             /*
              * At this point collapsed edges labeled with location UNKNOWN
              * must be disconnected from the area edges of the parent.
-             * They can be located based on their parent ring role (shell or hole).
+             * This can occur with a collapsed hole or shell.
+             * The edges can be labeled based on their parent ring role (shell or hole).
              */
             LabelCollapsedEdges();
 
@@ -46,8 +47,8 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Labels node edges based on the arrangement
-        /// of boundary edges incident on them.
+        /// Labels edges around nodes based on the arrangement
+        /// of incident area boundary edges.
         /// Also propagates the labelling to connected linear edges.
         /// </summary>
         /// <param name="nodes">The nodes to label</param>
@@ -171,9 +172,11 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// because that is done against the unreduced input geometry,
         /// which may give an invalid result due to topology collapse.
         /// <para/>
-        /// The labeling is propagated to other connected edges,
+        /// The labeling is propagated to other connected linear edges,
         /// since there may be NOT_PART edges which are connected,
-        /// and they need to be labeled in the same way.
+        /// and they can be labeled in the same way.
+        /// (These would get labeled anyway during subsequent disconnected labeling pass,
+        /// but may be more efficient and accurate to do it here.)
         /// </summary>
         private void LabelCollapsedEdges()
         {
@@ -208,32 +211,34 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         /// <summary>
         /// There can be edges which have unknown location
-        /// but are connected to a Line edge with known location.
-        /// In this case line location is propagated to the connected edges.
+        /// but are connected to a linear edge with known location.
+        /// In this case linear location is propagated to the connected edges.
         /// </summary>
         private void LabelConnectedLinearEdges()
         {
             //TODO: can these be merged to avoid two scans?
-            PropagateLineLocations(0);
+            PropagateLinearLocations(0);
             if (_inputGeometry.HasEdges(1))
             {
-                PropagateLineLocations(1);
+                PropagateLinearLocations(1);
             }
         }
 
-        private void PropagateLineLocations(int geomIndex)
+        /// <summary>
+        /// Performs a breadth-first graph traversal to find and label
+        /// connected linear edges.
+        /// </summary>
+        /// <param name="geomIndex">The index of the input geometry to label.</param>
+        private void PropagateLinearLocations(int geomIndex)
         {
-            // find L edges
-            var lineEdges = FindLinearEdgesWithLocation(geomIndex);
+            // find located linear edges
+            var linearEdges = FindLinearEdgesWithLocation(_edges, geomIndex);
+            if (linearEdges.Count == 0) return;
+
             // TODO: This is originally a ArrayDeque<T> in JTS.
-            var edgeStack = new LinkedList<OverlayEdge>(lineEdges);
+            var edgeStack = new LinkedList<OverlayEdge>(linearEdges);
+            bool isInputLine = _inputGeometry.IsLine(geomIndex);
 
-            PropagateLineLocations(geomIndex, edgeStack);
-        }
-
-        private void PropagateLineLocations(int geomIndex, LinkedList<OverlayEdge> edgeStack)
-        {
-            // TODO: edgeStack is a Deque<OverlayEdge> in JTS.
             // traverse line edges, labelling unknown ones that are connected
             while (edgeStack.Count > 0)
             {
@@ -243,35 +248,34 @@ namespace NetTopologySuite.Operation.OverlayNg
 
                 // for any edges around origin with unknown location for this geomIndex,
                 // add those edges to stack to continue traversal
-                PropagateLineLocation(lineEdge.Value, geomIndex, edgeStack, _inputGeometry);
+                PropagateLinearLocationAtNode(lineEdge.Value, geomIndex, isInputLine, edgeStack);
             }
         }
 
-        private static void PropagateLineLocation(OverlayEdge eStart, int index,
-            LinkedList<OverlayEdge> edgeStack, InputGeometry inputGeometry)
+        private static void PropagateLinearLocationAtNode(OverlayEdge eNode, int geomIndex,
+            bool isInputLine, LinkedList<OverlayEdge> edgeStack)
         {
             // TODO: edgeStack is a Deque<OverlayEdge> in JTS.
-            var e = eStart.ONextOE;
-            var lineLoc = eStart.Label.GetLineLocation(index);
+            var lineLoc = eNode.Label.GetLineLocation(geomIndex);
 
             /*
-             * If the parent geom is an L (dim 1) 
+             * If the parent geom is a Line
              * then only propagate EXTERIOR locations.
              */
-            if (inputGeometry.IsLine(index)
-                && lineLoc != Location.Exterior) return;
+            if (isInputLine && lineLoc != Location.Exterior) return;
 
+            var e = eNode.ONextOE;
             do
             {
                 var label = e.Label;
                 //Debug.println("propagateLineLocationAtNode - checking " + index + ": " + e);
-                if (label.IsLineLocationUnknown(index))
+                if (label.IsLineLocationUnknown(geomIndex))
                 {
                     /*
                      * If edge is not a boundary edge, 
                      * its location is now known for this area
                      */
-                    label.SetLocationLine(index, lineLoc);
+                    label.SetLocationLine(geomIndex, lineLoc);
                     //Debug.println("propagateLineLocationAtNode - setting "+ index + ": " + e);
 
                     /*
@@ -281,17 +285,23 @@ namespace NetTopologySuite.Operation.OverlayNg
                     edgeStack.AddFirst(e.SymOE);
                 }
                 e = e.ONextOE;
-            } while (e != eStart);
+            } while (e != eNode);
         }
 
-        /// <summary>Finds all OverlayEdges which are labelled as L dimension.</summary>
-        /// <returns>A list of L edges</returns>
-        private List<OverlayEdge> FindLinearEdgesWithLocation(int geomIndex)
+        /// <summary>
+        /// Finds all OverlayEdges which are linear
+        /// (i.e.line or collapsed) and have a known location
+        /// for the given input geometry.
+        /// </summary>
+        /// <param name="geomIndex">The index of the input geometry</param>
+        /// <returns>A list of linear edges with known location</returns>
+        private static List<OverlayEdge> FindLinearEdgesWithLocation(IEnumerable<OverlayEdge> edges, int geomIndex)
         {
             var lineEdges = new List<OverlayEdge>();
-            foreach (var edge in _edges)
+            foreach (var edge in edges)
             {
                 var lbl = edge.Label;
+                // keep if linear with known location
                 if (lbl.IsLinear(geomIndex)
                     && !lbl.IsLineLocationUnknown(geomIndex))
                 {
