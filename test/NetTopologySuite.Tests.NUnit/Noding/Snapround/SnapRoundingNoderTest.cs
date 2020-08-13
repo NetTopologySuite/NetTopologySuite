@@ -37,6 +37,18 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string expected = "MULTILINESTRING ((2 3, 3 3), (2 3, 3 3), (3 2, 3 3), (3 2, 3 3))";
             CheckRounding(wkt, 1.0, expected);
         }
+
+        /**
+         * Rings with parallel narrow spikes are snapped to a simple ring and lines
+         */
+        [Test]
+        public void TestRingsWithParallelNarrowSpikes()
+        {
+            string wkt = "MULTILINESTRING ((1 3.3, 1.3 1.4, 3.1 1.4, 3.1 0.9, 1.3 0.9, 1 -0.2, 0.8 1.3, 1 3.3), (1 2.9, 2.9 2.9, 2.9 1.3, 1.7 1, 1.3 0.9, 1 0.4, 1 2.9))";
+            string expected = "MULTILINESTRING ((1 3, 1 1), (1 1, 2 1), (2 1, 3 1), (3 1, 2 1), (2 1, 1 1), (1 1, 1 0), (1 0, 1 1), (1 1, 1 3), (1 3, 3 3, 3 1), (3 1, 2 1), (2 1, 1 1), (1 1, 1 0), (1 0, 1 1), (1 1, 1 3))";
+            CheckRounding(wkt, 1.0, expected);
+        }
+
         /// <summary>
         /// This test checks the HotPixel test for overlapping horizontal line
         /// </summary>
