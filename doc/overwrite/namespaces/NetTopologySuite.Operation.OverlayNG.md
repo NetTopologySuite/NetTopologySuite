@@ -30,26 +30,30 @@ Additional operations include:
   * rings which self-touch at discrete points (sometimes called inverted shells and exverted holes).
   * rings which touch along line segments (i.e. topology collapse).
 
-##### The semantics of operation results are:
-* Results are always valid geometries. In particular, result `MultiPolygon`s are valid.
-* Empty results are `EMPTY` atomic geometries of appropriate dimension
+##### The semantics of operation output are:
+* Results are always valid geometries.  
+  In particular, result `MultiPolygon`s are valid.
 * Repeated vertices are removed
-* Linear results are merged node-to-node (e.g. are of maximial length)
+* Linear results are merged node-to-node (e.g. are of maximal length)
 * Polygon edges which collapse completely due to rounding are not output
-* The `intersection` and `difference` operations
-  always produce a homogeneous result.   
-  The result dimension is equal to or less than the maximum dimension of the inputs.   
-  (For instance, the intersection of a `Polygon`
+* The `intersection` operation produces a homogeneous result.  
+  The result contains the components of highest dimension in the intersection.
+  (For instance, the intersection of a `Polygon` 
   and a `LineString` might produce a `Point` result.)
+  always produce a homogeneous result.   
+* The `difference` operation produces a homogeneous result.  
+  The result dimension is that of the left-hand operand.
 * The `union` and `symmetric difference` operations
-  may produce heterogeneous results   
-  (i.e. a collection containing components of different dimension).
+  may produce heterogeneous result if the inputs are of mixed dimension.
 * Homogeneous results are output as `Multi` geometries.
-* Heterogeneous results are in the form of a `GeometryCollection`
-  containing a set of atomic geometries.  This provides backwards compatibility
+* Heterogeneous results are output as a `GeometryCollection`
+  containing a set of atomic geometries.  
+  This provides backwards compatibility
   with the original JTS overlay implementation.
-  However, this loses the information that the polygonal results
-  have valid `MultiPolygon` topology.
+  (However, this loses the information that the polygonal results 
+  have valid `MultiPolygon` topology.)
+* Empty results are atomic `EMPTY` geometries of dimension appropriate 
+  to the operation.
 
 ## Features
 Functionality
