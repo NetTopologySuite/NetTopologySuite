@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// This allows using a more performant noding strategy in specific cases,
     /// for instance in <see cref="CoverageUnion"/>.
     /// <para/>
-    /// <b>Note:</b If a <see cref="SnappingNoder"/> is used
+    /// <b>Note:</b> If a <see cref="SnappingNoder"/> is used
     /// it is best to specify a fairly small snap tolerance,
     /// since the intersection clipping optimization can
     /// interact with the snapping to alter the result.
@@ -69,6 +69,16 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// The code for the Symmetric Difference overlay operation.
         /// </summary>
         public const SpatialFunction SYMDIFFERENCE = SpatialFunction.SymDifference;
+
+        /// <summary>
+        /// Indicates whether intersections are allowed to produce
+        /// heterogeneous results.
+        /// <c>true</c> provides the classic JTS semantics
+        /// (for proper boundary touches only -
+        /// touching along collapses are not output).
+        /// </summary>
+        internal const bool ALLOW_INT_MIXED_INT_RESULT = true;
+
 
         /// <summary>
         /// Tests whether a point with a given topological <see cref="Label"/>
@@ -403,6 +413,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
 
             LabelGraph(graph);
+            //for (OverlayEdge e : graph.getEdges()) {  Debug.println(e);  }
 
             if (_isOutputEdges || _isOutputResultEdges)
             {
@@ -487,31 +498,39 @@ namespace NetTopologySuite.Operation.OverlayNg
 
             //--- Build lines
             List<LineString> resultLineList = null;
-            if (opCode != INTERSECTION || !hasResultComponents)
+            bool allowMixedIntResult = !hasResultComponents || ALLOW_INT_MIXED_INT_RESULT;
+            if (opCode != INTERSECTION || allowMixedIntResult)
             {
                 var lineBuilder = new LineBuilder(_inputGeom, graph, hasResultComponents, opCode, _geomFact);
                 resultLineList = lineBuilder.GetLines();
-                hasResultComponents = resultLineList.Count > 0;
             }
+            hasResultComponents = hasResultComponents || resultLineList.Count > 0;
             /*
              * Since operations with point inputs are handled elsewhere,
              * this only handles the case where non-point inputs 
-             * intersect in points ONLY. 
+             * intersect in points. 
              */
             List<Point> resultPointList = null;
-            if (opCode == INTERSECTION && !hasResultComponents)
+            allowMixedIntResult = !hasResultComponents || ALLOW_INT_MIXED_INT_RESULT;
+            if (opCode == INTERSECTION && allowMixedIntResult)
+            //if (opCode == INTERSECTION)
             {
                 var pointBuilder = new IntersectionPointBuilder(graph, _geomFact);
                 resultPointList = pointBuilder.Points;
             }
 
-            if ((resultPolyList == null || resultPolyList.Count == 0)
-                && (resultLineList == null || resultLineList.Count == 0)
-                && (resultPointList == null || resultPointList.Count == 0))
+            if (IsEmpty(resultPolyList)
+                && IsEmpty(resultLineList)
+                && IsEmpty(resultPointList))
                 return CreateEmptyResult();
 
             var resultGeom = OverlayUtility.CreateResultGeometry(resultPolyList, resultLineList, resultPointList, _geomFact);
             return resultGeom;
+        }
+
+        static bool IsEmpty<T>(IReadOnlyCollection<T> self)
+        {
+            return self == null || self.Count == 0;
         }
 
         private Geometry CreateEmptyResult()
@@ -522,6 +541,5 @@ namespace NetTopologySuite.Operation.OverlayNg
                     _inputGeom.GetDimension(1)),
                   _geomFact);
         }
-
     }
 }

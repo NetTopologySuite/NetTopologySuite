@@ -33,30 +33,31 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <para/>
     /// For each input geometry, the label records
     /// that an edge is in one of the following states
-    /// (denoted by the<c>dim</c> field).
-    /// Each state has some additional information about the edge.
+    /// (identified by the<c>dim</c> field).
+    /// Each state has additional information about the edge topology.
     /// <list type="bullet">
-    /// <item><description>A <b>Boundary</b> edge of an input Area (polygon)
+    /// <item><description>A <b>Boundary</b> edge of an Area (polygon)
     ///   <list type="bullet">
     ///     <item><description><c>dim</c> = DIM_BOUNDARY</description></item>
-    ///     <item><description><c>locLeft, locRight</c> : the locations of the edge sides for the input Area</description></item>
+    ///     <item><description><c>locLeft, locRight</c> : the locations of the edge sides for the Area</description></item>
+///         <item><description><c>locLine</c> : INTERIOR</description></item>
     ///     <item><description><c>isHole</c> : whether the edge was in a shell or a hole (the ring role)</description></item>
     ///   </list>
     ///   </description>
     /// </item>
     /// <item><description>A <b>Collapsed</b> edge of an input Area
-    /// (which had two or more parent edges)
+    /// (formed by merging two or more parent edges)
     ///   <list type="bullet">
     ///     <item><description><c>dim</c> = DIM_COLLAPSE</description></item>
     ///     <item><description><c>locLine</c> : the location of the edge relative to the input Area</description></item>
-    ///     <item><description><c>isHole</c> : whether some contributing edge was in a shell(<c>false</c>), or otherwise that all were in holes (<c>true</c>)</description></item>
+    ///     <item><description><c>isHole</c> : whether some contributing edge was in a shell(<c>false</c>). Otherwise all parent edges were in holes (<c>true</c>)</description></item>
     ///     
     ///   </list></description>
     /// </item>
     /// <item><description>A <b>Line</b> edge from an input line
     ///   <list type="bullet">
     ///   <item><description><c>dim</c> = DIM_LINE</description></item>
-    ///   <item><description><c>locLine </c> : the location of the edge relative to the input Line.
+    ///   <item><description><c>locLine </c> : the location of the edge relative to the Line.
     ///   Initialized to LOC_UNKNOWN to simplify logic.</description></item>
     ///   </list></description>
     /// </item>
@@ -421,9 +422,8 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Tests if the label is for a collapsed
-        /// edge of an area 
-        /// which is coincident with the boundary of the other area.
+        /// Tests if the label is for a collapsed area edge
+        /// and is a(non-collapsed) boundary edge of the other area.
         /// </summary>
         /// <value><c>true</c> if the label is for a collapse coincident with a boundary</value>
         public bool IsBoundaryCollapse
@@ -433,6 +433,17 @@ namespace NetTopologySuite.Operation.OverlayNg
                 if (IsLine) return false;
                 return !IsBoundaryBoth;
             }
+        }
+
+        /// <summary>
+        /// Tests if a label is for an edge where two
+        /// area touch along their boundary.
+        /// </summary>
+        /// <returns><c>true</c> if the edge is a boundary touch</returns>
+        public bool IsBoundaryTouch
+        {
+            get => IsBoundaryBoth
+                   && GetLocation(0, Position.Right, true) != GetLocation(1, Position.Right, true);
         }
 
         /// <summary>
@@ -639,27 +650,6 @@ namespace NetTopologySuite.Operation.OverlayNg
         public OverlayLabel Copy()
         {
             return new OverlayLabel(this);
-        }
-
-        /// <summary>
-        /// Creates a flipped copy of this label.
-        /// </summary>
-        /// <returns>A flipped copy of the label</returns>
-        public OverlayLabel CopyFlip()
-        {
-            var lbl = new OverlayLabel();
-
-            lbl._aLocLeft = _aLocRight;
-            lbl._aLocRight = _aLocLeft;
-            lbl._aLocLine = _aLocLine;
-            lbl._aDim = _aDim;
-
-            lbl._bLocLeft = _bLocRight;
-            lbl._bLocRight = _bLocLeft;
-            lbl._bLocLine = _bLocLine;
-            lbl._bDim = _bDim;
-
-            return lbl;
         }
 
         public override string ToString()

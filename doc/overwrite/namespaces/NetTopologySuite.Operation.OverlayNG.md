@@ -39,10 +39,8 @@ The semantics of overlay output are:
   In some cases more nodes will be present.
   (If merged lines are required see <xref href="NetTopologySuite.Operation.Linemerge.LineMerger">LineMerger</xref>.)
 * Polygon edges which collapse completely due to rounding are not output
-* The `intersection` operation produces a homogeneous result.  
-  The result contains the components of highest dimension in the intersection.
-  (For instance, the intersection of a `Polygon` 
-  and a `LineString` might produce a `Point` result.)
+* The `intersection` operation may produce a heterogenous result. 
+  The result contains all the dimensional components of the intersection.
   always produce a homogeneous result.   
 * The `difference` operation produces a homogeneous result.  
   The result dimension is that of the left-hand operand.

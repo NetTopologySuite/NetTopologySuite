@@ -67,7 +67,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             var edges = _graph.Edges;
             foreach (var edge in edges)
             {
-                if (IsInResult(edge))
+                /*
+                 * If the edge linework is already marked as in the result,
+                 * it is not included as a line.
+                 * This occurs when an edge either is in a result area
+                 * or has already been included as a line.
+                 */
+                if (edge.IsInResultEither)
                     continue;
                 if (IsResultLine(edge.Label))
                 {
@@ -75,17 +81,6 @@ namespace NetTopologySuite.Operation.OverlayNg
                     //Debug.println(edge);
                 }
             }
-        }
-
-        /// <summary>
-        /// If the edge linework is already in the result,
-        /// this edge does not need to be included as a line.
-        /// </summary>
-        /// <param name="edge">An edge of the topology graph</param>
-        /// <returns><c>true</c> if the edge linework is already in the result</returns>
-        private static bool IsInResult(OverlayEdge edge)
-        {
-            return edge.IsInResult || edge.SymOE.IsInResult;
         }
 
         /// <summary>
@@ -101,12 +96,18 @@ namespace NetTopologySuite.Operation.OverlayNg
         private bool IsResultLine(OverlayLabel lbl)
         {
             /*
-             * Edges which are just collapses along boundaries
-             * are not output.
-             * In other words, an edge must be from a source line
-             * or two (coincident) area boundaries.
+             * Edges which are collapses along boundaries are not output.
+             * I.e a result line edge must be from a input line
+             * or two coincident area boundaries.
              */
             if (lbl.IsBoundaryCollapse) return false;
+
+            if (OverlayNG.ALLOW_INT_MIXED_INT_RESULT
+                && _opCode == OverlayNG.INTERSECTION && lbl.IsBoundaryTouch)
+            {
+                return true;
+            }
+
 
             /*
              * Skip edges that are inside result area, if there is one.
@@ -121,8 +122,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             if (_hasResultArea && lbl.IsLineInArea(_inputAreaIndex))
                 return false;
 
-            var aLoc = EffectiveLocation(0, lbl);
-            var bLoc = EffectiveLocation(1, lbl);
+            var aLoc = EffectiveLocation(lbl, 0);
+            var bLoc = EffectiveLocation(lbl, 1);
 
             bool isInResult = OverlayNG.IsResultOfOp(_opCode, aLoc, bLoc);
             return isInResult;
@@ -133,15 +134,14 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// for the purpose of overlay operation evaluation.
         /// Line edges and Collapses are reported as INTERIOR
         /// so they may be included in the result
-        /// if warranted by the effect of the operation
-        /// on the two edges.
-        /// (For instance, the intersection of line edge and a collapsed boundary
+        /// if warranted by the effect of the operation on the two edges.
+        /// (For instance, the intersection of a line edge and a collapsed boundary
         /// is included in the result).
         /// </summary>
-        /// <param name="geomIndex">The index of parent geometry</param>
         /// <param name="lbl">The label of line</param>
+        /// <param name="geomIndex">The index of parent geometry</param>
         /// <returns>The effective location of the line</returns>
-        private static Location EffectiveLocation(int geomIndex, OverlayLabel lbl)
+        private static Location EffectiveLocation(OverlayLabel lbl, int geomIndex)
         {
             if (lbl.IsCollapse(geomIndex))
                 return Location.Interior;

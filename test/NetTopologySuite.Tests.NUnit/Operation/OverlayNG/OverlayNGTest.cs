@@ -127,11 +127,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         }
 
         [Test]
-        public void TestPolygonPolygonWithLineTouchIntersection()
+        public void TestAreaLineIntersection()
         {
             var a = Read("POLYGON ((360 200, 220 200, 220 180, 300 180, 300 160, 300 140, 360 200))");
             var b = Read("MULTIPOLYGON (((280 180, 280 160, 300 160, 300 180, 280 180)), ((220 230, 240 230, 240 180, 220 180, 220 230)))");
-            var expected = Read("POLYGON ((220 200, 240 200, 240 180, 220 180, 220 200))");
+            var expected = Read("GEOMETRYCOLLECTION (LINESTRING (280 180, 300 180), LINESTRING (300 160, 300 180), POLYGON ((220 180, 220 200, 240 200, 240 180, 220 180)))");
+            var actual = Intersection(a, b, 1);
+            CheckEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestAreaLinePointIntersection()
+        {
+            var a = Read("POLYGON ((100 100, 200 100, 200 150, 250 100, 300 100, 300 150, 350 100, 350 200, 100 200, 100 100))");
+            var b = Read("POLYGON ((100 140, 170 140, 200 100, 400 100, 400 30, 100 30, 100 140))");
+            var expected = Read("GEOMETRYCOLLECTION (POINT (350 100), LINESTRING (250 100, 300 100), POLYGON ((100 100, 100 140, 170 140, 200 100, 100 100)))");
             var actual = Intersection(a, b, 1);
             CheckEqual(expected, actual);
         }

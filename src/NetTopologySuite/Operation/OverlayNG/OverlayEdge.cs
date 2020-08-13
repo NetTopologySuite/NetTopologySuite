@@ -232,6 +232,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => IsInResultArea || IsInResultLine;
         }
 
+        public bool IsInResultEither
+        {
+            get => IsInResult || SymOE.IsInResult;
+        }
+
         public OverlayEdge NextResult
         {
             get => _nextResultEdge;

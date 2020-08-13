@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
 using Position = NetTopologySuite.Geometries.Position;
@@ -264,11 +266,12 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             if (isInputLine && lineLoc != Location.Exterior) return;
 
+            //Debug.println("check " + geomIndex + " from: " + eNode);
             var e = eNode.ONextOE;
             do
             {
                 var label = e.Label;
-                //Debug.println("propagateLineLocationAtNode - checking " + index + ": " + e);
+                //Debug.println(""*** setting "+ geomIndex + ": " + e);
                 if (label.IsLineLocationUnknown(geomIndex))
                 {
                     /*
@@ -478,5 +481,25 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
+        public static string ToString(OverlayEdge nodeEdge)
+        {
+            var orig = nodeEdge.Orig;
+            var sb = new StringBuilder();
+            sb.AppendFormat("Node( {0} )\n", WKTWriter.Format(orig));
+            var e = nodeEdge;
+            do
+            {
+                sb.Append($"  -> {e}");
+                if (e.IsResultLinked)
+                {
+                    sb.Append(" Link: ");
+                    sb.Append(e.NextResult);
+                }
+                sb.Append("\n");
+                e = e.ONextOE;
+            } while (e != nodeEdge);
+
+            return sb.ToString();
+        }
     }
 }
