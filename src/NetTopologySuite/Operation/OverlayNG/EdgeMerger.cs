@@ -17,8 +17,8 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// using the same ON location</description></item>
     /// </list>
     /// <para/>
-    /// One constraint that is maintained is that the direction of linear
-    /// edges should be preserved if possible(which is the case if there is 
+    /// The merging attempts to preserve the direction of linear
+    /// edges if possible(which is the case if there is 
     /// no other coincident edge, or if all coincident edges have the same direction).
     /// This ensures that the overlay output line direction will be as consistent
     /// as possible with input lines.

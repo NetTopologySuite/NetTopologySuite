@@ -7,20 +7,19 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Operation.OverlayNg
 {
     /// <summary>
-    /// Represents the underlying linework for edges in a topology graph,
-    /// and carries the topology information
-    /// derived from the two parent geometries.
-    /// The edge may be the result of the merging of
-    /// two or more edges which have the same underlying linework
+    /// Represents the linework for edges in a topology graph,
+    /// derived from(up to) two parent geometries.
+    /// An edge may be the result of the merging of
+    /// two or more edges which have the same linework
     /// (although possibly different orientations).
     /// In this case the topology information is
     /// derived from the merging of the information in the
-    /// source edges.
+    /// source edges.<br/>
     /// Merged edges can occur in the following situations
     /// <list type="bullet">
+    /// <item><description>Due to coincident edges of polygonal or linear geometries.</description></item>
     /// <item><description>Due to topology collapse caused by snapping or rounding
     /// of polygonal geometries.</description></item>
-    /// <item><description>Due to coincident linework in a linear input</description></item>
     /// </list>
     /// The source edges may have the same parent geometry,
     /// or different ones, or a mix of the two.
@@ -129,12 +128,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             return true;
         }
 
-        public Dimension Dimension(int geomIndex)
-        {
-            if (geomIndex == 0) return _aDim;
-            return _bDim;
-        }
-
         public OverlayLabel CreateLabel()
         {
             var lbl = new OverlayLabel();
@@ -187,19 +180,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             if (isCollapse) return OverlayLabel.DIM_COLLAPSE;
 
             return OverlayLabel.DIM_BOUNDARY;
-        }
-
-        private bool IsHole(int index)
-        {
-            if (index == 0)
-                return _aIsHole;
-            return _bIsHole;
-        }
-
-        private bool IsBoundary(int geomIndex)
-        {
-            if (geomIndex == 0) return _aDim == OverlayLabel.DIM_BOUNDARY;
-            return _bDim == OverlayLabel.DIM_BOUNDARY;
         }
 
         /// <summary>
@@ -343,7 +323,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                 + depthDelta.ToString();  // force to string
         }
 
-        public static string RingRoleSymbol(Dimension dim, bool isHole)
+        private static string RingRoleSymbol(Dimension dim, bool isHole)
         {
             if (HasAreaParent(dim)) return "" + OverlayLabel.RingRoleSymbol(isHole);
             return "";
