@@ -14,31 +14,31 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             var line2 = CreateLine(10, 10, 0, 10);
             var line3 = CreateLine(0, 10, 0, 0);
 
-            var graph = createGraph(line1, line2, line3);
+            var graph = CreateGraph(line1, line2, line3);
 
-            var e1 = findEdge(graph, 0, 0, 10, 10);
-            var e2 = findEdge(graph, 10, 10, 0, 10);
-            var e3 = findEdge(graph, 0, 10, 0, 0);
+            var e1 = FindEdge(graph, 0, 0, 10, 10);
+            var e2 = FindEdge(graph, 10, 10, 0, 10);
+            var e3 = FindEdge(graph, 0, 10, 0, 0);
 
             CheckNodeValid(e1);
             CheckNodeValid(e2);
             CheckNodeValid(e3);
 
-            checkNext(e1, e2);
-            checkNext(e2, e3);
-            checkNext(e3, e1);
+            CheckNext(e1, e2);
+            CheckNext(e2, e3);
+            CheckNext(e3, e1);
 
-            var e1sym = findEdge(graph, 10, 10, 0, 0);
-            var e2sym = findEdge(graph, 0, 10, 10, 10);
-            var e3sym = findEdge(graph, 0, 0, 0, 10);
+            var e1sym = FindEdge(graph, 10, 10, 0, 0);
+            var e2sym = FindEdge(graph, 0, 10, 10, 10);
+            var e3sym = FindEdge(graph, 0, 0, 0, 10);
 
             Assert.AreEqual(e1sym, e1.Sym);
             Assert.AreEqual(e2sym, e2.Sym);
             Assert.AreEqual(e3sym, e3.SymOE);
 
-            checkNext(e1sym, e3sym);
-            checkNext(e2sym, e1sym);
-            checkNext(e3sym, e2sym);
+            CheckNext(e1sym, e3sym);
+            CheckNext(e2sym, e1sym);
+            CheckNext(e3sym, e2sym);
         }
 
         [Test]
@@ -47,19 +47,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 
             var graph = new OverlayGraph();
 
-            var e1 = addEdge(graph, 5, 5, 0, 0);
-            var e2 = addEdge(graph, 5, 5, 0, 9);
-            var e3 = addEdge(graph, 5, 5, 9, 9);
+            var e1 = AddEdge(graph, 5, 5, 0, 0);
+            var e2 = AddEdge(graph, 5, 5, 0, 9);
+            var e3 = AddEdge(graph, 5, 5, 9, 9);
 
             CheckNodeValid(e1);
 
-            checkNext(e1, e1.SymOE);
-            checkNext(e2, e2.SymOE);
-            checkNext(e3, e3.SymOE);
+            CheckNext(e1, e1.SymOE);
+            CheckNext(e2, e2.SymOE);
+            CheckNext(e3, e3.SymOE);
 
-            checkPrev(e1, e3.SymOE);
-            checkPrev(e2, e1.SymOE);
-            checkPrev(e3, e2.SymOE);
+            CheckPrev(e1, e3.SymOE);
+            CheckPrev(e2, e1.SymOE);
+            CheckPrev(e3, e2.SymOE);
         }
 
         /**
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             var e2 = CreateLine(50, 39, 50, 60, 20, 60);
             var e3 = CreateLine(50, 39, 68, 35);
 
-            var graph = createGraph(e1, e2, e3);
+            var graph = CreateGraph(e1, e2, e3);
             var node = graph.GetNodeEdge(new Coordinate(50, 39));
             CheckNodeValid(node);
         }
@@ -86,17 +86,17 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             var e2 = CreateLine(50, 200, 190, 50, 50, 50);
             var e3 = CreateLine(50, 200, 200, 200, 0, 200);
 
-            var graph = createGraph(e1, e2, e3);
+            var graph = CreateGraph(e1, e2, e3);
             var node = graph.GetNodeEdge(new Coordinate(50, 200));
             CheckNodeValid(node);
         }
 
-        private void checkNext(OverlayEdge e, OverlayEdge eNext)
+        private void CheckNext(OverlayEdge e, OverlayEdge eNext)
         {
             Assert.AreEqual(eNext, e.Next);
         }
 
-        private void checkPrev(OverlayEdge e, OverlayEdge ePrev)
+        private void CheckPrev(OverlayEdge e, OverlayEdge ePrev)
         {
             Assert.AreEqual(ePrev, e.Prev);
         }
@@ -107,16 +107,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             Assert.That(isNodeValid, Is.True, "Found non-sorted edges around node {0}", e.ToStringNode());
         }
 
-        private static OverlayEdge findEdge(OverlayGraph graph, double orgx, double orgy, double destx, double desty)
+        private static OverlayEdge FindEdge(OverlayGraph graph, double orgx, double orgy, double destx, double desty)
         {
             var edges = graph.Edges;
             foreach (var e in edges)
             {
-                if (isEdgeOrgDest(e, orgx, orgy, destx, desty))
+                if (IsEdgeOrgDest(e, orgx, orgy, destx, desty))
                 {
                     return e;
                 }
-                if (isEdgeOrgDest(e.SymOE, orgx, orgy, destx, desty))
+                if (IsEdgeOrgDest(e.SymOE, orgx, orgy, destx, desty))
                 {
                     return e.SymOE;
                 }
@@ -124,19 +124,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             return null;
         }
 
-        private static bool isEdgeOrgDest(OverlayEdge e, double orgx, double orgy, double destx, double desty)
+        private static bool IsEdgeOrgDest(OverlayEdge e, double orgx, double orgy, double destx, double desty)
         {
-            if (!isEqual(e.Orig, orgx, orgy)) return false;
-            if (!isEqual(e.Dest, destx, desty)) return false;
+            if (!IsEqual(e.Orig, orgx, orgy)) return false;
+            if (!IsEqual(e.Dest, destx, desty)) return false;
             return true;
         }
 
-        private static bool isEqual(Coordinate p, double x, double y)
+        private static bool IsEqual(Coordinate p, double x, double y)
         {
             return p.X == x && p.Y == y;
         }
 
-        private OverlayGraph createGraph(params Coordinate[][] edges)
+        private OverlayGraph CreateGraph(params Coordinate[][] edges)
         {
             var graph = new OverlayGraph();
             foreach (var e in edges)
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             return graph;
         }
 
-        private OverlayEdge addEdge(OverlayGraph graph, double x1, double y1, double x2, double y2)
+        private OverlayEdge AddEdge(OverlayGraph graph, double x1, double y1, double x2, double y2)
         {
             var pts = new [] {
                 new Coordinate(x1, y1), new Coordinate(x2, y2)
