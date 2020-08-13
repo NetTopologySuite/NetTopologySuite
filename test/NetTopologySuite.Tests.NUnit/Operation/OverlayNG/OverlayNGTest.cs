@@ -136,6 +136,29 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             CheckEqual(expected, actual);
         }
 
+        /**
+         * Note this result is different to old overlay, because the top-right diagonal line
+         * gets snapped to the vertex above it.
+         */
+        [Test]
+        public void TestTriangleFillingHoleUnion()
+        {
+            var a = Read("POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0), (1 1, 1 2, 2 1, 1 1), (1 2, 1 3, 2 3, 1 2), (2 3, 3 3, 3 2, 2 3))");
+            var b = Read("POLYGON ((2 1, 3 1, 3 2, 2 1))");
+            var expected = Read("POLYGON ((0 0, 0 4, 4 4, 4 0, 0 0), (1 2, 1 1, 2 1, 1 2), (2 3, 1 3, 1 2, 2 3))");
+            CheckEqual(expected, OverlayNGTest.Union(a, b, 1));
+        }
+
+        [Test]
+        public void TestTriangleFillingHoleUnionPrec10()
+        {
+            var a = Read("POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0), (1 1, 1 2, 2 1, 1 1), (1 2, 1 3, 2 3, 1 2), (2 3, 3 3, 3 2, 2 3))");
+            var b = Read("POLYGON ((2 1, 3 1, 3 2, 2 1))");
+            var expected = Read("POLYGON ((0 0, 0 4, 4 4, 4 0, 0 0), (1 2, 1 1, 2 1, 1 2), (2 3, 1 3, 1 2, 2 3), (3 2, 3 3, 2 3, 3 2))");
+            CheckEqual(expected, OverlayNGTest.Union(a, b, 10));
+        }
+
+
         [Test]
         public void TestBoxTriIntersection()
         {

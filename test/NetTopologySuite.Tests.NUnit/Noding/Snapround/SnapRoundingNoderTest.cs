@@ -26,6 +26,17 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             CheckRounding(wkt, 1, expected);
         }
 
+
+        /**
+         * A diagonal line is snapped to a vertex half a grid cell away
+         */
+        [Test]
+        public void TestSnappedDiagonalLine()
+        {
+            string wkt = "LINESTRING (2 3, 3 3, 3 2, 2 3)";
+            string expected = "MULTILINESTRING ((2 3, 3 3), (2 3, 3 3), (3 2, 3 3), (3 2, 3 3))";
+            CheckRounding(wkt, 1.0, expected);
+        }
         /// <summary>
         /// This test checks the HotPixel test for overlapping horizontal line
         /// </summary>
