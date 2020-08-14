@@ -107,7 +107,7 @@ namespace NetTopologySuite.IO
 
         internal static string Format(double x, double y)
         {
-            return $"{OrdinateFormat.Default.Format(x)}  {OrdinateFormat.Default.Format(y)}";
+            return $"{OrdinateFormat.Default.Format(x)} {OrdinateFormat.Default.Format(y)}";
         }
 
         /// <summary>
