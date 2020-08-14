@@ -33,6 +33,44 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.NUni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Lab", "src\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj", "{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{35443CE1-50D9-4F9D-B6D9-BADFD43D010C}"
+	ProjectSection(SolutionItems) = preProject
+		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Distance.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Distance.md
+		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Locate.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Locate.md
+		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Match.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Match.md
+		doc\overwrite\namespaces\NetTopologySuite.Algorithm.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.md
+		doc\overwrite\namespaces\NetTopologySuite.Densify.md = doc\overwrite\namespaces\NetTopologySuite.Densify.md
+		doc\overwrite\namespaces\NetTopologySuite.Geometries.md = doc\overwrite\namespaces\NetTopologySuite.Geometries.md
+		doc\overwrite\namespaces\NetTopologySuite.Geometries.Utilities.md = doc\overwrite\namespaces\NetTopologySuite.Geometries.Utilities.md
+		doc\overwrite\namespaces\NetTopologySuite.GeometriesGraph.Index.md = doc\overwrite\namespaces\NetTopologySuite.GeometriesGraph.Index.md
+		doc\overwrite\namespaces\NetTopologySuite.GeometriesGraph.md = doc\overwrite\namespaces\NetTopologySuite.GeometriesGraph.md
+		doc\overwrite\namespaces\NetTopologySuite.Index.Bintree.md = doc\overwrite\namespaces\NetTopologySuite.Index.Bintree.md
+		doc\overwrite\namespaces\NetTopologySuite.Index.Chain.md = doc\overwrite\namespaces\NetTopologySuite.Index.Chain.md
+		doc\overwrite\namespaces\NetTopologySuite.Index.md = doc\overwrite\namespaces\NetTopologySuite.Index.md
+		doc\overwrite\namespaces\NetTopologySuite.Index.Quadtree.md = doc\overwrite\namespaces\NetTopologySuite.Index.Quadtree.md
+		doc\overwrite\namespaces\NetTopologySuite.Index.Strtree.md = doc\overwrite\namespaces\NetTopologySuite.Index.Strtree.md
+		doc\overwrite\namespaces\NetTopologySuite.Index.Sweepline.md = doc\overwrite\namespaces\NetTopologySuite.Index.Sweepline.md
+		doc\overwrite\namespaces\NetTopologySuite.IO.GML2.md = doc\overwrite\namespaces\NetTopologySuite.IO.GML2.md
+		doc\overwrite\namespaces\NetTopologySuite.IO.md = doc\overwrite\namespaces\NetTopologySuite.IO.md
+		doc\overwrite\namespaces\NetTopologySuite.LinearReferencing.md = doc\overwrite\namespaces\NetTopologySuite.LinearReferencing.md
+		doc\overwrite\namespaces\NetTopologySuite.Noding.md = doc\overwrite\namespaces\NetTopologySuite.Noding.md
+		doc\overwrite\namespaces\NetTopologySuite.Noding.Snapround.md = doc\overwrite\namespaces\NetTopologySuite.Noding.Snapround.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.Buffer.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Buffer.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.Distance.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Distance.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.md = doc\overwrite\namespaces\NetTopologySuite.Operation.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.Overlay.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Overlay.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.OverlayNG.md = doc\overwrite\namespaces\NetTopologySuite.Operation.OverlayNG.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.Polygonize.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Polygonize.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.Relate.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Relate.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.Valid.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Valid.md
+		doc\overwrite\namespaces\NetTopologySuite.Planargraph.md = doc\overwrite\namespaces\NetTopologySuite.Planargraph.md
+		doc\overwrite\namespaces\NetTopologySuite.Precision.md = doc\overwrite\namespaces\NetTopologySuite.Precision.md
+		doc\overwrite\namespaces\NetTopologySuite.Simplify.md = doc\overwrite\namespaces\NetTopologySuite.Simplify.md
+		doc\overwrite\namespaces\NetTopologySuite.Triangulate.md = doc\overwrite\namespaces\NetTopologySuite.Triangulate.md
+		doc\overwrite\namespaces\NetTopologySuite.Triangulate.QuadEdge.md = doc\overwrite\namespaces\NetTopologySuite.Triangulate.QuadEdge.md
+		doc\overwrite\namespaces\NetTopologySuite.Utilities.md = doc\overwrite\namespaces\NetTopologySuite.Utilities.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

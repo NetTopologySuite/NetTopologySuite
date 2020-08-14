@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Index
         STRtree<string> stRtree;
 
         [Test, Category("Stress")]
-        private void Run()
+        public void Run()
         {
             hpRtree = new HPRtree<string>();
             stRtree = new STRtree<string>();
