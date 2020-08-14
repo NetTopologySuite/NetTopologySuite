@@ -305,9 +305,8 @@ namespace NetTopologySuite.Geometries
             /// <summary>
             /// Compares the specified <see cref="Coordinate" />s arrays.
             /// </summary>
-            /// <param name="pts1"></param>
-            /// <param name="pts2"></param>
-            /// <returns></returns>
+            /// <param name="pts1">An array of coordinates</param>
+            /// <param name="pts2">An array of coordinates</param>
             public int Compare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 return CoordinateArrays.Compare(pts1, pts2);
@@ -323,6 +322,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public class BidirectionalComparator : IComparer<Coordinate[]>
         {
+            /// <summary>
+            /// Compares the specified <see cref="Coordinate" />s arrays.
+            /// </summary>
+            /// <param name="pts1">An array of coordinates</param>
+            /// <param name="pts2">An array of coordinates</param>
             public int Compare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
@@ -341,6 +345,8 @@ namespace NetTopologySuite.Geometries
                 return forwardComp;
             }
 
+            /// <summary/>
+            [Obsolete("Old")]
             public int OldCompare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
@@ -416,11 +422,54 @@ namespace NetTopologySuite.Geometries
         public static void Scroll(Coordinate[] coordinates, Coordinate firstCoordinate)
         {
             int i = IndexOf(firstCoordinate, coordinates);
-            if (i < 0)
-                return;
+            Scroll(coordinates, i);
+        }
+
+        /// <summary>
+        /// Shifts the positions of the coordinates until the coordinate
+        /// at <c>indexOfFirstCoordinate</c> is first.
+        /// </summary>
+        /// <param name="coordinates">The array of coordinates to arrange</param>
+        /// <param name="indexOfFirstCoordinate">The index of the coordinate to make first</param>
+        public static void Scroll(Coordinate[] coordinates, int indexOfFirstCoordinate)
+        {
+            Scroll(coordinates, indexOfFirstCoordinate, IsRing(coordinates));
+        }
+
+        /// <summary>
+        /// Shifts the positions of the coordinates until the coordinate
+        /// at <c>indexOfFirstCoordinate</c> is first.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="ensureRing"/> is <c>true</c>, first and last
+        /// coordinate of the returned array are equal.
+        /// </remarks>
+        /// <param name="coordinates">The array of coordinates to arrange</param>
+        /// <param name="indexOfFirstCoordinate">The index of the coordinate to make first</param>
+        /// <param name="ensureRing">A flag indicating if returned array should form a ring.</param>
+        public static void Scroll(Coordinate[] coordinates, int indexOfFirstCoordinate, bool ensureRing)
+        {
+            int i = indexOfFirstCoordinate;
+            if (i <= 0) return;
+
             var newCoordinates = new Coordinate[coordinates.Length];
-            Array.Copy(coordinates, i, newCoordinates, 0, coordinates.Length - i);
-            Array.Copy(coordinates, 0, newCoordinates, coordinates.Length - i, i);
+            if (!ensureRing)
+            {
+                Array.Copy(coordinates, i, newCoordinates, 0, coordinates.Length - i);
+                Array.Copy(coordinates, 0, newCoordinates, coordinates.Length - i, i);
+            }
+            else
+            {
+                int last = coordinates.Length - 1;
+
+                // fill in values
+                int j;
+                for (j = 0; j < last; j++)
+                    newCoordinates[j] = coordinates[(i + j) % last];
+
+                // Fix the ring (first == last)
+                newCoordinates[j] = newCoordinates[0].Copy();
+            }
             Array.Copy(newCoordinates, 0, coordinates, 0, coordinates.Length);
         }
 
