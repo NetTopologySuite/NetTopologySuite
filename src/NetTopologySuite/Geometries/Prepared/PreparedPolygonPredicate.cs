@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries.Utilities;
@@ -62,9 +63,10 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /// <summary>
-        /// Tests whether any component of the test Geometry intersects the area of the target geometry.
+        /// Tests whether any component of the test Geometry intersects
+        /// the area of the target geometry.
+        /// Handles test geometries with both linear and point components.
         /// </summary>
-        /// <remarks>Handles test geometries with both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if any component of the argument intersects the prepared area geometry</returns>
         protected bool IsAnyTestComponentInTarget(Geometry testGeom)
@@ -80,11 +82,49 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /// <summary>
+        /// Tests whether any point of the test Geometry intersects the interior of the target geometry.
+        /// </summary>
+        /// <remarks>Handles test geometries with both linear and point components.</remarks>
+        /// <param name="testGeom">A geometry to test</param>
+        /// <returns>true if any point of the argument intersects the prepared area geometry</returns>
+        protected bool IsAllTestPointsInTarget(Geometry testGeom)
+        {
+            for (int i = 0; i < testGeom.NumGeometries; i++)
+            {
+                var pt = (Point)testGeom.GetGeometryN(i);
+                var p = pt.Coordinate;
+                var loc = _targetPointLocator.Locate(p);
+                if (loc != Location.Exterior)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Tests whether any point of the test Geometry intersects the interior of the target geometry.
+        /// </summary>
+        /// <param name="testGeom">A geometry to test</param>
+        /// <returns>true if any point of the argument intersects the prepared area geometry interior</returns>
+        protected bool IsAnyTestPointInTargetInterior(Geometry testGeom)
+        {
+            for (int i = 0; i < testGeom.NumGeometries; i++)
+            {
+                var pt = (Point)testGeom.GetGeometryN(i);
+                var p = pt.Coordinate;
+                var loc = _targetPointLocator.Locate(p);
+                if (loc == Location.Interior)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Tests whether any component of the test Geometry intersects the interior of the target geometry.
         /// </summary>
         /// <remarks>Handles test geometries with both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if any component of the argument intersects the prepared area geometry interior</returns>
+        [Obsolete]
         protected bool IsAnyTestComponentInTargetInterior(Geometry testGeom)
         {
             var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
@@ -95,6 +135,25 @@ namespace NetTopologySuite.Geometries.Prepared
                     return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Tests whether all points of the test Pointal geometry
+        /// are contained in the target geometry.
+        /// </summary>
+        /// <param name="testGeom">A geometry to test</param>
+        /// <returns>true if all points of the argument are contained in the target geometry</returns>
+        protected bool IsAllTestPointsInTargetInterior(Geometry testGeom)
+        {
+            for (int i = 0; i < testGeom.NumGeometries; i++)
+            {
+                var pt = (Point)testGeom.GetGeometryN(i);
+                var p = pt.Coordinate;
+                var loc = _targetPointLocator.Locate(p);
+                if (loc == Location.Exterior)
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>

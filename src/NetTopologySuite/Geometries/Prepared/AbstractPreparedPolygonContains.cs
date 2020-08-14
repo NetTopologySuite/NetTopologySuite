@@ -26,12 +26,11 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <author>Martin Davis</author>
     internal abstract class AbstractPreparedPolygonContains : PreparedPolygonPredicate
     {
-        /**
-         * This flag controls a difference between contains and covers.
-         *
-         * For contains the value is true.
-         * For covers the value is false.
-         */
+        /// <summary>
+        /// This flag controls a difference between contains and covers.
+        /// For contains the value is true.
+        /// For covers the value is false.
+        /// </summary>
         protected bool RequireSomePointInInterior = true;
 
         // information about geometric situation
@@ -56,6 +55,11 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the test geometry is contained</returns>
         protected bool Eval(Geometry geom)
         {
+            if (geom.Dimension == Dimension.Point)
+            {
+                return EvalPoints(geom);
+            }
+
             /*
              * Do point-in-poly tests first, since they are cheaper and may result
              * in a quick negative result.
@@ -64,21 +68,6 @@ namespace NetTopologySuite.Geometries.Prepared
              */
             bool isAllInTargetArea = IsAllTestComponentsInTarget(geom);
             if (!isAllInTargetArea) return false;
-
-            /*
-             * If the test geometry consists of only Points,
-             * then it is now sufficient to test if any of those
-             * points lie in the interior of the target geometry.
-             * If so, the test is contained.
-             * If not, all points are on the boundary of the area,
-             * which implies not contained.
-             */
-            if (RequireSomePointInInterior
-                    && geom.Dimension == 0)
-            {
-                bool isAnyInTargetInterior = IsAnyTestComponentInTargetInterior(geom);
-                return isAnyInTargetInterior;
-            }
 
             /*
              * Check if there is any intersection between the line segments
@@ -146,6 +135,40 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return true;
         }
+
+        /// <summary>
+        /// Evaluation optimized for Point geometries.
+        /// This provides about a 2x performance increase, and less memory usage.
+        /// </summary>
+        /// <param name="geom">A Point or MultiPoint geometry</param>
+        /// <returns>The value of the predicate being evaluated</returns>
+        private bool EvalPoints(Geometry geom)
+        {
+            /*
+             * Do point-in-poly tests first, since they are cheaper and may result
+             * in a quick negative result.
+             * 
+             * If a point of any test components does not lie in target, result is false
+             */
+            bool isAllInTargetArea = IsAllTestPointsInTarget(geom);
+            if (!isAllInTargetArea) return false;
+
+            /*
+             * If the test geometry consists of only Points, 
+             * then it is now sufficient to test if any of those
+             * points lie in the interior of the target geometry.
+             * If so, the test is contained.
+             * If not, all points are on the boundary of the area,
+             * which implies not contained.
+             */
+            if (RequireSomePointInInterior)
+            {
+                bool isAnyInTargetInterior = IsAnyTestPointInTargetInterior(geom);
+                return isAnyInTargetInterior;
+            }
+            return true;
+        }
+
 
         private bool IsProperIntersectionImpliesNotContainedSituation(Geometry testGeom)
         {
