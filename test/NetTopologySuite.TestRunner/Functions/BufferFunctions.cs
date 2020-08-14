@@ -21,7 +21,7 @@ namespace Open.Topology.TestRunner.Functions
             double dist = 0;
             if (distance != null) dist = distance.Value;
 
-            BufferParameters bufParams = new BufferParameters();
+            var bufParams = new BufferParameters();
             if (quadrantSegments != null) bufParams.QuadrantSegments = quadrantSegments.Value;
             if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle)capStyle.Value;
             if (joinStyle != null) bufParams.JoinStyle = (JoinStyle)joinStyle.Value;
@@ -36,7 +36,7 @@ namespace Open.Topology.TestRunner.Functions
             double dist = 0;
             if (distance != null) dist = distance.Value;
 
-            BufferParameters bufParams = new BufferParameters();
+            var bufParams = new BufferParameters();
             if (simplifyFactor != null)
                 bufParams.SimplifyFactor = simplifyFactor.Value;
             return BufferOp.Buffer(g, dist, bufParams);
@@ -54,7 +54,7 @@ namespace Open.Topology.TestRunner.Functions
             double dist = 0;
             if (distance != null) dist = distance.Value;
 
-            BufferParameters bufParams = new BufferParameters();
+            var bufParams = new BufferParameters();
             if (quadrantSegments != null) bufParams.QuadrantSegments = quadrantSegments.Value;
             if (capStyle != null) bufParams.EndCapStyle = (EndCapStyle)capStyle.Value;
             if (joinStyle != null) bufParams.JoinStyle = (JoinStyle)joinStyle.Value;
@@ -119,7 +119,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static Geometry SingleSidedBufferCurve(Geometry geom, double distance)
         {
-            BufferParameters bufParam = new BufferParameters();
+            var bufParam = new BufferParameters();
             bufParam.IsSingleSided = true;
             var ocb = new OffsetCurveBuilder(
                 geom.Factory.PrecisionModel, bufParam
@@ -131,7 +131,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static Geometry SingleSidedBuffer(Geometry geom, double distance)
         {
-            BufferParameters bufParams = new BufferParameters { IsSingleSided = true };
+            var bufParams = new BufferParameters { IsSingleSided = true };
             return BufferOp.Buffer(geom, distance, bufParams);
         }
 

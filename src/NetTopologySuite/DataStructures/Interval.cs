@@ -58,8 +58,8 @@ namespace NetTopologySuite.DataStructures
             if (Min.Equals(Coordinate.NullOrdinate))
                 return new Interval(p, p);
 #endif
-            var min = p < Min ? p : Min;
-            var max = p > Max ? p : Max;
+            double min = p < Min ? p : Min;
+            double max = p > Max ? p : Max;
             return new Interval(min, max);
         }
 
@@ -99,7 +99,7 @@ namespace NetTopologySuite.DataStructures
         public override string ToString()
         {
             return !IsEmpty
-                       ? String.Format(NumberFormatInfo.InvariantInfo, "Interval \u211D[{0}, {1}] (Width={2}) ", Min,
+                       ? string.Format(NumberFormatInfo.InvariantInfo, "Interval \u211D[{0}, {1}] (Width={2}) ", Min,
                                        Max, Width)
                        : "Interval \u211D[Uninitialized]";
         }
@@ -131,8 +131,8 @@ namespace NetTopologySuite.DataStructures
             if (IsEmpty && !interval.IsEmpty)
                 return interval;
 #endif
-            var min = Min < interval.Min ? Min : interval.Min;
-            var max = Max > interval.Max ? Max : interval.Max;
+            double min = Min < interval.Min ? Min : interval.Min;
+            double max = Max > interval.Max ? Max : interval.Max;
             return new Interval(min, max);
         }
 

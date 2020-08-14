@@ -11,7 +11,7 @@ namespace NetTopologySuite.IO
         /// Creates a <c>ParseException</c> with the given detail message.
         /// </summary>
         /// <param name="message">A description of this <c>ParseException</c>.</param>
-        public ParseException(String message) : base(message) { }
+        public ParseException(string message) : base(message) { }
 
         /// <summary>
         /// Creates a <c>ParseException</c> with <c>e</c>s detail message.
@@ -25,7 +25,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="message"></param>
         /// <param name="innerException">The inner exception</param>
-        public ParseException(String message, Exception innerException)
+        public ParseException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

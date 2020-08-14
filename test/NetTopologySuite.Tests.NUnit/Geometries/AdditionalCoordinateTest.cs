@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestConstructor3D()
         {
-            T c = CreateCoordinate3D(350.2, 4566.8, 5266.3);
+            var c = CreateCoordinate3D(350.2, 4566.8, 5266.3);
             Assert.AreEqual(350.2, c.X);
             Assert.AreEqual(4566.8, c.Y);
             CheckGetter(2, 5266.3, c.Z);
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestConstructor2D()
         {
-            T c = CreateCoordinate2D(350.2, 4566.8);
+            var c = CreateCoordinate2D(350.2, 4566.8);
             Assert.AreEqual(350.2, c.X);
             Assert.AreEqual(4566.8, c.Y);
             CheckGetter(2, Coordinate.NullOrdinate, c.Z);
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestDefaultConstructor()
         {
-            T c = CreateCoordinate();
+            var c = CreateCoordinate();
             Assert.AreEqual(0d, c.X);
             Assert.AreEqual(0d, c.Y);
             CheckGetter(2, Coordinate.NullOrdinate, c.Z);
@@ -105,8 +105,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestCopyConstructor3D()
         {
-            T orig = CreateCoordinate3D(350.2, 4566.8, 5266.3);
-            T c = CreateCoordinate(orig);
+            var orig = CreateCoordinate3D(350.2, 4566.8, 5266.3);
+            var c = CreateCoordinate(orig);
             Assert.AreEqual(350.2, c.X);
             Assert.AreEqual(4566.8, c.Y);
             CheckGetter(2, 5266.3, c.Z);
@@ -131,8 +131,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestSetCoordinate()
         {
-            T orig = CreateCoordinate3D(350.2, 4566.8, 5266.3);
-            T c = CreateCoordinate();
+            var orig = CreateCoordinate3D(350.2, 4566.8, 5266.3);
+            var c = CreateCoordinate();
             c.CoordinateValue = orig;
 
             Assert.AreNotSame(orig, c);
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestGetOrdinate2D()
         {
-            T c = CreateCoordinate2D(350.2, 4566.8);
+            var c = CreateCoordinate2D(350.2, 4566.8);
             Assert.AreEqual(c[0], 350.2);
             Assert.AreEqual(c[1], 4566.8);
             CheckIndexer(c, 2, double.NaN);
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestGetOrdinate3D()
         {
-            T c = CreateCoordinate3D(350.2, 4566.8, 5266.3);
+            var c = CreateCoordinate3D(350.2, 4566.8, 5266.3);
             Assert.AreEqual(c[0], 350.2);
             Assert.AreEqual(c[1], 4566.8);
             CheckIndexer(c, 2, 5266.3);
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestGetOrdinate3DM()
         {
-            T c = CreateCoordinate3DM(350.2, 4566.8, 5266.3, 6226.4);
+            var c = CreateCoordinate3DM(350.2, 4566.8, 5266.3, 6226.4);
             Assert.AreEqual(c[0], 350.2);
             Assert.AreEqual(c[1], 4566.8);
             CheckIndexer(c, 2, 5266.3);
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestGetOrdinate2DM()
         {
-            T c = CreateCoordinate2DM(350.2, 4566.8, 6226.4);
+            var c = CreateCoordinate2DM(350.2, 4566.8, 6226.4);
             Assert.AreEqual(c[0], 350.2);
             Assert.AreEqual(c[1], 4566.8);
             CheckIndexer(c, 2, double.NaN);
@@ -186,7 +186,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestSetOrdinate()
         {
-            T c = CreateCoordinate();
+            var c = CreateCoordinate();
             c[0] = 111;
             c[1] = 222;
             if (ZIndex.HasValue)
@@ -204,12 +204,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestEquals()
         {
-            T c1 = CreateCoordinate3D(1, 2, 3);
+            var c1 = CreateCoordinate3D(1, 2, 3);
             const string s = "Not a coordinate";
             // ReSharper disable once SuspiciousTypeConversion.Global
             Assert.IsFalse(c1.Equals(s));
 
-            T c2 = CreateCoordinate3D(1, 2, 3);
+            var c2 = CreateCoordinate3D(1, 2, 3);
             Assert.IsTrue(c1.Equals2D(c2));
 
             var c3 = new CoordinateZ(1, 22, 3);
@@ -219,29 +219,29 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestEquals2D()
         {
-            T c1 = CreateCoordinate3D(1, 2, 3);
-            T c2 = CreateCoordinate3D(1, 2, 3);
+            var c1 = CreateCoordinate3D(1, 2, 3);
+            var c2 = CreateCoordinate3D(1, 2, 3);
             Assert.IsTrue(c1.Equals2D(c2));
 
-            T c3 = CreateCoordinate3D(1, 22, 3);
+            var c3 = CreateCoordinate3D(1, 22, 3);
             Assert.IsFalse(c1.Equals2D(c3));
         }
 
         [Test]
         public void TestEquals2DWithinTolerance()
         {
-            T c = CreateCoordinate3D(100.0, 200.0, 50.0);
-            T aBitOff = CreateCoordinate3D(100.1, 200.1, 50.0);
+            var c = CreateCoordinate3D(100.0, 200.0, 50.0);
+            var aBitOff = CreateCoordinate3D(100.1, 200.1, 50.0);
             Assert.IsTrue(c.Equals2D(aBitOff, 0.2));
         }
 
         [Test]
         public void TestCompareTo()
         {
-            T lowest = CreateCoordinate3D(10.0, 100.0, 50.0);
-            T highest = CreateCoordinate3D(20.0, 100.0, 50.0);
-            T equalToHighest = CreateCoordinate3D(20.0, 100.0, 50.0);
-            T higherStill = CreateCoordinate3D(20.0, 200.0, 50.0);
+            var lowest = CreateCoordinate3D(10.0, 100.0, 50.0);
+            var highest = CreateCoordinate3D(20.0, 100.0, 50.0);
+            var equalToHighest = CreateCoordinate3D(20.0, 100.0, 50.0);
+            var higherStill = CreateCoordinate3D(20.0, 200.0, 50.0);
 
             Assert.AreEqual(-1, lowest.CompareTo((object)highest));
             Assert.AreEqual(-1, lowest.CompareTo(highest));
@@ -274,8 +274,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestDistance()
         {
-            T coord1 = CreateCoordinate3D(0.0, 0.0, 0.0);
-            T coord2 = CreateCoordinate3D(100.0, 200.0, 50.0);
+            var coord1 = CreateCoordinate3D(0.0, 0.0, 0.0);
+            var coord2 = CreateCoordinate3D(100.0, 200.0, 50.0);
             double distance = coord1.Distance(coord2);
             Assert.AreEqual(223.60679774997897, distance, 0.00001);
         }

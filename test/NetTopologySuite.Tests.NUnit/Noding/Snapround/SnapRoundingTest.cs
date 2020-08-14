@@ -105,8 +105,8 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         {
             {
                 const double scale = 2.0E10;
-                PrecisionModel precisionModel = new PrecisionModel(scale);
-                GeometryFactory geometryFactory = new GeometryFactory(precisionModel);
+                var precisionModel = new PrecisionModel(scale);
+                var geometryFactory = new GeometryFactory(precisionModel);
 
                 var reader = new WKTReader(geometryFactory);
                 var lineStringA = (LineString)
