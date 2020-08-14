@@ -12,6 +12,8 @@ namespace NetTopologySuite.IO
     /// <remarks>
     /// WKBWriter stores <see cref="Coordinate" /> X,Y,Z values if <see cref="Coordinate.Z" /> is not <see cref="double.NaN"/>,
     /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
+    /// <para/>
+    /// Empty Points are output as a Point with <c>NaN</c> X and Y ordinate values. w
     /// </remarks>
     // Thanks to Roberto Acioli for Coordinate.Z patch
     public class WKBWriter
@@ -308,7 +310,10 @@ namespace NetTopologySuite.IO
             ////     writer.Write((int)WKBGeometryTypes.WKBPoint);
             ////else writer.Write((int)WKBGeometryTypes.WKBPointZ);
             //Write(point.Coordinate, writer);
-            Write(point.CoordinateSequence, false, writer);
+            if (point.IsEmpty)
+                WriteNaNs(_coordinateSize / 8, writer);
+            else
+                Write(point.CoordinateSequence, false, writer);
         }
 
         /// <summary>
@@ -650,6 +655,12 @@ namespace NetTopologySuite.IO
                 _handleOrdinates = value;
                 CalcCoordinateSize();
             }
+        }
+
+        private static void WriteNaNs(int numNaNs, BinaryWriter writer)
+        {
+            for (int i = 0; i<numNaNs; i++)
+                writer.Write(double.NaN);
         }
     }
 }

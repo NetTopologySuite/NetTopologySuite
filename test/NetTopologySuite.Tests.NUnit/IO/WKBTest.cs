@@ -43,6 +43,13 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void TestPointEmpty()
+        {
+            RunWKBTest("POINT EMPTY");
+        }
+
+
+[Test]
         public void TestLineString()
         {
             RunWKBTest("LINESTRING (1 2, 10 20, 100 200)");

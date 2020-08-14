@@ -12,7 +12,10 @@ namespace NetTopologySuite.IO
     /// (specifically, LineStrings and LinearRings which contain
     /// too few points have vertices added,
     /// and non-closed rings are closed).
-    /// s</remarks>
+    /// <para/>
+    /// Although not defined in the WKB spec, empty points
+    /// are handled if they are represented as a Point with <c>NaN</c> X and Y ordinates.
+    /// </remarks>
     public class WKBReader
     {
         /// <summary>
@@ -358,7 +361,10 @@ namespace NetTopologySuite.IO
         protected Geometry ReadPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            return factory.CreatePoint(ReadCoordinateSequence(reader, 1, cs));
+            var seq = ReadCoordinateSequence(reader, 1, cs);
+            if (double.IsNaN(seq.GetX(0)) || double.IsNaN(seq.GetY(0)))
+                return factory.CreatePoint();
+            return factory.CreatePoint();
         }
 
         /// <summary>
