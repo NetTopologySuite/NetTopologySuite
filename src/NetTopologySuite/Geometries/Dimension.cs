@@ -18,14 +18,29 @@ namespace NetTopologySuite.Geometries
         Point = 0,
 
         /// <summary>
+        /// Dimension value of a point (0).
+        /// </summary>
+        P = Point,
+
+        /// <summary>
         /// Dimension value of a curve (1).
         /// </summary>
         Curve = 1,
 
         /// <summary>
+        /// Dimension value of a curve (1).
+        /// </summary>
+        L = Curve,
+
+        /// <summary>
         /// Dimension value of a surface (2).
         /// </summary>
         Surface = 2,
+
+        /// <summary>
+        /// Dimension value of a surface (2).
+        /// </summary>
+        A = Surface,
 
         /// <summary>
         /// Dimension value of a empty point (-1).
