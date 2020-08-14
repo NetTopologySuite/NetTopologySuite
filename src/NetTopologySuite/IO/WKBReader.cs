@@ -364,7 +364,7 @@ namespace NetTopologySuite.IO
             var seq = ReadCoordinateSequence(reader, 1, cs);
             if (double.IsNaN(seq.GetX(0)) || double.IsNaN(seq.GetY(0)))
                 return factory.CreatePoint();
-            return factory.CreatePoint();
+            return factory.CreatePoint(seq);
         }
 
         /// <summary>
