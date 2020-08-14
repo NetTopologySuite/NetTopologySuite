@@ -271,11 +271,21 @@ namespace NetTopologySuite.IO
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
         private CoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags)
         {
-            return this.GetCoordinateSequence(tokens, ordinateFlags, false);
+            if (GetNextEmptyOrOpener(tokens).Equals(WKTConstants.EMPTY))
+                return _coordinateSequencefactory.Create(0, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
+
+            var coordinates = new List<CoordinateSequence>();
+            do
+            {
+                coordinates.Add(GetCoordinate(tokens, ordinateFlags, false));
+            } while (GetNextCloserOrComma(tokens).Equals(","));
+
+            return MergeSequences(coordinates, ordinateFlags);
         }
 
         /// <summary>
-        /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>.
+        /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>
+        /// for an old-style JTS MultiPoint (Point coordinates not enclosed in parentheses).
         /// <para>
         /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
         /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
@@ -284,21 +294,15 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
-        /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed for each coordinate.</param>
         /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
+        private CoordinateSequence GetCoordinateSequenceOldMultiPoint(TokenStream tokens, Ordinates ordinateFlags)
         {
-            if (GetNextEmptyOrOpener(tokens) == WKTConstants.EMPTY)
-            {
-                return _coordinateSequencefactory.Create(0, this.ToDimension(ordinateFlags));
-            }
-
             var coordinates = new List<CoordinateSequence>();
             do
             {
-                coordinates.Add(this.GetCoordinate(tokens, ordinateFlags, tryParen));
+                coordinates.Add(GetCoordinate(tokens, ordinateFlags, true));
             }
             while (GetNextCloserOrComma(tokens) == ",");
 
@@ -765,8 +769,35 @@ namespace NetTopologySuite.IO
         /// token in the stream.</returns>
         private MultiPoint ReadMultiPointText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            return factory.CreateMultiPoint(
-                GetCoordinateSequence(tokens, ordinateFlags, _isAllowOldNtsMultipointSyntax));
+            string nextToken = GetNextEmptyOrOpener(tokens);
+            if (nextToken.Equals(WKTConstants.EMPTY))
+            {
+                return factory.CreateMultiPoint(new Point[0]);
+            }
+
+            // check for old-style JTS syntax (no parentheses surrounding Point coordinates) and parse it if present
+            // MD 2009-02-21 - this is only provided for backwards compatibility for a few versions
+            if (IsOldNtsMultiPointSyntaxAllowed)
+            {
+                string nextWord = LookAheadWord(tokens);
+                if (nextWord != "(")
+                {
+                    return factory.CreateMultiPoint(
+                        GetCoordinateSequenceOldMultiPoint(tokens, ordinateFlags));
+                }
+            }
+
+            var points = new List<Point>();
+            var point = ReadPointText(tokens, factory, ordinateFlags);
+            points.Add(point);
+            nextToken = GetNextCloserOrComma(tokens);
+            while (nextToken.Equals(","))
+            {
+                point = ReadPointText(tokens, factory, ordinateFlags);
+                points.Add(point);
+                nextToken = GetNextCloserOrComma(tokens);
+            }
+            return factory.CreateMultiPoint(points.ToArray());
         }
 
         /// <summary>
