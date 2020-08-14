@@ -33,7 +33,7 @@ namespace NetTopologySuite.IO
     /// The <c>WKTReader</c> will convert the input numbers to the precise
     /// internal representation.
     /// <remarks>
-    /// <see cref="WKTReader" /> reads also non-standard "LINEARRING" tags.
+    /// <see cref="WKTReader" /> reads also non-standard <see cref="WKTConstants.LINEARRING"/> tags.
     /// </remarks>
     /// </summary>
     public class WKTReader
@@ -290,7 +290,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
         private CoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
         {
-            if (GetNextEmptyOrOpener(tokens) == "EMPTY")
+            if (GetNextEmptyOrOpener(tokens) == WKTConstants.EMPTY)
             {
                 return _coordinateSequencefactory.Create(0, this.ToDimension(ordinateFlags));
             }
@@ -449,37 +449,37 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Returns the next "EMPTY" or "(" in the stream as uppercase text.
+        /// Returns the next WKTConstants.EMPTY or "(" in the stream as uppercase text.
         /// </summary>
         /// <param name="tokens">
         /// Tokenizer over a stream of text in Well-known Text
-        /// format. The next token must be "EMPTY" or "(".
+        /// format. The next token must be <see cref="WKTConstants.EMPTY"/> or "(".
         /// </param>
         /// <returns>
-        /// The next "EMPTY" or "(" in the stream as uppercase text.</returns>
+        /// The next WKTConstants.EMPTY or "(" in the stream as uppercase text.</returns>
         private static string GetNextEmptyOrOpener(TokenStream tokens)
         {
             string nextWord = GetNextWord(tokens);
-            if (nextWord.Equals("Z", StringComparison.OrdinalIgnoreCase))
+            if (nextWord.Equals(WKTConstants.Z, StringComparison.OrdinalIgnoreCase))
             {
                 //z = true;
                 nextWord = GetNextWord(tokens);
             }
-            else if (nextWord.Equals("M", StringComparison.OrdinalIgnoreCase))
+            else if (nextWord.Equals(WKTConstants.M, StringComparison.OrdinalIgnoreCase))
             {
                 //m = true;
                 nextWord = GetNextWord(tokens);
             }
-            else if (nextWord.Equals("ZM", StringComparison.OrdinalIgnoreCase))
+            else if (nextWord.Equals(WKTConstants.ZM, StringComparison.OrdinalIgnoreCase))
             {
                 //z = true;
                 //m = true;
                 nextWord = GetNextWord(tokens);
             }
 
-            if (nextWord.Equals("EMPTY") || nextWord.Equals("("))
+            if (nextWord.Equals(WKTConstants.EMPTY) || nextWord.Equals("("))
                 return nextWord;
-            throw new ParseException("Expected 'EMPTY' or '(' but encountered '" + nextWord + "'");
+            throw new ParseException($"Expected '{WKTConstants.EMPTY}' or '(' but encountered '" + nextWord + "'");
         }
 
         /// <summary>
@@ -493,17 +493,17 @@ namespace NetTopologySuite.IO
         private static Ordinates GetNextOrdinateFlags(TokenStream tokens)
         {
             string nextWord = LookAheadWord(tokens);
-            if (nextWord.Equals("Z", StringComparison.OrdinalIgnoreCase))
+            if (nextWord.Equals(WKTConstants.Z, StringComparison.OrdinalIgnoreCase))
             {
                 tokens.NextToken(true);
                 return Ordinates.XYZ;
             }
-            else if (nextWord.Equals("M", StringComparison.OrdinalIgnoreCase))
+            else if (nextWord.Equals(WKTConstants.M, StringComparison.OrdinalIgnoreCase))
             {
                 tokens.NextToken(true);
                 return Ordinates.XYZ;
             }
-            else if (nextWord.Equals("ZM", StringComparison.OrdinalIgnoreCase))
+            else if (nextWord.Equals(WKTConstants.ZM, StringComparison.OrdinalIgnoreCase))
             {
                 tokens.NextToken(true);
                 return Ordinates.XYZM;
@@ -577,9 +577,9 @@ namespace NetTopologySuite.IO
             switch (token)
             {
                 case WordToken wordToken:
-                    if (wordToken.StringValue.Equals("EMPTY", StringComparison.OrdinalIgnoreCase))
+                    if (wordToken.StringValue.Equals(WKTConstants.EMPTY, StringComparison.OrdinalIgnoreCase))
                     {
-                        return "EMPTY";
+                        return WKTConstants.EMPTY;
                     }
 
                     return wordToken.StringValue;
@@ -641,15 +641,15 @@ namespace NetTopologySuite.IO
             var ordinateFlags = Ordinates.XY;
             try
             {
-                if (type.EndsWith("ZM", StringComparison.OrdinalIgnoreCase))
+                if (type.EndsWith(WKTConstants.ZM, StringComparison.OrdinalIgnoreCase))
                 {
                     ordinateFlags = Ordinates.XYZM;
                 }
-                else if (type.EndsWith("Z", StringComparison.OrdinalIgnoreCase))
+                else if (type.EndsWith(WKTConstants.Z, StringComparison.OrdinalIgnoreCase))
                 {
                     ordinateFlags = Ordinates.XYZ;
                 }
-                else if (type.EndsWith("M", StringComparison.OrdinalIgnoreCase))
+                else if (type.EndsWith(WKTConstants.M, StringComparison.OrdinalIgnoreCase))
                 {
                     ordinateFlags = Ordinates.XYM;
                 }
@@ -681,21 +681,21 @@ namespace NetTopologySuite.IO
             var factory = NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, srid,
                 csFactory);
 
-            if (type.StartsWith("POINT", StringComparison.OrdinalIgnoreCase))
+            if (type.StartsWith(WKTConstants.POINT, StringComparison.OrdinalIgnoreCase))
                 returned = ReadPointText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("LINESTRING", StringComparison.OrdinalIgnoreCase))
+            else if (type.StartsWith(WKTConstants.LINESTRING, StringComparison.OrdinalIgnoreCase))
                 returned = ReadLineStringText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("LINEARRING", StringComparison.OrdinalIgnoreCase))
+            else if (type.StartsWith(WKTConstants.LINEARRING, StringComparison.OrdinalIgnoreCase))
                 returned = ReadLinearRingText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("POLYGON", StringComparison.OrdinalIgnoreCase))
+            else if (type.StartsWith(WKTConstants.POLYGON, StringComparison.OrdinalIgnoreCase))
                 returned = ReadPolygonText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("MULTIPOINT", StringComparison.OrdinalIgnoreCase))
+            else if (type.StartsWith(WKTConstants.MULTIPOINT, StringComparison.OrdinalIgnoreCase))
                 returned = ReadMultiPointText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("MULTILINESTRING", StringComparison.OrdinalIgnoreCase))
+            else if (type.StartsWith(WKTConstants.MULTILINESTRING, StringComparison.OrdinalIgnoreCase))
                 returned = ReadMultiLineStringText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("MULTIPOLYGON", StringComparison.OrdinalIgnoreCase))
+            else if (type.StartsWith(WKTConstants.MULTIPOLYGON, StringComparison.OrdinalIgnoreCase))
                 returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("GEOMETRYCOLLECTION", StringComparison.OrdinalIgnoreCase))
+            else if (type.StartsWith(WKTConstants.GEOMETRYCOLLECTION, StringComparison.OrdinalIgnoreCase))
                 returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
             else throw new ParseException("Unknown type: " + type);
 
@@ -784,7 +784,7 @@ namespace NetTopologySuite.IO
         private Polygon ReadPolygonText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY"))
+            if (nextToken.Equals(WKTConstants.EMPTY))
                 return factory.CreatePolygon();
 
             var holes = new List<LinearRing>();
@@ -813,7 +813,7 @@ namespace NetTopologySuite.IO
         private MultiLineString ReadMultiLineStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY"))
+            if (nextToken.Equals(WKTConstants.EMPTY))
                 return factory.CreateMultiLineString();
 
             var lineStrings = new List<LineString>();
@@ -842,7 +842,7 @@ namespace NetTopologySuite.IO
         private MultiPolygon ReadMultiPolygonText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY"))
+            if (nextToken.Equals(WKTConstants.EMPTY))
                 return factory.CreateMultiPolygon();
 
             var polygons = new List<Polygon>();
@@ -872,7 +872,7 @@ namespace NetTopologySuite.IO
         private GeometryCollection ReadGeometryCollectionText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY"))
+            if (nextToken.Equals(WKTConstants.EMPTY))
                 return factory.CreateGeometryCollection();
 
             var geometries = new List<Geometry>();
