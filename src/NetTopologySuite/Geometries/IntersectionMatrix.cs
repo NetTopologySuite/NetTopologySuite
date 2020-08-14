@@ -7,32 +7,31 @@ namespace NetTopologySuite.Geometries
     /// Models a <b>Dimensionally Extended Nine-Intersection Model (DE-9IM)</b> matrix. 
     /// </summary>
     /// <remarks>
-    /// <para>
     /// DE-9IM matrices (such as "212FF1FF2")
     /// specify the topological relationship between two <see cref="Geometry"/>s. 
     /// This class can also represent matrix patterns (such as "T*T******")
     /// which are used for matching instances of DE-9IM matrices.
-    /// </para>
-    /// <para>
+    /// <para/>
     /// Methods are provided to:
     /// <list type="bullet">
     /// <item><description>Set and query the elements of the matrix in a convenient fashion.</description></item>
     /// <item><description>Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).</description></item>
     /// <item><description>Test to see if a matrix matches a given pattern string.</description></item>
     /// </list>
-    /// </para>
-    /// For a description of the DE-9IM and the spatial predicates derived from it, see the <i>
-    /// <see href="http://www.opengis.org/techno/specs.htm">OGC 99-049 OpenGIS Simple Features Specification for SQL.</see></i> as well as 
-    /// <i>OGC 06-103r4 OpenGIS 
-    /// Implementation Standard for Geographic information - 
-    /// Simple feature access - Part 1: Common architecture</i>
-    /// (which provides some further details on certain predicate specifications).
-    /// <para>
+    /// <para/>
     /// The entries of the matrix are defined by the constants in the <see cref="Dimension"/> enum.
     /// The indices of the matrix represent the topological locations 
     /// that occur in a geometry (Interior, Boundary, Exterior).  
     /// These are provided as constants in the <see cref="Location"/> enum.
-    /// </para>
+    /// <para/>
+    /// For a description of the DE-9IM and the spatial predicates derived from it, see the following references:
+    /// <list type="bullet">
+    /// <item><description><i><see href="http://portal.opengeospatial.org/files/?artifact_id=829">OGC 99-049 OpenGIS Simple Features Specification for SQL.</see></i></description></item>
+    /// <item><description>
+    ///     <i><a href="http://portal.opengeospatial.org/files/?artifact_id=25355">OGC 06-103r4 OpenGIS Implementation Standard for Geographic information - Simple feature access - Part 1: Common architecture</a></i>, 
+    ///     Section 6.1.15 (which provides some further details on certain predicate specifications).</description></item>
+    /// <item><description>Wikipedia article on <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a></description></item>
+    /// </list>
     /// </remarks>
     public class IntersectionMatrix
     {
