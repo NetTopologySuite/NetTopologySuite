@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index;
@@ -49,12 +50,9 @@ namespace NetTopologySuite.Algorithm.Locate
         /// </returns>
         public Location Locate(Coordinate p)
         {
-            if (_index == null)
-            {
-                _index = new IntervalIndexedGeometry(_geom);
-                // no need to hold onto geom
-                _geom = null;
-            }
+            // avoid calling synchronized method improves performance
+            if (_index == null) CreateIndex();
+
             var rcc = new RayCrossingCounter(p);
 
             var visitor = new SegmentVisitor(rcc);
@@ -62,12 +60,27 @@ namespace NetTopologySuite.Algorithm.Locate
 
             /*
              // MD - slightly slower alternative
-            List segs = index.query(p.y, p.y);
-            countSegs(rcc, segs);
-            */
+             List segs = index.query(p.y, p.y);
+             countSegs(rcc, segs);
+             */
 
             return rcc.Location;
         }
+
+        /// <summary>
+        /// Creates the indexed geometry, creating it if necessary.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        private void CreateIndex()
+        {
+            if (_index == null)
+            {
+                _index = new IntervalIndexedGeometry(_geom);
+                // no need to hold onto geom
+                _geom = null;
+            }
+        }
+
 
         /*
         private void countSegs(RayCrossingCounter rcc, List segs)
