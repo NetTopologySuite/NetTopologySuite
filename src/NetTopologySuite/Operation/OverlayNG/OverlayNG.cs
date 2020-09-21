@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// (for proper boundary touches only -
         /// touching along collapses are not output).
         /// </summary>
-        internal const bool ALLOW_INT_MIXED_INT_RESULT = true;
+        internal const bool ALLOW_INT_MIXED_RESULT = true;
 
 
         /// <summary>
@@ -494,25 +494,25 @@ namespace NetTopologySuite.Operation.OverlayNg
             var resultAreaEdges = graph.GetResultAreaEdges();
             var polyBuilder = new PolygonBuilder(resultAreaEdges, _geomFact);
             var resultPolyList = polyBuilder.GetPolygons();
-            bool hasResultComponents = resultPolyList.Count > 0;
+            bool hasResultAreaComponents = resultPolyList.Count > 0;
 
             //--- Build lines
             List<LineString> resultLineList = null;
-            bool allowMixedIntResult = !hasResultComponents || ALLOW_INT_MIXED_INT_RESULT;
-            if (opCode != INTERSECTION || allowMixedIntResult)
+            bool allowResultLines = !hasResultAreaComponents || ALLOW_INT_MIXED_RESULT;
+            if (opCode != INTERSECTION || allowResultLines)
             {
-                var lineBuilder = new LineBuilder(_inputGeom, graph, hasResultComponents, opCode, _geomFact);
+                var lineBuilder = new LineBuilder(_inputGeom, graph, hasResultAreaComponents, opCode, _geomFact);
                 resultLineList = lineBuilder.GetLines();
             }
-            hasResultComponents = hasResultComponents || resultLineList.Count > 0;
+            bool hasResultComponents = hasResultAreaComponents || resultLineList.Count > 0;
             /*
-             * Since operations with point inputs are handled elsewhere,
+             * Operations with point inputs are handled elsewhere,
              * this only handles the case where non-point inputs 
              * intersect in points. 
              */
             List<Point> resultPointList = null;
-            allowMixedIntResult = !hasResultComponents || ALLOW_INT_MIXED_INT_RESULT;
-            if (opCode == INTERSECTION && allowMixedIntResult)
+            bool allowResultPoints = !hasResultAreaComponents || ALLOW_INT_MIXED_RESULT;
+            if (opCode == INTERSECTION && allowResultPoints)
             //if (opCode == INTERSECTION)
             {
                 var pointBuilder = new IntersectionPointBuilder(graph, _geomFact);

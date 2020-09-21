@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             if (lbl.IsBoundaryCollapse) return false;
 
-            if (OverlayNG.ALLOW_INT_MIXED_INT_RESULT
+            if (OverlayNG.ALLOW_INT_MIXED_RESULT
                 && _opCode == OverlayNG.INTERSECTION && lbl.IsBoundaryTouch)
             {
                 return true;
