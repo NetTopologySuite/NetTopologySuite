@@ -35,6 +35,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             var nodes = _graph.NodeEdges;
             LabelAreaNodeEdges(nodes);
+            LabelConnectedLinearEdges();
 
             //TODO: is there a way to avoid scanning all edges in these steps?
             /*
@@ -44,6 +45,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              * The edges can be labeled based on their parent ring role (shell or hole).
              */
             LabelCollapsedEdges();
+            LabelConnectedLinearEdges();
 
             LabelDisconnectedEdges();
         }
@@ -64,7 +66,6 @@ namespace NetTopologySuite.Operation.OverlayNg
                     PropagateAreaLocations(nodeEdge, 1);
                 }
             }
-            LabelConnectedLinearEdges();
         }
 
         /// <summary>
@@ -74,10 +75,15 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// </summary>
         /// <param name="nodeEdge"></param>
         /// <param name="geomIndex">The geometry to propagate locations for</param>
-        public static void PropagateAreaLocations(OverlayEdge nodeEdge, int geomIndex)
+        public void PropagateAreaLocations(OverlayEdge nodeEdge, int geomIndex)
         {
             /*
-             * This handles dangling edges created by overlap limiting
+             * Only propagate for area geometries
+             */
+            if (!_inputGeometry.IsArea(geomIndex)) return;
+            /*
+             * No need to propagate if node has only one edge.
+             * This handles dangling edges created by overlap limiting.
              */
             if (nodeEdge.Degree() == 1) return;
 
@@ -135,7 +141,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Finds a boundary edge for this geom, if one exists
+        /// Finds a boundary edge for this geom, if one exists.
         /// </summary>
         /// <param name="nodeEdge">An edge for this node</param>
         /// <param name="geomIndex">The parent geometry index</param>
@@ -193,7 +199,6 @@ namespace NetTopologySuite.Operation.OverlayNg
                     LabelCollapsedEdge(edge, 1);
                 }
             }
-            LabelConnectedLinearEdges();
         }
 
         private void LabelCollapsedEdge(OverlayEdge edge, int geomIndex)
