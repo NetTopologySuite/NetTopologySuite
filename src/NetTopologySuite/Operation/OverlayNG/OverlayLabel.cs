@@ -461,6 +461,20 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
+        /// Tests whether a label is for an edge which is a boundary of one geometry
+        /// and not part of the other.
+        /// </summary>
+        /// <returns><c>true</c> if the edge is a boundary singleton</returns>
+        public bool IsBoundarySingleton 
+        {
+            get
+            {
+                if (_aDim == DIM_BOUNDARY && _bDim == DIM_NOT_PART) return true;
+                if (_bDim == DIM_BOUNDARY && _aDim == DIM_NOT_PART) return true;
+                return false;
+            }
+        }
+        /// <summary>
         /// Tests if the line location for a source is unknown.
         /// </summary>
         /// <param name="index">The index of the input geometry</param>

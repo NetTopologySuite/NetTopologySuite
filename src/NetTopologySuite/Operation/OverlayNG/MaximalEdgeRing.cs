@@ -107,12 +107,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             do
             {
                 if (edge == null)
-                    throw new TopologyException("Found null edge in ring");
+                    throw new TopologyException("Ring edge is null");
                 if (edge.MaxEdgeRing == this)
-                    throw new TopologyException("Edge visited twice during ring-building at " + edge.Coordinate, edge.Coordinate);
+                    throw new TopologyException($"Ring edge visited twice at {edge.Coordinate}", edge.Coordinate);
                 if (edge.NextResultMax == null)
                 {
-                    throw new TopologyException("Found null edge in ring", edge.Dest);
+                    throw new TopologyException($"Ring edge missing at {edge.Dest}", edge.Dest);
                 }
                 edge.MaxEdgeRing = this;
                 edge = edge.NextResultMax;
