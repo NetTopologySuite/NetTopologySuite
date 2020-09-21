@@ -649,6 +649,23 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             CheckEqual(expected, actual);
         }
 
+        /// <summary>
+        /// Tests that overlay can handle polygons with flat topology collapse
+        /// along top, courtesy of improved Orientation.isCCW algorithm.
+        /// </summary>
+        /// <remarks>
+        /// See also <a href="https://trac.osgeo.org/geos/ticket/1038"/>
+        /// </remarks>
+        [Test]
+        public void TestPolygonFlatCollapseIntersection()
+        {
+            var a = Read("POLYGON ((200 100, 150 200, 250 200, 150 200, 100 100, 200 100))");
+            var b = Read("POLYGON ((50 150, 250 150, 250 50, 50 50, 50 150))");
+            var expected = Read("POLYGON ((175 150, 200 100, 100 100, 125 150, 175 150))");
+            var actual = Intersection(a, b, 1);
+            CheckEqual(expected, actual);
+        }
+
         //============================================================
 
 
