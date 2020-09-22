@@ -78,6 +78,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             CheckEqual(expected, actual);
         }
 
+        [Test]
+        public void testPolygonLineUnion()
+        {
+            var a = Read("POLYGON ((10 20, 20 20, 20 10, 10 10, 10 20))");
+            var b = Read("LINESTRING (15 15, 25 15)");
+            var expected = Read("GEOMETRYCOLLECTION (POLYGON ((20 20, 20 15, 20 10, 10 10, 10 20, 20 20)), LINESTRING (20 15, 25 15))");
+            var actual = Union(a, b);
+            CheckEqual(expected, actual);
+        }
+
         [Test, Description("Check that result does not include collapsed line intersection")]
         public void TestPolygonIntersectionCollapse()
         {
@@ -98,32 +108,46 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             CheckEqual(expected, actual);
         }
 
-        public static Geometry Intersection(Geometry a, Geometry b)
+        static Geometry Intersection(Geometry a, Geometry b)
         {
             var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, SpatialFunction.Intersection);
             ov.StrictMode = true;
             return ov.GetResult();
         }
+        static Geometry Intersection(Geometry a, Geometry b, double scaleFactor)
+        {
+            return Overlay(a, b, scaleFactor, SpatialFunction.Intersection);
+        }
 
-        public static Geometry SymDifference(Geometry a, Geometry b)
+
+        static Geometry SymDifference(Geometry a, Geometry b)
         {
             var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, SpatialFunction.SymDifference);
             ov.StrictMode = true;
             return ov.GetResult();
         }
 
-        public static Geometry Intersection(Geometry a, Geometry b, double scaleFactor)
+        static Geometry Union(Geometry a, Geometry b)
         {
-            var pm = new PrecisionModel(scaleFactor);
-            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, pm, SpatialFunction.Intersection);
+            return Overlay(a, b, SpatialFunction.Union);
+        }
+
+        static Geometry Union(Geometry a, Geometry b, double scaleFactor)
+        {
+            return Overlay(a, b, scaleFactor, SpatialFunction.Union);
+        }
+
+        static Geometry Overlay(Geometry a, Geometry b, SpatialFunction opCode)
+        {
+            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, opCode);
             ov.StrictMode = true;
             return ov.GetResult();
         }
 
-        public static Geometry Union(Geometry a, Geometry b, double scaleFactor)
+        static Geometry Overlay(Geometry a, Geometry b, double scaleFactor, SpatialFunction opCode)
         {
             var pm = new PrecisionModel(scaleFactor);
-            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, pm, SpatialFunction.Union);
+            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, pm, opCode);
             ov.StrictMode = true;
             return ov.GetResult();
         }

@@ -49,14 +49,17 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// since the intersection clipping optimization can
     /// interact with the snapping to alter the result.
     /// <para/>
-    /// There is an option to set the overlay computation to work in strict mode.
-    /// In strict mode results have the following semantics:
+    /// Optionally the overlay computation can process using strict mode
+    /// (via <see cref="StrictMode"/> = <c>true</c>).
+    /// In strict mode result semantics are:
     /// <list type="bullet">
-    /// <item><description>Result geometries are homogeneous (all components are of same dimension)</description></item>
-    /// <item><description>Lines resulting from topology collapses are not included in the result</description></item>
+    /// <item><description>Result geometries are homogeneous (all components are of same dimension),
+    /// except for some cases of <see cref="SpatialFunction.SymDifference"/>.</description></item>
+    /// <item><description>Lines and Points resulting from topology collapses are not included in the result</description></item>
     /// </list>
     /// Strict mode has the following benefits:
     /// <list type="bullet">
+    /// <item><description>Results are simpler</description></item>
     /// <item><description>Overlay operations are easily chainable</description></item>
     /// </list>
     /// The original JTS overlay semantics corresponds to non-strict mode.
@@ -533,7 +536,8 @@ namespace NetTopologySuite.Operation.OverlayNg
                 //--- Build lines
                 bool allowResultLines = !hasResultAreaComponents
                                      || isAllowMixedIntResult
-                                     || opCode == SYMDIFFERENCE;
+                                     || opCode == SYMDIFFERENCE
+                                     || opCode == UNION;
                 if (allowResultLines)
                 {
                     var lineBuilder = new LineBuilder(_inputGeom, graph, hasResultAreaComponents, opCode, _geomFact);
