@@ -461,6 +461,10 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             var nodingBuilder = new EdgeNodingBuilder(_pm, _noder);
 
+            /*
+             * Optimize Intersection and Difference by clipping to the 
+             * result extent, if enabled.
+             */
             if (_isOptimized)
             {
                 var clipEnv = OverlayUtility.ClippingEnvelope(_opCode, _inputGeom, _pm);

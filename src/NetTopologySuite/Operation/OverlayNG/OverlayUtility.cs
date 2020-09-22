@@ -12,28 +12,69 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <author>Martin Davis</author>
     internal static class OverlayUtility
     {
+        /// <summary>
+        /// A null-handling wrapper for <see cref="PrecisionModel.IsFloating"/>
+        /// </summary>
+        /// <param name="pm">A precision model</param>
+        /// <returns><c>true</c> if the provided precision model is floating</returns>
         internal static bool IsFloating(PrecisionModel pm)
         {
             if (pm == null) return true;
             return pm.IsFloating;
         }
 
+        /// <summary>
+        /// Computes a clipping envelope for overlay input geometries.
+        /// The clipping envelope encloses all geometry line segments which
+        /// might participate in the overlay, with a buffer to
+        /// account for numerical precision
+        /// (in particular, rounding due to a precision model.
+        /// The clipping envelope is used in both the <see cref="RingClipper"/>
+        /// and in the <see cref="LineLimiter"/>.
+        /// <para/>
+        /// Some overlay operations (i.e. <see cref="SpatialFunction.Union"/> and <see cref="SpatialFunction.SymDifference"/>)
+        /// cannot use clipping as an optimization,
+        /// since the result envelope is the full extent of the two input geometries.
+        /// In this case the returned
+        /// envelope is <c>null</c> to indicate this.
+        /// </summary>
+        /// <param name="opCode">The overlay op code</param>
+        /// <param name="inputGeom">The input geometries</param>
+        /// <param name="pm">The precision model being used</param>
+        /// <returns>An envelope for clipping and line limiting, or null if no clipping is performed</returns>
         internal static Envelope ClippingEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
         {
-            var overlapEnv = OverlapEnvelope(opCode, inputGeom, pm);
-            if (overlapEnv == null)
+            var resultEnv = ResultEnvelope(opCode, inputGeom, pm);
+            if (resultEnv == null)
                 return null;
 
             var clipEnv = RobustClipEnvelopeComputer.GetEnvelope(
                 inputGeom.GetGeometry(0),
                 inputGeom.GetGeometry(1),
-                overlapEnv);
+                resultEnv);
 
             var safeEnv = SafeEnv(clipEnv, pm);
             return safeEnv;
         }
 
-        private static Envelope OverlapEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
+        /// <summary>
+        /// Computes an envelope which covers the extent of the result of
+        /// a given overlay operation for given inputs.
+        /// The operations which have a result envelope smaller than the extent of the inputs
+        /// are:
+        /// <list type="bullet">
+        /// <item><term><see cref="SpatialFunction.Intersection"/></term>
+        /// <description>result envelope is the intersection of the input envelopes</description></item>
+        /// <item><term><see cref="SpatialFunction.Difference"/></term>
+        /// <description>result envelope is the envelope of the A input geometry</description></item>
+        /// </list>
+        /// Otherwise, <code>null</code> is returned to indicate full extent.
+        /// </summary>
+        /// <param name="opCode">The overlay op code</param>
+        /// <param name="inputGeom">The input geometries</param>
+        /// <param name="pm">The precision model being used</param>
+        /// <returns>The result envelope, or null if the full extent</returns>
+        private static Envelope ResultEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
         {
             Envelope overlapEnv = null;
             switch (opCode)
