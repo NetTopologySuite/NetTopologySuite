@@ -1,12 +1,30 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation.OverlayNg;
 
 namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Reduces the precision of a <see cref="Geometry"/>
     /// according to the supplied <see cref="PrecisionModel"/>,
-    /// ensuring that the result is topologically valid.
+    /// ensuring that the result is topologically valid,
+    /// ensuring that the result is valid (unless specified otherwise).
+    /// <para/>
+    /// By default the reduced result is topologically valid
+    /// (i.e. <see cref="Geometry.IsValid"/> is true).
+    /// To ensure this a polygonal geometry is reduced in a topologically valid fashion
+    /// (technically, by using snap-rounding).
+    /// It can be forced to be reduced pointwise by using <see cref="Pointwise"/> = <c>true</c>.
+    /// Note that in this case the result geometry may be invalid.
+    /// Linear and point geometry is always reduced pointwise (i.e.without further change to
+    /// its topology or stucture), since this does not change validity.
+    /// <para/>
+    /// By default the geometry precision model is not changed.
+    /// This can be overridden by using <see cref="ChangePrecisionModel"/> = <c>true</c>.
+    /// <para/>
+    /// Normally collapsed components(e.g.lines collapsing to a point)
+    /// are not included in the result.
+    /// This behavior can be changed by using <see cref="RemoveCollapsedComponents"/> = <c>true</c>.
     /// </summary>
     public class GeometryPrecisionReducer
     {
@@ -43,14 +61,14 @@ namespace NetTopologySuite.Precision
             return reducer.Reduce(g);
         }
 
-        private readonly PrecisionModel _targetPrecModel;
+        private readonly PrecisionModel _targetPM;
         private bool _removeCollapsed = true;
         private bool _changePrecisionModel;
         private bool _isPointwise;
 
         public GeometryPrecisionReducer(PrecisionModel pm)
         {
-            _targetPrecModel = pm;
+            _targetPM = pm;
         }
 
         /// <summary>Gets or sets whether the reduction will result in collapsed components
@@ -93,20 +111,16 @@ namespace NetTopologySuite.Precision
 
         public Geometry Reduce(Geometry geom)
         {
-            var reducePointwise = ReducePointwise(geom);
-            if (_isPointwise)
-                return reducePointwise;
-
-            //TODO: handle GeometryCollections containing polys
-            if (!(reducePointwise is IPolygonal))
-                return reducePointwise;
-
-            // Geometry is polygonal - test if topology needs to be fixed
-            if (reducePointwise.IsValid) return reducePointwise;
-
-            // hack to fix topology.
-            // TODO: implement snap-rounding and use that.
-            return FixPolygonalTopology(reducePointwise);
+            if (!Pointwise && geom is IPolygonal) {
+                var reduced = PrecisionReducer.ReducePrecision(geom, _targetPM);
+                if (ChangePrecisionModel)
+                {
+                    return ChangePM(reduced, _targetPM);
+                }
+                return reduced;
+            }
+            var reducePW = ReducePointwise(geom);
+            return reducePW;
         }
 
         private Geometry ReducePointwise(Geometry geom)
@@ -114,7 +128,7 @@ namespace NetTopologySuite.Precision
             GeometryEditor geomEdit;
             if (_changePrecisionModel)
             {
-                var newFactory = CreateFactory(geom.Factory, _targetPrecModel);
+                var newFactory = CreateFactory(geom.Factory, _targetPM);
                 geomEdit = new GeometryEditor(newFactory);
             }
             else
@@ -130,7 +144,7 @@ namespace NetTopologySuite.Precision
                 finalRemoveCollapsed = true;
 
             var reduceGeom = geomEdit.Edit(geom,
-                    new PrecisionReducerCoordinateOperation(_targetPrecModel, finalRemoveCollapsed));
+                    new PrecisionReducerCoordinateOperation(_targetPM, finalRemoveCollapsed));
 
             return reduceGeom;
         }
@@ -144,7 +158,7 @@ namespace NetTopologySuite.Precision
             var geomToBuffer = geom;
             if (!_changePrecisionModel)
             {
-                geomToBuffer = ChangePrecModel(geom, _targetPrecModel);
+                geomToBuffer = ChangePM(geom, _targetPM);
             }
 
             var bufGeom = geomToBuffer.Buffer(0);
@@ -165,7 +179,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom">The geometry to duplicate</param>
         /// <param name="pm">The precision model to use</param>
         /// <returns>The geometry value with a new precision model</returns>
-        private static Geometry ChangePrecModel(Geometry geom, PrecisionModel pm)
+        private static Geometry ChangePM(Geometry geom, PrecisionModel pm)
         {
             var geomEditor = CreateEditor(geom.Factory, pm);
             // this operation changes the PM for the entire geometry tree
