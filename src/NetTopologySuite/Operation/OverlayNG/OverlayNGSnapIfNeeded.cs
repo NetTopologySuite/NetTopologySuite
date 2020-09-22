@@ -103,12 +103,29 @@ namespace NetTopologySuite.Operation.OverlayNg
             if (result != null)
                 return result;
 
+            /*
+             * On failure retry using snap-rounding with a heuristic scale factor (grid size).
+             */
+            result = OverlaySR(geom0, geom1, opCode);
+            if (result != null)
+                return result;
+
+            /*
+             * Just can't get overlay to work, so throw original error.
+             */
             throw exOriginal;
         }
 
 
         private const int NUM_SNAP_TRIES = 5;
 
+        /// <summary>
+        /// Attempt overlay using snapping with repeated tries with increasing snap tolerances.
+        /// </summary>
+        /// <param name ="geom0"></param>
+        /// <param name ="geom1"></param>
+        /// <param name ="opCode"></param>
+        /// <returns>The computed overlay result, or null if the overlay fails</returns>
         private static Geometry OverlaySnapTries(Geometry geom0, Geometry geom1, SpatialFunction opCode)
         {
             Geometry result;
@@ -134,6 +151,14 @@ namespace NetTopologySuite.Operation.OverlayNg
             return null;
         }
 
+        /// <summary>
+        /// Attempt overlay using a <see cref="SnappingNoder"/>.
+        /// </summary>
+        /// <param name="geom0"></param>
+        /// <param name="geom1"></param>
+        /// <param name="opCode"></param>
+        /// <param name="snapTol"></param>
+        /// <returns>The computed overlay result, or null if the overlay fails</returns>
         private static Geometry OverlaySnapping(Geometry geom0, Geometry geom1, SpatialFunction opCode, double snapTol)
         {
             try
@@ -142,7 +167,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
             catch (TopologyException ex)
             {
-                //---- ignore this exception, just return a null result
+                //---- ignore exception, return null to indicate failure
 
                 //System.out.println("Snapping with " + snapTol + " - FAILED");
                 //log("Snapping with " + snapTol + " - FAILED", geom0, geom1);
@@ -150,6 +175,14 @@ namespace NetTopologySuite.Operation.OverlayNg
             return null;
         }
 
+        /// <summary>
+        /// Attempt overlay with first snapping each geometry individually.
+        /// </summary>
+        /// <param name="geom0"></param>
+        /// <param name="geom1"></param>
+        /// <param name="opCode"></param>
+        /// <param name="snapTol"></param>
+        /// <returns>The computed overlay result, or null if the overlay fails</returns>
         private static Geometry OverlaySnapBoth(Geometry geom0, Geometry geom1, SpatialFunction opCode, double snapTol)
         {
             try
@@ -162,7 +195,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
             catch (TopologyException ex)
             {
-                //---- ignore this exception, just return a null result
+                //---- ignore exception, return null result to indicate failure
             }
             return null;
         }
@@ -228,50 +261,30 @@ namespace NetTopologySuite.Operation.OverlayNg
             Console.WriteLine(geom1);
         }
 
-        /**
-         * Creates a noder using simple floating noding 
-         * with no validation phase.
-         * This is twice as fast, but can cause
-         * invalid overlay results.
-         * 
-         * @return a floating noder with no validation
-         */
-        /*
-        private static Noder createFloatingNoValidNoder() {
-          MCIndexNoder noder = new MCIndexNoder();
-          LineIntersector li = new RobustLineIntersector();
-          noder.setSegmentIntersector(new IntersectionAdder(li));
-          return noder;
-        }
-        */
-
         /// <summary>
-        /// Overlay using Snap-Rounding with an automatically-determined
+        /// Attempt Overlay using Snap-Rounding with an automatically-determined
         /// scale factor.
-        /// <para/>
-        /// NOTE: currently this strategy is not used, since all known
-        /// test cases work using one of the Snapping strategies.
         /// </summary>
+        /// <param name="geom0"></param>
+        /// <param name="geom1"></param>
+        /// <param name="opCode"></param>
+        /// <returns>the computed overlay result, or null if the overlay fails</returns>
         public static Geometry OverlaySR(Geometry geom0, Geometry geom1, SpatialFunction opCode)
         {
             Geometry result;
             try
             {
-                // start with operation using floating PM
-                result = OverlayNG.Overlay(geom0, geom1, opCode, PmFloat);
+                //System.out.println("OverlaySnapIfNeeded: trying snap-rounding");
+                double scaleSafe = PrecisionUtility.SafeScale(geom0, geom1);
+                var pmSafe = new PrecisionModel(scaleSafe);
+                result = OverlayNG.Overlay(geom0, geom1, opCode, pmSafe);
                 return result;
             }
             catch (TopologyException ex)
             {
-                // ignore this exception, since the operation will be rerun
-                //Console.WriteLine("Overlay failed");
+                //---- ignore exception, return null result to indicate failure
             }
-            // on failure retry with a "safe" fixed PM
-            // this should not throw an exception, but if it does just let it go
-            double scaleSafe = PrecisionUtility.SafeScale(geom0, geom1);
-            var pmSafe = new PrecisionModel(scaleSafe);
-            result = OverlayNG.Overlay(geom0, geom1, opCode, pmSafe);
-            return result;
+            return null;
         }
 
     }
