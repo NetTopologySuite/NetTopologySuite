@@ -54,6 +54,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             }
 
             /**
+             * GEOS failure case due to porting bug
+             * See https://lists.osgeo.org/pipermail/geos-devel/2020-September/009679.html
+             */
+            [Test, Description("GEOS failure case due to porting bug\nSee https://lists.osgeo.org/pipermail/geos-devel/2020-September/009679.html")]
+            public void TestNarrowBoxesLineIntersection()
+            {
+                var a = Read("LINESTRING (832864.275023695 0, 835092.849076364 0)");
+                var b = Read("MULTIPOLYGON (((832864.275023695 0, 833978.556808034 -0.000110682755987, 833978.556808034 0, 833978.556808034 0.000110682755987, 832864.275023695 0, 832864.275023695 0)), ((835092.849076364 0, 833978.557030887 -0.000110682755987, 833978.557030887 0, 833978.557030887 0.000110682755987, 835092.849076364 0, 835092.849076364 0)))");
+                var expected = Read("MULTILINESTRING ((833978.557030887 0, 835092.849076364 0), (832864.275023695 0, 833978.556808034 0))");
+                var actual = Intersection(a, b);
+                CheckEqual(expected, actual, 1e-10);
+            }
+
+            /**
              * Tests a case where ring clipping causes an incorrect result.
              * <p>
              * The incorrect result occurs because:
