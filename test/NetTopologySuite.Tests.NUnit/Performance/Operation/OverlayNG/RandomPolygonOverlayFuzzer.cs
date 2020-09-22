@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
 
         const int N_PTS = 100;
 
-        const int N_TESTS = 10000;
+        const int N_TESTS = 1000;
 
         static double SCALE = 100000000;
 
@@ -166,9 +166,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
             //Geometry union = inter.union(diff1).union(diff2);
         }
 
-        private void OverlayNGSnapIfNeeded(Geometry poly1, Geometry poly2)
+        private void OverlayNGRobust(Geometry poly1, Geometry poly2)
         {
-            NetTopologySuite.Operation.OverlayNg.OverlayNGRobust.Intersection(poly1, poly2);
+            NetTopologySuite.Operation.OverlayNg.OverlayNGRobust.Overlay(poly1, poly2, SpatialFunction.Intersection);
             poly1.Intersection(poly2);
             //Geometry diff1 = poly1.difference(poly2);
             //Geometry diff2 = poly2.difference(poly1);

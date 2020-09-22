@@ -36,27 +36,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <author>Martin Davis</author>
     public class OverlayNGRobust
     {
-
-        public static Geometry Intersection(Geometry g0, Geometry g1)
-        {
-            return Overlay(g0, g1, SpatialFunction.Intersection);
-        }
-
-        public static Geometry Union(Geometry g0, Geometry g1)
-        {
-            return Overlay(g0, g1, OverlayNG.UNION);
-        }
-
-        public static Geometry Difference(Geometry g0, Geometry g1)
-        {
-            return Overlay(g0, g1, OverlayNG.DIFFERENCE);
-        }
-
-        public static Geometry SymDifference(Geometry g0, Geometry g1)
-        {
-            return Overlay(g0, g1, OverlayNG.SYMDIFFERENCE);
-        }
-
+        //--- The following function is provided to allow use in the TestRunner
         public static Geometry Union(Geometry a)
         {
             var unionSRFun = new UnionStrategy((g0, g1) => Overlay(g0, g1, SpatialFunction.Union), true);
@@ -64,8 +44,15 @@ namespace NetTopologySuite.Operation.OverlayNg
             return op.Union();
         }
 
-    private static readonly PrecisionModel PmFloat = new PrecisionModel();
-
+        /// <summary>
+        /// Overlay two geometries, using heuristics to ensure
+        /// computation completes correctly.
+        /// In practice the heuristics are observed to be fully correct.
+        /// </summary>
+        /// <param name="geom0">A geometry</param>
+        /// <param name="geom1">A geometry</param>
+        /// <param name="opCode">The overlay operation code</param>
+        /// <returns>The overlay result geometry</returns>
         public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
         {
             Geometry result;
@@ -73,20 +60,14 @@ namespace NetTopologySuite.Operation.OverlayNg
 
             /*
              * First try overlay with a PrecisionModels.Floating noder, which is
-             * fastest and causes least change to geometry coordinates
+             * fast and causes least change to geometry coordinates
              * By default the noder is validated, which is required in order
              * to detect certain invalid noding situations which otherwise
              * cause incorrect overlay output.
              */
             try
             {
-                result = OverlayNG.Overlay(geom0, geom1, opCode, PmFloat);
-
-                // Simple noding with no validation
-                // There are cases where this succeeds with invalid noding (e.g. STMLF 1608).
-                // So currently it is NOT safe to run overlay without noding validation
-                //result = OverlayNG.overlay(geom0, geom1, opCode, createFloatingNoder());
-
+                result = OverlayNG.Overlay(geom0, geom1, opCode);
                 return result;
             }
             catch (Exception ex)

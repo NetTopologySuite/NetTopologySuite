@@ -1,15 +1,14 @@
 ﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.OverlayNg;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {
-    /**
-     * Tests {@link OverlayNG} using the {@link SnappingNoder}.
-     * 
-     * @author mdavis
-     *
-     */
+    /// <summary>
+    /// Tests <see cref="OverlayNGRobust"/>.
+    /// </summary>
+    /// <author>mdavis</author>
     public class OverlayNGRobustTest : GeometryTestCase
     {
 
@@ -43,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             try
             {
-                OverlayNGRobust.Union(a, b);
+                OverlayNGRobust.Overlay(a, b, SpatialFunction.Union);
                 return true;
             }
             catch (TopologyException ex)
