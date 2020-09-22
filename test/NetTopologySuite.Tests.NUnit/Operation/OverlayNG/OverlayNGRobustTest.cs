@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
      * @author mdavis
      *
      */
-    public class OverlayNGSnapIfNeededTest : GeometryTestCase
+    public class OverlayNGRobustTest : GeometryTestCase
     {
 
         /**
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             try
             {
-                OverlayNGSnapIfNeeded.Union(a, b);
+                OverlayNGRobust.Union(a, b);
                 return true;
             }
             catch (TopologyException ex)

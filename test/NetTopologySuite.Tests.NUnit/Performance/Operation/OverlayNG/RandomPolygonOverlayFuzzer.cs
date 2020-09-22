@@ -168,7 +168,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
 
         private void OverlayNGSnapIfNeeded(Geometry poly1, Geometry poly2)
         {
-            NetTopologySuite.Operation.OverlayNg.OverlayNGSnapIfNeeded.Intersection(poly1, poly2);
+            NetTopologySuite.Operation.OverlayNg.OverlayNGRobust.Intersection(poly1, poly2);
             poly1.Intersection(poly2);
             //Geometry diff1 = poly1.difference(poly2);
             //Geometry diff2 = poly2.difference(poly1);

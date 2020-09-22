@@ -2,14 +2,16 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snap;
+using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Union;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
     /// <summary>
-    /// Performs an overlay operation, increasing robustness by using a series of
-    /// increasingly aggressive(and slower) noding strategies.
+    /// Performs an overlay operation using <see cref="OverlayNG"/>,
+    /// increasing robustness by using a series of
+    /// increasingly robust (but slower) noding strategies.
     /// <para/>
     /// The noding strategies used are:
     /// <list type="number">
@@ -17,9 +19,11 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <item><description>A <see cref="SnappingNoder"/> using an automatically-determined snap tolerance</description></item>
     /// <item><description>First snapping each geometry to itself, and then overlaying them wih a <see cref="SnappingNoder"/></description></item>
     /// <item><description>The above two strategies are repeated with increasing snap tolerance, up to a limit</description></item>
+    /// <item><description>Finally a <see cref="SnapRoundingNoder"/> is used with a automatically-determined scale factor.</description></item>
     /// </list>
-    /// If the above heuristics still fail to compute a valid overlay,
+    /// If all of the above heuristics fail to compute a valid overlay,
     /// the original <see cref="TopologyException"/> is thrown.
+    /// In practice this should be extremely unlikely to occur.
     /// <para/>
     /// This algorithm relies on each overlay operation execution
     /// throwing a <see cref="TopologyException"/> if it is unable
@@ -30,7 +34,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// in order to check the results of using a floating noder.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class OverlayNGSnapIfNeeded
+    public class OverlayNGRobust
     {
 
         public static Geometry Intersection(Geometry g0, Geometry g1)

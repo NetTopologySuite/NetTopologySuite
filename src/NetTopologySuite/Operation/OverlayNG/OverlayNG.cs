@@ -38,7 +38,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// For floating precision an <see cref="MCIndexNoder"/> is used.
     /// This is not fully robust, so can sometimes result in 
     /// <see cref="TopologyException"/>s being thrown.
-    /// For robust full-precision overlay see <see cref="OverlayNGSnapIfNeeded"/>.
+    /// For robust full-precision overlay see <see cref="OverlayNGRobust"/>.
     /// <para/>
     /// A custom <see cref="INoder"/> can be supplied.
     /// This allows using a more performant noding strategy in specific cases,
