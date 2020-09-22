@@ -48,6 +48,18 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// it is best to specify a fairly small snap tolerance,
     /// since the intersection clipping optimization can
     /// interact with the snapping to alter the result.
+    /// <para/>
+    /// There is an option to set the overlay computation to work in strict mode.
+    /// In strict mode results have the following semantics:
+    /// <list type="bullet">
+    /// <item><description>Result geometries are homogeneous (all components are of same dimension)</description></item>
+    /// <item><description>Lines resulting from topology collapses are not included in the result</description></item>
+    /// </list>
+    /// Strict mode has the following benefits:
+    /// <list type="bullet">
+    /// <item><description>Overlay operations are easily chainable</description></item>
+    /// </list>
+    /// The original JTS overlay semantics corresponds to non-strict mode.
     /// </summary>
     public class OverlayNG
     {
@@ -72,28 +84,15 @@ namespace NetTopologySuite.Operation.OverlayNg
         public const SpatialFunction SYMDIFFERENCE = SpatialFunction.SymDifference;
 
         /// <summary>
-        /// Indicates whether the old overlay result semantics are used:
-        /// <br/>
-        /// - Intersection result can be mixed-dimension<br/>
+        /// The default setting for Strict Mode.
+        /// <para/>
+        /// The original JTS overlay semantics used non-strict result
+        /// semantics, including;<br/>
+        /// - An Intersection result can be mixed-dimension,
+        ///   due to inclusion of intersection components of all dimensions <br/>
         /// - Results can include lines caused by Area topology collapse
         /// </summary>
-        private const bool USE_OLD_RESULT_SEMANTICS = true;
-
-        /// <summary>
-        /// Indicates whether intersections are allowed to produce
-        /// heterogeneous results.
-        /// <c>true</c> provides the classic JTS semantics
-        /// (for proper boundary touches only -
-        /// touching along collapses are not output).
-        /// </summary>
-        internal const bool ALLOW_INT_MIXED_RESULT = USE_OLD_RESULT_SEMANTICS;
-
-        /// <summary>
-        /// Allow lines created by area topology collapses
-        /// to appear in the result.
-        /// <c>true</c> provides the original JTS semantics.
-        /// </summary>
-        internal const bool ALLOW_COLLAPSE_LINES = USE_OLD_RESULT_SEMANTICS;
+        internal const bool STRICT_MODE_DEFAULT = false;
 
         /// <summary>
         /// Tests whether a point with a given topological <see cref="Label"/>
@@ -281,13 +280,12 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly GeometryFactory _geomFact;
         private readonly PrecisionModel _pm;
         private INoder _noder;
+        private bool _isStrictMode = STRICT_MODE_DEFAULT;
         private bool _isOptimized = true;
         private bool _isAreaResultOnly = false;
         private bool _isOutputEdges;
         private bool _isOutputResultEdges;
         private bool _isOutputNodedEdges;
-
-        //private Geometry outputEdges;
 
         /// <summary>
         /// Creates an overlay operation on the given geometries,
@@ -337,6 +335,17 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
+        /// Gets or sets whether the overlay results are computed according to strict mode
+        /// semantics.
+        /// <list type="bullet">
+        /// <item><description>Result geometry is always homogeneous(except for some SymmetricDifference cases)</description></item>
+        /// <item><description>Lines resulting from topology collapse are not included</description></item>
+        /// </list>
+        /// </summary>
+        /// <returns></returns>
+        public bool StrictMode { get => _isStrictMode; set => _isStrictMode = value; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether overlay processing optimizations are enabled.
         /// <para/>
         /// It may be useful to disable optimizations
@@ -360,6 +369,9 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => _isAreaResultOnly;
             set => _isAreaResultOnly = value;
         }
+
+        //------ Testing options -------
+
         public bool OutputEdges
         {
             get => _isOutputEdges;
@@ -381,6 +393,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => _isOutputResultEdges;
             set => _isOutputResultEdges = value;
         }
+
+        //---------------------------------
 
         private INoder Noder { get => _noder; set => _noder = value; }
 
@@ -503,6 +517,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <returns>The result geometry</returns>
         private Geometry ExtractResult(SpatialFunction opCode, OverlayGraph graph)
         {
+            bool isAllowMixedIntResult = !StrictMode;
 
             //--- Build polygons
             var resultAreaEdges = graph.GetResultAreaEdges();
@@ -516,10 +531,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             if (!_isAreaResultOnly)
             {
                 //--- Build lines
-                bool allowResultLines = !hasResultAreaComponents || ALLOW_INT_MIXED_RESULT;
+                bool allowResultLines = !hasResultAreaComponents
+                                     || isAllowMixedIntResult
+                                     || opCode == SYMDIFFERENCE;
                 if (allowResultLines)
                 {
                     var lineBuilder = new LineBuilder(_inputGeom, graph, hasResultAreaComponents, opCode, _geomFact);
+                    lineBuilder.StrictMode = StrictMode;
                     resultLineList = lineBuilder.GetLines();
                 }
                 /*
@@ -528,10 +546,11 @@ namespace NetTopologySuite.Operation.OverlayNg
                  * from non-point inputs. 
                  */
                 bool hasResultComponents = hasResultAreaComponents || resultLineList.Count > 0;
-                bool allowResultPoints = !hasResultComponents || ALLOW_INT_MIXED_RESULT;
+                bool allowResultPoints = !hasResultComponents || isAllowMixedIntResult;
                 if (opCode == INTERSECTION && allowResultPoints)
                 {
                     var pointBuilder = new IntersectionPointBuilder(graph, _geomFact);
+                    pointBuilder.StrictMode = StrictMode;
                     resultPointList = pointBuilder.Points;
                 }
             }

@@ -35,6 +35,26 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly SpatialFunction _opCode;
         private readonly int _inputAreaIndex;
         private readonly bool _hasResultArea;
+
+        /// <summary>
+        /// Indicates whether intersections are allowed to produce
+        /// heterogeneous results including proper boundary touches.
+        /// This does not control inclusion of touches along collapses.<br/>
+        /// True provides the original JTS semantics.
+        /// </summary>
+        private bool _isAllowMixedResult = !OverlayNG.STRICT_MODE_DEFAULT;
+
+        /**
+         * 
+         */
+        /// <summary>
+        /// Allow lines created by area topology collapses
+        /// to appear in the result.<br/>
+        /// True provides the original JTS semantics.
+        /// </summary>
+        private bool _isAllowCollapseLines = !OverlayNG.STRICT_MODE_DEFAULT;
+
+
         private readonly List<LineString> _lines = new List<LineString>();
 
         /// <summary>
@@ -53,6 +73,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             _geometryFactory = geomFact;
             _hasResultArea = hasResultArea;
             _inputAreaIndex = inputGeom.GetAreaIndex();
+        }
+
+        public bool StrictMode
+        {
+            get { return !_isAllowCollapseLines; }
+            set { _isAllowCollapseLines = _isAllowMixedResult = !value; }
         }
 
         public List<LineString> GetLines()
@@ -110,7 +136,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              * 
              * This logic is only used if not including collapse lines in result.
              */
-            if (!OverlayNG.ALLOW_COLLAPSE_LINES
+            if (!_isAllowCollapseLines
                 && lbl.IsBoundaryCollapse) return false;
 
             /*
@@ -147,7 +173,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              * Include line edge formed by touching area boundaries,
              * if enabled.
              */
-            if (OverlayNG.ALLOW_INT_MIXED_RESULT
+            if (_isAllowMixedResult
                 && _opCode == OverlayNG.INTERSECTION && lbl.IsBoundaryTouch)
             {
                 return true;

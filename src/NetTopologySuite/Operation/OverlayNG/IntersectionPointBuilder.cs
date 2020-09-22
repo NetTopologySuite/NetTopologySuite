@@ -24,11 +24,25 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly OverlayGraph _graph;
         private List<Point> _points;// = new List<Point>();
 
+        /// <summary>
+        /// Controls whether lines created by area topology collapses
+        /// to participate in the result computation. <br/>
+        /// True provides the original JTS semantics.
+        /// </summary>
+        private bool _isAllowCollapseLines = !OverlayNG.STRICT_MODE_DEFAULT;
+
+
         public IntersectionPointBuilder(OverlayGraph graph,
             GeometryFactory geomFact)
         {
             _graph = graph;
             _geometryFactory = geomFact;
+        }
+
+        public bool StrictMode
+        {
+            get => !_isAllowCollapseLines;
+            set => _isAllowCollapseLines = !value;
         }
 
         public List<Point> Points
@@ -82,8 +96,10 @@ namespace NetTopologySuite.Operation.OverlayNg
             return isNodeInBoth;
         }
 
-        private static bool IsEdgeOf(OverlayLabel label, int i)
+        private bool IsEdgeOf(OverlayLabel label, int i)
         {
+            if (!_isAllowCollapseLines && label.IsBoundaryCollapse)
+                return false;
             return label.IsBoundary(i) || label.IsLineAt(i);
         }
 
