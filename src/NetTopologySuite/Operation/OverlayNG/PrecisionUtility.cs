@@ -11,6 +11,11 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// In particular, these can be used to
     /// automatically determine appropriate scale factors for operations 
     /// using limited-precision noding (such as <see cref="OverlayNG"/>).
+    /// <para/>
+    /// WARNING: the<code> inherentScale</code> and<code> robustScale</code> 
+    /// functions can be very slow, due to the method used to determine
+    /// number of decimal places of a number.
+    /// These are not recommended for production use.
     /// </summary>
     /// <author>Martin Davis</author>
     public static class PrecisionUtility
@@ -22,93 +27,6 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// This value should be less than the maximum decimal precision of double-precision values (16).
         /// </summary>
         public static int MAX_ROBUST_DP_DIGITS = 14;
-
-        /// <summary>
-        /// Determines a precision model to 
-        /// use for robust overlay operations.
-        /// The precision scale factor is chosen to maximize 
-        /// output precision while avoiding round-off issues.
-        /// <para/>
-        /// NOTE: this is a heuristic determination, so is not guaranteed to 
-        /// eliminate precision issues.
-        /// <para/>
-        /// WARNING: this is quite slow.
-        /// </summary>
-        /// <param name="a">A geometry</param>
-        /// <param name="b">A geometry</param>
-        /// <returns>A suitable precision model for overlay</returns>
-        public static PrecisionModel RobustPM(Geometry a, Geometry b)
-        {
-            double scale = RobustScale(a, b);
-            return new PrecisionModel(scale);
-        }
-
-        /// <summary>
-        /// Determines a precision model to 
-        /// use for robust overlay operations.
-        /// The precision scale factor is chosen to maximize 
-        /// output precision while avoiding round-off issues.
-        /// <para/>
-        /// NOTE: this is a heuristic determination, so is not guaranteed to 
-        /// eliminate precision issues.
-        /// <para/>
-        /// WARNING: this is quite slow.
-        /// </summary>
-        /// <param name="a">A geometry</param>
-        /// <returns>A suitable precision model for overlay</returns>
-        public static PrecisionModel RobustPM(Geometry a)
-        {
-            double scale = RobustScale(a);
-            return new PrecisionModel(scale);
-        }
-
-        /// <summary>
-        /// Determines a scale factor which maximizes 
-        /// the digits of precision and is 
-        /// safe to use for overlay operations.
-        /// The robust scale is the minimum of the 
-        /// inherent scale and the safe scale factors.
-        /// </summary>
-        /// <param name="a">A geometry</param>
-        /// <param name="b">A geometry</param>
-        /// <returns>A scale factor for use in overlay operations</returns>
-        public static double RobustScale(Geometry a, Geometry b)
-        {
-            double inherentScale = InherentScale(a, b);
-            double safeScale = SafeScale(a, b);
-            return RobustScale(inherentScale, safeScale);
-        }
-
-        /// <summary>
-        /// Determines a scale factor which maximizes 
-        /// the digits of precision and is 
-        /// safe to use for overlay operations.
-        /// The robust scale is the minimum of the 
-        /// inherent scale and the safe scale factors.
-        /// </summary>
-        /// <param name="a">A geometry</param>
-        /// <returns>A scale factor for use in overlay operations</returns>
-        public static double RobustScale(Geometry a)
-        {
-            double inherentScale = InherentScale(a);
-            double safeScale = SafeScale(a);
-            return RobustScale(inherentScale, safeScale);
-        }
-
-        private static double RobustScale(double inherentScale, double safeScale)
-        {
-            /*
-             * Use safe scale if lower, 
-             * since it is important to preserve some precision for robustness
-             */
-            if (inherentScale <= safeScale)
-            {
-                return inherentScale;
-            }
-
-            //System.out.println("Scale = " + scale);
-            return safeScale;
-        }
 
         /// <summary>
         /// Computes a safe scale factor for a numeric value.
@@ -234,6 +152,8 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <para/>
         /// This is the maximum inherent scale
         /// of all ordinate values in the geometry.
+        /// <para/>
+        /// WARNING: this is <b>very</b> slow.
         /// </summary>
         /// <param name="geom">A geometry</param>
         /// <returns>The inherent scale factor in the geometry's ordinates</returns>
@@ -314,6 +234,8 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <summary>
         /// Applies the inherent scale calculation 
         /// to every ordinate in a geometry.
+        /// <para/>
+        /// WARNING: this is <b>very</b> slow.
         /// </summary>
         /// <author>Martin Davis</author>
         private class InherentScaleFilter : IEntireCoordinateSequenceFilter
@@ -355,5 +277,74 @@ namespace NetTopologySuite.Operation.OverlayNg
                 get => false;
             }
         }
+
+        /// <summary>
+        /// Determines a precision model to
+        /// use for robust overlay operations for one geometry.
+        /// The precision scale factor is chosen to maximize
+        /// output precision while avoiding round-off issues.
+        /// <para/>
+        /// NOTE: this is a heuristic determination, so is not guaranteed to
+        /// eliminate precision issues.
+        /// <para/>
+        /// WARNING: this is <b>very</b> slow.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <returns>A suitable precision model for overlay</returns>
+        public static PrecisionModel RobustPM(Geometry a)
+        {
+            double scale = PrecisionUtility.RobustScale(a);
+            return new PrecisionModel(scale);
+        }
+
+        /// <summary>
+        /// Determines a scale factor which maximizes
+        /// the digits of precision and is
+        /// safe to use for overlay operations.
+        /// The robust scale is the minimum of the
+        /// inherent scale and the safe scale factors.
+        /// <para/>
+        /// WARNING: this is <b>very</b> slow.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <param name="b">A geometry</param>
+        /// <returns>A scale factor for use in overlay operations</returns>
+        public static double RobustScale(Geometry a, Geometry b)
+        {
+            double inherentScale = InherentScale(a, b);
+            double safeScale = SafeScale(a, b);
+            return RobustScale(inherentScale, safeScale);
+        }
+
+        /// <summary>
+        /// Determines a scale factor which maximizes
+        /// the digits of precision and is
+        /// safe to use for overlay operations.
+        /// The robust scale is the minimum of the
+        /// inherent scale and the safe scale factors.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <returns>A scale factor for use in overlay operations</returns>
+        public static double RobustScale(Geometry a)
+        {
+            double inherentScale = InherentScale(a);
+            double safeScale = SafeScale(a);
+            return RobustScale(inherentScale, safeScale);
+        }
+
+        private static double RobustScale(double inherentScale, double safeScale)
+        {
+            /*
+             * Use safe scale if lower, 
+             * since it is important to preserve some precision for robustness
+             */
+            if (inherentScale <= safeScale)
+            {
+                return inherentScale;
+            }
+            //System.out.println("Scale = " + scale);
+            return safeScale;
+        }
+
     }
 }
