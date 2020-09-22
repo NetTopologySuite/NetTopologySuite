@@ -38,12 +38,16 @@ The semantics of overlay output are:
 * Linear results include all nodes (endpoints) present in the input.
   In some cases more nodes will be present.
   (If merged lines are required see <xref href="NetTopologySuite.Operation.Linemerge.LineMerger">LineMerger</xref>.)
-* Polygon edges which collapse completely due to rounding are not output
-* The `intersection` operation may produce a heterogenous result. 
-  The result contains all the dimensional components of the intersection.
-  always produce a homogeneous result.   
-* The `difference` operation produces a homogeneous result.  
-  The result dimension is that of the left-hand operand.
+* Polygon edges which undergo topology collapse to lines
+  (due to rounding or snapping) are included in the result.
+  This means that all operations may produce a heterogeneous result.
+  Generally this only occurs when using a fixed-precision model.
+* The `intersection` operation result includes all the components of the
+  intersection for geometries which intersect in components of the same and/or
+  lower dimension.
+* The `difference` operation produces a homogeneous result if no topology
+  collapses are present.   
+  In this case the result dimension is equal to that of the left-hand operand.
 * The `union` and `symmetric difference` operations
   may produce heterogeneous result if the inputs are of mixed dimension.
 * Homogeneous results are output as `Multi` geometries.
@@ -51,9 +55,9 @@ The semantics of overlay output are:
   containing a set of atomic geometries.  
   (This provides backwards compatibility
   with the original NTS overlay implementation.
-  However, it loses the information that the polygonal results 
+  However, it loses the information that the polygonal results
   have valid `MultiPolygon` topology.)
-* Empty results are atomic `EMPTY` geometries of dimension appropriate 
+* Empty results are atomic `EMPTY` geometries of dimension appropriate
   to the operation.
 
 ## Features
@@ -72,11 +76,11 @@ of polygonal inputs which are invalid
 
 ## Pluggable Noding
 The noding phase of overlay uses a <xref href="NetTopologySuite.Noding.INoder">INoder</xref> subclass. This is determine automatically based on the precision model of the input. Or it can be provided explicity, which allows changing characteristics of performance and robustness. Examples of relevant noders include:
-* <xref href="NetTopologySuite.Noding.MCIndexNoder">MCIndexNoder</xref> - a fast full-precision noder, which however may not produce 
+* <xref href="NetTopologySuite.Noding.MCIndexNoder">MCIndexNoder</xref> - a fast full-precision noder, which however may not produce
 a valid noding in some situations. Should be combined with a <xref href="NetTopologySuite.Noding.ValidatingNoder">ValidatingNoder</xref> wrapper to detect
 noding failures.
 * <xref href="NetTopologySuite.Noding.Snap.SnappingNoder">SnappingNoder</xref> - a robust full-precision noder
-* <xref href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder">SnapRoundingNoder</xref> - a noder which enforces a supplied fixed precision model 
+* <xref href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder">SnapRoundingNoder</xref> - a noder which enforces a supplied fixed precision model
 by snapping vertices and intersections to a grid
 * <xref href="NetTopologySuite.Noding.ValidatingNoder">ValidatingNoder</xref> - a wrapper which can be used to verify the noding prior to topology building
 * <xref href="NetTopologySuite.Operation.OverlayNG.SegmentExtractingNoder">SegmentExtractingNoder</xref> - requires node-clean input, and provides very fast noding

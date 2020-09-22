@@ -31,7 +31,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// Accessors for orientation-sensitive information
     /// are parameterized by the orientation of the containing edge.
     /// <para/>
-    /// For each input geometry, the label records
+    /// For each input geometry (0 and 1), the label records
     /// that an edge is in one of the following states
     /// (identified by the<c>dim</c> field).
     /// Each state has additional information about the edge topology.
@@ -40,8 +40,8 @@ namespace NetTopologySuite.Operation.OverlayNg
     ///   <list type="bullet">
     ///     <item><description><c>dim</c> = DIM_BOUNDARY</description></item>
     ///     <item><description><c>locLeft, locRight</c> : the locations of the edge sides for the Area</description></item>
-///         <item><description><c>locLine</c> : INTERIOR</description></item>
-    ///     <item><description><c>isHole</c> : whether the edge was in a shell or a hole (the ring role)</description></item>
+    ///         <item><description><c>locLine</c> : INTERIOR</description></item>
+    ///     <item><description><c>isHole</c> : whether the edge is in a shell or a hole (the ring role)</description></item>
     ///   </list>
     ///   </description>
     /// </item>
@@ -49,8 +49,10 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// (formed by merging two or more parent edges)
     ///   <list type="bullet">
     ///     <item><description><c>dim</c> = DIM_COLLAPSE</description></item>
-    ///     <item><description><c>locLine</c> : the location of the edge relative to the input Area</description></item>
-    ///     <item><description><c>isHole</c> : whether some contributing edge was in a shell(<c>false</c>). Otherwise all parent edges were in holes (<c>true</c>)</description></item>
+    ///     <item><description><c>locLine</c> : the location of the edge relative to the effective input Area
+///                            (a collapsed spike is EXTERIOR, a collapsed gore or hole is INTERIOR)</description></item>
+    ///     <item><description><c>isHole</c> : <c>true</c> if all parent edges are in holes;
+    ///                                        <c>false</c> if some parent edge is in a shell</description></item>
     ///     
     ///   </list></description>
     /// </item>
@@ -86,27 +88,30 @@ namespace NetTopologySuite.Operation.OverlayNg
         private const char SYM_LINE = 'L';
 
         /// <summary>
-        /// The dimension of an input geometry which is not known
+        /// The dimension of an input geometry which is not known.
         /// </summary>
         public const Dimension DIM_UNKNOWN = Geometries.Dimension.Unknown;
 
         /// <summary>
-        /// The dimension of an edge which is not part of a specified input geometry
+        /// The dimension of an edge which is not part of a specified input geometry.
         /// </summary>
         public const Dimension DIM_NOT_PART = DIM_UNKNOWN;
 
         /// <summary>
-        /// The dimension of an edge which is a line
+        /// The dimension of an edge which is a line.
         /// </summary>
         public const Dimension DIM_LINE = Geometries.Dimension.Curve;
 
         /// <summary>
-        /// The dimension for an edge which is part of an input Area geometry boundary
+        /// The dimension for an edge which is part of an input Area geometry boundary.
         /// </summary>
         public const Dimension DIM_BOUNDARY = Geometries.Dimension.Surface;
 
         /// <summary>
-        /// The dimension for an edge which is a collapsed part of an input Area geometry boundary
+        /// The dimension for an edge which is a collapsed part of an input Area geometry boundary.
+        /// A collapsed edge represents two or more line segments which have the same endpoints.
+        /// They usually are caused by edges in valid polygonal geometries
+        /// having their endpoints become identical due to precision reduction.
         /// </summary>
         public const Dimension DIM_COLLAPSE = Geometries.Dimension.Collapse;
 
@@ -222,6 +227,10 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <summary>
         /// Initializes the label for an edge which is the collapse of
         /// part of the boundary of an Area input geometry.
+        /// <para/>
+        /// The location of the collapsed edge relative to the
+        /// parent area geometry is initially unknown.
+        /// It must be determined from the topology of the overlay graph
         /// </summary>
         /// <param name="index">The index of the parent input geometry</param>
         /// <param name="isHole">Whether the dominant edge role is a hole or a shell</param>
@@ -375,7 +384,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Tests whether a source is known.
+        /// Tests whether the source of a label is known.
         /// </summary>
         /// <param name="index">The index of the input geometry</param>
         /// <returns><c>true</c> if the source is known</returns>
@@ -422,7 +431,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Tests if the label is for a collapsed area edge
+        /// Tests if the label is a collapsed edge of one area  
         /// and is a(non-collapsed) boundary edge of the other area.
         /// </summary>
         /// <value><c>true</c> if the label is for a collapse coincident with a boundary</value>
@@ -448,6 +457,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         /// <summary>
         /// Tests if a label is for an edge which is in the boundary of a source geometry.
+        /// Collapses are not reported as being in the boundary.
         /// </summary>
         /// <param name="index">The index of the input geometry</param>
         /// <returns><c>true</c> if the label is a boundary for the source</returns>
@@ -531,6 +541,36 @@ namespace NetTopologySuite.Operation.OverlayNg
         public bool IsCollapse(int index)
         {
             return Dimension(index) == DIM_COLLAPSE;
+        }
+
+        /// <summary>
+        /// Tests if a label is a Collapse has location {@link Location#INTERIOR},
+        /// to at least one source geometry.
+        /// </summary>
+        /// <returns><c>true</c> if the label is an Interior Collapse to a source geometry</returns>
+        public bool IsInteriorCollapse
+        {
+            get
+            {
+                if (_aDim == DIM_COLLAPSE && _aLocLine == Location.Interior) return true;
+                if (_bDim == DIM_COLLAPSE && _bLocLine == Location.Interior) return true;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Tests if a label is a Collapse
+        /// and NotPart with location {@link Location#INTERIOR} for the other geometry.
+        /// </summary>
+        /// <returns><c>true</c> if the label is a Collapse and a NotPart with Location Interior</returns>
+        public bool IsCollapseAndNotPartInterior
+        {
+            get
+            {
+                if (_aDim == DIM_COLLAPSE && _bDim == DIM_NOT_PART && _bLocLine == Location.Interior) return true;
+                if (_bDim == DIM_COLLAPSE && _aDim == DIM_NOT_PART && _aLocLine == Location.Interior) return true;
+                return false;
+            }
         }
 
         /// <summary>
@@ -691,6 +731,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
             else
             {
+                // is a linear edge
                 buf.Append(LocationUtility.ToLocationSymbol(index == 0 ? _aLocLine : _bLocLine));
             }
             if (IsKnown(index))
@@ -702,11 +743,21 @@ namespace NetTopologySuite.Operation.OverlayNg
             return buf.ToString();
         }
 
+        /// <summary>
+        /// Gets a symbol for the a ring role (Shell or Hole).
+        /// </summary>
+        /// <param name="isHole"><c>true</c> for a hole, <c>false</c> for a shell</param>
+        /// <returns>The ring role symbol character</returns>
         public static char RingRoleSymbol(bool isHole)
         {
             return isHole ? 'h' : 's';
         }
 
+        /// <summary>
+        /// Gets the symbol for the dimension code of an edge.
+        /// </summary>
+        /// <param name="dim">The dimension code</param>
+        /// <returns>The dimension symbol character</returns>
         public static char DimensionSymbol(Dimension dim)
         {
             switch (dim)

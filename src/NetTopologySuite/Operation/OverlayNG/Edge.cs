@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
@@ -50,12 +48,12 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly Coordinate[] _pts;
 
         private Dimension _aDim = OverlayLabel.DIM_UNKNOWN;
-        private int _aDepthDelta = 0;
-        private bool _aIsHole = false;
+        private int _aDepthDelta;
+        private bool _aIsHole;
 
         private Dimension _bDim = OverlayLabel.DIM_UNKNOWN;
-        private int _bDepthDelta = 0;
-        private bool _bIsHole = false;
+        private int _bDepthDelta;
+        private bool _bIsHole;
 
         public Edge(Coordinate[] pts, EdgeSourceInfo info)
         {

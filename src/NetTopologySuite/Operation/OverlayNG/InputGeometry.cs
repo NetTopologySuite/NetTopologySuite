@@ -70,7 +70,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         public bool IsLine(int geomIndex)
         {
-            return _geom[geomIndex].Dimension == Dimension.Curve;
+            return GetDimension(geomIndex) == Dimension.Curve;
         }
 
         public bool IsAllPoints

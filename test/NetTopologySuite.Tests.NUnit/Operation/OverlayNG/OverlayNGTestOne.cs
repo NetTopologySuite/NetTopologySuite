@@ -5,6 +5,49 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {
     public class OverlayNGTestOne : GeometryTestCase
     {
+        //======  Tests for semantic of including collapsed edges as lines in result
+
+        [Test, Ignore("")]
+        public void TestCollapseTriBoxIntersection()
+        {
+            var a = Read("POLYGON ((1 2, 1 1, 9 1, 1 2))");
+            var b = Read("POLYGON ((9 2, 9 1, 8 1, 8 2, 9 2))");
+            var expected = Read("LINESTRING (8 1, 9 1)");
+            var actual = Intersection(a, b, 1);
+            CheckEqual(expected, actual);
+        }
+
+        [Test]
+        public void TestCollapseTriBoxesIntersection()
+        {
+            var a = Read("MULTIPOLYGON (((1 4, 1 1, 2 1, 2 4, 1 4)), ((9 4, 9 1, 10 1, 10 4, 9 4)))");
+            var b = Read("POLYGON ((0 2, 11 3, 11 2, 0 2))");
+            var expected = Read("GEOMETRYCOLLECTION (LINESTRING (1 2, 2 2), POLYGON ((9 2, 9 3, 10 3, 10 2, 9 2)))");
+            var actual = Intersection(a, b, 1);
+            CheckEqual(expected, actual);
+        }
+
+        [Test, Ignore("")]
+        public void TestCollapseBoxCutByTriangleUnion()
+        {
+            var a = Read("POLYGON ((100 10, 0 10, 100 11, 100 10))");
+            var b = Read("POLYGON ((20 20, 0 20, 0 0, 20 0, 20 20))");
+            var expected = Read("MULTIPOLYGON (((0 0, 0 10, 0 20, 20 20, 20 10, 20 0, 0 0)), ((20 10, 100 11, 100 10, 20 10)))");
+            CheckEqual(expected, OverlayNGTest.Union(a, b, 1));
+        }
+
+        [Test, Ignore("")]
+        public void TestCollapseBoxTriangleUnion()
+        {
+            var a = Read("POLYGON ((10 10, 100 10, 10 11, 10 10))");
+            var b = Read("POLYGON ((90 0, 200 0, 200 200, 90 200, 90 0))");
+            var expected = Read("MULTIPOLYGON (((90 10, 10 10, 10 11, 90 10)), ((90 10, 90 200, 200 200, 200 0, 90 0, 90 10)))");
+            CheckEqual(expected, OverlayNGTest.Union(a, b, 1));
+        }
+
+        //==============================================
+
+
         [Test, Ignore("")]
         public void TestParallelSpikes()
         {

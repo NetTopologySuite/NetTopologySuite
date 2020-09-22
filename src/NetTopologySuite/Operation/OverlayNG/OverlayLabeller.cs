@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
@@ -29,7 +27,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Computes the topological labelling for the edges in the graph.
+        /// Computes the topological labeling for the edges in the graph.
         /// </summary>
         public void ComputeLabelling()
         {
@@ -53,7 +51,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <summary>
         /// Labels edges around nodes based on the arrangement
         /// of incident area boundary edges.
-        /// Also propagates the labelling to connected linear edges.
+        /// Also propagates the labeling to connected linear edges.
         /// </summary>
         /// <param name="nodes">The nodes to label</param>
         private void LabelAreaNodeEdges(IEnumerable<OverlayEdge> nodes)
@@ -112,6 +110,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                 }
                 else
                 {
+                    // must be a boundary edge
                     Assert.IsTrue(label.HasSides(geomIndex));
                     /*
                      *  This is a boundary edge for the input area geom.
@@ -141,7 +140,10 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         /// <summary>
-        /// Finds a boundary edge for this geom, if one exists.
+        /// Finds a boundary edge for this geom originating at the given
+        /// node, if one exists.
+        /// A boundary edge should exist if this is a node on the boundary
+        /// of the parent area geometry.
         /// </summary>
         /// <param name="nodeEdge">An edge for this node</param>
         /// <param name="geomIndex">The parent geometry index</param>
@@ -246,16 +248,16 @@ namespace NetTopologySuite.Operation.OverlayNg
             var edgeStack = new LinkedList<OverlayEdge>(linearEdges);
             bool isInputLine = _inputGeometry.IsLine(geomIndex);
 
-            // traverse line edges, labelling unknown ones that are connected
+            // traverse line edges, labeling unknown ones that are connected
             while (edgeStack.Count > 0)
             {
-                var lineEdge = edgeStack.First;
+                var lineEdge = edgeStack.First.Value;
                 edgeStack.RemoveFirst();
                 // assert: lineEdge.getLabel().isLine(geomIndex);
 
                 // for any edges around origin with unknown location for this geomIndex,
                 // add those edges to stack to continue traversal
-                PropagateLinearLocationAtNode(lineEdge.Value, geomIndex, isInputLine, edgeStack);
+                PropagateLinearLocationAtNode(lineEdge, geomIndex, isInputLine, edgeStack);
             }
         }
 

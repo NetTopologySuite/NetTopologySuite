@@ -60,11 +60,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             return result;
         }
 
-        /**
-         * 
-         * 
-         * @return 
-         */
         /// <summary>
         /// Gets the representative edges marked as being in the result area.
         /// </summary>

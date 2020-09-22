@@ -27,7 +27,10 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <returns>The precision-reduced geometry</returns>
         public static Geometry ReducePrecision(Geometry geom, PrecisionModel pm)
         {
-            var reduced = OverlayNG.Union(geom, pm);
+            var ov = new OverlayNG(geom, pm);
+            ov.AreaResultOnly = true;
+            var reduced = ov.GetResult();
+
             return reduced;
         }
 

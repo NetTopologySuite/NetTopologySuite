@@ -13,41 +13,32 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <author>Martin Davis</author>
     internal class EdgeKey : IComparable<EdgeKey>
     {
-
-
         public static EdgeKey Create(Edge edge)
         {
             return new EdgeKey(edge);
         }
 
-        private double _p0x;
-        private double _p0y;
-        private double _p1x;
-        private double _p1y;
+        private readonly double _p0x;
+        private readonly double _p0y;
+        private readonly double _p1x;
+        private readonly double _p1y;
 
+        
         private EdgeKey(Edge edge)
         {
-            InitPoints(edge);
-        }
-
-        private void InitPoints(Edge edge)
-        {
             bool direction = edge.Direction;
+            Coordinate p0, p1;
             if (direction)
             {
-                Init(edge.GetCoordinate(0),
-                    edge.GetCoordinate(1));
+                p0 = edge.GetCoordinate(0);
+                p1 = edge.GetCoordinate(1);
             }
             else
             {
-                int len = edge.Count;
-                Init(edge.GetCoordinate(len - 1),
-                    edge.GetCoordinate(len - 2));
+                int idx = edge.Count - 1;
+                p0 = edge.GetCoordinate(idx--);
+                p1 = edge.GetCoordinate(idx);
             }
-        }
-
-        private void Init(Coordinate p0, Coordinate p1)
-        {
             _p0x = p0.X;
             _p0y = p0.Y;
             _p1x = p1.X;

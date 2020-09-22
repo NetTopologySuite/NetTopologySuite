@@ -7,6 +7,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
     public class PrecisionReducerTest : GeometryTestCase
     {
         [Test]
+        public void TestPolygonBoxEmpty()
+        {
+            CheckReduce("POLYGON ((1 1.4, 7.3 1.4, 7.3 1.2, 1 1.2, 1 1.4))",
+                1, "POLYGON EMPTY");
+        }
+
+        [Test]
+        public void TestPolygonThinEmpty()
+        {
+            CheckReduce("POLYGON ((1 1.4, 3.05 1.4, 3 4.1, 6 5, 3.2 4, 3.2 1.4, 7.3 1.4, 7.3 1.2, 1 1.2, 1 1.4))",
+                1, "POLYGON EMPTY");
+        }
+
+
+        [Test]
         public void TestPolygonGore()
         {
             CheckReduce("POLYGON ((2 1, 9 1, 9 5, 3 5, 9 5.3, 9 9, 2 9, 2 1))",

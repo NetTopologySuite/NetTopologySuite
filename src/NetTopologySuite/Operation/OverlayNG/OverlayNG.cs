@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
@@ -71,14 +72,28 @@ namespace NetTopologySuite.Operation.OverlayNg
         public const SpatialFunction SYMDIFFERENCE = SpatialFunction.SymDifference;
 
         /// <summary>
+        /// Indicates whether the old overlay result semantics are used:
+        /// <br/>
+        /// - Intersection result can be mixed-dimension<br/>
+        /// - Results can include lines caused by Area topology collapse
+        /// </summary>
+        private const bool USE_OLD_RESULT_SEMANTICS = true;
+
+        /// <summary>
         /// Indicates whether intersections are allowed to produce
         /// heterogeneous results.
         /// <c>true</c> provides the classic JTS semantics
         /// (for proper boundary touches only -
         /// touching along collapses are not output).
         /// </summary>
-        internal const bool ALLOW_INT_MIXED_RESULT = true;
+        internal const bool ALLOW_INT_MIXED_RESULT = USE_OLD_RESULT_SEMANTICS;
 
+        /// <summary>
+        /// Allow lines created by area topology collapses
+        /// to appear in the result.
+        /// <c>true</c> provides the original JTS semantics.
+        /// </summary>
+        internal const bool ALLOW_COLLAPSE_LINES = USE_OLD_RESULT_SEMANTICS;
 
         /// <summary>
         /// Tests whether a point with a given topological <see cref="Label"/>
@@ -285,6 +300,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly PrecisionModel _pm;
         private INoder _noder;
         private bool _isOptimized = true;
+        private bool _isAreaResultOnly = false;
         private bool _isOutputEdges;
         private bool _isOutputResultEdges;
         private bool _isOutputNodedEdges;
@@ -296,7 +312,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// with a defined precision model.
         /// </summary>
         /// <param name="geom0">The A operand geometry</param>
-        /// <param name="geom1">The B operand geometry</param>
+        /// <param name="geom1">The B operand geometry (may be <c>null</c>)</param>
         /// <param name="pm">The precision model to use</param>
         /// <param name="opCode">The overlay opcode</param>
         public OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, SpatialFunction opCode)
@@ -321,19 +337,21 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// </list>
         /// </summary>
         /// <param name="geom0">The A operand geometry</param>
-        /// <param name="geom1">The B operand geometry</param>
+        /// <param name="geom1">The B operand geometry (may be <c>null</c>)</param>
         /// <param name="opCode">The overlay opcode</param>
         public OverlayNG(Geometry geom0, Geometry geom1, SpatialFunction opCode)
             : this(geom0, geom1, geom0.Factory.PrecisionModel, opCode)
         {
         }
 
-        private OverlayNG(Geometry geom0, PrecisionModel pm)
+        /// <summary>
+        /// Creates a union of a single geometry with a given precision model.
+        /// </summary>
+        /// <param name="geom">The geometry</param>
+        /// <param name="pm">The precision model to use</param>
+        public OverlayNG(Geometry geom, PrecisionModel pm)
+            : this(geom, null, pm, SpatialFunction.Union)
         {
-            _pm = pm;
-            _opCode = UNION;
-            _geomFact = geom0.Factory;
-            _inputGeom = new InputGeometry(geom0, null);
         }
 
         /// <summary>
@@ -350,6 +368,16 @@ namespace NetTopologySuite.Operation.OverlayNg
             set => _isOptimized = value;
         }
 
+        /// <summary>
+        /// Gets or sets whether the result can contain only {@link Polygon} components.
+        /// This is used if it is known that the result must be an (possibly empty) area.
+        /// </summary>
+        /// <returns><c>true</c> if the result should contain only area components</returns>
+        public bool AreaResultOnly
+        {
+            get => _isAreaResultOnly;
+            set => _isAreaResultOnly = value;
+        }
         public bool OutputEdges
         {
             get => _isOutputEdges;
@@ -374,6 +402,10 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private INoder Noder { get => _noder; set => _noder = value; }
 
+        /// <summary>
+        /// Gets the result of the overlay operation.
+        /// e</summary>
+        /// <returns>The result of the overlay operation.</returns>
         public Geometry GetResult()
         {
             if (OverlayUtility.IsEmptyResult(_opCode,
@@ -496,27 +528,30 @@ namespace NetTopologySuite.Operation.OverlayNg
             var resultPolyList = polyBuilder.GetPolygons();
             bool hasResultAreaComponents = resultPolyList.Count > 0;
 
-            //--- Build lines
             List<LineString> resultLineList = null;
-            bool allowResultLines = !hasResultAreaComponents || ALLOW_INT_MIXED_RESULT;
-            if (opCode != INTERSECTION || allowResultLines)
-            {
-                var lineBuilder = new LineBuilder(_inputGeom, graph, hasResultAreaComponents, opCode, _geomFact);
-                resultLineList = lineBuilder.GetLines();
-            }
-            bool hasResultComponents = hasResultAreaComponents || resultLineList.Count > 0;
-            /*
-             * Operations with point inputs are handled elsewhere,
-             * this only handles the case where non-point inputs 
-             * intersect in points. 
-             */
             List<Point> resultPointList = null;
-            bool allowResultPoints = !hasResultAreaComponents || ALLOW_INT_MIXED_RESULT;
-            if (opCode == INTERSECTION && allowResultPoints)
-            //if (opCode == INTERSECTION)
+
+            if (!_isAreaResultOnly)
             {
-                var pointBuilder = new IntersectionPointBuilder(graph, _geomFact);
-                resultPointList = pointBuilder.Points;
+                //--- Build lines
+                bool allowResultLines = !hasResultAreaComponents || ALLOW_INT_MIXED_RESULT;
+                if (allowResultLines)
+                {
+                    var lineBuilder = new LineBuilder(_inputGeom, graph, hasResultAreaComponents, opCode, _geomFact);
+                    resultLineList = lineBuilder.GetLines();
+                }
+                /*
+                 * Operations with point inputs are handled elsewhere.
+                 * Only an Intersection op can produce point results
+                 * from non-point inputs. 
+                 */
+                bool hasResultComponents = hasResultAreaComponents || resultLineList.Count > 0;
+                bool allowResultPoints = !hasResultComponents || ALLOW_INT_MIXED_RESULT;
+                if (opCode == INTERSECTION && allowResultPoints)
+                {
+                    var pointBuilder = new IntersectionPointBuilder(graph, _geomFact);
+                    resultPointList = pointBuilder.Points;
+                }
             }
 
             if (IsEmpty(resultPolyList)
