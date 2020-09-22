@@ -204,24 +204,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             var geomOv = ov.GetResult();
             return geomOv;
         }
-        /// <summary>
-        /// Computes an overlay operation on 
-        /// the given geometry operands,
-        /// using an automatically-determined fixed precision model
-        /// which maximises precision while ensuring robust computation.
-        /// </summary>
-        /// <param name="geom0">The first geometry argument</param>
-        /// <param name="geom1">The second geometry argument</param>
-        /// <param name="opCode">The code for the desired overlay operation</param>
-        /// <returns>The result of the overlay operation</returns>
-        public static Geometry OverlayFixedPrecision(Geometry geom0, Geometry geom1, SpatialFunction opCode)
-        {
-            var pm = PrecisionUtility.RobustPM(geom0, geom1);
-            //System.out.println("Precision Model: " + pm);
-
-            var ov = new OverlayNG(geom0, geom1, pm, opCode);
-            return ov.GetResult();
-        }
 
         /// <summary>
         /// Computes an overlay operation on 
