@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
             //overlayOrig(poly1, poly2);
             //overlayOrigNoSnap(poly1, poly2);
             //overlayNGFloat(poly1, poly2);
-            OverlayNGSnapIfNeeded(poly1, poly2);
+            OverlayNGRobust(poly1, poly2);
             //overlayNG(poly1, poly2);
             //OverlayNGSnapping(poly1, poly2);
         }
