@@ -95,7 +95,7 @@ namespace Open.Topology.TestRunner
         {
             if (_nfi == null)
             {
-                _nfi = new NumberFormatInfo {NumberDecimalSeparator = "."};
+                _nfi = NumberFormatInfo.InvariantInfo;
             }
             return _nfi;
         }
