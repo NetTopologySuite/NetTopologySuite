@@ -10,12 +10,35 @@ namespace NetTopologySuite.IO
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
-    /// WKBWriter stores <see cref="Coordinate" /> X,Y,Z values if <see cref="Coordinate.Z" /> is not <see cref="double.NaN"/>,
-    /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
+    /// There are a few cases which are not specified in the standard.
+    /// The implementation uses a representation which is compatible with
+    /// other common spatial systems (notably, PostGIS).
+    /// <list type="bullet">
+    /// <item><term><see cref="LinearRing"/>s</term><description>are written as <see cref="LineString"/>s.</description></item>
+    /// <item><term>Empty geometries are output as follows</term><description>
+    /// <list type="bullet">
+    /// <item><term><c>Point</c></term><description>A <c>WKBPoint</c> with <c>double.NaN</c> ordinate values</description></item>
+    /// <item><term><c>LineString</c></term><description>A <c>WKBLineString</c> with zero points</description></item>
+    /// <item><term><c>Polygon</c></term><description>currently output as a <c>WKBPolygon</c> with one <c>LinearRing</c> with zero points.
+    /// <i>Note:</i> This is different to other systems. It will change to a <c>WKBPolygon</c> with zero <c>LinearRing</c>s.</description></item>
+    /// <item><term>Multi geometries</term><description>A <c>WKBMulti</c> with zero elements</description></item>
+    /// <item><term><c>GeometryCollection</c></term><description>A <c>WKBGeometryCollection</c> with zero elements</description></item>
+    /// </list>
+    /// </description></item></list>
     /// <para/>
-    /// Empty Points are output as a Point with <c>NaN</c> X and Y ordinate values. w
+    /// This implementation supports the <b>Extended WKB</b> standard.
+    /// Extended WKB allows writing 3-dimensional coordinates
+    /// and the geometry SRID value.
+    /// The presence of 3D coordinates is indicated
+    /// by setting the high bit of the <tt>wkbType</tt> word.
+    /// The presence of a SRID is indicated
+    /// by setting the third bit of the <tt>wkbType</tt> word.
+    /// EWKB format is upward-compatible with the original SFS WKB format.
+    /// <para/>
+    /// This class supports reuse of a single instance to read multiple
+    /// geometries. This class is not thread - safe; each thread should create its own
+    /// instance.
     /// </remarks>
-    // Thanks to Roberto Acioli for Coordinate.Z patch
     public class WKBWriter
     {
         /// <summary>Converts a byte array to a hexadecimal string.</summary>
@@ -108,6 +131,9 @@ namespace NetTopologySuite.IO
                 writer.Write(geom.SRID);
         }
 
+        /// <summary>
+        /// Gets or sets the binary encoding type
+        /// </summary>
         public ByteOrder EncodingType { get; protected set; }
 
         /// <summary>
