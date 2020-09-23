@@ -11,9 +11,15 @@ namespace NetTopologySuite.Densify
     /// than the given distance tolerance.
     /// </summary>
     /// <remarks>
-    /// <para>Densified polygonal geometries are guaranteed to be topologically correct.</para>
-    /// <para>The coordinates created during densification respect the input geometry's <see cref="PrecisionModel"/>.</para>
-    /// <para><b>Note:</b> At some future point this class will offer a variety of densification strategies.</para>
+    /// Densified polygonal geometries are guaranteed to be topologically correct.
+    /// <para/>
+    /// The coordinates created during densification respect the input geometry's <see cref="PrecisionModel"/>.
+    /// <para/>
+    /// By default polygonal results are processed to ensure they are valid.
+    /// This processing is costly, and it is very rare for results to be invalid.
+    /// Validation processing can be disabled by calling the {@link #setValidate(boolean)} method.
+    /// <para/>
+    /// <b>Note:</b> At some future point this class will offer a variety of densification strategies.
     /// </remarks>
     /// <author>Martin Davis</author>
     public class Densifier
@@ -68,6 +74,12 @@ namespace NetTopologySuite.Densify
         private readonly Geometry _inputGeom;
         private double _distanceTolerance;
 
+        /// <summary>
+        /// Indicates whether areas should be topologically validated.
+        /// <br/><b>Note:</b> JTS name <c>_isValidated</c>
+        /// </summary>
+        private bool _validate = true;
+
         /// <summary>Creates a new densifier instance</summary>
         /// <param name="inputGeom">The geometry to densify</param>
         public Densifier(Geometry inputGeom)
@@ -94,21 +106,38 @@ namespace NetTopologySuite.Densify
         }
 
         /// <summary>
+        /// Gets or sets whether polygonal results are processed to ensure they are valid.
+        /// </summary>
+        /// <returns><c>true</c> if polygonal input is validated.</returns>
+        public bool Validate
+        {
+            get => _validate;
+            set => _validate = value;
+        }
+
+        /// <summary>
         /// Gets the densified geometry.
         /// </summary>
         /// <returns>The densified geometry</returns>
         public Geometry GetResultGeometry()
         {
-            return (new DensifyTransformer(_distanceTolerance)).Transform(_inputGeom);
+            return new DensifyTransformer(_distanceTolerance, _validate).Transform(_inputGeom);
         }
 
         private class DensifyTransformer : GeometryTransformer
         {
             private readonly double _distanceTolerance;
 
-            public DensifyTransformer(double distanceTolerance)
+            /// <summary>
+            /// Indicates whether areas should be topologically validated.
+            /// <br/><b>Note:</b> JTS name <c>_isValidated</c>
+            /// </summary>
+            private readonly bool _validate;
+
+            public DensifyTransformer(double distanceTolerance, bool validate)
             {
                 _distanceTolerance = distanceTolerance;
+                _validate = validate;
             }
 
             protected override CoordinateSequence TransformCoordinates(
@@ -152,8 +181,9 @@ namespace NetTopologySuite.Densify
             /// </summary>
             /// <param name="roughAreaGeom">An area geometry possibly containing self-intersections</param>
             /// <returns>A valid area geometry</returns>
-            private static Geometry CreateValidArea(Geometry roughAreaGeom)
+            private Geometry CreateValidArea(Geometry roughAreaGeom)
             {
+                if (!_validate) return roughAreaGeom;
                 return roughAreaGeom.Buffer(0.0);
             }
         }
