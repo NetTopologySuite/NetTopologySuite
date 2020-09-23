@@ -49,6 +49,115 @@ namespace NetTopologySuite.Geometries
             return measures;
         }
 
+
+        /// <summary>
+        /// Utility method ensuring array contents are of consistent dimension and measures.
+        /// <para/>
+        /// Array is modified in place if required, coordinates are replaced in the array as required
+        /// to ensure all coordinates have the same dimension and measures. The final dimension and
+        /// measures used are the maximum found when checking the array.
+        /// </summary>
+        /// <param name="array">Modified in place to coordinates of consistent dimension and measures.</param>
+        public static void EnforceConsistency(Coordinate[] array)
+        {
+            if (array == null)
+            {
+                return;
+            }
+            // step one check
+            int maxSpatialDimension = -1;
+            int maxMeasures = -1;
+            bool isConsistent = true;
+            for (int i = 0; i < array.Length; i++)
+            {
+                var coordinate = array[i];
+                if (coordinate != null)
+                {
+                    int m = Coordinates.Measures(coordinate);
+                    int sd = Coordinates.Dimension(coordinate) - m;
+                    if (maxSpatialDimension == -1)
+                    {
+                        maxMeasures = m;
+                        maxSpatialDimension = sd;
+                        continue;
+                    }
+                    if (sd != maxSpatialDimension || m != maxMeasures)
+                    {
+                        isConsistent = false;
+                        maxSpatialDimension = Math.Max(maxSpatialDimension, sd);
+                        maxMeasures = Math.Max(maxMeasures, m);
+                    }
+                }
+            }
+            if (!isConsistent)
+            {
+                // step two fix
+                int maxDimension = maxSpatialDimension + maxMeasures;
+                var sample = Coordinates.Create(maxDimension, maxMeasures);
+                var type = sample.GetType();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    var coordinate = array[i];
+                    if (coordinate != null && coordinate.GetType() != type)
+                    {
+                        var duplicate = Coordinates.Create(maxDimension, maxMeasures);
+                        duplicate.CoordinateValue = coordinate;
+                        array[i] = duplicate;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Utility method ensuring array contents are of the specified dimension and measures.
+        /// <para/>
+        /// Array is returned unmodified if consistent, or a copy of the array is made with
+        /// each inconsistent coordinate duplicated into an instance of the correct dimension and measures.
+        /// </summary>
+        /// <param name="array">A coordinate array</param>
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        /// <returns>Input array or copy created if required to enforce consistency.</returns>
+        public static Coordinate[] EnforceConsistency(Coordinate[] array, int dimension, int measures)
+        {
+            var sample = Coordinates.Create(dimension, measures);
+            var type = sample.GetType();
+            bool isConsistent = true;
+            for (int i = 0; i < array.Length; i++)
+            {
+                var coordinate = array[i];
+                if (coordinate != null && coordinate.GetType() != type)
+                {
+                    isConsistent = false;
+                    break;
+                }
+            }
+            if (isConsistent)
+            {
+                return array;
+            }
+            else
+            {
+                var coordinateType = sample.GetType();
+                var copy = (Coordinate[])Array.CreateInstance(coordinateType, array.Length);
+                for (int i = 0; i < copy.Length; i++)
+                {
+                    var coordinate = array[i];
+                    if (coordinate != null && coordinate.GetType() != type)
+                    {
+                        var duplicate = Coordinates.Create(dimension, measures);
+                        duplicate.CoordinateValue = coordinate;
+                        copy.SetValue(duplicate, i);
+                    }
+                    else
+                    {
+                        copy.SetValue(coordinate, i);
+                    }
+                }
+                return copy;
+            }
+        }
+
         /// <summary>
         /// Tests whether an array of <see cref="Coordinate"/>s forms a ring, by checking length and closure.
         /// Self-intersection is not checked.

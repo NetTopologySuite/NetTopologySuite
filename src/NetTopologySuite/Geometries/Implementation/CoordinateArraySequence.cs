@@ -46,12 +46,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Constructs a sequence based on the given array
         /// of <see cref="Coordinate"/>s.
+        /// <para/>
+        /// The Array is <b>not</b> copied
+        /// <para/>
+        /// It is your responsibility to ensure the array contains Coordinates of the
+        /// indicated dimension and measures (See <see cref="CoordinateArrays.EnforceConsistency(Coordinate[])"/>).
         /// </summary>
-        /// <remarks>The Array is not copied</remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         /// <param name="dimension">The dimension of the coordinates</param>
+        /// <param name="measures">The number of measure ordinate values.</param>
         public CoordinateArraySequence(Coordinate[] coordinates, int dimension, int measures)
-            : base(coordinates?.Length ?? 0, dimension, measures)
+            :base(coordinates?.Length ?? 0, dimension, measures)
         {
             if (coordinates == null)
             {
@@ -59,7 +64,7 @@ namespace NetTopologySuite.Geometries.Implementation
             }
             else
             {
-                Coordinates = EnforceArrayConsistency(coordinates);
+                Coordinates = coordinates;
             }
         }
 
@@ -125,6 +130,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </para>
         /// </summary>
         /// <param name="array">array containing consistent coordinate instances</param>
+        [Obsolete("It is the clients responsibility to provide consistent arrays")]
         protected Coordinate[] EnforceArrayConsistency(Coordinate[] array)
         {
             var sample = CreateCoordinate();

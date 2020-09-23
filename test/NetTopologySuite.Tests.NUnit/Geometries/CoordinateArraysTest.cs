@@ -118,6 +118,31 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
+        [Test]
+        public void TestEnforceConsistency()
+        {
+            var array = new Coordinate[]{ new CoordinateZ(1.0, 1.0, 2.0), new CoordinateM(2.0,2.0,1.0) };
+            var array2 = new Coordinate[]{ new Coordinate(1.0, 1.0), new Coordinate(2.0,2.0) };
+            // process into array with dimension 4 and measures 1
+            CoordinateArrays.EnforceConsistency(array);
+            Assert.AreEqual(4, CoordinateArrays.Dimension(array));
+            Assert.AreEqual(1, CoordinateArrays.Measures(array));
+            Assert.AreEqual(2d, array[0].Z);
+            Assert.AreEqual(double.NaN, array[0].M);
+            Assert.AreEqual(double.NaN, array[1].Z);
+            Assert.AreEqual(1d, array[1].M);
+
+            CoordinateArrays.EnforceConsistency(array2);
+
+            var @fixed = CoordinateArrays.EnforceConsistency(array2, 2, 0);
+            Assert.AreSame(@fixed, array2) ; // no processing required
+
+            @fixed = CoordinateArrays.EnforceConsistency(array, 3, 0);
+            Assert.AreNotSame(@fixed, array); // copied into new array
+            Assert.AreNotSame(array[0], @fixed[0]) ; // processing needed to CoordinateXYZ
+            Assert.AreNotSame(array[1], @fixed[1]) ; // processing needed to CoordinateXYZ
+        }
+
         private static void CheckCoordinateAt(Coordinate[] seq1, int pos1,
                                               Coordinate[] seq2, int pos2)
         {
