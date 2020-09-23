@@ -90,7 +90,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="dimension">the dimension of the coordinates in the sequence 
         /// (if user-specifiable, otherwise ignored)</param>
         /// <returns>A coordinate sequence</returns>
-        public CoordinateSequence Create(int size, int dimension) => Create(size, dimension, 0);
+        public /*virtual*/ CoordinateSequence Create(int size, int dimension) => Create(size, dimension, Math.Max(0, dimension - 3));
 
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" /> of the specified size and dimension

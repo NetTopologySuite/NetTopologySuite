@@ -269,7 +269,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension)
-            : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
+            : this(coords, dimension, Math.Max(0, dimension - 3))
         {
         }
 
@@ -334,7 +334,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 double m = _coords[index * Dimension + 2];
                 return new CoordinateM(x, y, m);
             }
-            else if (Dimension == 4 && Measures == 1)
+            else if (Dimension == 4)
             {
                 double z = _coords[index * Dimension + 2];
                 double m = _coords[index * Dimension + 3];
@@ -487,7 +487,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension)
-            : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
+            : this(coords, dimension, Math.Max(0, dimension - 3))
         {
         }
 
@@ -552,7 +552,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 double m = _coords[index * Dimension + 2];
                 return new CoordinateM(x, y, m);
             }
-            else if (Dimension == 4 && Measures == 1)
+            else if (Dimension == 4)
             {
                 double z = _coords[index * Dimension + 2];
                 double m = _coords[index * Dimension + 3];

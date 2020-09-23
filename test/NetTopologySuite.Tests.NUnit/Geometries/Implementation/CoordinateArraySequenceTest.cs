@@ -16,10 +16,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
             var factory = (CoordinateArraySequenceFactory)CsFactory;
             var sequence = factory.Create(10, 4);
-            Assert.That(sequence.Dimension, Is.EqualTo(3));
-            Assert.That(sequence.Measures, Is.EqualTo(0));
+            //Assert.That(sequence.Dimension, Is.EqualTo(3));
+            //Assert.That(sequence.Measures, Is.EqualTo(0));
+            Assert.That(sequence.Dimension, Is.EqualTo(4));
+            Assert.That(sequence.Measures, Is.EqualTo(1));
             Assert.That(sequence.HasZ);
-            Assert.That(!sequence.HasM);
+            //Assert.That(!sequence.HasM);
+            Assert.That(sequence.HasM);
 
             sequence = factory.Create(10, 4, 0);
             Assert.That(sequence.Dimension, Is.EqualTo(3));
