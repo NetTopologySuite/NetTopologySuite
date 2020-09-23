@@ -1,5 +1,6 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -53,7 +54,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static OrientationIndex Index(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            /**
+            /*
              * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
              * dependent, when computing the orientation of a point very close to a
              * line. This is possibly due to the arithmetic in the translation to the
@@ -88,103 +89,39 @@ namespace NetTopologySuite.Algorithm
         /// oriented counter-clockwise.
         /// <list type="bullet">
         /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
-        /// <item><description>This will handle coordinate lists which contain repeated points.</description></item>
+        /// <item><description>This handles coordinate lists which contain repeated points.</description></item>
+        /// <item><description>This handles rings which contain collapsed segments (in particular, along the top of the ring).</description></item>
         /// </list>
-        /// This algorithm is <b>only</b> guaranteed to work with valid rings.If the
-        /// ring is invalid(e.g.self-crosses or touches), the computed result may not
-        /// be correct.
+        /// This algorithm is guaranteed to work with valid rings.
+        /// It also works with "mildly invalid" rings
+        /// which contain collapsed(coincident) flat segments along the top of the ring.
+        /// If the ring is "more" invalid (e.g.self-crosses or touches),
+        /// the computed result may not be correct.
         /// </summary>
-        /// <param name="ring">An array of <c>Coordinate</c>s forming a ring.</param>
+        /// <param name="ring">An array of <c>Coordinate</c>s forming a ring (with first and last point identical)</param>
         /// <returns><c>true</c> if the ring is oriented counter-clockwise.</returns>
         /// <exception cref="ArgumentException">Thrown if there are too few points to determine orientation (&lt; 4)</exception>
         public static bool IsCCW(Coordinate[] ring)
         {
-            // # of points without closing endpoint
-            int nPts = ring.Length - 1;
-            // sanity check
-            if (nPts < 3)
-                throw new ArgumentException(
-                    "Ring has fewer than 4 points, so orientation cannot be determined",
-                    nameof(ring));
-
-            // find highest point
-            var hiPt = ring[0];
-            int hiIndex = 0;
-            for (int i = 1; i <= nPts; i++)
-            {
-                var p = ring[i];
-                if (p.Y > hiPt.Y)
-                {
-                    hiPt = p;
-                    hiIndex = i;
-                }
-            }
-
-            // find distinct point before highest point
-            int iPrev = hiIndex;
-            do
-            {
-                iPrev = iPrev - 1;
-                if (iPrev < 0)
-                    iPrev = nPts;
-            } while (ring[iPrev].Equals2D(hiPt) && iPrev != hiIndex);
-
-            // find distinct point after highest point
-            int iNext = hiIndex;
-            do
-            {
-                iNext = (iNext + 1) % nPts;
-            } while (ring[iNext].Equals2D(hiPt) && iNext != hiIndex);
-
-            var prev = ring[iPrev];
-            var next = ring[iNext];
-
-            /**
-             * This check catches cases where the ring contains an A-B-A configuration
-             * of points. This can happen if the ring does not contain 3 distinct points
-             * (including the case where the input array has fewer than 4 elements), or
-             * it contains coincident line segments.
-             */
-            if (prev.Equals2D(hiPt) || next.Equals2D(hiPt) || prev.Equals2D(next))
-                return false;
-
-            var disc = Index(prev, hiPt, next);
-
-            /**
-             * If disc is exactly 0, lines are collinear. There are two possible cases:
-             * (1) the lines lie along the x axis in opposite directions (2) the lines
-             * lie on top of one another
-             *
-             * (1) is handled by checking if next is left of prev ==> CCW (2) will never
-             * happen if the ring is valid, so don't check for it (Might want to assert
-             * this)
-             */
-            bool isCCW;
-            if (disc == OrientationIndex.Collinear)
-            {
-                // poly is CCW if prev x is right of next x
-                isCCW = (prev.X > next.X);
-            }
-            else
-            {
-                // if area is positive, points are ordered CCW
-                isCCW = (disc > 0);
-            }
-            return isCCW;
+            // wrap with an XY CoordinateSequence
+            return IsCCW(new CoordinateArraySequence(ring));
         }
 
         /// <summary>
-        /// Computes whether a ring defined by an <see cref="CoordinateSequence"/> is
+        /// Computes whether a ring defined by a <see cref="CoordinateSequence"/> is
         /// oriented counter-clockwise.
         /// <list type="bullet">
         /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
-        /// <item><description>This will handle coordinate lists which contain repeated points.</description></item>
+        /// <item><description>This handles coordinate lists which contain repeated points.</description></item>
+        /// <item><description>This handles rings which contain collapsed segments (in particular, along the top of the ring).</description></item>
         /// </list>
-        /// This algorithm is <b>only</b> guaranteed to work with valid rings.If the
-        /// ring is invalid(e.g.self-crosses or touches), the computed result may not
-        /// be correct.
+        /// This algorithm is guaranteed to work with valid rings.
+        /// It also works with "mildly invalid" rings
+        /// which contain collapsed(coincident) flat segments along the top of the ring.
+        /// If the ring is "more" invalid (e.g.self-crosses or touches),
+        /// the computed result may not be correct.
         /// </summary>
-        /// <param name="ring">A <c>CoordinateSequence</c>s forming a ring.</param>
+        /// <param name="ring">A <c>CoordinateSequence</c>s forming a ring (with first and last point identical).</param>
         /// <returns><c>true</c> if the ring is oriented counter-clockwise.</returns>
         /// <exception cref="ArgumentException">Thrown if there are too few points to determine orientation (&lt; 4)</exception>
         public static bool IsCCW(CoordinateSequence ring)
@@ -194,74 +131,90 @@ namespace NetTopologySuite.Algorithm
             // sanity check
             if (nPts < 3)
                 throw new ArgumentException(
-                    "Ring has fewer than 4 points, so orientation cannot be determined",
-                    nameof(ring));
+                    "Ring has fewer than 4 points, so orientation cannot be determined", nameof(ring));
 
-            // find highest point
-            var hiPt = ring.GetCoordinate(0);
-            int hiIndex = 0;
+            /*
+             * Find first highest point after a lower point, if one exists
+             * (e.g. a rising segment)
+             * If one does not exist, hiIndex will remain 0
+             * and the ring must be flat.
+             * Note this relies on the convention that
+             * rings have the same start and end point. 
+             */
+            var upHiPt = ring.GetCoordinate(0);
+            double prevY = upHiPt.Y;
+            Coordinate upLowPt = null;
+            int iUpHi = 0;
             for (int i = 1; i <= nPts; i++)
             {
-                var p = ring.GetCoordinate(i);
-                if (p.Y > hiPt.Y)
+                double py = ring.GetOrdinate(i, Ordinate.Y);
+                /*
+                 * If segment is upwards and endpoint is higher, record it
+                 */
+                if (py > prevY && py >= upHiPt.Y)
                 {
-                    hiPt = ring.GetCoordinate(i);
-                    hiIndex = i;
+                    upHiPt = ring.GetCoordinate(i);
+                    iUpHi = i;
+                    upLowPt = ring.GetCoordinate(i - 1);
                 }
+                prevY = py;
             }
+            /*
+             * Check if ring is flat and return default value if so
+             */
+            if (iUpHi == 0) return false;
 
-            // find distinct point before highest point
-            Coordinate prev;
-            int iPrev = hiIndex;
+            /*
+             * Find the next lower point after the high point
+             * (e.g. a falling segment).
+             * This must exist since ring is not flat.
+             */
+            int iDownLow = iUpHi;
             do
             {
-                iPrev = iPrev - 1;
-                if (iPrev < 0)
-                    iPrev = nPts;
-                prev = ring.GetCoordinate(iPrev);
-            } while (prev.Equals2D(hiPt) && iPrev != hiIndex);
+                iDownLow = (iDownLow + 1) % nPts;
+            } while (iDownLow != iUpHi && ring.GetOrdinate(iDownLow, Ordinate.Y) == upHiPt.Y);
 
-            // find distinct point after highest point
-            Coordinate next;
-            int iNext = hiIndex;
-            do
-            {
-                iNext = (iNext + 1) % nPts;
-                next = ring.GetCoordinate(iNext);
-            } while (next.Equals2D(hiPt) && iNext != hiIndex);
+            var downLowPt = ring.GetCoordinate(iDownLow);
+            int iDownHi = iDownLow > 0 ? iDownLow - 1 : nPts - 1;
+            var downHiPt = ring.GetCoordinate(iDownHi);
 
-            /**
-             * This check catches cases where the ring contains an A-B-A configuration
-             * of points. This can happen if the ring does not contain 3 distinct points
-             * (including the case where the input array has fewer than 4 elements), or
-             * it contains coincident line segments.
+            /*
+             * Two cases can occur:
+             * 1) the hiPt and the downPrevPt are the same.  
+             *    This is the general position case of a "pointed cap".
+             *    The ring orientation is determined by the orientation of the cap
+             * 2) The hiPt and the downPrevPt are different.
+             *    In this case the top of the cap is flat.
+             *    The ring orientation is given by the direction of the flat segment
              */
-            if (prev.Equals2D(hiPt) || next.Equals2D(hiPt) || prev.Equals2D(next))
-                return false;
-
-            var disc = Index(prev, hiPt, next);
-
-            /**
-             * If disc is exactly 0, lines are collinear. There are two possible cases:
-             * (1) the lines lie along the x axis in opposite directions (2) the lines
-             * lie on top of one another
-             *
-             * (1) is handled by checking if next is left of prev ==> CCW (2) will never
-             * happen if the ring is valid, so don't check for it (Might want to assert
-             * this)
-             */
-            bool isCCW;
-            if (disc == OrientationIndex.Collinear)
+            if (upHiPt.Equals2D(downHiPt))
             {
-                // polygon is CCW if previous x is right of next x
-                isCCW = (prev.X > next.X);
+                /*
+                 * Check for the case where the cap has configuration A-B-A. 
+                 * This can happen if the ring does not contain 3 distinct points
+                 * (including the case where the input array has fewer than 4 elements), or
+                 * it contains coincident line segments.
+                 */
+                if (upLowPt.Equals2D(upHiPt) || downLowPt.Equals2D(upHiPt) || upLowPt.Equals2D(downLowPt))
+                    return false;
+
+                /*
+                 * It can happen that the top segments are coincident.
+                 * This is an invalid ring, which cannot be computed correctly.
+                 * In this case the orientation is 0, and the result is false.
+                 */
+                var index = Index(upLowPt, upHiPt, downLowPt);
+                return index == OrientationIndex.CounterClockwise;
             }
             else
             {
-                // if area is positive, points are ordered CCW
-                isCCW = (disc > 0);
+                /*
+                 * Flat cap - direction of flat top determines orientation
+                 */
+                double delX = downHiPt.X - upHiPt.X;
+                return delX < 0;
             }
-            return isCCW;
         }
 
         /// <summary>
