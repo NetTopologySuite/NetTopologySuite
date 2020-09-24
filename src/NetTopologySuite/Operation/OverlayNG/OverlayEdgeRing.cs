@@ -4,7 +4,7 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     internal class OverlayEdgeRing
     {

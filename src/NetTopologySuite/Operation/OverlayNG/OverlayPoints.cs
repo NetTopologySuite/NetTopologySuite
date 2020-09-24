@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Performs an overlay operation on inputs which are both point geometries.

@@ -2,7 +2,7 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// A key for sorting and comparing edges in a noded arrangement.

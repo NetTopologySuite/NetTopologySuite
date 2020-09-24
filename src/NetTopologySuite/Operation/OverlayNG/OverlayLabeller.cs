@@ -6,7 +6,7 @@ using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
 using Position = NetTopologySuite.Geometries.Position;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Implements the logic to compute the full labeling

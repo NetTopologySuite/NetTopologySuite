@@ -1,8 +1,8 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation.OverlayNg;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using NetTopologySuite.Operation.OverlayNG;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {

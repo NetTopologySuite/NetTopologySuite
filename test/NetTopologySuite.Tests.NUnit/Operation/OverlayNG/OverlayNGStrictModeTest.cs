@@ -110,7 +110,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 
         static Geometry Intersection(Geometry a, Geometry b)
         {
-            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, SpatialFunction.Intersection);
+            var ov = new NetTopologySuite.Operation.OverlayNG.OverlayNG(a, b, SpatialFunction.Intersection);
             ov.StrictMode = true;
             return ov.GetResult();
         }
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 
         static Geometry SymDifference(Geometry a, Geometry b)
         {
-            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, SpatialFunction.SymDifference);
+            var ov = new NetTopologySuite.Operation.OverlayNG.OverlayNG(a, b, SpatialFunction.SymDifference);
             ov.StrictMode = true;
             return ov.GetResult();
         }
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 
         static Geometry Overlay(Geometry a, Geometry b, SpatialFunction opCode)
         {
-            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, opCode);
+            var ov = new NetTopologySuite.Operation.OverlayNG.OverlayNG(a, b, opCode);
             ov.StrictMode = true;
             return ov.GetResult();
         }
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         static Geometry Overlay(Geometry a, Geometry b, double scaleFactor, SpatialFunction opCode)
         {
             var pm = new PrecisionModel(scaleFactor);
-            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, pm, opCode);
+            var ov = new NetTopologySuite.Operation.OverlayNG.OverlayNG(a, b, pm, opCode);
             ov.StrictMode = true;
             return ov.GetResult();
         }

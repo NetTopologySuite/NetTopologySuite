@@ -1,6 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.Operation.OverlayNg;
+using NetTopologySuite.Operation.OverlayNG;
 
 namespace NetTopologySuite.Precision
 {

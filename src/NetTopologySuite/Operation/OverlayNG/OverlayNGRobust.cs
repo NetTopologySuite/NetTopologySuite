@@ -6,7 +6,7 @@ using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Union;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Performs an overlay operation using <see cref="OverlayNG"/>,

@@ -2,12 +2,13 @@
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snap;
 using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.OverlayNG;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {
     /// <summary>
-    /// Tests <see cref="NetTopologySuite.Operation.OverlayNg.OverlayNG"/> using the <see cref="SnappingNoder"/>
+    /// Tests <see cref="OverlayNG"/> using the <see cref="SnappingNoder"/>
     /// </summary>
     public class OverlayNGSnappingNoderTest : GeometryTestCase
     {
@@ -64,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         public static Geometry Union(Geometry a, Geometry b, double tolerance)
         {
             var noder = GetNoder(tolerance);
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Union, null, noder);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Union, null, noder);
         }
 
         private static INoder GetNoder(double tolerance)

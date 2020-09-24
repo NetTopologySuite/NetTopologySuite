@@ -2,7 +2,7 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
 
     /// <summary>

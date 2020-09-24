@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
@@ -7,7 +6,7 @@ using NetTopologySuite.Noding.Snap;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Overlay;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Computes the geometric overlay of two <see cref="Geometry"/>s,

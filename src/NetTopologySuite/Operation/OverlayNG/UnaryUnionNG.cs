@@ -2,7 +2,7 @@
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Union;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Unions a collection of geometries in an

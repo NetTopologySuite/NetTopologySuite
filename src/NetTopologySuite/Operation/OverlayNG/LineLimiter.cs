@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Limits the segments in a list of segments

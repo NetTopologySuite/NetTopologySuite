@@ -6,7 +6,7 @@ using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.IO;
 using Position = NetTopologySuite.Geometries.Position;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     internal class OverlayEdge : HalfEdge
     {

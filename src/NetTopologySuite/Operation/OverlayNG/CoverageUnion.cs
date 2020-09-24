@@ -1,7 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Unions a valid coverage of polygons or lines

@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Computes an overlay where one input is Point(s) and one is not.

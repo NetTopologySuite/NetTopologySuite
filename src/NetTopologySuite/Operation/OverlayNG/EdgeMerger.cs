@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Utilities;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Performs merging on the noded edges of the input geometries.

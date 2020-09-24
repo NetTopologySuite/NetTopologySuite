@@ -2,7 +2,7 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     internal class PolygonBuilder
     {

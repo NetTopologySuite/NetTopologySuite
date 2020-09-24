@@ -1,7 +1,7 @@
 ﻿using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Manages the input geometries for an overlay operation.

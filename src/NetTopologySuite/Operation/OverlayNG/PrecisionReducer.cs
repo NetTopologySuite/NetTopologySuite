@@ -1,7 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Precision;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Functions to reduce the precision of a geometry

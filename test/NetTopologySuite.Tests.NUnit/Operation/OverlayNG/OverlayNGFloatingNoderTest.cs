@@ -128,7 +128,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             {
                 try
                 {
-                    var result = NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Intersection);
+                    var result = NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection);
                     return result.Area;
                 }
                 catch (TopologyException ex)
@@ -142,7 +142,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 
             static Geometry Intersection(Geometry a, Geometry b)
             {
-                return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Intersection);
+                return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection);
             }
         }
     }

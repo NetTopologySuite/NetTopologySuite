@@ -1,6 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Clips a ring of points to an rectangle.

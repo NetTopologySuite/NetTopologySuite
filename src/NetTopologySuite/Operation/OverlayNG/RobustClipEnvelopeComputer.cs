@@ -1,6 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Computes a robust clipping envelope for a pair of polygonal geometries.

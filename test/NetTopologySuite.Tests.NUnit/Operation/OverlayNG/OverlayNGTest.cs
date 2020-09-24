@@ -672,55 +672,55 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         public static Geometry Difference(Geometry a, Geometry b, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Difference, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Difference, pm);
         }
 
         public static Geometry SymDifference(Geometry a, Geometry b, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.SymDifference, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.SymDifference, pm);
         }
 
         public static Geometry Intersection(Geometry a, Geometry b, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, pm);
         }
 
         public static Geometry Union(Geometry a, Geometry b, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Union, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Union, pm);
         }
 
         public static Geometry Difference(Geometry a, Geometry b)
         {
             var pm = new PrecisionModel();
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Difference, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Difference, pm);
         }
 
         public static Geometry SymDifference(Geometry a, Geometry b)
         {
             var pm = new PrecisionModel();
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.SymDifference, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.SymDifference, pm);
         }
 
         public static Geometry Intersection(Geometry a, Geometry b)
         {
             var pm = new PrecisionModel();
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, pm);
         }
 
         public static Geometry Union(Geometry a, Geometry b)
         {
             var pm = new PrecisionModel();
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Union, pm);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Union, pm);
         }
 
         public static Geometry IntersectionNoOpt(Geometry a, Geometry b, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-            var ov = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, pm, SpatialFunction.Intersection);
+            var ov = new NetTopologySuite.Operation.OverlayNG.OverlayNG(a, b, pm, SpatialFunction.Intersection);
             ov.Optimized = false;
             return ov.GetResult();
         }

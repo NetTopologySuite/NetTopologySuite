@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         public static Geometry Union(Geometry a, Geometry b, double tolerance)
         {
             var noder = GetNoder(tolerance);
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Union, null, noder);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Union, null, noder);
         }
 
         private static INoder GetNoder(double tolerance)

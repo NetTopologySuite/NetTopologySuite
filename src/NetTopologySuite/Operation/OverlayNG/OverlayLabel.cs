@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using Position = NetTopologySuite.Geometries.Position;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// A structure recording the topological situation

@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Utility methods for overlay processing.

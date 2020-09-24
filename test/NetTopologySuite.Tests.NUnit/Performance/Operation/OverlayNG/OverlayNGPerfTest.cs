@@ -3,7 +3,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Overlay;
-using NetTopologySuite.Operation.OverlayNg;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
@@ -112,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
         {
             foreach (var b in geomB)
             {
-                NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(geomA, b, SpatialFunction.Union, precisionModel);
+                NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(geomA, b, SpatialFunction.Union, precisionModel);
             }
         }
 
@@ -136,7 +135,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
         {
             foreach (var b in geomB)
             {
-                NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(geomA, b, SpatialFunction.Intersection, precisionModel);
+                NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(geomA, b, SpatialFunction.Intersection, precisionModel);
             }
         }
 
@@ -189,19 +188,19 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
         {
             var intFast = fastIntersect(a, b);
             if (intFast != null) return intFast;
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, precisionModel);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, precisionModel);
         }
 
         public Geometry intersectionNGNoClip(Geometry a, Geometry b)
         {
-            var overlay = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, precisionModel, SpatialFunction.Intersection);
+            var overlay = new NetTopologySuite.Operation.OverlayNG.OverlayNG(a, b, precisionModel, SpatialFunction.Intersection);
             overlay.Optimized = false;
             return overlay.GetResult();
         }
 
         public Geometry intersectionNGFloating(Geometry a, Geometry b)
         {
-            var overlay = new NetTopologySuite.Operation.OverlayNg.OverlayNG(a, b, SpatialFunction.Intersection);
+            var overlay = new NetTopologySuite.Operation.OverlayNG.OverlayNG(a, b, SpatialFunction.Intersection);
             overlay.Optimized = false;
             return overlay.GetResult();
         }
@@ -211,7 +210,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
             var pg = cacheFetch(a);
             if (!pg.Intersects(b)) return null;
             if (pg.Covers(b)) return b.Copy();
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, precisionModel);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, precisionModel);
         }
 
         public Geometry intersectionNGPrepNoCache(Geometry a, Geometry b)
@@ -219,7 +218,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
             var intFast = fastintersectsPrepNoCache(a, b);
             if (intFast != null) return intFast;
 
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, precisionModel);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, precisionModel);
         }
 
         private Geometry fastintersectsPrepNoCache(Geometry a, Geometry b)

@@ -4,7 +4,6 @@ using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snap;
 using NetTopologySuite.Operation.Overlay;
-using NetTopologySuite.Operation.OverlayNg;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
@@ -132,14 +131,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
             Log(testDesc);
             var pm = PrecModel(scale);
 
-            var inter = NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(poly1, poly2,
-                NetTopologySuite.Operation.OverlayNg.OverlayNG.INTERSECTION,
+            var inter = NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(poly1, poly2,
+                NetTopologySuite.Operation.OverlayNG.OverlayNG.INTERSECTION,
                 pm);
-            var symDiff = NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(poly1, poly2,
-                NetTopologySuite.Operation.OverlayNg.OverlayNG.SYMDIFFERENCE,
+            var symDiff = NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(poly1, poly2,
+                NetTopologySuite.Operation.OverlayNG.OverlayNG.SYMDIFFERENCE,
                 pm);
-            var union = NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(OnlyPolys(inter), OnlyPolys(symDiff),
-                NetTopologySuite.Operation.OverlayNg.OverlayNG.UNION,
+            var union = NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(OnlyPolys(inter), OnlyPolys(symDiff),
+                NetTopologySuite.Operation.OverlayNG.OverlayNG.UNION,
                 pm);
         }
 
@@ -159,8 +158,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
 
         private void OverlayNGFloat(Geometry poly1, Geometry poly2)
         {
-            NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(poly1, poly2,
-                NetTopologySuite.Operation.OverlayNg.OverlayNG.INTERSECTION);
+            NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(poly1, poly2,
+                NetTopologySuite.Operation.OverlayNG.OverlayNG.INTERSECTION);
             //Geometry diff1 = poly1.difference(poly2);
             //Geometry diff2 = poly2.difference(poly1);
             //Geometry union = inter.union(diff1).union(diff2);
@@ -168,7 +167,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
 
         private void OverlayNGRobust(Geometry poly1, Geometry poly2)
         {
-            NetTopologySuite.Operation.OverlayNg.OverlayNGRobust.Overlay(poly1, poly2, SpatialFunction.Intersection);
+            NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Overlay(poly1, poly2, SpatialFunction.Intersection);
             poly1.Intersection(poly2);
             //Geometry diff1 = poly1.difference(poly2);
             //Geometry diff2 = poly2.difference(poly1);
@@ -198,7 +197,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
         public static Geometry UnionSnap(Geometry a, Geometry b, double tolerance)
         {
             var noder = GetNoder(tolerance);
-            return NetTopologySuite.Operation.OverlayNg.OverlayNG.Overlay(a, b, SpatialFunction.Union, null, noder);
+            return NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Union, null, noder);
         }
 
         private static INoder GetNoder(double tolerance)

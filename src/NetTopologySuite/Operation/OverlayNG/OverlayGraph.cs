@@ -2,7 +2,7 @@
 using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Operation.OverlayNg
+namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// A planar graph of edges, representing
