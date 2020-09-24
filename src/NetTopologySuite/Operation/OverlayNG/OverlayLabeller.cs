@@ -244,15 +244,14 @@ namespace NetTopologySuite.Operation.OverlayNG
             var linearEdges = FindLinearEdgesWithLocation(_edges, geomIndex);
             if (linearEdges.Count == 0) return;
 
-            // TODO: This is originally a ArrayDeque<T> in JTS.
-            var edgeStack = new LinkedList<OverlayEdge>(linearEdges);
+            // Note: This is originally a ArrayDeque<T> in JTS. It is used as a Stack.
+            var edgeStack = new Stack<OverlayEdge>(linearEdges);
             bool isInputLine = _inputGeometry.IsLine(geomIndex);
 
             // traverse line edges, labeling unknown ones that are connected
             while (edgeStack.Count > 0)
             {
-                var lineEdge = edgeStack.First.Value;
-                edgeStack.RemoveFirst();
+                var lineEdge = edgeStack.Pop();
                 // assert: lineEdge.getLabel().isLine(geomIndex);
 
                 // for any edges around origin with unknown location for this geomIndex,
@@ -262,9 +261,9 @@ namespace NetTopologySuite.Operation.OverlayNG
         }
 
         private static void PropagateLinearLocationAtNode(OverlayEdge eNode, int geomIndex,
-            bool isInputLine, LinkedList<OverlayEdge> edgeStack)
+            bool isInputLine, Stack<OverlayEdge> edgeStack)
         {
-            // TODO: edgeStack is a Deque<OverlayEdge> in JTS.
+            // Note: edgeStack is a Deque<OverlayEdge> in JTS. It is used as a Stack.
             var lineLoc = eNode.Label.GetLineLocation(geomIndex);
 
             /*
@@ -292,7 +291,7 @@ namespace NetTopologySuite.Operation.OverlayNG
                      * Add sym edge to stack for graph traversal
                      * (Don't add e itself, since e origin node has now been scanned)
                      */
-                    edgeStack.AddFirst(e.SymOE);
+                    edgeStack.Push(e.SymOE);
                 }
                 e = e.ONextOE;
             } while (e != eNode);
