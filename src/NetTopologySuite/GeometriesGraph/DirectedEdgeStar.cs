@@ -82,8 +82,8 @@ namespace NetTopologySuite.GeometriesGraph
                 return de0;
             var deLast = (DirectedEdge)edges[size - 1];
 
-            var quad0 = de0.QuadrantValue;
-            var quad1 = deLast.QuadrantValue;
+            var quad0 = de0.QuadrantEx;
+            var quad1 = deLast.QuadrantEx;
             if (QuadrantExtensions.IsNorthern(quad0) && QuadrantExtensions.IsNorthern(quad1))
                 return de0;
             else if (!QuadrantExtensions.IsNorthern(quad0) && !QuadrantExtensions.IsNorthern(quad1))

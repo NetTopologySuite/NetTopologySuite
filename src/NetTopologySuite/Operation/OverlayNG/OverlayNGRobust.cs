@@ -34,11 +34,16 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// in order to check the results of using a floating noder.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class OverlayNGRobust
+    public sealed class OverlayNGRobust
     {
         //--- The following function is provided to allow use in the TestRunner
         public static Geometry Union(Geometry a)
         {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
             var unionSRFun = new UnionStrategy((g0, g1) => Overlay(g0, g1, SpatialFunction.Union), true);
             var op = new UnaryUnionOp(a) {UnionStrategy = unionSRFun};
             return op.Union();
@@ -55,8 +60,22 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The overlay result geometry</returns>
         public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
         {
-            Geometry result;
-            Exception exOriginal;
+            if (geom0 == null)
+            {
+                throw new ArgumentNullException(nameof(geom0));
+            }
+
+            switch (opCode)
+            {
+                case SpatialFunction.Intersection:
+                case SpatialFunction.Union:
+                case SpatialFunction.Difference:
+                case SpatialFunction.SymDifference:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(opCode), opCode, "Only Intersection, Union, Difference, and SymDifference are recognized at this time.");
+            }
 
             /*
              * First try overlay with a PrecisionModels.Floating noder, which is
@@ -67,38 +86,47 @@ namespace NetTopologySuite.Operation.OverlayNG
              */
             try
             {
-                result = OverlayNG.Overlay(geom0, geom1, opCode);
-                return result;
+                return OverlayNG.Overlay(geom0, geom1, opCode);
             }
             catch (Exception ex)
             {
                 /*
-                 * Capture original exception,
-                 * so it can be rethrown if the remaining strategies all fail.
+                 * On failure retry using snapping noding with a "safe" tolerance.
+                 * if this throws an exception just let it go,
+                 * since it is something that is not a TopologyException
                  */
-                exOriginal = ex;
+                try
+                {
+                    if (OverlaySnapTries(geom0, geom1, opCode) is Geometry result)
+                    {
+                        return result;
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    throw new AggregateException(ex, ex2);
+                }
+
+                /*
+                 * On failure retry using snap-rounding with a heuristic scale factor (grid size).
+                 */
+                try
+                {
+                    if (OverlaySR(geom0, geom1, opCode) is Geometry result)
+                    {
+                        return result;
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    throw new AggregateException(ex, ex2);
+                }
+
+                /*
+                 * Just can't get overlay to work, so throw original error.
+                 */
+                throw;
             }
-
-            /*
-             * On failure retry using snapping noding with a "safe" tolerance.
-             * if this throws an exception just let it go,
-             * since it is something that is not a TopologyException
-             */
-            result = OverlaySnapTries(geom0, geom1, opCode);
-            if (result != null)
-                return result;
-
-            /*
-             * On failure retry using snap-rounding with a heuristic scale factor (grid size).
-             */
-            result = OverlaySR(geom0, geom1, opCode);
-            if (result != null)
-                return result;
-
-            /*
-             * Just can't get overlay to work, so throw original error.
-             */
-            throw exOriginal;
         }
 
 
@@ -238,13 +266,6 @@ namespace NetTopologySuite.Operation.OverlayNG
         }
 
         //===============================================
-
-        private static void Log(string msg, Geometry geom0, Geometry geom1)
-        {
-            Console.WriteLine(msg);
-            Console.WriteLine(geom0);
-            Console.WriteLine(geom1);
-        }
 
         /// <summary>
         /// Attempt Overlay using Snap-Rounding with an automatically-determined

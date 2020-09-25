@@ -6,9 +6,8 @@ namespace NetTopologySuite.Noding.Snap
     /// <summary>
     /// An index providing fast creating and lookup of snap points.
     /// </summary>
-    public class SnappingPointIndex
+    public sealed class SnappingPointIndex
     {
-        private readonly double _snapTolerance;
         /// <summary>
         /// Since points are added incrementally, this index needs to be dynamic.
         /// This class also makes use of the KdTree support for a tolerance distance
@@ -18,7 +17,7 @@ namespace NetTopologySuite.Noding.Snap
 
         public SnappingPointIndex(double snapTolerance)
         {
-            _snapTolerance = snapTolerance;
+            Tolerance = snapTolerance;
             _snapPointIndex = new KdTree<Coordinate>(snapTolerance);
         }
 
@@ -32,7 +31,7 @@ namespace NetTopologySuite.Noding.Snap
             return node.Coordinate;
         }
 
-        public double Tolerance { get =>_snapTolerance; }
+        public double Tolerance { get; }
 
     }
 }

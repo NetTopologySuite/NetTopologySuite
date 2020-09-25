@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class EdgeNodingBuilder
+    internal sealed class EdgeNodingBuilder
     {
 
         /*

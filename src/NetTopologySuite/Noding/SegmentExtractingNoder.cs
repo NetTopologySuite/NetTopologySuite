@@ -5,7 +5,7 @@ namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// A noder which extracts all line segments 
-    /// as {@link SegmentString}s.
+    /// as <see cref="ISegmentString"/>s.
     /// This enables fast overlay of geometries which are known to be already fully noded.
     /// In particular, it provides fast union of polygonal and linear coverages.
     /// Unioning a noded set of lines is an effective way 
@@ -16,7 +16,7 @@ namespace NetTopologySuite.Noding
     /// or the input must be precision-reduced beforehand.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class SegmentExtractingNoder : INoder
+    public sealed class SegmentExtractingNoder : INoder
     {
         private List<ISegmentString> _segList;
 
@@ -35,13 +35,16 @@ namespace NetTopologySuite.Noding
             return segList;
         }
 
-        private static void ExtractSegments(ISegmentString ss, ICollection<ISegmentString> segList)
+        private static void ExtractSegments(ISegmentString ss, List<ISegmentString> segList)
         {
-            for (int i = 0; i < ss.Count - 1; i++)
+            var coords = ss.Coordinates;
+            object context = ss.Context;
+            int cnt = ss.Count;
+            for (int i = 0; i < cnt - 1; i++)
             {
-                var p0 = ss.Coordinates[i];
-                var p1 = ss.Coordinates[i + 1];
-                var seg = new BasicSegmentString(new Coordinate[] { p0, p1 }, ss.Context);
+                var p0 = coords[i];
+                var p1 = coords[i + 1];
+                var seg = new BasicSegmentString(new Coordinate[] { p0, p1 }, context);
                 segList.Add(seg);
             }
         }

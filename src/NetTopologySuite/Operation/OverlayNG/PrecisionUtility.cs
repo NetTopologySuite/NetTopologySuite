@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Mathematics;
@@ -51,6 +53,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>A safe scale factor for the geometry ordinates</returns>
         public static double SafeScale(Geometry geom)
         {
+            if (geom == null)
+            {
+                throw new ArgumentNullException(nameof(geom));
+            }
+
             return SafeScale(MaxBoundMagnitude(geom.EnvelopeInternal));
         }
 
@@ -65,6 +72,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>A safe scale factor for the geometry ordinates</returns>
         public static double SafeScale(Geometry a, Geometry b)
         {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
             double maxBnd = MaxBoundMagnitude(a.EnvelopeInternal);
             if (b != null)
             {
@@ -86,6 +98,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The value of the maximum bound magnitude</returns>
         private static double MaxBoundMagnitude(Envelope env)
         {
+            if (env == null)
+            {
+                throw new ArgumentNullException(nameof(env));
+            }
+
             return MathUtil.Max(
                 Math.Abs(env.MaxX),
                 Math.Abs(env.MaxY),
@@ -159,6 +176,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The inherent scale factor in the geometry's ordinates</returns>
         public static double InherentScale(Geometry geom)
         {
+            if (geom == null)
+            {
+                throw new ArgumentNullException(nameof(geom));
+            }
+
             var scaleFilter = new InherentScaleFilter();
             geom.Apply(scaleFilter);
             return scaleFilter.Scale;
@@ -179,6 +201,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The inherent scale factor in the geometries' ordinates</returns>
         public static double InherentScale(Geometry a, Geometry b)
         {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
             double scale = InherentScale(a);
             if (b != null)
             {
@@ -207,15 +234,58 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <summary>
         /// Determines the 
         /// number of decimal places represented in a double-precision
-        /// number (as determined by Java).
-        /// This uses the Java double-precision print routine 
+        /// number (as determined by .NET).
+        /// This uses the .NET double-precision print routine 
         /// to determine the number of decimal places,
         /// This is likely not optimal for performance, 
         /// but should be accurate and portable. 
         /// </summary>
         /// <param name="value">A numeric value</param>
         /// <returns>The number of decimal places in the value</returns>
-        private static int NumberOfDecimals(double value)
+        private static unsafe int NumberOfDecimals(double value)
+        {
+            // NaN, infinities, and many values closer to 0 than to 1 can fail this test.
+            const double DecimalMaxValueAsDouble = 79228162514264337593543950335d;
+            if (Math.Abs(value) < DecimalMaxValueAsDouble)
+            {
+                decimal valueAsDecimal = (decimal)value;
+
+                // decimal does not guarantee a perfectly faithful conversion from double even when
+                // it would be possible to do so (and it's not always possible to do so), so we need
+                // to do at least some form of round-trip equality testing.  dotnet/runtime#42775
+                // tracks the "even when it would be possible to do so" part of this issue.
+                //
+                // in practice, most values generated *completely* at random would tend to fail this
+                // test every time, truncating one fractional digit from them tends to get them to
+                // pass a visible amount of the time, and truncating two fractional digits gets them
+                // to pass the test (seemingly) every time, so as long as both immediate neighboring
+                // values on the number line are only representable in decimal with more digits, we
+                // can just extract the scale byte from the converted-to-decimal representation and
+                // get a 20-25x speedup compared to skipping right to the slow path every time.
+                // given that this method is probably intended to be used primarily with values that
+                // come from a source with a fixed (but unknown) precision that's significantly less
+                // than the precision limit of a double-precision floating-point value, it seems
+                // worth paying 4% to 5% more in cases that hit the slow-path in order to buy that
+                // 20x-25x speedup elsewhere (airbreather 2020-09-26).
+                if (value == (double)valueAsDecimal)
+                {
+                    // System.Decimal layout matches the layout of a Win32 DECIMAL, so the flags are
+                    // in the first 32 bits of the value:
+                    // https://github.com/dotnet/runtime/blob/cd4cc97e4c099f637061afe2b6c546483ffd3073/src/libraries/System.Private.CoreLib/src/System/Decimal.cs#L104-L108
+                    // so we can rely on the scale living at the same spot:
+                    // https://github.com/dotnet/runtime/blob/cd4cc97e4c099f637061afe2b6c546483ffd3073/src/libraries/System.Private.CoreLib/src/System/Decimal.cs#L70-L76
+                    return ((byte*)&valueAsDecimal)[BitConverter.IsLittleEndian ? 2 : 1];
+                }
+            }
+
+            // take the slow path: format to a string, get rid of scientific notation, and count the
+            // number of digits to the right of the decimal point (or return zero if there is no
+            // decimal point).
+            return NumberOfDecimalsSlow(value);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static int NumberOfDecimalsSlow(double value)
         {
             /*
              * Ensure that scientific notation is NOT used
@@ -238,14 +308,14 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// WARNING: this is <b>very</b> slow.
         /// </summary>
         /// <author>Martin Davis</author>
-        private class InherentScaleFilter : IEntireCoordinateSequenceFilter
+        private sealed class InherentScaleFilter : IEntireCoordinateSequenceFilter
         {
 
-            private double _scale = 0;
+            private int _maxNumberOfDecimalsSoFar = 0;
 
             public double Scale
             {
-                get => _scale;
+                get => Math.Pow(10, _maxNumberOfDecimalsSoFar);
             }
 
             public void Filter(CoordinateSequence sequence)
@@ -259,12 +329,7 @@ namespace NetTopologySuite.Operation.OverlayNG
 
             private void UpdateScaleMax(double value)
             {
-                double scaleVal = PrecisionUtility.InherentScale(value);
-                if (scaleVal > _scale)
-                {
-                    //System.out.println("Value " + value + " has scale: " + scaleVal);
-                    _scale = scaleVal;
-                }
+                _maxNumberOfDecimalsSoFar = Math.Max(_maxNumberOfDecimalsSoFar, NumberOfDecimals(value));
             }
 
             public bool Done
@@ -293,6 +358,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>A suitable precision model for overlay</returns>
         public static PrecisionModel RobustPM(Geometry a)
         {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
             double scale = PrecisionUtility.RobustScale(a);
             return new PrecisionModel(scale);
         }
@@ -311,6 +381,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>A scale factor for use in overlay operations</returns>
         public static double RobustScale(Geometry a, Geometry b)
         {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
             double inherentScale = InherentScale(a, b);
             double safeScale = SafeScale(a, b);
             return RobustScale(inherentScale, safeScale);
@@ -327,6 +402,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>A scale factor for use in overlay operations</returns>
         public static double RobustScale(Geometry a)
         {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
             double inherentScale = InherentScale(a);
             double safeScale = SafeScale(a);
             return RobustScale(inherentScale, safeScale);

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Text;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph;
-using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.OverlayNG
 {
@@ -79,7 +77,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </list>
     /// </remarks>
     /// <author>Martin Davis</author>
-    internal class OverlayLabel
+    internal sealed class OverlayLabel
     {
 
         private const char SYM_UNKNOWN = '#';
@@ -632,20 +630,6 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
             return LOC_UNKNOWN;
         }
-
-        /// <summary>
-        /// Gets the location for this label for either
-        /// a Boundary or a Line edge.
-        /// This supports a simple determination of
-        /// whether the edge should be included as a result edge.
-        /// </summary>
-        /// <param name="index">The source index</param>
-        /// <param name="position">The position for a boundary label</param>
-        /// <param name="isForward">The direction for a boundary label</param>
-        /// <returns>The location for the specified position</returns>
-        [Obsolete("Use GetLocationBoundaryOrLine(int, Geometries.Position, bool)")]
-        public Location GetLocationBoundaryOrLine(int index, Positions position, bool isForward)
-            => GetLocationBoundaryOrLine(index, (Position) position, isForward);
 
         /// <summary>
         /// Gets the location for this label for either

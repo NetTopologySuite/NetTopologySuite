@@ -104,10 +104,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        [Obsolete("Use QuadrantValue")]
+        [Obsolete("Use QuadrantEx")]
         public int Quadrant => (int)_quadrant;
 
-        public Quadrant QuadrantValue => _quadrant;
+        public Quadrant QuadrantEx => _quadrant;
 
         /// <summary>
         ///

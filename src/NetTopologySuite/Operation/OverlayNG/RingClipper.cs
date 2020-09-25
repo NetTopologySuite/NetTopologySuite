@@ -1,4 +1,6 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNG
 {
@@ -27,7 +29,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </summary>
     /// <seealso cref="LineLimiter"/>
     /// <author>Martin Davis</author>
-    public class RingClipper
+    public sealed class RingClipper
     {
 
         private const int BoxLeft = 3;
@@ -47,6 +49,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="clipEnv">The clipping envelope</param>
         public RingClipper(Envelope clipEnv)
         {
+            if (clipEnv == null)
+            {
+                throw new ArgumentNullException(nameof(clipEnv));
+            }
+
             //this.clipEnv = clipEnv;
             _clipEnvMinY = clipEnv.MinY;
             _clipEnvMaxY = clipEnv.MaxY;
@@ -61,6 +68,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The points of the clipped ring</returns>
         public Coordinate[] Clip(Coordinate[] pts)
         {
+            if (pts == null)
+            {
+                throw new ArgumentNullException(nameof(pts));
+            }
+
             for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
             {
                 bool closeRing = edgeIndex == 3;

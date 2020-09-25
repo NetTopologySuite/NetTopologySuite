@@ -26,7 +26,7 @@ namespace NetTopologySuite.Noding.Snap
     /// If required this can be done by <see cref="ValidatingNoder"/>. 
     /// </summary>
     /// <version>1.17</version>
-    public class SnappingNoder : INoder
+    public sealed class SnappingNoder : INoder
     {
         private readonly SnappingPointIndex snapIndex;
         private readonly double _snapTolerance;

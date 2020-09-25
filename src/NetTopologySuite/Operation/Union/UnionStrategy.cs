@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Union
     /// kinds of overlay algorithms.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class UnionStrategy
+    public sealed class UnionStrategy
     {
         private readonly Func<Geometry, Geometry, Geometry> _unionFunction;
 
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
         /// <returns>The union of the input</returns>
-        public Geometry Union(Geometry g0, Geometry g1) => _unionFunction(g0, g1);
+        internal Geometry Union(Geometry g0, Geometry g1) => _unionFunction(g0, g1);
 
         /// <summary>
         /// Indicates whether the union function operates using
@@ -38,6 +38,6 @@ namespace NetTopologySuite.Operation.Union
         /// Otherwise, the union result extent may not be the same as the extent of the inputs,
         /// which prevents using some optimizations.
         /// </summary>
-        public bool IsFloatingPrecision { get; }
+        internal bool IsFloatingPrecision { get; }
     }
 }

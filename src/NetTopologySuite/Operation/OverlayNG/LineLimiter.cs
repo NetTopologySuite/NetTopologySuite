@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNG
@@ -20,7 +21,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </summary>
     /// <seealso cref="RingClipper"/>
     /// <author>Martin Davis</author>
-    public class LineLimiter
+    public sealed class LineLimiter
     {
         private readonly Envelope _limitEnv;
         private CoordinateList _ptList;
@@ -33,7 +34,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="env">The envelope to limit to</param>
         public LineLimiter(Envelope env)
         {
-            _limitEnv = env;
+            _limitEnv = env ?? throw new ArgumentNullException(nameof(env));
         }
 
         /// <summary>
@@ -41,15 +42,19 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// </summary>
         /// <param name="pts">The segment sequence to limit</param>
         /// <returns>The sections which intersect the limit envelope</returns>
-        public List<Coordinate[]> Limit(Coordinate[] pts)
+        public List<Coordinate[]> Limit(IEnumerable<Coordinate> pts)
         {
+            if (pts == null)
+            {
+                throw new ArgumentNullException(nameof(pts));
+            }
+
             _lastOutside = null;
             _ptList = null;
             _sections = new List<Coordinate[]>();
 
-            for (int i = 0; i < pts.Length; i++)
+            foreach (var p in pts)
             {
-                var p = pts[i];
                 if (_limitEnv.Intersects(p))
                     AddPoint(p);
                 else

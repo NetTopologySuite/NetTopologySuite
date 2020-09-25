@@ -119,11 +119,23 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        [Obsolete("Use Get/SetLocation")]
+        [Obsolete("Use the Geometries.Position indexer instead")]
         public  Location this[Positions posIndex]
         {
-            get => Get((Geometries.Position)posIndex);
-            set => SetLocation((Geometries.Position)posIndex, value);
+            get => this[(Geometries.Position)posIndex];
+            set => this[(Geometries.Position)posIndex] = value;
+        }
+
+        /// <summary>
+        /// Get calls Get(Positions posIndex),
+        /// Set calls SetLocation(Positions locIndex, Location locValue)
+        /// </summary>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public Location this[Geometries.Position posIndex]
+        {
+            get => Get(posIndex);
+            set => SetLocation(posIndex, value);
         }
 
         /// <returns>

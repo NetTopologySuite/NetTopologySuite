@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
+
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
@@ -20,7 +21,7 @@ namespace NetTopologySuite.Noding.Snapround
     /// The tolerance distance is chosen to be significantly below the snap-rounding grid size.
     /// This has empirically proven to eliminate noding failures.
     /// </summary>
-    public class SnapRoundingIntersectionAdder : ISegmentIntersector
+    public sealed class SnapRoundingIntersectionAdder : ISegmentIntersector
     {
         /// <summary>
         /// The division factor used to determine
@@ -29,7 +30,6 @@ namespace NetTopologySuite.Noding.Snapround
         private const int NearnessFactor = 100;
 
         private readonly LineIntersector _li;
-        private readonly List<Coordinate> _intersections;
         private readonly PrecisionModel _precModel;
         private readonly double _nearnessTol;
 
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Noding.Snapround
              * They are snapped in a subsequent phase.
              */
             _li = new RobustLineIntersector();
-            _intersections = new List<Coordinate>();
+            Intersections = new Collection<Coordinate>();
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// so they can be processed as hot pixels.
         /// </summary>
         /// <returns>A list of intersection points</returns>
-        public IList<Coordinate> Intersections { get => _intersections; }
+        public Collection<Coordinate> Intersections { get; }
 
         /// <summary>
         /// This method is called by clients
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Noding.Snapround
                 {
                     for (int intIndex = 0; intIndex < _li.IntersectionNum; intIndex++)
                     {
-                        _intersections.Add(_li.GetIntersection(intIndex));
+                        Intersections.Add(_li.GetIntersection(intIndex));
                     }
                     ((NodedSegmentString)e0).AddIntersections(_li, segIndex0, 0);
                     ((NodedSegmentString)e1).AddIntersections(_li, segIndex1, 1);
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Noding.Snapround
             double distSeg = DistanceComputer.PointToSegment(p, p0, p1);
             if (distSeg < _nearnessTol)
             {
-                _intersections.Add(p);
+                Intersections.Add(p);
                 ((NodedSegmentString)edge).AddIntersection(p, segIndex);
             }
         }

@@ -35,7 +35,7 @@ namespace NetTopologySuite.Noding.Snapround
     /// and <see cref="SnappingNoder"/>.
     /// </summary>
     /// <version>1.17</version>
-    public class SnapRoundingNoder : INoder
+    public sealed class SnapRoundingNoder : INoder
     {
         private readonly PrecisionModel _pm;
         private readonly HotPixelIndex _pixelIndex;

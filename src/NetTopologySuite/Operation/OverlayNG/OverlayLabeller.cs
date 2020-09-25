@@ -4,7 +4,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
-using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.OverlayNG
 {
@@ -13,7 +12,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// for the edges in an <see cref="OverlayGraph"/>.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class OverlayLabeller
+    internal sealed class OverlayLabeller
     {
         private readonly OverlayGraph _graph;
         private readonly InputGeometry _inputGeometry;

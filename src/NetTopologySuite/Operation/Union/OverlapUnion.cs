@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -106,6 +107,11 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="unionFun">Function to union two geometries</param>
         public OverlapUnion(Geometry g0, Geometry g1, UnionStrategy unionFun)
         {
+            if (g0 == null)
+            {
+                throw new ArgumentNullException(nameof(g0));
+            }
+
             _g0 = g0;
             _g1 = g1;
             _geomFactory = g0.Factory;

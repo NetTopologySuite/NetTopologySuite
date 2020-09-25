@@ -9,7 +9,7 @@ namespace NetTopologySuite.Noding.Snap
     /// and adds them as nodes.
     /// </summary>
     /// <version>1.17</version>
-    public class SnappingIntersectionAdder : ISegmentIntersector
+    public sealed class SnappingIntersectionAdder : ISegmentIntersector
     {
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly double _snapTolerance;

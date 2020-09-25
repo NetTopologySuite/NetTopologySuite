@@ -92,7 +92,7 @@ namespace NetTopologySuite.Planargraph
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
         /// orientation lies.
         /// </summary>
-        public Quadrant QuadrantValue => _quadrant;
+        public Quadrant QuadrantEx => _quadrant;
 
         /// <summary>
         /// Returns a point to which an imaginary line is drawn from the from-node to
@@ -176,9 +176,9 @@ namespace NetTopologySuite.Planargraph
         public int CompareDirection(DirectedEdge e)
         {
             // if the rays are in different quadrants, determining the ordering is trivial
-            if (_quadrant > e.QuadrantValue)
+            if (_quadrant > e.QuadrantEx)
                 return 1;
-            if (_quadrant < e.QuadrantValue)
+            if (_quadrant < e.QuadrantEx)
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e

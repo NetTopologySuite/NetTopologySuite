@@ -24,7 +24,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// as possible with input lines.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class EdgeMerger
+    internal sealed class EdgeMerger
     {
 
         public static IList<Edge> Merge(List<Edge> edges)
@@ -33,10 +33,10 @@ namespace NetTopologySuite.Operation.OverlayNG
             return merger.Merge();
         }
 
-        private readonly ICollection<Edge> _edges;
-        private readonly IDictionary<EdgeKey, Edge> _edgeMap = new Dictionary<EdgeKey, Edge>();
+        private readonly List<Edge> _edges;
+        private readonly Dictionary<EdgeKey, Edge> _edgeMap = new Dictionary<EdgeKey, Edge>();
 
-        public EdgeMerger(ICollection<Edge> edges)
+        public EdgeMerger(List<Edge> edges)
         {
             _edges = edges;
         }

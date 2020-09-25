@@ -9,7 +9,7 @@ namespace NetTopologySuite.Noding.Snapround
     /// and allows performing range queries on them.
     /// </summary>
     /// <author>Martin Davis</author>
-    class HotPixelIndex
+    internal sealed class HotPixelIndex
     {
         private readonly PrecisionModel _precModel;
         private readonly double _scaleFactor;

@@ -9,7 +9,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// using a spatial index to provide good performance.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class IndexedPointOnLineLocator : IPointOnGeometryLocator
+    internal sealed class IndexedPointOnLineLocator : IPointOnGeometryLocator
     {
 
         private readonly Geometry _inputGeom;

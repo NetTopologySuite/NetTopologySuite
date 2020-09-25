@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.IO;
-using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.OverlayNG
 {
@@ -48,65 +46,28 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// </summary>
         public static IComparer<OverlayEdge> NodeComparator => Comparer<OverlayEdge>.Create((e1, e2) => e1.Orig.CompareTo(e2.Orig));
 
-        private readonly Coordinate[] _pts;
-
+        public OverlayEdge(Coordinate orig, Coordinate dirPt, bool direction, OverlayLabel label, Coordinate[] pts) : base(orig)
+        {
+            DirectionPt = dirPt;
+            IsForward = direction;
+            Coordinates = pts;
+            Label = label;
+        }
 
         /// <summary>
         /// <c>true</c> indicates direction is forward along segString<br/>
         /// <c>false</c> is reverse direction<br/>
         /// The label must be interpreted accordingly.
         /// </summary>
-        private readonly bool _direction;
-        private readonly Coordinate _dirPt;
-        private readonly OverlayLabel _label;
+        public bool IsForward { get; }
 
-        private bool _isInResultArea;
-        private bool _isInResultLine;
-        private bool _isVisited;
+        protected override Coordinate DirectionPt { get; }
 
-        /// <summary>
-        /// Link to next edge in the result ring.
-        /// The origin of the edge is the dest of this edge.
-        /// </summary>
-        private OverlayEdge _nextResultEdge;
-
-        private OverlayEdgeRing _edgeRing;
-
-        private MaximalEdgeRing _maxEdgeRing;
-
-        private OverlayEdge _nextResultMaxEdge;
-
-
-        public OverlayEdge(Coordinate orig, Coordinate dirPt, bool direction, OverlayLabel label, Coordinate[] pts) : base(orig)
-        {
-            _dirPt = dirPt;
-            _direction = direction;
-            _pts = pts;
-            _label = label;
-        }
-
-        public bool IsForward
-        {
-            get => _direction;
-        }
-
-        protected override Coordinate DirectionPt
-        {
-            get => _dirPt;
-        }
-
-        public OverlayLabel Label
-        {
-            get => _label;
-        }
-
-        [Obsolete("Use GetLocation(int, Geometries.Position)")]
-        public Location GetLocation(int index, Positions position)
-            => GetLocation(index, (Position) position);
+        public OverlayLabel Label { get; }
 
         public Location GetLocation(int index, Position position)
         {
-            return _label.GetLocation(index, position, _direction);
+            return Label.GetLocation(index, position, IsForward);
         }
 
         public Coordinate Coordinate
@@ -114,21 +75,18 @@ namespace NetTopologySuite.Operation.OverlayNG
             get => Orig;
         }
 
-        public Coordinate[] Coordinates
-        {
-            get => _pts;
-        }
+        public Coordinate[] Coordinates { get; }
 
         public Coordinate[] CoordinatesOriented
         {
             get
             {
-                if (_direction)
+                if (IsForward)
                 {
-                    return _pts;
+                    return Coordinates;
                 }
 
-                var copy = (Coordinate[])_pts.Clone();
+                var copy = (Coordinate[])Coordinates.Clone();
                 CoordinateArrays.Reverse(copy);
                 return copy;
             }
@@ -145,22 +103,22 @@ namespace NetTopologySuite.Operation.OverlayNG
         public void AddCoordinates(CoordinateList coords)
         {
             bool isFirstEdge = coords.Count > 0;
-            if (_direction)
+            if (IsForward)
             {
                 int startIndex = 1;
                 if (isFirstEdge) startIndex = 0;
-                for (int i = startIndex; i < _pts.Length; i++)
+                for (int i = startIndex; i < Coordinates.Length; i++)
                 {
-                    coords.Add(_pts[i], false);
+                    coords.Add(Coordinates[i], false);
                 }
             }
             else
             { // is backward
-                int startIndex = _pts.Length - 2;
-                if (isFirstEdge) startIndex = _pts.Length - 1;
+                int startIndex = Coordinates.Length - 2;
+                if (isFirstEdge) startIndex = Coordinates.Length - 1;
                 for (int i = startIndex; i >= 0; i--)
                 {
-                    coords.Add(_pts[i], false);
+                    coords.Add(Coordinates[i], false);
                 }
             }
         }
@@ -187,11 +145,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             get => (OverlayEdge)ONext;
         }
 
-        public bool IsInResultArea
-        {
-            get => _isInResultArea;
-            private set => _isInResultArea = value;
-        }
+        public bool IsInResultArea { get; private set; }
 
         public bool IsInResultAreaBoth
         {
@@ -211,19 +165,15 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public void MarkInResultAreaBoth()
         {
-            _isInResultArea = true;
-            SymOE._isInResultArea = true;
+            IsInResultArea = true;
+            SymOE.IsInResultArea = true;
         }
 
-        public bool IsInResultLine
-        {
-            get => _isInResultLine;
-            private set => _isInResultLine = value;
-        }
+        public bool IsInResultLine { get; private set; }
 
         public void MarkInResultLine()
         {
-            _isInResultLine = true;
+            IsInResultLine = true;
             SymOE.IsInResultLine = true;
         }
 
@@ -237,54 +187,42 @@ namespace NetTopologySuite.Operation.OverlayNG
             get => IsInResult || SymOE.IsInResult;
         }
 
-        public OverlayEdge NextResult
-        {
-            get => _nextResultEdge;
-            set => _nextResultEdge = value;
-        }
+        /// <summary>
+        /// Gets or sets a link to next edge in the result ring.
+        /// The origin of the edge is the dest of this edge.
+        /// </summary>
+        public OverlayEdge NextResult { get; set; }
 
 
         public bool IsResultLinked
         {
-            get => _nextResultEdge != null;
+            get => NextResult != null;
         }
 
-        public OverlayEdge NextResultMax
-        {
-            get => _nextResultMaxEdge;
-            set => _nextResultMaxEdge = value;
-        }
+        public OverlayEdge NextResultMax { get; set; }
 
         public bool IsResultMaxLinked
         {
-            get => _nextResultMaxEdge != null;
+            get => NextResultMax != null;
         }
 
-        public bool IsVisited
-        {
-            get => _isVisited;
-            set => _isVisited = value;
-        }
+        public bool IsVisited { get; set; }
 
         public void MarkVisitedBoth()
         {
             IsVisited = true;
-            SymOE._isVisited = true;
+            SymOE.IsVisited = true;
         }
 
-        public OverlayEdgeRing EdgeRing
-        {
-            get => _edgeRing;
-            set => _edgeRing = value;
-        }
+        public OverlayEdgeRing EdgeRing { get; set; }
 
-        public MaximalEdgeRing MaxEdgeRing { get => _maxEdgeRing; set => _maxEdgeRing = value; }
+        public MaximalEdgeRing MaxEdgeRing { get; set; }
 
         public override string ToString()
         {
             var orig = Orig;
             var dest = Dest;
-            string dirPtStr = (_pts.Length > 2)
+            string dirPtStr = (Coordinates.Length > 2)
                 ? ", " + WKTWriter.Format(DirectionPt)
                     : "";
 
@@ -292,9 +230,9 @@ namespace NetTopologySuite.Operation.OverlayNG
                 + dirPtStr
                 + " .. " + WKTWriter.Format(dest)
                 + " ) "
-                + _label.ToString(_direction)
+                + Label.ToString(IsForward)
                 + ResultSymbol
-                + " / Sym: " + SymOE.Label.ToString(SymOE._direction)
+                + " / Sym: " + SymOE.Label.ToString(SymOE.IsForward)
                 + SymOE.ResultSymbol
                 ;
         }
@@ -303,8 +241,8 @@ namespace NetTopologySuite.Operation.OverlayNG
         {
             get
             {
-                if (_isInResultArea) return " resA";
-                if (_isInResultLine) return " resL";
+                if (IsInResultArea) return " resA";
+                if (IsInResultLine) return " resL";
                 return "";
             }
         }

@@ -5,7 +5,7 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.OverlayNG
 {
-    internal class MaximalEdgeRing
+    internal sealed class MaximalEdgeRing
     {
 
         private const int STATE_FIND_INCOMING = 1;

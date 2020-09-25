@@ -11,7 +11,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// not perturbed when clipped using <see cref="RingClipper"/>.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class RobustClipEnvelopeComputer
+    internal sealed class RobustClipEnvelopeComputer
     {
 
         public static Envelope GetEnvelope(Geometry a, Geometry b, Envelope targetEnv)

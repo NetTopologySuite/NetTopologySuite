@@ -11,7 +11,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// 2 | 3
     /// </para>
     /// </summary>
-    [Obsolete("Use NetTopologySuite.Topology.Quadrant and NetTopologySuite.Topology.QuadrantExtensions")]
+    [Obsolete("Use NetTopologySuite.Geometries.Quadrant and NetTopologySuite.Geometries.QuadrantExtensions")]
     public class QuadrantOp
     {
 
@@ -35,7 +35,6 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Only static methods!
         /// </summary>
-        [Obsolete]
         private QuadrantOp() { }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// or different ones, or a mix of the two.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class Edge
+    internal sealed class Edge
     {
         /// <summary>
         /// Tests if the given point sequence
@@ -45,8 +45,6 @@ namespace NetTopologySuite.Operation.OverlayNG
             return false;
         }
 
-        private readonly Coordinate[] _pts;
-
         private Dimension _aDim = OverlayLabel.DIM_UNKNOWN;
         private int _aDepthDelta;
         private bool _aIsHole;
@@ -57,23 +55,20 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public Edge(Coordinate[] pts, EdgeSourceInfo info)
         {
-            _pts = pts;
+            Coordinates = pts;
             CopyInfo(info);
         }
 
-        public Coordinate[] Coordinates
-        {
-            get => _pts;
-        }
+        public Coordinate[] Coordinates { get; }
 
         public Coordinate GetCoordinate(int index)
         {
-            return _pts[index];
+            return Coordinates[index];
         }
 
         public int Count
         {
-            get => _pts.Length;
+            get => Coordinates.Length;
         }
 
         public bool Direction
@@ -285,7 +280,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         public override string ToString()
         {
 
-            string ptsStr = ToStringPts(_pts);
+            string ptsStr = ToStringPts(Coordinates);
 
             string aInfo = InfoString(0, _aDim, _aIsHole, _aDepthDelta);
             string bInfo = InfoString(1, _bDim, _bIsHole, _bDepthDelta);
@@ -296,7 +291,7 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public string ToLineString()
         {
-            return WKTWriter.ToLineString(_pts);
+            return WKTWriter.ToLineString(Coordinates);
         }
 
         private static string ToStringPts(Coordinate[] pts)

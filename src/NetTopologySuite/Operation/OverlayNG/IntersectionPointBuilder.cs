@@ -17,7 +17,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </summary>
     /// <author>Martin Davis</author>
     /// <seealso cref="OverlayPoints"/>
-    class IntersectionPointBuilder
+    internal sealed class IntersectionPointBuilder
     {
 
         private readonly GeometryFactory _geometryFactory;
@@ -41,7 +41,6 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public bool StrictMode
         {
-            get => !_isAllowCollapseLines;
             set => _isAllowCollapseLines = !value;
         }
 

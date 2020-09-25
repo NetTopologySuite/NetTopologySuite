@@ -1,4 +1,7 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Precision;
 
 namespace NetTopologySuite.Operation.OverlayNG
@@ -12,7 +15,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </summary>
     /// <seealso cref="GeometryPrecisionReducer"/>
     /// <author>Martin Davis</author>
-    public class PrecisionReducer
+    public static class PrecisionReducer
     {
 
         /// <summary>
@@ -33,7 +36,12 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The precision-reduced geometry</returns>
         public static Geometry ReducePrecision(Geometry geom, PrecisionModel pm)
         {
-            var ov = new OverlayNG(geom, pm);
+            if (geom == null)
+            {
+                throw new ArgumentNullException(nameof(geom));
+            }
+
+            var ov = new OverlayNG(geom, null, pm, SpatialFunction.Union);
             /*
              * Ensure reducing a area only produces polygonal result.
              * (I.e. collapse lines are not output)
@@ -43,11 +51,6 @@ namespace NetTopologySuite.Operation.OverlayNG
             var reduced = ov.GetResult();
 
             return reduced;
-        }
-
-        private PrecisionReducer()
-        {
-            // no instantiation for now
         }
     }
 }

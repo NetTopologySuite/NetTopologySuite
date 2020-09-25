@@ -27,7 +27,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// This will require additional info from the input linework.
     /// </summary>
     /// <author>Martin Davis</author>
-    class LineBuilder
+    internal sealed class LineBuilder
     {
 
         private readonly GeometryFactory _geometryFactory;
@@ -77,7 +77,6 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public bool StrictMode
         {
-            get { return !_isAllowCollapseLines; }
             set { _isAllowCollapseLines = _isAllowMixedResult = !value; }
         }
 

@@ -36,7 +36,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// within or outside a polygon.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class OverlayMixedPoints
+    internal sealed class OverlayMixedPoints
     {
 
         public static Geometry Overlay(SpatialFunction opCode, Geometry geom0, Geometry geom1, PrecisionModel pm)

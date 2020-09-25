@@ -13,51 +13,35 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// That information is used to construct the topology graph <see cref="OverlayLabel"/>s.
     /// </summary>
     /// <autor>Martin Davis</autor>
-    internal class EdgeSourceInfo
+    internal sealed class EdgeSourceInfo
     {
-        private int index;
-        private Dimension dim;// = -999;
-        private bool isHole;
-        private int depthDelta;
-
         public EdgeSourceInfo(int index, int depthDelta, bool isHole)
         {
-            this.index = index;
-            this.dim = Dimension.Surface;
-            this.depthDelta = depthDelta;
-            this.isHole = isHole;
+            Index = index;
+            Dimension = Dimension.Surface;
+            DepthDelta = depthDelta;
+            IsHole = isHole;
         }
 
         public EdgeSourceInfo(int index)
         {
-            this.index = index;
-            this.dim = Dimension.Curve;
-            this.isHole = false;
-            this.depthDelta = 0;
+            Index = index;
+            Dimension = Dimension.Curve;
+            IsHole = false;
+            DepthDelta = 0;
         }
 
-        public int Index
-        {
-            get => index;
-        }
+        public int Index { get; }
 
-        public Dimension Dimension
-        {
-            get => dim;
-        }
-        public int DepthDelta
-        {
-            get => depthDelta;
-        }
+        public Dimension Dimension { get; } // = -999;
 
-        public bool IsHole
-        {
-            get => isHole;
-        }
+        public int DepthDelta { get; }
+
+        public bool IsHole { get; }
 
         public override string ToString()
         {
-            return Edge.InfoString(index, dim, isHole, depthDelta);
+            return Edge.InfoString(Index, Dimension, IsHole, DepthDelta);
         }
     }
 }

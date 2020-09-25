@@ -9,7 +9,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// to support for instance precision reduction.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class InputGeometry
+    internal sealed class InputGeometry
     {
 
         //private static final PointLocator ptLocator = new PointLocator();

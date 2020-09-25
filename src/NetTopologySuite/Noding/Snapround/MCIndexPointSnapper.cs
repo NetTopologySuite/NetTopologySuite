@@ -165,17 +165,11 @@ namespace NetTopologySuite.Noding.Snapround
                 _isNodeAdded |= AddSnappedNode(_hotPixel, ss, startIndex);
             }
 
-            /**
-             * 
-             *
-             * @param segStr
-             * @param segIndex
-             * @return true if a node was added to the segment
-             */
             /// <summary>
             /// Adds a new node (equal to the snap pt) to the specified segment
             /// if the segment passes through the hot pixel
             /// </summary>
+            /// <returns><see langword="true"/> if a node was added to the segment</returns>
             private bool AddSnappedNode(HotPixel hotPixel,
                 INodableSegmentString segStr,
                 int segIndex

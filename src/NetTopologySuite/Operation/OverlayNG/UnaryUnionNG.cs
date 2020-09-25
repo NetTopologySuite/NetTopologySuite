@@ -1,4 +1,6 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Union;
 
@@ -10,7 +12,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// to ensure robust computation.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class UnaryUnionNG
+    public static class UnaryUnionNG
     {
         /// <summary>
         /// Unions a collection of geometries
@@ -21,6 +23,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The union of the geometries</returns>
         public static Geometry Union(Geometry geom, PrecisionModel pm)
         {
+            if (geom == null)
+            {
+                throw new ArgumentNullException(nameof(geom));
+            }
+
             var unionSRFun = new UnionStrategy((g0, g1) =>
                 OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm), OverlayUtility.IsFloating(pm));
 
@@ -29,11 +36,6 @@ namespace NetTopologySuite.Operation.OverlayNG
             };
 
             return op.Union();
-        }
-
-        private UnaryUnionNG()
-        {
-            // no instantiation for now
         }
     }
 }

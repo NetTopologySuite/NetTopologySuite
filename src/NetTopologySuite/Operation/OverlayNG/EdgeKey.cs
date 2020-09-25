@@ -11,7 +11,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// iff they have their first segment in common.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class EdgeKey : IComparable<EdgeKey>
+    internal sealed class EdgeKey : IComparable<EdgeKey>
     {
         public static EdgeKey Create(Edge edge)
         {
@@ -62,12 +62,8 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <inheritdoc cref="object.Equals(object)"/>
         public override bool Equals(object o)
         {
-            if (!(o is EdgeKey))
-            {
-                return false;
-            }
-            var ek = (EdgeKey)o;
-            return _p0x == ek._p0x
+            return o is EdgeKey ek
+                && _p0x == ek._p0x
                 && _p0y == ek._p0y
                 && _p1x == ek._p1x
                 && _p1y == ek._p1y;
@@ -78,23 +74,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         {
             //Algorithm from Effective Java by Joshua Bloch
             int result = 17;
-            result = 37 * result + /*_p0x.GetHashCode(); */GetHashCode(_p0x);
-            result = 37 * result + /*_p0y.GetHashCode(); */GetHashCode(_p0y);
-            result = 37 * result + /*_p1x.GetHashCode(); */GetHashCode(_p1x);
-            result = 37 * result + /*_p1y.GetHashCode(); */GetHashCode(_p1y);
+            result = 37 * result + _p0x.GetHashCode();
+            result = 37 * result + _p0y.GetHashCode();
+            result = 37 * result + _p1x.GetHashCode();
+            result = 37 * result + _p1y.GetHashCode();
             return unchecked(result);
-        }
-
-        /// <summary>
-        /// Computes a hash code for a double value, using the algorithm from
-        /// Joshua Bloch's book <i>Effective Java"</i>
-        /// </summary>
-        /// <param name="x">The value to compute for</param>
-        /// <returns>A hashcode for x</returns>
-        public static int GetHashCode(double x)
-        {
-            ulong f = (ulong)BitConverter.DoubleToInt64Bits(x);
-            return (int)(f ^ (f >> 32));
         }
 
         /// <inheritdoc cref="object.ToString"/>

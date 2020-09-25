@@ -346,12 +346,11 @@ namespace NetTopologySuite.Index.KdTree
             QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
         }
 
-        /**
-         * Searches for a given point in the index and returns its node if found.
-         * 
-         * @param queryPt the point to query
-         * @return the point node, if it is found in the index, or null if not
-         */
+        /// <summary>
+        /// Searches for a given point in the index and returns its node if found.
+        /// </summary>
+        /// <param name="queryPt">the point to query</param>
+        /// <returns>the point node, if it is found in the index, or <see langword="null"/> if not</returns>
         public KdNode<T> Query(Coordinate queryPt)
         {
             return QueryNodePoint(Root, queryPt, true);

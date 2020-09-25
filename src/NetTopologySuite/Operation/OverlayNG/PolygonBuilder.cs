@@ -4,7 +4,7 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.OverlayNG
 {
-    internal class PolygonBuilder
+    internal sealed class PolygonBuilder
     {
 
         private readonly GeometryFactory _geometryFactory;

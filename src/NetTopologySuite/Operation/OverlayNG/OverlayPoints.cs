@@ -17,7 +17,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class OverlayPoints
+    internal sealed class OverlayPoints
     {
         /// <summary>
         /// Performs an overlay operation on inputs which are both point geometries.
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Operation.OverlayNG
             return _geometryFactory.BuildGeometry(_resultList);
         }
 
-        private void ComputeIntersection(IDictionary<Coordinate, Point> map0, IDictionary<Coordinate, Point> map1,
-            ICollection<Point> resultList)
+        private void ComputeIntersection(Dictionary<Coordinate, Point> map0, Dictionary<Coordinate, Point> map1,
+            List<Point> resultList)
         {
             foreach (var entry in map0)
             {
@@ -100,8 +100,8 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
         }
 
-        private void ComputeDifference(IDictionary<Coordinate, Point> map0, IDictionary<Coordinate, Point> map1,
-            ICollection<Point> resultList)
+        private void ComputeDifference(Dictionary<Coordinate, Point> map0, Dictionary<Coordinate, Point> map1,
+            List<Point> resultList)
         {
             foreach (var entry in map0)
             {
@@ -112,8 +112,8 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
         }
 
-        private void ComputeUnion(IDictionary<Coordinate, Point> map0, IDictionary<Coordinate, Point> map1,
-            ICollection<Point> resultList)
+        private void ComputeUnion(Dictionary<Coordinate, Point> map0, Dictionary<Coordinate, Point> map1,
+            List<Point> resultList)
         {
             // copy all points
             foreach (var p in map0.Values)
@@ -144,21 +144,20 @@ namespace NetTopologySuite.Operation.OverlayNG
             return _geometryFactory.CreatePoint(seq2);
         }
 
-        private IDictionary<Coordinate, Point> BuildPointMap(Geometry geom)
+        private Dictionary<Coordinate, Point> BuildPointMap(Geometry geom)
         {
             var map = new Dictionary<Coordinate, Point>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var elt = geom.GetGeometryN(i);
-                if (!(elt is Point))
+                if (!(elt is Point pt))
                 {
                     throw new ArgumentException("Non-point geometry input to point overlay", nameof(geom));
                 }
 
                 // don't add empty points
-                if (elt.IsEmpty) continue;
+                if (pt.IsEmpty) continue;
 
-                var pt = (Point) elt;
                 var p = RoundCoord(pt, _pm);
                 /*
                  * Only add first occurrence of a point.

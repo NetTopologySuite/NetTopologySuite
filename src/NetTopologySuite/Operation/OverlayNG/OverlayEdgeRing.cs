@@ -6,48 +6,26 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNG
 {
-    internal class OverlayEdgeRing
+    internal sealed class OverlayEdgeRing
     {
-
-        private readonly OverlayEdge _startEdge;
-        private LinearRing _ring;
-        private bool isHole;
-        private readonly Coordinate[] _ringPts;
         private IndexedPointInAreaLocator _locator;
         private OverlayEdgeRing _shell;
         private readonly List<OverlayEdgeRing> _holes = new List<OverlayEdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
 
         public OverlayEdgeRing(OverlayEdge start, GeometryFactory geometryFactory)
         {
-            _startEdge = start;
-            _ringPts = ComputeRingPts(start);
-            ComputeRing(_ringPts, geometryFactory);
+            Edge = start;
+            Coordinates = ComputeRingPts(start);
+            ComputeRing(Coordinates, geometryFactory);
         }
 
-        public LinearRing Ring
-        {
-            get => _ring;
-        }
+        public LinearRing Ring { get; private set; }
 
         /// <summary>
         /// Tests whether this ring is a hole.
         /// </summary>
         /// <value><c>true</c> if this ring is a hole</value>
-        public bool IsHole
-        {
-            get => isHole;
-        }
-
-        /// <summary>
-        /// Sets the containing shell ring of a ring that has been determined to be a hole.
-        /// </summary>
-        /// <param name="shell">The shell ring</param>
-        [Obsolete("Use Shell property", true)]
-        public void setShell(OverlayEdgeRing shell)
-        {
-            this._shell = shell;
-            if (shell != null) shell.AddHole(this);
-        }
+        public bool IsHole { get; private set; }
 
         /// <summary>
         /// Tests whether this ring has a shell assigned to it.
@@ -56,19 +34,6 @@ namespace NetTopologySuite.Operation.OverlayNG
         public bool HasShell
         {
             get => _shell != null;
-        }
-
-        /// <summary>
-        /// Gets the shell for this ring. The shell is the
-        /// ring itself if it is not a hole, otherwise its
-        /// parent shell.
-        /// </summary>
-        /// <returns>the shell for this ring</returns>
-        [Obsolete("Use Shell property", true)]
-        public OverlayEdgeRing getShell()
-        {
-            if (IsHole) return _shell;
-            return this;
         }
 
         /// <summary>
@@ -116,9 +81,9 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         private void ComputeRing(Coordinate[] ringPts, GeometryFactory geometryFactory)
         {
-            if (_ring != null) return;   // don't compute more than once
-            _ring = geometryFactory.CreateLinearRing(ringPts);
-            isHole = Orientation.IsCCW(_ring.Coordinates);
+            if (Ring != null) return;   // don't compute more than once
+            Ring = geometryFactory.CreateLinearRing(ringPts);
+            IsHole = Orientation.IsCCW(Ring.Coordinates);
         }
 
         /// <summary>
@@ -126,10 +91,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// The coordinates are computed once only and cached.
         /// </summary>
         /// <value>An array of the <see cref="Coordinate"/>s in this ring</value>
-        private Coordinate[] Coordinates
-        {
-            get => _ringPts;
-        }
+        private Coordinate[] Coordinates { get; }
 
         /// <summary>
         /// Finds the innermost enclosing shell OverlayEdgeRing
@@ -207,7 +169,7 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public Coordinate Coordinate
         {
-            get => _ringPts[0];
+            get => Coordinates[0];
         }
 
         /// <summary>
@@ -225,13 +187,10 @@ namespace NetTopologySuite.Operation.OverlayNG
                     holeLR[i] = _holes[i].Ring;
                 }
             }
-            var poly = factory.CreatePolygon(_ring, holeLR);
+            var poly = factory.CreatePolygon(Ring, holeLR);
             return poly;
         }
 
-        public OverlayEdge Edge
-        {
-            get => _startEdge;
-        }
+        public OverlayEdge Edge { get; }
     }
 }

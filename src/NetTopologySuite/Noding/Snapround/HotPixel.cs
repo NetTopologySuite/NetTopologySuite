@@ -29,15 +29,6 @@ namespace NetTopologySuite.Noding.Snapround
         private const double Tolerance = 0.5d;
 
         private readonly Coordinate _ptHot;
-        private readonly Coordinate _originalPt;
-
-        /// <summary>
-        /// Indicates if this hot pixel must be a node in the output
-        /// </summary>
-        private bool _isNode = false;
-
-
-        private readonly double _scaleFactor;
 
         private readonly double _minx;
         private readonly double _maxx;
@@ -50,7 +41,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="pt">The coordinate at the center of the hot pixel</param>
         /// <param name="scaleFactor">The scale factor determining the pixel size</param>
         /// <param name="li">The intersector to use for testing intersection with line segments</param>
-        [Obsolete]
+        [Obsolete("LineIntersector is no longer used.")]
         public HotPixel(Coordinate pt, double scaleFactor, LineIntersector li)
             :this(pt, scaleFactor)
         { }
@@ -63,9 +54,9 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="scaleFactor">The scale factor determining the pixel size</param>
         public HotPixel(Coordinate pt, double scaleFactor)
         {
-            _originalPt = pt;
+            Coordinate = pt;
             _ptHot = pt;
-            _scaleFactor = scaleFactor;
+            ScaleFactor = scaleFactor;
 
             if (scaleFactor <= 0d)
                 throw new ArgumentException("Scale factor must be non-zero");
@@ -83,37 +74,30 @@ namespace NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Gets the coordinate this hot pixel is based at.
         /// </summary>
-        public Coordinate Coordinate => _originalPt;
+        public Coordinate Coordinate { get; }
 
         /// <summary>
         /// Gets the scale factor for the precision grid for this pixel.
         /// </summary>
-        public double ScaleFactor
-        {
-            get => _scaleFactor;
-        }
+        public double ScaleFactor { get; }
 
         /// <summary>
         /// Gets the width of the hot pixel in the original coordinate system.
         /// </summary>
         public double Width
         {
-            get => 1.0d / _scaleFactor;
+            get => 1.0d / ScaleFactor;
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether this pixel has been marked as a node.
         /// </summary>
         /// <returns><c>true</c> if the pixel is marked as a node</returns>
-        public bool IsNode
-        {
-            get => _isNode;
-            set => _isNode = value;
-        }
+        public bool IsNode { get; set; }
 
         private double ScaleRound(double val)
         {
-            return Math.Round(val * _scaleFactor);
+            return Math.Round(val * ScaleFactor);
         }
 
         private Coordinate ScaleRound(Coordinate p)
@@ -130,11 +114,8 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         private double Scale(double val)
         {
-            return val * _scaleFactor;
+            return val * ScaleFactor;
         }
-
-        [Obsolete("Moved to MCIndexPointSnapper")]
-        private const double SafeEnvelopeExpansionFactor = 0.75d;
 
         /// <summary>
         /// Returns a "safe" envelope that is guaranteed to contain the hot pixel.
@@ -144,9 +125,10 @@ namespace NetTopologySuite.Noding.Snapround
         [Obsolete("Moved to MCIndexPointSnapper")]
         public Envelope GetSafeEnvelope()
         {
-            double safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
-            return new Envelope(_originalPt.X - safeTolerance, _originalPt.X + safeTolerance,
-                                _originalPt.Y - safeTolerance, _originalPt.Y + safeTolerance);
+            const double SafeEnvelopeExpansionFactor = 0.75d;
+            double safeTolerance = SafeEnvelopeExpansionFactor / ScaleFactor;
+            return new Envelope(Coordinate.X - safeTolerance, Coordinate.X + safeTolerance,
+                                Coordinate.Y - safeTolerance, Coordinate.Y + safeTolerance);
         }
 
         /// <summary>
@@ -176,7 +158,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>true if the line segment intersects this hot pixel.</returns>
         public bool Intersects(Coordinate p0, Coordinate p1)
         {
-            if (_scaleFactor == 1.0)
+            if (ScaleFactor == 1.0)
                 return IntersectsScaled(p0.X, p0.Y, p1.X, p1.Y);
 
             double sp0x = Scale(p0.X);
@@ -192,7 +174,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("This method was never intended to be public and will be removed in a future release.")]
         public bool IntersectsScaled(Coordinate p0, Coordinate p1)
         {
             return IntersectsScaled(p0.X, p0.Y, p1.X, p1.Y);
@@ -356,7 +338,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="segStr"></param>
         /// <param name="segIndex"></param>
         /// <returns><c>true</c> if a node was added to the segment</returns>
-        [Obsolete("Moved to MCIndexPointSnapper", true)]
+        [Obsolete("Moved to MCIndexPointSnapper")]
         public bool AddSnappedNode(INodableSegmentString segStr, int segIndex)
         {
             var coords = segStr.Coordinates;

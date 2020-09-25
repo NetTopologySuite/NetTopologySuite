@@ -37,7 +37,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </summary>
     /// <author>Martin Davis</author>
     /// <seealso cref="SegmentExtractingNoder"/>
-    public class CoverageUnion
+    public static class CoverageUnion
     {
         /// <summary>
         /// Unions a valid polygonal coverage or linear network.
@@ -50,11 +50,6 @@ namespace NetTopologySuite.Operation.OverlayNG
             var noder = new SegmentExtractingNoder();
             // a precision model is not needed since no noding is done
             return OverlayNG.Union(coverage, null, noder);
-        }
-
-        private CoverageUnion()
-        {
-            // No instantiation for now
         }
     }
 }

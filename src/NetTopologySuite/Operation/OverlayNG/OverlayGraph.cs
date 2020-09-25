@@ -14,17 +14,9 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// and a single <see cref="OverlayLabel"/>.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class OverlayGraph
+    internal sealed class OverlayGraph
     {
-
-        private readonly List<OverlayEdge> _edges = new List<OverlayEdge>();
-        private readonly IDictionary<Coordinate, OverlayEdge> _nodeMap = new Dictionary<Coordinate, OverlayEdge>();
-
-        /// <summary>
-        /// Creates an empty graph
-        /// </summary>
-        public OverlayGraph()
-        { }
+        private readonly Dictionary<Coordinate, OverlayEdge> _nodeMap = new Dictionary<Coordinate, OverlayEdge>();
 
         /// <summary>
         /// Gets the set of edges in this graph.
@@ -32,10 +24,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// The opposing edge can be found by using <see cref="HalfEdge.Sym"/>.
         /// </summary>
         /// <returns>The collection of representative edges in this graph</returns>
-        public IList<OverlayEdge> Edges
-        {
-            get => _edges;
-        }
+        public List<OverlayEdge> Edges { get; } = new List<OverlayEdge>();
 
         /// <summary>
         /// Gets the collection of edges representing the nodes in this graph.
@@ -44,7 +33,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// The other edges around the node can be found by following the next and prev links.
         /// </summary>
         /// <returns>The collection of representative node edges</returns>
-        public ICollection<OverlayEdge> NodeEdges
+        public IReadOnlyCollection<OverlayEdge> NodeEdges
         {
             get => _nodeMap.Values;
         }
@@ -67,7 +56,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         public IReadOnlyCollection<OverlayEdge> GetResultAreaEdges()
         {
             var resultEdges = new List<OverlayEdge>();
-            foreach (var edge in _edges)
+            foreach (var edge in Edges)
             {
                 if (edge.IsInResultArea)
                 {
@@ -102,7 +91,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="e">The half-edge to insert</param>
         private void Insert(OverlayEdge e)
         {
-            _edges.Add(e);
+            Edges.Add(e);
             /*
              * If the edge origin node is already in the graph, 
              * insert the edge into the star of edges around the node.

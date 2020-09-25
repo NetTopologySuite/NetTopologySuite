@@ -14,7 +14,7 @@ namespace NetTopologySuite.Noding
     /// </summary>
     /// <author>Martin Davis</author>
     /// <seealso cref="FastNodingValidator"/>
-    public class ValidatingNoder : INoder
+    public sealed class ValidatingNoder : INoder
     {
 
         private readonly INoder _noder;

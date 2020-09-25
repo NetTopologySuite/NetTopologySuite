@@ -47,7 +47,7 @@ namespace NetTopologySuite.Operation.Union
     public class CascadedPolygonUnion
     {
         /// <summary>
-        /// A union strategy that uses the classic NTS {@link SnapIfNeededOverlayOp},
+        /// A union strategy that uses the classic NTS <see cref="SnapIfNeededOverlayOp"/>,
         /// and for polygonal geometries a robustness fallback using <c>Buffer(0)</c>.
         /// </summary>
         internal static readonly UnionStrategy ClassicUnion = new UnionStrategy(
@@ -58,10 +58,9 @@ namespace NetTopologySuite.Operation.Union
                     return SnapIfNeededOverlayOp.Union(g0, g1);
                 }
                 catch (TopologyException ex)
-                {
                     // union-by-buffer only works for polygons
-                    if (g0.Dimension != Dimension.Surface || g1.Dimension != Dimension.Surface)
-                        throw ex;
+                    when (g0.Dimension == Dimension.Surface && g1.Dimension == Dimension.Surface)
+                {
                     return UnionPolygonsByBuffer(g0, g1);
                 }
             }, true);
@@ -103,8 +102,8 @@ namespace NetTopologySuite.Operation.Union
         private GeometryFactory _geomFactory;
         private readonly UnionStrategy _unionStrategy;
 
-        private int countRemainder = 0;
-        private int countInput = 0;
+        private int _countRemainder = 0;
+        private int _countInput = 0;
 #if UseWorker
         private int _numThreadsStarted = 0;
 #endif
@@ -119,12 +118,12 @@ namespace NetTopologySuite.Operation.Union
         {
         }
 
-        /**
-      * Creates a new instance to union
-      * the given collection of {@link Geometry}s.
-      *
-      * @param polys a collection of {@link Polygonal} {@link Geometry}s
-      */
+        /// <summary>
+        /// Creates a new instance to union
+        /// the given collection of <see cref="Geometry"/>s.
+        /// </summary>
+        /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="Geometry"/>s</param>
+        /// <param name="unionStrategy"></param>
         public CascadedPolygonUnion(ICollection<Geometry> polys, UnionStrategy unionStrategy)
         {
             _inputPolys = polys;
@@ -132,8 +131,8 @@ namespace NetTopologySuite.Operation.Union
             // guard against null input
             if (_inputPolys == null)
                 _inputPolys = new List<Geometry>();
-            countInput = _inputPolys.Count;
-            countRemainder = countInput;
+            _countInput = _inputPolys.Count;
+            _countRemainder = _countInput;
         }
 
         /// <summary>
@@ -366,8 +365,8 @@ namespace NetTopologySuite.Operation.Union
             if (g1 == null)
                 return (Geometry) g0.Copy();
 
-            countRemainder--;
-            Debug.WriteLine("Remainder: " + countRemainder + " out of " + countInput);
+            _countRemainder--;
+            Debug.WriteLine("Remainder: " + _countRemainder + " out of " + _countInput);
             Debug.WriteLine("Union: A: " + g0.NumPoints + " / B: " + g1.NumPoints + "  ---  ");
 
             var union = UnionActual(g0, g1, _unionStrategy);

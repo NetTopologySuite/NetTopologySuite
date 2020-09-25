@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
@@ -63,7 +66,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </list>
     /// The original JTS overlay semantics corresponds to non-strict mode.
     /// </summary>
-    public class OverlayNG
+    public sealed class OverlayNG
     {
         /// <summary>
         /// The code for the Intersection overlay operation.
@@ -107,7 +110,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="label">The topological label of the point</param>
         /// <param name="opCode">The code for the overlay operation to test</param>
         /// <returns><c>true</c> if the label locations correspond to the overlay <paramref name="opCode"/></returns>
-        static bool IsResultOfOpPoint(OverlayLabel label, SpatialFunction opCode)
+        private static bool IsResultOfOpPoint(OverlayLabel label, SpatialFunction opCode)
         {
             var loc0 = label.GetLocation(0);
             var loc1 = label.GetLocation(1);
@@ -214,12 +217,12 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <para/>
         /// The noder is chosen according to the precision model specified.
         /// <list type="bullet">
-        /// <item><description>For {@link PrecisionModel#FIXED}
+        /// <item><description>For <see cref="PrecisionModels.Fixed"/>
         /// a snap-rounding noder is used, and the computation is robust.</description></item>
-        /// <item><description>For {@link PrecisionModel#FLOATING}
+        /// <item><description>For <see cref="PrecisionModels.Floating"/>
         /// a non-snapping noder is used,
         /// and this computation may not be robust.
-        /// If errors occur a {@link TopologyException} is thrown.</description></item>
+        /// If errors occur a <see cref="TopologyException"/> is thrown.</description></item>
         /// </list>
         /// </summary>
         /// <param name="geom0">The first geometry argument</param>
@@ -254,7 +257,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <seealso cref="CoverageUnion"/>
         internal static Geometry Union(Geometry geom, PrecisionModel pm)
         {
-            var ov = new OverlayNG(geom, pm);
+            var ov = new OverlayNG(geom, null, pm, SpatialFunction.Union);
             var geomOv = ov.GetResult();
             return geomOv;
         }
@@ -271,7 +274,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <seealso cref="CoverageUnion"/>
         internal static Geometry Union(Geometry geom, PrecisionModel pm, INoder noder)
         {
-            var ov = new OverlayNG(geom, pm);
+            var ov = new OverlayNG(geom, null, pm, SpatialFunction.Union);
             ov.Noder = noder;
             var geomOv = ov.GetResult();
             return geomOv;
@@ -281,12 +284,6 @@ namespace NetTopologySuite.Operation.OverlayNG
         private readonly InputGeometry _inputGeom;
         private readonly GeometryFactory _geomFact;
         private readonly PrecisionModel _pm;
-        private INoder _noder;
-        private bool _isStrictMode = STRICT_MODE_DEFAULT;
-        private bool _isOptimized = true;
-        private bool _isAreaResultOnly = false;
-        private bool _isOutputEdges;
-        private bool _isOutputResultEdges;
         private bool _isOutputNodedEdges;
 
         /// <summary>
@@ -299,6 +296,23 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="opCode">The overlay opcode</param>
         public OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, SpatialFunction opCode)
         {
+            if (geom0 == null)
+            {
+                throw new ArgumentNullException(nameof(geom0));
+            }
+
+            switch (opCode)
+            {
+                case SpatialFunction.Intersection:
+                case SpatialFunction.Union:
+                case SpatialFunction.Difference:
+                case SpatialFunction.SymDifference:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(opCode), opCode, "Only Intersection, Union, Difference, and SymDifference are recognized at this time.");
+            }
+
             _pm = pm;
             _opCode = opCode;
             _geomFact = geom0.Factory;
@@ -322,17 +336,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="geom1">The B operand geometry (may be <c>null</c>)</param>
         /// <param name="opCode">The overlay opcode</param>
         public OverlayNG(Geometry geom0, Geometry geom1, SpatialFunction opCode)
-            : this(geom0, geom1, geom0.Factory.PrecisionModel, opCode)
-        {
-        }
-
-        /// <summary>
-        /// Creates a union of a single geometry with a given precision model.
-        /// </summary>
-        /// <param name="geom">The geometry</param>
-        /// <param name="pm">The precision model to use</param>
-        public OverlayNG(Geometry geom, PrecisionModel pm)
-            : this(geom, null, pm, SpatialFunction.Union)
+            : this(geom0, geom1, geom0?.Factory.PrecisionModel, opCode)
         {
         }
 
@@ -345,7 +349,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// </list>
         /// </summary>
         /// <returns></returns>
-        public bool StrictMode { get => _isStrictMode; set => _isStrictMode = value; }
+        public bool StrictMode { get; set; } = STRICT_MODE_DEFAULT;
 
         /// <summary>
         /// Gets or sets a value indicating whether overlay processing optimizations are enabled.
@@ -355,31 +359,21 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <para/>
         /// Default is <c>true</c> (optimization enabled).
         /// </summary>
-        public bool Optimized
-        {
-            get => _isOptimized;
-            set => _isOptimized = value;
-        }
+        public bool Optimized { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets whether the result can contain only {@link Polygon} components.
+        /// Gets or sets whether the result can contain only <see cref="Polygon"/> components.
         /// This is used if it is known that the result must be an (possibly empty) area.
         /// </summary>
         /// <returns><c>true</c> if the result should contain only area components</returns>
-        public bool AreaResultOnly
-        {
-            get => _isAreaResultOnly;
-            set => _isAreaResultOnly = value;
-        }
+        public bool AreaResultOnly { get; set; } = false;
 
         //------ Testing options -------
 
-        public bool OutputEdges
-        {
-            get => _isOutputEdges;
-            set => _isOutputEdges = value;
-        }
-        
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public bool OutputEdges { get; set; }
+
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public bool OutputNodedEdges
         {
             get => _isOutputNodedEdges;
@@ -390,15 +384,12 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
         }
 
-        public bool OutputResultEdges
-        {
-            get => _isOutputResultEdges;
-            set => _isOutputResultEdges = value;
-        }
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public bool OutputResultEdges { get; set; }
 
         //---------------------------------
 
-        private INoder Noder { get => _noder; set => _noder = value; }
+        private INoder Noder { get; set; }
 
         /// <summary>
         /// Gets the result of the overlay operation.
@@ -439,15 +430,15 @@ namespace NetTopologySuite.Operation.OverlayNG
 
             if (_isOutputNodedEdges)
             {
-                return OverlayUtility.ToLines(graph, _isOutputEdges, _geomFact);
+                return OverlayUtility.ToLines(graph, OutputEdges, _geomFact);
             }
 
             LabelGraph(graph);
             //for (OverlayEdge e : graph.getEdges()) {  Debug.println(e);  }
 
-            if (_isOutputEdges || _isOutputResultEdges)
+            if (OutputEdges || OutputResultEdges)
             {
-                return OverlayUtility.ToLines(graph, _isOutputEdges, _geomFact);
+                return OverlayUtility.ToLines(graph, OutputEdges, _geomFact);
             }
 
             return ExtractResult(_opCode, graph);
@@ -458,13 +449,13 @@ namespace NetTopologySuite.Operation.OverlayNG
             /*
              * Node the edges, using whatever noder is being used
              */
-            var nodingBuilder = new EdgeNodingBuilder(_pm, _noder);
+            var nodingBuilder = new EdgeNodingBuilder(_pm, Noder);
 
             /*
              * Optimize Intersection and Difference by clipping to the 
              * result extent, if enabled.
              */
-            if (_isOptimized)
+            if (Optimized)
             {
                 var clipEnv = OverlayUtility.ClippingEnvelope(_opCode, _inputGeom, _pm);
                 if (clipEnv != null)
@@ -534,7 +525,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             List<LineString> resultLineList = null;
             List<Point> resultPointList = null;
 
-            if (!_isAreaResultOnly)
+            if (!AreaResultOnly)
             {
                 //--- Build lines
                 bool allowResultLines = !hasResultAreaComponents

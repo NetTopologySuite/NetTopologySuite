@@ -25,7 +25,7 @@ namespace NetTopologySuite.Noding.Snapround
     /// results are not 100% guaranteed to be correctly noded.
     /// 
     /// </summary>
-    [Obsolete]
+    [Obsolete("Use SnapRoundingNoder instead")]
     public class SimpleSnapRounder : INoder
     {
         private readonly PrecisionModel _pm;
@@ -261,10 +261,41 @@ namespace NetTopologySuite.Noding.Snapround
         /// snapping segments to vertices of other segments.
         /// </summary>
         /// <param name="edges">The list of segment strings to snap together</param>
-        [Obsolete("Will cause NotSupportedException", true)]
+        [Obsolete("This method is no longer supported in the latest version of NetTopologySuite and may cause unexpected behavior.  Strongly favor using MCIndexPointSnapper instead.")]
         public void ComputeVertexSnaps(IList<ISegmentString> edges)
         {
-            throw new NotSupportedException();
+            foreach (INodableSegmentString edge0 in edges)
+                foreach (INodableSegmentString edge1 in edges)
+                    ComputeVertexSnaps(edge0, edge1);
+        }
+
+        /// <summary>
+        /// Performs a brute-force comparison of every segment in each <see cref="ISegmentString" />.
+        /// This has n^2 performance.
+        /// </summary>
+        /// <param name="e0"></param>
+        /// <param name="e1"></param>
+        private void ComputeVertexSnaps(INodableSegmentString e0, INodableSegmentString e1)
+        {
+            var pts0 = e0.Coordinates;
+            var pts1 = e1.Coordinates;
+            for (int i0 = 0; i0 < pts0.Length - 1; i0++)
+            {
+                var hotPixel = new HotPixel(pts0[i0], _scaleFactor);
+                for (int i1 = 0; i1 < pts1.Length - 1; i1++)
+                {
+                    // don't snap a vertex to itself
+                    if (e0 == e1)
+                        if (i0 == i1)
+                            continue;
+
+                    bool isNodeAdded = //AddSnappedNode(hotPixel, e1, i1);
+                                       hotPixel.AddSnappedNode(e1, i1);
+                    // if a node is created for a vertex, that vertex must be noded too
+                    if (isNodeAdded)
+                        e0.AddIntersection(pts0[i0], i0);
+                }
+            }
         }
     }
 }

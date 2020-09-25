@@ -126,7 +126,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="_location"></param>
-        [Obsolete]
+        [Obsolete("This method is not used and will be removed in a later release.")]
         public void Add(int geomIndex, Positions posIndex, Location _location)
         {
             if (_location == Location.Interior)
