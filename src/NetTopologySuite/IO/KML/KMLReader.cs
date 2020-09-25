@@ -200,6 +200,10 @@ namespace NetTopologySuite.IO.KML
 
                         attributes.Add(elementName, xmlStreamReader.ReadElementContentAsString());
                     }
+                    else
+                    {
+                        xmlStreamReader.Read();
+                    }
                 }
                 else
                 {
