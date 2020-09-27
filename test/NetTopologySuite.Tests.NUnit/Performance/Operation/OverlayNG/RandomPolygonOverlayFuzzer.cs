@@ -65,6 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
         private string testDesc = "";
 
         [Test]
+        [Category("LongRunning")]
         public void Run()
         {
             TestContext.WriteLine("Running {0:D} tests", N_TESTS);

@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
 {
+    [Category("LongRunning")]
     public class OverlayNGPerfTest : PerformanceTestCase
     {
         private const int PREC_SCALE_FACTOR = 1000000;

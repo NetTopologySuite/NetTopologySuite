@@ -4,11 +4,14 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Precision;
 
+using NUnit.Framework;
+
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     /// <summary>
     /// An example of the usage of the <see cref="PerformanceTestRunner"/>.
     /// </summary>
+    [Category("LongRunning")]
     public class InteriorPointAreaPerfTest : PerformanceTestCase
     {
         private const int NumberOfIterations = 100;
