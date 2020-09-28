@@ -51,7 +51,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         [Obsolete("Use GetDepth(int, Geometries.Position)")]
         public int GetDepth(int geomIndex, Positions posIndex) =>
-            GetDepth(geomIndex, (Geometries.Position) posIndex);
+            GetDepth(geomIndex, new Geometries.Position((int) posIndex));
 
         /// <summary>
         ///
@@ -72,7 +72,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="depthValue"></param>
         [Obsolete("Use SetDepth(int, Geometries.Position, int)")]
         public void SetDepth(int geomIndex, Positions posIndex, int depthValue)
-            => SetDepth(geomIndex, (Geometries.Position) posIndex, depthValue);
+            => SetDepth(geomIndex, new Geometries.Position((int)posIndex), depthValue);
         /// <summary>
         ///
         /// </summary>
@@ -105,7 +105,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         [Obsolete("Use GetLocation(int, Geometries.Position)")]
         public Location GetLocation(int geomIndex, Positions posIndex)
-            => GetLocation(geomIndex, (Geometries.Position) posIndex);
+            => GetLocation(geomIndex, new Geometries.Position((int)posIndex));
 
         /// <summary>
         ///
@@ -167,7 +167,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         [Obsolete("Use IsNull(int, Geometries.Position)")]
         public bool IsNull(int geomIndex, Positions posIndex) =>
-            IsNull(geomIndex, (Geometries.Position) posIndex);
+            IsNull(geomIndex, new Geometries.Position((int) posIndex));
 
         /// <summary>
         ///
@@ -190,11 +190,11 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 for (int j = 1; j < 3; j++)
                 {
-                    var loc = lbl.GetLocation(i, (Geometries.Position)j);
+                    var loc = lbl.GetLocation(i, new Geometries.Position(j));
                     if (loc == Location.Exterior || loc == Location.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
-                        if (IsNull(i, (Geometries.Position)j))
+                        if (IsNull(i, new Geometries.Position(j)))
                              depth[i,j]  = DepthAtLocation(loc);
                         else depth[i,j] += DepthAtLocation(loc);
                     }

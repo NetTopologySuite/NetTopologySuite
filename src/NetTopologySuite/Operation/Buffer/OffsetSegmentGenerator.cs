@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.Buffer
             _li = new RobustLineIntersector();
             _filletAngleQuantum = Math.PI / 2.0 / bufParams.QuadrantSegments;
 
-            /**
+            /*
              * Non-round joins cause issues with short closing segments, so don't use
              * them. In any case, non-round joins only really make sense for relatively
              * small buffer distances.
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Operation.Buffer
             _maxCurveSegmentError = distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
             _segList = new OffsetSegmentString();
             _segList.PrecisionModel = _precisionModel;
-            /**
+            /*
              * Choose the min vertex separation as a small fraction of the offset distance.
              */
             _segList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         [Obsolete("Use InitSideSegments(Coordinate, Coordinate, Geometries.Position)")]
         public void InitSideSegments(Coordinate s1, Coordinate s2, Positions side) =>
-            InitSideSegments(s1, s1, (Position) side);
+            InitSideSegments(s1, s1, new Position((int)side));
 
         public void InitSideSegments(Coordinate s1, Coordinate s2, Position side)
         {
@@ -246,7 +246,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         private void AddOutsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
-            /**
+            /*
              * Heuristic: If offset endpoints are very close together,
              * just use one of them as the corner vertex.
              * This avoids problems with computing mitre corners in the case
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="addStartPoint"></param>
         private void AddInsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
-            /**
+            /*
              * add intersection point of offset segments (if any)
              */
             _li.ComputeIntersection(_offset0.P0, _offset0.P1, _offset1.P0, _offset1.P1);
@@ -527,13 +527,6 @@ namespace NetTopologySuite.Operation.Buffer
                 _segList.AddPt(bevelEndLeft);
             }
         }
-
-        /**
-         *
-         *
-         * @param offset0
-         * @param offset1
-         */
 
         /// <summary>
         /// Adds a bevel join connecting the two offset segments

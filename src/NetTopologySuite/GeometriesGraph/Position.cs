@@ -45,7 +45,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="position"></param>
         public static Positions Opposite(Positions position)
         {
-            return (Positions) PositionExtensions.Opposite((Geometries.Position) position);
+            return (Positions) new Geometries.Position((int)position).Opposite.Index;
         }
     }
 }

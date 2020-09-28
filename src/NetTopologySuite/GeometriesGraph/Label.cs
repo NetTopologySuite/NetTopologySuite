@@ -120,7 +120,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         [Obsolete("Use GetLocation(int, Topology.Location)")]
         public Location GetLocation(int geomIndex, Positions posIndex)
-            => GetLocation(geomIndex, (Geometries.Position) posIndex);
+            => GetLocation(geomIndex, new Geometries.Position((int) posIndex));
 
         /// <summary>
         ///
@@ -151,7 +151,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="_location"></param>
         [Obsolete("Use SetLocation(int, Geometries.Position, Location)")]
         public void SetLocation(int geomIndex, Positions posIndex, Location _location) =>
-            SetLocation(geomIndex, (Geometries.Position) posIndex, _location);
+            SetLocation(geomIndex, new Geometries.Position((int)posIndex), _location);
         /// <summary>
         ///
         /// </summary>

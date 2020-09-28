@@ -614,19 +614,19 @@ namespace NetTopologySuite.Operation.OverlayNG
         {
             if (index == 0)
             {
-                switch (position)
+                switch (position.Index)
                 {
-                    case Position.Left: return isForward ? _aLocLeft : _aLocRight;
-                    case Position.Right: return isForward ? _aLocRight : _aLocLeft;
-                    case Position.On: return _aLocLine;
+                    case Position.IndexLeft: return isForward ? _aLocLeft : _aLocRight;
+                    case Position.IndexRight: return isForward ? _aLocRight : _aLocLeft;
+                    case Position.IndexOn: return _aLocLine;
                 }
             }
             // index == 1
             switch (position)
             {
-                case Position.Left: return isForward ? _bLocLeft : _bLocRight;
-                case Position.Right: return isForward ? _bLocRight : _bLocLeft;
-                case Position.On: return _bLocLine;
+                case Position.IndexLeft: return isForward ? _bLocLeft : _bLocRight;
+                case Position.IndexRight: return isForward ? _bLocRight : _bLocLeft;
+                case Position.IndexOn: return _bLocLine;
             }
             return LOC_UNKNOWN;
         }

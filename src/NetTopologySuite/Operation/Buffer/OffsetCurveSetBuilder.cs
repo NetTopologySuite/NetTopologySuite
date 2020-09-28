@@ -180,7 +180,7 @@ namespace NetTopologySuite.Operation.Buffer
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
-                AddRingSide(holeCoord, offsetDistance, PositionExtensions.Opposite(offsetSide),
+                AddRingSide(holeCoord, offsetDistance, offsetSide.Opposite,
                                Location.Interior, Location.Exterior);
             }
         }
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;
-                side = PositionExtensions.Opposite(side);
+                side = side.Opposite;
             }
             var curve = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
             AddCurve(curve, leftLoc, rightLoc);

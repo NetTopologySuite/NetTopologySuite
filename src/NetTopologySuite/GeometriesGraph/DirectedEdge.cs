@@ -100,7 +100,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="position"></param>
         /// <returns></returns>
         [Obsolete("Use GetDepth(Geometries.Position)")]
-        public int GetDepth(Positions position) => GetDepth((Geometries.Position) position);
+        public int GetDepth(Positions position) => GetDepth(new Geometries.Position((int)position));
 
         /// <summary>
         ///
@@ -118,7 +118,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="position"></param>
         /// <param name="depthVal"></param>
         [Obsolete("Use SetDepth(Geometries.Position, int)")]
-        public void SetDepth(Positions position, int depthVal) => SetDepth((Geometries.Position) position, depthVal);
+        public void SetDepth(Positions position, int depthVal) => SetDepth(new Geometries.Position((int)position), depthVal);
 
         /// <summary>
         ///
@@ -255,7 +255,7 @@ namespace NetTopologySuite.GeometriesGraph
         [Obsolete("Use SetEdgeDepths(Topology.Postion, int)")]
         public void SetEdgeDepths(Positions position, int depth)
         {
-            SetEdgeDepths((Geometries.Position)position, depth);
+            SetEdgeDepths(new Geometries.Position((int)position), depth);
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (position == Geometries.Position.Left)
                 directionFactor = -1;
 
-            var oppositePos = PositionExtensions.Opposite(position);
+            var oppositePos = position.Opposite;
             int delta = depthDelta * directionFactor;
             int oppositeDepth = depth + delta;
             SetDepth(position, depth);

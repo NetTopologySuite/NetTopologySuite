@@ -101,7 +101,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// or <c>null</c> if the curve is empty</returns>
         [Obsolete("Use GetRingCurve(Coordinate[], Geometries.Position, double)")]
         public Coordinate[] GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
-            => GetRingCurve(inputPts, (Position) side, distance);
+            => GetRingCurve(inputPts, new Position((int)side), distance);
 
         /// <summary>
         /// This method handles the degenerate cases of single points and lines,

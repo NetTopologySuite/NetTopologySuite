@@ -98,7 +98,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         [Obsolete("Use Get(Geometries.Position)")]
         public Location Get(Positions posIndex) =>
-            Get((Geometries.Position) posIndex);
+            Get(new Geometries.Position((int)posIndex));
 
         /// <summary>
         ///
@@ -122,8 +122,8 @@ namespace NetTopologySuite.GeometriesGraph
         [Obsolete("Use the Geometries.Position indexer instead")]
         public  Location this[Positions posIndex]
         {
-            get => this[(Geometries.Position)posIndex];
-            set => this[(Geometries.Position)posIndex] = value;
+            get => this[new Geometries.Position((int)posIndex)];
+            set => this[new Geometries.Position((int)posIndex)] = value;
         }
 
         /// <summary>
@@ -195,8 +195,8 @@ namespace NetTopologySuite.GeometriesGraph
             if (_location.Length <= 1)
                 return;
             var temp = _location[(int)Geometries.Position.Left];
-            _location[(int)Geometries.Position.Left] = _location[(int)Geometries.Position.Right];
-            _location[(int)Geometries.Position.Right] = temp;
+            _location[Geometries.Position.Left] = _location[(int)Geometries.Position.Right];
+            _location[Geometries.Position.Right] = temp;
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="locValue"></param>
         [Obsolete("Use SetLocation(Geometries.Position, Location)")]
         public void SetLocation(Positions locIndex, Location locValue) =>
-            SetLocation((Geometries.Position) locIndex, locValue);
+            SetLocation(new Geometries.Position((int)locIndex), locValue);
 
         /// <summary>
         ///
@@ -265,9 +265,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="right"></param>
         public  void SetLocations(Location on, Location left, Location right)
         {
-            _location[(int)Geometries.Position.On] = on;
-            _location[(int)Geometries.Position.Left] = left;
-            _location[(int)Geometries.Position.Right] = right;
+            _location[Geometries.Position.On] = on;
+            _location[Geometries.Position.Left] = left;
+            _location[Geometries.Position.Right] = right;
         }
 
         /// <summary>
