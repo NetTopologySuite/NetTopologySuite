@@ -85,13 +85,13 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private static int FindChainEnd(Coordinate[] pts, int start)
         {
             // determine quadrant for chain
-            var chainQuad = QuadrantExtensions.Quadrant(pts[start], pts[start + 1]);
+            var chainQuad = new Quadrant(pts[start], pts[start + 1]);
             int last = start + 1;
             while (last < pts.Length)
             {
                 //if (last - start > 100) break;
                 // compute quadrant for next possible segment in chain
-                var quad = QuadrantExtensions.Quadrant(pts[last - 1], pts[last]);
+                var quad = new Quadrant(pts[last - 1], pts[last]);
                 if (quad != chainQuad)
                     break;
                 last++;

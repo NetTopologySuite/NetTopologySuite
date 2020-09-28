@@ -73,7 +73,7 @@ namespace NetTopologySuite.GeometriesGraph
             _p1 = p1;
             _dx = p1.X - p0.X;
             _dy = p1.Y - p0.Y;
-            _quadrant = QuadrantExtensions.Quadrant(_dx, _dy);
+            _quadrant = new Quadrant(_dx, _dy);
             Assert.IsTrue(! (_dx == 0 && _dy == 0), "EdgeEnd with identical endpoints found");
         }
 
@@ -105,7 +105,7 @@ namespace NetTopologySuite.GeometriesGraph
         ///
         /// </summary>
         [Obsolete("Use QuadrantEx")]
-        public int Quadrant => (int)_quadrant;
+        public int Quadrant => _quadrant.Value;
 
         public Quadrant QuadrantEx => _quadrant;
 

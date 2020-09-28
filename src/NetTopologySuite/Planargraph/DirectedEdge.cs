@@ -66,7 +66,7 @@ namespace NetTopologySuite.Planargraph
             p1 = directionPt;
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
-            _quadrant = QuadrantExtensions.Quadrant(dx, dy);
+            _quadrant = new Quadrant(dx, dy);
             _angle = Math.Atan2(dy, dx);
         }
 
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Planargraph
         /// orientation lies.
         /// </summary>
         [Obsolete("Use QuadrantValue")]
-        public int Quadrant => (int)_quadrant;
+        public int Quadrant => _quadrant.Value;
 
         /// <summary>
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's

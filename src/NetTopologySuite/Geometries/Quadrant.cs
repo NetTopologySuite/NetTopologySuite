@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace NetTopologySuite.Geometries
 {
@@ -9,72 +11,67 @@ namespace NetTopologySuite.Geometries
     /// The quadants are numbered as follows:
     /// <para>
     /// <code>
-    /// 1 - NW | 0 - NE
-    /// -------+-------
+    /// 1 - NW | 0 - NE <br/>
+    /// -------+------- <br/>
     /// 2 - SW | 3 - SE
     /// </code>
     /// </para>
     /// </remarks>
-    public enum Quadrant
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public readonly struct Quadrant
     {
         /// <summary>
         /// Undefined
         /// </summary>
-        Undefined = -1,
+        public static Quadrant Undefined => new Quadrant(-1);
 
         /// <summary>
         /// North-East
         /// </summary>
-        NE = 0,
+        public static Quadrant NE => new Quadrant(0);
 
         /// <summary>
         /// North-West
         /// </summary>
-        NW = 1,
+        public static Quadrant NW => new Quadrant(1);
 
         /// <summary>
         /// South-West
         /// </summary>
-        SW = 2,
+        public static Quadrant SW => new Quadrant(2);
 
         /// <summary>
         /// South-East
         /// </summary>
-        SE = 3
-    }
+        public static Quadrant SE => new Quadrant(3);
 
-    /// <summary>
-    /// Utility functions for working with quadrants, which are numbered as follows:
-    /// <para>
-    /// <code>
-    /// 1 - NW | 0 - NE
-    /// -------+-------
-    /// 2 - SW | 3 - SE
-    /// </code>
-    /// </para>
-    /// </summary>
-    public static class QuadrantExtensions
-    {
         /// <summary>
-        /// Returns the quadrant of a directed line segment (specified as x and y
+        /// Creates a quadrant with t
+        /// </summary>
+        /// <param name="value"></param>
+        public Quadrant(int value)
+        {
+            if (value < -1 || 4 < value)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            Value = value;
+        }
+
+        /// <summary>
+        /// Creates a quadrant of a directed line segment (specified as x and y
         /// displacements, which cannot both be 0).
         /// </summary>
         /// <param name="dx"></param>
         /// <param name="dy"></param>
         /// <exception cref="ArgumentException">If the displacements are both 0</exception>
-        public static Quadrant Quadrant(double dx, double dy)
+        public Quadrant(double dx, double dy)
         {
             if (dx == 0.0 && dy == 0.0)
-                throw new ArgumentException("Cannot compute the quadrant for point ( "+ dx + ", " + dy + " )" );
+                throw new ArgumentException("Cannot compute the quadrant for point ( " + dx + ", " + dy + " )");
+
             if (dx >= 0.0)
-            {
-                if (dy >= 0.0)
-                     return Geometries.Quadrant.NE;
-                return Geometries.Quadrant.SE;
-            }
-            if (dy >= 0.0)
-                return Geometries.Quadrant.NW;
-            return Geometries.Quadrant.SW;
+                Value = dy >= 0.0 ? NE.Value : SE.Value;
+            else
+                Value = dy >= 0.0 ? NW.Value : SW.Value;
         }
 
         /// <summary>
@@ -83,32 +80,64 @@ namespace NetTopologySuite.Geometries
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <exception cref="ArgumentException"> if the points are equal</exception>
-        public static Quadrant Quadrant(Coordinate p0, Coordinate p1)
+        public Quadrant(Coordinate p0, Coordinate p1)
         {
             if (p1.X == p0.X && p1.Y == p0.Y)
                 throw new ArgumentException("Cannot compute the quadrant for two identical points " + p0);
 
             if (p1.X >= p0.X)
-            {
-                if (p1.Y >= p0.Y)
-                    return Geometries.Quadrant.NE;
-                return Geometries.Quadrant.SE;
-            }
-            if (p1.Y >= p0.Y)
-                return Geometries.Quadrant.NW;
-            return Geometries.Quadrant.SW;
+                Value = p1.Y >= p0.Y ? NE.Value : SE.Value;
+            else
+                Value = p1.Y >= p0.Y ? NW.Value : SW.Value;
         }
+
+        internal int Value { get; }
+
+        #region object overrides
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            return 13 ^ Value.GetHashCode();
+        }
+
+        /// <inheritdoc cref="object.Equals(object)"/>
+        public override bool Equals(object obj)
+        {
+            if (obj is Quadrant q)
+                return this == q;
+            return false;
+        }
+
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString()
+        {
+            switch (Value)
+            {
+                case 0:
+                    return "NE(=0)";
+                case 1:
+                    return "NW(=1)";
+                case 2:
+                    return "SW(=2)";
+                case 3:
+                    return "SE(=3)";
+                default:
+                    return "Undefinded(=-1)";
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Returns true if the quadrants are 1 and 3, or 2 and 4.
         /// </summary>
-        /// <param name="quad1"></param>
-        /// <param name="quad2"></param>
-        public static bool IsOpposite(Quadrant quad1, Quadrant quad2)
+        /// <param name="quad">A quadrant</param>
+        public bool IsOpposite(Quadrant quad)
         {
-            if (quad1 == quad2)
+            if (this == quad)
                 return false;
-            int diff = (quad1 - quad2 + 4) % 4;
+            int diff = (Value - quad.Value + 4) % 4;
             // if quadrants are not adjacent, they are opposite
             if (diff == 2)
                 return true;
@@ -127,40 +156,103 @@ namespace NetTopologySuite.Geometries
             // Simply return one of the two possibilities
             if (quad1 == quad2)
                 return quad1;
-            int diff = (quad1 - quad2 + 4) % 4;
+            int diff = (quad1.Value - quad2.Value + 4) % 4;
             // if quadrants are not adjacent, they do not share a common halfplane
             if (diff == 2)
-                return Geometries.Quadrant.Undefined;
+                return Quadrant.Undefined;
 
             var min = (quad1 < quad2) ? quad1 : quad2;
             var max = (quad1 > quad2) ? quad1 : quad2;
             // for this one case, the righthand plane is NOT the minimum index;
-            if (min == 0 && max == Geometries.Quadrant.SW)
-                return Geometries.Quadrant.SW;
+            if (min == NW && max == Quadrant.SW)
+                return Quadrant.SW;
             // in general, the halfplane index is the minimum of the two adjacent quadrants
             return min;
         }
 
         /// <summary>
-        /// Returns whether the given quadrant lies within the given halfplane (specified
+        /// Returns whether this quadrant lies within the given halfplane (specified
         /// by its right-hand quadrant).
         /// </summary>
-        /// <param name="quad"></param>
         /// <param name="halfPlane"></param>
-        public static bool IsInHalfPlane(Quadrant quad, Quadrant halfPlane)
+        public bool IsInHalfPlane(Quadrant halfPlane)
         {
-            if (halfPlane == Geometries.Quadrant.SE)
-                return quad == Geometries.Quadrant.SE || quad == Geometries.Quadrant.SW;
-            return quad == halfPlane || quad == halfPlane + 1;
+            if (halfPlane == SE)
+                return this == SE || this == SW;
+            return this == halfPlane || Value == halfPlane.Value + 1;
         }
 
         /// <summary>
-        /// Returns true if the given quadrant is 0 or 1.
+        /// Returns <c>true</c> if the given quadrant is 0 or 1.
         /// </summary>
-        /// <param name="quad"></param>
-        public static bool IsNorthern(Quadrant quad)
+        public bool IsNorthern
         {
-            return quad == Geometries.Quadrant.NE || quad == Geometries.Quadrant.NW;
+            get => Value == NE.Value || Value == NW.Value;
         }
+
+        /// <summary>
+        /// Equality operator for quadrants
+        /// </summary>
+        /// <param name="lhs">Quadrant value on the left-hand-side</param>
+        /// <param name="rhs">Quadrant value on the right-hand-side</param>
+        /// <returns><c>true</c> if quadrant value of <paramref name="lhs"/> and <paramref name="rhs"/> are equal.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(Quadrant lhs, Quadrant rhs)
+        {
+            return lhs.Value == rhs.Value;
+        }
+
+        /// <summary>
+        /// Inequality operator for quadrants
+        /// </summary>
+        /// <param name="lhs">Quadrant value on the left-hand-side</param>
+        /// <param name="rhs">Quadrant value on the right-hand-side</param>
+        /// <returns><c>true</c> if quadrant value of <paramref name="lhs"/> and <paramref name="rhs"/> are <b>not</b> equal.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(Quadrant lhs, Quadrant rhs)
+        {
+            return lhs.Value != rhs.Value;
+        }
+
+        /// <summary>
+        /// Greater than (&gt;) operator for quadrants
+        /// </summary>
+        /// <param name="lhs">Quadrant value on the left-hand-side</param>
+        /// <param name="rhs">Quadrant value on the right-hand-side</param>
+        /// <returns><c>true</c> if quadrant value of <paramref name="lhs"/> and <paramref name="rhs"/> are <b>not</b> equal.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >(Quadrant lhs, Quadrant rhs)
+        {
+            return lhs.Value > rhs.Value;
+        }
+
+        /// <summary>
+        /// Less than (&lt;) operator for quadrants
+        /// </summary>
+        /// <param name="lhs">Quadrant value on the left-hand-side</param>
+        /// <param name="rhs">Quadrant value on the right-hand-side</param>
+        /// <returns><c>true</c> if quadrant value of <paramref name="lhs"/> and <paramref name="rhs"/> are <b>not</b> equal.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <(Quadrant lhs, Quadrant rhs)
+        {
+            return lhs.Value < rhs.Value;
+        }
+        ///// <summary>
+        ///// Converts an integer value to a <see cref="Quadrant"/>
+        ///// </summary>
+        ///// <param name="value">The integer value</param>
+        //public static implicit operator Quadrant(int value)
+        //{
+        //    return new Quadrant(value/* + 1*/);
+        //}
+
+        ///// <summary>
+        ///// Converts an integer value to a <see cref="Quadrant"/>
+        ///// </summary>
+        ///// <param name="value">The integer value</param>
+        //public static implicit operator int(Quadrant value)
+        //{
+        //    return value.Value/* - 1*/;
+        //}
     }
 }
