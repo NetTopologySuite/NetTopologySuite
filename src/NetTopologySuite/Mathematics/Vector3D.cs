@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Common;
 using System.Globalization;
 using NetTopologySuite.Geometries;
 
@@ -11,6 +10,10 @@ namespace NetTopologySuite.Mathematics
     /// <author>Martin Davis</author>
     public class Vector3D
     {
+        /// <summary>
+        /// Creates a new vector with all components set to Zero
+        /// </summary>
+        public static Vector3D Zero => new Vector3D(0,0,0);
 
         // ReSharper disable InconsistentNaming
         /// <summary>
@@ -32,6 +35,19 @@ namespace NetTopologySuite.Mathematics
             return ABx * CDx + ABy * CDy + ABz * CDz;
         }
         // ReSharper restore InconsistentNaming
+
+        /// <summary>
+        /// Calculates the cross product of two vectors.
+        /// </summary>
+        /// <param name="left">First source vector.</param>
+        /// <param name="right">Second source vector.</param>
+        public static Vector3D Cross(Vector3D left, Vector3D right)
+        {
+            return new Vector3D(
+                (left.Y * right.Z) - (left.Z * right.Y),
+                (left.Z * right.X) - (left.X * right.Z),
+                (left.X * right.Y) - (left.Y * right.X));
+        }
 
         /// <summary>
         /// Creates a new vector with given <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> components.
@@ -115,6 +131,17 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
+        /// Creates a <see cref="Vector3D"/> using a <see cref="Vector2D"/> plus a value for <paramref name="z"/> component
+        /// </summary>
+        /// <param name="value">A vector containing the values with which to initialize the X and Y components.</param>
+        /// <param name="z">Initial value for the Z component of the vector.</param>
+        public Vector3D(Vector2D value, double z) {
+            _x = value.X;
+            _y = value.Y;
+            _z = z;
+        }
+
+        /// <summary>
         /// Gets a value indicating the x-ordinate
         /// </summary>
         public double X => _x;
@@ -173,6 +200,16 @@ namespace NetTopologySuite.Mathematics
             return _x * v._x + _y * v._y + _z * v._z;
         }
 
+        /// <summary>
+        /// Computes the cross-product of this <see cref="Vector3D"/> and <paramref name="v"/>
+        /// </summary>
+        /// <paramref name="v">The 2nd vector</paramref>
+        /// <returns>The cross product of the vectors</returns>
+        public Vector3D Cross(Vector3D v)
+        {
+            return Vector3D.Cross(this, v);
+        }
+
 
         /// <summary>
         /// Computes the length of this vector
@@ -218,6 +255,7 @@ namespace NetTopologySuite.Mathematics
             return new CoordinateZ(v.X / len, v.Y / len, v.Z / len);
         }
 
+
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
@@ -227,7 +265,7 @@ namespace NetTopologySuite.Mathematics
         ///<inheritdoc cref="object.Equals(object)"/>
         public override bool Equals(object o)
         {
-            if (!(o is Vector3D v) ) {
+            if (!(o is Vector3D v)) {
                 return false;
             }
             return _x == v.X && _y == v.Y && _z == v.Z;
@@ -243,5 +281,127 @@ namespace NetTopologySuite.Mathematics
             result = 37 * result + _z.GetHashCode();
             return result;
         }
+
+        /// <summary>
+        /// Adds two vectors.
+        /// </summary>
+        /// <param name="left">The first vector to add.</param>
+        /// <param name="right">The second vector to add.</param>
+        /// <returns>The sum of the two vectors.</returns>
+        public static Vector3D operator +(Vector3D left, Vector3D right)
+        {
+            return new Vector3D(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+        }
+
+        /// <summary>
+        /// Modulates a vector with another by performing component-wise multiplication.
+        /// </summary>
+        /// <param name="left">The first vector to multiply.</param>
+        /// <param name="right">The second vector to multiply.</param>
+        /// <returns>The multiplication of the two vectors.</returns>
+        public static Vector3D operator *(Vector3D left, Vector3D right)
+        {
+            return new Vector3D(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
+        }
+
+        /// <summary>
+        /// Assert a vector (return it unchanged).
+        /// </summary>
+        /// <param name="value">The vector to assert (unchanged).</param>
+        /// <returns>The asserted (unchanged) vector.</returns>
+        public static Vector3D operator +(Vector3D value)
+        {
+            return value;
+        }
+
+        /// <summary>
+        /// Subtracts two vectors.
+        /// </summary>
+        /// <param name="left">The first vector to subtract.</param>
+        /// <param name="right">The second vector to subtract.</param>
+        /// <returns>The difference of the two vectors.</returns>
+        public static Vector3D operator -(Vector3D left, Vector3D right)
+        {
+            return new Vector3D(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+        }
+
+        /// <summary>
+        /// Reverses the direction of a given vector.
+        /// </summary>
+        /// <param name="value">The vector to negate.</param>
+        /// <returns>A vector facing in the opposite direction.</returns>
+        public static Vector3D operator -(Vector3D value)
+        {
+            return new Vector3D(-value.X, -value.Y, -value.Z);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator *(double scale, Vector3D value)
+        {
+            return new Vector3D(value.X * scale, value.Y * scale, value.Z * scale);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator *(Vector3D value, double scale)
+        {
+            return new Vector3D(value.X * scale, value.Y * scale, value.Z * scale);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator /(Vector3D value, double scale)
+        {
+            return new Vector3D(value.X / scale, value.Y / scale, value.Z / scale);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator /(Vector3D value, Vector3D scale)
+        {
+            return new Vector3D(value.X / scale.X, value.Y / scale.Y, value.Z / scale.Z);
+        }
+
+        /// <summary>
+        /// Tests for equality between two objects.
+        /// </summary>
+        /// <param name="left">The first value to compare.</param>
+        /// <param name="right">The second value to compare.</param>
+        /// <returns><c>true</c> if <paramref name="left"/> has the same value as <paramref name="right"/>; otherwise, <c>false</c>.</returns>
+        public static bool operator ==(Vector3D left, Vector3D right)
+        {
+            if (left is null) return right is null;
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Tests for inequality between two objects.
+        /// </summary>
+        /// <param name="left">The first value to compare.</param>
+        /// <param name="right">The second value to compare.</param>
+        /// <returns><c>true</c> if <paramref name="left"/> has a different value than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
+        public static bool operator !=(Vector3D left, Vector3D right)
+        {
+            if (left is null) return !(right is null);
+            return !left.Equals(right);
+        }
+
     }
 }
