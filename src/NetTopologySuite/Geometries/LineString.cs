@@ -6,7 +6,7 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Models an OGC-style <code>LineString</code>
+    /// Models an OGC-style <c>LineString</c>
     /// </summary>
     /// <remarks>
     /// A LineString consists of a sequence of two or more vertices,

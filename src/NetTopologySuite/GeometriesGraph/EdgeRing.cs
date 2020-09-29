@@ -247,7 +247,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         protected void MergeLabel(Label deLabel, int geomIndex)
         {
-            var loc = deLabel.GetLocation(geomIndex, Positions.Right);
+            var loc = deLabel.GetLocation(geomIndex, Geometries.Position.Right);
             // no information to be had from this label
             if (loc == Location.Null)
                 return;

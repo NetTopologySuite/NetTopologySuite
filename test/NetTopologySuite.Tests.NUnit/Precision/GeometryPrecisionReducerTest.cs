@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Precision
 {
     [TestFixture]
-    public class GeometryPrecisionReducerTest
+    public class GeometryPrecisionReducerTest : GeometryTestCase
     {
         private PrecisionModel pmFloat;
         private PrecisionModel pmFixed1;
@@ -32,73 +32,89 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         [Test]
         public void TestSquare()
         {
-            var g = reader.Read("POLYGON (( 0 0, 0 1.4, 1.4 1.4, 1.4 0, 0 0 ))");
-            var g2 = reader.Read("POLYGON (( 0 0, 0 1, 1 1, 1 0, 0 0 ))");
-            var gReduce = reducer.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+
+            CheckReduceSameFactory("POLYGON (( 0 0, 0 1.4, 1.4 1.4, 1.4 0, 0 0 ))",
+                "POLYGON (( 0 0, 0 1, 1 1, 1 0, 0 0 ))");
         }
 
         [Test]
         public void TestTinySquareCollapse()
+
         {
-            var g = reader.Read("POLYGON (( 0 0, 0 .4, .4 .4, .4 0, 0 0 ))");
-            var g2 = reader.Read("POLYGON EMPTY");
-            var gReduce = reducer.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceSameFactory("POLYGON (( 0 0, 0 .4, .4 .4, .4 0, 0 0 ))",
+                "POLYGON EMPTY");
         }
 
         [Test]
         public void TestSquareCollapse()
+
         {
-            var g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
-            var g2 = reader.Read("POLYGON EMPTY");
-            var gReduce = reducer.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceSameFactory("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))",
+                "POLYGON EMPTY");
         }
 
         [Test]
         public void TestSquareKeepCollapse()
+
         {
-            var g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
-            var g2 = reader.Read("POLYGON EMPTY");
-            var gReduce = reducerKeepCollapse.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceSameFactory("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))",
+                "POLYGON EMPTY");
         }
 
         [Test]
         public void TestLine()
+
         {
-            var g = reader.Read("LINESTRING ( 0 0, 0 1.4 )");
-            var g2 = reader.Read("LINESTRING (0 0, 0 1)");
-            var gReduce = reducer.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceExactSameFactory("LINESTRING ( 0 0, 0 1.4 )",
+                "LINESTRING (0 0, 0 1)");
+        }
+
+        [Test]
+        public void TestLineNotNoded()
+
+        {
+            CheckReduceExactSameFactory("LINESTRING(1 1, 3 3, 9 9, 5.1 5, 2.1 2)",
+                "LINESTRING(1 1, 3 3, 9 9, 5 5, 2 2)");
         }
 
         [Test]
         public void TestLineRemoveCollapse()
+
         {
-            var g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
-            var g2 = reader.Read("LINESTRING EMPTY");
-            var gReduce = reducer.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceExactSameFactory("LINESTRING ( 0 0, 0 .4 )",
+                "LINESTRING EMPTY");
         }
 
         [Test]
         public void TestLineKeepCollapse()
+
         {
-            var g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
-            var g2 = reader.Read("LINESTRING ( 0 0, 0 0 )");
-            var gReduce = reducerKeepCollapse.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceExactSameFactory(reducerKeepCollapse,
+                "LINESTRING ( 0 0, 0 .4 )",
+                "LINESTRING ( 0 0, 0 0 )");
+        }
+
+        [Test]
+        public void TestPoint()
+
+        {
+            CheckReduceExactSameFactory("POINT(1.1 4.9)",
+                "POINT(1 5)");
+        }
+
+        [Test]
+        public void TestMultiPoint()
+
+        {
+            CheckReduceExactSameFactory("MULTIPOINT( (1.1 4.9),(1.2 4.8), (3.3 6.6))",
+                "MULTIPOINT((1 5), (1 5), (3 7))");
         }
 
         [Test]
         public void TestPolgonWithCollapsedLine()
         {
-            var g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 10, 10 10))");
-            var g2 = reader.Read("POLYGON ((10 10, 100 100, 200 10, 10 10))");
-            var gReduce = reducer.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceSameFactory("POLYGON ((10 10, 100 100, 200 10.1, 300 10, 10 10))",
+                "POLYGON ((10 10, 100 100, 200 10, 10 10))");
         }
 
         [Test]
@@ -113,10 +129,8 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         [Test]
         public void TestPolgonWithCollapsedPoint()
         {
-            var g = reader.Read("POLYGON ((10 10, 100 100, 200 10.1, 300 100, 400 10, 10 10))");
-            var g2 = reader.Read("MULTIPOLYGON (((10 10, 100 100, 200 10, 10 10)), ((200 10, 300 100, 400 10, 200 10)))");
-            var gReduce = reducer.Reduce(g);
-            AssertEqualsExactAndHasSameFactory(gReduce, g2);
+            CheckReduceSameFactory("POLYGON ((10 10, 100 100, 200 10.1, 300 100, 400 10, 10 10))",
+                "MULTIPOLYGON (((10 10, 100 100, 200 10, 10 10)), ((200 10, 300 100, 400 10, 200 10)))");
         }
 
         [Test]
@@ -132,6 +146,33 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         {
             Assert.IsTrue(a.EqualsExact(b));
             Assert.IsTrue(a.Factory == b.Factory);
+        }
+
+        private void CheckReduceExactSameFactory(string wkt, string wktExpected)
+        {
+            CheckReduceExactSameFactory(reducer, wkt, wktExpected);
+        }
+
+        private void CheckReduceExactSameFactory(GeometryPrecisionReducer reducer,
+            string wkt,
+            string wktExpected)
+        {
+            var g = Read(wkt);
+            var expected = Read(wktExpected);
+            var actual = reducer.Reduce(g);
+            Assert.That(actual.EqualsExact(expected), Is.True);
+            Assert.That(expected.Factory, Is.EqualTo(expected.Factory));
+        }
+
+        private void CheckReduceSameFactory(
+            string wkt,
+            string wktExpected)
+        {
+            var g = Read(wkt);
+            var expected = Read(wktExpected);
+            var actual = reducer.Reduce(g);
+            CheckEqual(expected, actual);
+            Assert.That(expected.Factory, Is.EqualTo(expected.Factory));
         }
 
     }

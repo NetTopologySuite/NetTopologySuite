@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.XUnit
         [Test, Category("FailureCase")]
         public override void Test06()
         {
-            base.Test03();
+            base.Test06();
         }
     }
 

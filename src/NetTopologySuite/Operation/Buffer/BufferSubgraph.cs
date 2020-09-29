@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -113,7 +114,7 @@ namespace NetTopologySuite.Operation.Buffer
             // find an outside edge to assign depth to
             var de = _finder.Edge;
             // right side of line returned by finder is on the outside
-            de.SetEdgeDepths(Positions.Right, outsideDepth);
+            de.SetEdgeDepths(Position.Right, outsideDepth);
             CopySymDepths(de);
             ComputeDepths(de);
         }
@@ -192,8 +193,8 @@ namespace NetTopologySuite.Operation.Buffer
         private static void CopySymDepths(DirectedEdge de)
         {
             var sym = de.Sym;
-            sym.SetDepth(Positions.Left, de.GetDepth(Positions.Right));
-            sym.SetDepth(Positions.Right, de.GetDepth(Positions.Left));
+            sym.SetDepth(Position.Left, de.GetDepth(Position.Right));
+            sym.SetDepth(Position.Right, de.GetDepth(Position.Left));
         }
 
         /// <summary>
@@ -216,7 +217,7 @@ namespace NetTopologySuite.Operation.Buffer
                 * count as "outside".
                 */
                 // <FIX> - handle negative depths
-                if (de.GetDepth(Positions.Right) >= 1 && de.GetDepth(Positions.Left) <= 0 && !de.IsInteriorAreaEdge)
+                if (de.GetDepth(Position.Right) >= 1 && de.GetDepth(Position.Left) <= 0 && !de.IsInteriorAreaEdge)
                     de.InResult = true;
             }
         }

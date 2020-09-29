@@ -53,7 +53,15 @@ namespace Open.Topology.TestRunner
             if (string.IsNullOrEmpty(strTestType))
                 return null;
 
-            ParseType(strTestType, xmlTest);
+            try
+            {
+                if (!ParseType(strTestType, xmlTest))
+                    return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
 
             // Handle the Geometry A:
             string wkt = testInfo.GetValue("a");
@@ -215,7 +223,7 @@ namespace Open.Topology.TestRunner
 
             else
             {
-                System.Diagnostics.Debug.Assert(false);
+                //System.Diagnostics.Debug.Assert(false);
                 throw new ArgumentException(string.Format("The operation type \"{0}\" is not valid: ", testType));
             }
 

@@ -11,6 +11,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// 2 | 3
     /// </para>
     /// </summary>
+    [Obsolete("Use NetTopologySuite.Geometries.Quadrant")]
     public class QuadrantOp
     {
 

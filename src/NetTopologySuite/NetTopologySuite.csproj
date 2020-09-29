@@ -6,6 +6,7 @@
     <SignAssembly>true</SignAssembly>
     <NoWarn>659,168,1587</NoWarn>
     <EnableApiCompat>true</EnableApiCompat>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Label="Assembly Info">

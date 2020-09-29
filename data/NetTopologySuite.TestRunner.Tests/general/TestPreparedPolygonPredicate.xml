@@ -12,9 +12,9 @@
   <b>
       POINT (10 10)
   </b>
-<test>  <op name="contains"       arg1="A" arg2="B">   false  </op> </test>
-<test>  <op name="covers"         arg1="A" arg2="B">   true   </op> </test>
-<test>  <op name="intersects"     arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains"   		arg1="A" arg2="B">   false  </op> </test>
+<test>  <op name="covers"     		arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="intersects" 		arg1="A" arg2="B">   true   </op> </test>
 </case>
 
 <case>
@@ -131,8 +131,8 @@
 
 <case>
   <desc>mA/L
-    A has 2 shells touching at one vertex and one non-vertex.
-    B passes between the shells, but is wholely contained
+  	A has 2 shells touching at one vertex and one non-vertex.
+  	B passes between the shells, but is wholely contained
   </desc>
   <a>
     MULTIPOLYGON (((100 30, 30 110, 150 110, 100 30)), 
@@ -147,8 +147,8 @@
 
 <case>
   <desc>mA/L
-    A has 2 shells touching at one vertex and one non-vertex
-    B passes between the shells, but is NOT contained (since it is slightly offset)
+  	A has 2 shells touching at one vertex and one non-vertex
+  	B passes between the shells, but is NOT contained (since it is slightly offset)
   
   </desc>
   <a>
@@ -252,9 +252,9 @@
   <b>
     POLYGON((20 20, 20 100, 120 100, 140 20, 20 20)) 
   </b>
-<test>  <op name="contains"       arg1="A" arg2="B">   true  </op> </test>
-<test>  <op name="covers"         arg1="A" arg2="B">   true  </op> </test>
-<test>  <op name="intersects"     arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains"   		arg1="A" arg2="B">   true  </op> </test>
+<test>  <op name="covers"     		arg1="A" arg2="B">   true  </op> </test>
+<test>  <op name="intersects" 		arg1="A" arg2="B">   true   </op> </test>
 </case>
 
 <case>
@@ -266,9 +266,9 @@
   <b>
     LINESTRING (10 60, 50 60, 60 30, 60 30, 90 80, 90 80, 160 70) 
   </b>
-<test>  <op name="contains"       arg1="A" arg2="B">   false  </op> </test>
-<test>  <op name="covers"         arg1="A" arg2="B">   false  </op> </test>
-<test>  <op name="intersects"     arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains"   		arg1="A" arg2="B">   false  </op> </test>
+<test>  <op name="covers"     		arg1="A" arg2="B">   false  </op> </test>
+<test>  <op name="intersects" 		arg1="A" arg2="B">   true   </op> </test>
 </case>
 
 <case>
@@ -280,9 +280,9 @@
   <b>
     LINESTRING (10 60, 50 60, 60 30, 60 30, 90 80, 90 80, 160 70) 
   </b>
-<test>  <op name="contains"       arg1="A" arg2="B">   false  </op> </test>
-<test>  <op name="covers"         arg1="A" arg2="B">   false  </op> </test>
-<test>  <op name="intersects"     arg1="A" arg2="B">   true   </op> </test>
+<test>  <op name="contains"   		arg1="A" arg2="B">   false  </op> </test>
+<test>  <op name="covers"     		arg1="A" arg2="B">   false  </op> </test>
+<test>  <op name="intersects" 		arg1="A" arg2="B">   true   </op> </test>
 </case>
 
 

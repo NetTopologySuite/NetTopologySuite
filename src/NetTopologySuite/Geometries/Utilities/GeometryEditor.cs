@@ -37,7 +37,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </para>
     /// <para>
     /// All changes must be consistent with the original Geometry's structure
-    /// (e.g. a <code>Polygon</code> cannot be collapsed into a <code>LineString</code>).
+    /// (e.g. a <c>Polygon</c> cannot be collapsed into a <c>LineString</c>).
     /// If changing the structure is required, use a <see cref="GeometryTransformer"/>.
     /// </para>
     /// <para>
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Geometries.Utilities
             /// <summary>
             /// Edits a Geometry by returning a new Geometry with a modification.
             /// The returned Geometry may be the input geometry itself.
-            /// It may be <code>null</code> if the geometry is to be deleted.
+            /// It may be <c>null</c> if the geometry is to be deleted.
             /// </summary>
             /// <param name="geometry">The Geometry to modify.</param>
             /// <param name="factory">

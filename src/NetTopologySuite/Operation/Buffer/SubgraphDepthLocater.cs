@@ -4,6 +4,7 @@ using System.Linq;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -114,10 +115,10 @@ namespace NetTopologySuite.Operation.Buffer
                 if (Orientation.Index(_seg.P0, _seg.P1, stabbingRayLeftPt) == OrientationIndex.Right) continue;
 
                 // stabbing line cuts this segment, so record it
-                int depth = dirEdge.GetDepth(Positions.Left);
+                int depth = dirEdge.GetDepth(Position.Left);
                 // if segment direction was flipped, use RHS depth instead
                 if (!_seg.P0.Equals(pts[i]))
-                    depth = dirEdge.GetDepth(Positions.Right);
+                    depth = dirEdge.GetDepth(Position.Right);
                 var ds = new DepthSegment(_seg, depth);
                 stabbedSegments.Add(ds);
             }
@@ -195,22 +196,22 @@ namespace NetTopologySuite.Operation.Buffer
                 return _upwardSeg.CompareTo(other._upwardSeg);
             }
 
-            /// <summary>
-            /// Compare two collinear segments for left-most ordering.
-            /// If segments are vertical, use vertical ordering for comparison.
-            /// If segments are equal, return 0.
-            /// Segments are assumed to be directed so that the second coordinate is >= to the first
-            /// (e.g. up and to the right).
-            /// </summary>
-            /// <param name="seg0">A segment to compare.</param>
-            /// <param name="seg1">A segment to compare.</param>
-            /// <returns></returns>
-            private static int CompareX(LineSegment seg0, LineSegment seg1)
-            {
-                int compare0 = seg0.P0.CompareTo(seg1.P0);
-                if (compare0 != 0) return compare0;
-                return seg0.P1.CompareTo(seg1.P1);
-            }
+            ///// <summary>
+            ///// Compare two collinear segments for left-most ordering.
+            ///// If segments are vertical, use vertical ordering for comparison.
+            ///// If segments are equal, return 0.
+            ///// Segments are assumed to be directed so that the second coordinate is >= to the first
+            ///// (e.g. up and to the right).
+            ///// </summary>
+            ///// <param name="seg0">A segment to compare.</param>
+            ///// <param name="seg1">A segment to compare.</param>
+            ///// <returns></returns>
+            //private static int CompareX(LineSegment seg0, LineSegment seg1)
+            //{
+            //    int compare0 = seg0.P0.CompareTo(seg1.P0);
+            //    if (compare0 != 0) return compare0;
+            //    return seg0.P1.CompareTo(seg1.P1);
+            //}
 
             public override string ToString()
             {

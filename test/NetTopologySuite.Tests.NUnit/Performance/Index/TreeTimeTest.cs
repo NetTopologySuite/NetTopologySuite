@@ -14,6 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Index
         public const int NUM_ITEMS = 100000;
 
         [Test]
+        [Category("LongRunning")]
         public void TestWithObject()
         {
             int n = NUM_ITEMS;

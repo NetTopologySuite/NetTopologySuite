@@ -418,7 +418,7 @@ namespace NetTopologySuite.GeometriesGraph
             int boundaryCount = 1;
             // determine the current location for the point (if any)
             //Location loc = Location.Null;
-            var loc = lbl.GetLocation(argIndex, Positions.On);
+            var loc = lbl.GetLocation(argIndex, Geometries.Position.On);
             if (loc == Location.Boundary)
                 boundaryCount++;
 

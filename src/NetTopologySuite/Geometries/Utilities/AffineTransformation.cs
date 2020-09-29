@@ -587,7 +587,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// A positive rotation angle corresponds
         /// to a counter-clockwise rotation.
         /// The transformation matrix for a rotation
-        /// by an angle <code>theta</code>
+        /// by an angle <c>theta</c>
         /// has the value:
         /// <blockquote><pre>
         /// |  cos(theta)  -sin(theta)   0 |
@@ -959,7 +959,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="src"> the coordinate to transform</param>
         /// <param name="dest"> the coordinate to accept the results</param>
-        /// <returns> the <code>dest</code> coordinate</returns>
+        /// <returns> the <c>dest</c> coordinate</returns>
         ///
         public Coordinate Transform(Coordinate src, Coordinate dest)
         {
@@ -986,7 +986,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Applies this transformation to the i'th coordinate
         /// in the given CoordinateSequence.
         /// </summary>
-        /// <param name="seq"> a <code>CoordinateSequence</code></param>
+        /// <param name="seq"> a <c>CoordinateSequence</c></param>
         /// <param name="i"> the index of the coordinate to transform</param>
         public void Transform(CoordinateSequence seq, int i)
         {
