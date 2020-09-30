@@ -188,7 +188,7 @@ namespace NetTopologySuite.Index.KdTree
             bool isOddLevel = true;
             bool isLessThan = true;
 
-            /**
+            /*
              * Traverse the tree, first cutting the plane left-right (by X ordinate)
              * then top-bottom (by Y ordinate)
              */
@@ -355,6 +355,47 @@ namespace NetTopologySuite.Index.KdTree
         {
             return QueryNodePoint(Root, queryPt, true);
         }
+
+        /// <summary>
+        /// Gets a value indicating the depth of the tree
+        /// </summary>
+        /// <returns>The depth of the tree</returns>
+        public int Depth
+        {
+            get => DepthNode(Root);
+        }
+
+        private int DepthNode(KdNode<T> currentNode)
+        {
+            if (currentNode == null)
+                return 0;
+
+            int dL = DepthNode(currentNode.Left);
+            int dR = DepthNode(currentNode.Right);
+            return 1 + (dL > dR ? dL : dR);
+        }
+
+        /// <summary>
+        /// Gets a value indicating the number of items in the tree.
+        /// </summary>
+        /// <returns>The number of items in the tree.</returns>
+        public int Count 
+        {
+            get => CountNode(Root);
+        }
+
+        private static int CountNode(KdNode<T> currentNode)
+        {
+            if (currentNode == null)
+                return 0;
+
+            int sizeL = CountNode(currentNode.Left);
+            int sizeR = CountNode(currentNode.Right);
+
+            return 1 + sizeL + sizeR;
+        }
+
+
 
         private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T : class
         {

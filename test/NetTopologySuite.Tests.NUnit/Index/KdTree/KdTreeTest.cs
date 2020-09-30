@@ -123,6 +123,18 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 "MULTIPOINT ( (10 60), (20 60), (20 60))");
         }
 
+        [Test]
+        public void TestSizeDepth()
+        {
+            var index = Build("MULTIPOINT ( (10 60), (20 60), (16 60), (1 1), (23 400))", 0);
+            int count = index.Count;
+            Assert.AreEqual(5, count);
+            int depth = index.Depth;
+            // these are weak conditions, but depth varies depending on data and algorithm
+            Assert.True(depth > 1);
+            Assert.True(depth <= count);
+        }
+
         private void TestQuery(string wktInput, double tolerance,
             Envelope queryEnv, string wktExpected)
         {
