@@ -28,12 +28,10 @@ namespace NetTopologySuite.Noding.Snapround
     {
         private const double Tolerance = 0.5d;
 
-        private readonly Coordinate _ptHot;
-
-        private readonly double _minx;
-        private readonly double _maxx;
-        private readonly double _miny;
-        private readonly double _maxy;
+        /// <summary>The <b>scaled</b> x-ordinate of the hot pixel point (<see cref="Coordinate"/>)</summary>
+        private readonly double _hpx;
+        /// <summary>The <b>scaled</b> y-ordinate of the hot pixel point (<see cref="Coordinate"/>)</summary>
+        private readonly double _hpy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HotPixel"/> class.
@@ -47,28 +45,29 @@ namespace NetTopologySuite.Noding.Snapround
         { }
 
         /// <summary>
-        /// Creates a new hot pixel, using a given scale factor.
+        /// Creates a new hot pixel centered on a rounded point, using a given scale factor.
         /// The scale factor must be strictly positive(non-zero).
         /// </summary>
-        /// <param name="pt">The coordinate at the center of the hot pixel</param>
+        /// <param name="pt">The coordinate at the center of the hot pixel (already rounded)</param>
         /// <param name="scaleFactor">The scale factor determining the pixel size</param>
         public HotPixel(Coordinate pt, double scaleFactor)
         {
             Coordinate = pt;
-            _ptHot = pt;
             ScaleFactor = scaleFactor;
 
             if (scaleFactor <= 0d)
                 throw new ArgumentException("Scale factor must be non-zero");
 
             if (scaleFactor != 1.0)
-                _ptHot = ScaleRound(pt);
-
-            // extreme values for pixel
-            _minx = _ptHot.X - Tolerance;
-            _maxx = _ptHot.X + Tolerance;
-            _miny = _ptHot.Y - Tolerance;
-            _maxy = _ptHot.Y + Tolerance;
+            {
+                _hpx = ScaleRound(pt.X);
+                _hpy = ScaleRound(pt.Y);
+            }
+            else
+            {
+                _hpx = pt.X;
+                _hpy = pt.Y;
+            }
         }
 
         /// <summary>
@@ -100,10 +99,10 @@ namespace NetTopologySuite.Noding.Snapround
             return Math.Round(val * ScaleFactor);
         }
 
-        private Coordinate ScaleRound(Coordinate p)
-        {
-            return new Coordinate(ScaleRound(p.X), ScaleRound(p.Y));
-        }
+        //private Coordinate ScaleRound(Coordinate p)
+        //{
+        //    return new Coordinate(ScaleRound(p.X), ScaleRound(p.Y));
+        //}
 
         /// <summary>
         /// Scale without rounding.
@@ -140,13 +139,13 @@ namespace NetTopologySuite.Noding.Snapround
         {
             double x = Scale(p.X);
             double y = Scale(p.Y);
-            if (x >= _maxx) return false;
+            if (x >= _hpx + Tolerance) return false;
             // check Left side
-            if (x < _minx) return false;
+            if (x < _hpx - Tolerance) return false;
             // check Top side
-            if (y >= _maxy) return false;
+            if (y >= _hpy + Tolerance) return false;
             // check Bottom side
-            if (y < _miny) return false;
+            if (y < _hpy - Tolerance) return false;
             return true;
         }
         /// <summary>
@@ -196,22 +195,26 @@ namespace NetTopologySuite.Noding.Snapround
                 qy = p0y;
             }
             /*
-            * Report false if segment env does not intersect pixel env.
-            * This check reflects the fact that the pixel Top and Right sides
-            * are open (not part of the pixel).
-            */
+             * Report false if segment env does not intersect pixel env.
+             * This check reflects the fact that the pixel Top and Right sides
+             * are open (not part of the pixel).
+             */
             // check Right side
+            double maxx = _hpx + Tolerance;
             double segMinx = Math.Min(px, qx);
-            if (segMinx >= _maxx) return false;
+            if (segMinx >= maxx) return false;
             // check Left side
+            double minx = _hpx - Tolerance;
             double segMaxx = Math.Max(px, qx);
-            if (segMaxx < _minx) return false;
+            if (segMaxx < minx) return false;
             // check Top side
+            double maxy = _hpy + Tolerance;
             double segMiny = Math.Min(py, qy);
-            if (segMiny >= _maxy) return false;
+            if (segMiny >= maxy) return false;
             // check Bottom side
+            double miny = _hpy - Tolerance;
             double segMaxy = Math.Max(py, qy);
-            if (segMaxy < _miny) return false;
+            if (segMaxy < miny) return false;
 
             /*
              * Vertical or horizontal segments must now intersect
@@ -241,14 +244,14 @@ namespace NetTopologySuite.Noding.Snapround
              * This is the case if the orientations for each corner of the side are different.
              */
 
-            int orientUL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _minx, _maxy);
+            int orientUL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, minx, maxy);
             if (orientUL == 0)
             {
                 if (py < qy) return false;
                 return true;
             }
 
-            int orientUR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _maxx, _maxy);
+            int orientUR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, maxx, maxy);
             if (orientUR == 0)
             {
                 if (py > qy) return false;
@@ -260,19 +263,22 @@ namespace NetTopologySuite.Noding.Snapround
                 return true;
             }
 
-            int orientLL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _minx, _miny);
+            int orientLL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, minx, miny);
+            // Note: The following always evaluates to false:
+            /*
             if (orientUL == 0)
             {
                 // LL corner is the only one in pixel interior
                 return true;
             }
+             */
             //--- check crossing Left side
             if (orientLL != orientUL)
             {
                 return true;
             }
 
-            int orientLR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _maxx, _miny);
+            int orientLR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, maxx, miny);
             if (orientLR == 0)
             {
                 if (py < qy) return false;
@@ -312,11 +318,16 @@ namespace NetTopologySuite.Noding.Snapround
             const int lowerLeft = 2;
             const int lowerRight = 3;
 
+            double minx = _hpx - Tolerance;
+            double maxx = _hpx + Tolerance;
+            double miny = _hpy - Tolerance;
+            double maxy = _hpy + Tolerance;
+
             var corner = new Coordinate[4];
-            corner[upperRight] = new Coordinate(_maxx, _maxy);
-            corner[upperLeft] = new Coordinate(_minx, _maxy);
-            corner[lowerLeft] = new Coordinate(_minx, _miny);
-            corner[lowerRight] = new Coordinate(_maxx, _miny);
+            corner[upperRight] = new Coordinate(maxx, maxy);
+            corner[upperLeft] = new Coordinate(minx, maxy);
+            corner[lowerLeft] = new Coordinate(minx, miny);
+            corner[lowerRight] = new Coordinate(maxx, miny);
 
             LineIntersector li = new RobustLineIntersector();
             li.ComputeIntersection(p0, p1, corner[0], corner[1]);
@@ -358,7 +369,7 @@ namespace NetTopologySuite.Noding.Snapround
 
         public override string ToString()
         {
-            return $"HP({WKTWriter.Format(_ptHot)})";
+            return $"HP({WKTWriter.Format(Coordinate)})";
         }
     }
 }
