@@ -2,16 +2,17 @@
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Index.KdTree;
 
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
-    /// An index which creates <see cref="HotPixel"/>s for provided points,
-    /// and allows performing range queries on them.
+    ///  An index which creates unique <see cref="HotPixel"/>s for provided points,
+    /// and performs range queries on them.
+    /// The points passed to the index do not needed to be
+    /// rounded to the specified scale factor; this is done internally
+    /// when creating the HotPixels for them.
     /// </summary>
     /// <author>Martin Davis</author>
     internal sealed class HotPixelIndex
@@ -21,7 +22,7 @@ namespace NetTopologySuite.Noding.Snapround
 
         /*
          * Use a kd-tree to index the pixel centers for optimum performance.
-         * Since HotPixels have an extent, queries to the
+         * Since HotPixels have an extent, range queries to the
          * index must enlarge the query range by a suitable value 
          * (using the pixel width is safest).
          */
@@ -134,7 +135,12 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="pts">The points to add</param>
         public void Add(IEnumerable<Coordinate> pts)
         {
-
+            /*
+             * Attempt to shuffle the points before adding.
+             * This avoids having long monontic runs of points
+             * causing an unbalanced KD-tree, which would create
+             * performance and robustness issues.
+             */
             if (pts is Coordinate[] ptsA)
                 pts = new ShuffledCoordinates(ptsA);
 
@@ -150,6 +156,11 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="pts">The points to add</param>
         public void AddNodes(IEnumerable<Coordinate> pts)
         {
+            /*
+             * Node points are not shuffled, since they are
+             * added after the vertex points, and hence the KD-tree should 
+             * be reasonably balanced already.
+             */
             foreach (var pt in pts)
             {
                 var hp = Add(pt);
