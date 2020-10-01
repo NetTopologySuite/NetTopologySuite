@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Xml;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Index.KdTree;
 
 namespace NetTopologySuite.Noding.Snapround
@@ -32,12 +37,107 @@ namespace NetTopologySuite.Noding.Snapround
             _scaleFactor = pm.Scale;
         }
 
+
+        /// <summary>
+        /// Utility class to enumerate through a shuffled array of
+        /// <see cref="Coordinate"/>s using the
+        /// <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">Fisher-Yates shuffle algorithm</a>
+        /// </summary>
+        private sealed class ShuffledCoordinates : IEnumerable<Coordinate>
+        {
+            private readonly Coordinate[] _pts;
+
+            /// <summary>
+            /// Creates an instance of this class using the provided <see cref="Coordinate"/>s.
+            /// </summary>
+            /// <param name="pts">An array of coordinates</param>
+            public ShuffledCoordinates(Coordinate[] pts)
+            {
+                _pts = pts;
+            }
+
+            private sealed class ShuffledCoordinatesEnumerator : IEnumerator<Coordinate>
+            {
+                private readonly Random _rnd = new Random(13);
+                private readonly Coordinate[] _pts;
+                private readonly int[] _indices;
+                private int _index;
+
+                /// <summary>
+                /// Creates an instance of this class using the provided <see cref="Coordinate"/>s.
+                /// </summary>
+                /// <param name="pts">An array of coordinates</param>
+                public ShuffledCoordinatesEnumerator(Coordinate[] pts)
+                {
+                    _pts = pts;
+                    _indices = ArrayPool<int>.Shared.Rent(pts?.Length ?? 0);
+                    Reset();
+                }
+
+                /// <inheritdoc cref="IEnumerator.MoveNext()"/>
+                public bool MoveNext()
+                {
+                    if (_index < 1)
+                    {
+                        Current = null;
+                        return false;
+                    }
+
+                    int j = _rnd.Next(_index);
+                    Current = _pts[_indices[j]];
+                    _indices[j] = _indices[--_index];
+                    return true;
+                }
+
+                /// <inheritdoc cref="IEnumerator.Reset()"/>
+                public void Reset()
+                {
+                    for (int i = 0; i < _indices.Length; i++)
+                        _indices[i] = i;
+                    _index = _pts?.Length ?? 0;
+                    Current = null;
+                    // Initialize Rnd?
+                }
+
+                /// <inheritdoc cref="IEnumerator{T}.Current"/>
+                public Coordinate Current
+                {
+                    get;
+                    private set;
+                }
+
+                object IEnumerator.Current => Current;
+
+                /// <inheritdoc cref="IDisposable.Dispose()"/>
+                public void Dispose()
+                {
+                    ArrayPool<int>.Shared.Return(_indices);
+                }
+            }
+
+            /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>
+            public IEnumerator<Coordinate> GetEnumerator()
+            {
+                return new ShuffledCoordinatesEnumerator(_pts);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+
         /// <summary>
         /// Adds a series of points as non-node pixels
         /// </summary>
         /// <param name="pts">The points to add</param>
         public void Add(IEnumerable<Coordinate> pts)
         {
+
+            if (pts is Coordinate[] ptsA)
+                pts = new ShuffledCoordinates(ptsA);
+
             foreach (var pt in pts)
             {
                 Add(pt);
