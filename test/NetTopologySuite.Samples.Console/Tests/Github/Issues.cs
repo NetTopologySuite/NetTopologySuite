@@ -8,11 +8,12 @@ using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.OverlayNG;
 using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Precision;
-using NetTopologySuite.SnapRound;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github
@@ -363,7 +364,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             Geometry res = null;
             //                                                                                     |
             //                                                             Some cruel scale factor V
-            Assert.DoesNotThrow(() => res = SnapRoundOverlayFunctions.SnappedIntersection(g1, g2, 0.1));
+            Assert.DoesNotThrow(() => res = OverlayNG.Overlay(g1, g2, SpatialFunction.Intersection, new PrecisionModel(10)));
             Assert.That(res, Is.Not.Null);
             Assert.That(res.IsValid, Is.True);
 

@@ -2,8 +2,8 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Valid;
-using NetTopologySuite.SnapRound;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
@@ -107,8 +107,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             }
             catch (TopologyException)
             {
-                Debug.WriteLine("Probing with SnapRoundOverlayFunctions");
-                Assert.DoesNotThrow(() => result = SnapRoundOverlayFunctions.Intersection(geom1, geom2, scaleFactor));
+                Debug.WriteLine("Probing with OverlayNG");
+                Assert.DoesNotThrow(() => result = NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(geom1, geom2, SpatialFunction.Intersection, new PrecisionModel(scaleFactor)));
             }
 
             ToImage(number, geom1, geom2, result);
