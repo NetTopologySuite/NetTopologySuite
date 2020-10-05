@@ -137,7 +137,7 @@ namespace NetTopologySuite.Noding.Snapround
         {
             /*
              * Attempt to shuffle the points before adding.
-             * This avoids having long monontic runs of points
+             * This avoids having long monotonic runs of points
              * causing an unbalanced KD-tree, which would create
              * performance and robustness issues.
              */

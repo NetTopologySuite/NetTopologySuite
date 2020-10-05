@@ -99,11 +99,6 @@ namespace NetTopologySuite.Noding.Snapround
             return Math.Round(val * ScaleFactor);
         }
 
-        //private Coordinate ScaleRound(Coordinate p)
-        //{
-        //    return new Coordinate(ScaleRound(p.X), ScaleRound(p.Y));
-        //}
-
         /// <summary>
         /// Scale without rounding.
         /// This ensures intersections are checked against original
@@ -247,31 +242,32 @@ namespace NetTopologySuite.Noding.Snapround
             int orientUL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, minx, maxy);
             if (orientUL == 0)
             {
+                // upward segment does not intersect pixel interior
                 if (py < qy) return false;
+                // downward segment must intersect pixel interior
                 return true;
             }
 
             int orientUR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, maxx, maxy);
             if (orientUR == 0)
             {
+                // downward segment does not intersect pixel interior
                 if (py > qy) return false;
+                // upward segment must intersect pixel interior
                 return true;
             }
             //--- check crossing Top side
-            if (orientUL != orientUR)
-            {
+            if (orientUL != orientUR) {
                 return true;
             }
 
             int orientLL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, minx, miny);
-            // Note: The following always evaluates to false:
-            /*
-            if (orientUL == 0)
+            if (orientLL == 0)
             {
-                // LL corner is the only one in pixel interior
+                // segment crossed LL corner, which is the only one in pixel interior
                 return true;
             }
-             */
+            
             //--- check crossing Left side
             if (orientLL != orientUL)
             {
@@ -281,7 +277,9 @@ namespace NetTopologySuite.Noding.Snapround
             int orientLR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, maxx, miny);
             if (orientLR == 0)
             {
+                // upward segment does not intersect pixel interior
                 if (py < qy) return false;
+                // downward segment must intersect pixel interior
                 return true;
             }
 
