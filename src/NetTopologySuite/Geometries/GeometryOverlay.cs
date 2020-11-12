@@ -10,7 +10,6 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// A class that encapsulates geometry overlay functionality
     /// </summary>
-    [Serializable]
     public abstract class GeometryOverlay
     {
         /// <summary>
@@ -179,7 +178,6 @@ namespace NetTopologySuite.Geometries
 
         #region Standard implementations
 
-        [Serializable]
         private sealed class OverlayV1 : GeometryOverlay
         {
             public static GeometryOverlay Instance { get; } = new OverlayV1();
@@ -204,7 +202,6 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        [Serializable]
         private sealed class OverlayV2 : GeometryOverlay
         {
             public static GeometryOverlay Instance { get; } = new OverlayV2();

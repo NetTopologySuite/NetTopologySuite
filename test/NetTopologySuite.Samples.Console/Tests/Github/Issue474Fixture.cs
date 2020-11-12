@@ -39,7 +39,9 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void TestUsingOverlayNG()
         {
-            var services = new NtsGeometryServices(CoordinateArraySequenceFactory.Instance, new PrecisionModel(1000d), 28992, GeometryOverlay.NG);
+            var services = new NtsGeometryServices(
+                CoordinateArraySequenceFactory.Instance, new PrecisionModel(1000d),
+                28992, GeometryOverlay.NG, new CoordinateEqualityComparer());
 
             // Geometry from WKT
             var reader = new IO.WKTReader(services);

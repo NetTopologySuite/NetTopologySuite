@@ -1,5 +1,6 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;
 
@@ -10,13 +11,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /// </summary>
     public class GeometryOverlayTest : GeometryTestCase
     {
+        private static NtsGeometryServices OverlayLegacy = new NtsGeometryServices(
+            CoordinateArraySequenceFactory.Instance, PrecisionModel.Floating.Value, 0, GeometryOverlay.Legacy, new CoordinateEqualityComparer());
+        private static NtsGeometryServices OverlayNG = new NtsGeometryServices(
+            CoordinateArraySequenceFactory.Instance, PrecisionModel.Floating.Value, 0, GeometryOverlay.NG, new CoordinateEqualityComparer());
+
         private static (Geometry a, Geometry b) Create()
         {
-            var i = NtsGeometryServices.Instance;
-            var gf = new GeometryFactory(i.DefaultPrecisionModel, 0, i.DefaultCoordinateSequenceFactory, GeometryOverlay.Legacy);
-            var p1 = gf.CreatePoint(new Coordinate(10, 10));
-            gf = new GeometryFactory(i.DefaultPrecisionModel, 0, i.DefaultCoordinateSequenceFactory, GeometryOverlay.NG);
-            var p2 = gf.CreatePoint(new Coordinate(11, 11));
+            var i = OverlayLegacy;
+            var p1 = i.CreateGeometryFactory().CreatePoint(new Coordinate(10, 10));
+            i = OverlayNG;
+            var p2 = i.CreateGeometryFactory().CreatePoint(new Coordinate(11, 11));
 
             return (p1, p2);
         }
@@ -51,7 +56,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             //GeometryOverlay.setOverlayImpl(GeometryOverlay.OVERLAY_PROPERTY_VALUE_NG);
             var pmFixed = new PrecisionModel(1);
-            var ntsGeometryServices = new NtsGeometryServices(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory, pmFixed, NtsGeometryServices.Instance.DefaultSRID, GeometryOverlay.NG);
+            var instance = NtsGeometryServices.Instance;
+            var ntsGeometryServices = new NtsGeometryServices(instance.DefaultCoordinateSequenceFactory, pmFixed, instance.DefaultSRID, GeometryOverlay.NG, instance.CoordinateEqualityComparer);
             var expected = Read(ntsGeometryServices, "POLYGON ((1 2, 4 1, 1 1, 1 2))");
 
             CheckIntersectionPM(ntsGeometryServices, expected);
@@ -62,7 +68,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             //GeometryOverlay.setOverlayImpl(GeometryOverlay.OVERLAY_PROPERTY_VALUE_NG);
             var pmFloat = new PrecisionModel();
-            var ntsGeometryServices = new NtsGeometryServices(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory, pmFloat, NtsGeometryServices.Instance.DefaultSRID, GeometryOverlay.NG);
+            var instance = NtsGeometryServices.Instance;
+            var ntsGeometryServices = new NtsGeometryServices(instance.DefaultCoordinateSequenceFactory, pmFloat, instance.DefaultSRID, GeometryOverlay.NG, instance.CoordinateEqualityComparer);
             var expected = Read(ntsGeometryServices, "POLYGON ((1 1, 1 2, 4 1.25, 4 1, 1 1))");
 
             CheckIntersectionPM(ntsGeometryServices, expected);

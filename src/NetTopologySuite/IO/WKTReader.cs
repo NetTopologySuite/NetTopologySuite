@@ -71,7 +71,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory">The factory used to create <c>Geometry</c>s.</param>
         [Obsolete("Use a constructor with a configured NtsGeometryServices instance.")]
         public WKTReader(GeometryFactory factory)
-            : this(new NtsGeometryServices(factory?.CoordinateSequenceFactory ?? throw new ArgumentNullException(nameof(factory)), factory.PrecisionModel, factory.SRID, factory.GeometryOverlay))
+            : this(factory.GeometryServices)
         {
         }
 
@@ -107,9 +107,7 @@ namespace NetTopologySuite.IO
             {
                 if (value != null)
                 {
-                    _ntsGeometryServices = new NtsGeometryServices(
-                        value.CoordinateSequenceFactory, value.PrecisionModel,
-                        value.SRID, value.GeometryOverlay);
+                    _ntsGeometryServices = value.GeometryServices;
                     // Not sure about this:
                     // DefaultSRID = value.SRID;
                 }

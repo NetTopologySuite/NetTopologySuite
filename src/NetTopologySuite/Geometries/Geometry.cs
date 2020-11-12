@@ -2095,6 +2095,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="b"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
+
+        [Obsolete("Will be removed in a future version")]
         protected static bool Equal(Coordinate a, Coordinate b, double tolerance)
         {
             if (tolerance == 0)
@@ -2188,6 +2190,7 @@ namespace NetTopologySuite.Geometries
                     _inner.Filter(seq);
                 }
             }
+
         }
     }
 }
