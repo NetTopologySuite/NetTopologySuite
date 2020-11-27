@@ -10,6 +10,7 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// A class that encapsulates geometry overlay functionality
     /// </summary>
+    [Serializable]
     public abstract class GeometryOverlay
     {
         private static GeometryOverlay _default;
@@ -186,8 +187,9 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentException("Operation does not support GeometryCollection arguments", nameof(b));
         }
 
-#region Standard implementations
+        #region Standard implementations
 
+        [Serializable]
         private sealed class OverlayV1 : GeometryOverlay
         {
             public static GeometryOverlay Instance { get; } = new OverlayV1();
@@ -207,6 +209,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        [Serializable]
         private sealed class OverlayV2 : GeometryOverlay
         {
             public static GeometryOverlay Instance { get; } = new OverlayV2();
