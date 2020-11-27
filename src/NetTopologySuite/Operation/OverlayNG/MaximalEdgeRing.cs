@@ -250,12 +250,8 @@ namespace NetTopologySuite.Operation.OverlayNG
                 do
                 {
                     coords.Add(edge.Orig);
-                    if (edge == null)
-                        break;
                     if (edge.NextResultMax == null)
-                    {
                         break;
-                    }
 
                     edge = edge.NextResultMax;
                 } while (edge != _startEdge);
