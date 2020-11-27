@@ -397,26 +397,28 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The result of the overlay operation.</returns>
         public Geometry GetResult()
         {
+            // handle empty inputs which determine result
             if (OverlayUtility.IsEmptyResult(_opCode,
-                _inputGeom.GetGeometry(0),
+            _inputGeom.GetGeometry(0),
                 _inputGeom.GetGeometry(1),
                 _pm))
             {
                 return CreateEmptyResult();
             }
 
-            // special logic for Point-Point inputs
+            // handle Point-Point inputs
             if (_inputGeom.IsAllPoints)
             {
                 return OverlayPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
 
-            // special logic for Point-nonPoint inputs 
+            // handle Point-nonPoint inputs 
             if (!_inputGeom.IsSingle && _inputGeom.HasPoints)
             {
                 return OverlayMixedPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
 
+            // handle case where both inputs are formed of edges (Lines and Polygons)
             var result = ComputeEdgeOverlay();
 
             return result;

@@ -36,16 +36,20 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// <author>Martin Davis</author>
     public sealed class OverlayNGRobust
     {
-        //--- The following function is provided to allow use in the TestRunner
-        public static Geometry Union(Geometry a)
+        /// <summary>
+        /// Computes unary union using robust computation.
+        /// </summary>
+        /// <param name="geom">The geometry to union</param>
+        /// <returns>The union result</returns>
+        public static Geometry Union(Geometry geom)
         {
-            if (a == null)
+            if (geom == null)
             {
-                throw new ArgumentNullException(nameof(a));
+                throw new ArgumentNullException(nameof(geom));
             }
 
             var unionSRFun = new UnionStrategy((g0, g1) => Overlay(g0, g1, SpatialFunction.Union), true);
-            var op = new UnaryUnionOp(a) {UnionStrategy = unionSRFun};
+            var op = new UnaryUnionOp(geom) {UnionStrategy = unionSRFun};
             return op.Union();
         }
 
