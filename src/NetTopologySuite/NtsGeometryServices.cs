@@ -14,6 +14,7 @@ namespace NetTopologySuite
         private static volatile NtsGeometryServices s_instance = new NtsGeometryServices();
 
         private readonly ConcurrentDictionary<GeometryFactoryKey, GeometryFactory> m_factories = new ConcurrentDictionary<GeometryFactoryKey, GeometryFactory>();
+        private GeometryOverlay _geometryOverlay;
 
         /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
@@ -49,6 +50,21 @@ namespace NetTopologySuite
             get => s_instance;
             set => s_instance = value ?? throw new ArgumentNullException(nameof(value));
         }
+
+        public GeometryOverlay GeometryOverlay
+        {
+            get { return _geometryOverlay ?? (_geometryOverlay = GeometryOverlay.Default); }
+            set
+            {
+                if (_geometryOverlay != null)
+                    throw new InvalidOperationException();
+                if (value == null)
+                    value = GeometryOverlay.Default;
+
+                _geometryOverlay = value;
+            }
+        }
+
 
         /// <summary>
         /// Gets the default spatial reference id
@@ -109,7 +125,7 @@ namespace NetTopologySuite
             }
 
             return m_factories.GetOrAdd(new GeometryFactoryKey(precisionModel, srid, coordinateSequenceFactory),
-                                        key => CreateGeometryFactoryCore(key.PrecisionModel, key.SRID, key.CoordinateSequenceFactory));
+                                        key => Configure(CreateGeometryFactoryCore(key.PrecisionModel, key.SRID, key.CoordinateSequenceFactory)));
         }
 
         /// <summary>
@@ -142,6 +158,17 @@ namespace NetTopologySuite
         protected virtual GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
         {
             return new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
+        }
+
+        /// <summary>
+        /// Method to configure a newly created geometry factory
+        /// </summary>
+        /// <param name="factory">The factory to configure</param>
+        /// <returns>The created factory</returns>
+        protected virtual GeometryFactory Configure(GeometryFactory factory)
+        {
+            factory.GeometryOverlay = GeometryOverlay;
+            return factory;
         }
 
         private readonly struct GeometryFactoryKey : IEquatable<GeometryFactoryKey>

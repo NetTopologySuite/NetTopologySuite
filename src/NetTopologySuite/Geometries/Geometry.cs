@@ -354,7 +354,8 @@ namespace NetTopologySuite.Geometries
         /// In general, the array cannot be assumed to be the actual internal
         /// storage for the vertices.  Thus modifying the array
         /// may not modify the geometry itself.
-        /// Use the <see cref="CoordinateSequence.SetOrdinate"/> method
+        /// Use the <see cref="CoordinateSequence.SetOrdinate(int, int, double)"/> or
+        /// <see cref="CoordinateSequence.SetOrdinate(int, Ordinate, double)"/> method
         /// (possibly on the components) to modify the underlying data.
         /// If the coordinates are modified,
         /// <see cref="Geometry.GeometryChanged"/> must be called afterwards.
@@ -362,7 +363,8 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
         /// <seealso cref="Geometry.GeometryChanged"/>
-        /// <seealso cref="CoordinateSequence.SetOrdinate"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate(int, int, double)"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate(int, Ordinate, double)"/>
         public abstract Coordinate[] Coordinates { get; }
 
         /// <summary>
@@ -1515,24 +1517,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">if the argument is a non-empty heterogeneous <c>GeometryCollection</c></exception>
         public Geometry Intersection(Geometry other)
         {
-            // Special case: if one input is empty ==> empty
-            if (IsEmpty || other.IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
-
-            // compute for GCs
-            // (An inefficient algorithm, but will work)
-            // TODO: improve efficiency of computation for GCs
-            if (IsGeometryCollection)
-            {
-                var g2 = other;
-                return GeometryCollectionMapper.Map(
-                    (GeometryCollection)this, g => g.Intersection(g2));
-            }
-
-            // No longer needed since GCs are handled by previous code
-            //CheckNotGeometryCollection(this);
-            //CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
+            return Factory.GeometryOverlay.Intersection(this, other);
         }
 
         /// <summary>
@@ -1570,19 +1555,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="LineMerger"/>
         public Geometry Union(Geometry other)
         {
-            // handle empty geometry cases
-            if (IsEmpty || (other == null || other.IsEmpty))
-            {
-                if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
-
-                // Special case: if either input is empty ==> other input
-                if (other == null || other.IsEmpty) return Copy();
-                if (IsEmpty) return other.Copy();
-            }
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Union);
+            return Factory.GeometryOverlay.Union(this, other);
         }
 
         /// <summary>
@@ -1599,15 +1572,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>A Geometry representing the point-set difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public Geometry Difference(Geometry other)
         {
-            // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
-            if (IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
-            if (other == null || other.IsEmpty)
-                return Copy();
-
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Difference);
+            return Factory.GeometryOverlay.Difference(this, other);
         }
 
         /// <summary>
@@ -1625,21 +1590,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>a Geometry representing the point-set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
         public Geometry SymmetricDifference(Geometry other)
         {
-            // handle empty geometry cases
-            if (IsEmpty || (other == null || other.IsEmpty))
-            {
-                // both empty - check dimensions
-                if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
-
-                // special case: if either input is empty ==> result = other arg
-                if (other == null || other.IsEmpty) return Copy();
-                if (IsEmpty) return other.Copy();
-            }
-
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
+            return Factory.GeometryOverlay.SymmetricDifference(this, other);
         }
 
         /// <summary>
@@ -1659,7 +1610,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
         public Geometry Union()
         {
-            return UnaryUnionOp.Union(this);
+            return Factory.GeometryOverlay.Union(this);
         }
 
         /// <summary>

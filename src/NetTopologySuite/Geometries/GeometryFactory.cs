@@ -68,6 +68,26 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public int SRID => _srid;
 
+        private GeometryOverlay _geometryOverlay;
+
+        /// <summary>
+        /// Gets a value indicating the geometry overlay function set to use
+        /// </summary>
+        public GeometryOverlay GeometryOverlay
+        {
+            get { return _geometryOverlay ?? (_geometryOverlay = GeometryOverlay.Default); }
+            set
+            {
+                if (_geometryOverlay != null)
+                    throw new InvalidOperationException("GeometryOverlay already set.");
+
+                if (value == null)
+                    value = GeometryOverlay.Default;
+
+                _geometryOverlay = value;
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>
