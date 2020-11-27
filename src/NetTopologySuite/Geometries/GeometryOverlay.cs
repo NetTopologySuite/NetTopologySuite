@@ -95,15 +95,15 @@ namespace NetTopologySuite.Geometries
         public virtual Geometry Union(Geometry a, Geometry b)
         {
             // handle empty geometry cases
-            if (a.IsEmpty || b.IsEmpty)
+            if (a.IsEmpty || (b == null || b.IsEmpty))
             {
                 // both empty - check dimensions
-                if (a.IsEmpty && b.IsEmpty)
+                if (a.IsEmpty && (b == null || b.IsEmpty))
                     return OverlayOp.CreateEmptyResult(SpatialFunction.Union, a, b, a.Factory);
 
                 // special case: if either input is empty ==> result = other arg
                 if (a.IsEmpty) return b.Copy();
-                if (b.IsEmpty) return a.Copy();
+                if (b == null || b.IsEmpty) return a.Copy();
             }
 
             // TODO: optimize if envelopes of geometries do not intersect
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Geometries
         {
             // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
             if (a.IsEmpty) return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, a, b, a.Factory);
-            if (b.IsEmpty) return a.Copy();
+            if (b == null || b.IsEmpty) return a.Copy();
 
             CheckNotGeometryCollection(a, b);
 
@@ -154,15 +154,15 @@ namespace NetTopologySuite.Geometries
         public virtual Geometry SymmetricDifference(Geometry a, Geometry b)
         {
             // handle empty geometry cases
-            if (a.IsEmpty || b.IsEmpty)
+            if (a.IsEmpty || (b == null || b.IsEmpty))
             {
                 // both empty - check dimensions
-                if (a.IsEmpty && b.IsEmpty)
+                if (a.IsEmpty && (b == null || b.IsEmpty))
                     return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, a, b, a.Factory);
 
                 // special case: if either input is empty ==> result = other arg
                 if (a.IsEmpty) return b.Copy();
-                if (b.IsEmpty) return a.Copy();
+                if (b == null || b.IsEmpty) return a.Copy();
             }
 
             CheckNotGeometryCollection(a, b);
