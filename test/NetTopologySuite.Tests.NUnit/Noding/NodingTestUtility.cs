@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
@@ -34,6 +35,12 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             return nssList;
         }
 
+        public static ICollection<ISegmentString> GetNodedSubstrings(NodedSegmentString nss)
+        {
+            var resultEdgelist = new List<ISegmentString>();
+            nss.NodeList.AddSplitEdges(resultEdgelist);
+            return resultEdgelist;
+        }
         /**
          * Runs a noder on one or two sets of input geometries
          * and validates that the result is fully noded.
@@ -61,5 +68,23 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             var result = ToLines(nodedList, geom1.Factory);
             return result;
         }
+
+
+        public static NodedSegmentString CreateNSS(params double[] ords)
+        {
+            if (ords.Length % 2 != 0)
+            {
+                throw new ArgumentException("Must provide pairs of ordinates");
+            }
+            var pts = new Coordinate[ords.Length / 2];
+            for (int i = 0; i <= ords.Length; i += 2)
+            {
+                var p = new Coordinate(ords[i], ords[i + 1]);
+                pts[i / 2] = p;
+            }
+            var nss = new NodedSegmentString(pts, null);
+            return nss;
+        }
+
     }
 }

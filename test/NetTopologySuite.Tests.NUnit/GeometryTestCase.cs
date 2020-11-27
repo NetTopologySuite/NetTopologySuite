@@ -26,6 +26,13 @@ namespace NetTopologySuite.Tests.NUnit
             //_readerWKT = new WKTReader(_geomFactory);
         }
 
+        /**
+         * Checks that the normalized values of the expected and actual
+         * geometries are exactly equals.
+         * 
+         * @param expected the expected value
+         * @param actual the actual value
+         */
         protected void CheckEqual(Geometry expected, Geometry actual)
         {
             var actualNorm = actual.Normalized();
