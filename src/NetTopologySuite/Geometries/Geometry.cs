@@ -586,8 +586,8 @@ namespace NetTopologySuite.Geometries
         /// <item><description>a point, returns a <c>Point</c></description></item>
         /// <item><description>a line parallel to an axis, a two-vertex <c>LineString</c>,</description></item>
         /// <item><description>otherwise, returns a
-        /// <c>Polygon</c> whose vertices are (minx, miny), (maxx, miny), (maxx,
-        /// maxy), (minx, maxy), (minx, miny).</description></item>
+        /// <c>Polygon</c> whose vertices are (minx, miny), (maxx, miny),
+        /// (maxx, maxy), (minx, maxy), (minx, miny).</description></item>
         /// </list>
         /// </remarks>
         /// <returns>
