@@ -41,8 +41,9 @@ The semantics of overlay output are:
 * Polygon edges which undergo topology collapse to lines
   (due to rounding or snapping) are included in the result.
   This means that all operations may produce a heterogeneous result.
-  Usually this only occurs when using a fixed-precision model.
-* The `intersection` operation result includes all the components of the
+  Usually this only occurs when using a fixed-precision model,
+  but it can happen due to snapping performed to improve robustness.
+* The `intersection` operation result includes all components of the
   intersection for geometries which intersect in components of the same and/or
   lower dimension.
 * The `difference` operation produces a homogeneous result if no topology

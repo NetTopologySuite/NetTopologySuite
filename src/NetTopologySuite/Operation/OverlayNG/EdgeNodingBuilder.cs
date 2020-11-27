@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
@@ -203,8 +204,22 @@ namespace NetTopologySuite.Operation.OverlayNG
             else if (g is LineString ls)         AddLine(ls, geomIndex);
             else if (g is MultiLineString ml)    AddCollection(ml, geomIndex);
             else if (g is MultiPolygon mp)       AddCollection(mp, geomIndex);
-            else if (g is GeometryCollection gc) AddCollection(gc, geomIndex);
+            else if (g is GeometryCollection gc) AddGeometryCollection(gc, geomIndex, g.Dimension);
             // ignore Point geometries - they are handled elsewhere
+        }
+
+        private void AddGeometryCollection(GeometryCollection gc, int geomIndex, Dimension expectedDim)
+        {
+            for (int i = 0; i < gc.NumGeometries; i++)
+            {
+                var g = gc.GetGeometryN(i);
+                // check for mixed-dimension input, which is not supported
+                if (g.Dimension != expectedDim)
+                {
+                    throw new ArgumentException("Overlay input is mixed-dimension", nameof(gc));
+                }
+                Add(g, geomIndex);
+            }
         }
 
         private void AddCollection(GeometryCollection gc, int geomIndex)
