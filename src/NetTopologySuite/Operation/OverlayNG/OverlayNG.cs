@@ -238,23 +238,18 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <summary>
         /// Computes a union operation on 
         /// the given geometry, with the supplied precision model.
-        /// The primary use for this is to perform precision reduction
-        /// (round the geometry to the supplied precision).
         /// <para/>
         /// The input must be a valid geometry.
         /// Collections must be homogeneous.
         /// <para/>
         /// To union an overlapping set of polygons in a more performant way use <see cref="UnaryUnionNG"/>.
-        /// To union a polyonal coverage or linear network in a more performant way, 
+        /// To union a polygonal coverage or linear network in a more performant way, 
         /// use <see cref="CoverageUnion"/>.
         /// </summary>
         /// <param name="geom">The geometry</param>
         /// <param name="pm">The precision model to use</param>
         /// <returns>The result of the union operation</returns>
         /// <seealso cref="OverlayMixedPoints"/>
-        /// <seealso cref="PrecisionReducer"/>
-        /// <seealso cref="UnaryUnionNG"/>
-        /// <seealso cref="CoverageUnion"/>
         internal static Geometry Union(Geometry geom, PrecisionModel pm)
         {
             var ov = new OverlayNG(geom, null, pm, SpatialFunction.Union);
@@ -266,6 +261,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// Computes a union of a single geometry using a custom noder.
         /// <para/>
         /// The primary use of this is to support coverage union.
+        /// Because of this the overlay is performed using strict mode.
         /// </summary>
         /// <param name="geom">The geometry to union</param>
         /// <param name="pm">The precision model to use (maybe be <c>null</c>)</param>
@@ -276,6 +272,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         {
             var ov = new OverlayNG(geom, null, pm, SpatialFunction.Union);
             ov.Noder = noder;
+            ov.StrictMode = true;
             var geomOv = ov.GetResult();
             return geomOv;
         }
