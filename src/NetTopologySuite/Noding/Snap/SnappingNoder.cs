@@ -32,6 +32,10 @@ namespace NetTopologySuite.Noding.Snap
         private readonly double _snapTolerance;
         private IList<ISegmentString> _nodedResult;
 
+        /// <summary>
+        /// Creates a snapping noder using the given snap distance tolerance.
+        /// </summary>
+        /// <param name="snapTolerance">Points are snapped if within this distance</param>
         public SnappingNoder(double snapTolerance)
         {
             _snapTolerance = snapTolerance;
