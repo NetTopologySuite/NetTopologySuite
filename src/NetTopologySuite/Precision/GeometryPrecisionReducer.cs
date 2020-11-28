@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.OverlayNG;
 
@@ -14,13 +15,21 @@ namespace NetTopologySuite.Precision
     /// (i.e. <see cref="Geometry.IsValid"/> is true).
     /// To ensure this a polygonal geometry is reduced in a topologically valid fashion
     /// (technically, by using snap-rounding).
-    /// It can be forced to be reduced pointwise by using <see cref="Pointwise"/> = <c>true</c>.
-    /// Note that in this case the result geometry may be invalid.
-    /// Linear and point geometry is always reduced pointwise (i.e.without further change to
-    /// its topology or stucture), since this does not change validity.
+    /// Note that this may change polygonal geometry structure
+    /// (e.g.two polygons separated by a distance below the specified precision
+    /// will be merged into a single polygon).
+    /// <para/>
+    /// In general input must be valid geometry, or an <see cref="ArgumentException"/>
+    /// will be thrown.However if the invalidity is "mild" or very small then it
+    /// may be eliminated by precision reduction.
+    /// <para/>
+    /// Alternatively, geometry can be reduced pointwise by using <see cref="Pointwise"/><c>= true</c>.
+    /// In this case the result geometry topology may be invalid.
+    /// Linear and point geometry are always reduced pointwise (i.e.without further change to
+    /// topology or structure), since this does not change validity.
     /// <para/>
     /// By default the geometry precision model is not changed.
-    /// This can be overridden by using <see cref="ChangePrecisionModel"/> = <c>true</c>.
+    /// This can be overridden by using <see cref="ChangePrecisionModel"/><c> = true</c>.
     /// <para/>
     /// Normally collapsed components(e.g.lines collapsing to a point)
     /// are not included in the result.
@@ -109,6 +118,14 @@ namespace NetTopologySuite.Precision
             set => _isPointwise = value;
         }
 
+        /// <summary>
+        /// Reduces the precision of a geometry,
+        /// according to the specified strategy of this reducer.
+        /// </summary>
+        /// <param name="geom">The geometry to reduce</param>
+        /// <returns>The precision-reduced geometry</returns>
+        /// <exception cref="ArgumentException">if the reduction fails
+        /// due to input geometry is invalid.</exception>
         public Geometry Reduce(Geometry geom)
         {
             if (!Pointwise && geom is IPolygonal) {
@@ -135,7 +152,7 @@ namespace NetTopologySuite.Precision
                 // don't change geometry factory
                 geomEdit = new GeometryEditor();
 
-            /**
+            /*
              * For polygonal geometries, collapses are always removed, in order
              * to produce correct topology
              */
