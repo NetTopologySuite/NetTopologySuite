@@ -232,7 +232,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             var ov = new OverlayNG(geom, null);
             var snapNoder = new SnappingNoder(snapTol);
             ov.Noder = snapNoder;
-            /**
+            /*
              * Ensure the result is not mixed-dimension,
              * since it will be used in further overlay computation.
              * It may however be lower dimension, if it collapses completely due to snapping.

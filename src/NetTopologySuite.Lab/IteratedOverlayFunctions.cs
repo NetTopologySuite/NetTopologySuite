@@ -3,6 +3,7 @@ using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Quadtree;
+using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.OverlayNG;
 
 namespace NetTopologySuite
@@ -10,23 +11,23 @@ namespace NetTopologySuite
     public class IteratedOverlayFunctions
     {
 
-        public static Geometry Intersection(Geometry coll)
+        public static Geometry OverlayOld(Geometry coll)
         {
-            return Intersection(coll, false, null);
+            return Overlay(coll, false, null);
         }
 
-        public static Geometry IntersectionNG(Geometry coll)
+        public static Geometry OverlayNG(Geometry coll)
         {
-            return Intersection(coll, true, null);
+            return Overlay(coll, true, null);
         }
 
-        public static Geometry IntersectionSR(Geometry coll, double scale)
+        public static Geometry OverlaySR(Geometry coll, double scale)
         {
             var pm = new PrecisionModel(scale);
-            return Intersection(coll, true, pm);
+            return Overlay(coll, true, pm);
         }
 
-        private static Geometry Intersection(Geometry coll, bool useNG, PrecisionModel pm)
+        private static Geometry Overlay(Geometry coll, bool useNG, PrecisionModel pm)
         {
             var result = new List<Geometry>();
             for (int i = 0; i < coll.NumGeometries; i++)
@@ -63,12 +64,12 @@ namespace NetTopologySuite
         }
 
 
-        public static Geometry intersectionQTNG(Geometry coll)
+        public static Geometry OverlayIndexedNG(Geometry coll)
         {
-            return intersectionQT(coll, true, null);
+            return OverlayIndexed(coll, true, null);
         }
 
-        private static Geometry intersectionQT(Geometry coll, bool useNG, PrecisionModel pm)
+        private static Geometry OverlayIndexed(Geometry coll, bool useNG, PrecisionModel pm)
         {
             var tree = new Quadtree<Geometry>();
             for (int i = 0; i < coll.NumGeometries; i++)
@@ -120,8 +121,8 @@ namespace NetTopologySuite
             if (useNG)
             {
                 if (pm == null)
-                    return OverlayNGRobust.Overlay(a, b, OverlayNG.INTERSECTION);
-                return OverlayNG.Overlay(a, b, OverlayNG.INTERSECTION, pm);
+                    return OverlayNGRobust.Overlay(a, b, SpatialFunction.Intersection);
+                return Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection, pm);
             }
             return a.Intersection(b);
         }
@@ -131,8 +132,8 @@ namespace NetTopologySuite
             if (useNG)
             {
                 if (pm == null)
-                    return OverlayNGRobust.Overlay(a, b, OverlayNG.DIFFERENCE);
-                return OverlayNG.Overlay(a, b, OverlayNG.DIFFERENCE, pm);
+                    return OverlayNGRobust.Overlay(a, b, SpatialFunction.Difference);
+                return Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Difference, pm);
             }
             return a.Difference(b);
         }
