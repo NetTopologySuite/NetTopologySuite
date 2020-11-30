@@ -12,9 +12,24 @@ namespace NetTopologySuite
     public class NtsGeometryServices
     {
         private static volatile NtsGeometryServices s_instance = new NtsGeometryServices();
+        private static GeometryOverlay _default;
+
+        /// <summary>
+        /// Gets a value indicating the default geometry overlay operation
+        /// </summary>
+        public static GeometryOverlay DefaultGeometryOverlay
+        {
+            get => _default ?? GeometryOverlay.Old;
+            set => _default = value;
+        }
 
         private readonly ConcurrentDictionary<GeometryFactoryKey, GeometryFactory> m_factories = new ConcurrentDictionary<GeometryFactoryKey, GeometryFactory>();
         private GeometryOverlay _geometryOverlay;
+
+        private static GeometryOverlay AssignGeometryOverlay()
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
@@ -51,15 +66,18 @@ namespace NetTopologySuite
             set => s_instance = value ?? throw new ArgumentNullException(nameof(value));
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating the operations to use for geometry overlay.  
+        /// </summary>
         public GeometryOverlay GeometryOverlay
         {
-            get { return _geometryOverlay ?? (_geometryOverlay = GeometryOverlay.Default); }
+            get { return _geometryOverlay ?? (_geometryOverlay = DefaultGeometryOverlay); }
             set
             {
                 if (_geometryOverlay != null)
                     throw new InvalidOperationException();
                 if (value == null)
-                    value = GeometryOverlay.Default;
+                    value = DefaultGeometryOverlay;
 
                 _geometryOverlay = value;
             }

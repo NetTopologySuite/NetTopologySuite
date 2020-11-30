@@ -13,17 +13,6 @@ namespace NetTopologySuite.Geometries
     [Serializable]
     public abstract class GeometryOverlay
     {
-        private static GeometryOverlay _default;
-
-        /// <summary>
-        /// Gets a value indicating the default geometry overlay operation
-        /// </summary>
-        public static GeometryOverlay Default
-        {
-            get => _default ?? Old;
-            set => _default = value;
-        }
-
         /// <summary>
         /// Gets a value indicating a geometry overlay operation class that uses old NTS overlay operation set.
         /// </summary>

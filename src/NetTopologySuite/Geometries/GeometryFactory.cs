@@ -73,16 +73,16 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the geometry overlay function set to use
         /// </summary>
-        public GeometryOverlay GeometryOverlay
+        internal GeometryOverlay GeometryOverlay
         {
-            get { return _geometryOverlay ?? (_geometryOverlay = GeometryOverlay.Default); }
+            get { return _geometryOverlay ?? (_geometryOverlay = NtsGeometryServices.Instance.GeometryOverlay); }
             set
             {
                 if (_geometryOverlay != null)
                     throw new InvalidOperationException("GeometryOverlay already set.");
 
                 if (value == null)
-                    value = GeometryOverlay.Default;
+                    value = NtsGeometryServices.Instance.GeometryOverlay;
 
                 _geometryOverlay = value;
             }

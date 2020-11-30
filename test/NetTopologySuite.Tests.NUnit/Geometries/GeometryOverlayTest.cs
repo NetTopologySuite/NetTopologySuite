@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private void CheckIntersectionPM(PrecisionModel pmFixed, Geometry expected)
         {
             var geomFactFixed = new GeometryFactory(pmFixed);
-            Assert.That(geomFactFixed.GeometryOverlay, Is.EqualTo(GeometryOverlay.Default));
+            Assert.That(geomFactFixed.GeometryOverlay, Is.EqualTo(NtsGeometryServices.Instance.GeometryOverlay));
 
             var a = Read(geomFactFixed, "POLYGON ((1 1, 1 2, 5 1, 1 1))");
             var b = Read(geomFactFixed, "POLYGON ((0 3, 4 3, 4 0, 0 0, 0 3))");
