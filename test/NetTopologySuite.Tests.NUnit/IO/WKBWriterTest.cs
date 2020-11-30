@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             // set SRID if not -1
             bool includeSRID = false;
-            if (srid >= 0)
+            if (srid > 0)
             {
                 includeSRID = true;
                 geom.SRID = srid;
