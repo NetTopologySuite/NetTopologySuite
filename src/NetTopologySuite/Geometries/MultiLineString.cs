@@ -139,6 +139,17 @@ namespace NetTopologySuite.Geometries
             return base.Reverse();
         }
 
+        /// <inheritdoc cref="ReverseInternal"/>
+        protected override Geometry ReverseInternal()
+        {
+            var lineStrings = new LineString[Geometries.Length];
+            for (int i = 0; i < lineStrings.Length; i++)
+            {
+                lineStrings[i] = (LineString)Geometries[i].Reverse();
+            }
+            return new MultiLineString(lineStrings, Factory);
+        }
+
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
         protected override Geometry CopyInternal()
         {

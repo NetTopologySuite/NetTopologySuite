@@ -15,6 +15,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="seq">The coordinate sequence to reverse.</param>
         public static void Reverse(CoordinateSequence seq)
         {
+            if (seq.Count <= 1) return;
+
             int last = seq.Count - 1;
             int mid = last / 2;
             for (int i = 0; i <= mid; i++)

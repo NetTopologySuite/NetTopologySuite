@@ -95,6 +95,17 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
+        /// <inheritdoc cref="ReverseInternal"/>
+        protected override Geometry ReverseInternal()
+        {
+            var points = new Point[Geometries.Length];
+            for (int i = 0; i < points.Length; i++)
+            {
+                points[i] = (Point)Geometries[i].Copy();
+            }
+            return new MultiPoint(points, Factory);
+        }
+
         /// <summary>
         ///
         /// </summary>

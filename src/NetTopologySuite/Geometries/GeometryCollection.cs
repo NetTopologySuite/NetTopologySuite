@@ -506,7 +506,7 @@ namespace NetTopologySuite.Geometries
             for (int i = 0; i < numGeometries; i++)
                 reversed[i] = _geometries[i].Reverse();
 
-            return Factory.BuildGeometry(reversed);
+            return new GeometryCollection(reversed, Factory);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

@@ -8,14 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestReverse()
         {
-            CheckReverse(Read(GeometryTestData.WKT_POINT));
-            CheckReverse(Read(GeometryTestData.WKT_LINESTRING));
-            CheckReverse(Read(GeometryTestData.WKT_LINEARRING));
-            CheckReverse(Read(GeometryTestData.WKT_POLY));
-            CheckReverse(Read(GeometryTestData.WKT_MULTIPOINT));
-            CheckReverse(Read(GeometryTestData.WKT_MULTILINESTRING));
-            CheckReverse(Read(GeometryTestData.WKT_MULTIPOLYGON));
-            CheckReverse(Read(GeometryTestData.WKT_GC));
+            foreach (string wkt in GeometryTestData.WKT_ALL)
+                CheckReverse(Read(wkt));
         }
 
         private void CheckReverse(Geometry g)
@@ -68,6 +62,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                                             pl2.GetInteriorRingN(k).CoordinateSequence))
                         return false;
                     }
+                }
+                else if (gt1 is GeometryCollection) {
+                    CheckSequences(gt1, gt2);
                 }
                 else
                 {

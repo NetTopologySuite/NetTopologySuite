@@ -140,6 +140,15 @@ namespace NetTopologySuite.Geometries
             return base.Reverse();
         }
 
-
+        /// <inheritdoc cref="ReverseInternal"/>
+        protected override Geometry ReverseInternal()
+        {
+            var polygons = new Polygon[Geometries.Length];
+            for (int i = 0; i < polygons.Length; i++)
+            {
+                polygons[i] = (Polygon)Geometries[i].Reverse();
+            }
+            return new MultiPolygon(polygons, Factory);
+        }
     }
 }
