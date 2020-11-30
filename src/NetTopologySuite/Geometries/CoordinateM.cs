@@ -90,7 +90,8 @@ namespace NetTopologySuite.Geometries
                     case 2:
                         return M;
                 }
-                throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
+                return double.NaN;
+                //throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
             }
             set
             {
