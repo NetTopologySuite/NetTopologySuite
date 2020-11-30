@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -60,22 +61,54 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestPointEmpty2D()
         {
-            CheckWKB("POINT EMPTY", ByteOrder.LittleEndian, false, "0101000000000000000000F8FF000000000000F8FF");
+            CheckWKB("POINT EMPTY", ByteOrder.LittleEndian, false, 0, "0101000000000000000000F8FF000000000000F8FF");
         }
 
         [Test]
         public void TestPointEmpty3D()
         {
-            CheckWKB("POINT EMPTY", ByteOrder.LittleEndian, true,
+            CheckWKB("POINT EMPTY", ByteOrder.LittleEndian, true, 0,
                 //JTS test value: "0101000080000000000000F87F000000000000F87F000000000000F87F");
                 "01E9030080000000000000F8FF000000000000F8FF000000000000F8FF");
         }
 
-        void CheckWKB(string wkt, ByteOrder byteOrder, bool emitZ, string expectedWKBHex)
+        [Test]
+        public void TestPolygonEmpty2DSRID()
+        {
+            CheckWKB("POLYGON EMPTY", ByteOrder.LittleEndian, false, 4326, "0103000020E610000000000000");
+        }
+
+        [Test]
+        public void TestPolygonEmpty2D()
+        {
+            CheckWKB("POLYGON EMPTY", false, "010300000000000000");
+        }
+
+        [Test]
+        public void TestPolygonEmpty3D()
+        {
+            CheckWKB("POLYGON EMPTY", true, "01EB03008000000000"); //JTS:"010300008000000000");
+        }
+
+
+        void CheckWKB(string wkt, bool emitZ, string expectedWKBHex)
+        {
+            CheckWKB(wkt, ByteOrder.LittleEndian, emitZ,  -1, expectedWKBHex);
+        }
+
+        void CheckWKB(string wkt, ByteOrder byteOrder, bool emitZ, int srid, string expectedWKBHex)
         {
             var geom = Read(wkt);
-            var wkbWriter = new WKBWriter(byteOrder, false, emitZ);
-            wkbWriter.Strict = false;
+
+            // set SRID if not -1
+            bool includeSRID = false;
+            if (srid >= 0)
+            {
+                includeSRID = true;
+                geom.SRID = srid;
+            }
+
+            var wkbWriter = new WKBWriter(byteOrder, includeSRID, emitZ) {Strict = false};
             byte[] wkb = wkbWriter.Write(geom);
             string wkbHex = WKBWriter.ToHex(wkb);
 
