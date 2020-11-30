@@ -51,11 +51,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var pt3DM = (Point) this.readerXYZM.Read("POINT ZM(10 10 10 11)");
 
             // assert
-            Assert.That(CheckEqual(seqPt2D, pt2D.CoordinateSequence));
-            Assert.That(CheckEqual(seqPt2DE, pt2DE.CoordinateSequence));
-            Assert.That(CheckEqual(seqPt3D, pt3D.CoordinateSequence));
-            Assert.That(CheckEqual(seqPt2DM, pt2DM.CoordinateSequence));
-            Assert.That(CheckEqual(seqPt3DM, pt3DM.CoordinateSequence));
+            Assert.That(IsEqual(seqPt2D, pt2D.CoordinateSequence));
+            Assert.That(IsEqual(seqPt2DE, pt2DE.CoordinateSequence));
+            Assert.That(IsEqual(seqPt3D, pt3D.CoordinateSequence));
+            Assert.That(IsEqual(seqPt2DM, pt2DM.CoordinateSequence));
+            Assert.That(IsEqual(seqPt3DM, pt3DM.CoordinateSequence));
         }
 
         [Test]
@@ -77,11 +77,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var ls3DM = (LineString) this.readerXYZM.Read("LINESTRING ZM(10 10 10 11, 20 20 10 11, 30 40 10 11)");
 
             // assert
-            Assert.That(CheckEqual(seqLs2D, ls2D.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs2DE, ls2DE.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs3D, ls3D.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs2DM, ls2DM.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs3DM, ls3DM.CoordinateSequence));
+            Assert.That(IsEqual(seqLs2D, ls2D.CoordinateSequence));
+            Assert.That(IsEqual(seqLs2DE, ls2DE.CoordinateSequence));
+            Assert.That(IsEqual(seqLs3D, ls3D.CoordinateSequence));
+            Assert.That(IsEqual(seqLs2DM, ls2DM.CoordinateSequence));
+            Assert.That(IsEqual(seqLs3DM, ls3DM.CoordinateSequence));
         }
 
         [Test]
@@ -104,11 +104,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 "LINEARRING ZM(10 10 10 11, 20 20 10 11, 30 40 10 11, 10 10 10 11)");
 
             // assert
-            Assert.That(CheckEqual(seqLs2D, ls2D.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs2DE, ls2DE.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs3D, ls3D.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs2DM, ls2DM.CoordinateSequence));
-            Assert.That(CheckEqual(seqLs3DM, ls3DM.CoordinateSequence));
+            Assert.That(IsEqual(seqLs2D, ls2D.CoordinateSequence));
+            Assert.That(IsEqual(seqLs2DE, ls2DE.CoordinateSequence));
+            Assert.That(IsEqual(seqLs3D, ls3D.CoordinateSequence));
+            Assert.That(IsEqual(seqLs2DM, ls2DM.CoordinateSequence));
+            Assert.That(IsEqual(seqLs3DM, ls3DM.CoordinateSequence));
         }
 
         [Test]
@@ -192,20 +192,20 @@ namespace NetTopologySuite.Tests.NUnit.IO
             };
 
             // assert
-            Assert.That(CheckEqual(csPoly2D[0], poly2D[2].ExteriorRing.CoordinateSequence));
-            Assert.That(CheckEqual(csPoly2D[1], poly2D[2].GetInteriorRingN(0).CoordinateSequence));
-            Assert.That(CheckEqual(csPoly2D[2], poly2D[2].GetInteriorRingN(1).CoordinateSequence));
-            Assert.That(CheckEqual(csPoly2DE, poly2DE.ExteriorRing.CoordinateSequence, 2));
+            Assert.That(IsEqual(csPoly2D[0], poly2D[2].ExteriorRing.CoordinateSequence));
+            Assert.That(IsEqual(csPoly2D[1], poly2D[2].GetInteriorRingN(0).CoordinateSequence));
+            Assert.That(IsEqual(csPoly2D[2], poly2D[2].GetInteriorRingN(1).CoordinateSequence));
+            Assert.That(IsEqualDim(csPoly2DE, poly2DE.ExteriorRing.CoordinateSequence, 2));
 
-            Assert.That(CheckEqual(csPoly3D[0], poly3D[2].ExteriorRing.CoordinateSequence));
-            Assert.That(CheckEqual(csPoly3D[1], poly3D[2].GetInteriorRingN(0).CoordinateSequence));
-            Assert.That(CheckEqual(csPoly3D[2], poly3D[2].GetInteriorRingN(1).CoordinateSequence));
-            Assert.That(CheckEqual(csPoly2DM[0], poly2DM[2].ExteriorRing.CoordinateSequence));
-            Assert.That(CheckEqual(csPoly2DM[1], poly2DM[2].GetInteriorRingN(0).CoordinateSequence));
-            Assert.That(CheckEqual(csPoly2DM[2], poly2DM[2].GetInteriorRingN(1).CoordinateSequence));
-            Assert.That(CheckEqual(csPoly3DM[0], poly3DM[2].ExteriorRing.CoordinateSequence));
-            Assert.That(CheckEqual(csPoly3DM[1], poly3DM[2].GetInteriorRingN(0).CoordinateSequence));
-            Assert.That(CheckEqual(csPoly3DM[2], poly3DM[2].GetInteriorRingN(1).CoordinateSequence));
+            Assert.That(IsEqual(csPoly3D[0], poly3D[2].ExteriorRing.CoordinateSequence));
+            Assert.That(IsEqual(csPoly3D[1], poly3D[2].GetInteriorRingN(0).CoordinateSequence));
+            Assert.That(IsEqual(csPoly3D[2], poly3D[2].GetInteriorRingN(1).CoordinateSequence));
+            Assert.That(IsEqual(csPoly2DM[0], poly2DM[2].ExteriorRing.CoordinateSequence));
+            Assert.That(IsEqual(csPoly2DM[1], poly2DM[2].GetInteriorRingN(0).CoordinateSequence));
+            Assert.That(IsEqual(csPoly2DM[2], poly2DM[2].GetInteriorRingN(1).CoordinateSequence));
+            Assert.That(IsEqual(csPoly3DM[0], poly3DM[2].ExteriorRing.CoordinateSequence));
+            Assert.That(IsEqual(csPoly3DM[1], poly3DM[2].GetInteriorRingN(0).CoordinateSequence));
+            Assert.That(IsEqual(csPoly3DM[2], poly3DM[2].GetInteriorRingN(1).CoordinateSequence));
         }
 
         private static readonly double[][] mpCoords = {new double[] {10, 10}, new double[] {20, 20}};
@@ -436,15 +436,15 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var gc3 = (GeometryCollection) rdr.Read("GeometryCollection EMPTY");
 
             // assert
-            Assert.That(CheckEqual(css[0], ((Point) gc0.GetGeometryN(0)).CoordinateSequence));
-            Assert.That(CheckEqual(css[1], ((Point) gc0.GetGeometryN(1)).CoordinateSequence));
-            Assert.That(CheckEqual(css[2], ((LineString) gc0.GetGeometryN(2)).CoordinateSequence));
-            Assert.That(CheckEqual(css[0], ((Point) gc1.GetGeometryN(0)).CoordinateSequence));
-            Assert.That(CheckEqual(css[3], ((LinearRing) gc1.GetGeometryN(1)).CoordinateSequence));
-            Assert.That(CheckEqual(css[2], ((LineString) gc1.GetGeometryN(2)).CoordinateSequence));
-            Assert.That(CheckEqual(css[0], ((Point) gc2.GetGeometryN(0)).CoordinateSequence));
-            Assert.That(CheckEqual(css[4], ((LinearRing) gc2.GetGeometryN(1)).CoordinateSequence));
-            Assert.That(CheckEqual(css[2], ((LineString) gc2.GetGeometryN(2)).CoordinateSequence));
+            Assert.That(IsEqual(css[0], ((Point) gc0.GetGeometryN(0)).CoordinateSequence));
+            Assert.That(IsEqual(css[1], ((Point) gc0.GetGeometryN(1)).CoordinateSequence));
+            Assert.That(IsEqual(css[2], ((LineString) gc0.GetGeometryN(2)).CoordinateSequence));
+            Assert.That(IsEqual(css[0], ((Point) gc1.GetGeometryN(0)).CoordinateSequence));
+            Assert.That(IsEqual(css[3], ((LinearRing) gc1.GetGeometryN(1)).CoordinateSequence));
+            Assert.That(IsEqual(css[2], ((LineString) gc1.GetGeometryN(2)).CoordinateSequence));
+            Assert.That(IsEqual(css[0], ((Point) gc2.GetGeometryN(0)).CoordinateSequence));
+            Assert.That(IsEqual(css[4], ((LinearRing) gc2.GetGeometryN(1)).CoordinateSequence));
+            Assert.That(IsEqual(css[2], ((LineString) gc2.GetGeometryN(2)).CoordinateSequence));
             Assert.That(gc3.IsEmpty);
         }
 
@@ -461,9 +461,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var pt3 = (Point) this.readerXYOld.Read("POINT (10 10 NAN)");
 
             // assert
-            Assert.That(CheckEqual(seq, pt1.CoordinateSequence));
-            Assert.That(CheckEqual(seq, pt2.CoordinateSequence));
-            Assert.That(CheckEqual(seq, pt3.CoordinateSequence));
+            Assert.That(IsEqual(seq, pt1.CoordinateSequence));
+            Assert.That(IsEqual(seq, pt2.CoordinateSequence));
+            Assert.That(IsEqual(seq, pt3.CoordinateSequence));
         }
 
 
@@ -513,7 +513,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         private void CheckCS(CoordinateSequence cs, Geometry geom)
         {
-            Assert.That(CheckEqual(cs, ExtractCS(geom)), Is.True);
+            Assert.That(IsEqual(cs, ExtractCS(geom)), Is.True);
         }
 
         private CoordinateSequence ExtractCS(Geometry geom)

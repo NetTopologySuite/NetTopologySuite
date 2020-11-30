@@ -15,6 +15,7 @@ namespace NetTopologySuite.Tests.NUnit
     {
         //readonly WKTReader _readerWKT = new WKTReader();
         private readonly GeometryFactory _geomFactory = new GeometryFactory();
+        private const string CHECK_EQUAL_FAIL = "FAIL\nExpected = {0}\nActual   = {1}\n";
 
         protected GeometryTestCase()
         {
@@ -39,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit
             var expectedNorm = expected.Normalized();
             bool equal = actualNorm.EqualsExact(expectedNorm);
             //var writer = new WKTWriter {MaxCoordinatesPerLine };
-            Assert.That(equal, Is.True, string.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
+            Assert.That(equal, Is.True, string.Format(CHECK_EQUAL_FAIL, expected, actual));
         }
 
         protected void CheckEqual(Geometry expected, Geometry actual, double tolerance)
@@ -49,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit
             bool equal = actualNorm.EqualsExact(expectedNorm, tolerance);
             if (!equal)
             {
-                Console.WriteLine($"FAIL - Expected = {expectedNorm} actual = {actualNorm}");
+                Console.WriteLine(CHECK_EQUAL_FAIL, expectedNorm, actualNorm);
             }
             Assert.That(equal);
         }
@@ -204,7 +205,7 @@ namespace NetTopologySuite.Tests.NUnit
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension</description></item>
@@ -214,13 +215,13 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2)
+        public static bool IsEqual(CoordinateSequence seq1, CoordinateSequence seq2)
         {
-            return CheckEqual(seq1, seq2, 0d);
+            return IsEqualTol(seq1, seq2, 0d);
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension</description></item>
@@ -230,18 +231,18 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2, double tolerance)
+        public static bool IsEqualTol(CoordinateSequence seq1, CoordinateSequence seq2, double tolerance)
         {
             if (seq1?.Dimension != seq2?.Dimension)
             {
                 return false;
             }
 
-            return CheckEqual(seq1, seq2, seq1.Dimension, tolerance);
+            return IsEqual(seq1, seq2, seq1.Dimension, tolerance);
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension up to <paramref name="dimension"/></description></item>
@@ -251,13 +252,13 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2, int dimension)
+        public static bool IsEqualDim(CoordinateSequence seq1, CoordinateSequence seq2, int dimension)
         {
-            return CheckEqual(seq1, seq2, dimension, 0);
+            return IsEqual(seq1, seq2, dimension, 0);
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension up to <paramref name="dimension"/></description></item>
@@ -267,7 +268,7 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2, int dimension, double tolerance)
+        public static bool IsEqual(CoordinateSequence seq1, CoordinateSequence seq2, int dimension, double tolerance)
         {
             if (ReferenceEquals(seq1, seq2))
             {
