@@ -52,8 +52,11 @@ namespace NetTopologySuite.Operation.Union
     /// but it could happen due to snapping.  It has been observed
     /// in other APIs(e.g.GEOS) due to more aggressive snapping.
     /// It is more likely to happen if a Snap - Rounding overlay is used.
+    /// <para/>
+    /// <b>NOTE: Test has shown that using this heuristic impairs performance.</b>
     /// </remarks>
     /// <author>Martin Davis</author>
+    [Obsolete("Due to impairing performance")]
     public class OverlapUnion
     {
         /// <summary>
