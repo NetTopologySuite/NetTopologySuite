@@ -39,6 +39,33 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         }
 
         [Test]
+        public void TestSpatialIndexConstructorUsingLeafNodes()
+        {
+            var tester = new SpatialIndexTester();
+            tester.SpatialIndex = new STRtree(4);
+            tester.Init();
+            var index_init = (STRtree)tester.SpatialIndex;
+            var index = new STRtree(index_init.NodeCapacity, index_init.ItemBoundables);
+            tester.SpatialIndex = index;
+            tester.Run();
+            Assert.IsTrue(tester.IsSuccess);
+        }
+
+        [Test]
+        public void TestSpatialIndexConstructorUsingRoot()
+        {
+            var tester = new SpatialIndexTester();
+            tester.SpatialIndex = new STRtree(4);
+            tester.Init();
+            var index_init = (STRtree)tester.SpatialIndex;
+            index_init.Build();
+            var index = new STRtree(index_init.NodeCapacity, index_init.Root);
+            tester.SpatialIndex = index;
+            tester.Run();
+            Assert.IsTrue(tester.IsSuccess);
+        }
+
+        [Test]
         public void TestSerialization()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };

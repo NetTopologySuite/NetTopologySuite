@@ -50,7 +50,7 @@ namespace NetTopologySuite.Index.Strtree
         /**
          * Set to <tt>null</tt> when index is built, to avoid retaining memory.
          */
-        private List<IBoundable<T, TItem>> _itemBoundables = new List<IBoundable<T,TItem>>();
+        private IList<IBoundable<T, TItem>> _itemBoundables = new List<IBoundable<T,TItem>>();
 
         private readonly int _nodeCapacity;
 
@@ -64,6 +64,33 @@ namespace NetTopologySuite.Index.Strtree
             Assert.IsTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
             _nodeCapacity = nodeCapacity;
         }
+
+        /// <summary>
+        /// Constructs an AbstractSTRtree with the specified maximum number of child
+        /// nodes that a node may have, and the root node
+        /// </summary>
+        /// <param name="nodeCapacity">The maximum number of child nodes in a node</param>
+        /// <param name="root">The root node that links to all other nodes in the tree</param>
+        protected AbstractSTRtree(int nodeCapacity, AbstractNode<T,TItem> root)
+            : this(nodeCapacity)
+        {
+            _built = true;
+            _root = root;
+            _itemBoundables = null;
+        }
+
+        /// <summary>
+        /// Constructs an AbstractSTRtree with the specified maximum number of child
+        /// nodes that a node may have, and all leaf nodes in the tree
+        /// </summary>
+        /// <param name="nodeCapacity">The maximum number of child nodes in a node</param>
+        /// <param name="itemBoundables">The list of leaf nodes in the tree</param>
+        protected AbstractSTRtree(int nodeCapacity, IList<IBoundable<T, TItem>> itemBoundables)
+            : this(nodeCapacity)
+        {
+            _itemBoundables = itemBoundables;
+        }
+
 
         /// <summary>
         /// Creates parent nodes, grandparent nodes, and so forth up to the root
@@ -439,7 +466,15 @@ namespace NetTopologySuite.Index.Strtree
                 }
             }
         }
+
         protected abstract IComparer<IBoundable<T, TItem>> GetComparer();
+
+        /// <summary>
+        /// Gets a value indicating the boundable items that have to be included in the index
+        /// </summary>
+        /// <returns>A list of boundable items</returns>
+        public IList<IBoundable<T, TItem>> ItemBoundables => _itemBoundables;
+
 
         private static IEqualityComparer<TItem> InitializeEqualityComparerForRemoveItem()
         {

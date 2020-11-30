@@ -216,11 +216,17 @@ namespace NetTopologySuite.Index.Quadtree
         {
             double delX = itemEnv.Width;
             if (delX < _minExtent && delX > 0.0)
-            _minExtent = delX;
+                _minExtent = delX;
 
             double delY = itemEnv.Height;
             if (delY < _minExtent && delY > 0.0)
-            _minExtent = delY;
+                _minExtent = delY;
         }
+
+        /// <summary>
+        /// Gets a value indicating the root node of this QuadTree
+        /// </summary>
+        /// <returns>The root node of this QuadTree</returns>
+        public Root<T> Root => _root;
     }
 }
