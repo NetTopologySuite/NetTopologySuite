@@ -26,7 +26,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             if (IsIndexValid(ref index))
                 Assert.AreEqual(value, coordinate[index]);
             else
-                Assert.Throws<ArgumentOutOfRangeException>(() => val = coordinate[index]);
+            {
+                //Assert.Throws<ArgumentOutOfRangeException>(() => val = coordinate[index]);
+                val = coordinate[index];
+                Assert.AreEqual(double.NaN, val);
+            }
         }
 
         protected void CheckGetter(int index, double expected, double actual)

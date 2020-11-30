@@ -428,21 +428,30 @@ namespace NetTopologySuite.Operation.OverlayNG
                 return CreateEmptyResult();
             }
 
-            // handle Point-Point inputs
+            /*
+             * The elevation model is only computed if the input geometries have Z values.
+             */
+            var elevModel = ElevationModel.Create(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+            Geometry result;
             if (_inputGeom.IsAllPoints)
             {
-                return OverlayPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
+                // handle Point-Point inputs
+                result = OverlayPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
-
-            // handle Point-nonPoint inputs 
-            if (!_inputGeom.IsSingle && _inputGeom.HasPoints)
+            else if (!_inputGeom.IsSingle && _inputGeom.HasPoints)
             {
-                return OverlayMixedPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
+                // handle Point-nonPoint inputs 
+                result = OverlayMixedPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
-
-            // handle case where both inputs are formed of edges (Lines and Polygons)
-            var result = ComputeEdgeOverlay();
-
+            else
+            {
+                // handle case where both inputs are formed of edges (Lines and Polygons)
+                result = ComputeEdgeOverlay();
+            }
+            /*
+             * This is a no-op if the elevation model was not computed due to Z not present
+             */
+            elevModel.PopulateZ(result);
             return result;
         }
 
