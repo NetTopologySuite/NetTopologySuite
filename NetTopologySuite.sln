@@ -71,6 +71,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		doc\overwrite\namespaces\NetTopologySuite.Utilities.md = doc\overwrite\namespaces\NetTopologySuite.Utilities.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.NUnit.Performance", "test\NetTopologySuite.Tests.NUnit.Performance\NetTopologySuite.Tests.NUnit.Performance.csproj", "{36BE3588-C9C0-4079-B84E-7788A2BA3DEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BE3588-C9C0-4079-B84E-7788A2BA3DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BE3588-C9C0-4079-B84E-7788A2BA3DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BE3588-C9C0-4079-B84E-7788A2BA3DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BE3588-C9C0-4079-B84E-7788A2BA3DEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +121,7 @@ Global
 		{13669184-2446-404F-8894-5E20B6C3FCC6} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{D78F2066-2CB6-4AE0-ADAC-CF011B5083E8} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 		{92BB4BF0-DB6E-462E-B806-DB1FE90051B0} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
+		{36BE3588-C9C0-4079-B84E-7788A2BA3DEF} = {AAD516A6-0F6D-4FFE-881C-37D15A4702C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F26DAA4-E047-4A9E-828A-D49CA02F80E0}
