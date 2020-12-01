@@ -35,8 +35,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         {
             // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             var poly = CreateSineStar(new Coordinate(0, 0), 100, nPts);
-            // System.Console.WriteLine(poly);
-            // System.Console.WriteLine("Running with " + nPts + " points");
+            // TestContext.WriteLine(poly);
+            // TestContext.WriteLine("Running with " + nPts + " points");
             Test(poly);
         }
 
@@ -113,8 +113,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
             if (slowIntersects != fastIntersects)
             {
-                Console.WriteLine(line);
-                Console.WriteLine("Slow = " + slowIntersects + ", Fast = " + fastIntersects);
+                TestContext.WriteLine(line);
+                TestContext.WriteLine("Slow = " + slowIntersects + ", Fast = " + fastIntersects);
                 throw new Exception("Different results found for intersects() !");
             }
         }

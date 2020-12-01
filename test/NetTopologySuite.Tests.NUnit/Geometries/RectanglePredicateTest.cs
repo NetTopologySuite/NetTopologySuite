@@ -48,9 +48,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             bool relateContainsValue = rect.Relate(testGeom).IsContains();
             bool containsOK = containsValue == relateContainsValue;
 
-            ////System.Console.WriteLine(testGeom);
+            ////TestContext.WriteLine(testGeom);
             //if (!intersectsOK || !containsOK)
-            //    Console.WriteLine(testGeom);
+            //    TestContext.WriteLine(testGeom);
 
             Assert.IsTrue(intersectsOK);
             Assert.IsTrue(containsOK);

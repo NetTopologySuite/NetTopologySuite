@@ -80,9 +80,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             var dtb = new DelaunayTriangulationBuilder();
             dtb.SetSites(geom);
             var resultEdges = dtb.GetEdges(geom.Factory);
-            Console.WriteLine(resultEdges.AsText());
+            TestContext.WriteLine(resultEdges.AsText());
             var resultTriangles = dtb.GetTriangles(geom.Factory);
-            Console.WriteLine(resultTriangles.AsText());
+            TestContext.WriteLine(resultTriangles.AsText());
         }
         [Test]
         public void Test2()
@@ -91,9 +91,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             var dtb = new ConformingDelaunayTriangulationBuilder();
             dtb.SetSites(geom);
             var resultEdges = dtb.GetEdges(geom.Factory);
-            Console.WriteLine(resultEdges.AsText());
+            TestContext.WriteLine(resultEdges.AsText());
             var resultTriangles = dtb.GetTriangles(geom.Factory);
-            Console.WriteLine(resultTriangles.AsText());
+            TestContext.WriteLine(resultTriangles.AsText());
         }
 
         [Test /*, ExpectedException() */]
@@ -111,20 +111,20 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
             //Apply italic effect
             geom = atb.GetTransformation().Transform(geom);
-            Console.WriteLine(geom.AsText());
+            TestContext.WriteLine(geom.AsText());
 
             //Setup
             var dtb = new DelaunayTriangulationBuilder();
             dtb.SetSites(geom);
             var result = dtb.GetEdges(geom.Factory);
-            Console.WriteLine(result.AsText());
+            TestContext.WriteLine(result.AsText());
         }
 
         [Test]
         public void TestInvertedNTSConforming()
         {
             var geom = _wktReader.Read(NTS);
-            Console.WriteLine(geom.AsText());
+            TestContext.WriteLine(geom.AsText());
 
             Geometry constraint = ((Polygon)geom).GetInteriorRingN(0);
             constraint = geom.Factory.CreatePolygon((LinearRing)constraint, null);
@@ -134,13 +134,13 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             coordinates[coordinates.Length - 1].Y -= 1e-7;
 
             constraint = geom.Factory.CreateLineString(coordinates);
-            Console.WriteLine(constraint.AsText());
+            TestContext.WriteLine(constraint.AsText());
 
             //Setup
             var dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
             dtb.SetSites(geom);
             var result = dtb.GetEdges(geom.Factory);
-            Console.WriteLine(result.AsText());
+            TestContext.WriteLine(result.AsText());
 
         }
 
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
             //Apply italic effect
             geom = atb.GetTransformation().Transform(geom);
-            Console.WriteLine(geom.AsText());
+            TestContext.WriteLine(geom.AsText());
 
             Geometry constraint = ((Polygon)geom).GetInteriorRingN(0);
             constraint = geom.Factory.CreatePolygon((LinearRing)constraint, null);
@@ -165,13 +165,13 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             coordinates[coordinates.Length - 1].Y -= 1e-7;
 
             constraint = geom.Factory.CreateLineString(coordinates);
-            Console.WriteLine(constraint.AsText());
+            TestContext.WriteLine(constraint.AsText());
 
             //Setup
             var dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
             dtb.SetSites(geom);
             var result = dtb.GetEdges(geom.Factory);
-            Console.WriteLine(result.AsText());
+            TestContext.WriteLine(result.AsText());
 
         }
     }

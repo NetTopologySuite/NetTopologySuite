@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
@@ -14,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
                 serializer.Serialize(ms, obj);
                 ms.Seek(0, SeekOrigin.Begin);
                 var reader = new StreamReader(ms);
-                Console.WriteLine(reader.ReadToEnd());
+                TestContext.WriteLine(reader.ReadToEnd());
 
                 return ms.ToArray();
             }

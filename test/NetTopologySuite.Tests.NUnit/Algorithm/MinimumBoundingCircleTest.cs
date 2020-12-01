@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Geometry actual = geometryFactory.CreateMultiPointFromCoords(exPts);
             double actualRadius = mbc.GetRadius();
             var actualCentre = mbc.GetCentre();
-            //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
+            //TestContext.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
 
             var expected = reader.Read(expectedWKT);
             bool isEqual = actual.Equals(expected);
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 isEqual = true;
             if (!isEqual)
             {
-                Console.WriteLine("Actual = " + actual + ", Expected = " + expected);
+                TestContext.WriteLine("Actual = " + actual + ", Expected = " + expected);
             }
             Assert.IsTrue(isEqual);
 

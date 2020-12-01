@@ -59,9 +59,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         //    Geometry g =
         //        new WKTReader().Read(
         //        "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))");
-        //    Console.WriteLine(g);
-        //    Console.WriteLine(g.Buffer(0.01, 100));
-        //    Console.WriteLine("END");
+        //    TestContext.WriteLine(g);
+        //    TestContext.WriteLine(g.Buffer(0.01, 100));
+        //    TestContext.WriteLine("END");
         //}
 
         public BufferValidator(double bufferDistance, string wkt)

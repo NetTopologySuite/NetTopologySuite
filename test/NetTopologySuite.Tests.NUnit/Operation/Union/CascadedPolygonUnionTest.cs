@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         {
             var geoms = CreateDiscs(5, 0.7);
 
-            // System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
+            // TestContext.WriteLine(_geomFact.BuildGeometry(geoms));
 
             RunTest(geoms,
                     CascadedPolygonUnionTester.MinSimilarityMeaure);
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         {
             var geoms = CreateDiscs(5, 0.55);
 
-            // System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
+            // TestContext.WriteLine(_geomFact.BuildGeometry(geoms));
 
             RunTest(geoms,
                     CascadedPolygonUnionTester.MinSimilarityMeaure);

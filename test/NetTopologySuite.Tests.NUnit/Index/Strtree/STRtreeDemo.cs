@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
@@ -59,8 +60,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 
         public static void PrintSourceData(IList<Envelope> sourceEnvelopes)
         {
-            Console.WriteLine("============ Source Data ============\n");
-            Console.Write("GEOMETRYCOLLECTION(");
+            TestContext.WriteLine("============ Source Data ============\n");
+            TestContext.Write("GEOMETRYCOLLECTION(");
             bool first = true;
             foreach (var e in sourceEnvelopes)
             {
@@ -74,11 +75,11 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 }
                 else
                 {
-                    Console.Write(",");
+                    TestContext.Write(",");
                 }
-                Console.Write(g);
+                TestContext.Write(g);
             }
-            Console.WriteLine(")\n");
+            TestContext.WriteLine(")\n");
         }
 
         private static IList<Envelope> SourceData()
@@ -117,8 +118,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 
         public static void PrintBoundables(IList<IBoundable<Envelope, object>> boundables, string title)
         {
-            Console.WriteLine("============ " + title + " ============\n");
-            Console.Write("GEOMETRYCOLLECTION(");
+            TestContext.WriteLine("============ " + title + " ============\n");
+            TestContext.Write("GEOMETRYCOLLECTION(");
             bool first = true;
             foreach (var boundable in boundables)
             {
@@ -128,11 +129,11 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 }
                 else
                 {
-                    Console.Write(",");
+                    TestContext.Write(",");
                 }
-                Console.Write(ToString(boundable));
+                TestContext.Write(ToString(boundable));
             }
-            Console.WriteLine(")\n");
+            TestContext.WriteLine(")\n");
         }
 
         private static string ToString(IBoundable<Envelope, object> b)

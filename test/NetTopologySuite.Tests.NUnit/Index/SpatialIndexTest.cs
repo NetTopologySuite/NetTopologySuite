@@ -14,18 +14,18 @@ namespace NetTopologySuite.Tests.NUnit.Index
         [Test]
         public void TestSpatialIndex()
         {
-            Console.WriteLine("===============================");
-            Console.WriteLine("Spatial-Index Test: " + this.GetType().FullName);
-            Console.WriteLine("Grid Extent: " + (CELL_EXTENT * CELLS_PER_GRID_SIDE));
-            Console.WriteLine("Cell Extent: " + CELL_EXTENT);
-            Console.WriteLine("Feature Extent: " + FEATURE_EXTENT);
-            Console.WriteLine("Cells Per Grid Side: " + CELLS_PER_GRID_SIDE);
-            Console.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
+            TestContext.WriteLine("===============================");
+            TestContext.WriteLine("Spatial-Index Test: " + this.GetType().FullName);
+            TestContext.WriteLine("Grid Extent: " + (CELL_EXTENT * CELLS_PER_GRID_SIDE));
+            TestContext.WriteLine("Cell Extent: " + CELL_EXTENT);
+            TestContext.WriteLine("Feature Extent: " + FEATURE_EXTENT);
+            TestContext.WriteLine("Cells Per Grid Side: " + CELLS_PER_GRID_SIDE);
+            TestContext.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
             var index = CreateSpatialIndex();
             var sourceData = new List<Envelope>();
             AddSourceData(0, sourceData);
             AddSourceData(OFFSET, sourceData);
-            Console.WriteLine("Feature Count: " + sourceData.Count);
+            TestContext.WriteLine("Feature Count: " + sourceData.Count);
             Insert(sourceData, index);
             DoTest(index, QUERY_ENVELOPE_EXTENT_1, sourceData);
             DoTest(index, QUERY_ENVELOPE_EXTENT_2, sourceData);
@@ -64,8 +64,8 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
         private void DoTest(ISpatialIndex<object> index, double queryEnvelopeExtent, IList<Envelope> sourceData)
         {
-            Console.WriteLine("---------------");
-            Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
+            TestContext.WriteLine("---------------");
+            TestContext.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
             int extraMatchCount = 0;
             int expectedMatchCount = 0;
             int actualMatchCount = 0;
@@ -85,13 +85,13 @@ namespace NetTopologySuite.Tests.NUnit.Index
                     queryCount++;
                 }
             }
-            Console.WriteLine("Expected Matches: " + expectedMatchCount);
-            Console.WriteLine("Actual Matches: " + actualMatchCount);
-            Console.WriteLine("Extra Matches: " + extraMatchCount);
-            Console.WriteLine("Query Count: " + queryCount);
-            Console.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double)queryCount));
-            Console.WriteLine("Average Actual Matches: " + (actualMatchCount/(double)queryCount));
-            Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double)queryCount));
+            TestContext.WriteLine("Expected Matches: " + expectedMatchCount);
+            TestContext.WriteLine("Actual Matches: " + actualMatchCount);
+            TestContext.WriteLine("Extra Matches: " + extraMatchCount);
+            TestContext.WriteLine("Query Count: " + queryCount);
+            TestContext.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double)queryCount));
+            TestContext.WriteLine("Average Actual Matches: " + (actualMatchCount/(double)queryCount));
+            TestContext.WriteLine("Average Extra Matches: " + (extraMatchCount/(double)queryCount));
         }
 
         private void Compare(IList<object> expectedEnvelopes, IList<object> actualEnvelopes)

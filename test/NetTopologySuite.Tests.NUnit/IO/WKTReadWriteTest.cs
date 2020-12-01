@@ -190,7 +190,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             WaitHandle.WaitAll(waitHandles, 10000);
 
             int after = ((NtsGeometryServices)services).NumFactories;
-            Console.WriteLine("Now {0} factories created", after);
+            TestContext.WriteLine("Now {0} factories created", after);
             Assert.LessOrEqual(after, before + srids.Length);
         }
 
@@ -217,7 +217,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 }
             }
 
-            Console.WriteLine("ThreadId {0} finished Job {1}", Thread.CurrentThread.ManagedThreadId, jobId);
+            TestContext.WriteLine("ThreadId {0} finished Job {1}", Thread.CurrentThread.ManagedThreadId, jobId);
             waitHandle.Set();
         }
 
