@@ -1,7 +1,6 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.Operation.OverlayNG;
 
 namespace NetTopologySuite.Precision
 {
@@ -128,65 +127,14 @@ namespace NetTopologySuite.Precision
         /// due to input geometry is invalid.</exception>
         public Geometry Reduce(Geometry geom)
         {
-            if (!Pointwise && geom is IPolygonal) {
-                var reduced = PrecisionReducer.ReducePrecision(geom, _targetPM);
-                if (ChangePrecisionModel)
-                {
-                    return ChangePM(reduced, _targetPM);
-                }
-                return reduced;
-            }
-            var reducePW = ReducePointwise(geom);
-            return reducePW;
-        }
+            var reduced = PrecisionReducerTransformer.Reduce(geom, _targetPM, _isPointwise);
 
-        private Geometry ReducePointwise(Geometry geom)
-        {
-            GeometryEditor geomEdit;
+            // TODO: incorporate this in the Transformer above
             if (_changePrecisionModel)
             {
-                var newFactory = CreateFactory(geom.Factory, _targetPM);
-                geomEdit = new GeometryEditor(newFactory);
+                return ChangePM(reduced, _targetPM);
             }
-            else
-                // don't change geometry factory
-                geomEdit = new GeometryEditor();
-
-            /*
-             * For polygonal geometries, collapses are always removed, in order
-             * to produce correct topology
-             */
-            bool finalRemoveCollapsed = _removeCollapsed;
-            if (geom.Dimension >= Dimension.Surface)
-                finalRemoveCollapsed = true;
-
-            var reduceGeom = geomEdit.Edit(geom,
-                    new PrecisionReducerCoordinateOperation(_targetPM, finalRemoveCollapsed));
-
-            return reduceGeom;
-        }
-
-        private Geometry FixPolygonalTopology(Geometry geom)
-        {
-            /**
-             * If precision model was *not* changed, need to flip
-             * geometry to targetPM, buffer in that model, then flip back
-             */
-            var geomToBuffer = geom;
-            if (!_changePrecisionModel)
-            {
-                geomToBuffer = ChangePM(geom, _targetPM);
-            }
-
-            var bufGeom = geomToBuffer.Buffer(0);
-
-            var finalGeom = bufGeom;
-            if (!_changePrecisionModel)
-            {
-                // a slick way to copy the geometry with the original precision factory
-                finalGeom = geom.Factory.CreateGeometry(bufGeom);
-            }
-            return finalGeom;
+            return reduced;
         }
 
         /// <summary>
