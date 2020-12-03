@@ -170,7 +170,7 @@ namespace NetTopologySuite.Triangulate
         /// Computes the intersection point between this segment and another one.
         /// </summary>
         /// <param name="s">a segment</param>
-        /// <returns>the intersection point, or <code>null</code> if there is none</returns>
+        /// <returns>the intersection point, or <c>null</c> if there is none</returns>
         public Coordinate Intersection(Segment s)
         {
             return _ls.Intersection(s.LineSegment);

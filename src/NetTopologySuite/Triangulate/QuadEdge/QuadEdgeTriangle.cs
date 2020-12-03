@@ -317,7 +317,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         /// <summary>
         /// Gets the neighbours of this triangle. If there is no neighbour triangle, the array element is
-        /// <code>null</code>
+        /// <c>null</c>
         /// </summary>
         /// <returns>an array containing the 3 neighbours of this triangle</returns>
         public QuadEdgeTriangle[] GetNeighbours()

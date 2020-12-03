@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// automatically determine appropriate scale factors for operations 
     /// using limited-precision noding (such as <see cref="OverlayNG"/>).
     /// <para/>
-    /// WARNING: the<code> inherentScale</code> and<code> robustScale</code> 
+    /// WARNING: the <c>inherentScale</c> and <c>robustScale</c> 
     /// functions can be very slow, due to the method used to determine
     /// number of decimal places of a number.
     /// These are not recommended for production use.

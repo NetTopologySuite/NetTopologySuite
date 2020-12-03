@@ -68,7 +68,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <item><term><see cref="SpatialFunction.Difference"/></term>
         /// <description>result envelope is the envelope of the A input geometry</description></item>
         /// </list>
-        /// Otherwise, <code>null</code> is returned to indicate full extent.
+        /// Otherwise, <c>null</c> is returned to indicate full extent.
         /// </summary>
         /// <param name="opCode">The overlay op code</param>
         /// <param name="inputGeom">The input geometries</param>

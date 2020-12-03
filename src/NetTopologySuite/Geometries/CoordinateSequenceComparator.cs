@@ -18,11 +18,11 @@ namespace NetTopologySuite.Geometries
     public class CoordinateSequenceComparator : IComparer<CoordinateSequence>
     {
         /// <summary>
-        /// Compare two <code>double</code>s, allowing for NaN values.
+        /// Compare two <c>double</c>s, allowing for NaN values.
         /// NaN is treated as being less than any valid number.
         /// </summary>
-        /// <param name="a">A <code>double</code></param>
-        /// <param name="b">A <code>double</code></param>
+        /// <param name="a">A <c>double</c></param>
+        /// <param name="b">A <c>double</c></param>
         /// <returns>-1, 0, or 1 depending on whether a is less than, equal to or greater than b</returns>
         public static int Compare(double a, double b)
         {

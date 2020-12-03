@@ -20,7 +20,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// <c>CoordinateM</c>s are two-dimensional points, with an additional M-ordinate.    
     /// If an M-ordinate value is not specified or not defined,
-    /// constructed coordinates have a M-ordinate of <code>NaN</code>
+    /// constructed coordinates have a M-ordinate of <c>NaN</c>
     /// (which is also the value of <see cref="Coordinate.NullOrdinate"/>).
     /// Apart from the basic accessor functions, NTS supports
     /// only specific operations involving the M-ordinate.

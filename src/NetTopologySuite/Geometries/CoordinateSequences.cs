@@ -298,7 +298,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// Shifts the positions of the coordinates until the coordinate at  <c>firstCoordinateIndex</c>
         /// is first.
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>
@@ -309,7 +309,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// Shifts the positions of the coordinates until the coordinate at  <c>firstCoordinateIndex</c>
         /// is first.
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>
