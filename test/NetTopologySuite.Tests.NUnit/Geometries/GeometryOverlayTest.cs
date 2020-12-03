@@ -1,4 +1,6 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
@@ -8,6 +10,42 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /// </summary>
     public class GeometryOverlayTest : GeometryTestCase
     {
+        private static (Geometry a, Geometry b) Create()
+        {
+            var i = NtsGeometryServices.Instance;
+            var gf = new GeometryFactory(i.DefaultPrecisionModel, 0, i.DefaultCoordinateSequenceFactory, GeometryOverlay.Legacy);
+            var p1 = gf.CreatePoint(new Coordinate(10, 10));
+            gf = new GeometryFactory(i.DefaultPrecisionModel, 0, i.DefaultCoordinateSequenceFactory, GeometryOverlay.NG);
+            var p2 = gf.CreatePoint(new Coordinate(11, 11));
+
+            return (p1, p2);
+        }
+
+        [TestCase(SpatialFunction.Intersection)]
+        [TestCase(SpatialFunction.Difference)]
+        [TestCase(SpatialFunction.Union)]
+        [TestCase(SpatialFunction.SymDifference)]
+        public void TestOverlayOfGeometriesWithDifferentGeometryOverlayFails(SpatialFunction opCode)
+        {
+            (var a, var b) = Create();
+
+            switch (opCode)
+            {
+                case SpatialFunction.Intersection:
+                    Assert.Throws<ArgumentException>(() => a.Intersection(b));
+                    break;
+                case SpatialFunction.Difference:
+                    Assert.Throws<ArgumentException>(() => a.Difference(b));
+                    break;
+                case SpatialFunction.Union:
+                    Assert.Throws<ArgumentException>(() => a.Union(b));
+                    break;
+                case SpatialFunction.SymDifference:
+                    Assert.Throws<ArgumentException>(() => a.SymmetricDifference(b));
+                    break;
+            }
+        }
+
         [Test]
         public void TestOverlayNGFixed()
         {
@@ -46,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             // must set overlay method explicitly since order of tests is not deterministic
             //GeometryOverlay.setOverlayImpl(GeometryOverlay.OVERLAY_PROPERTY_VALUE_OLD);
-            CheckIntersectionFails(new NtsGeometryServices(GeometryOverlay.Old));
+            CheckIntersectionFails(new NtsGeometryServices(GeometryOverlay.Legacy));
         }
 
         [Test]

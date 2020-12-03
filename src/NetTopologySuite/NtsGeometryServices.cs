@@ -19,7 +19,7 @@ namespace NetTopologySuite
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
         /// </summary>
         public NtsGeometryServices()
-            : this(GeometryOverlay.Old)
+            : this(GeometryOverlay.Legacy)
         {
         }
 
@@ -39,7 +39,7 @@ namespace NetTopologySuite
         /// <param name="precisionModel">The precision model.</param>
         /// <param name="srid">The default spatial reference ID</param>
         public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid)
-            : this(coordinateSequenceFactory, precisionModel, srid, GeometryOverlay.Old)
+            : this(coordinateSequenceFactory, precisionModel, srid, GeometryOverlay.Legacy)
         {
         }
 

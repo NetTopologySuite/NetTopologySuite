@@ -16,7 +16,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating a geometry overlay operation class that uses old NTS overlay operation set.
         /// </summary>
-        public static GeometryOverlay Old
+        public static GeometryOverlay Legacy
         {
             get { return OverlayV1.Instance; }
         }
@@ -30,13 +30,32 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        /// Computes a <c>Geometry</c> representing the overlay of geometries <c>a</c> and <c>b</c>
+        /// using the spatial function defined by <c>opCode</c>.
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="opCode"></param>
-        /// <returns></returns>
-        protected abstract Geometry Overlay(Geometry a, Geometry b, SpatialFunction opCode);
+        /// <param name="a">The 1st geometry</param>
+        /// <param name="b">The 2nd geometry</param>
+        /// <param name="opCode">The spatial function for the overlay operation</param>
+        /// <returns>The computed geometry</returns>
+        protected Geometry Overlay(Geometry a, Geometry b, SpatialFunction opCode)
+        {
+            if (!Equals(a.Factory.GeometryOverlay, this))
+                throw new ArgumentException("Geometry has different GeometryOverlay operation assigned", nameof(a));
+            if (!Equals(b.Factory.GeometryOverlay, this))
+                throw new ArgumentException("Geometry has different GeometryOverlay operation assigned", nameof(b));
+
+            return OverlayInternal(a, b, opCode);
+        }
+
+        /// <summary>
+        /// Actual implementation of the overlay computation for geometries <c>a</c> and <c>b</c>
+        /// using the spatial function defined by <c>opCode</c>.
+        /// </summary>
+        /// <param name="a">The 1st geometry</param>
+        /// <param name="b">The 2nd geometry</param>
+        /// <param name="opCode">The spatial function for the overlay operation</param>
+        /// <returns>The computed geometry</returns>
+        protected abstract Geometry OverlayInternal(Geometry a, Geometry b, SpatialFunction opCode);
 
         /// <summary>
         /// Computes a <c>Geometry</c> representing the point-set which is
@@ -187,7 +206,7 @@ namespace NetTopologySuite.Geometries
             {
             }
 
-            protected override Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
+            protected override Geometry OverlayInternal(Geometry geom0, Geometry geom1, SpatialFunction opCode)
             {
                 return SnapIfNeededOverlayOp.Overlay(geom0, geom1, opCode);
             }
@@ -207,7 +226,7 @@ namespace NetTopologySuite.Geometries
             {
             }
 
-            protected override Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
+            protected override Geometry OverlayInternal(Geometry geom0, Geometry geom1, SpatialFunction opCode)
             {
                 return OverlayNGRobust.Overlay(geom0, geom1, opCode);
             }
