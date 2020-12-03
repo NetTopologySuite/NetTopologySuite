@@ -38,6 +38,8 @@ namespace NetTopologySuite.IO
     /// </summary>
     public class WKTReader
     {
+        private readonly NtsGeometryServices _ntsGeometryServices;
+
         private CoordinateSequenceFactory _coordinateSequencefactory;
         private PrecisionModel _precisionModel;
 
@@ -52,7 +54,18 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
         /// </summary>
-        public WKTReader() : this(NtsGeometryServices.Instance.CreateGeometryFactory()) { }
+        public WKTReader() : this(NtsGeometryServices.Instance) { }
+
+        /// <summary>
+        /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
+        /// </summary>
+        public WKTReader(NtsGeometryServices ntsGeometryServices)
+        {
+            _ntsGeometryServices = ntsGeometryServices;
+            _coordinateSequencefactory = ntsGeometryServices.DefaultCoordinateSequenceFactory;
+            _precisionModel = ntsGeometryServices.DefaultPrecisionModel;
+            DefaultSRID = ntsGeometryServices.DefaultSRID;
+        }
 
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using the given
@@ -61,9 +74,8 @@ namespace NetTopologySuite.IO
         /// <param name="geometryFactory">The factory used to create <c>Geometry</c>s.</param>
         public WKTReader(GeometryFactory geometryFactory)
         {
-            _coordinateSequencefactory = geometryFactory.CoordinateSequenceFactory;
-            _precisionModel = geometryFactory.PrecisionModel;
-            DefaultSRID = geometryFactory.SRID;
+            _ntsGeometryServices = NtsGeometryServices.Instance;
+            Factory = geometryFactory;
         }
 
         /// <summary>
@@ -92,11 +104,14 @@ namespace NetTopologySuite.IO
         /// </summary>
         public GeometryFactory Factory
         {
-            get => NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
+            get => _ntsGeometryServices.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
             set
             {
                 if (value != null)
                 {
+                    if (value.GeometryOverlay != _ntsGeometryServices.GeometryOverlay)
+                        throw new ArgumentException("Factory has incompatible set of overlay functions assigned.", nameof(value));
+
                     _coordinateSequencefactory = value.CoordinateSequenceFactory;
                     _precisionModel = value.PrecisionModel;
                     DefaultSRID = value.SRID;
@@ -682,8 +697,7 @@ namespace NetTopologySuite.IO
             // differently than JTS's, so this is actually how we have to do it to match the output
             // from JTS (which could hypothetically return a collection whose inner elements have
             // different SRIDs than the collection itself if that's how it's specified).
-            var factory = NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, srid,
-                csFactory);
+            var factory = _ntsGeometryServices.CreateGeometryFactory(_precisionModel, srid, csFactory);
 
             if (type.StartsWith(WKTConstants.POINT, StringComparison.OrdinalIgnoreCase))
                 returned = ReadPointText(tokens, factory, ordinateFlags);

@@ -7,6 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     public class GeometryFactoryExTest : GeometryFactoryTest
     {
+        private static readonly NtsGeometryServices InstanceToUse = new NtsGeometryServicesEx();
         private NtsGeometryServices _oldInstance;
 
         private class NtsGeometryServicesEx : NtsGeometryServices
@@ -14,24 +15,25 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             protected override GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid,
                 CoordinateSequenceFactory coordinateSequenceFactory)
             {
-                return new GeometryFactoryEx(precisionModel, srid, coordinateSequenceFactory);
+                return new GeometryFactoryEx(precisionModel, srid, coordinateSequenceFactory, GeometryOverlay);
             }
         }
 
-        public GeometryFactoryExTest() : base(new GeometryFactoryEx(PrecModel, 0))
+        public GeometryFactoryExTest()
+            : base(InstanceToUse, new GeometryFactoryEx(PrecModel, 0))
         {
 
         }
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        [SetUp]
+        public void SetUp()
         {
             _oldInstance = NtsGeometryServices.Instance;
-            NtsGeometryServices.Instance = new NtsGeometryServicesEx();
+            NtsGeometryServices.Instance = InstanceToUse;
         }
 
-        [OneTimeTearDown]
-        public void OneTimeTearDown()
+        [TearDown]
+        public void TearDown()
         {
             NtsGeometryServices.Instance = _oldInstance;
         }

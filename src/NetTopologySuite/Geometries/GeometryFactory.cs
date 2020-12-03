@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
 
@@ -73,19 +72,10 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the geometry overlay function set to use
         /// </summary>
+        /// <returns>A geometry overlay function set.</returns>
         internal GeometryOverlay GeometryOverlay
         {
-            get { return _geometryOverlay ?? (_geometryOverlay = NtsGeometryServices.Instance.GeometryOverlay); }
-            set
-            {
-                if (_geometryOverlay != null)
-                    throw new InvalidOperationException("GeometryOverlay already set.");
-
-                if (value == null)
-                    value = NtsGeometryServices.Instance.GeometryOverlay;
-
-                _geometryOverlay = value;
-            }
+            get { return _geometryOverlay; }
         }
 
         /// <summary>
@@ -101,14 +91,30 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
+        /// Constructs a <c>GeometryFactory</c> that generates Geometries having the given
+        /// <paramref name="precisionModel">precision model</paramref>, <paramref name="srid">spatial-reference ID</paramref>, 
+        /// <paramref name="coordinateSequenceFactory">CoordinateSequence</paramref> and
+        /// <paramref name="geometryOverlay">Geometry overlay </paramref>.
         /// </summary>
-        public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+        /// <param name="precisionModel">A precision model</param>
+        /// <param name="srid">A spatial reference id</param>
+        /// <param name="coordinateSequenceFactory">A coordinate sequence factory</param>
+        /// <param name="geometryOverlay">A geometry overlay function set</param>
+        public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory, GeometryOverlay geometryOverlay)
         {
             _precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _srid = srid;
+            _geometryOverlay = geometryOverlay;
+        }
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
+        /// </summary>
+        public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+            : this(precisionModel, srid, coordinateSequenceFactory, NtsGeometryServices.Instance.GeometryOverlay)
+        {
         }
 
         /// <summary>
@@ -126,7 +132,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         public GeometryFactory(PrecisionModel precisionModel) :
-            this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) { }
+            this(precisionModel, 0, NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -136,7 +142,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="srid">The SRID to use.</param>
         public GeometryFactory(PrecisionModel precisionModel, int srid) :
-            this(precisionModel, srid, GetDefaultCoordinateSequenceFactory()) { }
+            this(precisionModel, srid, NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
@@ -677,9 +683,10 @@ namespace NetTopologySuite.Geometries
             return editor.Edit(g, operation);
         }
 
-        private static CoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString()
         {
-            return CoordinateArraySequenceFactory.Instance;
+            return $"{GetType().Name}[PM={PrecisionModel}, SRID={SRID}, CSFactory={CoordinateSequenceFactory.GetType().Name}, GeometryOverlay:{GeometryOverlay}]";
         }
     }
 }
