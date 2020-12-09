@@ -50,25 +50,42 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <summary>
         /// The distance between the paired coordinates
         /// </summary>
+        /// <returns>The distance between the paired coordinates</returns>
         public double Distance => _distance;
 
         /// <summary>
-        /// Returns an array containing the paired points
+        /// Gets a value indicating the paired coordinates.
         /// </summary>
+        /// <returns>An array containing the paired points</returns>
         public Coordinate[] Coordinates => _pt;
 
         /// <summary>
-        /// Gets the value of
+        /// Gets the value of one of the paired points
         /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
+        /// <param name="i">An index, valid are [0, 1].</param>
+        /// <returns>The <c>Coordinate</c> at index <c>i</c>.</returns>
         public Coordinate this[int i] => _pt[i];
 
+
+        /// <summary>
+        /// Updates <c>this</c> <c>PointPairDistance</c> if <paramref name="ptDist"/>
+        /// has greater <see cref="Distance"/> than <c>this</c> instance.
+        /// </summary>
+        /// <param name="ptDist">The <c>PointPairDistance</c> to test.</param>
         public void SetMaximum(PointPairDistance ptDist)
         {
-            SetMaximum(ptDist._pt[0], ptDist._pt[1]);
+            if (_isNull || ptDist.Distance > Distance)
+                Initialize(ptDist[0], ptDist[1], ptDist.Distance);
+            //SetMaximum(ptDist._pt[0], ptDist._pt[1]);
         }
 
+        /// <summary>
+        /// Updates <c>this</c> <c>PointPairDistance</c> if the distance between
+        /// <paramref name="p0"/> and <paramref name="p1"/> is greater than the
+        /// <see cref="Distance"/> of <c>this</c> instance.
+        /// </summary>
+        /// <param name="p0">The 1st point's coordinate</param>
+        /// <param name="p1">The 2nd point's coordinate</param>
         public void SetMaximum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)
@@ -81,11 +98,25 @@ namespace NetTopologySuite.Algorithm.Distance
                 Initialize(p0, p1, dist);
         }
 
+        /// <summary>
+        /// Updates <c>this</c> <c>PointPairDistance</c> if <paramref name="ptDist"/>
+        /// has a smaller <see cref="Distance"/> than <c>this</c> instance.
+        /// </summary>
+        /// <param name="ptDist">The <c>PointPairDistance</c> to test.</param>
         public void SetMinimum(PointPairDistance ptDist)
         {
-            SetMinimum(ptDist._pt[0], ptDist._pt[1]);
+            if (_isNull || ptDist.Distance < Distance)
+                Initialize(ptDist[0], ptDist[1], ptDist.Distance);
+            //SetMinimum(ptDist._pt[0], ptDist._pt[1]);
         }
 
+        /// <summary>
+        /// Updates <c>this</c> <c>PointPairDistance</c> if the distance between
+        /// <paramref name="p0"/> and <paramref name="p1"/> is smaller than the
+        /// <see cref="Distance"/> of <c>this</c> instance.
+        /// </summary>
+        /// <param name="p0">The 1st point's coordinate</param>
+        /// <param name="p1">The 2nd point's coordinate</param>
         public void SetMinimum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)

@@ -18,6 +18,9 @@ namespace NetTopologySuite.Geometries.Implementation
     [Serializable]
     public class CoordinateArraySequence : CoordinateSequence
     {
+        /// <summary>
+        /// Array of coordinates in sequence
+        /// </summary>
         protected Coordinate[] Coordinates;
 
         /// <summary>
@@ -96,6 +99,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         /// <param name="dimension">the dimension of the coordinates</param>
+        /// <param name="measures">the number of measures of the coordinates</param>
         public CoordinateArraySequence(int size, int dimension, int measures)
             : base(size, dimension, measures)
         {
@@ -124,7 +128,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Ensure array contents of the same type, making use of <see cref="CreateCoordinate"/> as needed.
+        /// Ensure array contents of the same type, making use of <see cref="CoordinateSequence.CreateCoordinate"/> as needed.
         /// <para>
         /// A new array will be created if needed to return a consistent result.
         /// </para>
@@ -356,6 +360,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return env;
         }
 
+        /// <inheritdoc cref="CoordinateSequence.Reversed()"/>
         public override CoordinateSequence Reversed()
         {
             var coordinates = new Coordinate[Count];

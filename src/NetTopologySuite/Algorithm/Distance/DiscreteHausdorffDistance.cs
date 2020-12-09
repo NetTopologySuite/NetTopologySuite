@@ -33,7 +33,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// Examples of these are:
     /// <list type="bullet">
     /// <item><description>
-    /// computing distance between Linestrings that are roughly parallel to each other,
+    /// computing distance between <c>Linestring</c>s that are roughly parallel to each other,
     /// and roughly equal in length.  This occurs in matching linear networks.
     /// </description></item>
     /// <item><description>Testing similarity of geometries.</description></item>
@@ -81,9 +81,10 @@ namespace NetTopologySuite.Algorithm.Distance
         private readonly Geometry _g0;
         private readonly Geometry _g1;
         private readonly PointPairDistance _ptDist = new PointPairDistance();
-        /**
-         * Value of 0.0 indicates that no densification should take place
-         */
+
+        /// <summary>
+        /// Value of 0.0 indicates that no densification should take place
+        /// </summary>
         private double _densifyFrac;
 
         /// <summary>
@@ -98,11 +99,11 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <summary>
-        /// Gets/sets the fraction by which to densify each segment.
+        /// Gets or sets the fraction by which to densify each segment.
         /// </summary>
         /// <remarks>
         /// Each segment will be (virtually) split into a number of equal-length
-        /// subsegments, whose fraction of the total length is closest
+        /// sub-segments, whose fraction of the total length is closest
         /// to the given fraction.
         /// </remarks>
         public double DensifyFraction
@@ -110,26 +111,36 @@ namespace NetTopologySuite.Algorithm.Distance
             get => _densifyFrac;
             set
             {
-                if (value > 1.0
-                    || value <= 0.0)
+                if (value > 1.0 || value <= 0.0)
                     throw new ArgumentOutOfRangeException("value", @"Fraction is not in range (0.0 - 1.0]");
 
                 _densifyFrac = value;
             }
         }
 
+        /// <summary>
+        /// Computes the discrete hausdorff distance between the two assigned geometries.
+        /// </summary>
+        /// <returns>The discrete hausdorff distance</returns>
         public double Distance()
         {
             Compute(_g0, _g1);
             return _ptDist.Distance;
         }
 
+        /// <summary>
+        /// Computes the discrete hausdorff distance between the 1st and the 2nd assigned geometry
+        /// </summary>
+        /// <returns>The discrete hausdorff distance.</returns>
         public double OrientedDistance()
         {
             ComputeOrientedDistance(_g0, _g1, _ptDist);
             return _ptDist.Distance;
         }
 
+        /// <summary>
+        /// Gets a value indicating the 
+        /// </summary>
         public Coordinate[] Coordinates => _ptDist.Coordinates;
 
         private void Compute(Geometry g0, Geometry g1)
@@ -147,55 +158,77 @@ namespace NetTopologySuite.Algorithm.Distance
             if (_densifyFrac > 0)
             {
                 var fracFilter = new MaxDensifiedByFractionDistanceFilter(geom, _densifyFrac);
-                discreteGeom.Apply(fracFilter);
+                discreteGeom.Apply((IEntireCoordinateSequenceFilter)fracFilter);
                 ptDist.SetMaximum(fracFilter.MaxPointDistance);
 
             }
         }
 
-        public class MaxPointDistanceFilter
-            : ICoordinateFilter
+        /// <summary>
+        /// A coordinate filter that computes the maximum <see cref="PointPairDistance"/> between points of
+        /// an assigned <c>Geometry</c> and all filtered geometries.
+        /// </summary>
+        public class MaxPointDistanceFilter : ICoordinateFilter
         {
             private readonly PointPairDistance _maxPtDist = new PointPairDistance();
-            private readonly PointPairDistance _minPtDist = new PointPairDistance();
+            //private readonly PointPairDistance _minPtDist = new PointPairDistance();
             //private EuclideanDistanceToPoint euclideanDist = new EuclideanDistanceToPoint();
             private readonly Geometry _geom;
 
+            /// <summary>
+            /// Creates an instance of this class
+            /// </summary>
+            /// <param name="geom">A geometry</param>
             public MaxPointDistanceFilter(Geometry geom)
             {
                 _geom = geom;
             }
 
+            /// <inheritdoc cref="ICoordinateFilter.Filter"/>
             public void Filter(Coordinate pt)
             {
-                _minPtDist.Initialize();
-                DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
-                _maxPtDist.SetMaximum(_minPtDist);
+                var minPtDist = new PointPairDistance();
+                DistanceToPoint.ComputeDistance(_geom, pt, minPtDist);
+                _maxPtDist.SetMaximum(minPtDist);
             }
 
+            /// <summary>
+            /// Gets a value indicating the maximum distance between
+            /// an assigned <c>Geometry</c> and the filtered one.
+            /// </summary>
             public PointPairDistance MaxPointDistance => _maxPtDist;
         }
 
-        public class MaxDensifiedByFractionDistanceFilter
-        : ICoordinateSequenceFilter
+        /// <summary>
+        /// A coordinate filter that computes the maximum <see cref="PointPairDistance"/> between points of
+        /// an assigned <c>Geometry</c> and all filtered geometries. The filtered geometries' line segments
+        /// are 
+        /// </summary>
+        public class MaxDensifiedByFractionDistanceFilter : ICoordinateSequenceFilter, IEntireCoordinateSequenceFilter
         {
             private readonly PointPairDistance _maxPtDist = new PointPairDistance();
-            private readonly PointPairDistance _minPtDist = new PointPairDistance();
+            //private readonly PointPairDistance _minPtDist = new PointPairDistance();
             private readonly Geometry _geom;
             private readonly int _numSubSegs;
 
+            /// <summary>
+            /// Creates an instance of this filter class
+            /// </summary>
+            /// <param name="geom">The geometry to densify</param>
+            /// <param name="fraction">The densification fraction</param>
             public MaxDensifiedByFractionDistanceFilter(Geometry geom, double fraction)
             {
                 _geom = geom;
                 _numSubSegs = (int)Math.Round(1.0 / fraction, MidpointRounding.ToEven); //see Java's Math.rint
             }
 
+            /// <inheritdoc cref="ICoordinateSequenceFilter.Filter"/>
             public void Filter(CoordinateSequence seq, int index)
             {
-                /**
+                /*
                  * This logic also handles skipping Point geometries
                  */
-                if (index == 0)
+                if (index < 1)
                     return;
 
                 var p0 = seq.GetCoordinate(index - 1);
@@ -209,17 +242,52 @@ namespace NetTopologySuite.Algorithm.Distance
                     double x = p0.X + i * delx;
                     double y = p0.Y + i * dely;
                     var pt = new Coordinate(x, y);
-                    _minPtDist.Initialize();
-                    DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
-                    _maxPtDist.SetMaximum(_minPtDist);
+                    var minPtDist = new PointPairDistance();
+                    DistanceToPoint.ComputeDistance(_geom, pt, minPtDist);
+                    _maxPtDist.SetMaximum(minPtDist);
                 }
-
             }
 
+            /// <inheritdoc cref="ICoordinateSequenceFilter.GeometryChanged"/>
+            /// <returns>As this filter does not change the geometry, the return value is always <c>false</c></returns>
             public bool GeometryChanged => false;
 
+            /// <inheritdoc cref="ICoordinateSequenceFilter.Done"/>
+            /// <returns>As this filter does not end prematurely, the return value is always <c>false</c></returns>
             public bool Done => false;
 
+            void IEntireCoordinateSequenceFilter.Filter(CoordinateSequence seq)
+            {
+                /*
+                 * This logic also handles skipping Point geometries
+                 */
+                for (int index = 1; index < seq.Count; index++)
+                {
+                    var p0 = seq.GetCoordinate(index - 1);
+                    var p1 = seq.GetCoordinate(index);
+
+                    double delx = (p1.X - p0.X) / _numSubSegs;
+                    double dely = (p1.Y - p0.Y) / _numSubSegs;
+
+                    for (int i = 0; i < _numSubSegs; i++)
+                    {
+                        double x = p0.X + i * delx;
+                        double y = p0.Y + i * dely;
+                        var pt = new Coordinate(x, y);
+                        var minPtDist = new PointPairDistance();
+                        DistanceToPoint.ComputeDistance(_geom, pt, minPtDist);
+                        _maxPtDist.SetMaximum(minPtDist);
+                    }
+                }
+            }
+
+            bool IEntireCoordinateSequenceFilter.Done => Done;
+
+            bool IEntireCoordinateSequenceFilter.GeometryChanged => GeometryChanged;
+
+            /// <summary>
+            /// Gets a value indicating the maximum distance between p
+            /// </summary>
             public PointPairDistance MaxPointDistance => _maxPtDist;
         }
 
