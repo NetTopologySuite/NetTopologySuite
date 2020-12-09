@@ -98,8 +98,9 @@ namespace NetTopologySuite.IO.KML
         private bool _extrude;
         private bool _tesselate;
         private string _altitudeMode;
-        private NumberFormatInfo _formatter;
-        private string _format;
+        //private NumberFormatInfo _formatter;
+        private OrdinateFormat _ordinateFormat;
+        private int _precision;
 
         /// <summary>
         /// A tag string which is prefixed to every emitted text line.
@@ -167,18 +168,17 @@ namespace NetTopologySuite.IO.KML
         /// </remarks>
         public int Precision
         {
-            get => _formatter.NumberDecimalDigits;
+            get => _precision;
             set => CreateFormatter(value);
         }
 
         private void CreateFormatter(int precision)
         {
+            _precision = precision;
             var precisionModel = precision < 0
                 ? new PrecisionModel(PrecisionModels.Floating)
                 : new PrecisionModel(precision);
-            _formatter = WKTWriter.CreateFormatter(precisionModel);
-            string digits = new string('#', _formatter.NumberDecimalDigits);
-            _format = string.Format("0.{0}", digits);
+            _ordinateFormat = WKTWriter.CreateOrdinateFormat(precisionModel);
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace NetTopologySuite.IO.KML
 
         private void Write(double d, StringBuilder sb)
         {
-            string tos = d.ToString(_format, _formatter);
+            string tos = _ordinateFormat.Format(d);
             sb.Append(tos);
         }
     }
