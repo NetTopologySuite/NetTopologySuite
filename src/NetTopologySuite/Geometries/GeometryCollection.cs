@@ -490,10 +490,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>A <see cref="GeometryCollection"/></returns> in the reverse order
         [Obsolete("Call Geometry.Reverse()")]
+#pragma warning disable 809
         public override Geometry Reverse()
         {
             return base.Reverse();
         }
+#pragma warning restore 809
 
         /// <summary>
         /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>GeometryCollection</c>s.

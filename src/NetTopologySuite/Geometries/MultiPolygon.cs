@@ -135,10 +135,12 @@ namespace NetTopologySuite.Geometries
         /// <remarks>The order of the components in the collection are not reversed.</remarks>
         /// <returns>An <see cref="MultiPolygon"/> in the reverse order</returns>
         [Obsolete("Call Geometry.Reverse()")]
+#pragma warning disable 809
         public override Geometry Reverse()
         {
             return base.Reverse();
         }
+#pragma warning restore 809
 
         /// <inheritdoc cref="ReverseInternal"/>
         protected override Geometry ReverseInternal()

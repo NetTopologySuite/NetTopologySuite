@@ -261,10 +261,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
         [Obsolete("Call Geometry.Reverse()")]
+#pragma warning disable 809
         public override Geometry Reverse()
         {
             return base.Reverse();
         }
+#pragma warning restore 809
 
         /// <summary>
         /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>LINESTRING</c>s.
