@@ -9,6 +9,16 @@ namespace NetTopologySuite
     /// <summary>
     /// A geometry service provider class
     /// </summary>
+    /// <remarks>
+    /// When overriding this class, you need to provide a public constructor with the following arguments:
+    /// <list type="number">
+    /// <item><c>CoordinateSequenceFactory</c><description>A factory to create coordinate sequences</description></item>
+    /// <item><term><c>PrecisionModel</c></term><description>A precision model</description></item>
+    /// <item><term><c>int</c></term><description>spatial reference id (srid)</description></item>
+    /// <item><term><c>GeometryOverlay</c></term><description>A class that bundles an overlay operation function set</description></item>
+    /// </list>
+    /// <see cref="NtsGeometryServices(CoordinateSequenceFactory, PrecisionModel, int, GeometryOverlay)"/>
+    /// </remarks>
     public class NtsGeometryServices
     {
         private static volatile NtsGeometryServices s_instance = new NtsGeometryServices();
@@ -33,7 +43,8 @@ namespace NetTopologySuite
         {
         }
         /// <summary>
-        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>, <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>).
         /// </summary>
         /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
         /// <param name="precisionModel">The precision model.</param>
@@ -44,7 +55,9 @@ namespace NetTopologySuite
         }
 
         /// <summary>
-        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>, <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/>, a spatial reference Id (<paramref name="srid"/>) and
+        /// a <see cref="Geometries.GeometryOverlay"/>.
         /// </summary>
         /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
         /// <param name="precisionModel">The precision model.</param>

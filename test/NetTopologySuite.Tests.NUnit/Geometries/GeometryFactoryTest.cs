@@ -20,9 +20,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         public GeometryFactoryTest(NtsGeometryServices ntsGeometryServices, GeometryFactory geometryFactory = null)
         {
-            Factory = geometryFactory ?? new GeometryFactory();
+            Factory = geometryFactory ?? ntsGeometryServices.CreateGeometryFactory();
             _reader = new WKTReader(ntsGeometryServices);
-            _reader.Factory = geometryFactory ?? ntsGeometryServices.CreateGeometryFactory();
+            _reader.Factory = Factory;
         }
 
         [Test]

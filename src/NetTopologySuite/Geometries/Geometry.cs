@@ -2,18 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Operation.Linemerge;
-using NetTopologySuite.Operation.Overlay;
-using NetTopologySuite.Operation.Overlay.Snap;
 using NetTopologySuite.Operation.Predicate;
 using NetTopologySuite.Operation.Relate;
-using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
 
 namespace NetTopologySuite.Geometries
@@ -1515,8 +1511,11 @@ namespace NetTopologySuite.Geometries
         /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
         /// <exception cref="TopologyException">if a robustness error occurs.</exception>
         /// <exception cref="ArgumentException">if the argument is a non-empty heterogeneous <c>GeometryCollection</c></exception>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry Intersection(Geometry other)
         {
+            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.Intersection(this, other);
         }
 
@@ -1552,9 +1551,12 @@ namespace NetTopologySuite.Geometries
         /// points of <c>other</c></returns>
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
         /// <exception cref="ArgumentException">Thrown if either input is a non-empty GeometryCollection</exception>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         /// <seealso cref="LineMerger"/>
         public Geometry Union(Geometry other)
         {
+            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.Union(this, other);
         }
 
@@ -1570,8 +1572,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the difference.</param>
         /// <returns>A Geometry representing the point-set difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry Difference(Geometry other)
         {
+            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.Difference(this, other);
         }
 
@@ -1588,8 +1593,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the symmetric difference.</param>
         /// <returns>a Geometry representing the point-set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry SymmetricDifference(Geometry other)
         {
+            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.SymmetricDifference(this, other);
         }
 

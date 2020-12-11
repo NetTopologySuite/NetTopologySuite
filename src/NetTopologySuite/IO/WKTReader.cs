@@ -38,15 +38,11 @@ namespace NetTopologySuite.IO
     /// </summary>
     public class WKTReader
     {
-        private readonly NtsGeometryServices _ntsGeometryServices;
-
-        private CoordinateSequenceFactory _coordinateSequencefactory;
-        private PrecisionModel _precisionModel;
-
-        private static readonly CultureInfo InvariantCulture =
-            CultureInfo.InvariantCulture;
+        private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
         private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
         private static readonly CoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
+
+        private NtsGeometryServices _ntsGeometryServices;
 
         private bool _isAllowOldNtsCoordinateSyntax = true;
         private bool _isAllowOldNtsMultipointSyntax = true;
@@ -62,8 +58,6 @@ namespace NetTopologySuite.IO
         public WKTReader(NtsGeometryServices ntsGeometryServices)
         {
             _ntsGeometryServices = ntsGeometryServices;
-            _coordinateSequencefactory = ntsGeometryServices.DefaultCoordinateSequenceFactory;
-            _precisionModel = ntsGeometryServices.DefaultPrecisionModel;
             DefaultSRID = ntsGeometryServices.DefaultSRID;
         }
 
@@ -71,11 +65,11 @@ namespace NetTopologySuite.IO
         /// Creates a <c>WKTReader</c> that creates objects using the given
         /// <c>GeometryFactory</c>.
         /// </summary>
-        /// <param name="geometryFactory">The factory used to create <c>Geometry</c>s.</param>
-        public WKTReader(GeometryFactory geometryFactory)
+        /// <param name="factory">The factory used to create <c>Geometry</c>s.</param>
+        [Obsolete("Use a constructor with a configured NtsGeometryServices instance.")]
+        public WKTReader(GeometryFactory factory)
+            : this(new NtsGeometryServices(factory.CoordinateSequenceFactory, factory.PrecisionModel, factory.SRID, factory.GeometryOverlay))
         {
-            _ntsGeometryServices = NtsGeometryServices.Instance;
-            Factory = geometryFactory;
         }
 
         /// <summary>
@@ -104,17 +98,16 @@ namespace NetTopologySuite.IO
         /// </summary>
         public GeometryFactory Factory
         {
-            get => _ntsGeometryServices.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
+            get => _ntsGeometryServices.CreateGeometryFactory(DefaultSRID);
             set
             {
                 if (value != null)
                 {
-                    if (value.GeometryOverlay != _ntsGeometryServices.GeometryOverlay)
-                        throw new ArgumentException("Factory has incompatible set of overlay functions assigned.", nameof(value));
-
-                    _coordinateSequencefactory = value.CoordinateSequenceFactory;
-                    _precisionModel = value.PrecisionModel;
-                    DefaultSRID = value.SRID;
+                    _ntsGeometryServices = (NtsGeometryServices)Activator.CreateInstance(_ntsGeometryServices.GetType(),
+                        value.CoordinateSequenceFactory, value.PrecisionModel,
+                        value.SRID, value.GeometryOverlay);
+                    // Not sure about this:
+                    // DefaultSRID = value.SRID;
                 }
             }
         }
@@ -123,6 +116,22 @@ namespace NetTopologySuite.IO
         /// Gets or sets the default SRID
         /// </summary>
         public int DefaultSRID { get; set; }
+
+        /* THIS WOULD BE A BREAKING CHANGE
+        public int DefaultSRID
+        {
+            get => _ntsGeometryServices.DefaultSRID;
+            set
+            {
+                if (value == DefaultSRID)
+                    return;
+
+                _ntsGeometryServices = new NtsGeometryServices(
+                    _ntsGeometryServices.DefaultCoordinateSequenceFactory, _ntsGeometryServices.DefaultPrecisionModel,
+                    _ntsGeometryServices.DefaultSRID, _ntsGeometryServices.GeometryOverlay);
+            }
+        }
+         */
 
         /// <summary>
         /// Converts a Well-known Text representation to a <c>Geometry</c>.
@@ -171,13 +180,6 @@ namespace NetTopologySuite.IO
         /// </returns>
         public Geometry Read(TextReader reader)
         {
-            /*
-            var tokens = Tokenize(reader);
-            StreamTokenizer tokenizer = new StreamTokenizer(reader);
-            IList<Token> tokens = new List<Token>();
-            tokenizer.Tokenize(tokens);     // Read directly all tokens
-             */
-            //_index = 0;                      // Reset pointer to start of tokens
             try
             {
                 var enumerator = Tokenizer(reader);
@@ -225,13 +227,14 @@ namespace NetTopologySuite.IO
         /// Those are silently dropped.
         /// </para>
         /// </summary>
+        /// <param name="factory">A geometry factory</param>
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
         /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed.</param>
         /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinate(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
+        private CoordinateSequence GetCoordinate(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
         {
             bool opened = false;
             if (tryParen && IsOpenerNext(tokens))
@@ -242,9 +245,9 @@ namespace NetTopologySuite.IO
 
             // create a sequence for one coordinate
             int offsetM = ordinateFlags.HasFlag(Ordinates.Z) ? 1 : 0;
-            var sequence = _coordinateSequencefactory.Create(1, this.ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
-            sequence.SetOrdinate(0, 0, _precisionModel.MakePrecise(GetNextNumber(tokens)));
-            sequence.SetOrdinate(0, 1, _precisionModel.MakePrecise(GetNextNumber(tokens)));
+            var sequence = factory.CoordinateSequenceFactory.Create(1, this.ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
+            sequence.SetOrdinate(0, 0, factory.PrecisionModel.MakePrecise(GetNextNumber(tokens)));
+            sequence.SetOrdinate(0, 1, factory.PrecisionModel.MakePrecise(GetNextNumber(tokens)));
 
             // additionally read other vertices
             if (ordinateFlags.HasFlag(Ordinates.Z))
@@ -279,23 +282,24 @@ namespace NetTopologySuite.IO
         /// Those are silently dropped.
         /// </para>
         /// </summary>
+        /// <param name="factory">A geometry factory</param>
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
         /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags)
+        private CoordinateSequence GetCoordinateSequence(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
         {
             if (GetNextEmptyOrOpener(tokens).Equals(WKTConstants.EMPTY))
-                return _coordinateSequencefactory.Create(0, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
+                return factory.CoordinateSequenceFactory.Create(0, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
 
             var coordinates = new List<CoordinateSequence>();
             do
             {
-                coordinates.Add(GetCoordinate(tokens, ordinateFlags, false));
+                coordinates.Add(GetCoordinate(factory, tokens, ordinateFlags, false));
             } while (GetNextCloserOrComma(tokens).Equals(","));
 
-            return MergeSequences(coordinates, ordinateFlags);
+            return MergeSequences(factory, coordinates, ordinateFlags);
         }
 
         /// <summary>
@@ -307,21 +311,22 @@ namespace NetTopologySuite.IO
         /// Those are silently dropped.
         /// </para>
         /// </summary>
+        /// <param name="factory">A geometry factory</param>
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
         /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinateSequenceOldMultiPoint(TokenStream tokens, Ordinates ordinateFlags)
+        private CoordinateSequence GetCoordinateSequenceOldMultiPoint(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
         {
             var coordinates = new List<CoordinateSequence>();
             do
             {
-                coordinates.Add(GetCoordinate(tokens, ordinateFlags, true));
+                coordinates.Add(GetCoordinate(factory, tokens, ordinateFlags, true));
             }
             while (GetNextCloserOrComma(tokens) == ",");
 
-            return this.MergeSequences(coordinates, ordinateFlags);
+            return MergeSequences(factory, coordinates, ordinateFlags);
         }
 
         /// <summary>
@@ -355,15 +360,16 @@ namespace NetTopologySuite.IO
         /// Merges an array of one-coordinate-<see cref="CoordinateSequence"/>s into one
         /// <see cref="CoordinateSequence"/>.
         /// </summary>
+        /// <param name="factory">A geometry factory</param>
         /// <param name="sequences">an array of coordinate sequences. Each sequence contains <b>exactly one</b> coordinate.</param>
         /// <param name="ordinateFlags">a bit-mask of required ordinates.</param>
         /// <returns>a coordinate sequence containing all coordinate.</returns>
-        private CoordinateSequence MergeSequences(List<CoordinateSequence> sequences, Ordinates ordinateFlags)
+        private CoordinateSequence MergeSequences(GeometryFactory factory, List<CoordinateSequence> sequences, Ordinates ordinateFlags)
         {
             // if the sequences array is empty or null create an empty sequence
             if (sequences == null || sequences.Count == 0)
             {
-                return _coordinateSequencefactory.Create(0, this.ToDimension(ordinateFlags));
+                return factory.CoordinateSequenceFactory.Create(0, ToDimension(ordinateFlags));
             }
 
             if (sequences.Count == 1)
@@ -390,7 +396,7 @@ namespace NetTopologySuite.IO
             }
 
             // create and fill the result sequence
-            var sequence = _coordinateSequencefactory.Create(sequences.Count, this.ToDimension(mergeOrdinates), mergeOrdinates.HasFlag(Ordinates.M) ? 1 : 0);
+            var sequence = factory.CoordinateSequenceFactory.Create(sequences.Count, ToDimension(mergeOrdinates), mergeOrdinates.HasFlag(Ordinates.M) ? 1 : 0);
 
             int offsetM = 2 + (mergeOrdinates.HasFlag(Ordinates.Z) ? 1 : 0);
             for (int i = 0; i < sequences.Count; i++)
@@ -687,8 +693,8 @@ namespace NetTopologySuite.IO
                 ordinateFlags = GetNextOrdinateFlags(tokens);
             }
 
-            var csFactory = (_coordinateSequencefactory.Ordinates & ordinateFlags) == ordinateFlags
-                ? _coordinateSequencefactory
+            var csFactory = (_ntsGeometryServices.DefaultCoordinateSequenceFactory.Ordinates & ordinateFlags) == ordinateFlags
+                ? _ntsGeometryServices.DefaultCoordinateSequenceFactory
                 : CoordinateSequenceFactoryXYZM;
 
             // DEVIATION: JTS largely uses the same geometry factory that we were given originally,
@@ -697,7 +703,7 @@ namespace NetTopologySuite.IO
             // differently than JTS's, so this is actually how we have to do it to match the output
             // from JTS (which could hypothetically return a collection whose inner elements have
             // different SRIDs than the collection itself if that's how it's specified).
-            var factory = _ntsGeometryServices.CreateGeometryFactory(_precisionModel, srid, csFactory);
+            var factory = _ntsGeometryServices.CreateGeometryFactory(_ntsGeometryServices.DefaultPrecisionModel, srid, csFactory);
 
             if (type.StartsWith(WKTConstants.POINT, StringComparison.OrdinalIgnoreCase))
                 returned = ReadPointText(tokens, factory, ordinateFlags);
@@ -730,12 +736,13 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a &lt;Point Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>A <c>Point</c> specified by the next token in
         /// the stream.</returns>
         private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            var point = factory.CreatePoint(GetCoordinateSequence(tokens, ordinateFlags));
+            var point = factory.CreatePoint(GetCoordinateSequence(factory, tokens, ordinateFlags));
             return point;
         }
 
@@ -746,13 +753,14 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a &lt;LineString Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>
         /// A <c>LineString</c> specified by the next
         /// token in the stream.</returns>
         private LineString ReadLineStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            return factory.CreateLineString(GetCoordinateSequence(tokens, ordinateFlags));
+            return factory.CreateLineString(GetCoordinateSequence(factory, tokens, ordinateFlags));
         }
 
         /// <summary>
@@ -762,12 +770,13 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a &lt;LineString Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>A <c>LinearRing</c> specified by the next
         /// token in the stream.</returns>
         private LinearRing ReadLinearRingText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            return factory.CreateLinearRing(GetCoordinateSequence(tokens, ordinateFlags));
+            return factory.CreateLinearRing(GetCoordinateSequence(factory, tokens, ordinateFlags));
         }
 
         /// <summary>
@@ -777,7 +786,8 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a &lt;MultiPoint Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>
         /// A <c>MultiPoint</c> specified by the next
         /// token in the stream.</returns>
@@ -797,7 +807,7 @@ namespace NetTopologySuite.IO
                 if (nextWord != "(")
                 {
                     return factory.CreateMultiPoint(
-                        GetCoordinateSequenceOldMultiPoint(tokens, ordinateFlags));
+                        GetCoordinateSequenceOldMultiPoint(factory, tokens, ordinateFlags));
                 }
             }
 
@@ -821,7 +831,8 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a Polygon Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>
         /// A <c>Polygon</c> specified by the next token
         /// in the stream.
@@ -851,7 +862,8 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a MultiLineString Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>
         /// A <c>MultiLineString</c> specified by the
         /// next token in the stream.</returns>
@@ -879,7 +891,8 @@ namespace NetTopologySuite.IO
         /// <param name="tokens">Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a MultiPolygon Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>
         /// A <c>MultiPolygon</c> specified by the next
         /// token in the stream, or if if the coordinates used to create the
@@ -910,7 +923,8 @@ namespace NetTopologySuite.IO
         ///   Tokenizer over a stream of text in Well-known Text
         ///   format. The next tokens must form a &lt;GeometryCollection Text.
         /// </param>
-        /// <param name="factory"> </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
         /// <returns>
         /// A <c>GeometryCollection</c> specified by the
         /// next token in the stream.</returns>

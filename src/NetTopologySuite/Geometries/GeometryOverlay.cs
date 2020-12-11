@@ -37,25 +37,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">The 2nd geometry</param>
         /// <param name="opCode">The spatial function for the overlay operation</param>
         /// <returns>The computed geometry</returns>
-        protected Geometry Overlay(Geometry a, Geometry b, SpatialFunction opCode)
-        {
-            if (!Equals(a.Factory.GeometryOverlay, this))
-                throw new ArgumentException("Geometry has different GeometryOverlay operation assigned", nameof(a));
-            if (!Equals(b.Factory.GeometryOverlay, this))
-                throw new ArgumentException("Geometry has different GeometryOverlay operation assigned", nameof(b));
-
-            return OverlayInternal(a, b, opCode);
-        }
-
-        /// <summary>
-        /// Actual implementation of the overlay computation for geometries <c>a</c> and <c>b</c>
-        /// using the spatial function defined by <c>opCode</c>.
-        /// </summary>
-        /// <param name="a">The 1st geometry</param>
-        /// <param name="b">The 2nd geometry</param>
-        /// <param name="opCode">The spatial function for the overlay operation</param>
-        /// <returns>The computed geometry</returns>
-        protected abstract Geometry OverlayInternal(Geometry a, Geometry b, SpatialFunction opCode);
+        protected abstract Geometry Overlay(Geometry a, Geometry b, SpatialFunction opCode);
 
         /// <summary>
         /// Computes a <c>Geometry</c> representing the point-set which is
@@ -206,7 +188,7 @@ namespace NetTopologySuite.Geometries
             {
             }
 
-            protected override Geometry OverlayInternal(Geometry geom0, Geometry geom1, SpatialFunction opCode)
+            protected override Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
             {
                 return SnapIfNeededOverlayOp.Overlay(geom0, geom1, opCode);
             }
@@ -214,6 +196,11 @@ namespace NetTopologySuite.Geometries
             public override Geometry Union(Geometry a)
             {
                 return UnaryUnionOp.Union(a);
+            }
+
+            public override string ToString()
+            {
+                return "Legacy";
             }
         }
 
@@ -226,7 +213,7 @@ namespace NetTopologySuite.Geometries
             {
             }
 
-            protected override Geometry OverlayInternal(Geometry geom0, Geometry geom1, SpatialFunction opCode)
+            protected override Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
             {
                 return OverlayNGRobust.Overlay(geom0, geom1, opCode);
             }
@@ -235,7 +222,12 @@ namespace NetTopologySuite.Geometries
             {
                 return OverlayNGRobust.Union(a);
             }
+
+            public override string ToString()
+            {
+                return "NG";
+            }
         }
-#endregion
+        #endregion
     }
 }
