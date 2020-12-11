@@ -88,7 +88,7 @@ namespace NetTopologySuite
         /// Gets or sets a value indicating the operations to use for geometry overlay.  
         /// </summary>
         /// <returns>A set of geometry overlay functions.</returns>
-        internal GeometryOverlay GeometryOverlay { get; }
+        public GeometryOverlay GeometryOverlay { get; }
 
 
         /// <summary>
