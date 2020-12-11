@@ -106,6 +106,17 @@ namespace NetTopologySuite.Geometries.Implementation
             return arr;
         }
 
+        /// <summary>
+        /// Releases the weak reference to the coordinate array.
+        /// </summary>
+        /// <remarks>
+        /// This is necessary if you directly modify the array from <c>GetRawCoordinates</c>.
+        /// </remarks>
+        public void ReleaseCoordinateArray()
+        {
+            CoordRef = null;
+        }
+
         private Coordinate[] GetCachedCoords()
         {
             var localCoordRef = CoordRef;
