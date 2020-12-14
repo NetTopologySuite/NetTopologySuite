@@ -15,6 +15,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="seq">The coordinate sequence to reverse.</param>
         public static void Reverse(CoordinateSequence seq)
         {
+            if (seq.Count <= 1) return;
+
             int last = seq.Count - 1;
             int mid = last / 2;
             for (int i = 0; i <= mid; i++)
@@ -296,7 +298,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// Shifts the positions of the coordinates until the coordinate at  <c>firstCoordinateIndex</c>
         /// is first.
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>
@@ -307,7 +309,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// Shifts the positions of the coordinates until the coordinate at  <c>firstCoordinateIndex</c>
         /// is first.
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>

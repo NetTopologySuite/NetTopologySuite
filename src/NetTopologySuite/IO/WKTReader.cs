@@ -224,7 +224,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory">A geometry factory</param>
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
-        /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed.</param>
+        /// <param name="tryParen">a value indicating if a starting "<c>(</c>" should be probed.</param>
         /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>

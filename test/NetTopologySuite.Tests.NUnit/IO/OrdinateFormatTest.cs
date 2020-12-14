@@ -90,9 +90,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test, Ignore("Just testing")]
         public void TestFormat()
         {
-            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo,
+            TestContext.WriteLine(string.Format(NumberFormatInfo.InvariantInfo,
                 $"{{0:0.{new string('#', 325)}}}", double.MaxValue));
-            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo,
+            TestContext.WriteLine(string.Format(NumberFormatInfo.InvariantInfo,
                 "{0:G17}", double.MaxValue));
 
             double parsed1 = double.Parse(string.Format(NumberFormatInfo.InvariantInfo,
@@ -102,9 +102,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 "{0:G17}", double.MaxValue), NumberFormatInfo.InvariantInfo);
             Assert.That(parsed1, Is.EqualTo(double.MaxValue));
 
-            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:0.{new string('#', 325)}}}", Math.PI));
-            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:R}}", Math.PI));
-            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:G17}}", Math.PI));
+            TestContext.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:0.{new string('#', 325)}}}", Math.PI));
+            TestContext.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:R}}", Math.PI));
+            TestContext.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:G17}}", Math.PI));
         }
         */
 

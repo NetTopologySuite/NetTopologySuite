@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Bintree
         public void Run()
         {
             Fill();
-            Console.WriteLine($"depth = {_btree.Depth},  size = {_btree.Count}");
+            TestContext.WriteLine($"depth = {_btree.Depth},  size = {_btree.Count}");
             RunQueries();
         }
 
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Bintree
                 //queryTime(env);
             }
 
-            Console.WriteLine($"Time = {sw.ElapsedMilliseconds}ms.");
+            TestContext.WriteLine($"Time = {sw.ElapsedMilliseconds}ms.");
         }
 
         void QueryTime(Interval interval)
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Bintree
             var finalList = GetOverlapping(candidateList, interval);
 
             var eList = _intervalList.Query(interval);
-            Console.WriteLine(finalList.Count);
+            TestContext.WriteLine(finalList.Count);
 
             if (finalList.Count != eList.Count)
                 throw new AssertionException("queries do not match");

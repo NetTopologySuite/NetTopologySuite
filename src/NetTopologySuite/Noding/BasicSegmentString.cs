@@ -42,7 +42,7 @@ namespace NetTopologySuite.Noding
         public int Count => _pts.Length;
 
         /// <summary>
-        /// Gets the octant of the segment starting at vertex <code>index</code>
+        /// Gets the octant of the segment starting at vertex <c>index</c>
         /// </summary>
         /// <param name="index">the index of the vertex starting the segment. Must not be the last index in the vertex list</param>
         /// <returns>octant of the segment at the vertex</returns>

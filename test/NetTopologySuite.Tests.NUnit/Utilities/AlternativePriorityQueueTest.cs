@@ -134,7 +134,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
             while (q.Count > nodesToKeep)
             {
                 int next = q.Dequeue().Priority;
-                Console.WriteLine(next);
+                TestContext.WriteLine(next);
                 if (!first)
                 {
                     int comparison = next.CompareTo(curr);

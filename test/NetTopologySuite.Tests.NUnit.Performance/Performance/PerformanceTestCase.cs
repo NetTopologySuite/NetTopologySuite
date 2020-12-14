@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// The time to run the method is printed for each one.
     /// </summary>
     /// <author>Martin Davis</author>
-    [TestFixture]
+    [TestFixture, Category("Stress")]
     public abstract class PerformanceTestCase
     {
         private readonly string _name;

@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var g = reader.Read(wkt);
             double len = g.Length;
-            //System.Console.WriteLine(len);
+            //TestContext.WriteLine(len);
             Assert.AreEqual(expectedValue, len, TOLERANCE);
         }
 

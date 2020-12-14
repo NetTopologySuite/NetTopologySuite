@@ -115,7 +115,7 @@ namespace NetTopologySuite.Geometries
         /// Gets the number of non-measure dimensions included in <see cref="Dimension"/> for each
         /// coordinate for this sequence.
         /// <para>
-        /// Equivalent to <code>Dimension - Measures</code>.
+        /// Equivalent to <c>Dimension - Measures</c>.
         /// </para>
         /// </summary>
         public int Spatial { get; }

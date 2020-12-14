@@ -207,8 +207,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
                 var result = sequencer.GetSequencedLineStrings();
                 bool isOK = expected.EqualsNormalized(result);
                 if (! isOK) {
-                    Console.WriteLine("ERROR - Expected: " + expected);
-                    Console.WriteLine("          Actual: " + result);
+                    TestContext.WriteLine("ERROR - Expected: " + expected);
+                    TestContext.WriteLine("          Actual: " + result);
                 }
 
                 bool isSequenced = LineSequencer.IsSequenced(result);
@@ -235,7 +235,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.StackTrace);
+                    TestContext.WriteLine(ex.StackTrace);
                 }
             }
             return geomList;

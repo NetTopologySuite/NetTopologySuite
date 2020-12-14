@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
         public void Tun()
         {
             Fill();
-            Console.WriteLine($"depth = {q.Depth},  size = {q.Count}");
+            TestContext.WriteLine($"depth = {q.Depth},  size = {q.Count}");
             RunQueries();
         }
 
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
                 }
             }
 
-            Console.WriteLine($"Time = {sw.ElapsedMilliseconds}ms.");
+            TestContext.WriteLine($"Time = {sw.ElapsedMilliseconds}ms.");
         }
 
         void QueryTime(Envelope env)

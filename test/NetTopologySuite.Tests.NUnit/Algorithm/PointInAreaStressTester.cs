@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
@@ -82,14 +83,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 }
             }
             sw.Stop();
-            Console.WriteLine("Test completed in " + sw.ElapsedMilliseconds);
+            TestContext.WriteLine("Test completed in " + sw.ElapsedMilliseconds);
             PrintStats();
             return true;
         }
 
         public void PrintStats()
         {
-            Console.WriteLine("Location counts: "
+            TestContext.WriteLine("Location counts: "
                               + "\nBoundary = " + _locationCount[(int)Location.Boundary]
                               + "\nInterior = " + _locationCount[(int)Location.Interior]
                               + "\nExterior = " + _locationCount[(int)Location.Exterior]
@@ -103,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// <returns>true if the point location is determined to be the same by both PIA locators</returns>
         private bool TestPointInArea(Coordinate p)
         {
-            //Console.WriteLine(WKTWriter.toPoint(p));
+            //TestContext.WriteLine(WKTWriter.toPoint(p));
 
             var loc1 = _pia1.Locate(p);
             var loc2 = _pia2.Locate(p);

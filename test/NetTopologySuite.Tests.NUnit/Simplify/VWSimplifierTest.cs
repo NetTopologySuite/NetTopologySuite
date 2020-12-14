@@ -205,8 +205,8 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 }
             }
 
-            Console.WriteLine("Total: Removed {0} of {1} points (reduction: {2:P0}).", pointsRemoved, totalPointCount, pointsRemoved / (double)totalPointCount);
-            Console.WriteLine("Old: {0:N3} seconds.  New: {1:N3} seconds (reduction: {2:P0}).", oldTicks / (double)Stopwatch.Frequency, newTicks / (double)Stopwatch.Frequency, (oldTicks - newTicks) / (double)oldTicks);
+            TestContext.WriteLine("Total: Removed {0} of {1} points (reduction: {2:P0}).", pointsRemoved, totalPointCount, pointsRemoved / (double)totalPointCount);
+            TestContext.WriteLine("Old: {0:N3} seconds.  New: {1:N3} seconds (reduction: {2:P0}).", oldTicks / (double)Stopwatch.Frequency, newTicks / (double)Stopwatch.Frequency, (oldTicks - newTicks) / (double)oldTicks);
         }
     }
 
@@ -219,7 +219,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             var ioGeom = new Geometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = VWSimplifier.Simplify(ioGeom[0], tolerance);
-            Console.WriteLine(ioGeom[1]);
+            TestContext.WriteLine(ioGeom[1]);
             return ioGeom;
         }
     }

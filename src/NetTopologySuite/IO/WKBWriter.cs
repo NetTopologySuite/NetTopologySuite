@@ -330,12 +330,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(Point point, BinaryWriter writer)
         {
-            ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, point);
-            ////if (Double.IsNaN(point.Coordinate.Z))
-            ////     writer.Write((int)WKBGeometryTypes.WKBPoint);
-            ////else writer.Write((int)WKBGeometryTypes.WKBPointZ);
-            //Write(point.Coordinate, writer);
             if (point.IsEmpty)
                 WriteNaNs(_coordinateSize / 8, writer);
             else
@@ -349,14 +344,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(LineString lineString, BinaryWriter writer)
         {
-            ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, lineString);
-            ////if (Double.IsNaN(lineString.Coordinate.Z))
-            ////     writer.Write((int)WKBGeometryTypes.WKBLineString);
-            ////else writer.Write((int)WKBGeometryTypes.WKBLineStringZ);
-            //writer.Write(lineString.NumPoints);
-            //for (int i = 0; i < lineString.Coordinates.Length; i++)
-            //    Write(lineString.Coordinates[i], writer);
             Write(lineString.CoordinateSequence, true, writer);
         }
 
@@ -367,9 +355,6 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(LinearRing ring, BinaryWriter writer)
         {
-            //writer.Write(ring.NumPoints);
-            //for (int i = 0; i < ring.Coordinates.Length; i++)
-            //    Write(ring.Coordinates[i], writer);
             Write(ring.CoordinateSequence, true, writer);
         }
 
@@ -380,11 +365,15 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(Polygon polygon, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, polygon);
-            //if (Double.IsNaN(polygon.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBPolygon);
-            //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);
+
+            // For an empty polygon just write 0 to indicate no rings!
+            if (polygon.IsEmpty)
+            {
+                writer.Write(0);
+                return;
+            }
+
             writer.Write(polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as LinearRing, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
@@ -398,11 +387,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(MultiPoint multiPoint, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiPoint);
-            //if (Double.IsNaN(multiPoint.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
-            //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write(multiPoint.NumGeometries);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as Point, writer);
@@ -415,11 +400,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(MultiLineString multiLineString, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiLineString);
-            //if (Double.IsNaN(multiLineString.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
-            //else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
             writer.Write(multiLineString.NumGeometries);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as LineString, writer);
@@ -432,11 +413,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(MultiPolygon multiPolygon, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiPolygon);
-            //if (Double.IsNaN(multiPolygon.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
-            //else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
             writer.Write(multiPolygon.NumGeometries);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as Polygon, writer);
@@ -449,11 +426,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(GeometryCollection geomCollection, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, geomCollection);
-            //if (Double.IsNaN(geomCollection.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
-            //else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
             writer.Write(geomCollection.NumGeometries);
             for (int i = 0; i < geomCollection.NumGeometries; i++)
                 Write(geomCollection.Geometries[i], writer);
@@ -484,7 +457,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Sets corrent length for Byte Stream.
+        /// Sets required length for Byte Stream.
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
@@ -573,8 +546,12 @@ namespace NetTopologySuite.IO
             int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int count = InitCount;
             count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
-            count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
-            count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings
+            if (!geometry.IsEmpty)
+            {
+                count += 4 * (geometry.NumInteriorRings + 1); // Index parts
+                count += geometry.NumPoints * pointSize; // Points in exterior and interior rings
+            }
+
             return count;
         }
 

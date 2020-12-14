@@ -376,13 +376,13 @@ namespace NetTopologySuite.Geometries
         /// <list type="bullet">
         /// <item><description>The geometries have some but not all interior points in common.</description></item>
         /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches</description></item>
-        ///   <list type"bullet">
+        ///   <list type="bullet">
         ///     <item><description><c>[T*T******]</c> (for P/L, P/A, and L/A situations)</description></item>
         ///     <item><description><c>[T*****T**]</c> (for L/P, L/A, and A/L situations)</description></item>
         ///     <item><description><c>[0********]</c> (for L/L situations)</description></item>
         ///   </list>
         /// </list>
-        /// For any other combination of dimensions this predicate returns<code>false</code>.
+        /// For any other combination of dimensions this predicate returns <c>false</c>.
         /// <para/>
         /// The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
         /// JTS extends the definition to apply to L/P, A/P and A/L situations as well.

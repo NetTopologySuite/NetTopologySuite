@@ -387,12 +387,7 @@ namespace NetTopologySuite.Operation.Union
         /// <returns>The union of the inputs</returns>
         private static Geometry UnionActual(Geometry g0, Geometry g1, UnionStrategy unionStrategy)
         {
-            Geometry union;
-            if (unionStrategy.IsFloatingPrecision)
-                union = OverlapUnion.Union(g0, g1, unionStrategy);
-            else 
-                union = unionStrategy.Union(g0, g1);
-        
+            var union = unionStrategy.Union(g0, g1);
             var unionPoly = RestrictToPolygons(union);
             return unionPoly;
         }

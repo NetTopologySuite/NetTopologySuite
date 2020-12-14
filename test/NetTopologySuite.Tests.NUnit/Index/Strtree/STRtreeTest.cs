@@ -39,12 +39,39 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         }
 
         [Test]
+        public void TestSpatialIndexConstructorUsingLeafNodes()
+        {
+            var tester = new SpatialIndexTester();
+            tester.SpatialIndex = new STRtree(4);
+            tester.Init();
+            var index_init = (STRtree)tester.SpatialIndex;
+            var index = new STRtree(index_init.NodeCapacity, index_init.ItemBoundables);
+            tester.SpatialIndex = index;
+            tester.Run();
+            Assert.IsTrue(tester.IsSuccess);
+        }
+
+        [Test]
+        public void TestSpatialIndexConstructorUsingRoot()
+        {
+            var tester = new SpatialIndexTester();
+            tester.SpatialIndex = new STRtree(4);
+            tester.Init();
+            var index_init = (STRtree)tester.SpatialIndex;
+            index_init.Build();
+            var index = new STRtree(index_init.NodeCapacity, index_init.Root);
+            tester.SpatialIndex = index;
+            tester.Run();
+            Assert.IsTrue(tester.IsSuccess);
+        }
+
+        [Test]
         public void TestSerialization()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };
             tester.Init();
 
-            Console.WriteLine("\n\nTest with original data\n");
+            TestContext.WriteLine("\n\nTest with original data\n");
             tester.Run();
             var tree1 = (STRtree)tester.SpatialIndex;
             // create the index before serialization
@@ -53,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var tree2 = SerializationUtility.Deserialize<STRtree>(data);
             tester.SpatialIndex = tree2;
 
-            Console.WriteLine("\n\nTest with deserialized data\n");
+            TestContext.WriteLine("\n\nTest with deserialized data\n");
             tester.Run();
             tester.Run();
             Assert.IsTrue(tester.IsSuccess);
@@ -136,7 +163,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             catch (Exception x)
             {
-                Console.WriteLine(x.Message);
+                TestContext.WriteLine(x.Message);
                 throw x;
             }
         }

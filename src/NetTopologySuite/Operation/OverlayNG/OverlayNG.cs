@@ -23,8 +23,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// <item><term><see cref="SpatialFunction.SymDifference"/></term><description>all points which lie in one geometry but not both</description></item>
     /// </list>
     /// Input geometries may have different dimension.
-    /// Collections must be homogeneous
-    /// (all elements must have the same dimension).
+    /// Input collections must be homogeneous (all elements must have the same dimension).
     /// <para/>
     /// The precision model used for the computation can be supplied
     /// independent of the precision model of the input geometry.
@@ -55,16 +54,26 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// (via <see cref="StrictMode"/> = <c>true</c>).
     /// In strict mode result semantics are:
     /// <list type="bullet">
-    /// <item><description>Result geometries are homogeneous (all components are of same dimension),
-    /// except for some cases of <see cref="SpatialFunction.SymDifference"/>.</description></item>
     /// <item><description>Lines and Points resulting from topology collapses are not included in the result</description></item>
+    /// <item><description>Result geometry is homogeneous
+    /// for the <see cref="SpatialFunction.Intersection"/> and <see cref="SpatialFunction.Difference"/> operations.</description></item>
+    /// <item><description>Result geometry is homogeneous
+    /// for the <see cref="SpatialFunction.Union"/> and <see cref="SpatialFunction.SymDifference"/> operations
+    /// if the inputs have the same dimension</description></item>
     /// </list>
     /// Strict mode has the following benefits:
     /// <list type="bullet">
     /// <item><description>Results are simpler</description></item>
-    /// <item><description>Overlay operations are easily chainable</description></item>
+    /// <item><description>Overlay operations are easily chainable
+    /// without needing to remove lower-dimension elements</description></item>
     /// </list>
     /// The original JTS overlay semantics corresponds to non-strict mode.
+    /// <para/>
+    /// If a robustness error occurs, a <see cref="TopologyException"/> is thrown.
+    /// These are usually caused by numerical rounding causing the noding output
+    /// to not be fully noded.
+    /// For robust computation with full-precision <see cref="OverlayNGRobust"/>
+    /// can be used.
     /// </summary>
     public sealed class OverlayNG
     {
@@ -338,11 +347,25 @@ namespace NetTopologySuite.Operation.OverlayNG
         }
 
         /// <summary>
+        /// Creates a union of a single geometry with a given precision model.
+        /// </summary>
+        /// <param name="geom">The geometry</param>
+        /// <param name="pm">The precision model to use</param>
+        internal OverlayNG(Geometry geom, PrecisionModel pm)
+            : this(geom, null, pm, UNION)
+        { }
+
+        /// <summary>
         /// Gets or sets whether the overlay results are computed according to strict mode
         /// semantics.
         /// <list type="bullet">
-        /// <item><description>Result geometry is always homogeneous(except for some SymmetricDifference cases)</description></item>
         /// <item><description>Lines resulting from topology collapse are not included</description></item>
+        /// <item><description>Result geometry is homogeneous for the
+        /// <see cref="SpatialFunction.Intersection"/> and
+        /// <see cref="SpatialFunction.Difference"/> operations.</description></item>
+        /// <item><description>Result geometry is homogeneous for the
+        /// <see cref="SpatialFunction.Union"/> and
+        /// <see cref="SpatialFunction.SymDifference"/> operations if the inputs have the same dimension</description></item>
         /// </list>
         /// </summary>
         /// <returns></returns>
@@ -386,12 +409,14 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         //---------------------------------
 
-        private INoder Noder { get; set; }
+        public INoder Noder { get; set; }
 
         /// <summary>
         /// Gets the result of the overlay operation.
         /// e</summary>
         /// <returns>The result of the overlay operation.</returns>
+        /// <exception cref="ArgumentException">Thrown, if the input is not supported (e.g. a mixed-dimension geometry)</exception>
+        /// <exception cref="TopologyException">Thrown, if a robustness error occurs</exception>
         public Geometry GetResult()
         {
             // handle empty inputs which determine result
@@ -403,21 +428,30 @@ namespace NetTopologySuite.Operation.OverlayNG
                 return CreateEmptyResult();
             }
 
-            // handle Point-Point inputs
+            /*
+             * The elevation model is only computed if the input geometries have Z values.
+             */
+            var elevModel = ElevationModel.Create(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+            Geometry result;
             if (_inputGeom.IsAllPoints)
             {
-                return OverlayPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
+                // handle Point-Point inputs
+                result = OverlayPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
-
-            // handle Point-nonPoint inputs 
-            if (!_inputGeom.IsSingle && _inputGeom.HasPoints)
+            else if (!_inputGeom.IsSingle && _inputGeom.HasPoints)
             {
-                return OverlayMixedPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
+                // handle Point-nonPoint inputs 
+                result = OverlayMixedPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
-
-            // handle case where both inputs are formed of edges (Lines and Polygons)
-            var result = ComputeEdgeOverlay();
-
+            else
+            {
+                // handle case where both inputs are formed of edges (Lines and Polygons)
+                result = ComputeEdgeOverlay();
+            }
+            /*
+             * This is a no-op if the elevation model was not computed due to Z not present
+             */
+            elevModel.PopulateZ(result);
             return result;
         }
 

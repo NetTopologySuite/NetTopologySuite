@@ -14,11 +14,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         [Test]
         public void TestEByTaylorSeries()
         {
-            //System.Console.WriteLine("--------------------------------");
-            //System.Console.WriteLine("Computing e by Taylor series");
+            //TestContext.WriteLine("--------------------------------");
+            //TestContext.WriteLine("Computing e by Taylor series");
             var testE = ComputeEByTaylorSeries();
             double err = Math.Abs((testE - DD.E).ToDoubleValue());
-            //System.Console.WriteLine("Difference from DoubleDouble.E = " + err);
+            //TestContext.WriteLine("Difference from DoubleDouble.E = " + err);
             Assert.IsTrue(err < 64*DD.Epsilon);
         }
 
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 n += 1.0;
                 t /= DD.ValueOf(n);
                 s += t;
-                Console.WriteLine(i + ": " + s);
+                TestContext.WriteLine(i + ": " + s);
             }
             return s;
         }
@@ -49,11 +49,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         [Test]
         public void TestPiByMachin()
         {
-            //System.Console.WriteLine("--------------------------------");
-            //System.Console.WriteLine("Computing Pi by Machin's rule");
+            //TestContext.WriteLine("--------------------------------");
+            //TestContext.WriteLine("Computing Pi by Machin's rule");
             var testE = ComputePiByMachin();
             double err = Math.Abs((testE - DD.PI).ToDoubleValue());
-            //System.Console.WriteLine("Difference from DoubleDouble.PI = " + err);
+            //TestContext.WriteLine("Difference from DoubleDouble.PI = " + err);
             Assert.IsTrue(err < 8*DD.Epsilon);
         }
 
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 * ArcTan(t1)
                 - ArcTan(t2);
             var pi = DD.ValueOf(4.0) * pi4;
-            Console.WriteLine("Computed value = " + pi);
+            TestContext.WriteLine("Computed value = " + pi);
             return pi;
         }
 
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 t *= t2;
                 sign = -sign;
             }
-            //System.Console.WriteLine("Computed DD.atan(): " + at
+            //TestContext.WriteLine("Computed DD.atan(): " + at
             //                        +"    Math.atan = " + Math.Atan(x.ToDoubleValue()));
             return at;
         }

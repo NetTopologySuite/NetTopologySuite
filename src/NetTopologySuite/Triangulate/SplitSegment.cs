@@ -11,8 +11,8 @@ namespace NetTopologySuite.Triangulate
     {
         /// <summary>
         /// Computes the {@link Coordinate} that lies a given fraction along the line defined by the
-        /// reverse of the given segment. A fraction of <code>0.0</code> returns the end point of the
-        /// segment; a fraction of <code>1.0</code> returns the start point of the segment.
+        /// reverse of the given segment. A fraction of <c>0.0</c> returns the end point of the
+        /// segment; a fraction of <c>1.0</c> returns the start point of the segment.
         /// </summary>
         /// <param name="seg">the LineSegment</param>
         /// <param name="segmentLengthFraction">the fraction of the segment length along the line</param>

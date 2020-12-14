@@ -15,6 +15,9 @@ namespace NetTopologySuite.Tests.NUnit
     {
         //readonly WKTReader _readerWKT = new WKTReader();
         private readonly GeometryFactory _geomFactory = new GeometryFactory();
+        private const string CHECK_EQUAL_FAIL = "FAIL\nExpected = {0}\nActual   = {1}\n";
+
+        private readonly WKTWriter _writerZ = new WKTWriter(3);
 
         protected GeometryTestCase()
         {
@@ -39,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit
             var expectedNorm = expected.Normalized();
             bool equal = actualNorm.EqualsExact(expectedNorm);
             //var writer = new WKTWriter {MaxCoordinatesPerLine };
-            Assert.That(equal, Is.True, string.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
+            Assert.That(equal, Is.True, string.Format(CHECK_EQUAL_FAIL, expected, actual));
         }
 
         protected void CheckEqual(Geometry expected, Geometry actual, double tolerance)
@@ -49,9 +52,63 @@ namespace NetTopologySuite.Tests.NUnit
             bool equal = actualNorm.EqualsExact(expectedNorm, tolerance);
             if (!equal)
             {
-                Console.WriteLine($"FAIL - Expected = {expectedNorm} actual = {actualNorm}");
+                TestContext.WriteLine(CHECK_EQUAL_FAIL, expectedNorm, actualNorm);
             }
             Assert.That(equal);
+        }
+
+        protected void CheckEqualXYZ(Geometry expected, Geometry actual)
+        {
+            var actualNorm = actual.Normalized();
+            var expectedNorm = expected.Normalized();
+            bool equal = EqualsExactXYZ(actualNorm, expectedNorm);
+            if (!equal)
+            {
+                TestContext.WriteLine(CHECK_EQUAL_FAIL, _writerZ.Write(expectedNorm), _writerZ.Write(actualNorm));
+            }
+            Assert.That(equal, Is.True);
+        }
+
+        private bool EqualsExactXYZ(Geometry a, Geometry b)
+        {
+            if (a.GetType() != b.GetType()) return false;
+            if (a.NumGeometries != b.NumGeometries) return false;
+            if (a is Point) {
+                return IsEqualDim(((Point)a).CoordinateSequence, ((Point)b).CoordinateSequence, 3);
+            }
+            if (a is LineString) {
+                return IsEqualDim(((LineString)a).CoordinateSequence, ((LineString)b).CoordinateSequence, 3);
+            }
+            if (a is Polygon) {
+                return EqualsExactXYZPolygon((Polygon)a, (Polygon)b);
+            }
+            if (a is GeometryCollection) {
+                for (int i = 0; i < a.NumGeometries; i++)
+                {
+                    if (!EqualsExactXYZ(a.GetGeometryN(i), b.GetGeometryN(i)))
+                        return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private bool EqualsExactXYZPolygon(Polygon a, Polygon b)
+        {
+            var aShell = a.ExteriorRing;
+            var bShell = b.ExteriorRing;
+            if (!IsEqualDim(aShell.CoordinateSequence, bShell.CoordinateSequence, 3))
+                return false;
+            if (a.NumInteriorRings != b.NumInteriorRings)
+                return false;
+            for (int i = 0; i < a.NumInteriorRings; i++)
+            {
+                var aHole = a.GetInteriorRingN(i);
+                var bHole = b.GetInteriorRingN(i);
+                if (!IsEqualDim(aHole.CoordinateSequence, bHole.CoordinateSequence, 3))
+                    return false;
+            }
+            return true;
         }
 
         protected void CheckEqual(ICollection<Geometry> expected, ICollection<Geometry> actual)
@@ -69,6 +126,14 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(expected.X, actual.X, "Coordinate X");
             Assert.AreEqual(expected.Y, actual.Y, "Coordinate Y");
         }
+
+        protected void CheckEqualXYZ(Coordinate expected, Coordinate actual)
+        {
+            Assert.AreEqual(expected.X, actual.X, "Coordinate X");
+            Assert.AreEqual(expected.Y, actual.Y, "Coordinate Y");
+            Assert.AreEqual(expected.Z, actual.Z, "Coordinate Z");
+        }
+
 
         protected void CheckEqualXY(string message, Coordinate expected, Coordinate actual)
         {
@@ -227,7 +292,7 @@ namespace NetTopologySuite.Tests.NUnit
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension</description></item>
@@ -237,13 +302,13 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2)
+        public static bool IsEqual(CoordinateSequence seq1, CoordinateSequence seq2)
         {
-            return CheckEqual(seq1, seq2, 0d);
+            return IsEqualTol(seq1, seq2, 0d);
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension</description></item>
@@ -253,18 +318,18 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2, double tolerance)
+        public static bool IsEqualTol(CoordinateSequence seq1, CoordinateSequence seq2, double tolerance)
         {
             if (seq1?.Dimension != seq2?.Dimension)
             {
                 return false;
             }
 
-            return CheckEqual(seq1, seq2, seq1.Dimension, tolerance);
+            return IsEqual(seq1, seq2, seq1.Dimension, tolerance);
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension up to <paramref name="dimension"/></description></item>
@@ -274,13 +339,13 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2, int dimension)
+        public static bool IsEqualDim(CoordinateSequence seq1, CoordinateSequence seq2, int dimension)
         {
-            return CheckEqual(seq1, seq2, dimension, 0);
+            return IsEqual(seq1, seq2, dimension, 0);
         }
 
         /// <summary>
-        /// Checks two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
+        /// Tests two <see cref="CoordinateSequence"/>s for equality.  The following items are checked:
         /// <list type="bullet">
         /// <item><description>size</description></item>
         /// <item><description>dimension up to <paramref name="dimension"/></description></item>
@@ -290,7 +355,7 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="seq1">a sequence</param>
         /// <param name="seq2">another sequence</param>
         /// <returns><see langword="true"/> if both sequences are equal.</returns>
-        public static bool CheckEqual(CoordinateSequence seq1, CoordinateSequence seq2, int dimension, double tolerance)
+        public static bool IsEqual(CoordinateSequence seq1, CoordinateSequence seq2, int dimension, double tolerance)
         {
             if (ReferenceEquals(seq1, seq2))
             {
@@ -323,12 +388,9 @@ namespace NetTopologySuite.Tests.NUnit
                 {
                     double val1 = seq1.GetOrdinate(i, j);
                     double val2 = seq2.GetOrdinate(i, j);
-                    if (double.IsNaN(val1))
+                    if (double.IsNaN(val1) || double.IsNaN(val2))
                     {
-                        if (!double.IsNaN(val2))
-                        {
-                            return false;
-                        }
+                        return double.IsNaN(val1) && double.IsNaN(val2);
                     }
                     else if (Math.Abs(val1 - val2) > tolerance)
                     {

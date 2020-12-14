@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit
                 }
 
                 WaitHandle.WaitAll(waitHandles);
-                Console.WriteLine("\nDone!");
+                TestContext.WriteLine("\nDone!");
                 Assert.LessOrEqual(srids.Length * precisionModels.Length, ((NtsGeometryServices)NtsGeometryServices.Instance).NumFactories,
                     "Too many factories created!");
                 Assert.IsTrue(true);
@@ -78,12 +78,12 @@ namespace NetTopologySuite.Tests.NUnit
                 var factory = NtsGeometryServices.Instance.CreateGeometryFactory(precisionModel, srid);
                 if (verbose)
                 {
-                    Console.WriteLine("Thread_{0}: SRID: {1}; PM({2}, {3})", Thread.CurrentThread.ManagedThreadId,
+                    TestContext.WriteLine("Thread_{0}: SRID: {1}; PM({2}, {3})", Thread.CurrentThread.ManagedThreadId,
                                       factory.SRID, factory.PrecisionModel.PrecisionModelType,
                                       factory.PrecisionModel.Scale);
                 }
             }
-            Console.WriteLine("Thread_{0} finished workitem {1}!", Thread.CurrentThread.ManagedThreadId, workItemId);
+            TestContext.WriteLine("Thread_{0} finished workitem {1}!", Thread.CurrentThread.ManagedThreadId, workItemId);
             wh.Set();
         }
     }

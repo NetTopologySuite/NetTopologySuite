@@ -122,7 +122,7 @@ namespace NetTopologySuite.IO
         /// A <c>NumberFormatInfo</c> that write <c>double</c>s
         /// without scientific notation.
         /// </returns>
-        [Obsolete]
+        [Obsolete("Use CreateOrdinateFormat")]
         internal static NumberFormatInfo CreateFormatter(PrecisionModel precisionModel)
         {
             // the default number of decimal places is 16, which is sufficient
@@ -133,7 +133,7 @@ namespace NetTopologySuite.IO
             return OrdinateFormat.CreateFormat(decimalPlaces);
         }
 
-        private OrdinateFormat CreateOrdinateFormat(PrecisionModel precisionModel)
+        internal static OrdinateFormat CreateOrdinateFormat(PrecisionModel precisionModel)
         {
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.

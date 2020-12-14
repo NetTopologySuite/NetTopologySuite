@@ -89,7 +89,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             var g2 = rdr.Read(wkt2);
             var im = RelateOp.Relate(g1, g2, bnRule);
             string imStr = im.ToString();
-            //System.Console.WriteLine(imStr);
+            //TestContext.WriteLine(imStr);
             Assert.IsTrue(im.Matches(expectedIM));
         }
     }

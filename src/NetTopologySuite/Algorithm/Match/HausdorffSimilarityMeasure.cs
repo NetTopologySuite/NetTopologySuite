@@ -30,7 +30,7 @@ namespace NetTopologySuite.Algorithm.Match
         /*
          * Densify a small amount to increase accuracy of Hausdorff distance
          */
-        private static readonly double DensifyFraction = 0.25;
+        private const double DensifyFraction = 0.25;
 
         public double Measure(Geometry g1, Geometry g2)
         {

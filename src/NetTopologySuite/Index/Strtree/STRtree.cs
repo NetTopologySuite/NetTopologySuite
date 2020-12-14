@@ -101,6 +101,30 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
+        /// Constructs an AbstractSTRtree with the specified maximum number of child
+        /// nodes that a node may have, and the root node
+        /// </summary>
+        /// <retmarks>The minimum recommended capacity setting is 4</retmarks>
+        /// <param name="nodeCapacity">The maximum number of child nodes in a node</param>
+        /// <param name="root">The root node that links to all other nodes in the tree</param>
+        public STRtree(int nodeCapacity, AbstractNode<Envelope, TItem> root)
+            : base(nodeCapacity, root)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an AbstractSTRtree with the specified maximum number of child
+        /// nodes that a node may have, and all leaf nodes in the tree
+        /// </summary>
+        /// <retmarks>The minimum recommended capacity setting is 4</retmarks>
+        /// <param name="nodeCapacity">The maximum number of child nodes in a node</param>
+        /// <param name="itemBoundables">The list of leaf nodes in the tree</param>
+        public STRtree(int nodeCapacity, IList<IBoundable<Envelope, TItem>> itemBoundables)
+            :base(nodeCapacity, itemBoundables)
+        {
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="a"></param>

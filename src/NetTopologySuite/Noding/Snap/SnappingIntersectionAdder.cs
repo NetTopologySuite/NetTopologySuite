@@ -48,26 +48,26 @@ namespace NetTopologySuite.Noding.Snap
             var p10 = seg1.Coordinates[segIndex1];
             var p11 = seg1.Coordinates[segIndex1 + 1];
 
-            _li.ComputeIntersection(p00, p01, p10, p11);
-            //if (li.hasIntersection() && li.isProper()) Debug.println(li);
-
             /*
-             * Process single point intersections only.
-             * Two-point (colinear) ones will be handled by the near-vertex code
+             * Don't node intersections which are just 
+             * due to the shared vertex of adjacent segments.
              */
-            if (_li.HasIntersection && _li.IntersectionNum == 1)
+            if (!IsAdjacent(seg0, segIndex0, seg1, segIndex1))
             {
-                /**
-                 * Don't node intersections which are just 
-                 * due to the shared vertex of adjacent segments.
+                _li.ComputeIntersection(p00, p01, p10, p11);
+                //if (_li.HasIntersection && _li.IsProper) System.Diagnostics.Debug.WriteLine(_li);
+
+                /*
+                 * Process single point intersections only.
+                 * Two-point (colinear) ones will be handled by the near-vertex code
                  */
-                if (!IsAdjacent(seg0, segIndex0, seg1, segIndex1))
+                if (_li.HasIntersection && _li.IntersectionNum == 1)
                 {
                     var intPt = _li.GetIntersection(0);
                     var snapPt = _snapPointIndex.Snap(intPt);
 
-                    ((NodedSegmentString) seg0).AddIntersection(snapPt, segIndex0);
-                    ((NodedSegmentString) seg1).AddIntersection(snapPt, segIndex1);
+                    ((NodedSegmentString)seg0).AddIntersection(snapPt, segIndex0);
+                    ((NodedSegmentString)seg1).AddIntersection(snapPt, segIndex1);
                 }
             }
 

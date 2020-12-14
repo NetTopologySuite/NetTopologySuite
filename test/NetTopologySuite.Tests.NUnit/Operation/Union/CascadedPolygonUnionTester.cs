@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NetTopologySuite.Algorithm.Match;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
@@ -17,18 +18,18 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         public bool Test(IList<Geometry> geoms, double minimumMeasure)
         {
-            //System.Console.WriteLine("Computing Iterated union ");
+            //System.TestContext.WriteLine("Computing Iterated union ");
             var union1 = UnionIterated(geoms);
-            //System.Console.WriteLine("Computing Cascaded union");
+            //System.TestContext.WriteLine("Computing Cascaded union");
             var union2 = UnionCascaded(geoms);
 
-            //System.Console.WriteLine("Testing similarity with min measure = " + minimumMeasure);
+            //TestContext.WriteLine("Testing similarity with min measure = " + minimumMeasure);
 
             double areaMeasure = (new AreaSimilarityMeasure()).Measure(union1, union2);
             double hausMeasure = (new HausdorffSimilarityMeasure()).Measure(union1, union2);
             double overallMeasure = SimilarityMeasureCombiner.Combine(areaMeasure, hausMeasure);
 
-            //Console.WriteLine(
+            //TestContext.WriteLine(
             //        "Area measure = " + areaMeasure
             //        + "   Hausdorff measure = " + hausMeasure
             //        + "    Overall = " + overallMeasure);
@@ -72,11 +73,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                 count++;
                 if (count % 100 == 0)
                 {
-                    Console.Write(".");
+                    TestContext.Write(".");
                     //        System.out.println("Adding geom #" + count);
                 }
             }
-            Console.WriteLine("\nDone!");
+
+            TestContext.Write("\nDone");
+
             return unionAll;
         }
 

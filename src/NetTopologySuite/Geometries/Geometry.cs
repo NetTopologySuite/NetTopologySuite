@@ -386,7 +386,7 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns an element Geometry from a GeometryCollection,
-        /// or <code>this</code>, if the geometry is not a collection.
+        /// or <c>this</c>, if the geometry is not a collection.
         /// </summary>
         /// <param name="n">The index of the geometry element.</param>
         /// <returns>The n'th geometry contained in this geometry.</returns>
@@ -406,17 +406,17 @@ namespace NetTopologySuite.Geometries
         /// <list type="bullet">
         /// <item><description>Valid polygonal geometries are simple, since their rings
         /// must not self-intersect. <c>IsSimple</c>
-        /// tests for this condition and reports <code>false</code> if it is not met.
+        /// tests for this condition and reports <c>false</c> if it is not met.
         /// (This is a looser test than checking for validity).</description></item>
         /// <item><description>Linear rings have the same semantics.</description></item>
         /// <item><description>Linear geometries are simple iff they do not self-intersect at points
         /// other than boundary points.</description></item>
         /// <item><description>Zero-dimensional geometries (points) are simple iff they have no
         /// repeated points.</description></item>
-        /// <item><description>Empty <code>Geometry</code>s are always simple.</description></item>
+        /// <item><description>Empty <c>Geometry</c>s are always simple.</description></item>
         /// </list>
         /// </summary>
-        /// <returns><c>true</c> if this <code>Geometry</code> is simple</returns>
+        /// <returns><c>true</c> if this <c>Geometry</c> is simple</returns>
         /// <seealso cref="IsValid"/>
         public virtual bool IsSimple
         {
@@ -778,7 +778,7 @@ namespace NetTopologySuite.Geometries
         /// </list>
         /// </item>
         /// </list>
-        /// For any other combination of dimensions this predicate returns <code>false</code>.
+        /// For any other combination of dimensions this predicate returns <c>false</c>.
         /// <para>
         /// The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
         /// In order to make the relation symmetric,
@@ -799,7 +799,7 @@ namespace NetTopologySuite.Geometries
         /// Tests whether this geometry is within the specified geometry.
         /// </summary>
         /// <remarks>
-        /// The <code>within</code> predicate has the following equivalent definitions:
+        /// The <c>within</c> predicate has the following equivalent definitions:
         /// <list type="bullet">
         /// <item><description>
         /// Every point of this geometry is a point of the other geometry,
@@ -1068,7 +1068,7 @@ namespace NetTopologySuite.Geometries
         /// as defined by the SFS <c>Equals</c> predicate.
         /// </summary>
         /// <remarks>
-        /// The SFS <code>equals</code> predicate has the following equivalent definitions:
+        /// The SFS <c>equals</c> predicate has the following equivalent definitions:
         /// <list type="bullet">
         /// <item><description>The two geometries have at least one point in common,
         /// and no point of either geometry lies in the exterior of the other geometry.</description></item>
@@ -1084,7 +1084,7 @@ namespace NetTopologySuite.Geometries
         /// For structural equality, see {@link #equalsExact(Geometry)}.
         /// </remarks>
         /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
-        /// <returns><c>true</c> if the two <code>Geometry</code>s are topologically equal</returns>
+        /// <returns><c>true</c> if the two <c>Geometry</c>s are topologically equal</returns>
         public virtual bool EqualsTopologically(Geometry g)
         {
             // short-circuit test

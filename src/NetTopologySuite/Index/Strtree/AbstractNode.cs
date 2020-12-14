@@ -17,7 +17,7 @@ namespace NetTopologySuite.Index.Strtree
     [Serializable]
     public abstract class AbstractNode<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
-        private readonly List<IBoundable<T, TItem>> _childBoundables = new List<IBoundable<T, TItem>>();
+        private IList<IBoundable<T, TItem>> _childBoundables = new List<IBoundable<T, TItem>>();
         private T _bounds;
         private readonly int _level;
 
@@ -37,7 +37,11 @@ namespace NetTopologySuite.Index.Strtree
         /// Returns either child <see cref="AbstractNode{T, TItem}"/>s, or if this is a leaf node, real data (wrapped
         /// in <see cref="ItemBoundable{T, TItem}"/>s).
         /// </summary>
-        public IList<IBoundable<T, TItem>> ChildBoundables => _childBoundables;
+        public IList<IBoundable<T, TItem>> ChildBoundables
+        {
+            get { return _childBoundables; }
+            set { _childBoundables = value; }
+        }
 
         /// <summary>
         /// Returns a representation of space that encloses this Boundable,

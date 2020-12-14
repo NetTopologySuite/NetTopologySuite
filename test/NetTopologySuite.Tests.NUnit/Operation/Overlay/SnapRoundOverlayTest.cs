@@ -153,7 +153,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             //    }
             //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
             //    img.Save(path, ImageFormat.Png);
-            //    Console.WriteLine("Image for Test {0} written to {1}", nr, new Uri(path).AbsoluteUri);
+            //    TestContext.WriteLine("Image for Test {0} written to {1}", nr, new Uri(path).AbsoluteUri);
             //}
         }
 

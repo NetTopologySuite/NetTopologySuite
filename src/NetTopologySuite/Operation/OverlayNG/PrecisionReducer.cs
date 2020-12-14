@@ -48,9 +48,15 @@ namespace NetTopologySuite.Operation.OverlayNG
              */
             if (geom.Dimension == Dimension.Surface)
                 ov.AreaResultOnly = true;
-            var reduced = ov.GetResult();
-
-            return reduced;
+            try
+            {
+                var reduced = ov.GetResult();
+                return reduced;
+            }
+            catch (TopologyException ex)
+            {
+                throw new ArgumentException("Reduction failed, possible invalid input", ex);
+            }
         }
     }
 }

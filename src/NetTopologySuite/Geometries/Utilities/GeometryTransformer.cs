@@ -177,6 +177,11 @@ namespace NetTopologySuite.Geometries.Utilities
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
             }
+            if (transGeomList.Count == 0)
+            {
+                return Factory.CreateMultiPoint();
+            }
+
             return Factory.BuildGeometry(transGeomList);
         }
 
@@ -235,6 +240,10 @@ namespace NetTopologySuite.Geometries.Utilities
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
+            }
+            if (transGeomList.Count == 0)
+            {
+                return Factory.CreateMultiLineString();
             }
             return Factory.BuildGeometry(transGeomList);
         }
@@ -298,6 +307,10 @@ namespace NetTopologySuite.Geometries.Utilities
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
+            }
+            if (transGeomList.Count == 0)
+            {
+                return Factory.CreateMultiPolygon();
             }
             return Factory.BuildGeometry(transGeomList);
         }

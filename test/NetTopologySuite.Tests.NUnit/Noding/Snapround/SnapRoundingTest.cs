@@ -153,10 +153,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
 
                 double difference = Math.Abs(shortestDistanceToPointAfterNoding - shortestDistanceToPointBeforeNoding);
 
-                Console.WriteLine("Scale: {0}", scale);
-                Console.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);
-                Console.WriteLine("Distance to point after noding:  {0}", shortestDistanceToPointAfterNoding);
-                Console.WriteLine("Difference is {0} and should be lesser than {1}", difference, 1.0/scale);
+                TestContext.WriteLine("Scale: {0}", scale);
+                TestContext.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);
+                TestContext.WriteLine("Distance to point after noding:  {0}", shortestDistanceToPointAfterNoding);
+                TestContext.WriteLine("Difference is {0} and should be lesser than {1}", difference, 1.0/scale);
 
                 const double roughTolerance = 10.0;
                 Assert.IsTrue(difference < roughTolerance, "this difference should should be lesser than " + 1.0/scale);
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             var nodedLines = noder.Node(geoms);
 
             foreach ( var ls in nodedLines)
-                Console.WriteLine(ls);
+                TestContext.WriteLine(ls);
 
             Assert.IsTrue(IsSnapped(nodedLines, SnapTolerance));
 
@@ -190,7 +190,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                     geomList.Add(rdr.Read(wkts[i]));
                 }
                 catch (Exception ex) {
-                    Console.WriteLine(ex.StackTrace);
+                    TestContext.WriteLine(ex.StackTrace);
                 }
             }
             return geomList;

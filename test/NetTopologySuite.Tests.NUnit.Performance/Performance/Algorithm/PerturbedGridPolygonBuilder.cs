@@ -2,7 +2,7 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
-namespace NetTopologySuite.Tests.NUnit.Algorithm
+namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     ///<summary>
     /// Creates a perturbed, buffered grid and tests a set

@@ -123,7 +123,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);
+                TestContext.WriteLine(ex.StackTrace);
             }
             return geom;
         }

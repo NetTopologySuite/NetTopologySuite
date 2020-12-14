@@ -27,11 +27,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             {
                 string msg = validator.ErrorMessage;
 
-                //System.Console.WriteLine(msg);
+                //TestContext.WriteLine(msg);
                 var errorLocation = validator.ErrorLocation;
                 if (errorLocation != null)
                 {
-                    //System.Console.WriteLine(WKTWriter.ToPoint(errorLocation));
+                    //TestContext.WriteLine(WKTWriter.ToPoint(errorLocation));
                 }
                 Assert.Fail("The buffer result was not valid");
             }

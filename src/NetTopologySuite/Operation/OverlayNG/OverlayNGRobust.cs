@@ -204,8 +204,8 @@ namespace NetTopologySuite.Operation.OverlayNG
         {
             try
             {
-                var snap0 = OverlaySnapTol(geom0, null, OverlayNG.UNION, snapTol);
-                var snap1 = OverlaySnapTol(geom1, null, OverlayNG.UNION, snapTol);
+                var snap0 = SnapSelf(geom0, snapTol);
+                var snap1 = SnapSelf(geom1, snapTol);
                 //log("Snapping BOTH with " + snapTol, geom0, geom1);
 
                 return OverlaySnapTol(snap0, snap1, opCode, snapTol);
@@ -215,6 +215,30 @@ namespace NetTopologySuite.Operation.OverlayNG
                 //---- ignore exception, return null result to indicate failure
             }
             return null;
+        }
+
+        /// <summary>
+        /// Self-snaps a geometry by running a union operation with it as the only input.
+        /// This helps to remove narrow spike/gore artifacts to simplify the geometry,
+        /// which improves robustness.
+        /// Collapsed artifacts are removed from the result to allow using
+        /// it in further overlay operations.
+        /// </summary>
+        /// <param name="geom">Geometry to self-snap</param>
+        /// <param name="snapTol">Snap tolerance</param>
+        /// <returns>The snapped geometry (homogenous)</returns>
+        private static Geometry SnapSelf(Geometry geom, double snapTol)
+        {
+            var ov = new OverlayNG(geom, null);
+            var snapNoder = new SnappingNoder(snapTol);
+            ov.Noder = snapNoder;
+            /*
+             * Ensure the result is not mixed-dimension,
+             * since it will be used in further overlay computation.
+             * It may however be lower dimension, if it collapses completely due to snapping.
+             */
+            ov.StrictMode = true;
+            return ov.GetResult();
         }
 
         private static Geometry OverlaySnapTol(Geometry geom0, Geometry geom1, SpatialFunction opCode, double snapTol)

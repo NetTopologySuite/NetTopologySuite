@@ -25,11 +25,13 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(coordinates);
         }
 
+        /// <inheritdoc cref="CoordinateSequenceFactory.Create(CoordinateSequence)"/>
         public override CoordinateSequence Create(CoordinateSequence coordSeq)
         {
             return new CoordinateArraySequence(coordSeq);
         }
 
+        /// <inheritdoc cref="CoordinateSequenceFactory.Create(int, int, int)"/>
         public override CoordinateSequence Create(int size, int dimension, int measures)
         {
             int spatial = dimension - measures;

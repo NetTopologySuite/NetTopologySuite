@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
 
         private static void Test(ICollection<Geometry> rect, Geometry g)
         {
-            Console.WriteLine("Target # pts: " + g.NumPoints
+            TestContext.WriteLine("Target # pts: " + g.NumPoints
                               + "  -- # Rectangles: " + rect.Count
                 );
 
@@ -64,8 +64,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
                 }
             }
             sw.Stop();
-            Console.WriteLine("Finished in " + sw.Elapsed);
-            Console.WriteLine();
+            TestContext.WriteLine("Finished in " + sw.Elapsed);
+            TestContext.WriteLine();
         }
 
         /// <summary>
