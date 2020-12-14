@@ -14,15 +14,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private readonly WKTReader _reader;
 
         public GeometryFactoryTest()
-            : this(NtsGeometryServices.Instance, NtsGeometryServices.Instance.CreateGeometryFactory())
+            : this(NtsGeometryServices.Instance)
         {
         }
 
-        public GeometryFactoryTest(NtsGeometryServices ntsGeometryServices, GeometryFactory geometryFactory = null)
+        public GeometryFactoryTest(NtsGeometryServices ntsGeometryServices)
         {
-            Factory = geometryFactory ?? ntsGeometryServices.CreateGeometryFactory();
+            Factory = ntsGeometryServices.CreateGeometryFactory();
             _reader = new WKTReader(ntsGeometryServices);
-            _reader.Factory = Factory;
         }
 
         [Test]

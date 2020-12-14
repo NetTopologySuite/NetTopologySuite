@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         public GeometryFactoryExTest()
-            : base(InstanceToUse, new GeometryFactoryEx(PrecModel, 0))
+            : base(InstanceToUse)
         {
 
         }

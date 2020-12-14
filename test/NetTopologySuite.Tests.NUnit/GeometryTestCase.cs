@@ -113,22 +113,11 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="ntsGeometryServices">The geometry services class to use.</param>
         /// <param name="wkt">The WKT string</param>
         /// <returns>The geometry read</returns>
-        protected static Geometry Read(NtsGeometryServices ntsGeometryServices, string wkt) =>
-            Read(ntsGeometryServices, ntsGeometryServices.CreateGeometryFactory(), wkt);
-
-        /// <summary>
-        /// Reads a <see cref="Geometry"/> from a WKT string using a custom <see cref="GeometryFactory"/>.
-        /// </summary>
-        /// <param name="ntsGeometryServices">The geometry services class to use.</param>
-        /// <param name="factory">The geometry factory class that serves as a template.</param>
-        /// <param name="wkt">The WKT string</param>
-        /// <returns>The geometry read</returns>
-        protected static Geometry Read(NtsGeometryServices ntsGeometryServices, GeometryFactory factory, string wkt)
+        protected static Geometry Read(NtsGeometryServices ntsGeometryServices, string wkt)
         {
             var reader = new WKTReader(ntsGeometryServices);
             try
             {
-                reader.Factory = factory;
                 return reader.Read(wkt);
             }
             catch (ArgumentException e)

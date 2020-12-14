@@ -1514,7 +1514,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry Intersection(Geometry other)
         {
-            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
                 throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.Intersection(this, other);
         }
@@ -1555,7 +1555,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="LineMerger"/>
         public Geometry Union(Geometry other)
         {
-            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
                 throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.Union(this, other);
         }
@@ -1575,7 +1575,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry Difference(Geometry other)
         {
-            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
                 throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.Difference(this, other);
         }
@@ -1596,7 +1596,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry SymmetricDifference(Geometry other)
         {
-            if (!Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
                 throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
             return Factory.GeometryOverlay.SymmetricDifference(this, other);
         }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
+
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Utilities;
@@ -44,6 +46,8 @@ namespace NetTopologySuite.IO
 
         private NtsGeometryServices _ntsGeometryServices;
 
+        private int? _overriddenDefaultSRID;
+
         private bool _isAllowOldNtsCoordinateSyntax = true;
         private bool _isAllowOldNtsMultipointSyntax = true;
 
@@ -57,8 +61,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public WKTReader(NtsGeometryServices ntsGeometryServices)
         {
-            _ntsGeometryServices = ntsGeometryServices;
-            DefaultSRID = ntsGeometryServices.DefaultSRID;
+            _ntsGeometryServices = ntsGeometryServices ?? throw new ArgumentNullException(nameof(ntsGeometryServices));
         }
 
         /// <summary>
@@ -68,7 +71,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory">The factory used to create <c>Geometry</c>s.</param>
         [Obsolete("Use a constructor with a configured NtsGeometryServices instance.")]
         public WKTReader(GeometryFactory factory)
-            : this(new NtsGeometryServices(factory.CoordinateSequenceFactory, factory.PrecisionModel, factory.SRID, factory.GeometryOverlay))
+            : this(new NtsGeometryServices(factory?.CoordinateSequenceFactory ?? throw new ArgumentNullException(nameof(factory)), factory.PrecisionModel, factory.SRID, factory.GeometryOverlay))
         {
         }
 
@@ -96,6 +99,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets or sets the factory to create geometries
         /// </summary>
+        [Obsolete("Supply an appropriate NtsGeometryServices instance to the constructor instead.  The ability to set this value after an instance is created may be removed in a future release.")]
         public GeometryFactory Factory
         {
             get => _ntsGeometryServices.CreateGeometryFactory(DefaultSRID);
@@ -103,7 +107,7 @@ namespace NetTopologySuite.IO
             {
                 if (value != null)
                 {
-                    _ntsGeometryServices = (NtsGeometryServices)Activator.CreateInstance(_ntsGeometryServices.GetType(),
+                    _ntsGeometryServices = new NtsGeometryServices(
                         value.CoordinateSequenceFactory, value.PrecisionModel,
                         value.SRID, value.GeometryOverlay);
                     // Not sure about this:
@@ -115,23 +119,13 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets or sets the default SRID
         /// </summary>
-        public int DefaultSRID { get; set; }
-
-        /* THIS WOULD BE A BREAKING CHANGE
+        [Obsolete("Supply an appropriate NtsGeometryServices instance to the constructor instead.  The ability to set this value after an instance is created may be removed in a future release.")]
         public int DefaultSRID
         {
-            get => _ntsGeometryServices.DefaultSRID;
-            set
-            {
-                if (value == DefaultSRID)
-                    return;
-
-                _ntsGeometryServices = new NtsGeometryServices(
-                    _ntsGeometryServices.DefaultCoordinateSequenceFactory, _ntsGeometryServices.DefaultPrecisionModel,
-                    _ntsGeometryServices.DefaultSRID, _ntsGeometryServices.GeometryOverlay);
-            }
+            // set the CompilerGenerated attribute so that ApiCompat stops complaining.
+            [CompilerGenerated] get => _overriddenDefaultSRID ?? _ntsGeometryServices.DefaultSRID;
+            [CompilerGenerated] set => _overriddenDefaultSRID = value;
         }
-         */
 
         /// <summary>
         /// Converts a Well-known Text representation to a <c>Geometry</c>.
@@ -661,7 +655,7 @@ namespace NetTopologySuite.IO
                 //tokens.RemoveAt(0);
             }
             else
-                srid = DefaultSRID;
+                srid = _overriddenDefaultSRID ?? _ntsGeometryServices.DefaultSRID;
 
             var ordinateFlags = Ordinates.XY;
             try

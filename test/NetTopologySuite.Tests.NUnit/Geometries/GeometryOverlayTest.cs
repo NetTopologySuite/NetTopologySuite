@@ -50,31 +50,28 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestOverlayNGFixed()
         {
             //GeometryOverlay.setOverlayImpl(GeometryOverlay.OVERLAY_PROPERTY_VALUE_NG);
-            var ntsGeometryServices = new NtsGeometryServices(GeometryOverlay.NG);
+            var pmFixed = new PrecisionModel(1);
+            var ntsGeometryServices = new NtsGeometryServices(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory, pmFixed, NtsGeometryServices.Instance.DefaultSRID, GeometryOverlay.NG);
             var expected = Read(ntsGeometryServices, "POLYGON ((1 2, 4 1, 1 1, 1 2))");
 
-            var pmFixed = new PrecisionModel(1);
-            CheckIntersectionPM(ntsGeometryServices, pmFixed, expected);
+            CheckIntersectionPM(ntsGeometryServices, expected);
         }
 
         [Test]
         public void TestOverlayNGFloat()
         {
             //GeometryOverlay.setOverlayImpl(GeometryOverlay.OVERLAY_PROPERTY_VALUE_NG);
-            var ntsGeometryServices = new NtsGeometryServices(GeometryOverlay.NG);
+            var pmFloat = new PrecisionModel();
+            var ntsGeometryServices = new NtsGeometryServices(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory, pmFloat, NtsGeometryServices.Instance.DefaultSRID, GeometryOverlay.NG);
             var expected = Read(ntsGeometryServices, "POLYGON ((1 1, 1 2, 4 1.25, 4 1, 1 1))");
 
-            var pmFloat = new PrecisionModel();
-            CheckIntersectionPM(ntsGeometryServices, pmFloat, expected);
+            CheckIntersectionPM(ntsGeometryServices, expected);
         }
 
-        private void CheckIntersectionPM(NtsGeometryServices ntsGeometryServices, PrecisionModel pmFixed, Geometry expected)
+        private void CheckIntersectionPM(NtsGeometryServices ntsGeometryServices, Geometry expected)
         {
-            var ef = expected.Factory;
-            var geomFactFixed = new GeometryFactory(pmFixed, ef.SRID, ef.CoordinateSequenceFactory, ef.GeometryOverlay);
-
-            var a = Read(ntsGeometryServices, geomFactFixed, "POLYGON ((1 1, 1 2, 5 1, 1 1))");
-            var b = Read(ntsGeometryServices, geomFactFixed, "POLYGON ((0 3, 4 3, 4 0, 0 0, 0 3))");
+            var a = Read(ntsGeometryServices, "POLYGON ((1 1, 1 2, 5 1, 1 1))");
+            var b = Read(ntsGeometryServices, "POLYGON ((0 3, 4 3, 4 0, 0 0, 0 3))");
             var actual = a.Intersection(b);
             CheckEqual(expected, actual);
         }
