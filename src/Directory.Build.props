@@ -48,7 +48,7 @@
 
     <!-- MAJOR, MINOR, and PATCH are defined according to SemVer 2.0.0. -->
     <NtsMajorVersion>2</NtsMajorVersion>
-    <NtsMinorVersion>1</NtsMinorVersion>
+    <NtsMinorVersion>2</NtsMinorVersion>
     <NtsPatchVersion>0</NtsPatchVersion>
 
     <NtsBuildTimestamp>$([System.DateTime]::UtcNow.Ticks)</NtsBuildTimestamp>
