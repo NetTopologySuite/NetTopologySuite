@@ -2,18 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Operation.Linemerge;
-using NetTopologySuite.Operation.Overlay;
-using NetTopologySuite.Operation.Overlay.Snap;
 using NetTopologySuite.Operation.Predicate;
 using NetTopologySuite.Operation.Relate;
-using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
 
 namespace NetTopologySuite.Geometries
@@ -354,7 +350,8 @@ namespace NetTopologySuite.Geometries
         /// In general, the array cannot be assumed to be the actual internal
         /// storage for the vertices.  Thus modifying the array
         /// may not modify the geometry itself.
-        /// Use the <see cref="CoordinateSequence.SetOrdinate"/> method
+        /// Use the <see cref="CoordinateSequence.SetOrdinate(int, int, double)"/> or
+        /// <see cref="CoordinateSequence.SetOrdinate(int, Ordinate, double)"/> method
         /// (possibly on the components) to modify the underlying data.
         /// If the coordinates are modified,
         /// <see cref="Geometry.GeometryChanged"/> must be called afterwards.
@@ -362,7 +359,8 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
         /// <seealso cref="Geometry.GeometryChanged"/>
-        /// <seealso cref="CoordinateSequence.SetOrdinate"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate(int, int, double)"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate(int, Ordinate, double)"/>
         public abstract Coordinate[] Coordinates { get; }
 
         /// <summary>
@@ -1513,26 +1511,12 @@ namespace NetTopologySuite.Geometries
         /// <returns>A geometry representing the point-set common to the two <c>Geometry</c>s.</returns>
         /// <exception cref="TopologyException">if a robustness error occurs.</exception>
         /// <exception cref="ArgumentException">if the argument is a non-empty heterogeneous <c>GeometryCollection</c></exception>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry Intersection(Geometry other)
         {
-            // Special case: if one input is empty ==> empty
-            if (IsEmpty || other.IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
-
-            // compute for GCs
-            // (An inefficient algorithm, but will work)
-            // TODO: improve efficiency of computation for GCs
-            if (IsGeometryCollection)
-            {
-                var g2 = other;
-                return GeometryCollectionMapper.Map(
-                    (GeometryCollection)this, g => g.Intersection(g2));
-            }
-
-            // No longer needed since GCs are handled by previous code
-            //CheckNotGeometryCollection(this);
-            //CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
+            return Factory.GeometryOverlay.Intersection(this, other);
         }
 
         /// <summary>
@@ -1567,22 +1551,13 @@ namespace NetTopologySuite.Geometries
         /// points of <c>other</c></returns>
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
         /// <exception cref="ArgumentException">Thrown if either input is a non-empty GeometryCollection</exception>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         /// <seealso cref="LineMerger"/>
         public Geometry Union(Geometry other)
         {
-            // handle empty geometry cases
-            if (IsEmpty || (other == null || other.IsEmpty))
-            {
-                if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.Union, this, other, _factory);
-
-                // Special case: if either input is empty ==> other input
-                if (other == null || other.IsEmpty) return Copy();
-                if (IsEmpty) return other.Copy();
-            }
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Union);
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
+            return Factory.GeometryOverlay.Union(this, other);
         }
 
         /// <summary>
@@ -1597,17 +1572,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the difference.</param>
         /// <returns>A Geometry representing the point-set difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry Difference(Geometry other)
         {
-            // special case: if A.isEmpty ==> empty; if B.isEmpty ==> A
-            if (IsEmpty)
-                return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
-            if (other == null || other.IsEmpty)
-                return Copy();
-
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Difference);
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
+            return Factory.GeometryOverlay.Difference(this, other);
         }
 
         /// <summary>
@@ -1623,23 +1593,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">The <c>Geometry</c> with which to compute the symmetric difference.</param>
         /// <returns>a Geometry representing the point-set symmetric difference of this <c>Geometry</c> with <c>other</c>.</returns>
+        /// <exception cref="ArgumentException">if the argument has a factory with a different <c>GeometryOverlay</c> object assigned</exception>
         public Geometry SymmetricDifference(Geometry other)
         {
-            // handle empty geometry cases
-            if (IsEmpty || (other == null || other.IsEmpty))
-            {
-                // both empty - check dimensions
-                if (IsEmpty && (other == null || other.IsEmpty))
-                    return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
-
-                // special case: if either input is empty ==> result = other arg
-                if (other == null || other.IsEmpty) return Copy();
-                if (IsEmpty) return other.Copy();
-            }
-
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
-            return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.SymDifference);
+            if (other != null && !Equals(other.Factory.GeometryOverlay, Factory.GeometryOverlay))
+                throw new ArgumentException("Geometry has factory with different GeometryOverlay operation assigned", nameof(other));
+            return Factory.GeometryOverlay.SymmetricDifference(this, other);
         }
 
         /// <summary>
@@ -1659,7 +1618,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
         public Geometry Union()
         {
-            return UnaryUnionOp.Union(this);
+            return Factory.GeometryOverlay.Union(this);
         }
 
         /// <summary>

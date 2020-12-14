@@ -79,6 +79,7 @@ namespace NetTopologySuite.IO
         private readonly PrecisionModel _precisionModel;
 
         private readonly NtsGeometryServices _geometryServices;
+
         /**
          * true if structurally invalid input should be reported rather than repaired.
          * At some point this could be made client-controllable.
@@ -90,6 +91,10 @@ namespace NetTopologySuite.IO
         /// </summary>
         public WKBReader() : this(NtsGeometryServices.Instance) { }
 
+        /// <summary>
+        /// Creates an instance of this class using the provided <c>NtsGeometryServices</c>
+        /// </summary>
+        /// <param name="services"></param>
         public WKBReader(NtsGeometryServices services)
         {
             services = services ?? NtsGeometryServices.Instance;
@@ -562,12 +567,21 @@ namespace NetTopologySuite.IO
             return factory.CreateGeometryCollection(geometries);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating if a possibly encoded SRID value should be handled.
+        /// </summary>
         public bool HandleSRID { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating which ordinates can be handled.
+        /// </summary>
         public Ordinates AllowedOrdinates => Ordinates.XYZM & _sequenceFactory.Ordinates;
 
         private Ordinates _handleOrdinates;
 
+        /// <summary>
+        /// Gets a value indicating which ordinates should be handled.
+        /// </summary>
         public Ordinates HandleOrdinates
         {
             get => _handleOrdinates;

@@ -9,6 +9,16 @@ namespace NetTopologySuite
     /// <summary>
     /// A geometry service provider class
     /// </summary>
+    /// <remarks>
+    /// When overriding this class, you need to provide a public constructor with the following arguments:
+    /// <list type="number">
+    /// <item><c>CoordinateSequenceFactory</c><description>A factory to create coordinate sequences</description></item>
+    /// <item><term><c>PrecisionModel</c></term><description>A precision model</description></item>
+    /// <item><term><c>int</c></term><description>spatial reference id (srid)</description></item>
+    /// <item><term><c>GeometryOverlay</c></term><description>A class that bundles an overlay operation function set</description></item>
+    /// </list>
+    /// <see cref="NtsGeometryServices(CoordinateSequenceFactory, PrecisionModel, int, GeometryOverlay)"/>
+    /// </remarks>
     public class NtsGeometryServices
     {
         private static volatile NtsGeometryServices s_instance = new NtsGeometryServices();
@@ -19,23 +29,47 @@ namespace NetTopologySuite
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
         /// </summary>
         public NtsGeometryServices()
-            : this(CoordinateArraySequenceFactory.Instance,
-                   new PrecisionModel(PrecisionModels.Floating),
-                   -1)
+            : this(GeometryOverlay.Legacy)
         {
         }
 
         /// <summary>
-        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>, <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
+        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
+        /// </summary>
+        public NtsGeometryServices(GeometryOverlay geometryOverlay)
+            : this(CoordinateArraySequenceFactory.Instance,
+                new PrecisionModel(PrecisionModels.Floating),
+                -1, geometryOverlay)
+        {
+        }
+        /// <summary>
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>).
         /// </summary>
         /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
         /// <param name="precisionModel">The precision model.</param>
         /// <param name="srid">The default spatial reference ID</param>
         public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid)
+            : this(coordinateSequenceFactory, precisionModel, srid, GeometryOverlay.Legacy)
         {
-            DefaultCoordinateSequenceFactory = coordinateSequenceFactory ?? throw new ArgumentNullException(nameof(coordinateSequenceFactory));
+        }
+
+        /// <summary>
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/>, a spatial reference Id (<paramref name="srid"/>) and
+        /// a <see cref="Geometries.GeometryOverlay"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
+        /// <param name="precisionModel">The precision model.</param>
+        /// <param name="srid">The default spatial reference ID</param>
+        /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid, GeometryOverlay geometryOverlay)
+        {
+            DefaultCoordinateSequenceFactory = coordinateSequenceFactory ??
+                                               throw new ArgumentNullException(nameof(coordinateSequenceFactory));
             DefaultPrecisionModel = precisionModel ?? throw new ArgumentNullException(nameof(precisionModel));
             DefaultSRID = srid;
+            GeometryOverlay = geometryOverlay;
         }
 
         /// <summary>
@@ -49,6 +83,13 @@ namespace NetTopologySuite
             get => s_instance;
             set => s_instance = value ?? throw new ArgumentNullException(nameof(value));
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating the operations to use for geometry overlay.  
+        /// </summary>
+        /// <returns>A set of geometry overlay functions.</returns>
+        public GeometryOverlay GeometryOverlay { get; }
+
 
         /// <summary>
         /// Gets the default spatial reference id
@@ -86,16 +127,54 @@ namespace NetTopologySuite
         /// <returns>The precision model.</returns>
         public PrecisionModel CreatePrecisionModel(double scale) => new PrecisionModel(scale);
 
+        /// <summary>
+        /// Creates or retrieves a geometry factory using <see cref="DefaultSRID"/>, <see cref="DefaultPrecisionModel"/> and
+        /// <see cref="DefaultCoordinateSequenceFactory"/>.
+        /// </summary>
+        /// <returns>A geometry factory</returns>
         public GeometryFactory CreateGeometryFactory() => CreateGeometryFactory(DefaultSRID);
 
+        /// <summary>
+        /// Creates or retrieves a geometry factory using <paramref name="srid"/>, <see cref="DefaultPrecisionModel"/> and
+        /// <see cref="DefaultCoordinateSequenceFactory"/>.
+        /// </summary>
+        /// <returns>A geometry factory</returns>
         public GeometryFactory CreateGeometryFactory(int srid) => CreateGeometryFactory(DefaultPrecisionModel, srid, DefaultCoordinateSequenceFactory);
 
-        public GeometryFactory CreateGeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory) => CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
+        /// <summary>
+        /// Creates or retrieves a geometry factory using <see cref="DefaultSRID"/>, <see cref="DefaultPrecisionModel"/> and
+        /// <paramref name="coordinateSequenceFactory"/>.
+        /// </summary>
+        /// <returns>A geometry factory</returns>
+        public GeometryFactory CreateGeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory) =>
+            CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
 
-        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel) => CreateGeometryFactory(precisionModel, DefaultSRID, DefaultCoordinateSequenceFactory);
+        /// <summary>
+        /// Creates or retrieves a geometry factory using <see cref="DefaultSRID"/>, <paramref name="precisionModel"/> and
+        /// <see cref="DefaultCoordinateSequenceFactory"/>.
+        /// </summary>
+        /// <param name="precisionModel">The precision model to use.</param>
+        /// <returns>A geometry factory</returns>
+        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel) =>
+            CreateGeometryFactory(precisionModel, DefaultSRID, DefaultCoordinateSequenceFactory);
 
+        /// <summary>
+        /// Creates or retrieves a geometry factory using <paramref name="srid"/>, <paramref name="precisionModel"/> and
+        /// <see cref="DefaultCoordinateSequenceFactory"/>.
+        /// </summary>
+        /// <param name="precisionModel">The precision model to use.</param>
+        /// <param name="srid">The spatial reference id.</param>
+        /// <returns>A geometry factory</returns>
         public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid) => CreateGeometryFactory(precisionModel, srid, DefaultCoordinateSequenceFactory);
 
+        /// <summary>
+        /// Creates or retrieves a geometry factory using <paramref name="srid"/>, <paramref name="precisionModel"/> and
+        /// <paramref name="coordinateSequenceFactory"/>.
+        /// </summary>
+        /// <param name="precisionModel">The precision model to use.</param>
+        /// <param name="srid">The spatial reference id.</param>
+        /// <param name="coordinateSequenceFactory"></param>
+        /// <returns>A geometry factory</returns>
         public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
         {
             if (precisionModel is null)
@@ -132,6 +211,10 @@ namespace NetTopologySuite
         /// This method is expected to be safe to call from any number of threads at once.
         /// </para>
         /// <para>
+        /// Implementations <strong>must</strong> make sure to use a constructor which
+        /// is properly assigning <see cref="GeometryOverlay"/> to the factory.
+        /// </para>
+        /// <para>
         /// Although the result for a given set of parameters is cached, there is no guarantee that,
         /// once this method is called with some set of parameters, it will never be called again
         /// with an exactly equal set of parameters.  When this does happen, an arbitrary result is
@@ -141,7 +224,7 @@ namespace NetTopologySuite
         /// </remarks>
         protected virtual GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
         {
-            return new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
+            return new GeometryFactory(precisionModel, srid, coordinateSequenceFactory, GeometryOverlay);
         }
 
         private readonly struct GeometryFactoryKey : IEquatable<GeometryFactoryKey>
