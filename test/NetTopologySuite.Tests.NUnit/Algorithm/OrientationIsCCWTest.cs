@@ -6,8 +6,11 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
+    /// <summary>
+    /// Tests <see cref="Orientation.IsCCW(Coordinate[])"/>
+    /// </summary>
     [TestFixture]
-    public class IsCCWTest : GeometryTestCase
+    public class OrientationIsCCWTest : GeometryTestCase
     {
         [Test]
         public void TestTooFewPoints()
@@ -29,55 +32,55 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void TestCCW()
         {
-            CheckOrientationCcw(true, "POLYGON ((60 180, 140 120, 100 180, 140 240, 60 180))");
+            CheckCCW(true, "POLYGON ((60 180, 140 120, 100 180, 140 240, 60 180))");
         }
 
         [Test]
         public void TestRingCW()
         {
-            CheckOrientationCcw(false, "POLYGON ((60 180, 140 240, 100 180, 140 120, 60 180))");
+            CheckCCW(false, "POLYGON ((60 180, 140 240, 100 180, 140 120, 60 180))");
         }
 
         [Test]
         public void TestCCWSmall()
         {
-            CheckOrientationCcw(true, "POLYGON ((1 1, 9 1, 5 9, 1 1))");
+            CheckCCW(true, "POLYGON ((1 1, 9 1, 5 9, 1 1))");
         }
 
         [Test]
         public void TestDuplicateTopPoint()
         {
-            CheckOrientationCcw(true, "POLYGON ((60 180, 140 120, 100 180, 140 240, 140 240, 60 180))");
+            CheckCCW(true, "POLYGON ((60 180, 140 120, 100 180, 140 240, 140 240, 60 180))");
         }
 
         [Test]
         public void TestFlatTopSegment()
         {
-            CheckOrientationCcw(false, "POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200))");
+            CheckCCW(false, "POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200))");
         }
 
         [Test]
         public void TestFlatMultipleTopSegment()
         {
-            CheckOrientationCcw(false, "POLYGON ((100 200, 127 200, 151 200, 173 200, 200 200, 100 100, 100 200))");
+            CheckCCW(false, "POLYGON ((100 200, 127 200, 151 200, 173 200, 200 200, 100 100, 100 200))");
         }
 
         [Test]
         public void TestDegenerateRingHorizontal()
         {
-            CheckOrientationCcw(false, "POLYGON ((100 200, 100 200, 200 200, 100 200))");
+            CheckCCW(false, "POLYGON ((100 200, 100 200, 200 200, 100 200))");
         }
 
         [Test]
         public void TestDegenerateRingAngled()
         {
-            CheckOrientationCcw(false, "POLYGON ((100 100, 100 100, 200 200, 100 100))");
+            CheckCCW(false, "POLYGON ((100 100, 100 100, 200 200, 100 100))");
         }
 
         [Test]
         public void TestDegenerateRingVertical()
         {
-            CheckOrientationCcw(false, "POLYGON ((200 100, 200 100, 200 200, 200 100))");
+            CheckCCW(false, "POLYGON ((200 100, 200 100, 200 200, 200 100))");
         }
 
         /**
@@ -86,39 +89,57 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void TestTopAngledSegmentCollapse()
         {
-            CheckOrientationCcw(false, "POLYGON ((10 20, 61 20, 20 30, 50 60, 10 20))");
+            CheckCCW(false, "POLYGON ((10 20, 61 20, 20 30, 50 60, 10 20))");
         }
 
         [Test]
         public void TestABATopFlatSegmentCollapse()
         {
-            CheckOrientationCcw(true, "POLYGON ((71 0, 40 40, 70 40, 40 40, 20 0, 71 0))");
+            CheckCCW(true, "POLYGON ((71 0, 40 40, 70 40, 40 40, 20 0, 71 0))");
         }
 
         [Test]
         public void TestABATopFlatSegmentCollapseMiddleStart()
         {
-            CheckOrientationCcw(true, "POLYGON ((90 90, 50 90, 10 10, 90 10, 50 90, 90 90))");
+            CheckCCW(true, "POLYGON ((90 90, 50 90, 10 10, 90 10, 50 90, 90 90))");
         }
 
         [Test]
         public void TestMultipleTopFlatSegmentCollapseSinglePoint()
         {
-            CheckOrientationCcw(true, "POLYGON ((100 100, 200 100, 150 200, 170 200, 200 200, 100 200, 150 200, 100 100))");
+            CheckCCW(true, "POLYGON ((100 100, 200 100, 150 200, 170 200, 200 200, 100 200, 150 200, 100 100))");
         }
 
         [Test]
         public void TestMultipleTopFlatSegmentCollapseFlatTop()
         {
-            CheckOrientationCcw(true, "POLYGON ((10 10, 90 10, 70 70, 90 70, 10 70, 30 70, 50 70, 10 10))");
+            CheckCCW(true, "POLYGON ((10 10, 90 10, 70 70, 90 70, 10 70, 30 70, 50 70, 10 10))");
         }
 
-        private void CheckOrientationCcw(bool expectedCCW, string wkt)
+        /*
+         * Signed-area orientation returns orientation of largest enclosed area
+         */
+        [Test]
+        public void TestBowTieByArea()
+        {
+            CheckCCW(false, "POLYGON ((10 10, 50 10, 25 35, 35 35, 10 10))");
+            CheckCCWArea(true, "POLYGON ((10 10, 50 10, 25 35, 35 35, 10 10))");
+        }
+
+        private void CheckCCW(bool expectedCCW, string wkt)
         {
             var pts2x = GetCoordinates(wkt);
             Assert.AreEqual(expectedCCW, Orientation.IsCCW(pts2x), $"Coordinate array isCCW: {expectedCCW}");
             var seq2x = GetCoordinateSequence(wkt);
             Assert.AreEqual(expectedCCW, Orientation.IsCCW(seq2x), $"CoordinateSequence isCCW: {expectedCCW}");
+        }
+
+        private void CheckCCWArea(bool expectedCCW, string wkt)
+        {
+            Assert.That(Orientation.IsCCWArea(GetCoordinates(wkt)),
+                Is.EqualTo(expectedCCW), $"Coordinate[] isCCW: {expectedCCW}");
+            Assert.That(Orientation.IsCCWArea(GetCoordinateSequence(wkt)),
+                Is.EqualTo(expectedCCW), $"CoordinateSequence isCCW: {expectedCCW}");
         }
 
         private Coordinate[] GetCoordinates(string wkt)

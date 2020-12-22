@@ -10,7 +10,8 @@ namespace NetTopologySuite.Algorithm
     /// Orientation is a fundamental property of planar geometries
     /// (and more generally geometry on two-dimensional manifolds).
     /// <para/>
-    /// Orientation is notoriously subject to numerical precision errors
+    /// Determining triangle orientation
+    /// is notoriously subject to numerical precision errors
     /// in the case of collinear or nearly collinear points.
     /// NTS uses extended-precision arithmetic to increase
     /// the robustness of the computation.
@@ -85,7 +86,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes whether a ring defined by an array of <see cref="Coordinate"/>s is
+        /// Tests if a ring defined by an array of <see cref="Coordinate"/>s is
         /// oriented counter-clockwise.
         /// <list type="bullet">
         /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
@@ -104,11 +105,11 @@ namespace NetTopologySuite.Algorithm
         public static bool IsCCW(Coordinate[] ring)
         {
             // wrap with an XY CoordinateSequence
-            return IsCCW(new CoordinateArraySequence(ring));
+            return IsCCW(new CoordinateArraySequence(ring, 2, 0));
         }
 
         /// <summary>
-        /// Computes whether a ring defined by a <see cref="CoordinateSequence"/> is
+        /// Tests if a ring defined by a <see cref="CoordinateSequence"/> is
         /// oriented counter-clockwise.
         /// <list type="bullet">
         /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
@@ -217,6 +218,61 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
+        /// <summary>
+        /// Tests if a ring defined by an array of <see cref="Coordinate"/>s is
+        /// oriented counter-clockwise, using the signed area of the ring.
+        /// <list type="bullet">
+        /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
+        /// <item><description>This handles coordinate lists which contain repeated points.</description></item>
+        /// <item><description>This handles rings which contain collapsed segments 
+        ///    (in particular, along the top of the ring).</description></item>
+        /// <item><description>This handles rings which are invalid due to self-intersection</description></item>
+        /// </list>
+        /// This algorithm is guaranteed to work with valid rings.
+        /// For invalid rings (containing self-intersections),
+        /// the algorithm determines the orientation of
+        /// the largest enclosed area (including overlaps).
+        /// This provides a more useful result in some situations, such as buffering.
+        /// <para/>
+        /// However, this approach may be less accurate in the case of
+        /// rings with almost zero area.
+        /// (Note that the orientation of rings with zero area is essentially
+        /// undefined, and hence non-deterministic.)
+        /// </summary>
+        /// <param name="ring">An array of Coordinates forming a ring (with first and last point identical)</param>
+        /// <returns><c>true</c> if the ring is oriented counter-clockwise.</returns>
+        public static bool IsCCWArea(Coordinate[] ring)
+        {
+            return Area.OfRingSigned(ring) < 0;
+        }
+
+        /// <summary>
+        /// Tests if a ring defined by a <see cref="CoordinateSequence"/> is
+        /// oriented counter-clockwise, using the signed area of the ring.
+        /// <list type="bullet">
+        /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
+        /// <item><description>This handles coordinate lists which contain repeated points.</description></item>
+        /// <item><description>This handles rings which contain collapsed segments 
+        ///    (in particular, along the top of the ring).</description></item>
+        /// <item><description>This handles rings which are invalid due to self-intersection</description></item>
+        /// </list>
+        /// This algorithm is guaranteed to work with valid rings.
+        /// For invalid rings (containing self-intersections),
+        /// the algorithm determines the orientation of
+        /// the largest enclosed area (including overlaps).
+        /// This provides a more useful result in some situations, such as buffering.
+        /// <para/>
+        /// However, this approach may be less accurate in the case of
+        /// rings with almost zero area.
+        /// (Note that the orientation of rings with zero area is essentially
+        /// undefined, and hence non-deterministic.)
+        /// </summary>
+        /// <param name="ring">An array of Coordinates forming a ring (with first and last point identical)</param>
+        /// <returns><c>true</c> if the ring is oriented counter-clockwise.</returns>
+        public static bool IsCCWArea(CoordinateSequence ring)
+        {
+            return Area.OfRingSigned(ring) < 0;
+        }
         /// <summary>
         /// Re-orients an orientation.
         /// </summary>

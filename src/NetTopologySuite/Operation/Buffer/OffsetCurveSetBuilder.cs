@@ -218,8 +218,18 @@ namespace NetTopologySuite.Operation.Buffer
 
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;
+            /*
+             * Use area-based orientation test, 
+             * to ensure that for invalid rings the largest enclosed area
+             * is used to determine orientation.
+             * This produces a more sensible result especially when
+             * used for validifying polygonal geometry via buffer-by-zero.
+             * For buffering use, the lower robustness of ccw-by-area
+             * doesn't matter, since very narrow or flat rings
+             * produce an acceptable offset curve for either orientation.
+             */
             if (coord.Length >= LinearRing.MinimumValidSize
-                && Orientation.IsCCW(coord))
+                && Orientation.IsCCWArea(coord))
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;

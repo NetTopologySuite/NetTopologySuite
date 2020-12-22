@@ -50,13 +50,20 @@ namespace NetTopologySuite.Operation.Buffer
     /// </ul>
     /// </para>
     /// <para>
-    /// The buffer algorithm can perform simplification on the input to increase performance.
+    /// The buffer algorithm may perform simplification on the input to increase performance.
     /// The simplification is performed a way that always increases the buffer area
     /// (so that the simplified input covers the original input).
     /// The degree of simplification can be specified with <see cref="BufferParameters.SimplifyFactor"/>,
     /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
     /// Note that if the buffer distance is zero then so is the computed simplify tolerance,
     /// no matter what the simplify factor.
+    /// </para>
+    /// <para>
+    /// Buffer results are always valid geometry.
+    /// Given this, computing a zero-width buffer of an invalid polygonal geometry is
+    /// an effective way to "validify" the geometry.
+    /// Note however that in the case of self-intersecting "bow-tie" geometries,
+    /// only the largest enclosed area will be retained.
     /// </para>
     /// </remarks>
     public class BufferOp
