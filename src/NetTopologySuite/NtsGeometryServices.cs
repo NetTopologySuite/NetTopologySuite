@@ -17,7 +17,7 @@ namespace NetTopologySuite
     /// <item><term><c>int</c></term><description>spatial reference id (srid)</description></item>
     /// <item><term><c>GeometryOverlay</c></term><description>A class that bundles an overlay operation function set</description></item>
     /// </list>
-    /// <see cref="NtsGeometryServices(CoordinateSequenceFactory, PrecisionModel, int, GeometryOverlay)"/>
+    /// <see cref="NetTopologySuite.NtsGeometryServices(CoordinateSequenceFactory, PrecisionModel, int, GeometryOverlay)"/>
     /// </remarks>
     public class NtsGeometryServices
     {
@@ -26,7 +26,10 @@ namespace NetTopologySuite
         private readonly ConcurrentDictionary<GeometryFactoryKey, GeometryFactory> m_factories = new ConcurrentDictionary<GeometryFactoryKey, GeometryFactory>();
 
         /// <summary>
-        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
+        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/>
+        /// as default and a <see cref="PrecisionModels.Floating"/> precision model.<br/>
+        /// No <see cref="DefaultSRID"/> is specified.<br/>
+        /// The <see cref="NetTopologySuite.Geometries.GeometryOverlay.Legacy"/> function set for overlay operations is being used.
         /// </summary>
         public NtsGeometryServices()
             : this(GeometryOverlay.Legacy)
@@ -34,14 +37,52 @@ namespace NetTopologySuite
         }
 
         /// <summary>
-        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
+        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/>
+        /// as default and a <see cref="PrecisionModels.Floating"/> precision model.
+        /// No <see cref="DefaultSRID"/> is specified
         /// </summary>
+        /// <param name="geometryOverlay">The function set to perform overlay operations</param>
         public NtsGeometryServices(GeometryOverlay geometryOverlay)
             : this(CoordinateArraySequenceFactory.Instance,
-                new PrecisionModel(PrecisionModels.Floating),
+                PrecisionModel.Floating.Value,
                 -1, geometryOverlay)
         {
         }
+
+        /// <summary>
+        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default.<br/>
+        /// No <see cref="DefaultSRID"/> is specified.<br/>
+        /// The default precision model is defined by <paramref name="precisionModel"/>.<br/>
+        /// The <see cref="NetTopologySuite.Geometries.GeometryOverlay.Legacy"/> function set for overlay operations is being used.
+        /// </summary>
+        public NtsGeometryServices(PrecisionModel precisionModel)
+            : this(CoordinateArraySequenceFactory.Instance,
+                precisionModel, -1, GeometryOverlay.Legacy)
+        {
+        }
+
+        /// <summary>
+        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default.<br/>
+        /// A value of <paramref name="srid"/> is assigned to <see cref="DefaultSRID"/>.<br/>
+        /// The default precision model is defined by <paramref name="precisionModel"/>.<br/>
+        /// The <see cref="NetTopologySuite.Geometries.GeometryOverlay.Legacy"/> function set for overlay operations is being used.
+        /// </summary>
+        public NtsGeometryServices(PrecisionModel precisionModel, int srid)
+            : this(CoordinateArraySequenceFactory.Instance,
+                precisionModel, srid, GeometryOverlay.Legacy)
+        {
+        }
+        /// <summary>
+        /// Creates an instance of this class, using a <see cref="PrecisionModels.Floating"/> precision model as default.<br/>
+        /// No <see cref="DefaultSRID"/> is specified.<br/>
+        /// The default coordinate sequence factory is defined by <paramref name="coordinateSequenceFactory"/>.<br/>
+        /// The <see cref="NetTopologySuite.Geometries.GeometryOverlay.Legacy"/> function set for overlay operations is being used.
+        /// </summary>
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory)
+            : this(coordinateSequenceFactory, PrecisionModel.Floating.Value, -1, GeometryOverlay.Legacy)
+        {
+        }
+
         /// <summary>
         /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
         /// <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>).
@@ -112,12 +153,14 @@ namespace NetTopologySuite
         /// Creates a precision model based on given precision model type
         /// </summary>
         /// <returns>The precision model type</returns>
+        [Obsolete("Will be removed in a future version")]
         public PrecisionModel CreatePrecisionModel(PrecisionModels modelType) => new PrecisionModel(modelType);
 
         /// <summary>
         /// Creates a precision model based on given precision model.
         /// </summary>
         /// <returns>The precision model</returns>
+        [Obsolete("Will be removed in a future version")]
         public PrecisionModel CreatePrecisionModel(PrecisionModel precisionModel) => new PrecisionModel(precisionModel);
 
         /// <summary>
@@ -125,6 +168,7 @@ namespace NetTopologySuite
         /// </summary>
         /// <param name="scale">The scale factor</param>
         /// <returns>The precision model.</returns>
+        [Obsolete("Will be removed in a future version")]
         public PrecisionModel CreatePrecisionModel(double scale) => new PrecisionModel(scale);
 
         /// <summary>

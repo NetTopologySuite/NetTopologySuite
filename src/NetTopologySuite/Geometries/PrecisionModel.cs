@@ -86,6 +86,28 @@ namespace NetTopologySuite.Geometries
         private readonly double _scale;
 
         /// <summary>
+        /// Gets a value indicating a precision model with double precision.
+        /// </summary>
+        /// <returns>A double precision model</returns>
+        public static Lazy<PrecisionModel> Floating =>
+            new Lazy<PrecisionModel>(() => new PrecisionModel(PrecisionModels.Floating));
+
+        /// <summary>
+        /// Gets a value indicating a precision model with single precision.
+        /// </summary>
+        /// <returns>A single precision model</returns>
+        public static Lazy<PrecisionModel> FloatingSingle =>
+            new Lazy<PrecisionModel>(() => new PrecisionModel(PrecisionModels.FloatingSingle));
+
+        /// <summary>
+        /// Gets a value indicating a precision model with a scale of <c>1</c>.
+        /// </summary>
+        /// <returns>A fixed precision model</returns>
+        public static Lazy<PrecisionModel> Fixed =>
+            new Lazy<PrecisionModel>(() => new PrecisionModel(PrecisionModels.Fixed));
+
+
+        /// <summary>
         /// Creates a <c>PrecisionModel</c> with a default precision
         /// of Floating.
         /// </summary>
