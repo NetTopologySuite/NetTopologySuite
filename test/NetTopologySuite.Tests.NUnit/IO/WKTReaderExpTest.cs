@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             {
                 var g = rdr.Read(wkt);
             }
-            catch (ParseException ex)
+            catch (ParseException /*ex*/)
             {
                 //TestContext.WriteLine(ex.Message);
                 threwParseEx = true;

@@ -42,8 +42,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private readonly GeometryFactory _geomFact = new GeometryFactory();
 
-        private double baseX;
-        private double baseY;
+        private const double baseX = 0;
+        private const double baseY = 0;
         private double rectSize = 100;
         private Envelope _rectEnv;
         private Coordinate[] _pts;

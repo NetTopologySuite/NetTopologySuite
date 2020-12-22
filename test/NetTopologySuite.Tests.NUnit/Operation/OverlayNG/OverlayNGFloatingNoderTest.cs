@@ -131,9 +131,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
                     var result = NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, SpatialFunction.Intersection);
                     return result.Area;
                 }
-                catch (TopologyException ex)
+                catch (TopologyException)
                 {
-                    /**
+                    /*
                      * This exception is expected if the geometries are not perturbed by clipping
                      */
                 }

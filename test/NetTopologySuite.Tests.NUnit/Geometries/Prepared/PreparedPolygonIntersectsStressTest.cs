@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
     {
         const int MAX_ITER = 10000;
 
-        bool testFailed = false;
+        //bool testFailed = false;
 
         [Test]
         [Category("Stress")]

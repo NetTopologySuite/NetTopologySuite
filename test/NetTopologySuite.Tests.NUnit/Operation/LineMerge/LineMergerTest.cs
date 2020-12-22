@@ -112,7 +112,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
                 {
                     geometries.Add(reader.Read(geomWkt));
                 }
-                catch (ParseException e)
+                catch (ParseException)
                 {
                     NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
                 }

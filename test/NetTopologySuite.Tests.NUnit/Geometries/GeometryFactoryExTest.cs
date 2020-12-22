@@ -222,12 +222,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     Assert.Fail("Setting exterior ring orientation should have failed!");
                 Assert.AreEqual(ringOrientation, gf.OrientationOfExteriorRing);
             }
-            catch (ArgumentOutOfRangeException iae)
+            catch (ArgumentOutOfRangeException)
             {
                 if (failKind != 1)
                     Assert.Fail("Wrong argument");
             }
-            catch (InvalidOperationException isa)
+            catch (InvalidOperationException)
             {
                 if (failKind != 2)
                     Assert.Fail("Setting exterior ring orientation twice!");

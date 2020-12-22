@@ -98,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 TryIntersection(ntsGeometryServices);
                 Assert.Fail("Intersection operation should have failed but did not");
             }
-            catch (TopologyException ex)
+            catch (TopologyException)
             {
                 // ignore - expected result
             }
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             {
                 TryIntersection(ntsGeometryServices);
             }
-            catch (TopologyException ex)
+            catch (TopologyException)
             {
                 Assert.Fail("Intersection operation failed.");
             }

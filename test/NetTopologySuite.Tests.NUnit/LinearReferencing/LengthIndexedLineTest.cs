@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         /// These tests work for LengthIndexedLine, but not LocationIndexedLine
         /// </summary>
         [Test]
-        public void TestOffsetStartPointRepeatedPoint()
+        public override void TestOffsetStartPointRepeatedPoint()
         {
             RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
             RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", -1.0, "POINT (0.7071067811865475 -0.7071067811865475)");

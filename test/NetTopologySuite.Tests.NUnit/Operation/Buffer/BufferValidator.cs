@@ -195,7 +195,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                         // 10/29/2003]
                         _buffer = _wktReader.Read("POINT EMPTY");
                     }
-                    catch (ParseException e)
+                    catch (ParseException)
                     {
                         NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
                     }

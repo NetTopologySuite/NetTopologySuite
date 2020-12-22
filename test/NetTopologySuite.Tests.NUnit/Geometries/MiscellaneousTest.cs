@@ -120,7 +120,7 @@ namespace NetTopologySuite.Tests.NUnit
                 var b = _geometryFactory.CreateGeometryCollection(new Geometry[] {}).Boundary;
                 Assert.IsTrue(false);
             }
-            catch (ArgumentException e)
+            catch (Exception)
             {
             }
         }
@@ -163,7 +163,7 @@ namespace NetTopologySuite.Tests.NUnit
                 double tmp = p.X;
                 Assert.IsTrue(false);
             }
-            catch (ArgumentOutOfRangeException e1)
+            catch (ArgumentOutOfRangeException)
             {
             }
             try
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Tests.NUnit
                 double tmp = p.Y;
                 Assert.IsTrue(false);
             }
-            catch (ArgumentOutOfRangeException e2)
+            catch (ArgumentOutOfRangeException)
             {
             }
 

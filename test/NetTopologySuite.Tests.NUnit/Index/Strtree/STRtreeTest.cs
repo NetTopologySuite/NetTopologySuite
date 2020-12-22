@@ -126,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 t.Insert(new Envelope(0, 0, 0, 0), new object());
                 Assert.IsTrue(false);
             }
-            catch (NetTopologySuite.Utilities.AssertionFailedException e)
+            catch (NetTopologySuite.Utilities.AssertionFailedException)
             {
                 Assert.IsTrue(true);
             }

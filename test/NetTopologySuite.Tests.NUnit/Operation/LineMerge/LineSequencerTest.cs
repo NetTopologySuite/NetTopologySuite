@@ -196,7 +196,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             var sequencer = new LineSequencer();
             sequencer.Add(inputGeoms);
 
-            bool isCorrect = false;
+            //bool isCorrect = false;
             if (!sequencer.IsSequenceable())
             {
                 Assert.IsTrue(expectedWKT == null);

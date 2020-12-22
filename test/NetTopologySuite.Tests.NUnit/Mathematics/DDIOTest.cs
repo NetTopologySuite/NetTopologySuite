@@ -153,7 +153,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             bool foundParseError = false;
             try {
                 DD.Parse(str);
-            } catch (FormatException ex) {
+            } catch (FormatException) {
                 foundParseError = true;
             }
             Assert.IsTrue(foundParseError);

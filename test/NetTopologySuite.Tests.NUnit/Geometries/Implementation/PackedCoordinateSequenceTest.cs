@@ -207,7 +207,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 var seq = factory.Create(5, 2, 1);
                 Assert.Fail("Dimension=2/Measure=1 (XM) not supported");
             }
-            catch (ArgumentException expected)
+            catch (ArgumentException)
             {
             }
         }

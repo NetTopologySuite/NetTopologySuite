@@ -195,7 +195,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     new Coordinate(0, 0)});
                 Assert.IsTrue(false);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 Assert.IsTrue(true);
             }
