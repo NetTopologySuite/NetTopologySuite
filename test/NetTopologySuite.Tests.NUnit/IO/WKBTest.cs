@@ -15,8 +15,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// </summary>
     public class WKBTest
     {
-        private static readonly GeometryFactory GeomFactory = new GeometryFactory();
-        private static readonly WKTReader Rdr = new WKTReader(GeomFactory);
+        private static readonly GeometryFactory GeomFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
+        private static readonly WKTReader Rdr = new WKTReader();
 
         [Test]
         public void BigEndianTest()
@@ -151,9 +151,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         private void RunWKBTestPackedCoordinate(string wkt)
         {
-            var factory = new GeometryFactory(
+            var gs = new NtsGeometryServices(
                 new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double));
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader(gs);
             var g = reader.Read(wkt);
 
             // Since we are using a PCS of dim=2, only check 2-dimensional storage

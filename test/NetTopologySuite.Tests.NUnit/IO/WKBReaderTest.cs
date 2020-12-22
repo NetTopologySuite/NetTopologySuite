@@ -95,10 +95,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
             // JTS deviation: our default reader doesn't do Z by default, so in addition to XYM and
             // XYZM, we also need to use a special reader for XYZ.
             var useReader = new WKTReader();
-            if (Regex.IsMatch(expectedWKT, "(Z|(Z?M)) ?\\("))
-            {
-                useReader = new WKTReader(NtsGeometryServices.Instance.CreateGeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory));
-            }
+            //if (Regex.IsMatch(expectedWKT, "(Z|(Z?M)) ?\\("))
+            //{
+            //    useReader = new WKTReader(NtsGeometryServices.Instance.CreateGeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory));
+            //}
 
             var expected = useReader.Read(expectedWKT);
 

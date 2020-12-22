@@ -10,20 +10,18 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue35Tests
     {
-        private readonly GeometryFactory factory = GeometryFactory.Default;
-
-        private WKTReader reader;
+        private WKTReader _reader;
 
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            reader = new WKTReader(factory);
+            _reader = new WKTReader();
         }
 
         [Test, Category("Issue35")]
         public void TestIsValid()
         {
-            var geom1 = reader.Read(
+            var geom1 = _reader.Read(
                     @"POLYGON((719522.38754834363 6176994.3322154824
 24.194645633515528,719522.38754834374 6176994.3322154824
 24.194645633477126,719522.93551468418 6176993.6599836433
@@ -39,7 +37,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(geom1);
             Assert.IsTrue(geom1.IsValid);
 
-            var geom2 = reader.Read(
+            var geom2 = _reader.Read(
                     @"POLYGON((719496.72750000039 6177012.6337
 21.226497462484563,719501.41240093729 6177017.249279663
 23.760978631209998,719526.8258614993 6176989.4829953332
@@ -49,7 +47,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(geom2);
             Assert.IsTrue(geom2.IsValid);
 
-            var expected = reader.Read(
+            var expected = _reader.Read(
                     @"POLYGON ((719522.3875483436 6176994.332215482 24.194645633515528,
 719522.3875483437 6176994.332215482 24.194645633477126, 719526.8258614993
 6176989.482995333 23.760978631060315, 719521.7233395944 6176985.323700737
@@ -74,7 +72,7 @@ namespace NetTopologySuite.Tests.Various
         [Test, Category("Issue35")]
         public void TestIsValid2()
         {
-            var geom1 = reader.Read(
+            var geom1 = _reader.Read(
                 @"POLYGON ((34.6084247111331 31.2600368705728, 34.6032199980889
 31.0998473691012, 34.4841253356165 31.1049514260643, 34.4725915455589
 31.2524625304851, 34.6084247111331 31.2600368705728))");
@@ -82,7 +80,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(geom1);
             Assert.IsTrue(geom1.IsValid);
 
-            var geom2 = reader.Read(
+            var geom2 = _reader.Read(
                 @"POLYGON ((34.6501882399183 31.4064219592108, 34.5539826799553
 31.4701726314754, 34.3859127258032 31.4180129905316, 34.3963446539919
 31.3600578339274, 34.3650488694256 31.2464657269832, 34.6768476119563

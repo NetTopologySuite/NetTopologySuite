@@ -8,9 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class TriangleTest
     {
-        private static readonly PrecisionModel PrecisionModel = new PrecisionModel();
-        private static readonly GeometryFactory GeometryFactory = new GeometryFactory(PrecisionModel, 0);
-        private static readonly WKTReader Reader = new WKTReader(GeometryFactory);
+        private static readonly WKTReader Reader = new WKTReader(new NtsGeometryServices(PrecisionModel.Floating.Value, 0));
 
         private const double Tolerance = 1E-5;
 

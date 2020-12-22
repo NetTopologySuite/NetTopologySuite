@@ -471,8 +471,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
         public void TestReadLargeNumbers()
         {
             var precisionModel = new PrecisionModel(1E9);
-            var geometryFactory = new GeometryFactory(precisionModel, 0);
-            var reader = new WKTReader(geometryFactory);
+            var gs = new NtsGeometryServices(precisionModel, 0);
+            var geometryFactory = gs.CreateGeometryFactory();
+            var reader = new WKTReader(gs);
             var point1 = ((Point) reader.Read("POINT (123456789.01234567890 10)")).CoordinateSequence;
             var point2 = geometryFactory.CreatePoint(new Coordinate(123456789.01234567890, 10)).CoordinateSequence;
             Assert.That(point1.GetOrdinate(0, Ordinate.X), Is.EqualTo(point2.GetOrdinate(0, Ordinate.X)).Within(1E-7));

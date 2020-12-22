@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using Open.Topology.TestRunner.Operations;
 using Open.Topology.TestRunner.Result;
@@ -30,17 +31,17 @@ namespace Open.Topology.TestRunner
             C = 3
         }
 
-        protected GeometryFactory ObjGeometryFactory;
         private readonly MultiFormatReader _objReader;
         private readonly IGeometryOperation _geometryOperation;
         private readonly IResultMatcher _resultMatcher;
 
         public XmlTestFactory(PrecisionModel pm, IGeometryOperation geometryOperation, IResultMatcher resultMatcher)
         {
-            ObjGeometryFactory = new GeometryFactory(pm);
+            var gs = new NtsGeometryServices(pm, 0);
+            //ObjGeometryFactory = gs.CreateGeometryFactory();
             _geometryOperation = geometryOperation;
             _resultMatcher = resultMatcher;
-            _objReader = new MultiFormatReader(ObjGeometryFactory);
+            _objReader = new MultiFormatReader(gs);
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)

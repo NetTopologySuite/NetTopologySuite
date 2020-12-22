@@ -9,15 +9,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     //[Ignore("The Minimum Bounding Circle logic does not look to have been included in NTS as yet")]
     public class MinimumBoundingCircleTest : GeometryTestCase
     {
-        private PrecisionModel precisionModel;
-        private GeometryFactory geometryFactory;
-        WKTReader reader;
+        private readonly GeometryFactory _geometryFactory;
+        private readonly WKTReader _reader;
 
         public MinimumBoundingCircleTest()
         {
-            precisionModel = new PrecisionModel(1);
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            var gs = new NtsGeometryServices(PrecisionModel.Fixed.Value, 0);
+            _geometryFactory = gs.CreateGeometryFactory();
+            _reader = new WKTReader(gs);
         }
 
         [Test]
@@ -106,14 +105,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void DoMinimumBoundingCircleTest(string wkt, string expectedWKT, Coordinate expectedCentre, double expectedRadius)
         {
-            var mbc = new MinimumBoundingCircle(reader.Read(wkt));
+            var mbc = new MinimumBoundingCircle(_reader.Read(wkt));
             var exPts = mbc.GetExtremalPoints();
-            Geometry actual = geometryFactory.CreateMultiPointFromCoords(exPts);
+            Geometry actual = _geometryFactory.CreateMultiPointFromCoords(exPts);
             double actualRadius = mbc.GetRadius();
             var actualCentre = mbc.GetCentre();
             //TestContext.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
 
-            var expected = reader.Read(expectedWKT);
+            var expected = _reader.Read(expectedWKT);
             bool isEqual = actual.Equals(expected);
             // need this hack because apparently equals does not work for MULTIPOINT EMPTY
             if (actual.IsEmpty && expected.IsEmpty)

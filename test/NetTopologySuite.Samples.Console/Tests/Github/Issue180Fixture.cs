@@ -13,8 +13,7 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void expected_no_interception_point()
         {
-            var factory = GeometryFactory.Default;
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader();
             var g1 = reader.Read(
                 @"LINESTRING (500252.36136968032 3268279.9946693764, 500197.63371806522 3268255.4002767489)");
             Assert.IsNotNull(g1);

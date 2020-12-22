@@ -67,8 +67,8 @@ namespace NetTopologySuite.Samples.Geometries
         public virtual void  Intersection(string wktA, string wktB, PrecisionModel pm)
         {
             Console.WriteLine("Running example using Precision Model = " + pm);
-            var fact = new GeometryFactory(pm);
-            var wktRdr = new WKTReader(fact);
+            var gs = new NtsGeometryServices(pm);
+            var wktRdr = new WKTReader(gs);
 
             var A = wktRdr.Read(wktA);
             var B = wktRdr.Read(wktB);
@@ -81,8 +81,8 @@ namespace NetTopologySuite.Samples.Geometries
         {
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("Running example using Precision Model = " + pm);
-            var fact = new GeometryFactory(pm);
-            var wktRdr = new WKTReader(fact);
+            var gs = new NtsGeometryServices(pm);
+            var wktRdr = new WKTReader(gs);
 
             var A = wktRdr.Read(wktA);
             var B = wktRdr.Read(wktB);

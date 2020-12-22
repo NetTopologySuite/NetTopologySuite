@@ -13,8 +13,8 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OverlayUsingDefaultPrecision()
         {
-            var factory = GeometryFactory.Default;
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader();
+            var factory = NtsGeometryServices.Instance.CreateGeometryFactory();
 
             var pol = reader.Read(wktpol);
             Assert.IsNotNull(pol);
@@ -32,8 +32,9 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OverlayUsingFixedPrecision()
         {
-            var factory = GeometryFactory.Fixed;
-            var reader = new WKTReader(factory);
+            var gs = new NtsGeometryServices(PrecisionModel.Fixed.Value, 0);
+            var factory = gs.CreateGeometryFactory();
+            var reader = new WKTReader(gs);
 
             var pol = reader.Read(wktpol);
             Assert.IsNotNull(pol);

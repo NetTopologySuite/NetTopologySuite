@@ -35,14 +35,14 @@ namespace Open.Topology.TestRunner.Utility
         private readonly NtsGeometryServices _services;
 
         public MultiFormatReader()
-            : this(new GeometryFactory())
+            : this(NtsGeometryServices.Instance)
         {
         }
 
-        public MultiFormatReader(GeometryFactory geomFactory)
+        public MultiFormatReader(NtsGeometryServices geomServ)
         {
-            _wktReader = new WKTReader(geomFactory);
-            _services = new NtsGeometryServices(geomFactory.CoordinateSequenceFactory, geomFactory.PrecisionModel, geomFactory.SRID);
+            _wktReader = new WKTReader(geomServ);
+            _services = geomServ;
         }
 
         /// <summary>

@@ -12,16 +12,16 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void test_wkt_wkb_result()
         {
-            bool failed = TestWktWkb(0, GeometryFactory.Default, Issue27Fixture.Poly1Wkt, Issue27Fixture.Poly1Wkb);
-            failed |= TestWktWkb(1, GeometryFactory.Default, Issue27Fixture.Poly2Wkt, Issue27Fixture.Poly2Wkb);
+            bool failed = TestWktWkb(0, NtsGeometryServices.Instance, Issue27Fixture.Poly1Wkt, Issue27Fixture.Poly1Wkb);
+            failed |= TestWktWkb(1, NtsGeometryServices.Instance, Issue27Fixture.Poly2Wkt, Issue27Fixture.Poly2Wkb);
             Assert.IsFalse(failed);
         }
 
-        private static bool TestWktWkb(int number, GeometryFactory factory, string wkt, string wkb)
+        private static bool TestWktWkb(int number, NtsGeometryServices gs, string wkt, string wkb)
         {
-            var r = new WKTReader(factory);
+            var r = new WKTReader(gs);
             var wktGeom = r.Read(wkt);
-            var s = new WKBReader(new NtsGeometryServices(factory.CoordinateSequenceFactory, factory.PrecisionModel, factory.SRID));
+            var s = new WKBReader(gs);
             var wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
 
             try

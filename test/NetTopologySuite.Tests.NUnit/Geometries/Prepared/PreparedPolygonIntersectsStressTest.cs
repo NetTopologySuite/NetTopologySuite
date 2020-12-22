@@ -17,11 +17,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
     {
         const int MAX_ITER = 10000;
 
-        static PrecisionModel pm = new PrecisionModel();
-        static GeometryFactory fact = new GeometryFactory(pm, 0);
-        static WKTReader wktRdr = new WKTReader(fact);
-        static WKTWriter wktWriter = new WKTWriter();
-
         bool testFailed = false;
 
         [Test]

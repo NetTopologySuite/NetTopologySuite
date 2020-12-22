@@ -172,13 +172,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         public BufferValidator SetPrecisionModel(PrecisionModel precisionModel)
         {
-            _wktReader = new WKTReader(new GeometryFactory(precisionModel));
+            _wktReader = new WKTReader(new NtsGeometryServices(precisionModel, 0));
             return this;
         }
 
         public BufferValidator SetFactory(PrecisionModel precisionModel, int srid)
         {
-            _wktReader = new WKTReader(new GeometryFactory(precisionModel, srid));
+            _wktReader = new WKTReader(new NtsGeometryServices(precisionModel, srid));
             return this;
         }
 

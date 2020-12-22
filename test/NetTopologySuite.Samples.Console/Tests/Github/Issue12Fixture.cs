@@ -12,8 +12,8 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void check_difference_results_with_fixed_precision()
         {
-            var precisionModel = new GeometryFactory(new PrecisionModel(100));
-            var reader = new WKTReader(precisionModel);
+            var gs = new NtsGeometryServices(new PrecisionModel(100));
+            var reader = new WKTReader(gs);
             var p1 = reader.Read(@"POLYGON ((504927.9 6228865.64, 504969.88 6228833.89, 504980.82 6228861.76, 504927.9 6228865.64))");
             var p2 = reader.Read(@"POLYGON ((504927.9 6228865.64, 504951.14 6228848.06, 504957.42 6228863.47, 504927.9 6228865.64))");
             var test = p1.Difference(p2);

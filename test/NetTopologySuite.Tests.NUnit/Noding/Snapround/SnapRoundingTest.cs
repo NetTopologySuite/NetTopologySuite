@@ -115,9 +115,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             {
                 const double scale = 2.0E10;
                 var precisionModel = new PrecisionModel(scale);
-                var geometryFactory = new GeometryFactory(precisionModel);
+                var gs = new NtsGeometryServices(precisionModel, 0);
+                //var geometryFactory = gs.CreateGeometryFactory();
 
-                var reader = new WKTReader(geometryFactory);
+                var reader = new WKTReader(gs);
                 var lineStringA = (LineString)
                     reader.Read("LINESTRING (-93.40178610435 -235.5437531975, -401.24229900825 403.69365857925)");
                 var lineStringB = (LineString)
@@ -132,7 +133,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 lineStrings.Add(lineStringB);
                 lineStrings.Add(lineStringC);
 
-                var noder = new GeometryNoder(geometryFactory.PrecisionModel);
+                var noder = new GeometryNoder(precisionModel);
                 var nodedLineStrings = noder.Node(lineStrings.ToArray());
 
                 double shortestDistanceToPointBeforeNoding = double.MaxValue;

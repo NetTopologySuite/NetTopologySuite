@@ -11,13 +11,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
     [TestFixture]
     public class WKTReaderExpTest
     {
-        private GeometryFactory fact;
-        private WKTReader rdr;
+        private readonly WKTReader rdr;
 
         public WKTReaderExpTest()
         {
-            fact = new GeometryFactory();
-            rdr = new WKTReader(fact);
+            rdr = new WKTReader();
         }
 
         [Test]

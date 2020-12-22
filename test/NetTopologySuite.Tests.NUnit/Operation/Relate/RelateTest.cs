@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 
     public class RelateTest
     {
-        private static readonly WKTReader Reader = new WKTReader(new GeometryFactory());
+        private static readonly WKTReader Reader = new WKTReader();
 
         /**
          * From GEOS #572

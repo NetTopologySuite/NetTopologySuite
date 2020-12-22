@@ -12,9 +12,10 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
     [TestFixture]
     public class LineSequencerTest : BaseSamples
     {
-        private static readonly WKTReader rdr = new WKTReader(GeometryFactory.Fixed);
+        private static readonly WKTReader rdr = new WKTReader(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)));
 
-        public LineSequencerTest() : base(GeometryFactory.Fixed) { }
+        public LineSequencerTest() : base(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)))
+        { }
 
         [Test]
         public void Simple()

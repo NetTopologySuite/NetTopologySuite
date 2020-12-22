@@ -13,8 +13,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        private static GeometryFactory fact = GeometryFactory.Fixed;
-        private static WKTReader rdr = new WKTReader(fact);
+        private static WKTReader rdr = new WKTReader(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearReferencingExample"/> class.

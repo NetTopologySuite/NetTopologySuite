@@ -8,15 +8,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class LineStringImplTest
     {
-        private PrecisionModel precisionModel;
-        private GeometryFactory geometryFactory;
-        WKTReader reader;
+        private readonly GeometryFactory geometryFactory;
+        private readonly WKTReader reader;
 
         public LineStringImplTest()
         {
-            precisionModel = new PrecisionModel(1000);
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            var gs = new NtsGeometryServices(new PrecisionModel(1000));
+            geometryFactory = gs.CreateGeometryFactory(0);
+            reader = new WKTReader(gs);
         }
 
         [Test]
@@ -145,7 +144,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestEquals8()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1000), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1000), 0));
             var l1 = (MultiLineString)reader.Read("MULTILINESTRING((1732328800 519578384, 1732026179 519976285, 1731627364 519674014, 1731929984 519276112, 1732328800 519578384))");
             var l2 = (MultiLineString)reader.Read("MULTILINESTRING((1731627364 519674014, 1731929984 519276112, 1732328800 519578384, 1732026179 519976285, 1731627364 519674014))");
             Assert.IsTrue(l1.Equals(l2));
@@ -154,7 +153,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestEquals9()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1), 0));
             var l1 = (MultiLineString)reader.Read("MULTILINESTRING((1732328800 519578384, 1732026179 519976285, 1731627364 519674014, 1731929984 519276112, 1732328800 519578384))");
             var l2 = (MultiLineString)reader.Read("MULTILINESTRING((1731627364 519674014, 1731929984 519276112, 1732328800 519578384, 1732026179 519976285, 1731627364 519674014))");
             Assert.IsTrue(l1.Equals(l2));
@@ -163,7 +162,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestEquals10()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1), 0));
             var l1 = reader.Read("POLYGON((1732328800 519578384, 1732026179 519976285, 1731627364 519674014, 1731929984 519276112, 1732328800 519578384))");
             var l2 = reader.Read("POLYGON((1731627364 519674014, 1731929984 519276112, 1732328800 519578384, 1732026179 519976285, 1731627364 519674014))");
             l1.Normalize();

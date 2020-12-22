@@ -13,20 +13,22 @@ namespace NetTopologySuite.Tests.NUnit
     /// <author>Martin Davis</author>
     public abstract class GeometryTestCase
     {
-        //readonly WKTReader _readerWKT = new WKTReader();
-        private readonly GeometryFactory _geomFactory = new GeometryFactory();
+        private readonly NtsGeometryServices _geomServices;
+        private readonly GeometryFactory _geomFactory;
+        
         private const string CHECK_EQUAL_FAIL = "FAIL\nExpected = {0}\nActual   = {1}\n";
 
         private readonly WKTWriter _writerZ = new WKTWriter(3);
 
         protected GeometryTestCase()
+            : this(CoordinateArraySequenceFactory.Instance)
         {
         }
 
         protected GeometryTestCase(CoordinateSequenceFactory coordinateSequenceFactory)
         {
-            _geomFactory = new GeometryFactory(coordinateSequenceFactory);
-            //_readerWKT = new WKTReader(_geomFactory);
+            _geomServices = new NtsGeometryServices(coordinateSequenceFactory, PrecisionModel.Floating.Value, 0);
+            _geomFactory = _geomServices.CreateGeometryFactory();
         }
 
         /**
@@ -156,25 +158,6 @@ namespace NetTopologySuite.Tests.NUnit
         /// <summary>
         /// Reads a <see cref="Geometry"/> from a WKT string using a custom <see cref="GeometryFactory"/>.
         /// </summary>
-        /// <param name="geomFactory">The custom factory to use</param>
-        /// <param name="wkt">The WKT string</param>
-        /// <returns>The geometry read</returns>
-        protected static Geometry Read(GeometryFactory geomFactory, string wkt)
-        {
-            var reader = new WKTReader(geomFactory);
-            try
-            {
-                return reader.Read(wkt);
-            }
-            catch (ParseException e)
-            {
-                throw new AssertionException(e.Message, e);
-            }
-        }
-
-        /// <summary>
-        /// Reads a <see cref="Geometry"/> from a WKT string using a custom <see cref="GeometryFactory"/>.
-        /// </summary>
         /// <param name="ntsGeometryServices">The geometry services class to use.</param>
         /// <param name="wkt">The WKT string</param>
         /// <returns>The geometry read</returns>
@@ -198,7 +181,7 @@ namespace NetTopologySuite.Tests.NUnit
         protected Geometry Read(string wkt)
         {
             //return Read(_readerWKT, wkt);
-            return WKTorBReader.Read(wkt, _geomFactory);
+            return WKTorBReader.Read(wkt, _geomServices);
         }
 
         public static Geometry Read(WKTReader reader, string wkt)
@@ -267,7 +250,7 @@ namespace NetTopologySuite.Tests.NUnit
             ordinateFlags |= Ordinates.XY;
             if ((ordinateFlags & Ordinates.XY) == ordinateFlags)
             {
-                return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance))
+                return new WKTReader(new NtsGeometryServices(CoordinateArraySequenceFactory.Instance, precisionModel, 0))
                 {
                     IsOldNtsCoordinateSyntaxAllowed = false,
                 };
@@ -276,19 +259,18 @@ namespace NetTopologySuite.Tests.NUnit
             // note: XYZM will go through here too, just like in JTS.
             if (ordinateFlags.HasFlag(Ordinates.Z))
             {
-                return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance));
+                return new WKTReader(new NtsGeometryServices(CoordinateArraySequenceFactory.Instance, precisionModel, 0));
             }
 
             if (ordinateFlags.HasFlag(Ordinates.M))
             {
-                return new WKTReader(new GeometryFactory(precisionModel, 0,
-                    PackedCoordinateSequenceFactory.DoubleFactory))
+                return new WKTReader(new NtsGeometryServices(PackedCoordinateSequenceFactory.DoubleFactory, precisionModel, 0))
                 {
                     IsOldNtsCoordinateSyntaxAllowed = false,
                 };
             }
 
-            return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance));
+            return new WKTReader(new NtsGeometryServices(CoordinateArraySequenceFactory.Instance, precisionModel, 0));
         }
 
         /// <summary>

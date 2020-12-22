@@ -8,14 +8,13 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue37Tests
     {
-        private readonly GeometryFactory factory = GeometryFactory.Default;
 
         private WKTReader reader;
 
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            reader = new WKTReader(factory);
+            reader = new WKTReader();
         }
 
         [Test, Category("Issue37")]

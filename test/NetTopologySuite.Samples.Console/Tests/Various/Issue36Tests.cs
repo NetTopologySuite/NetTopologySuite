@@ -11,14 +11,12 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue36Tests
     {
-        private readonly GeometryFactory factory = GeometryFactory.Default;
-
         private WKTReader reader;
 
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            reader = new WKTReader(factory);
+            reader = new WKTReader();
         }
 
         [Test, Category("Issue36")]

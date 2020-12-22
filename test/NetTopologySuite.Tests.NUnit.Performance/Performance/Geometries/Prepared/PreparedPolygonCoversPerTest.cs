@@ -16,10 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 
         private const int NUM_PTS = 2000;
 
-        static PrecisionModel pm = new PrecisionModel();
-        static GeometryFactory fact = new GeometryFactory(pm, 0);
-        static WKTReader wktRdr = new WKTReader(fact);
-        static WKTWriter wktWriter = new WKTWriter();
+        private readonly GeometryFactory fact = new GeometryFactory(PrecisionModel.Floating.Value, 0);
 
         Stopwatch sw = new Stopwatch();
 

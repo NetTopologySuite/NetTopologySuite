@@ -20,12 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     {
         private const int MaxIter = 50;
 
-        private static readonly PrecisionModel PrecModel = new PrecisionModel();
-        //private static PrecisionModel PrecModel = new PrecisionModel(10);
-
-        private static readonly GeometryFactory Factory = new GeometryFactory(PrecModel, 0);
-        private static readonly WKTReader WktReader = new WKTReader(Factory);
-        //private static WKTWriter wktWriter = new WKTWriter();
+        private static readonly WKTReader WktReader = new WKTReader(NtsGeometryServices.Instance);
 
         private readonly Stopwatch _sw = new Stopwatch();
 

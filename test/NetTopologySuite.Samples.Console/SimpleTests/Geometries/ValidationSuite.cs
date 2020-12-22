@@ -9,16 +9,14 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
     /// </summary>
     public class ValidationSuite : BaseSamples
     {
-        private GeometryFactory factory = null;
-        private WKTReader reader = null;
+        private readonly WKTReader reader;
 
         /// <summary>
         ///
         /// </summary>
         public ValidationSuite() : base()
         {
-            factory = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
-            reader = new WKTReader(factory);
+            reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)));
         }
 
         /// <summary>

@@ -9,7 +9,8 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
 {
     public class LineSequencerFileTest
     {
-        private readonly GeometryFactory factory = new GeometryFactory(new PrecisionModel(10000));
+        private readonly NtsGeometryServices gs = new NtsGeometryServices(new PrecisionModel(10000));
+        
 
         [TestCase("d:\\temp\\linestosequence.wkt")]
         public void TestWktFile(string file)
@@ -38,7 +39,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             if (!File.Exists(file))
                 Assert.Inconclusive("File {0} does not exist", file);
 
-            var r = new WKTFileReader(file, new WKTReader(factory));
+            var r = new WKTFileReader(file, new WKTReader(gs));
 
             var geoms = r.Read();
             var ls = new LineSequencer();

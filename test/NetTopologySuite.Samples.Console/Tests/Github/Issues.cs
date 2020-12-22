@@ -581,7 +581,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 (595229.059 662774.178, 595292.309 662772.342), (595217.835 662853.417, 595215.34 662774.577))";
 
             // Arrange
-            var geom = new WKTReader(new GeometryFactory(new PrecisionModel(1000))).Read(wkt);
+            var geom = new WKTReader(new NtsGeometryServices(new PrecisionModel(1000))).Read(wkt);
 
             var op = new Polygonizer();
             op.Add(geom);

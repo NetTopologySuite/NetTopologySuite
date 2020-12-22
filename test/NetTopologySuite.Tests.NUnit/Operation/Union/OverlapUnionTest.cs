@@ -1,10 +1,12 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Union;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
+    [Obsolete("OverlapUnion is obsolete due to impairing performance")]
     public class OverlapUnionTest : GeometryTestCase
     {
         [Test]
@@ -59,9 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         /// <param name="scaleFactor"></param>
         private static void CheckUnionWithTopologyFailure(string wktA, string wktB, double scaleFactor)
         {
-            var pm = new PrecisionModel(scaleFactor);
-            var geomFact = new GeometryFactory(pm);
-            var rdr = new WKTReader(geomFact);
+            var rdr = new WKTReader(new NtsGeometryServices(new PrecisionModel(scaleFactor), 0));
 
             var a = rdr.Read(wktA);
             var b = rdr.Read(wktB);
@@ -100,9 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         private static void CheckUnion(string wktA, string wktB, bool isCheckOptimized)
         {
-            var pm = new PrecisionModel();
-            var geomFact = new GeometryFactory(pm);
-            var rdr = new WKTReader(geomFact);
+            var rdr = new WKTReader();
 
             var a = rdr.Read(wktA);
             var b = rdr.Read(wktB);

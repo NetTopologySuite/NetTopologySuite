@@ -6,18 +6,16 @@ namespace NetTopologySuite.Samples.SimpleTests
 {
     public class BaseSamples
     {
-        protected GeometryFactory Factory { get; private set; }
+        protected GeometryFactory Factory { get; }
 
-        protected WKTReader Reader { get; private set; }
+        protected WKTReader Reader { get; }
 
-        protected BaseSamples() : this(new GeometryFactory(), new WKTReader()) { }
+        protected BaseSamples() : this(NtsGeometryServices.Instance) { }
 
-        protected BaseSamples(GeometryFactory factory) : this(factory, new WKTReader(factory)) { }
-
-        protected BaseSamples(GeometryFactory factory, WKTReader reader)
+        protected BaseSamples(NtsGeometryServices ntsGeometryServices)
         {
-            Factory = factory;
-            Reader = reader;
+            Factory = ntsGeometryServices.CreateGeometryFactory();
+            Reader = new WKTReader(ntsGeometryServices);
         }
 
         protected void Write(object o)

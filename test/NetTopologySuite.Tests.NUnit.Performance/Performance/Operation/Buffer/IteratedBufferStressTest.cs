@@ -17,8 +17,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     public class IteratedBufferStressTest
     {
 
-        private readonly PrecisionModel _precisionModel; 
-        private readonly GeometryFactory _geometryFactory;
         private readonly WKTReader _rdr;
 
         private const string inputWKT =
@@ -26,9 +24,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         public IteratedBufferStressTest()
         {
-            _precisionModel = new PrecisionModel();
-            _geometryFactory = new GeometryFactory(_precisionModel, 0);
-            _rdr = new WKTReader(_geometryFactory);
+            var gs = new NtsGeometryServices(PrecisionModel.Floating.Value, 0);
+            _rdr = new WKTReader(gs);
         }
 
         [Test]

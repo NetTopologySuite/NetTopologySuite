@@ -1,4 +1,5 @@
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -7,15 +8,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class GeometryCollectionImplTest
     {
-        private PrecisionModel precisionModel;
-        private GeometryFactory geometryFactory;
-        WKTReader reader;
+        private readonly NtsGeometryServices gs;
+        private readonly WKTReader reader;
 
         public GeometryCollectionImplTest()
         {
-            precisionModel = new PrecisionModel(1000);
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            gs = new NtsGeometryServices(CoordinateArraySequenceFactory.Instance, new PrecisionModel(1000), 0);
+            reader = new WKTReader(gs);
         }
 
         [Test]

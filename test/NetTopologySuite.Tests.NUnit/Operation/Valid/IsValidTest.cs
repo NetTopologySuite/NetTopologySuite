@@ -8,15 +8,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     [TestFixture]
     public class IsValidTest
     {
-        private PrecisionModel precisionModel;
-        private readonly GeometryFactory geometryFactory;
-        private readonly WKTReader reader;
+        private readonly GeometryFactory _geometryFactory;
+        private readonly WKTReader _reader;
 
         public IsValidTest()
         {
-            precisionModel = new PrecisionModel();
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            var gs = new NtsGeometryServices(PrecisionModel.Floating.Value, 0);
+            _geometryFactory = gs.CreateGeometryFactory();
+            _reader = new WKTReader(gs);
         }
 
         [Test]
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         {
             var badCoord = new Coordinate(1.0, double.NaN);
             Coordinate[] pts = { new Coordinate(0.0, 0.0), badCoord };
-            Geometry line = geometryFactory.CreateLineString(pts);
+            Geometry line = _geometryFactory.CreateLineString(pts);
             var isValidOp = new IsValidOp(line);
             bool valid = isValidOp.IsValid;
             var err = isValidOp.ValidationError;
@@ -38,14 +37,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [Test]
         public void TestZeroAreaPolygon()
         {
-            var g = reader.Read("POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
+            var g = _reader.Read("POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
             Assert.That(() => g.IsValid, Throws.Nothing);
         }
 
         [Test]
         public void TestLineString()
         {
-            var g = reader.Read("LINESTRING(0 0, 0 0)");
+            var g = _reader.Read("LINESTRING(0 0, 0 0)");
             Assert.That(() => g.IsValid, Throws.Nothing);
         }
 

@@ -1,7 +1,6 @@
 using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 using NUnit.Framework;
 
@@ -9,13 +8,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
     public abstract class StressTestHarness
     {
-        const int MAX_ITER = 10000;
-
-        static readonly PrecisionModel pm = new PrecisionModel();
-        static readonly GeometryFactory fact = new GeometryFactory(pm, 0);
-        static WKTReader _wktRdr = new WKTReader(fact);
-        static WKTWriter _wktWriter = new WKTWriter();
-
         private int _numTargetPts = 1000;
 
         protected StressTestHarness()

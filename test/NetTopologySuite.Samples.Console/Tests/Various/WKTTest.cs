@@ -40,24 +40,27 @@ namespace NetTopologySuite.Samples.Tests.Various
 
         private void TestFormatting(Coordinate c)
         {
-            Geometry point = GeometryFactory.Floating.CreatePoint(c);
+            var gs = new NtsGeometryServices(PrecisionModel.Floating.Value, 0);
+            var rdr = new WKTReader(gs);
+            
+            Geometry point = gs.CreateGeometryFactory().CreatePoint(c);
             string result = writer.Write(point);
             Debug.WriteLine(result);
-            var geom = new WKTReader(GeometryFactory.Floating).Read(result);
+            var geom = rdr.Read(result);
             string tos = geom.ToString();
             Assert.IsTrue(string.Equals(tos, result));
 
-            point = GeometryFactory.FloatingSingle.CreatePoint(c);
+            point = gs.CreateGeometryFactory(PrecisionModel.FloatingSingle.Value).CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
-            geom = new WKTReader(GeometryFactory.Floating).Read(result);
+            geom = rdr.Read(result);
             tos = geom.ToString();
             Assert.IsTrue(string.Equals(tos, result));
 
-            point = GeometryFactory.Fixed.CreatePoint(c);
+            point = gs.CreateGeometryFactory(PrecisionModel.Fixed.Value).CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
-            geom = new WKTReader(GeometryFactory.Floating).Read(result);
+            geom = rdr.Read(result);
             tos = geom.ToString();
             Assert.IsTrue(string.Equals(tos, result));
         }
