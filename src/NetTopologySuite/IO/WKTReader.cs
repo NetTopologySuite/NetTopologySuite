@@ -520,7 +520,7 @@ namespace NetTopologySuite.IO
             else if (nextWord.Equals(WKTConstants.M, StringComparison.OrdinalIgnoreCase))
             {
                 tokens.NextToken(true);
-                return Ordinates.XYZ;
+                return Ordinates.XYM;
             }
             else if (nextWord.Equals(WKTConstants.ZM, StringComparison.OrdinalIgnoreCase))
             {
