@@ -1,4 +1,6 @@
 //using System.Collections;
+
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -19,9 +21,10 @@ namespace NetTopologySuite.Noding.Snapround
     /// <para/>
     /// <h3>KNOWN BUGS</h3>
     /// This implementation is not fully robust.
-    /// Use <see cref="SnapRoundingNoder"/>
     /// instead.
     /// </summary>
+    /// <seealse cref="SnapRoundingNoder"/>
+    [Obsolete("Not robust. Use SnapRoundingNoder instead.")]
     public class MCIndexSnapRounder : INoder
     {
         private readonly LineIntersector _li;
