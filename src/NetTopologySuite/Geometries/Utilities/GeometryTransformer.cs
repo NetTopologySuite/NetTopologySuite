@@ -73,7 +73,9 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// <c>true</c> if the type of the input should be preserved.
         /// </summary>
+#pragma warning disable 649
         private bool _preserveType;
+#pragma warning restore 649
 
         ///// <summary>
         /////

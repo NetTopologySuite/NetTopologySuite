@@ -85,13 +85,20 @@ namespace NetTopologySuite.Operation.Union
         /// a collection of <see cref="Geometry"/>s.
         /// </summary>
         /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="Geometry"/>s.</param>
-        /// <returns></returns>
+        /// <returns>The union of the <paramref name="polys"/></returns>
         public static Geometry Union(ICollection<Geometry> polys)
         {
             var op = new CascadedPolygonUnion(polys);
             return op.Union();
         }
 
+        /// <summary>
+        /// Computes the union of
+        /// a collection of <see cref="Geometry"/>s.
+        /// </summary>
+        /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="Geometry"/>s.</param>
+        /// <param name="unionStrategy">A strategy to perform the unioning.</param>
+        /// <returns>The union of the <paramref name="polys"/></returns>
         public static Geometry Union(ICollection<Geometry> polys, UnionStrategy unionStrategy)
         {
             var op = new CascadedPolygonUnion(polys, unionStrategy);
@@ -242,7 +249,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="start">The start index of the section</param>
         /// <param name="end">The index after the end of the section</param>
         /// <returns>The union of the list section</returns>
-        private Geometry BinaryUnion(IList<Geometry> geoms, int start, int end, bool multiple = false)
+        private Geometry BinaryUnion(IList<Geometry> geoms, int start, int end/*, bool multiple = false*/)
         {
             Geometry g0, g1;
             if (end - start <= 1)

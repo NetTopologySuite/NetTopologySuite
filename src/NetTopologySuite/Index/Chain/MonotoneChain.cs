@@ -339,6 +339,10 @@ namespace NetTopologySuite.Index.Chain
             return Envelope.Intersects(_pts[start0], _pts[end0], mc._pts[start1], mc._pts[end1]);
         }
 
+        /// <param name="p1">The 1st coordinate of the 1st segment</param>
+        /// <param name="p2">The 2nd coordinate of the 1st segment</param>
+        /// <param name="q1">The 1st coordinate of the 2nd segment</param>
+        /// <param name="q2">The 2nd coordinate of the 2nd segment</param>
         /// <param name="overlapTolerance">The overlap tolerance distance (may be 0)</param>
         private static bool Overlaps(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2, double overlapTolerance)
         {

@@ -96,7 +96,7 @@ namespace NetTopologySuite.Operation.Polygonize
         private readonly GeometryFactory _factory;
 
         private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
-        private DirectedEdge lowestEdge = null;
+        //private DirectedEdge lowestEdge = null;
 
         // cache the following data for efficiency
         private LinearRing _ring;

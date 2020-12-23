@@ -33,7 +33,9 @@ namespace NetTopologySuite.Noding.Snapround
         private readonly IDictionary<Coordinate, HotPixel> _hotPixelMap = new Dictionary<Coordinate, HotPixel>();
         private List<HotPixel> _hotPixels;
 
+#pragma warning disable 649
         private List<NodedSegmentString> _snappedResult;
+#pragma warning restore 649
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleSnapRounder"/> class.
@@ -165,7 +167,6 @@ namespace NetTopologySuite.Noding.Snapround
         /// Also adds the intersection nodes to the segments.
         /// </summary>
         /// <param name="segStrings"></param>
-        /// <param name="li"></param>
         /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
         private IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings)
         {
@@ -180,7 +181,6 @@ namespace NetTopologySuite.Noding.Snapround
         /// Computes nodes introduced as a result of snapping segments to snap points (hot pixels).
         /// </summary>
         /// <param name="segStrings"></param>
-        /// <param name="snapPts"></param>
         private List<NodedSegmentString> ComputeSnaps(IEnumerable<ISegmentString> segStrings)
         {
             var snapped = new List<NodedSegmentString>();

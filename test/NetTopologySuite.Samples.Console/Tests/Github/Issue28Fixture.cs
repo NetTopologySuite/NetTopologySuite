@@ -48,7 +48,7 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void TestNumber()
         {
-            const string theNumberString = "6232756.00054126";
+            //const string theNumberString = "6232756.00054126";
             const double theNumber = 6232756.00054126; //6232756.0005412595;
             byte[] theBytes = BitConverter.GetBytes(theNumber);
             Console.WriteLine("{0:R} -> 0x{1}", theNumber, WKBWriter.ToHex(theBytes));

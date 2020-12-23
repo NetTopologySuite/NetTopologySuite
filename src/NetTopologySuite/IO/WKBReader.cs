@@ -130,7 +130,28 @@ namespace NetTopologySuite.IO
                 return Read(reader);
         }
 
-        protected enum CoordinateSystem { XY = 1, XYZ = 2, XYM = 3, XYZM = 4 };
+        /// <summary>
+        /// WKB Coordinate Systems
+        /// </summary>
+        protected enum CoordinateSystem
+        {
+            /// <summary>
+            /// 2D coordinate system
+            /// </summary>
+            XY = 1,
+            /// <summary>
+            /// 3D coordinate system
+            /// </summary>
+            XYZ = 2,
+            /// <summary>
+            /// 2D coordinate system with additional measure value
+            /// </summary>
+            XYM = 3,
+            /// <summary>
+            /// 3D coordinate system with additional measure value
+            /// </summary>
+            XYZM = 4
+        };
 
         /// <summary>
         ///

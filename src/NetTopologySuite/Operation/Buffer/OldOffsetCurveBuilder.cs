@@ -16,6 +16,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// of all the noded raw curves and tracing outside contours.
     /// The points in the raw curve are rounded to the required precision model.
     /// </remarks>
+    [Obsolete]
     public class OldOffsetCurveBuilder
     {
         /**
@@ -314,7 +315,7 @@ namespace NetTopologySuite.Operation.Buffer
             ComputeOffsetSegment(_seg1, side, _distance, _offset1);
         }
 
-        private static double _maxClosingSegLen = 3.0;
+        //private static double _maxClosingSegLen = 3.0;
 
         private void AddNextSegment(Coordinate p, bool addStartPoint)
         {

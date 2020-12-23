@@ -275,10 +275,10 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        ///
+        /// Write a <see cref="Coordinate"/>.
         /// </summary>
-        /// <param name="coordinate"></param>
-        /// <param name="writer"></param>
+        /// <param name="coordinate">The coordinate</param>
+        /// <param name="writer">The writer.</param>
         protected void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write(coordinate.X);
@@ -289,6 +289,12 @@ namespace NetTopologySuite.IO
                 writer.Write(coordinate.M);
         }
 
+        /// <summary>
+        /// Write a <see cref="CoordinateSequence"/>.
+        /// </summary>
+        /// <param name="sequence">The coordinate sequence to write</param>
+        /// <param name="emitSize">A flag indicating if the size of <paramref name="sequence"/> should be written, too.</param>
+        /// <param name="writer">The writer.</param>
         protected void Write(CoordinateSequence sequence, bool emitSize, BinaryWriter writer)
         {
             if (emitSize)
@@ -599,6 +605,10 @@ namespace NetTopologySuite.IO
         /// <item><description><c>0x20000000</c> flag if geometry's SRID value is written</description></item></list>
         /// </summary>
         private bool _strict = true;
+
+        /// <summary>
+        /// Gets a value indicating if only original WKT elements should be handled
+        /// </summary>
         public bool Strict
         {
             get => _strict;
@@ -611,6 +621,10 @@ namespace NetTopologySuite.IO
         }
 
         private bool _handleSRID;
+
+        /// <summary>
+        /// Gets or sets a value indicating if an encoded SRID value should be handled or ignored.
+        /// </summary>
         public bool HandleSRID
         {
             get => _handleSRID;

@@ -101,7 +101,7 @@ namespace NetTopologySuite.Noding.Snapround
         {
             foreach (var snapPt in snapPts)
             {
-                var hotPixel = new HotPixel(snapPt, _scaleFactor, _li);
+                var hotPixel = new HotPixel(snapPt, _scaleFactor/*, _li*/);
                 _pointSnapper.Snap(hotPixel);
             }
         }
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Noding.Snapround
             var pts0 = e.Coordinates;
             for (int i = 0; i < pts0.Length; i++)
             {
-                var hotPixel = new HotPixel(pts0[i], _scaleFactor, _li);
+                var hotPixel = new HotPixel(pts0[i], _scaleFactor/*, _li*/);
                 bool isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);
                 // if a node is created for a vertex, that vertex must be noded too
                 if (isNodeAdded)

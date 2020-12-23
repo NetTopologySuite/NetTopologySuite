@@ -19,7 +19,7 @@ namespace NetTopologySuite.Noding
     /// (with a segment string endpoint or with another interior vertex)</description></item>
     /// </list>
     /// The finder can be limited to finding only interior intersections
-    /// by setting <see cref="InteriorIntersectionOnly"/>.
+    /// by setting <see cref="InteriorIntersectionsOnly"/>.
     /// <para/>
     /// By default only the first intersection is found,
     /// but all can be found by setting {@link #setFindAllIntersections(boolean)
