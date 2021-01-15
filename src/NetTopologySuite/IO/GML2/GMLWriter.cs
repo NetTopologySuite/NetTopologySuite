@@ -408,7 +408,12 @@ namespace NetTopologySuite.IO.GML2
             return InitValue + CoordSize;
         }
 
-        protected string GetEpsCode(int srid) {
+        /// <summary>
+        /// Provides the EPSG code exposing the SRID of the geometry
+        /// </summary>
+        /// <param name="srid">The SRID of the geometry</param>
+        /// <returns></returns>
+        protected virtual string GetEpsgCode(int srid) {
             return $"EPSG:{srid}";
         }
     }
