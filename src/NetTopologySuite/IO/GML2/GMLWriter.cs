@@ -224,6 +224,13 @@ namespace NetTopologySuite.IO.GML2
                 Write(multiPoint.Geometries[i] as Point, writer);
                 writer.WriteEndElement();
             }
+
+            if (multiPoint.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
+            {
+                writer.WriteStartElement("pointMember", GMLElements.gmlNS);
+                writer.WriteEndElement();
+            }
+
             writer.WriteEndElement();
         }
 
@@ -241,6 +248,13 @@ namespace NetTopologySuite.IO.GML2
                 Write(multiLineString.Geometries[i] as LineString, writer);
                 writer.WriteEndElement();
             }
+
+            if (multiLineString.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
+            {
+                writer.WriteStartElement("lineStringMember", GMLElements.gmlNS);
+                writer.WriteEndElement();
+            }
+
             writer.WriteEndElement();
         }
 
@@ -258,6 +272,13 @@ namespace NetTopologySuite.IO.GML2
                 Write(multiPolygon.Geometries[i] as Polygon, writer);
                 writer.WriteEndElement();
             }
+
+            if (multiPolygon.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
+            {
+                writer.WriteStartElement("polygonMember", GMLElements.gmlNS);
+                writer.WriteEndElement();
+            }
+
             writer.WriteEndElement();
         }
 
@@ -275,6 +296,13 @@ namespace NetTopologySuite.IO.GML2
                 Write(geometryCollection.Geometries[i], writer);
                 writer.WriteEndElement();
             }
+
+            if (geometryCollection.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
+            {
+                writer.WriteStartElement("geometryMember", GMLElements.gmlNS);
+                writer.WriteEndElement();
+            }
+
             writer.WriteEndElement();
         }
 
