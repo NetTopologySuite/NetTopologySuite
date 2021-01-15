@@ -81,8 +81,12 @@ namespace NetTopologySuite.IO.GML2
                 return ReadMultiPoint(reader);
             if (IsStartElement(reader, "MultiLineString"))
                 return ReadMultiLineString(reader);
+            if (IsStartElement(reader, "MultiCurve"))
+                return ReadMultiCurve(reader);
             if (IsStartElement(reader, "MultiPolygon"))
                 return ReadMultiPolygon(reader);
+            if (IsStartElement(reader, "MultiSurface"))
+                return ReadMultiSurface(reader);
             if (IsStartElement(reader, "MultiGeometry"))
                 return ReadGeometryCollection(reader);
 
@@ -370,6 +374,30 @@ namespace NetTopologySuite.IO.GML2
             throw new ArgumentException("ShouldNeverReachHere!");
         }
 
+        protected MultiLineString ReadMultiCurve(XmlReader reader)
+        {
+            var lines = new List<LineString>();
+            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+            while (reader.Read())
+            {
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.Element:
+                        if (IsStartElement(reader, "curveMember"))
+                            lines.Add(ReadLineString(reader, gf));
+                        break;
+
+                    case XmlNodeType.EndElement:
+                        string name = reader.Name;
+                        if (name == "MultiCurve" ||
+                            name == GMLElements.gmlPrefix + ":MultiCurve")
+                            return gf.CreateMultiLineString(lines.ToArray());
+                        break;
+                }
+            }
+            throw new ArgumentException("ShouldNeverReachHere!");
+        }
+
         protected MultiPolygon ReadMultiPolygon(XmlReader reader)
         {
             var polygons = new List<Polygon>();
@@ -387,6 +415,30 @@ namespace NetTopologySuite.IO.GML2
                         string name = reader.Name;
                         if (name == "MultiPolygon" ||
                             name == GMLElements.gmlPrefix + ":MultiPolygon")
+                            return gf.CreateMultiPolygon(polygons.ToArray());
+                        break;
+                }
+            }
+            throw new ArgumentException("ShouldNeverReachHere!");
+        }
+
+        protected MultiPolygon ReadMultiSurface(XmlReader reader)
+        {
+            var polygons = new List<Polygon>();
+            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+            while (reader.Read())
+            {
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.Element:
+                        if (IsStartElement(reader, "surfaceMember"))
+                            polygons.Add(ReadPolygon(reader, gf));
+                        break;
+
+                    case XmlNodeType.EndElement:
+                        string name = reader.Name;
+                        if (name == "MultiSurface" ||
+                            name == GMLElements.gmlPrefix + ":MultiSurface")
                             return gf.CreateMultiPolygon(polygons.ToArray());
                         break;
                 }
@@ -412,8 +464,12 @@ namespace NetTopologySuite.IO.GML2
                             collection.Add(ReadMultiPoint(reader));
                         else if (IsStartElement(reader, "MultiLineString"))
                             collection.Add(ReadMultiLineString(reader));
+                        if (IsStartElement(reader, "MultiCurve"))
+                            collection.Add(ReadMultiCurve(reader));
                         else if (IsStartElement(reader, "MultiPolygon"))
                             collection.Add(ReadMultiPolygon(reader));
+                        if (IsStartElement(reader, "MultiSurface"))
+                            collection.Add(ReadMultiSurface(reader));
                         else if (IsStartElement(reader, "MultiGeometry"))
                             collection.Add(ReadGeometryCollection(reader));
                         break;

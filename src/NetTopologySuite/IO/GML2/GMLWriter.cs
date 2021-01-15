@@ -96,10 +96,19 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(Coordinate coordinate, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "coord", GMLElements.gmlNS);
-            writer.WriteElementString(GMLElements.gmlPrefix, "X", GMLElements.gmlNS, coordinate.X.ToString("g", NumberFormatter));
-            writer.WriteElementString(GMLElements.gmlPrefix, "Y", GMLElements.gmlNS, coordinate.Y.ToString("g", NumberFormatter));
-            writer.WriteEndElement();
+            if (_gmlVersion == GMLVersion.Two)
+            {
+                writer.WriteStartElement(GMLElements.gmlPrefix, "coord", GMLElements.gmlNS);
+                writer.WriteElementString(GMLElements.gmlPrefix, "X", GMLElements.gmlNS, coordinate.X.ToString("g", NumberFormatter));
+                writer.WriteElementString(GMLElements.gmlPrefix, "Y", GMLElements.gmlNS, coordinate.Y.ToString("g", NumberFormatter));
+                writer.WriteEndElement();
+            }
+            else
+            {
+                writer.WriteStartElement(GMLElements.gmlPrefix, "pos", GMLElements.gmlNS);
+                writer.WriteValue(string.Format(NumberFormatter, "{0} {1}", coordinate.X, coordinate.Y));
+                writer.WriteEndElement();
+            }
         }
 
         /// <summary>
@@ -120,11 +129,11 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void WriteCoordinates(Coordinate[] coordinates, XmlWriter writer)
         {
-            // TODO: use of "coordinates" is deprecated in GML3.
-            writer.WriteStartElement(GMLElements.gmlPrefix, "coordinates", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "coordinates" : "posList", GMLElements.gmlNS);
             var elements = new List<string>(coordinates.Length);
+            string coordsFormatter = _gmlVersion == GMLVersion.Two ? "{0},{1}" : "{0} {1}";
             foreach (var coordinate in coordinates)
-                elements.Add(string.Format(NumberFormatter, "{0},{1}", coordinate.X, coordinate.Y));
+                elements.Add(string.Format(NumberFormatter, coordsFormatter, coordinate.X, coordinate.Y));
 
             writer.WriteString(string.Join(" ", elements.ToArray()));
             writer.WriteEndElement();
@@ -234,10 +243,10 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(MultiLineString multiLineString, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiLineString", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiLineString" : "MultiCurve", GMLElements.gmlNS);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
-                writer.WriteStartElement("lineStringMember", GMLElements.gmlNS);
+                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "lineStringMember" : "curveMember", GMLElements.gmlNS);
                 Write(multiLineString.Geometries[i] as LineString, writer);
                 writer.WriteEndElement();
             }
@@ -251,10 +260,10 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(MultiPolygon multiPolygon, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiPolygon", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiPolygon" : "MultiSurface", GMLElements.gmlNS);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
-                writer.WriteStartElement("polygonMember", GMLElements.gmlNS);
+                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "polygonMember" : "surfaceMember", GMLElements.gmlNS);
                 Write(multiPolygon.Geometries[i] as Polygon, writer);
                 writer.WriteEndElement();
             }
