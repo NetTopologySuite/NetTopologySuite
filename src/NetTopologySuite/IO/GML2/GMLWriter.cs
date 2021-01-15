@@ -221,7 +221,7 @@ namespace NetTopologySuite.IO.GML2
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsCode(multiPoint.Factory.SRID));
+                writer.WriteAttributeString("srsName", GetEpsgCode(multiPoint.Factory.SRID));
             }
             for (int i = 0; i < multiPoint.NumGeometries; i++)
             {
@@ -243,7 +243,7 @@ namespace NetTopologySuite.IO.GML2
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsCode(multiLineString.Factory.SRID));
+                writer.WriteAttributeString("srsName", GetEpsgCode(multiLineString.Factory.SRID));
             }
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
@@ -265,7 +265,7 @@ namespace NetTopologySuite.IO.GML2
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsCode(multiPolygon.Factory.SRID));
+                writer.WriteAttributeString("srsName", GetEpsgCode(multiPolygon.Factory.SRID));
             }
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
@@ -287,7 +287,7 @@ namespace NetTopologySuite.IO.GML2
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsCode(geometryCollection.Factory.SRID));
+                writer.WriteAttributeString("srsName", GetEpsgCode(geometryCollection.Factory.SRID));
             }
             for (int i = 0; i < geometryCollection.NumGeometries; i++)
             {
