@@ -480,6 +480,17 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.That(point1.GetOrdinate(0, Ordinate.Y), Is.EqualTo(point2.GetOrdinate(0, Ordinate.Y)).Within(1E-7));
         }
 
+        [TestCase(
+            "GEOMETRYCOLLECTION M(POINT M(10 11 13), LINESTRING M(10 11 13, 20 21 23), POLYGON M EMPTY)")]
+        public void TestWKT(string wkt)
+        {
+            var wktReader = new WKTReader();
+            Geometry geom = null;
+            Assert.That(() => geom = wktReader.Read(wkt), Throws.Nothing);
+            Assert.That(geom, Is.Not.Null);
+            Assert.That(wkt.StartsWith(geom.GeometryType.ToUpperInvariant()));
+        }
+
         [Test]
         public void TestReadSRID()
         {

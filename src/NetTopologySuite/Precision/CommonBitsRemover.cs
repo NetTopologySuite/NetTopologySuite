@@ -117,29 +117,32 @@ namespace NetTopologySuite.Precision
         /// <summary>
         ///
         /// </summary>
-        private class Translater : ICoordinateSequenceFilter
+        private class Translater : IEntireCoordinateSequenceFilter
         {
             private readonly Coordinate _trans;
 
             /// <summary>
-            ///
+            /// Creates an instance of this class using the provided <paramref name="trans"/> coordinate.
             /// </summary>
-            /// <param name="trans"></param>
+            /// <param name="trans">A coordinate</param>
             public Translater(Coordinate trans)
             {
                 _trans = trans;
             }
 
             /// <summary>
-            ///
+            /// Apply 
             /// </summary>
             /// <param name="seq">The coordinate sequence</param>
-            public void Filter(CoordinateSequence seq, int i)
+            public void Filter(CoordinateSequence seq)
             {
-                double xp = seq.GetOrdinate(i, 0) + _trans.X;
-                double yp = seq.GetOrdinate(i, 1) + _trans.Y;
-                seq.SetOrdinate(i, 0, xp);
-                seq.SetOrdinate(i, 1, yp);
+                for (int i = 0; i < seq.Count; i++)
+                {
+                    double xp = seq.GetOrdinate(i, 0) + _trans.X;
+                    double yp = seq.GetOrdinate(i, 1) + _trans.Y;
+                    seq.SetOrdinate(i, 0, xp);
+                    seq.SetOrdinate(i, 1, yp);
+                }
             }
 
             public bool Done => false;

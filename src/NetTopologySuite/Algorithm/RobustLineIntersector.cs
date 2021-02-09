@@ -9,12 +9,7 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
+        /// <inheritdoc/>
         public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2)
         {
             IsProper = false;
@@ -34,6 +29,7 @@ namespace NetTopologySuite.Algorithm
             Result = NoIntersection;
         }
 
+        /// <inheritdoc/>
         public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             IsProper = false;

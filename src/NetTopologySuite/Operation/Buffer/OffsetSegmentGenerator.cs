@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -114,6 +115,15 @@ namespace NetTopologySuite.Operation.Buffer
         /// before it can be used.
         /// </summary>
         public bool HasNarrowConcaveAngle => _hasNarrowConcaveAngle;
+
+        /// <summary>
+        /// Gets a value indicating the distance to
+        /// </summary>
+        protected double Distance => _distance;
+
+        protected OffsetSegmentString SegList => _segList;
+
+        protected double FilletAngleQuantum => _filletAngleQuantum;
 
         private void Init(double distance)
         {
@@ -371,7 +381,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the segment <see cref="Positions"/> the offset lies on</param>
         /// <param name="distance">The offset distance</param>
         /// <param name="offset">The points computed for the offset segment</param>
-        private static void ComputeOffsetSegment(LineSegment seg, Position side, double distance, LineSegment offset)
+        protected virtual void ComputeOffsetSegment(LineSegment seg, Position side, double distance, LineSegment offset)
         {
             int sideSign = side == Position.Left ? 1 : -1;
             double dx = seg.P1.X - seg.P0.X;
@@ -584,7 +594,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="startAngle">The start angle of the fillet</param>
         /// <param name="endAngle">The end angle of the fillet</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddDirectedFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
+        protected virtual void AddDirectedFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
         {
             int directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
 
