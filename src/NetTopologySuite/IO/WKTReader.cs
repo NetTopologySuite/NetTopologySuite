@@ -41,7 +41,7 @@ namespace NetTopologySuite.IO
     public class WKTReader
     {
         private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
-        private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
+
         private static readonly CoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
 
         private NtsGeometryServices _ntsGeometryServices;
@@ -450,11 +450,18 @@ namespace NetTopologySuite.IO
             switch (token)
             {
                 case WordToken wordToken:
-                    if (wordToken.StringValue.Equals(NaNString, StringComparison.OrdinalIgnoreCase))
+                    if (wordToken.StringValue.Equals(OrdinateFormat.REP_NAN, StringComparison.OrdinalIgnoreCase))
                     {
                         return double.NaN;
                     }
-
+                    if (wordToken.StringValue.Equals(OrdinateFormat.REP_NEG_INF, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return double.NegativeInfinity;
+                    }
+                    if (wordToken.StringValue.Equals(OrdinateFormat.REP_POS_INF, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return double.PositiveInfinity;
+                    }
                     if (double.TryParse(wordToken.StringValue, NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture, out double val))
                     {
                         return val;
