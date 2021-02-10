@@ -156,15 +156,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
             Assert.AreEqual(4, seq.Dimension, "Dimension should be 4");
             Assert.IsTrue(seq.HasZ, "Z should be present");
-            Assert.IsTrue(seq.HasM, "M should be present");
+            Assert.IsTrue(!seq.HasM, "M should not be present");
 
             var coord = seq.GetCoordinate(4);
-            Assert.IsTrue(coord is CoordinateZM);
-            var coordZM = (CoordinateZM)coord;
             Assert.AreEqual(4.0, coord.X);
             Assert.AreEqual(4.0, coord.Y);
-            Assert.AreEqual(4.0, coordZM.Z);
-            Assert.AreEqual(4.0, coordZM.M);
+            Assert.AreEqual(4.0, coord.Z);
+            Assert.AreEqual(4.0, coord[Ordinate.Spatial4]);
 
             var array = seq.ToCoordinateArray();
             Assert.AreEqual(coord, array[4]);

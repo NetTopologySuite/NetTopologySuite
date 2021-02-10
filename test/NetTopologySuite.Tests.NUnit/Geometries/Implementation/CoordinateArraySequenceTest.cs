@@ -12,32 +12,27 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [Test]
         public void TestFactoryLimits()
         {
-            // Expected to clip dimension and measure value within factory limits
-
             var factory = (CoordinateArraySequenceFactory)CsFactory;
             var sequence = factory.Create(10, 4);
-            //Assert.That(sequence.Dimension, Is.EqualTo(3));
-            //Assert.That(sequence.Measures, Is.EqualTo(0));
             Assert.That(sequence.Dimension, Is.EqualTo(4));
-            Assert.That(sequence.Measures, Is.EqualTo(1));
-            Assert.That(sequence.HasZ);
-            //Assert.That(!sequence.HasM);
-            Assert.That(sequence.HasM);
-
-            sequence = factory.Create(10, 4, 0);
-            Assert.That(sequence.Dimension, Is.EqualTo(3));
             Assert.That(sequence.Measures, Is.EqualTo(0));
             Assert.That(sequence.HasZ);
             Assert.That(!sequence.HasM);
 
-            sequence = factory.Create(10, 4, 2); // note clip to spatial dimension
-            Assert.That(sequence.Dimension, Is.EqualTo(3));
-            Assert.That(sequence.Measures, Is.EqualTo(1));
+            sequence = factory.Create(10, 4, 0);
+            Assert.That(sequence.Dimension, Is.EqualTo(4));
+            Assert.That(sequence.Measures, Is.EqualTo(0));
+            Assert.That(sequence.HasZ);
+            Assert.That(!sequence.HasM);
+
+            sequence = factory.Create(10, 4, 2);
+            Assert.That(sequence.Dimension, Is.EqualTo(4));
+            Assert.That(sequence.Measures, Is.EqualTo(2));
             Assert.That(!sequence.HasZ);
             Assert.That(sequence.HasM);
 
             sequence = factory.Create(10, 5, 1);
-            Assert.That(sequence.Dimension, Is.EqualTo(4));
+            Assert.That(sequence.Dimension, Is.EqualTo(5));
             Assert.That(sequence.Measures, Is.EqualTo(1));
             Assert.That(sequence.HasZ);
             Assert.That(sequence.HasM);

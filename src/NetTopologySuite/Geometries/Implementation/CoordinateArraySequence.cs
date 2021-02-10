@@ -105,7 +105,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             Coordinates = new Coordinate[size];
             for (int i = 0; i < size; i++)
-                Coordinates[i] = CreateCoordinate();
+                Coordinates[i] = Geometries.Coordinates.Create(dimension, measures);
         }
 
         /// <summary>

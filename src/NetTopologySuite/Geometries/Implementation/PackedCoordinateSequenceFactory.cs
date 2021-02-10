@@ -121,7 +121,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A packed coordinate sequence of <see cref="Type"/></returns>
         public CoordinateSequence Create(double[] packedCoordinates, int dimension)
         {
-            return Create(packedCoordinates, dimension, Math.Max(DefaultMeasures, dimension - 3));
+            return Create(packedCoordinates, dimension, DefaultMeasures);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A packed coordinate sequence of <see cref="Type"/></returns>
         public CoordinateSequence Create(float[] packedCoordinates, int dimension)
         {
-            return Create(packedCoordinates, dimension, Math.Max(DefaultMeasures, dimension - 3));
+            return Create(packedCoordinates, dimension, DefaultMeasures);
         }
 
         /// <summary>
@@ -166,13 +166,6 @@ namespace NetTopologySuite.Geometries.Implementation
             return new PackedFloatCoordinateSequence(packedCoordinates, dimension, measures);
         }
 
-        /*
-        /// <inheritdoc />
-        public override CoordinateSequence Create(int size, int dimension)
-        {
-            return Create(size, dimension, Math.Max(DefaultMeasures, dimension - 3));
-        }
-         */
         /// <inheritdoc />
         public override CoordinateSequence Create(int size, int dimension, int measures)
         {

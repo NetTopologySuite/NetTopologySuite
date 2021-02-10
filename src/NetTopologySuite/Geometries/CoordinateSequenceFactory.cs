@@ -31,7 +31,7 @@ namespace NetTopologySuite.Geometries
         public Ordinates Ordinates { get; }
 
         /// <summary>
-        /// Returns a <see cref="CoordinateSequence" /> based on the given array; 
+        /// Returns a <see cref="CoordinateSequence" /> based on the given array;
         /// whether or not the array is copied is implementation-dependent.
         /// </summary>
         /// <param name="coordinates">A coordinates array, which may not be null nor contain null elements</param>
@@ -87,10 +87,10 @@ namespace NetTopologySuite.Geometries
         /// An error should not be thrown.
         /// </remarks>
         /// <param name="size"></param>
-        /// <param name="dimension">the dimension of the coordinates in the sequence 
+        /// <param name="dimension">the dimension of the coordinates in the sequence
         /// (if user-specifiable, otherwise ignored)</param>
         /// <returns>A coordinate sequence</returns>
-        public /*virtual*/ CoordinateSequence Create(int size, int dimension) => Create(size, dimension, Math.Max(0, dimension - 3));
+        public CoordinateSequence Create(int size, int dimension) => Create(size, dimension, 0);
 
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" /> of the specified size and dimension

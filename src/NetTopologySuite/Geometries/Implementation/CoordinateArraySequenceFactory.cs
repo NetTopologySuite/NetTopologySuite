@@ -36,17 +36,6 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             int spatial = dimension - measures;
 
-            if (measures > 1)
-            {
-                measures = 1; // clip measures
-            }
-
-            if (spatial > 3)
-            {
-                spatial = 3; // clip spatial dimension
-                // throw new ArgumentException("spatial dimension must be <= 3");
-            }
-
             if (spatial < 2)
             {
                 spatial = 2; // handle bogus dimension
