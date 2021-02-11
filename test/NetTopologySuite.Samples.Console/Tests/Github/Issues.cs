@@ -236,7 +236,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             Debug.WriteLine(res.AsText());
         }
 
-        [Test(Description = "GitHub Issue #124")]
+        [Test(Description = "GitHub Issue #124"), Explicit]
         [Category("FailureCase")]
         public void Fixing_invalid_polygon_with_Buffer_0_returns_empty_polygon()
         {

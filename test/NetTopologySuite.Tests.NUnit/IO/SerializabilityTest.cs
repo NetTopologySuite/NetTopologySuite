@@ -8,8 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
     [TestFixture]
     public class SerializabilityTest
     {
-        [Test]
-        public void TestSerializable()
+        [Test, Order(0)]
+        public void TestSerializable1()
         {
             var fact = new GeometryFactory();
             var gsf = new NetTopologySuite.Utilities.GeometricShapeFactory(fact) ;
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestCase("MULTILINESTRING((10  10, 20 20), (20 20, 30 20))")]
         [TestCase("MULTIPOLYGON(((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 1 2, 2 2, 2 1, 1 1)), ((8 8, 8 9, 9 9, 9 8, 8 8)))")]
         [TestCase("GEOMETRYCOLLECTION(POINT(10 10),LINESTRING(10  10, 20 20),POLYGON((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 1 2, 2 2, 2 1, 1 1), (8 8, 8 9, 9 9, 9 8, 8 8)))")]
-        public void TestSerializeable(string wkt)
+        public void TestSerializable(string wkt)
         {
             var reader = new WKTReader();
             var gS = reader.Read(wkt);

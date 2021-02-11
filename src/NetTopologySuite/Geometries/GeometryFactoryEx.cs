@@ -45,8 +45,8 @@ namespace NetTopologySuite.Geometries
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
         /// </summary>
-        public GeometryFactoryEx(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory, GeometryOverlay geometryOverlay)
-            : base(precisionModel, srid, coordinateSequenceFactory, geometryOverlay)
+        public GeometryFactoryEx(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory, NtsGeometryServices services)
+            : base(precisionModel, srid, coordinateSequenceFactory, services)
         { }
 
         /// <summary>
