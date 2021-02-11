@@ -231,6 +231,13 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q1">The 1st point of the 2nd segment</param>
         /// <param name="q2">The 2nd point of the 2nd segment</param>
         /// <returns></returns>
+        /// <remarks>
+        /// Don't use this function directly, it is not meant for public use.
+        /// Please call <see cref="ComputeIntersection(Coordinate,Coordinate,Coordinate,Coordinate)"/>
+        /// and test <see cref="HasIntersection"/> or <see cref="IsCollinear"/> along with <see cref="IsProper"/> and
+        /// <see cref="IsEndPoint"/>.
+        /// </remarks>
+        // TODO Change to protected!
         public abstract int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
 
         /// <inheritdoc cref="object.ToString()"/>
