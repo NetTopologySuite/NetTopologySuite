@@ -80,7 +80,7 @@ namespace NetTopologySuite.IO
 
         private readonly NtsGeometryServices _geometryServices;
 
-        /**
+        /*
          * true if structurally invalid input should be reported rather than repaired.
          * At some point this could be made client-controllable.
          */
@@ -618,8 +618,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         public bool RepairRings
         {
-            get => _isStrict;
-            set => _isStrict = value;
+            get => !_isStrict;
+            set => _isStrict = !value;
         }
 
         /// <summary>
