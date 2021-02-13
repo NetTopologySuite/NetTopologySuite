@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
+using System;
+using System.Collections.Generic;
 
 namespace NetTopologySuite.Geometries
 {
@@ -518,5 +518,46 @@ namespace NetTopologySuite.Geometries
         public int Count => _points.Count;
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// Computes the <see cref="nameof(Coordinate)" /> that lies at a given
+        /// distance (in meters) along the curve (line string).
+        /// </summary>
+        /// <remarks>
+        /// A value of <c>0</c> returns the start point of the line string;
+        /// A value of <c><see cref="nameof(Length)"/></c> returns the end point of the line string.
+        /// If the distance is &lt; 0 or &gt; 'Length' the point returned
+        /// will lie before the start or beyond the end of the segment.
+        /// </remarks>
+        /// </summary>
+        /// <param name="distance">The distance from starting point of the curve (line string) in meters.</param>
+        /// <returns>Coordinate at given distance from starting point only if distance is less than or equal to length of the curve.
+        /// Returns null if distance is greater than Length.</returns>
+        public Coordinate PointAlongCurve(double distance)
+        {
+            if (distance > Length)
+            {
+                // Distance should be less than the length of the line string.
+                return null;
+            }
+
+            double currentDistance = 0;
+            for (int i = 1; i < Length; i++)
+            {
+                var point1 = _points.GetCoordinate(i - 1);
+                var point2 = _points.GetCoordinate(i);
+                var displacement = point2.Distance(point1);
+                var tempCurrentDistance = currentDistance + displacement;
+                var dt = distance - currentDistance;
+                if (tempCurrentDistance >= distance)
+                {
+                    var line = new LineSegment(point1, point2);
+                    return line.PointAlong(Math.Min(1, dt / distance));
+                }
+                currentDistance = tempCurrentDistance;
+            }
+
+            return null;
+        }
     }
 }
