@@ -51,6 +51,11 @@ namespace NetTopologySuite.IO
         private bool _isAllowOldNtsCoordinateSyntax = true;
         private bool _isAllowOldNtsMultipointSyntax = true;
 
+        /*
+         * true if structurally invalid input should be reported rather than repaired.
+         */
+        private bool _isStrict = true;
+
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
         /// </summary>
@@ -123,6 +128,19 @@ namespace NetTopologySuite.IO
             // set the CompilerGenerated attribute so that ApiCompat stops complaining.
             [CompilerGenerated] get => _overriddenDefaultSRID ?? _ntsGeometryServices.DefaultSRID;
             [CompilerGenerated] set => _overriddenDefaultSRID = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating if the reader should attempt to repair malformed input.
+        /// </summary>
+        /// <remarks>
+        /// <i>Malformed</i> in this case means the ring has too few points (4),
+        /// or is not closed.
+        /// </remarks>
+        public bool IsStrict
+        {
+            get => _isStrict;
+            set => _isStrict = value;
         }
 
         /// <summary>
@@ -759,7 +777,10 @@ namespace NetTopologySuite.IO
         /// token in the stream.</returns>
         private LineString ReadLineStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            return factory.CreateLineString(GetCoordinateSequence(factory, tokens, ordinateFlags));
+            var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags);
+            if (!IsStrict && sequence.Count == 1)
+                sequence = CoordinateSequences.Extend(factory.CoordinateSequenceFactory, sequence, 2);
+            return factory.CreateLineString(sequence);
         }
 
         /// <summary>
@@ -775,7 +796,10 @@ namespace NetTopologySuite.IO
         /// token in the stream.</returns>
         private LinearRing ReadLinearRingText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            return factory.CreateLinearRing(GetCoordinateSequence(factory, tokens, ordinateFlags));
+            var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags);
+            if (!IsStrict && !CoordinateSequences.IsRing(sequence))
+                sequence = CoordinateSequences.EnsureValidRing(factory.CoordinateSequenceFactory, sequence);
+            return factory.CreateLinearRing(sequence);
         }
 
         /// <summary>
