@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
@@ -30,6 +31,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
             this.readerXYM = GetWKTReader(Ordinates.XYM, 1);
 
             this.readerXYZM = GetWKTReader(Ordinates.XYZM, 1);
+        }
+
+        [Test]
+        public void TestReadSpecialValues()
+        {
+            Geometry geom = null;
+            Assert.That(() => geom = readerXYZ.Read("POINT Z(NaN -Inf Inf)"), Throws.Nothing);
+            Assert.That(geom, Is.Not.Null);
         }
 
         [Test]

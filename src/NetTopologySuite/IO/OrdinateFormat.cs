@@ -24,17 +24,17 @@ namespace NetTopologySuite.IO
         ///<summary>
         /// The output representation of <see cref="double.PositiveInfinity"/>
         /// </summary>
-        const string REP_POS_INF = "Inf";
+        internal const string REP_POS_INF = "Inf";
 
         ///<summary>
         /// The output representation of <see cref="double.NegativeInfinity"/>
         /// </summary>
-        const string REP_NEG_INF = "-Inf";
+        internal const string REP_NEG_INF = "-Inf";
 
         ///<summary>
         /// The output representation of <see cref="double.NaN"/>
         /// </summary>
-        const string REP_NAN = "NaN";
+        internal const string REP_NAN = "NaN";
 
         
         /// <summary>

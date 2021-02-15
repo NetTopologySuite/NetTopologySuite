@@ -227,6 +227,11 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(MultiPoint multiPoint, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "MultiPoint", GMLElements.gmlNS);
+            if (_gmlVersion == GMLVersion.Two)
+            {
+                // Required in version 2
+                writer.WriteAttributeString("srsName", GetEpsgCode(multiPoint.Factory.SRID));
+            }
             for (int i = 0; i < multiPoint.NumGeometries; i++)
             {
                 writer.WriteStartElement("pointMember", GMLElements.gmlNS);
@@ -244,6 +249,11 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(MultiLineString multiLineString, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiLineString" : "MultiCurve", GMLElements.gmlNS);
+            if (_gmlVersion == GMLVersion.Two)
+            {
+                // Required in version 2
+                writer.WriteAttributeString("srsName", GetEpsgCode(multiLineString.Factory.SRID));
+            }
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
                 writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "lineStringMember" : "curveMember", GMLElements.gmlNS);
@@ -261,6 +271,11 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(MultiPolygon multiPolygon, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiPolygon" : "MultiSurface", GMLElements.gmlNS);
+            if (_gmlVersion == GMLVersion.Two)
+            {
+                // Required in version 2
+                writer.WriteAttributeString("srsName", GetEpsgCode(multiPolygon.Factory.SRID));
+            }
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "polygonMember" : "surfaceMember", GMLElements.gmlNS);
@@ -278,6 +293,11 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(GeometryCollection geometryCollection, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "MultiGeometry", GMLElements.gmlNS);
+            if (_gmlVersion == GMLVersion.Two)
+            {
+                // Required in version 2
+                writer.WriteAttributeString("srsName", GetEpsgCode(geometryCollection.Factory.SRID));
+            }
             for (int i = 0; i < geometryCollection.NumGeometries; i++)
             {
                 writer.WriteStartElement("geometryMember", GMLElements.gmlNS);
@@ -395,6 +415,15 @@ namespace NetTopologySuite.IO.GML2
         protected int SetByteStreamLength(Point point)
         {
             return InitValue + CoordSize;
+        }
+
+        /// <summary>
+        /// Provides the EPSG code exposing the SRID of the geometry
+        /// </summary>
+        /// <param name="srid">The SRID of the geometry</param>
+        /// <returns></returns>
+        protected virtual string GetEpsgCode(int srid) {
+            return $"EPSG:{srid}";
         }
     }
 }

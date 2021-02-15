@@ -15,16 +15,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             public NtsGeometryServicesEx() : base() {}
 
             public NtsGeometryServicesEx(CoordinateSequenceFactory csFactory, PrecisionModel pm, int srid,
-                GeometryOverlay go) : base(csFactory,pm, srid, go)
+                GeometryOverlay go, CoordinateEqualityComparer ceo) : base(csFactory,pm, srid, go, ceo)
             {
-
             }
 
 
             protected override GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid,
                 CoordinateSequenceFactory coordinateSequenceFactory)
             {
-                return new GeometryFactoryEx(precisionModel, srid, coordinateSequenceFactory, GeometryOverlay);
+                return new GeometryFactoryEx(precisionModel, srid, coordinateSequenceFactory, this);
             }
         }
 

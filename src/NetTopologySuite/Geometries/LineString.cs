@@ -334,9 +334,13 @@ namespace NetTopologySuite.Geometries
             if (_points.Count != otherLineString.NumPoints)
                 return false;
 
+            var cec = Factory.CoordinateEqualityComparer;
             for (int i = 0; i < _points.Count; i++)
-                if (!Equal(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
+            {
+                if (!cec.Equals(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
                     return false;
+            }
+
             return true;
         }
 
