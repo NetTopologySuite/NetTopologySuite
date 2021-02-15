@@ -34,6 +34,7 @@ namespace NetTopologySuite.Algorithm
             Result = NoIntersection;
         }
 
+        /// <inheritdoc cref="LineIntersector.ComputeIntersect"/>
         public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             IsProper = false;

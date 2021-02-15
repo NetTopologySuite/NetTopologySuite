@@ -41,7 +41,7 @@ namespace NetTopologySuite.IO
     public class WKTReader
     {
         private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
-        private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
+
         private static readonly CoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
 
         private NtsGeometryServices _ntsGeometryServices;
@@ -71,7 +71,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory">The factory used to create <c>Geometry</c>s.</param>
         [Obsolete("Use a constructor with a configured NtsGeometryServices instance.")]
         public WKTReader(GeometryFactory factory)
-            : this(new NtsGeometryServices(factory?.CoordinateSequenceFactory ?? throw new ArgumentNullException(nameof(factory)), factory.PrecisionModel, factory.SRID, factory.GeometryOverlay))
+            : this(factory.GeometryServices)
         {
         }
 
@@ -107,9 +107,7 @@ namespace NetTopologySuite.IO
             {
                 if (value != null)
                 {
-                    _ntsGeometryServices = new NtsGeometryServices(
-                        value.CoordinateSequenceFactory, value.PrecisionModel,
-                        value.SRID, value.GeometryOverlay);
+                    _ntsGeometryServices = value.GeometryServices;
                     // Not sure about this:
                     // DefaultSRID = value.SRID;
                 }
@@ -450,11 +448,18 @@ namespace NetTopologySuite.IO
             switch (token)
             {
                 case WordToken wordToken:
-                    if (wordToken.StringValue.Equals(NaNString, StringComparison.OrdinalIgnoreCase))
+                    if (wordToken.StringValue.Equals(OrdinateFormat.REP_NAN, StringComparison.OrdinalIgnoreCase))
                     {
                         return double.NaN;
                     }
-
+                    if (wordToken.StringValue.Equals(OrdinateFormat.REP_NEG_INF, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return double.NegativeInfinity;
+                    }
+                    if (wordToken.StringValue.Equals(OrdinateFormat.REP_POS_INF, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return double.PositiveInfinity;
+                    }
                     if (double.TryParse(wordToken.StringValue, NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture, out double val))
                     {
                         return val;

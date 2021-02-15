@@ -56,6 +56,80 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
             DoTest(typeof(MultiPolygon));
         }
 
+        [Test]
+        public void TestMultiSurfaceRead() {
+            string xml = @"<gml:MultiSurface xmlns:gml=""http://www.opengis.net/gml\"">
+                             <gml:surfaceMember>
+                               <gml:Polygon>
+                                 <gml:exterior>
+                                   <gml:LinearRing>
+                                     <gml:posList>40 40 20 45 45 30 40 40</gml:posList>
+                                   </gml:LinearRing>
+                                 </gml:exterior>
+                               </gml:Polygon>
+                             </gml:surfaceMember>
+                             <gml:surfaceMember>
+                               <gml:Polygon>
+                                 <gml:exterior>
+                                   <gml:LinearRing>
+                                     <gml:posList>20 35 10 30 10 10 30 5 45 20 20 35</gml:posList>
+                                   </gml:LinearRing>
+                                 </gml:exterior>
+                                 <gml:interior>
+                                   <gml:LinearRing>
+                                     <gml:posList>30 20 20 15 20 25 30 20</gml:posList>
+                                   </gml:LinearRing>
+                                 </gml:interior>
+                               </gml:Polygon>
+                             </gml:surfaceMember>
+                           </gml:MultiSurface>";
+
+            var gr = new GMLReader();
+
+            foreach (var readMethod in GetReadMethods())
+            {
+                var gc = (MultiPolygon)readMethod(gr, xml);
+                Assert.IsTrue(gc.NumGeometries == 2);
+                for (int i = 0; i < 1; i++)
+                {
+                    var g = gc.GetGeometryN(i);
+                    Assert.IsNotNull(g);
+                    Assert.IsInstanceOf(typeof(Polygon), g);
+                }
+            }
+        }
+
+        [Test]
+        public void TestMultiCurveRead()
+        {
+            string xml = @"<gml:MultiCurve xmlns:gml=""http://www.opengis.net/gml"">
+                             <gml:curveMember>
+                               <gml:LineString>
+                                 <gml:posList>10 10 20 20 10 40</gml:posList>
+                               </gml:LineString>
+                             </gml:curveMember>
+                             <gml:curveMember>
+                               <gml:LineString>
+                                 <gml:posList>40 40 30 30 40 20 30 10</gml:posList>
+                               </gml:LineString>
+                             </gml:curveMember>
+                           </gml:MultiCurve>";
+
+            var gr = new GMLReader();
+
+            foreach (var readMethod in GetReadMethods())
+            {
+                var gc = (MultiLineString)readMethod(gr, xml);
+                Assert.IsTrue(gc.NumGeometries == 2);
+                for (int i = 0; i < 1; i++)
+                {
+                    var g = gc.GetGeometryN(i);
+                    Assert.IsNotNull(g);
+                    Assert.IsInstanceOf(typeof(LineString), g);
+                }
+            }
+        }
+
         private static GeometryCollection DoTest(Type expectedType)
         {
             string name = expectedType.Name;

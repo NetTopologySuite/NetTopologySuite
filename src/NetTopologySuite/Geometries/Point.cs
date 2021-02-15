@@ -199,7 +199,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty != other.IsEmpty)
                 return false;
 
-            return Equal(other.Coordinate, Coordinate, tolerance);
+            return Factory.CoordinateEqualityComparer.Equals(other.Coordinate, Coordinate, tolerance);
         }
 
         /// <summary>
