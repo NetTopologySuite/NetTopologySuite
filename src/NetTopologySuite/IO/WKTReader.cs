@@ -50,6 +50,10 @@ namespace NetTopologySuite.IO
 
         private bool _isAllowOldNtsCoordinateSyntax = true;
         private bool _isAllowOldNtsMultipointSyntax = true;
+
+        /*
+         * true if structurally invalid input should be reported rather than repaired.
+         */
         private bool _isStrict = true;
 
         /// <summary>
@@ -127,16 +131,16 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Gets or sets a value indicating of malformed rings should be repaired
+        /// Gets or sets a value indicating if the reader should attempt to repair malformed input.
         /// </summary>
         /// <remarks>
         /// <i>Malformed</i> in this case means the ring has too few points (4),
         /// or is not closed.
         /// </remarks>
-        public bool RepairRings
+        public bool IsStrict
         {
-            get => !_isStrict;
-            set => _isStrict = !value;
+            get => _isStrict;
+            set => _isStrict = value;
         }
 
         /// <summary>
@@ -774,7 +778,7 @@ namespace NetTopologySuite.IO
         private LineString ReadLineStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags);
-            if (!_isStrict && sequence.Count == 1)
+            if (!IsStrict && sequence.Count == 1)
                 sequence = CoordinateSequences.Extend(factory.CoordinateSequenceFactory, sequence, 2);
             return factory.CreateLineString(sequence);
         }
@@ -793,7 +797,7 @@ namespace NetTopologySuite.IO
         private LinearRing ReadLinearRingText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags);
-            if (RepairRings && !CoordinateSequences.IsRing(sequence))
+            if (!IsStrict && !CoordinateSequences.IsRing(sequence))
                 sequence = CoordinateSequences.EnsureValidRing(factory.CoordinateSequenceFactory, sequence);
             return factory.CreateLinearRing(sequence);
         }

@@ -82,7 +82,6 @@ namespace NetTopologySuite.IO
 
         /*
          * true if structurally invalid input should be reported rather than repaired.
-         * At some point this could be made client-controllable.
          */
         private bool _isStrict;
 
@@ -614,12 +613,26 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
+        /// Gets or sets a value indicating if the reader should attempt to repair malformed input.
+        /// </summary>
+        /// <remarks>
+        /// <i>Malformed</i> in this case means the ring has too few points (4),
+        /// or is not closed.
+        /// </remarks>
+        public bool IsStrict
+        {
+            get => _isStrict;
+            set => _isStrict = value;
+        }
+
+        /// <summary>
         /// Gets or sets whether invalid linear rings should be fixed
         /// </summary>
+        [Obsolete("Use !IsStrict")]
         public bool RepairRings
         {
-            get => !_isStrict;
-            set => _isStrict = !value;
+            get => !IsStrict;
+            set => IsStrict = !value;
         }
 
         /// <summary>

@@ -16,7 +16,9 @@ namespace NetTopologySuite.Samples.Tests.Github
             const string wktNonClosedPolygon2 = "POLYGON((10 10, 10 20, 20 20, 20 10))";
             const string wktInsufficientLineString = "LINESTRING(10 10)";
 
-            var wktReader = new WKTReader {RepairRings = !strict};
+            var wktReader = new WKTReader {IsStrict = strict};
+            Assert.That(wktReader.IsStrict, Is.EqualTo(strict));
+
             Geometry polygon1 = null, polygon2 = null, linestring = null;
             if (strict)
             {
