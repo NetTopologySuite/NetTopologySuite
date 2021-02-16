@@ -118,6 +118,13 @@ namespace NetTopologySuite.Geometries.Implementation
             return this.GetCoordinateCopy(index);
         }
 
+        private protected static int GetDimensionAndMeasures(Coordinate[] coords, out int measures)
+        {
+            int dimension;
+            (_, dimension, measures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
+            return dimension;
+        }
+
         [OnDeserialized]
         private void OnDeserialization(StreamingContext context)
         {
@@ -180,7 +187,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         public PackedDoubleCoordinateSequence(Coordinate[] coords)
-            : this(coords, PackedCoordinateSequenceFactory.DefaultDimension)
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         { }
 
         /// <summary>
@@ -190,7 +197,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension)
-            : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         {
         }
 
@@ -402,7 +409,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         public PackedFloatCoordinateSequence(Coordinate[] coords)
-            : this(coords, PackedCoordinateSequenceFactory.DefaultDimension)
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         { }
 
         /// <summary>
@@ -412,7 +419,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension)
-            : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         {
         }
 
@@ -566,6 +573,5 @@ namespace NetTopologySuite.Geometries.Implementation
             }
             return new PackedDoubleCoordinateSequence(coords, dim, Measures);
         }
-
     }
 }

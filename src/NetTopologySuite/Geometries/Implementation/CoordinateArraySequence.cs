@@ -77,7 +77,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         public CoordinateArraySequence(int size)
-            : this(size, 2) { }
+            : this(size, 2, 0) { }
 
         /// <summary>
         /// Constructs a sequence of a given <paramref name="size"/>, populated
