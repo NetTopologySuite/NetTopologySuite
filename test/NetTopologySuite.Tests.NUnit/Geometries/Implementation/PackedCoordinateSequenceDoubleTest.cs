@@ -17,5 +17,33 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.AreEqual(3.0, cs.GetOrdinate(0, Ordinate.M));
         }
 
+        [Test]
+        public void Test2dMeasuredCoordinateSequenceInitializedFromVariousCoordinates()
+        {
+            var extraMeasuresCoordinate = Coordinates.Create(4, 2);
+            extraMeasuresCoordinate.X = 6;
+            extraMeasuresCoordinate.Y = 7;
+            extraMeasuresCoordinate.M = 8;
+            Coordinate[] coords =
+            {
+                new Coordinate(1, 2),
+                new CoordinateZ(2, 3, 4),
+                new CoordinateM(3, 4, 5),
+                new CoordinateZ(4, 5, 6),
+                new CoordinateZM(5, 6, 7, 8),
+                extraMeasuresCoordinate,
+            };
+            double[] expected =
+            {
+                1, 2, double.NaN,
+                2, 3, double.NaN,
+                3, 4, 5,
+                4, 5, double.NaN,
+                5, 6, 8,
+                6, 7, 8,
+            };
+            var cs = new PackedDoubleCoordinateSequence(coords, 3, 1);
+            Assert.That(cs.GetRawCoordinates(), Is.EqualTo(expected));
+        }
     }
 }

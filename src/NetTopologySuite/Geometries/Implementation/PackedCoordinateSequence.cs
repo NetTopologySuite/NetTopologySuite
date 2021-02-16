@@ -111,6 +111,10 @@ namespace NetTopologySuite.Geometries.Implementation
         [Obsolete("Unused.  This will be removed in a future release.")]
         protected virtual Coordinate GetCoordinateInternal(int index)
         {
+            // DEVIATION: JTS can't create Coordinate instances other than XY, XYZ, XYM, or XYZM.
+            // we can, and in fact our base method is able to do so without our help, so instead of
+            // channeling everything through this method, we just leave the inherited behavior alone
+            // and keep this around to avoid a breaking change.
             return this.GetCoordinateCopy(index);
         }
 
@@ -202,15 +206,25 @@ namespace NetTopologySuite.Geometries.Implementation
                 coords = new Coordinate[0];
 
             _coords = new double[coords.Length * Dimension];
+            _coords.AsSpan().Fill(double.NaN);
+            int spatial = Spatial;
             for (int i = 0; i < coords.Length; i++)
             {
                 int offset = i * dimension;
-                _coords[offset] = coords[i].X;
-                _coords[offset + 1] = coords[i].Y;
-                if (Dimension >= 3)
-                    _coords[offset + 2] = coords[i][2]; // Z or M
-                if (Dimension >= 4)
-                    _coords[offset + 3] = coords[i][3]; // M
+
+                var coord = coords[i];
+                int coordDimension = Coordinates.Dimension(coord);
+                int coordMeasures = Coordinates.Measures(coord);
+                int coordSpatial = coordDimension - coordMeasures;
+                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                {
+                    _coords[offset + dim] = coord[dim];
+                }
+
+                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                {
+                    _coords[offset + spatial + measure] = coord[coordSpatial + measure];
+                }
             }
         }
 
@@ -385,15 +399,25 @@ namespace NetTopologySuite.Geometries.Implementation
                 coords = new Coordinate[0];
 
             _coords = new float[coords.Length * Dimension];
+            _coords.AsSpan().Fill(float.NaN);
+            int spatial = Spatial;
             for (int i = 0; i < coords.Length; i++)
             {
                 int offset = i * dimension;
-                _coords[offset] = (float)coords[i].X;
-                _coords[offset + 1] = (float)coords[i].Y;
-                if (Dimension >= 3)
-                    _coords[offset + 2] = (float)coords[i][2]; // Z or M
-                if (Dimension >= 4)
-                    _coords[offset + 3] = (float)coords[i][3]; // M
+
+                var coord = coords[i];
+                int coordDimension = Coordinates.Dimension(coord);
+                int coordMeasures = Coordinates.Measures(coord);
+                int coordSpatial = coordDimension - coordMeasures;
+                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                {
+                    _coords[offset + dim] = (float)coord[dim];
+                }
+
+                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                {
+                    _coords[offset + spatial + measure] = (float)coord[coordSpatial + measure];
+                }
             }
         }
 

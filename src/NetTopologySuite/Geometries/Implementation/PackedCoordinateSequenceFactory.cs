@@ -83,15 +83,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public override CoordinateSequence Create(Coordinate[] coordinates)
         {
-            int dimension = DefaultDimension;
-            int measures = DefaultMeasures;
-            if (coordinates != null && coordinates.Length > 0 && coordinates[0] != null)
-            {
-                var first = coordinates[0];
-                dimension = Coordinates.Dimension(first);
-                measures = Coordinates.Measures(first);
-            }
-
+            // DEVIATION: JTS just uses the first coordinate, but other
+            int dimension = CoordinateArrays.Dimension(coordinates);
+            int measures = CoordinateArrays.Measures(coordinates);
             if (_type == PackedType.Double)
                 return new PackedDoubleCoordinateSequence(coordinates, dimension, measures);
             return new PackedFloatCoordinateSequence(coordinates, dimension, measures);

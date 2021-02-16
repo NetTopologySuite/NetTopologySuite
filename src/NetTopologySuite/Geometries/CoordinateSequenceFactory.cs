@@ -38,14 +38,36 @@ namespace NetTopologySuite.Geometries
         /// <returns>A coordinate sequence.</returns>
         public virtual CoordinateSequence Create(Coordinate[] coordinates)
         {
-            var result = Create(coordinates?.Length ?? 0, CoordinateArrays.Dimension(coordinates), CoordinateArrays.Measures(coordinates));
+            int dimension = CoordinateArrays.Dimension(coordinates);
+            int measures = CoordinateArrays.Measures(coordinates);
+            var result = Create(coordinates?.Length ?? 0, dimension, measures);
             if (coordinates != null)
             {
+                int spatial = dimension - measures;
                 for (int i = 0; i < coordinates.Length; i++)
                 {
-                    for (int dim = 0; dim < result.Dimension; dim++)
+                    var coord = coordinates[i];
+                    int coordDimension = Coordinates.Dimension(coord);
+                    int coordMeasures = Coordinates.Measures(coord);
+                    int coordSpatial = coordDimension - coordMeasures;
+                    for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
                     {
-                        result.SetOrdinate(i, dim, coordinates[i][dim]);
+                        result.SetOrdinate(i, dim, coord[dim]);
+                    }
+
+                    for (int dim = coordSpatial; dim < spatial; dim++)
+                    {
+                        result.SetOrdinate(i, dim, Coordinate.NullOrdinate);
+                    }
+
+                    for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                    {
+                        result.SetOrdinate(i, spatial + measure, coord[coordSpatial + measure]);
+                    }
+
+                    for (int measure = coordMeasures; measure < measures; measure++)
+                    {
+                        result.SetOrdinate(i, spatial + measure, Coordinate.NullOrdinate);
                     }
                 }
             }
