@@ -32,7 +32,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         public CoordinateArraySequence(Coordinate[] coordinates)
-            : this(coordinates, CoordinateArrays.Dimension(coordinates), CoordinateArrays.Measures(coordinates)) { }
+            : this(coordinates, GetDimensionAndMeasures(coordinates, out int measures), measures) { }
 
         /// <summary>
         /// Constructs a sequence based on the given array
@@ -41,8 +41,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <remarks>The Array is not copied</remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         /// <param name="dimension">The dimension of the coordinates</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public CoordinateArraySequence(Coordinate[] coordinates, int dimension)
-            : this(coordinates, dimension, CoordinateArrays.Measures(coordinates))
+            : this(coordinates, GetDimensionAndMeasures(coordinates, out int measures), measures)
         {
         }
 
@@ -59,7 +60,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The dimension of the coordinates</param>
         /// <param name="measures">The number of measure ordinate values.</param>
         public CoordinateArraySequence(Coordinate[] coordinates, int dimension, int measures)
-            :base(coordinates?.Length ?? 0, dimension, measures)
+            : base(coordinates?.Length ?? 0, dimension, measures)
         {
             if (coordinates == null)
             {
@@ -84,6 +85,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         /// <param name="dimension">the dimension of the coordinates</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public CoordinateArraySequence(int size, int dimension)
             : base(size, dimension, 0)
         {
@@ -368,7 +370,7 @@ namespace NetTopologySuite.Geometries.Implementation
             {
                 coordinates[Count - i - 1] = Coordinates[i].Copy();
             }
-            return new CoordinateArraySequence(coordinates, Dimension);
+            return new CoordinateArraySequence(coordinates, Dimension, Measures);
         }
 
         /// <summary>
@@ -391,6 +393,13 @@ namespace NetTopologySuite.Geometries.Implementation
                 return strBuf.ToString();
             }
             else return "()";
+        }
+
+        private static int GetDimensionAndMeasures(Coordinate[] coords, out int measures)
+        {
+            int dimension;
+            (_, dimension, measures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
+            return dimension;
         }
     }
 }

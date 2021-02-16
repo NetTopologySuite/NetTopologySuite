@@ -188,6 +188,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension)
             : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
         {
@@ -200,32 +201,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
         public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension, int measures)
-            : base(coords?.Length ?? 0, dimension, measures)
+            : this(coords, dimension, measures, false)
         {
-            if (coords == null)
-                coords = new Coordinate[0];
-
-            _coords = new double[coords.Length * Dimension];
-            _coords.AsSpan().Fill(double.NaN);
-            int spatial = Spatial;
-            for (int i = 0; i < coords.Length; i++)
-            {
-                int offset = i * dimension;
-
-                var coord = coords[i];
-                int coordDimension = Coordinates.Dimension(coord);
-                int coordMeasures = Coordinates.Measures(coord);
-                int coordSpatial = coordDimension - coordMeasures;
-                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
-                {
-                    _coords[offset + dim] = coord[dim];
-                }
-
-                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
-                {
-                    _coords[offset + spatial + measure] = coord[coordSpatial + measure];
-                }
-            }
         }
 
         /// <summary>
@@ -238,6 +215,50 @@ namespace NetTopologySuite.Geometries.Implementation
             : base(size, dimension, measures)
         {
             _coords = new double[size * Dimension];
+        }
+
+        internal PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
+            : base(coords?.Length ?? 0, dimension, measures)
+        {
+            if (coords == null)
+                coords = Array.Empty<Coordinate>();
+
+            _coords = new double[coords.Length * Dimension];
+            _coords.AsSpan().Fill(double.NaN);
+            if (coords.Length == 0)
+            {
+                return;
+            }
+
+            int coordDimension;
+            int coordMeasures;
+            if (dimensionAndMeasuresCameFromCoords)
+            {
+                coordDimension = dimension;
+                coordMeasures = measures;
+            }
+            else
+            {
+                (_, coordDimension, coordMeasures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
+            }
+
+            int spatial = dimension - measures;
+            int coordSpatial = coordDimension - coordMeasures;
+            for (int i = 0; i < coords.Length; i++)
+            {
+                int offset = i * dimension;
+
+                var coord = coords[i];
+                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                {
+                    _coords[offset + dim] = coord[dim];
+                }
+
+                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                {
+                    _coords[offset + spatial + measure] = coord[coordSpatial + measure];
+                }
+            }
         }
 
         /// <summary>
@@ -381,6 +402,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension)
             : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
         {
@@ -393,32 +415,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
         public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension, int measures)
-            : base(coords?.Length ?? 0, dimension, measures)
+            : this(coords, dimension, measures, false)
         {
-            if (coords == null)
-                coords = new Coordinate[0];
-
-            _coords = new float[coords.Length * Dimension];
-            _coords.AsSpan().Fill(float.NaN);
-            int spatial = Spatial;
-            for (int i = 0; i < coords.Length; i++)
-            {
-                int offset = i * dimension;
-
-                var coord = coords[i];
-                int coordDimension = Coordinates.Dimension(coord);
-                int coordMeasures = Coordinates.Measures(coord);
-                int coordSpatial = coordDimension - coordMeasures;
-                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
-                {
-                    _coords[offset + dim] = (float)coord[dim];
-                }
-
-                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
-                {
-                    _coords[offset + spatial + measure] = (float)coord[coordSpatial + measure];
-                }
-            }
         }
 
         /// <summary>
@@ -431,6 +429,50 @@ namespace NetTopologySuite.Geometries.Implementation
             : base(size, dimension, measures)
         {
             _coords = new float[size * Dimension];
+        }
+
+        internal PackedFloatCoordinateSequence(Coordinate[] coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
+            : base(coords?.Length ?? 0, dimension, measures)
+        {
+            if (coords == null)
+                coords = Array.Empty<Coordinate>();
+
+            _coords = new float[coords.Length * Dimension];
+            _coords.AsSpan().Fill(float.NaN);
+            if (coords.Length == 0)
+            {
+                return;
+            }
+
+            int coordDimension;
+            int coordMeasures;
+            if (dimensionAndMeasuresCameFromCoords)
+            {
+                coordDimension = dimension;
+                coordMeasures = measures;
+            }
+            else
+            {
+                (_, coordDimension, coordMeasures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
+            }
+
+            int spatial = dimension - measures;
+            int coordSpatial = coordDimension - coordMeasures;
+            for (int i = 0; i < coords.Length; i++)
+            {
+                int offset = i * dimension;
+
+                var coord = coords[i];
+                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                {
+                    _coords[offset + dim] = (float)coord[dim];
+                }
+
+                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                {
+                    _coords[offset + spatial + measure] = (float)coord[coordSpatial + measure];
+                }
+            }
         }
 
         /// <summary>

@@ -83,12 +83,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public override CoordinateSequence Create(Coordinate[] coordinates)
         {
-            // DEVIATION: JTS just uses the first coordinate, but other
-            int dimension = CoordinateArrays.Dimension(coordinates);
-            int measures = CoordinateArrays.Measures(coordinates);
+            // DEVIATION: JTS just uses the first coordinate, which can be lossy.
+            (_, int dimension, int measures) = GetCommonSequenceParameters(coordinates);
             if (_type == PackedType.Double)
-                return new PackedDoubleCoordinateSequence(coordinates, dimension, measures);
-            return new PackedFloatCoordinateSequence(coordinates, dimension, measures);
+                return new PackedDoubleCoordinateSequence(coordinates, dimension, measures, true);
+            return new PackedFloatCoordinateSequence(coordinates, dimension, measures, true);
         }
 
         /// <summary>
@@ -102,8 +101,8 @@ namespace NetTopologySuite.Geometries.Implementation
             int dimension = coordSeq.Dimension;
             int measures = coordSeq.Measures;
             if (_type == PackedType.Double)
-                return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures);
-            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures);
+                return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures, true);
+            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures, true);
         }
 
         /// <summary>
