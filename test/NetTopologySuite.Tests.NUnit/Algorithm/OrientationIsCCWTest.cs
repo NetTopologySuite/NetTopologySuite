@@ -22,11 +22,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 bool isCCW = Orientation.IsCCW(pts);
                 Assert.Fail();
             }
-            catch (Exception ex)
+            catch (ArgumentException)
             {
-                if (ex.GetType() != typeof(ArgumentException))
-                    Assert.Fail();
-                
                 hasError = true;
             }
             Assert.IsTrue(hasError);
