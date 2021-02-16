@@ -36,17 +36,8 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             int spatial = dimension - measures;
 
-            if (measures > 1)
-            {
-                measures = 1; // clip measures
-            }
-
-            if (spatial > 3)
-            {
-                spatial = 3; // clip spatial dimension
-                // throw new ArgumentException("spatial dimension must be <= 3");
-            }
-
+            // DEVIATION: JTS can't create Coordinate instances other than XY, XYZ, XYM, or XYZM.
+            // we can, so no need to clip spatial / measures.
             if (spatial < 2)
             {
                 spatial = 2; // handle bogus dimension

@@ -43,43 +43,7 @@ namespace NetTopologySuite.Geometries.Implementation
             var arr = GetCachedCoords();
             if(arr != null)
                  return arr[i];
-            return GetCoordinateInternal(i);
-        }
-
-        /// <summary>
-        /// Returns a copy of the i'th coordinate in this sequence.
-        /// This method optimizes the situation where the caller is
-        /// going to make a copy anyway - if the implementation
-        /// has already created a new Coordinate object, no further copy is needed.
-        /// </summary>
-        /// <param name="i">The index of the coordinate to retrieve.</param>
-        /// <returns>
-        /// A copy of the i'th coordinate in the sequence
-        /// </returns>
-        public sealed override Coordinate GetCoordinateCopy(int i)
-        {
-            return GetCoordinateInternal(i);
-        }
-
-        /// <summary>
-        /// Copies the i'th coordinate in the sequence to the supplied Coordinate.
-        /// Only the first two dimensions are copied.
-        /// </summary>
-        /// <param name="i">The index of the coordinate to copy.</param>
-        /// <param name="c">A Coordinate to receive the value.</param>
-        public sealed override void GetCoordinate(int i, Coordinate c)
-        {
-            c.X = GetOrdinate(i, 0);
-            c.Y = GetOrdinate(i, 1);
-            if (HasZ)
-            {
-                c.Z = GetZ(i);
-            }
-
-            if (HasM)
-            {
-                c.M = GetM(i);
-            }
+            return GetCoordinateCopy(i);
         }
 
         /// <summary>
@@ -100,7 +64,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
             arr = new Coordinate[Count];
             for (int i = 0; i < arr.Length; i++)
-                arr[i] = GetCoordinateInternal(i);
+                arr[i] = GetCoordinateCopy(i);
 
             CoordRef = new WeakReference(arr);
             return arr;
@@ -132,69 +96,6 @@ namespace NetTopologySuite.Geometries.Implementation
             return null;
         }
 
-        /// <summary>
-        /// Returns ordinate X (0) of the specified coordinate.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns>
-        /// The value of the X ordinate in the index'th coordinate.
-        /// </returns>
-        public sealed override double GetX(int index)
-        {
-            return GetOrdinate(index, 0);
-        }
-
-        /// <summary>
-        /// Returns ordinate Y (1) of the specified coordinate.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns>
-        /// The value of the Y ordinate in the index'th coordinate.
-        /// </returns>
-        public sealed override double GetY(int index)
-        {
-            return GetOrdinate(index, 1);
-        }
-
-        /// <summary>
-        /// Returns ordinate Z of the specified coordinate if available.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns>
-        /// The value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.
-        /// </returns>
-        public sealed override double GetZ(int index)
-        {
-            if (HasZ)
-            {
-                return GetOrdinate(index, 2);
-            }
-            else
-            {
-                return double.NaN;
-            }
-        }
-
-        /// <summary>
-        /// Returns ordinate M of the specified coordinate if available.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns>
-        /// The value of the M ordinate in the index'th coordinate, or Double.NaN if not defined.
-        /// </returns>
-        public sealed override double GetM(int index)
-        {
-            if (HasM)
-            {
-                int mIndex = Dimension - Measures;
-                return GetOrdinate(index, mIndex);
-            }
-            else
-            {
-                return Coordinate.NullOrdinate;
-            }
-        }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
@@ -207,7 +108,22 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="index">The coordinate index</param>
         /// <returns>The <see cref="Coordinate"/> at the given index</returns>
-        protected abstract Coordinate GetCoordinateInternal(int index);
+        [Obsolete("Unused.  This will be removed in a future release.")]
+        protected virtual Coordinate GetCoordinateInternal(int index)
+        {
+            // DEVIATION: JTS can't create Coordinate instances other than XY, XYZ, XYM, or XYZM.
+            // we can, and in fact our base method is able to do so without our help, so instead of
+            // channeling everything through this method, we just leave the inherited behavior alone
+            // and keep this around to avoid a breaking change.
+            return this.GetCoordinateCopy(index);
+        }
+
+        private protected static int GetDimensionAndMeasures(Coordinate[] coords, out int measures)
+        {
+            int dimension;
+            (_, dimension, measures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
+            return dimension;
+        }
 
         [OnDeserialized]
         private void OnDeserialization(StreamingContext context)
@@ -271,7 +187,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         public PackedDoubleCoordinateSequence(Coordinate[] coords)
-            : this(coords, PackedCoordinateSequenceFactory.DefaultDimension)
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         { }
 
         /// <summary>
@@ -279,8 +195,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension)
-            : this(coords, dimension, Math.Max(0, dimension - 3))
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         {
         }
 
@@ -291,22 +208,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
         public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension, int measures)
-            : base(coords?.Length ?? 0, dimension, measures)
+            : this(coords, dimension, measures, false)
         {
-            if (coords == null)
-                coords = new Coordinate[0];
-
-            _coords = new double[coords.Length * Dimension];
-            for (int i = 0; i < coords.Length; i++)
-            {
-                int offset = i * dimension;
-                _coords[offset] = coords[i].X;
-                _coords[offset + 1] = coords[i].Y;
-                if (Dimension >= 3)
-                    _coords[offset + 2] = coords[i][2]; // Z or M
-                if (Dimension >= 4)
-                    _coords[offset + 3] = coords[i][3]; // M
-            }
         }
 
         /// <summary>
@@ -321,39 +224,56 @@ namespace NetTopologySuite.Geometries.Implementation
             _coords = new double[size * Dimension];
         }
 
-        /// <summary>
-        /// Returns a Coordinate representation of the specified coordinate, by always
-        /// building a new Coordinate object.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        protected override Coordinate GetCoordinateInternal(int index)
+        internal PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
+            : base(coords?.Length ?? 0, dimension, measures)
         {
-            double x = _coords[index * Dimension];
-            double y = _coords[index * Dimension + 1];
-            if (Dimension == 2 && Measures == 0)
+            if (coords == null)
+                coords = Array.Empty<Coordinate>();
+
+            _coords = new double[coords.Length * Dimension];
+            if (coords.Length == 0)
             {
-                return new Coordinate(x, y);
-            }
-            else if (Dimension == 3 && Measures == 0)
-            {
-                double z = _coords[index * Dimension + 2];
-                return new CoordinateZ(x, y, z);
-            }
-            else if (Dimension == 3 && Measures == 1)
-            {
-                double m = _coords[index * Dimension + 2];
-                return new CoordinateM(x, y, m);
-            }
-            else if (Dimension == 4)
-            {
-                double z = _coords[index * Dimension + 2];
-                double m = _coords[index * Dimension + 3];
-                return new CoordinateZM(x, y, z, m);
+                return;
             }
 
-            // note: JTS's "Coordinate" is our "CoordinateZ".
-            return new CoordinateZ(x, y);
+            if (dimensionAndMeasuresCameFromCoords)
+            {
+                for (int i = 0; i < coords.Length; i++)
+                {
+                    int offset = i * dimension;
+
+                    var coord = coords[i];
+                    for (int dim = 0; dim < dimension; dim++)
+                    {
+                        _coords[offset + dim] = coord[dim];
+                    }
+                }
+            }
+            else
+            {
+                _coords.AsSpan().Fill(double.NaN);
+
+                int spatial = dimension - measures;
+                for (int i = 0; i < coords.Length; i++)
+                {
+                    int offset = i * dimension;
+
+                    var coord = coords[i];
+                    int coordDimension = Coordinates.Dimension(coord);
+                    int coordMeasures = Coordinates.Measures(coord);
+                    int coordSpatial = coordDimension - coordMeasures;
+
+                    for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                    {
+                        _coords[offset + dim] = coord[dim];
+                    }
+
+                    for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                    {
+                        _coords[offset + spatial + measure] = coord[coordSpatial + measure];
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -489,7 +409,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         public PackedFloatCoordinateSequence(Coordinate[] coords)
-            : this(coords, PackedCoordinateSequenceFactory.DefaultDimension)
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         { }
 
         /// <summary>
@@ -497,8 +417,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension)
-            : this(coords, dimension, Math.Max(0, dimension - 3))
+            : this(coords, GetDimensionAndMeasures(coords, out int measures), measures)
         {
         }
 
@@ -509,22 +430,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
         /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
         public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension, int measures)
-            : base(coords?.Length ?? 0, dimension, measures)
+            : this(coords, dimension, measures, false)
         {
-            if (coords == null)
-                coords = new Coordinate[0];
-
-            _coords = new float[coords.Length * Dimension];
-            for (int i = 0; i < coords.Length; i++)
-            {
-                int offset = i * dimension;
-                _coords[offset] = (float)coords[i].X;
-                _coords[offset + 1] = (float)coords[i].Y;
-                if (Dimension >= 3)
-                    _coords[offset + 2] = (float)coords[i][2]; // Z or M
-                if (Dimension >= 4)
-                    _coords[offset + 3] = (float)coords[i][3]; // M
-            }
         }
 
         /// <summary>
@@ -539,39 +446,56 @@ namespace NetTopologySuite.Geometries.Implementation
             _coords = new float[size * Dimension];
         }
 
-        /// <summary>
-        /// Returns a Coordinate representation of the specified coordinate, by always
-        /// building a new Coordinate object.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        protected override Coordinate GetCoordinateInternal(int index)
+        internal PackedFloatCoordinateSequence(Coordinate[] coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
+            : base(coords?.Length ?? 0, dimension, measures)
         {
-            double x = _coords[index * Dimension];
-            double y = _coords[index * Dimension + 1];
-            if (Dimension == 2 && Measures == 0)
+            if (coords == null)
+                coords = Array.Empty<Coordinate>();
+
+            _coords = new float[coords.Length * Dimension];
+            if (coords.Length == 0)
             {
-                return new Coordinate(x, y);
-            }
-            else if (Dimension == 3 && Measures == 0)
-            {
-                double z = _coords[index * Dimension + 2];
-                return new CoordinateZ(x, y, z);
-            }
-            else if (Dimension == 3 && Measures == 1)
-            {
-                double m = _coords[index * Dimension + 2];
-                return new CoordinateM(x, y, m);
-            }
-            else if (Dimension == 4)
-            {
-                double z = _coords[index * Dimension + 2];
-                double m = _coords[index * Dimension + 3];
-                return new CoordinateZM(x, y, z, m);
+                return;
             }
 
-            // note: JTS's "Coordinate" is our "CoordinateZ".
-            return new CoordinateZ(x, y);
+            if (dimensionAndMeasuresCameFromCoords)
+            {
+                for (int i = 0; i < coords.Length; i++)
+                {
+                    int offset = i * dimension;
+
+                    var coord = coords[i];
+                    for (int dim = 0; dim < dimension; dim++)
+                    {
+                        _coords[offset + dim] = (float)coord[dim];
+                    }
+                }
+            }
+            else
+            {
+                _coords.AsSpan().Fill(float.NaN);
+
+                int spatial = dimension - measures;
+                for (int i = 0; i < coords.Length; i++)
+                {
+                    int offset = i * dimension;
+
+                    var coord = coords[i];
+                    int coordDimension = Coordinates.Dimension(coord);
+                    int coordMeasures = Coordinates.Measures(coord);
+                    int coordSpatial = coordDimension - coordMeasures;
+
+                    for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                    {
+                        _coords[offset + dim] = (float)coord[dim];
+                    }
+
+                    for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                    {
+                        _coords[offset + spatial + measure] = (float)coord[coordSpatial + measure];
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -649,6 +573,5 @@ namespace NetTopologySuite.Geometries.Implementation
             }
             return new PackedDoubleCoordinateSequence(coords, dim, Measures);
         }
-
     }
 }

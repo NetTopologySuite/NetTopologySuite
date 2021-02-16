@@ -217,10 +217,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private static CoordinateSequence SetDimension(CoordinateSequenceFactory fact, CoordinateSequence seq,
             int dimension)
         {
-            if (seq.Dimension == dimension)
+            if (seq.Dimension == dimension && seq.Measures == 0)
                 return seq;
 
-            var res = fact.Create(seq.Count, dimension);
+            var res = fact.Create(seq.Count, dimension, 0);
             dimension = Math.Min(dimension, seq.Dimension);
             for (int i = 0; i < seq.Count; i++)
             {

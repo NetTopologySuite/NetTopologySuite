@@ -127,7 +127,7 @@ namespace NetTopologySuite.Geometries
 
         private static CoordinateSequence CreateClosedRing(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
         {
-            var newseq = fact.Create(size, seq.Dimension);
+            var newseq = fact.Create(size, seq.Dimension, seq.Measures);
             int n = seq.Count;
             Copy(seq, 0, newseq, 0, n);
             // fill remaining coordinates with start point
@@ -142,7 +142,7 @@ namespace NetTopologySuite.Geometries
         /// Because coordinate sequences are fix in size, extending is done by
         /// creating a new coordinate sequence of the requested size.
         /// <para/>
-        /// The new, trailing coordinate entries (if any) are filled with the last 
+        /// The new, trailing coordinate entries (if any) are filled with the last
         /// coordinate of the input sequence
         /// </summary>
         /// <param name="fact">The factory to use when creating the new sequence.</param>

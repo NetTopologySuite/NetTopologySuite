@@ -83,18 +83,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public override CoordinateSequence Create(Coordinate[] coordinates)
         {
-            int dimension = DefaultDimension;
-            int measures = DefaultMeasures;
-            if (coordinates != null && coordinates.Length > 0 && coordinates[0] != null)
-            {
-                var first = coordinates[0];
-                dimension = Coordinates.Dimension(first);
-                measures = Coordinates.Measures(first);
-            }
-
+            // DEVIATION: JTS just uses the first coordinate, which can be lossy.
+            (_, int dimension, int measures) = GetCommonSequenceParameters(coordinates);
             if (_type == PackedType.Double)
-                return new PackedDoubleCoordinateSequence(coordinates, dimension, measures);
-            return new PackedFloatCoordinateSequence(coordinates, dimension, measures);
+                return new PackedDoubleCoordinateSequence(coordinates, dimension, measures, true);
+            return new PackedFloatCoordinateSequence(coordinates, dimension, measures, true);
         }
 
         /// <summary>
@@ -108,8 +101,8 @@ namespace NetTopologySuite.Geometries.Implementation
             int dimension = coordSeq.Dimension;
             int measures = coordSeq.Measures;
             if (_type == PackedType.Double)
-                return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures);
-            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures);
+                return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures, true);
+            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures, true);
         }
 
         /// <summary>
@@ -121,7 +114,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A packed coordinate sequence of <see cref="Type"/></returns>
         public CoordinateSequence Create(double[] packedCoordinates, int dimension)
         {
-            return Create(packedCoordinates, dimension, Math.Max(DefaultMeasures, dimension - 3));
+            return Create(packedCoordinates, dimension, DefaultMeasures);
         }
 
         /// <summary>
@@ -148,7 +141,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A packed coordinate sequence of <see cref="Type"/></returns>
         public CoordinateSequence Create(float[] packedCoordinates, int dimension)
         {
-            return Create(packedCoordinates, dimension, Math.Max(DefaultMeasures, dimension - 3));
+            return Create(packedCoordinates, dimension, DefaultMeasures);
         }
 
         /// <summary>
@@ -166,13 +159,6 @@ namespace NetTopologySuite.Geometries.Implementation
             return new PackedFloatCoordinateSequence(packedCoordinates, dimension, measures);
         }
 
-        /*
-        /// <inheritdoc />
-        public override CoordinateSequence Create(int size, int dimension)
-        {
-            return Create(size, dimension, Math.Max(DefaultMeasures, dimension - 3));
-        }
-         */
         /// <inheritdoc />
         public override CoordinateSequence Create(int size, int dimension, int measures)
         {

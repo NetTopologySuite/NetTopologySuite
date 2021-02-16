@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [Test]
         public void TestCloneDimension2()
         {
-            var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 2);
+            var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 2, 0);
             s1.SetOrdinate(0, Ordinate.X, 1);
             s1.SetOrdinate(0, Ordinate.Y, 2);
             s1.SetOrdinate(1, Ordinate.X, 3);
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [Test]
         public void TestCloneDimension3()
         {
-            var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 3);
+            var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 3, 0);
             s1.SetOrdinate(0, Ordinate.X, 1);
             s1.SetOrdinate(0, Ordinate.Y, 2);
             s1.SetOrdinate(0, Ordinate.Z, 10);

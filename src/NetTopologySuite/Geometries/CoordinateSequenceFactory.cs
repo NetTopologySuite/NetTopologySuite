@@ -31,21 +31,42 @@ namespace NetTopologySuite.Geometries
         public Ordinates Ordinates { get; }
 
         /// <summary>
-        /// Returns a <see cref="CoordinateSequence" /> based on the given array; 
+        /// Returns a <see cref="CoordinateSequence" /> based on the given array;
         /// whether or not the array is copied is implementation-dependent.
         /// </summary>
         /// <param name="coordinates">A coordinates array, which may not be null nor contain null elements</param>
         /// <returns>A coordinate sequence.</returns>
         public virtual CoordinateSequence Create(Coordinate[] coordinates)
         {
-            var result = Create(coordinates?.Length ?? 0, CoordinateArrays.Dimension(coordinates), CoordinateArrays.Measures(coordinates));
+            (int count, int dimension, int measures) = GetCommonSequenceParameters(coordinates);
+            var result = Create(count, dimension, measures);
             if (coordinates != null)
             {
+                int spatial = dimension - measures;
                 for (int i = 0; i < coordinates.Length; i++)
                 {
-                    for (int dim = 0; dim < result.Dimension; dim++)
+                    var coord = coordinates[i];
+                    int coordDimension = Coordinates.Dimension(coord);
+                    int coordMeasures = Coordinates.Measures(coord);
+                    int coordSpatial = coordDimension - coordMeasures;
+                    for (int dim = 0; dim < coordSpatial; dim++)
                     {
-                        result.SetOrdinate(i, dim, coordinates[i][dim]);
+                        result.SetOrdinate(i, dim, coord[dim]);
+                    }
+
+                    for (int dim = coordSpatial; dim < spatial; dim++)
+                    {
+                        result.SetOrdinate(i, dim, Coordinate.NullOrdinate);
+                    }
+
+                    for (int measure = 0; measure < coordMeasures; measure++)
+                    {
+                        result.SetOrdinate(i, spatial + measure, coord[coordSpatial + measure]);
+                    }
+
+                    for (int measure = coordMeasures; measure < measures; measure++)
+                    {
+                        result.SetOrdinate(i, spatial + measure, Coordinate.NullOrdinate);
                     }
                 }
             }
@@ -87,10 +108,11 @@ namespace NetTopologySuite.Geometries
         /// An error should not be thrown.
         /// </remarks>
         /// <param name="size"></param>
-        /// <param name="dimension">the dimension of the coordinates in the sequence 
+        /// <param name="dimension">the dimension of the coordinates in the sequence
         /// (if user-specifiable, otherwise ignored)</param>
         /// <returns>A coordinate sequence</returns>
-        public /*virtual*/ CoordinateSequence Create(int size, int dimension) => Create(size, dimension, Math.Max(0, dimension - 3));
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
+        public CoordinateSequence Create(int size, int dimension) => Create(size, dimension, 0);
 
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" /> of the specified size and dimension
@@ -119,5 +141,52 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <returns>A coordinate sequence.</returns>
         public virtual CoordinateSequence Create(int size, Ordinates ordinates) => Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates & Ordinates), OrdinatesUtility.OrdinatesToMeasures(ordinates & Ordinates));
+
+        /// <summary>
+        /// Gets the three parameters needed to create any <see cref="CoordinateSequence"/> instance
+        /// (<see cref="CoordinateSequence.Count"/>, <see cref="CoordinateSequence.Dimension"/>, and
+        /// <see cref="CoordinateSequence.Measures"/>) such that the sequence can store all the data
+        /// from a given array of <see cref="Coordinate"/> instances.
+        /// </summary>
+        /// <param name="coordinates">
+        /// The array of <see cref="Coordinate"/> instances that the sequence will be created from.
+        /// </param>
+        /// <returns>
+        /// The values of the three parameters to use for creating the sequence.
+        /// </returns>
+        public static (int Count, int Dimension, int Measures) GetCommonSequenceParameters(Coordinate[] coordinates)
+        {
+            if (coordinates == null)
+            {
+                return (0, 2, 0);
+            }
+
+            int count = coordinates.Length;
+            int spatial = 2;
+            int measures = 0;
+
+            // figure out the minimum number of spatial dimensions and measures needed to hold all
+            // the data from the array.  this is NOT CoordinateArrays.Dimension(coordinates) and
+            // CoordinateArrays.Measures(coordinates): an array of only CoordinateZ and CoordinateM
+            // instances mixed together will give us dimension = 3 and measures = 1, which would
+            // mean that the resulting sequence would not contain Z.
+            foreach (var coord in coordinates)
+            {
+                int coordDimension = Coordinates.Dimension(coord);
+                int coordMeasures = Coordinates.Measures(coord);
+                int coordSpatial = coordDimension - coordMeasures;
+                if (coordSpatial > spatial)
+                {
+                    spatial = coordSpatial;
+                }
+
+                if (coordMeasures > measures)
+                {
+                    measures = coordMeasures;
+                }
+            }
+
+            return (count, spatial + measures, measures);
+        }
     }
 }

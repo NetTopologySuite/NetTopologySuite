@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
         private void CheckDim2(int size, CoordinateSequenceFactory factory)
         {
-            var seq = factory.Create(size, 2);
+            var seq = factory.Create(size, 2, 0);
 
             InitProgression(seq);
 
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
         private void CheckDim3(CoordinateSequenceFactory factory)
         {
-            var seq = factory.Create(5, 3);
+            var seq = factory.Create(5, 3, 0);
             InitProgression(seq);
 
             Assert.AreEqual(3, seq.Dimension, "Dimension should be 3");
@@ -151,20 +151,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
         public void CheckDim4(CoordinateSequenceFactory factory)
         {
-            var seq = factory.Create(5, 4);
+            var seq = factory.Create(5, 4, 0);
             InitProgression(seq);
 
             Assert.AreEqual(4, seq.Dimension, "Dimension should be 4");
             Assert.IsTrue(seq.HasZ, "Z should be present");
-            Assert.IsTrue(seq.HasM, "M should be present");
+            Assert.IsTrue(!seq.HasM, "M should not be present");
 
             var coord = seq.GetCoordinate(4);
-            Assert.IsTrue(coord is CoordinateZM);
-            var coordZM = (CoordinateZM)coord;
             Assert.AreEqual(4.0, coord.X);
             Assert.AreEqual(4.0, coord.Y);
-            Assert.AreEqual(4.0, coordZM.Z);
-            Assert.AreEqual(4.0, coordZM.M);
+            Assert.AreEqual(4.0, coord.Z);
+            Assert.AreEqual(4.0, coord[Ordinate.Spatial4]);
 
             var array = seq.ToCoordinateArray();
             Assert.AreEqual(coord, array[4]);
