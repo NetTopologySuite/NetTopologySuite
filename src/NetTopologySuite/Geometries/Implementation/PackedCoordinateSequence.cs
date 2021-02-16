@@ -224,39 +224,47 @@ namespace NetTopologySuite.Geometries.Implementation
                 coords = Array.Empty<Coordinate>();
 
             _coords = new double[coords.Length * Dimension];
-            _coords.AsSpan().Fill(double.NaN);
             if (coords.Length == 0)
             {
                 return;
             }
 
-            int coordDimension;
-            int coordMeasures;
             if (dimensionAndMeasuresCameFromCoords)
             {
-                coordDimension = dimension;
-                coordMeasures = measures;
+                for (int i = 0; i < coords.Length; i++)
+                {
+                    int offset = i * dimension;
+
+                    var coord = coords[i];
+                    for (int dim = 0; dim < dimension; dim++)
+                    {
+                        _coords[offset + dim] = coord[dim];
+                    }
+                }
             }
             else
             {
-                (_, coordDimension, coordMeasures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
-            }
+                _coords.AsSpan().Fill(double.NaN);
 
-            int spatial = dimension - measures;
-            int coordSpatial = coordDimension - coordMeasures;
-            for (int i = 0; i < coords.Length; i++)
-            {
-                int offset = i * dimension;
-
-                var coord = coords[i];
-                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                int spatial = dimension - measures;
+                for (int i = 0; i < coords.Length; i++)
                 {
-                    _coords[offset + dim] = coord[dim];
-                }
+                    int offset = i * dimension;
 
-                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
-                {
-                    _coords[offset + spatial + measure] = coord[coordSpatial + measure];
+                    var coord = coords[i];
+                    int coordDimension = Coordinates.Dimension(coord);
+                    int coordMeasures = Coordinates.Measures(coord);
+                    int coordSpatial = coordDimension - coordMeasures;
+
+                    for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                    {
+                        _coords[offset + dim] = coord[dim];
+                    }
+
+                    for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                    {
+                        _coords[offset + spatial + measure] = coord[coordSpatial + measure];
+                    }
                 }
             }
         }
@@ -438,39 +446,47 @@ namespace NetTopologySuite.Geometries.Implementation
                 coords = Array.Empty<Coordinate>();
 
             _coords = new float[coords.Length * Dimension];
-            _coords.AsSpan().Fill(float.NaN);
             if (coords.Length == 0)
             {
                 return;
             }
 
-            int coordDimension;
-            int coordMeasures;
             if (dimensionAndMeasuresCameFromCoords)
             {
-                coordDimension = dimension;
-                coordMeasures = measures;
+                for (int i = 0; i < coords.Length; i++)
+                {
+                    int offset = i * dimension;
+
+                    var coord = coords[i];
+                    for (int dim = 0; dim < dimension; dim++)
+                    {
+                        _coords[offset + dim] = (float)coord[dim];
+                    }
+                }
             }
             else
             {
-                (_, coordDimension, coordMeasures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
-            }
+                _coords.AsSpan().Fill(float.NaN);
 
-            int spatial = dimension - measures;
-            int coordSpatial = coordDimension - coordMeasures;
-            for (int i = 0; i < coords.Length; i++)
-            {
-                int offset = i * dimension;
-
-                var coord = coords[i];
-                for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                int spatial = dimension - measures;
+                for (int i = 0; i < coords.Length; i++)
                 {
-                    _coords[offset + dim] = (float)coord[dim];
-                }
+                    int offset = i * dimension;
 
-                for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
-                {
-                    _coords[offset + spatial + measure] = (float)coord[coordSpatial + measure];
+                    var coord = coords[i];
+                    int coordDimension = Coordinates.Dimension(coord);
+                    int coordMeasures = Coordinates.Measures(coord);
+                    int coordSpatial = coordDimension - coordMeasures;
+
+                    for (int dim = 0, dimEnd = Math.Min(spatial, coordSpatial); dim < dimEnd; dim++)
+                    {
+                        _coords[offset + dim] = (float)coord[dim];
+                    }
+
+                    for (int measure = 0, measureEnd = Math.Min(measures, coordMeasures); measure < measureEnd; measure++)
+                    {
+                        _coords[offset + spatial + measure] = (float)coord[coordSpatial + measure];
+                    }
                 }
             }
         }

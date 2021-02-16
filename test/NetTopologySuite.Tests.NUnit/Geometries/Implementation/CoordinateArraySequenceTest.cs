@@ -147,7 +147,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
             var array = new Coordinate[] { coord1, coord2, coord3, null };
             var seq = factory.Create(array);
-            Assert.That(seq.Dimension, Is.EqualTo(3));
+            Assert.That(seq.Dimension, Is.EqualTo(4));
             Assert.That(seq.Measures, Is.EqualTo(1));
             Assert.That(seq.GetCoordinate(0), Is.EqualTo(coord1));
             Assert.That(seq.GetCoordinate(1), Is.EqualTo(coord2));
