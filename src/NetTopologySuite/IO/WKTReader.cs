@@ -363,7 +363,7 @@ namespace NetTopologySuite.IO
             // if the sequences array is empty or null create an empty sequence
             if (sequences == null || sequences.Count == 0)
             {
-                return factory.CoordinateSequenceFactory.Create(0, ToDimension(ordinateFlags));
+                return factory.CoordinateSequenceFactory.Create(0, ToDimension(ordinateFlags), OrdinatesUtility.OrdinatesToMeasures(ordinateFlags));
             }
 
             if (sequences.Count == 1)

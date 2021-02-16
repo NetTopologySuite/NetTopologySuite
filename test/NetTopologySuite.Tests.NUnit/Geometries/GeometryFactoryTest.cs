@@ -62,11 +62,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckEmpty(Factory.CreateEmpty(Dimension.Point), typeof(Point));
             CheckEmpty(Factory.CreateEmpty(Dimension.Curve), typeof(LineString));
             CheckEmpty(Factory.CreateEmpty(Dimension.Surface), typeof(Polygon));
-    
+
             CheckEmpty(Factory.CreatePoint(), typeof(Point));
             CheckEmpty(Factory.CreateLineString(), typeof(LineString));
             CheckEmpty(Factory.CreatePolygon(), typeof(Polygon));
-    
+
             CheckEmpty(Factory.CreateMultiPoint(), typeof(MultiPoint));
             CheckEmpty(Factory.CreateMultiLineString(), typeof(MultiLineString));
             CheckEmpty(Factory.CreateMultiPolygon(), typeof(MultiPolygon));
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestCopyGeometryWithNonDefaultDimension()
         {
             var gf = new GeometryFactory(CoordinateArraySequenceFactory.Instance);
-            var mpSeq = gf.CoordinateSequenceFactory.Create(1, 2);
+            var mpSeq = gf.CoordinateSequenceFactory.Create(1, 2, 0);
             mpSeq.SetOrdinate(0, Ordinate.X, 50);
             mpSeq.SetOrdinate(0, Ordinate.Y, -2);
 

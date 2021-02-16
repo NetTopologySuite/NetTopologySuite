@@ -562,7 +562,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             // create a sequence capable of storing all ordinate values.
             var res = GetCSFactory(ordinateFlags)
-                .Create(size, RequiredDimension(ordinateFlags));
+                .Create(size, RequiredDimension(ordinateFlags), OrdinatesUtility.OrdinatesToMeasures(ordinateFlags));
 
             // fill in values
             int k = 0;

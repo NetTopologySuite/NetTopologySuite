@@ -111,6 +111,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="dimension">the dimension of the coordinates in the sequence
         /// (if user-specifiable, otherwise ignored)</param>
         /// <returns>A coordinate sequence</returns>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public CoordinateSequence Create(int size, int dimension) => Create(size, dimension, 0);
 
         /// <summary>
