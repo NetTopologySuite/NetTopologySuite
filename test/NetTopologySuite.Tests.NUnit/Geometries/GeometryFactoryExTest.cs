@@ -106,7 +106,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
-        [Description("https://github.com/NetTopologySuite/NetTopologySuite/issues/437")]
+        [Category("GitHub Issue")]
+        [Category("Issue437")]
         public void SettingSRIDShouldCopyFactoryFaithfully()
         {
             var gf = new GeometryFactoryEx

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
@@ -129,6 +130,37 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
                 }
             }
         }
+
+        [Test]
+        [Category("GitHub Issue")]
+        [Category("Issue437")]
+        public void CustomGeometryFactoryShouldBeAllowedWithSRID()
+        {
+            const int expectedSRID = 4326;
+            string xml = $@"
+<gml:Point srsName='urn:ogc:def:crs:EPSG::{expectedSRID}' xmlns:gml='http://www.opengis.net/gml'>
+  <gml:coordinates>45.67, 65.43</gml:coordinates>
+</gml:Point>";
+
+            var pm = new PrecisionModel(10);
+            var csf = PackedCoordinateSequenceFactory.DoubleFactory;
+            var orientation = LinearRingOrientation.Clockwise;
+            var gr = new GMLReader(new GeometryFactoryEx(pm, 0, csf)
+            {
+                OrientationOfExteriorRing = orientation,
+            });
+
+            foreach (var readMethod in GetReadMethods())
+            {
+                var pt = (Point)readMethod(gr, xml);
+                Assert.That(pt.Factory, Is.InstanceOf<GeometryFactoryEx>());
+                Assert.That(pt.Factory.PrecisionModel, Is.EqualTo(pm));
+                Assert.That(pt.Factory.SRID, Is.EqualTo(expectedSRID));
+                Assert.That(pt.Factory.CoordinateSequenceFactory, Is.EqualTo(csf));
+                Assert.That(((GeometryFactoryEx)pt.Factory).OrientationOfExteriorRing, Is.EqualTo(orientation));
+            }
+        }
+
 
         private static GeometryCollection DoTest(Type expectedType)
         {
