@@ -1,6 +1,8 @@
 ﻿using System;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
+
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
@@ -103,6 +105,33 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             gf = new GeometryFactoryEx { OrientationOfExteriorRing = LinearRingOrientation.CounterClockwise };
             Assert.IsTrue(((Polygon)gf.ToGeometry(env)).Shell.IsCCW);
+        }
+
+        [Test]
+        [Category("GitHub Issue")]
+        [Category("Issue437")]
+        public void SettingSRIDShouldCopyFactoryFaithfully()
+        {
+            var pm = new PrecisionModel(10);
+            const int initialSRID = 0;
+            var csf = PackedCoordinateSequenceFactory.FloatFactory;
+            const LinearRingOrientation orientation = LinearRingOrientation.Clockwise;
+
+            var gf = new GeometryFactoryEx(pm, initialSRID, csf)
+            {
+                OrientationOfExteriorRing = orientation,
+            };
+
+            var env = new Envelope(-10, 10, -8, 8);
+            var g = gf.ToGeometry(env);
+
+            const int expectedSRID = 4326;
+            g.SRID = expectedSRID;
+            Assert.That(g.Factory, Is.InstanceOf<GeometryFactoryEx>()
+                                     .With.Property(nameof(GeometryFactoryEx.SRID)).EqualTo(expectedSRID)
+                                     .With.Property(nameof(GeometryFactoryEx.OrientationOfExteriorRing)).EqualTo(orientation)
+                                     .With.Property(nameof(GeometryFactoryEx.PrecisionModel)).EqualTo(pm)
+                                     .With.Property(nameof(GeometryFactoryEx.CoordinateSequenceFactory)).EqualTo(csf));
         }
 
         private static void TestShellRingOrientationEnforcement(LinearRingOrientation ringOrientation)

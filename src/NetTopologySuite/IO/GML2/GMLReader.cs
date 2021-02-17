@@ -496,8 +496,9 @@ namespace NetTopologySuite.IO.GML2
 
         protected virtual GeometryFactory GetFactory(string srsName, GeometryFactory gfDefault)
         {
+            var factory = gfDefault ?? Factory;
             if (string.IsNullOrWhiteSpace(srsName))
-                return gfDefault ?? Factory;
+                return factory;
 
             if (!int.TryParse(srsName, out int srid))
             {
@@ -505,13 +506,10 @@ namespace NetTopologySuite.IO.GML2
                 if (match.Success)
                     srid = int.Parse(match.Groups[1].Value);
                 else
-                    return gfDefault ?? Factory;
+                    return factory;
             }
 
-            return NtsGeometryServices.Instance.CreateGeometryFactory(
-                gfDefault.PrecisionModel,
-                srid,
-                gfDefault.CoordinateSequenceFactory);
+            return factory.WithSRID(srid);
         }
 
         protected static string RemoveUnneccessaryWhitespace(string text)
