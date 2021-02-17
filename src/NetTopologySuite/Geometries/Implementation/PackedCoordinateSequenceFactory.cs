@@ -39,9 +39,6 @@ namespace NetTopologySuite.Geometries.Implementation
         public static readonly PackedCoordinateSequenceFactory FloatFactory =
             new PackedCoordinateSequenceFactory(PackedType.Float);
 
-        internal const int DefaultMeasures = 0;
-        internal const int DefaultDimension = 2;
-
         private PackedType _type = PackedType.Double;
 
         /// <summary>
@@ -112,9 +109,10 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="packedCoordinates">The array containing coordinate values</param>
         /// <param name="dimension">The coordinate dimension</param>
         /// <returns>A packed coordinate sequence of <see cref="Type"/></returns>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public CoordinateSequence Create(double[] packedCoordinates, int dimension)
         {
-            return Create(packedCoordinates, dimension, DefaultMeasures);
+            return Create(packedCoordinates, dimension, 0);
         }
 
         /// <summary>
@@ -139,9 +137,10 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="packedCoordinates">The array containing coordinate values</param>
         /// <param name="dimension">The coordinate dimension</param>
         /// <returns>A packed coordinate sequence of <see cref="Type"/></returns>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public CoordinateSequence Create(float[] packedCoordinates, int dimension)
         {
-            return Create(packedCoordinates, dimension, DefaultMeasures);
+            return Create(packedCoordinates, dimension, 0);
         }
 
         /// <summary>
