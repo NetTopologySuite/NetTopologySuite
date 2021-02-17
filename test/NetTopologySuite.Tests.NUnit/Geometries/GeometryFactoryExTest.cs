@@ -105,6 +105,26 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(((Polygon)gf.ToGeometry(env)).Shell.IsCCW);
         }
 
+        [Test]
+        [Description("https://github.com/NetTopologySuite/NetTopologySuite/issues/437")]
+        public void SettingSRIDShouldCopyFactoryFaithfully()
+        {
+            var gf = new GeometryFactoryEx
+            {
+                OrientationOfExteriorRing = LinearRingOrientation.Clockwise,
+            };
+
+            var env = new Envelope(-10, 10, -8, 8);
+            var g = gf.ToGeometry(env);
+
+            g.SRID = 4326;
+            Assert.That(g.Factory, Is.InstanceOf<GeometryFactoryEx>()
+                                     .With.Property(nameof(GeometryFactoryEx.SRID)).EqualTo(4326)
+                                     .With.Property(nameof(GeometryFactoryEx.OrientationOfExteriorRing)).EqualTo(LinearRingOrientation.Clockwise)
+                                     .With.Property(nameof(GeometryFactoryEx.PrecisionModel)).EqualTo(gf.PrecisionModel)
+                                     .With.Property(nameof(GeometryFactoryEx.CoordinateSequenceFactory)).EqualTo(gf.CoordinateSequenceFactory));
+        }
+
         private static void TestShellRingOrientationEnforcement(LinearRingOrientation ringOrientation)
         {
             var gf = new GeometryFactoryEx();

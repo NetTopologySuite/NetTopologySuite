@@ -703,6 +703,24 @@ namespace NetTopologySuite.Geometries
             return editor.Edit(g, operation);
         }
 
+        /// <summary>
+        /// Returns a new <see cref="GeometryFactory"/> whose <see cref="GeometryFactory.SRID"/> is
+        /// the given value and whose other values and behavior are, as near as we possibly can make
+        /// it, the same as our own.
+        /// </summary>
+        /// <param name="srid">
+        /// The <see cref="GeometryFactory.SRID"/> for the result.
+        /// </param>
+        /// <returns>
+        /// The cloned instance.
+        /// </returns>
+        public virtual GeometryFactory WithSRID(int srid)
+        {
+            return _srid == srid
+                ? this
+                : _services.CreateGeometryFactory(_precisionModel, srid, _coordinateSequenceFactory);
+        }
+
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {

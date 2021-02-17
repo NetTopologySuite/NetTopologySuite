@@ -108,7 +108,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The setter of this property has to be used prior to any call
-        /// to <c>CreatePolygon</c> or <c>"CreateMultiPolygon</c></remarks>
+        /// to <c>CreatePolygon</c>, <c>CreateMultiPolygon</c>, or
+        /// <c>ReplaceSRID</c></remarks>
         /// <seealso cref="GeometryFactory.CreatePolygon(Coordinate[])"/>
         /// <seealso cref="GeometryFactory.CreatePolygon(CoordinateSequence)"/>
         /// <seealso cref="GeometryFactory.CreatePolygon(LinearRing)"/>
@@ -120,7 +121,7 @@ namespace NetTopologySuite.Geometries
             set
             {
                 if (_polygonShellRingOrientation.IsValueCreated && _polygonShellRingOrientation.Value != value)
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("This value is only allowed to be set before anything observes it.");
                 if ((int)value < -1 || (int)value > 1)
                     throw new ArgumentOutOfRangeException();
 
@@ -203,6 +204,21 @@ namespace NetTopologySuite.Geometries
                 polygons[i] = CreatePolygon(polygons[i].Shell, polygons[i].Holes);
 
             return new MultiPolygon(polygons, this);
+        }
+
+        /// <inheritdoc />
+        public override GeometryFactory WithSRID(int srid)
+        {
+            var clone = base.WithSRID(srid);
+            if (!(clone is GeometryFactoryEx cloneEx))
+            {
+                cloneEx = new GeometryFactoryEx(PrecisionModel, srid, CoordinateSequenceFactory, GeometryServices);
+            }
+
+            // ensure that the value is initialized, to minimize the confusion when this is copied.
+            _ = _polygonShellRingOrientation.Value;
+            cloneEx._polygonShellRingOrientation = _polygonShellRingOrientation;
+            return cloneEx;
         }
 
         /// <summary>
