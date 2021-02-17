@@ -136,28 +136,31 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
         [Category("Issue437")]
         public void CustomGeometryFactoryShouldBeAllowedWithSRID()
         {
+            var pm = new PrecisionModel(10);
+            const int initialSRID = 0;
+            var csf = PackedCoordinateSequenceFactory.FloatFactory;
+            const LinearRingOrientation orientation = LinearRingOrientation.Clockwise;
+
+            var gf = new GeometryFactoryEx(pm, initialSRID, csf)
+            {
+                OrientationOfExteriorRing = orientation,
+            };
+
             const int expectedSRID = 4326;
             string xml = $@"
 <gml:Point srsName='urn:ogc:def:crs:EPSG::{expectedSRID}' xmlns:gml='http://www.opengis.net/gml'>
   <gml:coordinates>45.67, 65.43</gml:coordinates>
 </gml:Point>";
 
-            var pm = new PrecisionModel(10);
-            var csf = PackedCoordinateSequenceFactory.DoubleFactory;
-            var orientation = LinearRingOrientation.Clockwise;
-            var gr = new GMLReader(new GeometryFactoryEx(pm, 0, csf)
-            {
-                OrientationOfExteriorRing = orientation,
-            });
-
+            var gr = new GMLReader(gf);
             foreach (var readMethod in GetReadMethods())
             {
                 var pt = (Point)readMethod(gr, xml);
-                Assert.That(pt.Factory, Is.InstanceOf<GeometryFactoryEx>());
-                Assert.That(pt.Factory.PrecisionModel, Is.EqualTo(pm));
-                Assert.That(pt.Factory.SRID, Is.EqualTo(expectedSRID));
-                Assert.That(pt.Factory.CoordinateSequenceFactory, Is.EqualTo(csf));
-                Assert.That(((GeometryFactoryEx)pt.Factory).OrientationOfExteriorRing, Is.EqualTo(orientation));
+                Assert.That(pt.Factory, Is.InstanceOf<GeometryFactoryEx>()
+                                          .With.Property(nameof(GeometryFactoryEx.SRID)).EqualTo(expectedSRID)
+                                          .With.Property(nameof(GeometryFactoryEx.OrientationOfExteriorRing)).EqualTo(orientation)
+                                          .With.Property(nameof(GeometryFactoryEx.PrecisionModel)).EqualTo(pm)
+                                          .With.Property(nameof(GeometryFactoryEx.CoordinateSequenceFactory)).EqualTo(csf));
             }
         }
 

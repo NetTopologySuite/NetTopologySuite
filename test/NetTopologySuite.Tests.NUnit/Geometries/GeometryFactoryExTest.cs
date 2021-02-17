@@ -1,6 +1,8 @@
 ﻿using System;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
+
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
@@ -110,20 +112,26 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Category("Issue437")]
         public void SettingSRIDShouldCopyFactoryFaithfully()
         {
-            var gf = new GeometryFactoryEx
+            var pm = new PrecisionModel(10);
+            const int initialSRID = 0;
+            var csf = PackedCoordinateSequenceFactory.FloatFactory;
+            const LinearRingOrientation orientation = LinearRingOrientation.Clockwise;
+
+            var gf = new GeometryFactoryEx(pm, initialSRID, csf)
             {
-                OrientationOfExteriorRing = LinearRingOrientation.Clockwise,
+                OrientationOfExteriorRing = orientation,
             };
 
             var env = new Envelope(-10, 10, -8, 8);
             var g = gf.ToGeometry(env);
 
-            g.SRID = 4326;
+            const int expectedSRID = 4326;
+            g.SRID = expectedSRID;
             Assert.That(g.Factory, Is.InstanceOf<GeometryFactoryEx>()
-                                     .With.Property(nameof(GeometryFactoryEx.SRID)).EqualTo(4326)
-                                     .With.Property(nameof(GeometryFactoryEx.OrientationOfExteriorRing)).EqualTo(LinearRingOrientation.Clockwise)
-                                     .With.Property(nameof(GeometryFactoryEx.PrecisionModel)).EqualTo(gf.PrecisionModel)
-                                     .With.Property(nameof(GeometryFactoryEx.CoordinateSequenceFactory)).EqualTo(gf.CoordinateSequenceFactory));
+                                     .With.Property(nameof(GeometryFactoryEx.SRID)).EqualTo(expectedSRID)
+                                     .With.Property(nameof(GeometryFactoryEx.OrientationOfExteriorRing)).EqualTo(orientation)
+                                     .With.Property(nameof(GeometryFactoryEx.PrecisionModel)).EqualTo(pm)
+                                     .With.Property(nameof(GeometryFactoryEx.CoordinateSequenceFactory)).EqualTo(csf));
         }
 
         private static void TestShellRingOrientationEnforcement(LinearRingOrientation ringOrientation)
