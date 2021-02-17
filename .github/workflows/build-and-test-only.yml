@@ -1,13 +1,5 @@
 name: Build and Test (only)
 
-on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    branches:
-      - develop
-
 jobs:
   build:
     name: ${{ matrix.os }}
@@ -41,3 +33,4 @@ jobs:
       with:
         name: NuGet Package Files (${{ matrix.os }})
         path: artifacts
+
