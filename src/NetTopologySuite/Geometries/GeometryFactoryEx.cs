@@ -209,16 +209,12 @@ namespace NetTopologySuite.Geometries
         /// <inheritdoc />
         public override GeometryFactory WithSRID(int srid)
         {
-            var clone = base.WithSRID(srid);
-            if (!(clone is GeometryFactoryEx cloneEx))
-            {
-                cloneEx = new GeometryFactoryEx(PrecisionModel, srid, CoordinateSequenceFactory, GeometryServices);
-            }
+            var clone = new GeometryFactoryEx(PrecisionModel, srid, CoordinateSequenceFactory, GeometryServices);
 
             // ensure that the value is initialized, to minimize the confusion when this is copied.
             _ = _polygonShellRingOrientation.Value;
-            cloneEx._polygonShellRingOrientation = _polygonShellRingOrientation;
-            return cloneEx;
+            clone._polygonShellRingOrientation = _polygonShellRingOrientation;
+            return clone;
         }
 
         /// <summary>
