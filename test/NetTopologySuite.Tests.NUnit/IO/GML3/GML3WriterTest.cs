@@ -298,6 +298,11 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML3
         {
             var document = new XDocument(element);
             var actual = new GMLReader().Read(document);
+
+            // multi-geometries implement IEnumerable<Geometry> such that the first element in the
+            // sequence is the instance itself, so the default NUnit equality constraint behavior
+            // would overflow the stack.  work around that by telling it to use the default equality
+            // comparer for the Geometry type, which properly just does Equals(object).
             Assert.That(actual, Is.EqualTo(expected).Using<Geometry>(EqualityComparer<Geometry>.Default));
         }
     }
