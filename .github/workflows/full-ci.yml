@@ -53,6 +53,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: NuGet Package Files (ubuntu-latest)
+        path: artifacts
 
     - name: Publish Package Files to MyGet
       run: dotnet nuget push artifacts/*.nupkg -s https://www.myget.org/F/nettopologysuite/api/v3/index.json -k $MYGET_API_KEY
@@ -77,6 +78,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: NuGet Package Files (ubuntu-latest)
+        path: artifacts
 
     - name: Publish Package Files to NuGet
       run: echo THIS IS WHERE I WOULD PUSH TO NUGET
