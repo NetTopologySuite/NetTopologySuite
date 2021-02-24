@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
 
     needs: pack
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/gh-505')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
 
     steps:
     - name: Setup .NET Core 3.1
@@ -81,6 +81,8 @@ jobs:
         path: artifacts
 
     - name: Publish Package Files to NuGet
-      run: echo THIS IS WHERE I WOULD PUSH TO NUGET
+      run: dotnet nuget push artifacts/*.nupkg -s https://www.myget.org/F/nettopologysuite/api/v3/index.json -k $NUGET_API_KEY
       shell: bash
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
