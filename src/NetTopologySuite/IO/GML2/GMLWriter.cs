@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO.GML2
@@ -121,6 +122,17 @@ namespace NetTopologySuite.IO.GML2
         {
             foreach (var coord in coordinates)
                 Write(coord, writer);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="writer"></param>
+        [Obsolete("Use the overload that accepts a CoordinateSequence instead.")]
+        protected void WriteCoordinates(Coordinate[] coordinates, XmlWriter writer)
+        {
+            WriteCoordinates(new CoordinateArraySequence(coordinates), writer);
         }
 
         /// <summary>
