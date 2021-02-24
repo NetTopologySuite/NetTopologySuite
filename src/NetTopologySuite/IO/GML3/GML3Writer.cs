@@ -2,7 +2,7 @@ namespace NetTopologySuite.IO.GML3
 {
     /// <summary>
     /// Writes the GML representation of the features of NetTopologySuite model.
-    /// Uses GML 3.2.2 <c>Geometry.xsd</c> schema for base for features.
+    /// Uses GML 3.2.2 <c>gml.xsd</c> schema for base for features.
     /// </summary>
     public class GML3Writer : GML2.GMLWriter
     {
