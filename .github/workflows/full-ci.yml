@@ -81,7 +81,7 @@ jobs:
         path: artifacts
 
     - name: Publish Package Files to NuGet
-      run: dotnet nuget push artifacts/*.nupkg -s https://www.myget.org/F/nettopologysuite/api/v3/index.json -k $NUGET_API_KEY
+      run: dotnet nuget push artifacts/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
       shell: bash
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
