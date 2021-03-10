@@ -21,6 +21,8 @@ namespace NetTopologySuite.Tests.NUnit.Index
             IsSuccess = true;
         }
 
+        public int ItemCount => CellsPerGridSide * CellsPerGridSide * 2;
+
         public bool IsSuccess { get; private set; }
 
         public ISpatialIndex<object> SpatialIndex { get; set; }
