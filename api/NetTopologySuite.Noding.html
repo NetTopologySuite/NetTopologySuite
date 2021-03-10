@@ -131,16 +131,20 @@ Clients can choose to rerun the noding using a lower precision model.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.MCIndexNoder.html">MCIndexNoder</a></h4>
       <section><p>Nodes a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s using a index based
-on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <see cref="!:ISpatialIndex"></see>.
-The <see cref="!:ISpatialIndex"></see> used should be something that supports
+on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a>.
+The <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a> used should be something that supports
 envelope (range) queries efficiently (such as a <code>Quadtree</code>&quot;
 or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a>.</p>
+<p>
+The noder supports using an overlap tolerance distance.
+This allows determining segment intersection using a buffer for uses
+involving snapping with a distance tolerance.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.MCIndexNoder.SegmentOverlapAction.html">MCIndexNoder.SegmentOverlapAction</a></h4>
       <section></section>
       <h4><a class="xref" href="NetTopologySuite.Noding.MCIndexSegmentSetMutualIntersector.html">MCIndexSegmentSetMutualIntersector</a></h4>
       <section><p>Intersects two sets of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s using a index based
-on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <see cref="!:ISpatialIndex"></see>.</p>
+on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a>.</p>
 <p>
 Thread-safe and immutable.
 </section>
@@ -162,7 +166,7 @@ if any exist.</p>
 <p>
 Non-noded intersections include:
 <p>The finder can be limited to finding only interior intersections
-by setting <see cref="!:InteriorIntersectionOnly"></see>.</p>
+by setting <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersectionsOnly">InteriorIntersectionsOnly</a>.</p>
 <p>
 By default only the first intersection is found,
 but all can be found by setting {@link #setFindAllIntersections(boolean)
@@ -187,6 +191,18 @@ which can cause zero-length line segments to be created.
 These in turn can cause problems when used to build a planar graph.
 This situation should be checked for and collapsed segments removed if necessary.
 </p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.SegmentExtractingNoder.html">SegmentExtractingNoder</a></h4>
+      <section><p>A noder which extracts all line segments
+as <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s.
+This enables fast overlay of geometries which are known to be already fully noded.
+In particular, it provides fast union of polygonal and linear coverages.
+Unioning a noded set of lines is an effective way
+to perform line merging and line dissolving.</p>
+<p>
+No precision reduction is carried out. 
+If that is required, another noder must be used (such as a snap-rounding noder),
+or the input must be precision-reduced beforehand.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.SegmentIntersectionDetector.html">SegmentIntersectionDetector</a></h4>
       <section><p>Detects and records an intersection between two <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s,
@@ -225,6 +241,15 @@ brute-force comparison.</p>
       <section><p>Base class for <a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a>s which make a single pass to find intersections.
 This allows using a custom <a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a>
 (which for instance may simply identify intersections, rather than insert them).</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.ValidatingNoder.html">ValidatingNoder</a></h4>
+      <section><p>A wrapper for <a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a>s which validates
+the output arrangement is correctly noded.
+An arrangement of line segments is fully noded if
+there is no line segment
+which has another segment intersecting its interior.
+If the noding is not correct, a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown
+with details of the first invalid location found.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>

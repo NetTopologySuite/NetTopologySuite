@@ -102,8 +102,14 @@ than the given distance tolerance.</p>
   </div>
   <h5 id="NetTopologySuite_Densify_Densifier_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Densified polygonal geometries are guaranteed to be topologically correct.</p>
-<p>The coordinates created during densification respect the input geometry&apos;s <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.</p>
-<p><strong>Note:</strong> At some future point this class will offer a variety of densification strategies.</p>
+<p>
+The coordinates created during densification respect the input geometry&apos;s <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.
+<p>
+By default polygonal results are processed to ensure they are valid.
+This processing is costly, and it is very rare for results to be invalid.
+Validation processing can be disabled by calling the {@link #setValidate(boolean)} method.
+<p>
+<strong>Note:</strong> At some future point this class will offer a variety of densification strategies.
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -112,7 +118,7 @@ than the given distance tolerance.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Densify_Densifier__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Densify.Densifier.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L73">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L85">View Source</a>
   </span>
   <a id="NetTopologySuite_Densify_Densifier__ctor_" data-uid="NetTopologySuite.Densify.Densifier.#ctor*"></a>
   <h4 id="NetTopologySuite_Densify_Densifier__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Densify.Densifier.#ctor(NetTopologySuite.Geometries.Geometry)">Densifier(Geometry)</h4>
@@ -148,7 +154,7 @@ than the given distance tolerance.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Densify_Densifier_DistanceTolerance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Densify.Densifier.DistanceTolerance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L84">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L96">View Source</a>
   </span>
   <a id="NetTopologySuite_Densify_Densifier_DistanceTolerance_" data-uid="NetTopologySuite.Densify.Densifier.DistanceTolerance*"></a>
   <h4 id="NetTopologySuite_Densify_Densifier_DistanceTolerance" data-uid="NetTopologySuite.Densify.Densifier.DistanceTolerance">DistanceTolerance</h4>
@@ -177,6 +183,38 @@ The distance tolerance must be positive.</p>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Densify_Densifier_Validate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Densify.Densifier.Validate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L112">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Densify_Densifier_Validate_" data-uid="NetTopologySuite.Densify.Densifier.Validate*"></a>
+  <h4 id="NetTopologySuite_Densify_Densifier_Validate" data-uid="NetTopologySuite.Densify.Densifier.Validate">Validate</h4>
+  <div class="markdown level1 summary"><p>Gets or sets whether polygonal results are processed to ensure they are valid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Validate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if polygonal input is validated.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -184,7 +222,7 @@ The distance tolerance must be positive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Densify_Densifier_Densify_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Densify.Densifier.Densify(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L27">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L33">View Source</a>
   </span>
   <a id="NetTopologySuite_Densify_Densifier_Densify_" data-uid="NetTopologySuite.Densify.Densifier.Densify*"></a>
   <h4 id="NetTopologySuite_Densify_Densifier_Densify_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Densify.Densifier.Densify(NetTopologySuite.Geometries.Geometry,System.Double)">Densify(Geometry, Double)</h4>
@@ -240,7 +278,7 @@ The distance tolerance must be positive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Densify_Densifier_GetResultGeometry.md&amp;value=---%0Auid%3A%20NetTopologySuite.Densify.Densifier.GetResultGeometry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L100">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L122">View Source</a>
   </span>
   <a id="NetTopologySuite_Densify_Densifier_GetResultGeometry_" data-uid="NetTopologySuite.Densify.Densifier.GetResultGeometry*"></a>
   <h4 id="NetTopologySuite_Densify_Densifier_GetResultGeometry" data-uid="NetTopologySuite.Densify.Densifier.GetResultGeometry">GetResultGeometry()</h4>
@@ -278,7 +316,7 @@ The distance tolerance must be positive.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Densify_Densifier.md&amp;value=---%0Auid%3A%20NetTopologySuite.Densify.Densifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Densify/Densifier.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

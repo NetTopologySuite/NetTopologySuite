@@ -138,13 +138,20 @@ The following join styles are supported:
 </ul>
 </p>
 <p>
-The buffer algorithm can perform simplification on the input to increase performance.
+The buffer algorithm may perform simplification on the input to increase performance.
 The simplification is performed a way that always increases the buffer area
 (so that the simplified input covers the original input).
 The degree of simplification can be specified with <a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html#NetTopologySuite_Operation_Buffer_BufferParameters_SimplifyFactor">SimplifyFactor</a>,
 with a <a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html#NetTopologySuite_Operation_Buffer_BufferParameters_DefaultSimplifyFactor">DefaultSimplifyFactor</a> used otherwise.
 Note that if the buffer distance is zero then so is the computed simplify tolerance,
 no matter what the simplify factor.
+</p>
+<p>
+Buffer results are always valid geometry.
+Given this, computing a zero-width buffer of an invalid polygonal geometry is
+an effective way to &quot;validify&quot; the geometry.
+Note however that in the case of self-intersecting &quot;bow-tie&quot; geometries,
+only the largest enclosed area will be retained.
 </p>
 </div>
   <h3 id="constructors">Constructors
@@ -154,7 +161,7 @@ no matter what the simplify factor.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L186">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L193">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferOp__ctor_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferOp__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.#ctor(NetTopologySuite.Geometries.Geometry)">BufferOp(Geometry)</h4>
@@ -188,7 +195,7 @@ no matter what the simplify factor.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Buffer_BufferParameters_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Buffer.BufferParameters)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L197">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L204">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferOp__ctor_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Buffer_BufferParameters_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Buffer.BufferParameters)">BufferOp(Geometry, BufferParameters)</h4>
@@ -231,7 +238,7 @@ with the given set of parameters</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp_QuadrantSegments.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp.QuadrantSegments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L206">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L213">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferOp_QuadrantSegments_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.QuadrantSegments*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferOp_QuadrantSegments" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.QuadrantSegments">QuadrantSegments</h4>
@@ -264,7 +271,7 @@ with the given set of parameters</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp_Buffer_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp.Buffer(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L134">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L141">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferOp_Buffer_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.Buffer*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferOp_Buffer_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.Buffer(NetTopologySuite.Geometries.Geometry,System.Double)">Buffer(Geometry, Double)</h4>
@@ -320,7 +327,7 @@ with the given set of parameters</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp_Buffer_NetTopologySuite_Geometries_Geometry_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp.Buffer(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CNetTopologySuite.Operation.Buffer.BufferParameters)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L151">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L158">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferOp_Buffer_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.Buffer*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferOp_Buffer_NetTopologySuite_Geometries_Geometry_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.Buffer(NetTopologySuite.Geometries.Geometry,System.Double,NetTopologySuite.Operation.Buffer.BufferParameters)">Buffer(Geometry, Double, BufferParameters)</h4>
@@ -383,7 +390,7 @@ and accuracy of approximation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp_Buffer_NetTopologySuite_Geometries_Geometry_System_Double_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp.Buffer(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L166">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L173">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferOp_Buffer_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.Buffer*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferOp_Buffer_NetTopologySuite_Geometries_Geometry_System_Double_System_Int32_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.Buffer(NetTopologySuite.Geometries.Geometry,System.Double,System.Int32)">Buffer(Geometry, Double, Int32)</h4>
@@ -446,7 +453,7 @@ and accuracy of approximation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp_GetResultGeometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp.GetResultGeometry(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L217">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L224">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferOp_GetResultGeometry_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.GetResultGeometry*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferOp_GetResultGeometry_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.BufferOp.GetResultGeometry(System.Double)">GetResultGeometry(Double)</h4>
@@ -502,7 +509,7 @@ and accuracy of approximation.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferOp.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferOp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L62" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferOp.cs/#L69" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

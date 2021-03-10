@@ -119,6 +119,13 @@ is the ordering in the forward direction.</p>
 in the forward direction of their coordinates,
 using lexicographic ordering.</p>
 </section>
+      <h4><a class="xref" href="NetTopologySuite.Geometries.CoordinateEqualityComparer.html">CoordinateEqualityComparer</a></h4>
+      <section><p>A class that can be used to test coordinates for equality.</p>
+<p>
+It uses the algorithm that was default for NTS prior to v2.2,
+i.e. checks if the 2d distance between coordinates <code>x</code>
+and <code>y</code> is less than or equal to a tolerance value.
+</section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.CoordinateList.html">CoordinateList</a></h4>
       <section><p>A list of Coordinates, which may
 be set to prevent repeated coordinates from occurring in the list.</p>
@@ -213,6 +220,9 @@ from lists of Coordinates.</p>
       <h4><a class="xref" href="NetTopologySuite.Geometries.GeometryFactoryEx.html">GeometryFactoryEx</a></h4>
       <section><p>An extended <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> that is capable of enforcing a ring orientation for polygons.</p>
 </section>
+      <h4><a class="xref" href="NetTopologySuite.Geometries.GeometryOverlay.html">GeometryOverlay</a></h4>
+      <section><p>A class that encapsulates geometry overlay functionality</p>
+</section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.IntersectionMatrix.html">IntersectionMatrix</a></h4>
       <section><p>Models a <strong>Dimensionally Extended Nine-Intersection Model (DE-9IM)</strong> matrix.</p>
 </section>
@@ -230,7 +240,7 @@ object as a way of computing segment properties on the
 segments defined by arrays or lists of <code>Coordinate</code>s.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></h4>
-      <section><p>Models an OGC-style <pre><code>LineString</code></pre></p>
+      <section><p>Models an OGC-style <code>LineString</code></p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.LocationUtility.html">LocationUtility</a></h4>
       <section><p>Utility class for <a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a> enumeration</p>
@@ -254,6 +264,12 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
 </section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.OrdinatesUtility.html">OrdinatesUtility</a></h4>
       <section><p>Static utility functions for dealing with <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> and dimension</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Geometries.PerOrdinateEqualityComparer.html">PerOrdinateEqualityComparer</a></h4>
+      <section><p>A class that can be used to test coordinates for equality.</p>
+<p>
+This class test for each ordinate if the distance is less
+than a tolerance value.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></h4>
       <section><p>Represents a single point.</p>
@@ -292,6 +308,15 @@ points for all <code>Geometry</code>s.</p>
       <h4><a class="xref" href="NetTopologySuite.Geometries.Triangle.html">Triangle</a></h4>
       <section><p>Represents a planar triangle, and provides methods for calculating various
 properties of triangles.</p>
+</section>
+    <h3 id="structs">Structs
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Geometries.Position.html">Position</a></h4>
+      <section><p>Indicates the position of a location relative to a
+node or edge component of a planar topological structure.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Geometries.Quadrant.html">Quadrant</a></h4>
+      <section><p>Quadrant values</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>

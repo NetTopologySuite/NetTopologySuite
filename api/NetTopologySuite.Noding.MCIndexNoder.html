@@ -84,10 +84,14 @@
   <h1 id="NetTopologySuite_Noding_MCIndexNoder" data-uid="NetTopologySuite.Noding.MCIndexNoder" class="text-break">Class MCIndexNoder
   </h1>
   <div class="markdown level0 summary"><p>Nodes a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s using a index based
-on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <see cref="!:ISpatialIndex"></see>.
-The <see cref="!:ISpatialIndex"></see> used should be something that supports
+on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a>.
+The <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a> used should be something that supports
 envelope (range) queries efficiently (such as a <code>Quadtree</code>&quot;
 or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a>.</p>
+<p>
+The noder supports using an overlap tolerance distance.
+This allows determining segment intersection using a buffer for uses
+involving snapping with a distance tolerance.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -119,7 +123,7 @@ or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L27">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L33">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_MCIndexNoder__ctor_" data-uid="NetTopologySuite.Noding.MCIndexNoder.#ctor*"></a>
   <h4 id="NetTopologySuite_Noding_MCIndexNoder__ctor" data-uid="NetTopologySuite.Noding.MCIndexNoder.#ctor">MCIndexNoder()</h4>
@@ -135,7 +139,7 @@ or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder__ctor_NetTopologySuite_Noding_ISegmentIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder.%23ctor(NetTopologySuite.Noding.ISegmentIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L33">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L39">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_MCIndexNoder__ctor_" data-uid="NetTopologySuite.Noding.MCIndexNoder.#ctor*"></a>
   <h4 id="NetTopologySuite_Noding_MCIndexNoder__ctor_NetTopologySuite_Noding_ISegmentIntersector_" data-uid="NetTopologySuite.Noding.MCIndexNoder.#ctor(NetTopologySuite.Noding.ISegmentIntersector)">MCIndexNoder(ISegmentIntersector)</h4>
@@ -144,7 +148,7 @@ or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MCIndexNoder(ISegmentIntersector segInt)</code></pre>
+    <pre><code class="lang-csharp hljs">public MCIndexNoder(ISegmentIntersector si)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -158,8 +162,48 @@ or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a></td>
-        <td><span class="parametername">segInt</span></td>
+        <td><span class="parametername">si</span></td>
         <td><p>The <a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a> to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder__ctor_NetTopologySuite_Noding_ISegmentIntersector_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder.%23ctor(NetTopologySuite.Noding.ISegmentIntersector%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L47">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_MCIndexNoder__ctor_" data-uid="NetTopologySuite.Noding.MCIndexNoder.#ctor*"></a>
+  <h4 id="NetTopologySuite_Noding_MCIndexNoder__ctor_NetTopologySuite_Noding_ISegmentIntersector_System_Double_" data-uid="NetTopologySuite.Noding.MCIndexNoder.#ctor(NetTopologySuite.Noding.ISegmentIntersector,System.Double)">MCIndexNoder(ISegmentIntersector, Double)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="NetTopologySuite.Noding.MCIndexNoder.html">MCIndexNoder</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MCIndexNoder(ISegmentIntersector si, double overlapTolerance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a></td>
+        <td><span class="parametername">si</span></td>
+        <td><p>The <a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a> to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">overlapTolerance</span></td>
+        <td><p>The expansion distance for overlap tests</p>
 </td>
       </tr>
     </tbody>
@@ -171,7 +215,7 @@ or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder_Index.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder.Index%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L44">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L61">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_MCIndexNoder_Index_" data-uid="NetTopologySuite.Noding.MCIndexNoder.Index*"></a>
   <h4 id="NetTopologySuite_Noding_MCIndexNoder_Index" data-uid="NetTopologySuite.Noding.MCIndexNoder.Index">Index</h4>
@@ -201,7 +245,7 @@ or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder_MonotoneChains.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder.MonotoneChains%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L39">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L56">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_MCIndexNoder_MonotoneChains_" data-uid="NetTopologySuite.Noding.MCIndexNoder.MonotoneChains*"></a>
   <h4 id="NetTopologySuite_Noding_MCIndexNoder_MonotoneChains" data-uid="NetTopologySuite.Noding.MCIndexNoder.MonotoneChains">MonotoneChains</h4>
@@ -233,7 +277,7 @@ or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder_ComputeNodes_IList_NetTopologySuite_Noding_ISegmentString__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder.ComputeNodes(IList%7BNetTopologySuite.Noding.ISegmentString%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L62">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L79">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_MCIndexNoder_ComputeNodes_" data-uid="NetTopologySuite.Noding.MCIndexNoder.ComputeNodes*"></a>
   <h4 id="NetTopologySuite_Noding_MCIndexNoder_ComputeNodes_IList_NetTopologySuite_Noding_ISegmentString__" data-uid="NetTopologySuite.Noding.MCIndexNoder.ComputeNodes(IList{NetTopologySuite.Noding.ISegmentString})">ComputeNodes(IList&lt;ISegmentString&gt;)</h4>
@@ -270,7 +314,7 @@ others may only add some or none at all.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder_GetNodedSubstrings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder.GetNodedSubstrings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L51">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L68">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_MCIndexNoder_GetNodedSubstrings_" data-uid="NetTopologySuite.Noding.MCIndexNoder.GetNodedSubstrings*"></a>
   <h4 id="NetTopologySuite_Noding_MCIndexNoder_GetNodedSubstrings" data-uid="NetTopologySuite.Noding.MCIndexNoder.GetNodedSubstrings">GetNodedSubstrings()</h4>
@@ -314,7 +358,7 @@ The <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentS
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_MCIndexNoder.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.MCIndexNoder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/MCIndexNoder.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

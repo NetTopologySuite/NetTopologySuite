@@ -147,7 +147,7 @@ An interior point is guaranteed to lie in the interior of the Geometry,
 if it possible to calculate such a point exactly.
 Otherwise, the point may lie on the boundary of the geometry.</p>
 <p>
-The interior point of an empty geometry is <pre><code>POINT EMPTY</code></pre>.
+The interior point of an empty geometry is <code>POINT EMPTY</code>.
 </p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Algorithm.InteriorPointArea.html">InteriorPointArea</a></h4>
@@ -216,7 +216,8 @@ including point triplets(triangles) and rings.
 Orientation is a fundamental property of planar geometries
 (and more generally geometry on two-dimensional manifolds).</p>
 <p>
-Orientation is notoriously subject to numerical precision errors
+Determining triangle orientation
+is notoriously subject to numerical precision errors
 in the case of collinear or nearly collinear points.
 NTS uses extended-precision arithmetic to increase
 the robustness of the computation.

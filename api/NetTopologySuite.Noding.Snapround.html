@@ -93,10 +93,9 @@
       <section><p>Nodes the linework in a list of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s using Snap-Rounding
 to a given <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.</p>
 <p>
-The input coordinates are expected to be rounded
-to the given precision model.
-This class does not perform that function.
-<code>GeometryPrecisionReducer&quot;</code> may be used to do this.
+The input coordinates do not need to be rounded to the
+precision model.
+All output coordinates are rounded to the precision model.
 </p><p>
 This class does <strong>not</strong> dissolve the output linework,
 so there may be duplicate linestrings in the output.
@@ -107,10 +106,22 @@ to do this (although this is an inefficient approach).
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.HotPixel.html">HotPixel</a></h4>
       <section><p>Implements a &quot;hot pixel&quot; as used in the Snap Rounding algorithm.
-A hot pixel contains the interior of the tolerance square and the boundary
-minus the top and right segments.
+A hot pixel is a square region centred
+on the rounded valud of the coordinate given,
+and of width equal to the size of the scale factor.
+It is a partially open region, which contains
+the interior of the tolerance square and
+the boundary
+<strong>minus</strong> the top and right segments.
+This ensures that every point of the space lies in a unique hot pixel.
+It also matches the rounding semantics for numbers.</p>
+<p>
 The hot pixel operations are all computed in the integer domain
-to avoid rounding problems.</p>
+to avoid rounding problems.
+<p>
+Hot Pixels support being marked as nodes.
+This is used to prevent introducing nodes at line vertices
+which do not have other lines snapped to them.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.MCIndexPointSnapper.html">MCIndexPointSnapper</a></h4>
       <section><p>&quot;Snaps&quot; all <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s in a <see cref="!:ISpatialIndex"></see> containing
@@ -129,26 +140,71 @@ and all the input vertices must be rounded to that precision.</p>
 <p>
 This implementation uses a monotone chains and a spatial index to
 speed up the intersection tests.
-This implementation appears to be fully robust using an integer precision model.
-It will function with non-integer precision models, but the
-results are not 100% guaranteed to be correctly noded.
-</p>
+<p>
+<h3>KNOWN BUGS</h3>
+This implementation is not fully robust.
+instead.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.SimpleSnapRounder.html">SimpleSnapRounder</a></h4>
       <section><p>Uses Snap Rounding to compute a rounded,
-fully noded arrangement from a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s.
+fully noded arrangement from a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s.</p>
+<p>
 Implements the Snap Rounding technique described in
 the papers by Hobby, Guibas &amp; Marimont, and Goodrich et al.
-Snap Rounding assumes that all vertices lie on a uniform grid;
-hence the precision model of the input must be fixed precision,
-and all the input vertices must be rounded to that precision.</p>
+Snap Rounding enforces that all vertices lie on a uniform grid,
+which is determined by the provided <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.
+Input vertices do not have to be rounded to this grid;
+this will be done during the snap-rounding process.
 <p>
 This implementation uses simple iteration over the line segments.
-This is not the most efficient approach for large sets of segments.
+This is not an efficient approach for large sets of segments.
 This implementation appears to be fully robust using an integer precision model.
 It will function with non-integer precision models, but the
 results are not 100% guaranteed to be correctly noded.
-</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingIntersectionAdder.html">SnapRoundingIntersectionAdder</a></h4>
+      <section><p>Finds intersections between line segments which will be snap-rounded,
+and adds them as nodes to the segments.</p>
+<p>
+Intersections are detected and computed using full precision.
+Snapping takes place in a subsequent phase.
+<p>
+The intersection points are recorded, so that HotPixels can be created for them.
+<p>
+To avoid robustness issues with vertices which lie very close to line segments
+a heuristic is used:
+nodes are created if a vertex lies within a tolerance distance
+of the interior of a segment.
+The tolerance distance is chosen to be significantly below the snap-rounding grid size.
+This has empirically proven to eliminate noding failures.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder.html">SnapRoundingNoder</a></h4>
+      <section><p>Uses Snap Rounding to compute a rounded,
+fully noded arrangement from a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s,
+in a performant way, and avoiding unnecessary noding.</p>
+<p>
+Implements the Snap Rounding technique described in 
+the papers by Hobby, Guibas &amp; Marimont, and Goodrich et al.
+Snap Rounding enforces that all output vertices lie on a uniform grid,
+which is determined by the provided <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.
+<p>
+Input vertices do not have to be rounded to the grid beforehand; 
+this is done during the snap-rounding process.
+In fact, rounding cannot be done a priori,
+since rounding vertices by themselves can distort the rounded topology
+of the arrangement (i.e. by moving segments away from hot pixels
+that would otherwise intersect them, or by moving vertices
+across segments).
+<p>
+To minimize the number of introduced nodes,
+the Snap-Rounding Noder avoids creating nodes
+at edge vertices if there is no intersection or snap at that location.
+However, if two different input edges contain identical segments,
+each of the segment vertices will be noded.
+This still provides fully-noded output.
+This is the same behaviour provided by other noders,
+such as <a class="xref" href="NetTopologySuite.Noding.MCIndexNoder.html">MCIndexNoder</a>
+and <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a>.
 </section>
 </article>
           </div>

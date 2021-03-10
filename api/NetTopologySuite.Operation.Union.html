@@ -114,16 +114,19 @@ However, this case is likely rare in practice.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Union.OverlapUnion.html">OverlapUnion</a></h4>
       <section><p>Unions MultiPolygons efficiently by
-using full topological union only for polygons which may overlap
-by virtue of intersecting the common area of the inputs.
-Other polygons are simply combined with the union result,
-which is much more performant.</p>
+using full topological union only for polygons which may overlap,
+and combining with the remaining polygons.
+Polygons which may overlap are those which intersect the common extent of the inputs.
+Polygons wholly outside this extent must be disjoint to the computed union.
+They can thus be simply combined with the union result,
+which is much more performant.
+(There is one caveat to this, which is discussed below).</p>
 <p>
 This situation is likely to occur during cascaded polygon union,
 since the partitioning of polygons is done heuristically
 and thus may group disjoint polygons which can lie far apart.
 It may also occur in real world data which contains many disjoint polygons
-(e.g.polygons representing parcels on different street blocks).
+(e.g. polygons representing parcels on different street blocks).
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Union.PointGeometryUnion.html">PointGeometryUnion</a></h4>
       <section></section>
@@ -132,6 +135,10 @@ It may also occur in real world data which contains many disjoint polygons
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Union.UnionInteracting.html">UnionInteracting</a></h4>
       <section><p>Experimental code to union MultiPolygons with processing limited to the elements which actually interact.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.Union.UnionStrategy.html">UnionStrategy</a></h4>
+      <section><p>An strategy class that allows UnaryUnion to adapt to different
+kinds of overlay algorithms.</p>
 </section>
 </article>
           </div>

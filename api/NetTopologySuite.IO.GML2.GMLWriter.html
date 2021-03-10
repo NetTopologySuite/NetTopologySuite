@@ -94,6 +94,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">GMLWriter</span></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.IO.GML3.GML3Writer.html">GML3Writer</a></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.IO.GML2.html">NetTopologySuite.IO.GML2</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
@@ -108,7 +109,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L32">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L34">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter__ctor_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter__ctor" data-uid="NetTopologySuite.IO.GML2.GMLWriter.#ctor">GMLWriter()</h4>
@@ -126,7 +127,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_NumberFormatter.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.NumberFormatter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L27">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L29">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_NumberFormatter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.NumberFormatter*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_NumberFormatter" data-uid="NetTopologySuite.IO.GML2.GMLWriter.NumberFormatter">NumberFormatter</h4>
@@ -156,10 +157,59 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_GetEpsgCode_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.GetEpsgCode(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L503">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLWriter_GetEpsgCode_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.GetEpsgCode*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLWriter_GetEpsgCode_System_Int32_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.GetEpsgCode(System.Int32)">GetEpsgCode(Int32)</h4>
+  <div class="markdown level1 summary"><p>Provides the EPSG code exposing the SRID of the geometry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetEpsgCode(int srid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">srid</span></td>
+        <td><p>The SRID of the geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L286">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L382">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.Geometry)">SetByteStreamLength(Geometry)</h4>
@@ -207,7 +257,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_GeometryCollection_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.GeometryCollection)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L310">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L417">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_GeometryCollection_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.GeometryCollection)">SetByteStreamLength(GeometryCollection)</h4>
@@ -254,7 +304,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_LineString_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.LineString)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L374">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L481">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_LineString_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.LineString)">SetByteStreamLength(LineString)</h4>
@@ -301,7 +351,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_MultiLineString_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.MultiLineString)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L336">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L443">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_MultiLineString_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.MultiLineString)">SetByteStreamLength(MultiLineString)</h4>
@@ -348,7 +398,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_MultiPoint_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.MultiPoint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L349">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L456">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_MultiPoint_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.MultiPoint)">SetByteStreamLength(MultiPoint)</h4>
@@ -395,7 +445,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_MultiPolygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.MultiPolygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L323">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L430">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_MultiPolygon_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.MultiPolygon)">SetByteStreamLength(MultiPolygon)</h4>
@@ -442,7 +492,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_Point_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.Point)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L386">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L493">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_Point_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.Point)">SetByteStreamLength(Point)</h4>
@@ -489,7 +539,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L362">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L469">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_SetByteStreamLength_NetTopologySuite_Geometries_Polygon_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.SetByteStreamLength(NetTopologySuite.Geometries.Polygon)">SetByteStreamLength(Polygon)</h4>
@@ -536,7 +586,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Coordinate_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Coordinate%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L97">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L99">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Coordinate_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Coordinate,XmlWriter)">Write(Coordinate, XmlWriter)</h4>
@@ -573,7 +623,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Coordinate___XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Coordinate%5B%5D%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L110">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L121">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Coordinate___XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Coordinate[],XmlWriter)">Write(Coordinate[], XmlWriter)</h4>
@@ -610,7 +660,7 @@ Thanks to <a href="http//www.codeplex.com/Wiki/View.aspx?ProjectName=MsSqlSpatia
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L57">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L59">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Geometry)">Write(Geometry)</h4>
@@ -659,7 +709,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Geometry_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Geometry%2CStream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L75">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L77">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Geometry_Stream_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Geometry,Stream)">Write(Geometry, Stream)</h4>
@@ -697,7 +747,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Geometry_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Geometry%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L138">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L168">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Geometry_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Geometry,XmlWriter)">Write(Geometry, XmlWriter)</h4>
@@ -734,7 +784,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_GeometryCollection_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.GeometryCollection%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L269">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L353">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_GeometryCollection_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.GeometryCollection,XmlWriter)">Write(GeometryCollection, XmlWriter)</h4>
@@ -771,7 +821,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_LinearRing_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.LinearRing%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L186">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L234">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_LinearRing_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.LinearRing,XmlWriter)">Write(LinearRing, XmlWriter)</h4>
@@ -808,7 +858,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_LineString_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.LineString%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L174">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L222">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_LineString_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.LineString,XmlWriter)">Write(LineString, XmlWriter)</h4>
@@ -845,7 +895,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_MultiLineString_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.MultiLineString%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L235">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L295">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_MultiLineString_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.MultiLineString,XmlWriter)">Write(MultiLineString, XmlWriter)</h4>
@@ -882,7 +932,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_MultiPoint_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.MultiPoint%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L218">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L266">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_MultiPoint_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.MultiPoint,XmlWriter)">Write(MultiPoint, XmlWriter)</h4>
@@ -919,7 +969,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_MultiPolygon_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.MultiPolygon%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L252">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L324">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_MultiPolygon_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.MultiPolygon,XmlWriter)">Write(MultiPolygon, XmlWriter)</h4>
@@ -956,7 +1006,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Point_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Point%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L162">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L210">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Point_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Point,XmlWriter)">Write(Point, XmlWriter)</h4>
@@ -993,7 +1043,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Polygon_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Polygon%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L198">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L246">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_Write_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_Write_NetTopologySuite_Geometries_Polygon_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.Write(NetTopologySuite.Geometries.Polygon,XmlWriter)">Write(Polygon, XmlWriter)</h4>
@@ -1030,7 +1080,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_WriteCoordinates_NetTopologySuite_Geometries_Coordinate___XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.WriteCoordinates(NetTopologySuite.Geometries.Coordinate%5B%5D%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L121">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L132">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_GML2_GMLWriter_WriteCoordinates_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.WriteCoordinates*"></a>
   <h4 id="NetTopologySuite_IO_GML2_GMLWriter_WriteCoordinates_NetTopologySuite_Geometries_Coordinate___XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.WriteCoordinates(NetTopologySuite.Geometries.Coordinate[],XmlWriter)">WriteCoordinates(Coordinate[], XmlWriter)</h4>
@@ -1062,6 +1112,43 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter_WriteCoordinates_NetTopologySuite_Geometries_CoordinateSequence_XmlWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter.WriteCoordinates(NetTopologySuite.Geometries.CoordinateSequence%2CXmlWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L143">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLWriter_WriteCoordinates_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.WriteCoordinates*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLWriter_WriteCoordinates_NetTopologySuite_Geometries_CoordinateSequence_XmlWriter_" data-uid="NetTopologySuite.IO.GML2.GMLWriter.WriteCoordinates(NetTopologySuite.Geometries.CoordinateSequence,XmlWriter)">WriteCoordinates(CoordinateSequence, XmlWriter)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void WriteCoordinates(CoordinateSequence coordinates, XmlWriter writer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordinates</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">XmlWriter</span></td>
+        <td><span class="parametername">writer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -1073,7 +1160,7 @@ Use <code>XmlDocument.Load(XmlReader)</code> for obtain a <code>XmlDocument</cod
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLWriter.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLWriter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/GML2/GMLWriter.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

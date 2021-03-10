@@ -174,6 +174,9 @@ and querying is stateless.
     <div>
       <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html#NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetComparer">AbstractSTRtree&lt;Envelope, TItem&gt;.GetComparer()</a>
     </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html#NetTopologySuite_Index_Strtree_AbstractSTRtree_2_ItemBoundables">AbstractSTRtree&lt;Envelope, TItem&gt;.ItemBoundables</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.Strtree.html">NetTopologySuite.Index.Strtree</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
@@ -251,6 +254,88 @@ a node may have.</p>
   <h5 id="NetTopologySuite_Index_Strtree_STRtree_1__ctor_System_Int32__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The minimum recommended capacity setting is 4.</p>
 </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1__ctor_System_Int32_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.%23ctor(System.Int32%2CIList%7BNetTopologySuite.Geometries.IBoundable%7BNetTopologySuite.Geometries.Envelope%2C%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L122">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_STRtree_1__ctor_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.#ctor*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_STRtree_1__ctor_System_Int32_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.#ctor(System.Int32,IList{NetTopologySuite.Geometries.IBoundable{NetTopologySuite.Geometries.Envelope,`0}})">STRtree(Int32, IList&lt;IBoundable&lt;Envelope, TItem&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Constructs an AbstractSTRtree with the specified maximum number of child
+nodes that a node may have, and all leaf nodes in the tree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public STRtree(int nodeCapacity, IList&lt;IBoundable&lt;Envelope, TItem&gt;&gt; itemBoundables)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">nodeCapacity</span></td>
+        <td><p>The maximum number of child nodes in a node</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IList</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a>, TItem&gt;&gt;</td>
+        <td><span class="parametername">itemBoundables</span></td>
+        <td><p>The list of leaf nodes in the tree</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1__ctor_System_Int32_NetTopologySuite_Index_Strtree_AbstractNode_NetTopologySuite_Geometries_Envelope__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.%23ctor(System.Int32%2CNetTopologySuite.Index.Strtree.AbstractNode%7BNetTopologySuite.Geometries.Envelope%2C%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L110">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_STRtree_1__ctor_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.#ctor*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_STRtree_1__ctor_System_Int32_NetTopologySuite_Index_Strtree_AbstractNode_NetTopologySuite_Geometries_Envelope__0__" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.#ctor(System.Int32,NetTopologySuite.Index.Strtree.AbstractNode{NetTopologySuite.Geometries.Envelope,`0})">STRtree(Int32, AbstractNode&lt;Envelope, TItem&gt;)</h4>
+  <div class="markdown level1 summary"><p>Constructs an AbstractSTRtree with the specified maximum number of child
+nodes that a node may have, and the root node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public STRtree(int nodeCapacity, AbstractNode&lt;Envelope, TItem&gt; root)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">nodeCapacity</span></td>
+        <td><p>The maximum number of child nodes in a node</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a>, TItem&gt;</td>
+        <td><span class="parametername">root</span></td>
+        <td><p>The root node that links to all other nodes in the tree</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -258,7 +343,7 @@ a node may have.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_IntersectsOp.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.IntersectsOp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L229">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L253">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_IntersectsOp_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.IntersectsOp*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_IntersectsOp" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.IntersectsOp">IntersectsOp</h4>
@@ -292,7 +377,7 @@ a node may have.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_CreateNode_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.CreateNode(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L221">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L245">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_CreateNode_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.CreateNode*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_CreateNode_System_Int32_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.CreateNode(System.Int32)">CreateNode(Int32)</h4>
@@ -341,7 +426,7 @@ a node may have.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_CreateParentBoundables_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.CreateParentBoundables(IList%7BNetTopologySuite.Geometries.IBoundable%7BNetTopologySuite.Geometries.Envelope%2C%600%7D%7D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L143">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L167">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_CreateParentBoundables_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.CreateParentBoundables*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_CreateParentBoundables_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___System_Int32_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.CreateParentBoundables(IList{NetTopologySuite.Geometries.IBoundable{NetTopologySuite.Geometries.Envelope,`0}},System.Int32)">CreateParentBoundables(IList&lt;IBoundable&lt;Envelope, TItem&gt;&gt;, Int32)</h4>
@@ -400,7 +485,7 @@ a new (parent) node.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_CreateParentBoundablesFromVerticalSlice_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.CreateParentBoundablesFromVerticalSlice(IList%7BNetTopologySuite.Geometries.IBoundable%7BNetTopologySuite.Geometries.Envelope%2C%600%7D%7D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L180">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L204">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_CreateParentBoundablesFromVerticalSlice_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.CreateParentBoundablesFromVerticalSlice*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_CreateParentBoundablesFromVerticalSlice_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___System_Int32_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.CreateParentBoundablesFromVerticalSlice(IList{NetTopologySuite.Geometries.IBoundable{NetTopologySuite.Geometries.Envelope,`0}},System.Int32)">CreateParentBoundablesFromVerticalSlice(IList&lt;IBoundable&lt;Envelope, TItem&gt;&gt;, Int32)</h4>
@@ -452,7 +537,7 @@ a new (parent) node.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_GetComparer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.GetComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L281">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L305">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_GetComparer_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.GetComparer*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_GetComparer" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.GetComparer">GetComparer()</h4>
@@ -484,7 +569,7 @@ a new (parent) node.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_Insert_NetTopologySuite_Geometries_Envelope__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.Insert(NetTopologySuite.Geometries.Envelope%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L236">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L260">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_Insert_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Insert*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_Insert_NetTopologySuite_Geometries_Envelope__0_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Insert(NetTopologySuite.Geometries.Envelope,`0)">Insert(Envelope, TItem)</h4>
@@ -522,7 +607,7 @@ a new (parent) node.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_IsWithinDistance_NetTopologySuite_Index_Strtree_STRtree__0__NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.IsWithinDistance(NetTopologySuite.Index.Strtree.STRtree%7B%600%7D%2CNetTopologySuite.Index.Strtree.IItemDistance%7BNetTopologySuite.Geometries.Envelope%2C%600%7D%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L420">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L444">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_IsWithinDistance_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.IsWithinDistance*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_IsWithinDistance_NetTopologySuite_Index_Strtree_STRtree__0__NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__System_Double_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.IsWithinDistance(NetTopologySuite.Index.Strtree.STRtree{`0},NetTopologySuite.Index.Strtree.IItemDistance{NetTopologySuite.Geometries.Envelope,`0},System.Double)">IsWithinDistance(STRtree&lt;TItem&gt;, IItemDistance&lt;Envelope, TItem&gt;, Double)</h4>
@@ -579,7 +664,7 @@ a new (parent) node.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Geometries_Envelope__0_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.NearestNeighbour(NetTopologySuite.Geometries.Envelope%2C%600%2CNetTopologySuite.Index.Strtree.IItemDistance%7BNetTopologySuite.Geometries.Envelope%2C%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L323">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L347">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Geometries_Envelope__0_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour(NetTopologySuite.Geometries.Envelope,`0,NetTopologySuite.Index.Strtree.IItemDistance{NetTopologySuite.Geometries.Envelope,`0})">NearestNeighbour(Envelope, TItem, IItemDistance&lt;Envelope, TItem&gt;)</h4>
@@ -649,7 +734,7 @@ distance metric.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Geometries_Envelope__0_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.NearestNeighbour(NetTopologySuite.Geometries.Envelope%2C%600%2CNetTopologySuite.Index.Strtree.IItemDistance%7BNetTopologySuite.Geometries.Envelope%2C%600%7D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L525">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L549">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Geometries_Envelope__0_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__System_Int32_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour(NetTopologySuite.Geometries.Envelope,`0,NetTopologySuite.Index.Strtree.IItemDistance{NetTopologySuite.Geometries.Envelope,`0},System.Int32)">NearestNeighbour(Envelope, TItem, IItemDistance&lt;Envelope, TItem&gt;, Int32)</h4>
@@ -729,7 +814,7 @@ distance metric.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.NearestNeighbour(NetTopologySuite.Index.Strtree.IItemDistance%7BNetTopologySuite.Geometries.Envelope%2C%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L299">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L323">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour(NetTopologySuite.Index.Strtree.IItemDistance{NetTopologySuite.Geometries.Envelope,`0})">NearestNeighbour(IItemDistance&lt;Envelope, TItem&gt;)</h4>
@@ -787,7 +872,7 @@ the <a class="xref" href="NetTopologySuite.Index.Strtree.IItemDistance-2.html">I
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Index_Strtree_STRtree__0__NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.NearestNeighbour(NetTopologySuite.Index.Strtree.STRtree%7B%600%7D%2CNetTopologySuite.Index.Strtree.IItemDistance%7BNetTopologySuite.Geometries.Envelope%2C%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L343">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L367">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Index_Strtree_STRtree__0__NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.NearestNeighbour(NetTopologySuite.Index.Strtree.STRtree{`0},NetTopologySuite.Index.Strtree.IItemDistance{NetTopologySuite.Geometries.Envelope,`0})">NearestNeighbour(STRtree&lt;TItem&gt;, IItemDistance&lt;Envelope, TItem&gt;)</h4>
@@ -850,7 +935,7 @@ from the argument tree.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_Query_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.Query(NetTopologySuite.Geometries.Envelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L247">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L271">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_Query_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Query*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_Query_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Query(NetTopologySuite.Geometries.Envelope)">Query(Envelope)</h4>
@@ -898,7 +983,7 @@ from the argument tree.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_Query_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Index_IItemVisitor__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.Query(NetTopologySuite.Geometries.Envelope%2CNetTopologySuite.Index.IItemVisitor%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L259">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L283">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_Query_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Query*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_Query_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Index_IItemVisitor__0__" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Query(NetTopologySuite.Geometries.Envelope,NetTopologySuite.Index.IItemVisitor{`0})">Query(Envelope, IItemVisitor&lt;TItem&gt;)</h4>
@@ -936,7 +1021,7 @@ from the argument tree.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_Remove_NetTopologySuite_Geometries_Envelope__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.Remove(NetTopologySuite.Geometries.Envelope%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L272">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L296">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_Remove_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Remove*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_Remove_NetTopologySuite_Geometries_Envelope__0_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.Remove(NetTopologySuite.Geometries.Envelope,`0)">Remove(Envelope, TItem)</h4>
@@ -992,7 +1077,7 @@ from the argument tree.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_STRtree_1_VerticalSlices_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.STRtree%601.VerticalSlices(IList%7BNetTopologySuite.Geometries.IBoundable%7BNetTopologySuite.Geometries.Envelope%2C%600%7D%7D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L190">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/STRtree.cs/#L214">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_STRtree_1_VerticalSlices_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.VerticalSlices*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_STRtree_1_VerticalSlices_IList_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope__0___System_Int32_" data-uid="NetTopologySuite.Index.Strtree.STRtree`1.VerticalSlices(IList{NetTopologySuite.Geometries.IBoundable{NetTopologySuite.Geometries.Envelope,`0}},System.Int32)">VerticalSlices(IList&lt;IBoundable&lt;Envelope, TItem&gt;&gt;, Int32)</h4>

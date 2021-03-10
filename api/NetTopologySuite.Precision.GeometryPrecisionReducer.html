@@ -85,7 +85,32 @@
   </h1>
   <div class="markdown level0 summary"><p>Reduces the precision of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>
 according to the supplied <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>,
-ensuring that the result is topologically valid.</p>
+ensuring that the result is topologically valid,
+ensuring that the result is valid (unless specified otherwise).</p>
+<p>
+By default the reduced result is topologically valid
+(i.e. <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a> is true).
+To ensure this a polygonal geometry is reduced in a topologically valid fashion
+(technically, by using snap-rounding).
+Note that this may change polygonal geometry structure
+(e.g.two polygons separated by a distance below the specified precision
+will be merged into a single polygon).
+<p>
+In general input must be valid geometry, or an <see cref="!:ArgumentException"></see>
+will be thrown.However if the invalidity is &quot;mild&quot; or very small then it
+may be eliminated by precision reduction.
+<p>
+Alternatively, geometry can be reduced pointwise by using <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_Pointwise">Pointwise</a><code>= true</code>.
+In this case the result geometry topology may be invalid.
+Linear and point geometry are always reduced pointwise (i.e.without further change to
+topology or structure), since this does not change validity.
+<p>
+By default the geometry precision model is not changed.
+This can be overridden by using <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_ChangePrecisionModel">ChangePrecisionModel</a><code> = true</code>.
+<p>
+Normally collapsed components(e.g.lines collapsing to a point)
+are not included in the result.
+This behavior can be changed by using <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_RemoveCollapsedComponents">RemoveCollapsedComponents</a> = <code>true</code>.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -106,7 +131,7 @@ ensuring that the result is topologically valid.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L51">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L77">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_GeometryPrecisionReducer__ctor_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.#ctor*"></a>
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer__ctor_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.#ctor(NetTopologySuite.Geometries.PrecisionModel)">GeometryPrecisionReducer(PrecisionModel)</h4>
@@ -140,7 +165,7 @@ ensuring that the result is topologically valid.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ChangePrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ChangePrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L74">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L100">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_GeometryPrecisionReducer_ChangePrecisionModel_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.ChangePrecisionModel*"></a>
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer_ChangePrecisionModel" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.ChangePrecisionModel">ChangePrecisionModel</h4>
@@ -175,7 +200,7 @@ The default is to <strong>not</strong> change the precision model
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Pointwise.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Pointwise%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L88">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L114">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_GeometryPrecisionReducer_Pointwise_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.Pointwise*"></a>
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer_Pointwise" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.Pointwise">Pointwise</h4>
@@ -211,7 +236,7 @@ This is only relevant for geometries containing polygonal components.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_RemoveCollapsedComponents.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.RemoveCollapsedComponents%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L61">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L87">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_GeometryPrecisionReducer_RemoveCollapsedComponents_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.RemoveCollapsedComponents*"></a>
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer_RemoveCollapsedComponents" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.RemoveCollapsedComponents">RemoveCollapsedComponents</h4>
@@ -247,11 +272,13 @@ The default is to remove collapsed components.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L94">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L128">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce*"></a>
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry)">Reduce(Geometry)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Reduces the precision of a geometry,
+according to the specified strategy of this reducer.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -270,7 +297,8 @@ The default is to remove collapsed components.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">geom</span></td>
-        <td></td>
+        <td><p>The geometry to reduce</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -285,7 +313,8 @@ The default is to remove collapsed components.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td></td>
+        <td><p>The precision-reduced geometry</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -294,7 +323,7 @@ The default is to remove collapsed components.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L23">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L49">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce*"></a>
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.PrecisionModel)">Reduce(Geometry, PrecisionModel)</h4>
@@ -354,7 +383,7 @@ and preserving polygonal topology.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ReducePointwise_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ReducePointwise(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L39">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L65">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_GeometryPrecisionReducer_ReducePointwise_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.ReducePointwise*"></a>
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer_ReducePointwise_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.ReducePointwise(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.PrecisionModel)">ReducePointwise(Geometry, PrecisionModel)</h4>
@@ -420,7 +449,7 @@ but NOT preserving valid polygonal topology.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L37" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

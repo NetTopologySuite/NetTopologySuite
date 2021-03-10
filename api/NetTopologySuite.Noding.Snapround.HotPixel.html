@@ -84,10 +84,22 @@
   <h1 id="NetTopologySuite_Noding_Snapround_HotPixel" data-uid="NetTopologySuite.Noding.Snapround.HotPixel" class="text-break">Class HotPixel
   </h1>
   <div class="markdown level0 summary"><p>Implements a &quot;hot pixel&quot; as used in the Snap Rounding algorithm.
-A hot pixel contains the interior of the tolerance square and the boundary
-minus the top and right segments.
+A hot pixel is a square region centred
+on the rounded valud of the coordinate given,
+and of width equal to the size of the scale factor.
+It is a partially open region, which contains
+the interior of the tolerance square and
+the boundary
+<strong>minus</strong> the top and right segments.
+This ensures that every point of the space lies in a unique hot pixel.
+It also matches the rounding semantics for numbers.</p>
+<p>
 The hot pixel operations are all computed in the integer domain
-to avoid rounding problems.</p>
+to avoid rounding problems.
+<p>
+Hot Pixels support being marked as nodes.
+This is used to prevent introducing nodes at line vertices
+which do not have other lines snapped to them.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -105,10 +117,51 @@ to avoid rounding problems.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel__ctor_NetTopologySuite_Geometries_Coordinate_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.%23ctor(NetTopologySuite.Geometries.Coordinate%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L53">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_Snapround_HotPixel__ctor_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.#ctor*"></a>
+  <h4 id="NetTopologySuite_Noding_Snapround_HotPixel__ctor_NetTopologySuite_Geometries_Coordinate_System_Double_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.#ctor(NetTopologySuite.Geometries.Coordinate,System.Double)">HotPixel(Coordinate, Double)</h4>
+  <div class="markdown level1 summary"><p>Creates a new hot pixel centered on a rounded point, using a given scale factor.
+The scale factor must be strictly positive(non-zero).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HotPixel(Coordinate pt, double scaleFactor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">pt</span></td>
+        <td><p>The coordinate at the center of the hot pixel (already rounded)</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">scaleFactor</span></td>
+        <td><p>The scale factor determining the pixel size</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel__ctor_NetTopologySuite_Geometries_Coordinate_System_Double_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.%23ctor(NetTopologySuite.Geometries.Coordinate%2CSystem.Double%2CNetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L47">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L42">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_Snapround_HotPixel__ctor_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.#ctor*"></a>
   <h4 id="NetTopologySuite_Noding_Snapround_HotPixel__ctor_NetTopologySuite_Geometries_Coordinate_System_Double_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.#ctor(NetTopologySuite.Geometries.Coordinate,System.Double,NetTopologySuite.Algorithm.LineIntersector)">HotPixel(Coordinate, Double, LineIntersector)</h4>
@@ -144,7 +197,7 @@ to avoid rounding problems.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
         <td><span class="parametername">li</span></td>
-        <td><p>THe intersector to use for testing intersection with line segments</p>
+        <td><p>The intersector to use for testing intersection with line segments</p>
 </td>
       </tr>
     </tbody>
@@ -156,7 +209,7 @@ to avoid rounding problems.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_Coordinate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.Coordinate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L69">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L76">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_Snapround_HotPixel_Coordinate_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Coordinate*"></a>
   <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_Coordinate" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Coordinate">Coordinate</h4>
@@ -182,6 +235,100 @@ to avoid rounding problems.</p>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_IsNode.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.IsNode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L95">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_Snapround_HotPixel_IsNode_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.IsNode*"></a>
+  <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_IsNode" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.IsNode">IsNode</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this pixel has been marked as a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsNode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the pixel is marked as a node</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_ScaleFactor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.ScaleFactor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L81">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_Snapround_HotPixel_ScaleFactor_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.ScaleFactor*"></a>
+  <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_ScaleFactor" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.ScaleFactor">ScaleFactor</h4>
+  <div class="markdown level1 summary"><p>Gets the scale factor for the precision grid for this pixel.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ScaleFactor { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_Width.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.Width%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L86">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_Snapround_HotPixel_Width_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Width*"></a>
+  <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_Width" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Width">Width</h4>
+  <div class="markdown level1 summary"><p>Gets the width of the hot pixel in the original coordinate system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Width { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -189,7 +336,7 @@ to avoid rounding problems.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_AddSnappedNode_NetTopologySuite_Noding_INodableSegmentString_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.AddSnappedNode(NetTopologySuite.Noding.INodableSegmentString%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L244">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L350">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_Snapround_HotPixel_AddSnappedNode_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.AddSnappedNode*"></a>
   <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_AddSnappedNode_NetTopologySuite_Noding_INodableSegmentString_System_Int32_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.AddSnappedNode(NetTopologySuite.Noding.INodableSegmentString,System.Int32)">AddSnappedNode(INodableSegmentString, Int32)</h4>
@@ -244,7 +391,7 @@ if the segment passes through the hot pixel</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_GetSafeEnvelope.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.GetSafeEnvelope%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L78">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L119">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_Snapround_HotPixel_GetSafeEnvelope_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.GetSafeEnvelope*"></a>
   <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_GetSafeEnvelope" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.GetSafeEnvelope">GetSafeEnvelope()</h4>
@@ -274,10 +421,60 @@ The envelope returned will be larger than the exact envelope of the pixel.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_Intersects_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.Intersects(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L133">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_Snapround_HotPixel_Intersects_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Intersects*"></a>
+  <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_Intersects_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Intersects(NetTopologySuite.Geometries.Coordinate)">Intersects(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Tests whether a coordinate lies in (intersects) this hot pixel.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(Coordinate p)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p</span></td>
+        <td><p>The coordinate to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the coordinate intersects this hot pixel</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_Intersects_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.Intersects(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L124">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L153">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_Snapround_HotPixel_Intersects_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Intersects*"></a>
   <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_Intersects_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.Intersects(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Intersects(Coordinate, Coordinate)</h4>
@@ -334,7 +531,7 @@ intersects this hot pixel.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_IntersectsScaled_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.IntersectsScaled(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L152">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L171">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_Snapround_HotPixel_IntersectsScaled_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.IntersectsScaled*"></a>
   <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_IntersectsScaled_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.IntersectsScaled(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">IntersectsScaled(Coordinate, Coordinate)</h4>
@@ -381,6 +578,36 @@ intersects this hot pixel.</p>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L368">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_Snapround_HotPixel_ToString_" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.ToString*"></a>
+  <h4 id="NetTopologySuite_Noding_Snapround_HotPixel_ToString" data-uid="NetTopologySuite.Noding.Snapround.HotPixel.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -392,7 +619,7 @@ intersects this hot pixel.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_Snapround_HotPixel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.Snapround.HotPixel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/Snapround/HotPixel.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

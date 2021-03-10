@@ -83,7 +83,8 @@
   
   <h1 id="NetTopologySuite_Index_KdTree_KdTree_1" data-uid="NetTopologySuite.Index.KdTree.KdTree`1" class="text-break">Class KdTree&lt;T&gt;
   </h1>
-  <div class="markdown level0 summary"><p>An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on point data.</p>
+  <div class="markdown level0 summary"><p>An implementation of a 2-D KD-Tree. KD-trees provide fast range searching
+and fast lookup for point data.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -124,6 +125,17 @@ When a point is snapped to a node then a new node is not created but the count o
 is incremented.
 If more than one node in the tree is within tolerance of an inserted point,
 the closest and then lowest node is snapped to.</p>
+<p>
+Note that the structure of a KD-Tree depends on the order of insertion of the points.
+A tree may become imbalanced if the inserted points are coherent
+(e.g.monotonic in one or both dimensions).
+A perfectly balanced tree has depth of only log2(N),
+but an imbalanced tree may be much deeper.
+This has a serious impact on query efficiency.
+Even worse, since recursion is used for querying the tree
+an extremely deep tree may cause a <see cref="!:System.StackOverflowException"></see>.
+One solution to this is to randomize the order of points before insertion
+(e.g.by using <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle"> Fisher - Yates shuffling</a>).
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -132,7 +144,7 @@ the closest and then lowest node is snapped to.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L69">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L83">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1__ctor_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.#ctor*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1__ctor" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.#ctor">KdTree()</h4>
@@ -149,7 +161,7 @@ the closest and then lowest node is snapped to.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1__ctor_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.%23ctor(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L80">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L94">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1__ctor_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.#ctor*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1__ctor_System_Double_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.#ctor(System.Double)">KdTree(Double)</h4>
@@ -184,10 +196,74 @@ in the tree will be treated as identical to the existing point.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L392">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdTree_1_Count_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Count*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Count" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating the number of items in the tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The number of items in the tree.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Depth.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Depth%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L373">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdTree_1_Depth_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Depth*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Depth" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Depth">Depth</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating the depth of the tree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Depth { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The depth of the tree</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_IsEmpty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.IsEmpty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L88">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L102">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_IsEmpty_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.IsEmpty*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_IsEmpty" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.IsEmpty">IsEmpty</h4>
@@ -220,7 +296,7 @@ in the tree will be treated as identical to the existing point.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Insert_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Insert(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L107">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L121">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_Insert_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Insert*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Insert_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Insert(NetTopologySuite.Geometries.Coordinate)">Insert(Coordinate)</h4>
@@ -270,7 +346,7 @@ in the tree will be treated as identical to the existing point.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Insert_NetTopologySuite_Geometries_Coordinate__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Insert(NetTopologySuite.Geometries.Coordinate%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L122">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L136">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_Insert_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Insert*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Insert_NetTopologySuite_Geometries_Coordinate__0_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Insert(NetTopologySuite.Geometries.Coordinate,`0)">Insert(Coordinate, T)</h4>
@@ -328,7 +404,7 @@ by testing returnedNode.getCount() &gt; 1.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_InsertExact_NetTopologySuite_Geometries_Coordinate__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.InsertExact(NetTopologySuite.Geometries.Coordinate%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L184">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L199">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_InsertExact_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.InsertExact*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_InsertExact_NetTopologySuite_Geometries_Coordinate__0_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.InsertExact(NetTopologySuite.Geometries.Coordinate,`0)">InsertExact(Coordinate, T)</h4>
@@ -360,7 +436,8 @@ so that tree shape is deterministic.</p>
       <tr>
         <td><span class="xref">T</span></td>
         <td><span class="parametername">data</span></td>
-        <td></td>
+        <td><p>The data associated with <code data-dev-comment-type="paramref" class="paramref">p</code></p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -382,10 +459,60 @@ so that tree shape is deterministic.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Query(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L364">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdTree_1_Query_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query(NetTopologySuite.Geometries.Coordinate)">Query(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Searches for a given point in the index and returns its node if found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KdNode&lt;T&gt; Query(Coordinate queryPt)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">queryPt</span></td>
+        <td><p>the point to query</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.KdTree.KdNode-1.html">KdNode</a>&lt;T&gt;</td>
+        <td><p>the point node, if it is found in the index, or <span class="xref">null</span> if not</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Query(NetTopologySuite.Geometries.Envelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L300">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L342">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_Query_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query(NetTopologySuite.Geometries.Envelope)">Query(Envelope)</h4>
@@ -435,7 +562,7 @@ so that tree shape is deterministic.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Envelope_IList_NetTopologySuite_Index_KdTree_KdNode__0___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Query(NetTopologySuite.Geometries.Envelope%2CIList%7BNetTopologySuite.Index.KdTree.KdNode%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L312">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L354">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_Query_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Envelope_IList_NetTopologySuite_Index_KdTree_KdNode__0___" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query(NetTopologySuite.Geometries.Envelope,IList{NetTopologySuite.Index.KdTree.KdNode{`0}})">Query(Envelope, IList&lt;KdNode&lt;T&gt;&gt;)</h4>
@@ -475,7 +602,7 @@ so that tree shape is deterministic.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Index_KdTree_IKdNodeVisitor__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.Query(NetTopologySuite.Geometries.Envelope%2CNetTopologySuite.Index.KdTree.IKdNodeVisitor%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L290">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L332">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_Query_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_Query_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Index_KdTree_IKdNodeVisitor__0__" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.Query(NetTopologySuite.Geometries.Envelope,NetTopologySuite.Index.KdTree.IKdNodeVisitor{`0})">Query(Envelope, IKdNodeVisitor&lt;T&gt;)</h4>
@@ -514,7 +641,7 @@ so that tree shape is deterministic.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_ToCoordinates_IEnumerable_NetTopologySuite_Index_KdTree_KdNode__0___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.ToCoordinates(IEnumerable%7BNetTopologySuite.Index.KdTree.KdNode%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L32">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L45">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_ToCoordinates_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.ToCoordinates*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_ToCoordinates_IEnumerable_NetTopologySuite_Index_KdTree_KdNode__0___" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.ToCoordinates(IEnumerable{NetTopologySuite.Index.KdTree.KdNode{`0}})">ToCoordinates(IEnumerable&lt;KdNode&lt;T&gt;&gt;)</h4>
@@ -564,7 +691,7 @@ so that tree shape is deterministic.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1_ToCoordinates_IEnumerable_NetTopologySuite_Index_KdTree_KdNode__0___System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601.ToCoordinates(IEnumerable%7BNetTopologySuite.Index.KdTree.KdNode%7B%600%7D%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L47">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L60">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_KdTree_KdTree_1_ToCoordinates_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.ToCoordinates*"></a>
   <h4 id="NetTopologySuite_Index_KdTree_KdTree_1_ToCoordinates_IEnumerable_NetTopologySuite_Index_KdTree_KdNode__0___System_Boolean_" data-uid="NetTopologySuite.Index.KdTree.KdTree`1.ToCoordinates(IEnumerable{NetTopologySuite.Index.KdTree.KdNode{`0}},System.Boolean)">ToCoordinates(IEnumerable&lt;KdNode&lt;T&gt;&gt;, Boolean)</h4>
@@ -634,7 +761,7 @@ be included multiple times</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdTree_1.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdTree%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/KdTree/KdTree.cs/#L37" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

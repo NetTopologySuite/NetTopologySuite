@@ -98,8 +98,26 @@
     <pre><code class="lang-csharp hljs">public class WKBWriter : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_IO_WKBWriter_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>WKBWriter stores <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> X,Y,Z values if <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Z">Z</a> is not <see cref="!:double.NaN"></see>,
-otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Z">Z</a> value is discarded and only X,Y are stored.</p>
+  <div class="markdown level0 remarks"><p>There are a few cases which are not specified in the standard.
+The implementation uses a representation which is compatible with
+other common spatial systems (notably, PostGIS).</p>
+<ul><li><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a>sare written as <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s.</li><li>Empty geometries are output as follows
+<ul><li><code>Point</code>A <code>WKBPoint</code> with <code>double.NaN</code> ordinate values</li><li><code>LineString</code>A <code>WKBLineString</code> with zero points</li><li><code>Polygon</code>currently output as a <code>WKBPolygon</code> with one <code>LinearRing</code> with zero points.
+<em>Note:</em> This is different to other systems. It will change to a <code>WKBPolygon</code> with zero <code>LinearRing</code>s.</li><li>Multi geometriesA <code>WKBMulti</code> with zero elements</li><li><code>GeometryCollection</code>A <code>WKBGeometryCollection</code> with zero elements</li></ul>
+</li></ul>
+<p>
+This implementation supports the <strong>Extended WKB</strong> standard.
+Extended WKB allows writing 3-dimensional coordinates
+and the geometry SRID value.
+The presence of 3D coordinates is indicated
+by setting the high bit of the <tt>wkbType</tt> word.
+The presence of a SRID is indicated
+by setting the third bit of the <tt>wkbType</tt> word.
+EWKB format is upward-compatible with the original SFS WKB format.
+<p>
+This class supports reuse of a single instance to read multiple
+geometries. This class is not thread - safe; each thread should create its own
+instance.
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -108,7 +126,7 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L123">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L151">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter__ctor_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter__ctor" data-uid="NetTopologySuite.IO.WKBWriter.#ctor">WKBWriter()</h4>
@@ -124,7 +142,7 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.%23ctor(NetTopologySuite.IO.ByteOrder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L131">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L159">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter__ctor_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor(NetTopologySuite.IO.ByteOrder)">WKBWriter(ByteOrder)</h4>
@@ -158,7 +176,7 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.%23ctor(NetTopologySuite.IO.ByteOrder%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L141">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L169">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter__ctor_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_System_Boolean_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor(NetTopologySuite.IO.ByteOrder,System.Boolean)">WKBWriter(ByteOrder, Boolean)</h4>
@@ -198,7 +216,7 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.%23ctor(NetTopologySuite.IO.ByteOrder%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L152">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L180">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter__ctor_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_System_Boolean_System_Boolean_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor(NetTopologySuite.IO.ByteOrder,System.Boolean,System.Boolean)">WKBWriter(ByteOrder, Boolean, Boolean)</h4>
@@ -244,7 +262,7 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_System_Boolean_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.%23ctor(NetTopologySuite.IO.ByteOrder%2CSystem.Boolean%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L164">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L192">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter__ctor_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter__ctor_NetTopologySuite_IO_ByteOrder_System_Boolean_System_Boolean_System_Boolean_" data-uid="NetTopologySuite.IO.WKBWriter.#ctor(NetTopologySuite.IO.ByteOrder,System.Boolean,System.Boolean,System.Boolean)">WKBWriter(ByteOrder, Boolean, Boolean, Boolean)</h4>
@@ -298,7 +316,7 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_AllowedOrdinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.AllowedOrdinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L620">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L642">View Source</a>
   </span>
   <h4 id="NetTopologySuite_IO_WKBWriter_AllowedOrdinates" data-uid="NetTopologySuite.IO.WKBWriter.AllowedOrdinates">AllowedOrdinates</h4>
   <div class="markdown level1 summary"><p>Gets the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> that this class can write.</p>
@@ -330,11 +348,12 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_EncodingType.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.EncodingType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L109">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L137">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_EncodingType_" data-uid="NetTopologySuite.IO.WKBWriter.EncodingType*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_EncodingType" data-uid="NetTopologySuite.IO.WKBWriter.EncodingType">EncodingType</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the binary encoding type</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -360,7 +379,7 @@ otherwise <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetT
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_HandleOrdinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.HandleOrdinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L641">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L663">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_HandleOrdinates_" data-uid="NetTopologySuite.IO.WKBWriter.HandleOrdinates*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_HandleOrdinates" data-uid="NetTopologySuite.IO.WKBWriter.HandleOrdinates">HandleOrdinates</h4>
@@ -405,11 +424,12 @@ Flags not present in <a class="xref" href="NetTopologySuite.IO.WKBWriter.html#Ne
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_HandleSRID.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.HandleSRID%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L606">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L628">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_HandleSRID_" data-uid="NetTopologySuite.IO.WKBWriter.HandleSRID*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_HandleSRID" data-uid="NetTopologySuite.IO.WKBWriter.HandleSRID">HandleSRID</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating if an encoded SRID value should be handled or ignored.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -435,7 +455,7 @@ Flags not present in <a class="xref" href="NetTopologySuite.IO.WKBWriter.html#Ne
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_InitCount.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.InitCount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L118">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L146">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_InitCount_" data-uid="NetTopologySuite.IO.WKBWriter.InitCount*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_InitCount" data-uid="NetTopologySuite.IO.WKBWriter.InitCount">InitCount</h4>
@@ -470,11 +490,12 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Strict.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Strict%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L594">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L612">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Strict_" data-uid="NetTopologySuite.IO.WKBWriter.Strict*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Strict" data-uid="NetTopologySuite.IO.WKBWriter.Strict">Strict</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating if only original WKT elements should be handled</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -502,7 +523,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_GetBytes_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.GetBytes(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L436">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L446">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_GetBytes_" data-uid="NetTopologySuite.IO.WKBWriter.GetBytes*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_GetBytes_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.IO.WKBWriter.GetBytes(NetTopologySuite.Geometries.Geometry)">GetBytes(Geometry)</h4>
@@ -550,11 +571,11 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L460">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L470">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.Geometry)">SetByteStream(Geometry)</h4>
-  <div class="markdown level1 summary"><p>Sets corrent length for Byte Stream.</p>
+  <div class="markdown level1 summary"><p>Sets required length for Byte Stream.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -598,7 +619,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_GeometryCollection_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.GeometryCollection)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L484">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L494">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_GeometryCollection_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.GeometryCollection)">SetByteStream(GeometryCollection)</h4>
@@ -645,7 +666,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_LineString_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.LineString)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L555">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L569">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_LineString_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.LineString)">SetByteStream(LineString)</h4>
@@ -692,7 +713,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_MultiLineString_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.MultiLineString)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L512">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L522">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_MultiLineString_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.MultiLineString)">SetByteStream(MultiLineString)</h4>
@@ -739,7 +760,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_MultiPoint_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.MultiPoint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L526">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L536">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_MultiPoint_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.MultiPoint)">SetByteStream(MultiPoint)</h4>
@@ -786,7 +807,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_MultiPolygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.MultiPolygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L498">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L508">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_MultiPolygon_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.MultiPolygon)">SetByteStream(MultiPolygon)</h4>
@@ -833,7 +854,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_Point_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.Point)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L570">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L584">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_Point_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.Point)">SetByteStream(Point)</h4>
@@ -880,7 +901,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L540">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L550">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_SetByteStream_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_SetByteStream_NetTopologySuite_Geometries_Polygon_" data-uid="NetTopologySuite.IO.WKBWriter.SetByteStream(NetTopologySuite.Geometries.Polygon)">SetByteStream(Polygon)</h4>
@@ -927,7 +948,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_ToHex_System_Byte___.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.ToHex(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L21">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L46">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_ToHex_" data-uid="NetTopologySuite.IO.WKBWriter.ToHex*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_ToHex_System_Byte___" data-uid="NetTopologySuite.IO.WKBWriter.ToHex(System.Byte[])">ToHex(Byte[])</h4>
@@ -976,11 +997,12 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Coordinate_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Coordinate%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L254">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L282">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Coordinate_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Coordinate,BinaryWriter)">Write(Coordinate, BinaryWriter)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Write a <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -999,12 +1021,14 @@ Each complex point (LineString, Polygon, ...) contains:
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">coordinate</span></td>
-        <td></td>
+        <td><p>The coordinate</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">BinaryWriter</span></td>
         <td><span class="parametername">writer</span></td>
-        <td></td>
+        <td><p>The writer.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1013,11 +1037,12 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_CoordinateSequence_System_Boolean_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.CoordinateSequence%2CSystem.Boolean%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L264">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L298">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_CoordinateSequence_System_Boolean_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.CoordinateSequence,System.Boolean,BinaryWriter)">Write(CoordinateSequence, Boolean, BinaryWriter)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Write a <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1036,17 +1061,20 @@ Each complex point (LineString, Polygon, ...) contains:
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
         <td><span class="parametername">sequence</span></td>
-        <td></td>
+        <td><p>The coordinate sequence to write</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">emitSize</span></td>
-        <td></td>
+        <td><p>A flag indicating if the size of <code data-dev-comment-type="paramref" class="paramref">sequence</code> should be written, too.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">BinaryWriter</span></td>
         <td><span class="parametername">writer</span></td>
-        <td></td>
+        <td><p>The writer.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1055,7 +1083,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L186">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L214">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Geometry)">Write(Geometry)</h4>
@@ -1103,7 +1131,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Geometry_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Geometry%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L221">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L249">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Geometry_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Geometry,BinaryWriter)">Write(Geometry, BinaryWriter)</h4>
@@ -1140,7 +1168,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Geometry_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Geometry%2CStream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L199">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L227">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Geometry_Stream_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Geometry,Stream)">Write(Geometry, Stream)</h4>
@@ -1178,7 +1206,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_GeometryCollection_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.GeometryCollection%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L419">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L433">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_GeometryCollection_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.GeometryCollection,BinaryWriter)">Write(GeometryCollection, BinaryWriter)</h4>
@@ -1215,7 +1243,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_LinearRing_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.LinearRing%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L337">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L362">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_LinearRing_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.LinearRing,BinaryWriter)">Write(LinearRing, BinaryWriter)</h4>
@@ -1252,7 +1280,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_LineString_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.LineString%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L319">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L351">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_LineString_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.LineString,BinaryWriter)">Write(LineString, BinaryWriter)</h4>
@@ -1289,7 +1317,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_MultiLineString_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.MultiLineString%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L385">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L407">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_MultiLineString_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.MultiLineString,BinaryWriter)">Write(MultiLineString, BinaryWriter)</h4>
@@ -1326,7 +1354,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_MultiPoint_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.MultiPoint%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L368">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L394">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_MultiPoint_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.MultiPoint,BinaryWriter)">Write(MultiPoint, BinaryWriter)</h4>
@@ -1363,7 +1391,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_MultiPolygon_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.MultiPolygon%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L402">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L420">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_MultiPolygon_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.MultiPolygon,BinaryWriter)">Write(MultiPolygon, BinaryWriter)</h4>
@@ -1400,7 +1428,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Point_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Point%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L303">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L337">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Point_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Point,BinaryWriter)">Write(Point, BinaryWriter)</h4>
@@ -1437,7 +1465,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Polygon_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Polygon%2CBinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L350">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L372">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_Write_" data-uid="NetTopologySuite.IO.WKBWriter.Write*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_Write_NetTopologySuite_Geometries_Polygon_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.Write(NetTopologySuite.Geometries.Polygon,BinaryWriter)">Write(Polygon, BinaryWriter)</h4>
@@ -1474,7 +1502,7 @@ Each complex point (LineString, Polygon, ...) contains:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter_WriteByteOrder_BinaryWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter.WriteByteOrder(BinaryWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L244">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L272">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBWriter_WriteByteOrder_" data-uid="NetTopologySuite.IO.WKBWriter.WriteByteOrder*"></a>
   <h4 id="NetTopologySuite_IO_WKBWriter_WriteByteOrder_BinaryWriter_" data-uid="NetTopologySuite.IO.WKBWriter.WriteByteOrder(BinaryWriter)">WriteByteOrder(BinaryWriter)</h4>
@@ -1513,7 +1541,7 @@ Each complex point (LineString, Polygon, ...) contains:
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBWriter.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBWriter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBWriter.cs/#L42" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

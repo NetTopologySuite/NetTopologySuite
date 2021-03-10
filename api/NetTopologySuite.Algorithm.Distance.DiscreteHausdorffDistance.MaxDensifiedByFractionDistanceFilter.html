@@ -83,7 +83,10 @@
   
   <h1 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter" class="text-break">Class DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A coordinate filter that computes the maximum <a class="xref" href="NetTopologySuite.Algorithm.Distance.PointPairDistance.html">PointPairDistance</a> between points of
+an assigned <code>Geometry</code> and all filtered geometries. The filtered geometries' line segments
+are</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -93,12 +96,13 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="NetTopologySuite.Geometries.ICoordinateSequenceFilter.html">ICoordinateSequenceFilter</a></div>
+    <div><a class="xref" href="NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter.html">IEntireCoordinateSequenceFilter</a></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.Distance.html">NetTopologySuite.Algorithm.Distance</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MaxDensifiedByFractionDistanceFilter : object, ICoordinateSequenceFilter</code></pre>
+    <pre><code class="lang-csharp hljs">public class MaxDensifiedByFractionDistanceFilter : object, ICoordinateSequenceFilter, IEntireCoordinateSequenceFilter</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -107,11 +111,12 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter__ctor_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.%23ctor(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L187">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L219">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter__ctor_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.#ctor*"></a>
   <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter__ctor_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.#ctor(NetTopologySuite.Geometries.Geometry,System.Double)">MaxDensifiedByFractionDistanceFilter(Geometry, Double)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of this filter class</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -130,12 +135,14 @@
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">geom</span></td>
-        <td></td>
+        <td><p>The geometry to densify</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">fraction</span></td>
-        <td></td>
+        <td><p>The densification fraction</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -146,7 +153,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_Done.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.Done%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L221">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L257">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_Done_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.Done*"></a>
   <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_Done" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.Done">Done</h4>
@@ -167,7 +174,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>As this filter does not end prematurely, the return value is always <code>false</code></p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -176,7 +184,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_GeometryChanged.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.GeometryChanged%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L219">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L253">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_GeometryChanged_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.GeometryChanged*"></a>
   <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_GeometryChanged" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.GeometryChanged">GeometryChanged</h4>
@@ -197,7 +205,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>As this filter does not change the geometry, the return value is always <code>false</code></p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -206,11 +215,12 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_MaxPointDistance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.MaxPointDistance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L223">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L291">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_MaxPointDistance_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.MaxPointDistance*"></a>
   <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_MaxPointDistance" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.MaxPointDistance">MaxPointDistance</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating the maximum distance between p</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -238,7 +248,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_Filter_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.Filter(NetTopologySuite.Geometries.CoordinateSequence%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L193">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L226">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_Filter_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.Filter*"></a>
   <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_Filter_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.Filter(NetTopologySuite.Geometries.CoordinateSequence,System.Int32)">Filter(CoordinateSequence, Int32)</h4>
@@ -270,9 +280,106 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_Done.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite%23Geometries%23IEntireCoordinateSequenceFilter%23Done%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L284">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_Done_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite#Geometries#IEntireCoordinateSequenceFilter#Done*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_Done" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite#Geometries#IEntireCoordinateSequenceFilter#Done">IEntireCoordinateSequenceFilter.Done</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IEntireCoordinateSequenceFilter.Done { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_Filter_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite%23Geometries%23IEntireCoordinateSequenceFilter%23Filter(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L259">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_Filter_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite#Geometries#IEntireCoordinateSequenceFilter#Filter*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_Filter_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite#Geometries#IEntireCoordinateSequenceFilter#Filter(NetTopologySuite.Geometries.CoordinateSequence)">IEntireCoordinateSequenceFilter.Filter(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IEntireCoordinateSequenceFilter.Filter(CoordinateSequence seq)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">seq</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_GeometryChanged.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite%23Geometries%23IEntireCoordinateSequenceFilter%23GeometryChanged%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L286">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_GeometryChanged_" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite#Geometries#IEntireCoordinateSequenceFilter#GeometryChanged*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_GeometryChanged" data-uid="NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.NetTopologySuite#Geometries#IEntireCoordinateSequenceFilter#GeometryChanged">IEntireCoordinateSequenceFilter.GeometryChanged</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IEntireCoordinateSequenceFilter.GeometryChanged { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="NetTopologySuite.Geometries.ICoordinateSequenceFilter.html">ICoordinateSequenceFilter</a>
+  </div>
+  <div>
+      <a class="xref" href="NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter.html">IEntireCoordinateSequenceFilter</a>
   </div>
 </article>
           </div>
@@ -285,7 +392,7 @@
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Distance_DiscreteHausdorffDistance_MaxDensifiedByFractionDistanceFilter.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L179" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Distance/DiscreteHausdorffDistance.cs/#L207" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

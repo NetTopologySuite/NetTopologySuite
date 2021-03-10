@@ -88,7 +88,8 @@ including point triplets(triangles) and rings.
 Orientation is a fundamental property of planar geometries
 (and more generally geometry on two-dimensional manifolds).</p>
 <p>
-Orientation is notoriously subject to numerical precision errors
+Determining triangle orientation
+is notoriously subject to numerical precision errors
 in the case of collinear or nearly collinear points.
 NTS uses extended-precision arithmetic to increase
 the robustness of the computation.
@@ -112,7 +113,7 @@ the robustness of the computation.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Orientation_Index_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Orientation.Index(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L54">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L56">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Orientation_Index_" data-uid="NetTopologySuite.Algorithm.Orientation.Index*"></a>
   <h4 id="NetTopologySuite_Algorithm_Orientation_Index_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.Orientation.Index(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Index(Coordinate, Coordinate, Coordinate)</h4>
@@ -181,16 +182,18 @@ The index also indicates the orientation of the triangle formed by the three poi
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Orientation_IsCCW_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Orientation.IsCCW(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L100">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L105">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Orientation_IsCCW_" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCW*"></a>
   <h4 id="NetTopologySuite_Algorithm_Orientation_IsCCW_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCW(NetTopologySuite.Geometries.Coordinate[])">IsCCW(Coordinate[])</h4>
-  <div class="markdown level1 summary"><p>Computes whether a ring defined by an array of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s is
+  <div class="markdown level1 summary"><p>Tests if a ring defined by an array of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s is
 oriented counter-clockwise.</p>
-<ul><li>The list of points is assumed to have the first and last points equal.</li><li>This will handle coordinate lists which contain repeated points.</li></ul>
-This algorithm is <strong>only</strong> guaranteed to work with valid rings.If the
-ring is invalid(e.g.self-crosses or touches), the computed result may not
-be correct.
+<ul><li>The list of points is assumed to have the first and last points equal.</li><li>This handles coordinate lists which contain repeated points.</li><li>This handles rings which contain collapsed segments (in particular, along the top of the ring).</li></ul>
+This algorithm is guaranteed to work with valid rings.
+It also works with &quot;mildly invalid&quot; rings
+which contain collapsed(coincident) flat segments along the top of the ring.
+If the ring is &quot;more&quot; invalid (e.g.self-crosses or touches),
+the computed result may not be correct.
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -210,7 +213,7 @@ be correct.
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
         <td><span class="parametername">ring</span></td>
-        <td><p>An array of <code>Coordinate</code>s forming a ring.</p>
+        <td><p>An array of <code>Coordinate</code>s forming a ring (with first and last point identical)</p>
 </td>
       </tr>
     </tbody>
@@ -236,16 +239,18 @@ be correct.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Orientation_IsCCW_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Orientation.IsCCW(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L190">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L128">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Orientation_IsCCW_" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCW*"></a>
   <h4 id="NetTopologySuite_Algorithm_Orientation_IsCCW_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCW(NetTopologySuite.Geometries.CoordinateSequence)">IsCCW(CoordinateSequence)</h4>
-  <div class="markdown level1 summary"><p>Computes whether a ring defined by an <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a> is
+  <div class="markdown level1 summary"><p>Tests if a ring defined by a <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a> is
 oriented counter-clockwise.</p>
-<ul><li>The list of points is assumed to have the first and last points equal.</li><li>This will handle coordinate lists which contain repeated points.</li></ul>
-This algorithm is <strong>only</strong> guaranteed to work with valid rings.If the
-ring is invalid(e.g.self-crosses or touches), the computed result may not
-be correct.
+<ul><li>The list of points is assumed to have the first and last points equal.</li><li>This handles coordinate lists which contain repeated points.</li><li>This handles rings which contain collapsed segments (in particular, along the top of the ring).</li></ul>
+This algorithm is guaranteed to work with valid rings.
+It also works with &quot;mildly invalid&quot; rings
+which contain collapsed(coincident) flat segments along the top of the ring.
+If the ring is &quot;more&quot; invalid (e.g.self-crosses or touches),
+the computed result may not be correct.
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -265,7 +270,133 @@ be correct.
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
         <td><span class="parametername">ring</span></td>
-        <td><p>A <code>CoordinateSequence</code>s forming a ring.</p>
+        <td><p>A <code>CoordinateSequence</code>s forming a ring (with first and last point identical).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the ring is oriented counter-clockwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Orientation_IsCCWArea_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Orientation.IsCCWArea(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L244">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_Orientation_IsCCWArea_" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCWArea*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Orientation_IsCCWArea_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCWArea(NetTopologySuite.Geometries.Coordinate[])">IsCCWArea(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Tests if a ring defined by an array of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s is
+oriented counter-clockwise, using the signed area of the ring.</p>
+<ul><li>The list of points is assumed to have the first and last points equal.</li><li>This handles coordinate lists which contain repeated points.</li><li>This handles rings which contain collapsed segments 
+   (in particular, along the top of the ring).</li><li>This handles rings which are invalid due to self-intersection</li></ul>
+This algorithm is guaranteed to work with valid rings.
+For invalid rings (containing self-intersections),
+the algorithm determines the orientation of
+the largest enclosed area (including overlaps).
+This provides a more useful result in some situations, such as buffering.
+<p>
+However, this approach may be less accurate in the case of
+rings with almost zero area.
+(Note that the orientation of rings with zero area is essentially
+undefined, and hence non-deterministic.)
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsCCWArea(Coordinate[] ring)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">ring</span></td>
+        <td><p>An array of Coordinates forming a ring (with first and last point identical)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the ring is oriented counter-clockwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Orientation_IsCCWArea_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Orientation.IsCCWArea(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L272">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_Orientation_IsCCWArea_" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCWArea*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Orientation_IsCCWArea_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Algorithm.Orientation.IsCCWArea(NetTopologySuite.Geometries.CoordinateSequence)">IsCCWArea(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Tests if a ring defined by a <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a> is
+oriented counter-clockwise, using the signed area of the ring.</p>
+<ul><li>The list of points is assumed to have the first and last points equal.</li><li>This handles coordinate lists which contain repeated points.</li><li>This handles rings which contain collapsed segments 
+   (in particular, along the top of the ring).</li><li>This handles rings which are invalid due to self-intersection</li></ul>
+This algorithm is guaranteed to work with valid rings.
+For invalid rings (containing self-intersections),
+the algorithm determines the orientation of
+the largest enclosed area (including overlaps).
+This provides a more useful result in some situations, such as buffering.
+<p>
+However, this approach may be less accurate in the case of
+rings with almost zero area.
+(Note that the orientation of rings with zero area is essentially
+undefined, and hence non-deterministic.)
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsCCWArea(CoordinateSequence ring)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">ring</span></td>
+        <td><p>An array of Coordinates forming a ring (with first and last point identical)</p>
 </td>
       </tr>
     </tbody>
@@ -291,7 +422,7 @@ be correct.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Orientation_ReOrient_NetTopologySuite_Algorithm_OrientationIndex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Orientation.ReOrient(NetTopologySuite.Algorithm.OrientationIndex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L272">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L281">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Orientation_ReOrient_" data-uid="NetTopologySuite.Algorithm.Orientation.ReOrient*"></a>
   <h4 id="NetTopologySuite_Algorithm_Orientation_ReOrient_NetTopologySuite_Algorithm_OrientationIndex_" data-uid="NetTopologySuite.Algorithm.Orientation.ReOrient(NetTopologySuite.Algorithm.OrientationIndex)">ReOrient(OrientationIndex)</h4>
@@ -346,7 +477,7 @@ be correct.
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Orientation.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Orientation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Orientation.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

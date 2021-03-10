@@ -1,0 +1,984 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class OverlayNG
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class OverlayNG
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG">
+  
+  
+  <h1 id="NetTopologySuite_Operation_OverlayNG_OverlayNG" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG" class="text-break">Class OverlayNG
+  </h1>
+  <div class="markdown level0 summary"><p>Computes the geometric overlay of two <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s,
+using an explicit precision model to allow robust computation.
+The overlay can be used to determine any of the
+following set-theoretic operations (boolean combinations) of the geometries:</p>
+<ul><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Intersection">Intersection</a>all points which lie in both geometries</li><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Union">Union</a>all points which lie in at least one geometry</li><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Difference">Difference</a>all points which lie in the first geometry but not the second</li><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_SymDifference">SymDifference</a>all points which lie in one geometry but not both</li></ul>
+Input geometries may have different dimension.
+Input collections must be homogeneous (all elements must have the same dimension).
+<p>
+The precision model used for the computation can be supplied
+independent of the precision model of the input geometry.
+The main use for this is to allow using a fixed precision
+for geometry with a floating precision model.
+This does two things: ensures robust computation;
+and forces the output to be validly rounded to the precision model.
+<p>
+For fixed precision models noding is performed using a <a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder.html">SnapRoundingNoder</a>.
+This provides robust computation(as long as precision is limited to
+around 13 decimal digits).
+<p>
+For floating precision an <a class="xref" href="NetTopologySuite.Noding.MCIndexNoder.html">MCIndexNoder</a> is used.
+This is not fully robust, so can sometimes result in 
+<a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a>s being thrown.
+For robust full-precision overlay see <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html">OverlayNGRobust</a>.
+<p>
+A custom <a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a> can be supplied.
+This allows using a more performant noding strategy in specific cases,
+for instance in <a class="xref" href="NetTopologySuite.Operation.OverlayNG.CoverageUnion.html">CoverageUnion</a>.
+<p>
+<strong>Note:</strong> If a <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a> is used
+it is best to specify a fairly small snap tolerance,
+since the intersection clipping optimization can
+interact with the snapping to alter the result.
+<p>
+Optionally the overlay computation can process using strict mode
+(via <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html#NetTopologySuite_Operation_OverlayNG_OverlayNG_StrictMode">StrictMode</a> = <code>true</code>).
+In strict mode result semantics are:
+<ul><li>Lines and Points resulting from topology collapses are not included in the result</li><li>Result geometry is homogeneous
+for the <a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Intersection">Intersection</a> and <a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Difference">Difference</a> operations.</li><li>Result geometry is homogeneous
+for the <a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Union">Union</a> and <a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_SymDifference">SymDifference</a> operations
+if the inputs have the same dimension</li></ul>
+Strict mode has the following benefits:
+<ul><li>Results are simpler</li><li>Overlay operations are easily chainable
+without needing to remove lower-dimension elements</li></ul>
+The original JTS overlay semantics corresponds to non-strict mode.
+<p>
+If a robustness error occurs, a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown.
+These are usually caused by numerical rounding causing the noding output
+to not be fully noded.
+For robust computation with full-precision <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html">OverlayNGRobust</a>
+can be used.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">OverlayNG</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.OverlayNG.html">NetTopologySuite.Operation.OverlayNG</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class OverlayNG : object</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L303">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG__ctor_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Operation.Overlay.SpatialFunction)">OverlayNG(Geometry, Geometry, PrecisionModel, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Creates an overlay operation on the given geometries,
+with a defined precision model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, SpatialFunction opCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>The A operand geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>The B operand geometry (may be <code>null</code>)</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td><p>The precision model to use</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The overlay opcode</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L344">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG__ctor_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction)">OverlayNG(Geometry, Geometry, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Creates an overlay operation on the given geometries
+using the precision model of the geometries.</p>
+<p>
+The noder is chosen according to the precision model specified.
+<ul><li>For <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Fixed">Fixed</a>
+a snap - rounding noder is used, and the computation is robust.</li><li>For <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a> a non - snapping noder is used,
+and this computation may not be robust.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OverlayNG(Geometry geom0, Geometry geom1, SpatialFunction opCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>The A operand geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>The B operand geometry (may be <code>null</code>)</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The overlay opcode</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_DIFFERENCE.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.DIFFERENCE%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L93">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_DIFFERENCE" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.DIFFERENCE">DIFFERENCE</h4>
+  <div class="markdown level1 summary"><p>The code for the Difference overlay operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const SpatialFunction DIFFERENCE = default(SpatialFunction)</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_INTERSECTION.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.INTERSECTION%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L83">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_INTERSECTION" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.INTERSECTION">INTERSECTION</h4>
+  <div class="markdown level1 summary"><p>The code for the Intersection overlay operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const SpatialFunction INTERSECTION = default(SpatialFunction)</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_SYMDIFFERENCE.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.SYMDIFFERENCE%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L98">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_SYMDIFFERENCE" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.SYMDIFFERENCE">SYMDIFFERENCE</h4>
+  <div class="markdown level1 summary"><p>The code for the Symmetric Difference overlay operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const SpatialFunction SYMDIFFERENCE = default(SpatialFunction)</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_UNION.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.UNION%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L88">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_UNION" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.UNION">UNION</h4>
+  <div class="markdown level1 summary"><p>The code for the Union overlay operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const SpatialFunction UNION = default(SpatialFunction)</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_AreaResultOnly.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.AreaResultOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L389">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_AreaResultOnly_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.AreaResultOnly*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_AreaResultOnly" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.AreaResultOnly">AreaResultOnly</h4>
+  <div class="markdown level1 summary"><p>Gets or sets whether the result can contain only <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> components.
+This is used if it is known that the result must be an (possibly empty) area.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AreaResultOnly { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the result should contain only area components</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_Noder.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.Noder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L412">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Noder_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Noder*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Noder" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Noder">Noder</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INoder Noder { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_Optimized.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.Optimized%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L382">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Optimized_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Optimized*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Optimized" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Optimized">Optimized</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether overlay processing optimizations are enabled.</p>
+<p>
+It may be useful to disable optimizations
+for testing purposes.
+<p>
+Default is <code>true</code> (optimization enabled).
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Optimized { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputEdges.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputEdges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L393">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputEdges_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputEdges*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputEdges" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputEdges">OutputEdges</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool OutputEdges { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputNodedEdges.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputNodedEdges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L396">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputNodedEdges_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputNodedEdges*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputNodedEdges" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputNodedEdges">OutputNodedEdges</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool OutputNodedEdges { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputResultEdges.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputResultEdges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L407">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputResultEdges_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputResultEdges*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_OutputResultEdges" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.OutputResultEdges">OutputResultEdges</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool OutputResultEdges { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_StrictMode.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.StrictMode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L372">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_StrictMode_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.StrictMode*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_StrictMode" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.StrictMode">StrictMode</h4>
+  <div class="markdown level1 summary"><p>Gets or sets whether the overlay results are computed according to strict mode
+semantics.</p>
+<ul><li>Lines resulting from topology collapse are not included</li><li>Result geometry is homogeneous for the
+<a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Intersection">Intersection</a> and
+<a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Difference">Difference</a> operations.</li><li>Result geometry is homogeneous for the
+<a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Union">Union</a> and
+<a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_SymDifference">SymDifference</a> operations if the inputs have the same dimension</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool StrictMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_GetResult.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.GetResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L420">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_GetResult_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.GetResult*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_GetResult" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.GetResult">GetResult()</h4>
+  <div class="markdown level1 summary"><p>Gets the result of the overlay operation.
+e</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry GetResult()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The result of the overlay operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a></td>
+        <td><p>Thrown, if a robustness error occurs</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L241">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction)">Overlay(Geometry, Geometry, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Computes an overlay operation on
+the given geometry operands,
+using the precision model of the geometry.
+and an appropriate noder.</p>
+<p>
+The noder is chosen according to the precision model specified.
+<ul><li>For <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Fixed">Fixed</a>
+a snap-rounding noder is used, and the computation is robust.</li><li>For <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a>
+a non-snapping noder is used,
+and this computation may not be robust.
+If errors occur a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>The first geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>The second geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The code for the desired overlay operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The result of the overlay operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L176">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction,NetTopologySuite.Geometries.PrecisionModel)">Overlay(Geometry, Geometry, SpatialFunction, PrecisionModel)</h4>
+  <div class="markdown level1 summary"><p>Computes an overlay operation for
+the given geometry operands, with the
+noding strategy determined by the precision model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode, PrecisionModel pm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>The first geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>The second geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The code for the desired overlay operation</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td><p>The precision model to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The result of the overlay operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Noding_INoder_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction%2CNetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Noding.INoder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L194">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Noding_INoder_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction,NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Noding.INoder)">Overlay(Geometry, Geometry, SpatialFunction, PrecisionModel, INoder)</h4>
+  <div class="markdown level1 summary"><p>Computes an overlay operation for
+the given geometry operands, using a supplied <a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode, PrecisionModel pm, INoder noder)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>The first geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>The second geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The code for the desired overlay operation</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td><p>The precision model to use (which may be null if the noder does not use one)</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a></td>
+        <td><span class="parametername">noder</span></td>
+        <td><p>The noder to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The result of the overlay operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Noding_INoder_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction%2CNetTopologySuite.Noding.INoder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L212">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNG_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Noding_INoder_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction,NetTopologySuite.Noding.INoder)">Overlay(Geometry, Geometry, SpatialFunction, INoder)</h4>
+  <div class="markdown level1 summary"><p>Computes an overlay operation on the given geometry operands,
+using a supplied <a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode, INoder noder)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>The first geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>The second geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The code for the desired overlay operation</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a></td>
+        <td><span class="parametername">noder</span></td>
+        <td><p>The noder to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The result of the overlay operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNG.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNG%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/OverlayNG.cs/#L78" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

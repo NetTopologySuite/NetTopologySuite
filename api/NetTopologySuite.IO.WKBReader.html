@@ -101,8 +101,10 @@
   <div class="markdown level0 remarks"><p>The reader repairs structurally-invalid input
 (specifically, LineStrings and LinearRings which contain
 too few points have vertices added,
-and non-closed rings are closed).
-s</p>
+and non-closed rings are closed).</p>
+<p>
+Although not defined in the WKB spec, empty points
+are handled if they are represented as a Point with <code>NaN</code> X and Y ordinates.
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -111,7 +113,7 @@ s</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L88">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L91">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader__ctor_" data-uid="NetTopologySuite.IO.WKBReader.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader__ctor" data-uid="NetTopologySuite.IO.WKBReader.#ctor">WKBReader()</h4>
@@ -127,11 +129,12 @@ s</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader__ctor_NetTopologySuite_NtsGeometryServices_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.%23ctor(NetTopologySuite.NtsGeometryServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L90">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L97">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader__ctor_" data-uid="NetTopologySuite.IO.WKBReader.#ctor*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader__ctor_NetTopologySuite_NtsGeometryServices_" data-uid="NetTopologySuite.IO.WKBReader.#ctor(NetTopologySuite.NtsGeometryServices)">WKBReader(NtsGeometryServices)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of this class using the provided <code>NtsGeometryServices</code></p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -161,11 +164,12 @@ s</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_AllowedOrdinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.AllowedOrdinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L561">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L598">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_AllowedOrdinates_" data-uid="NetTopologySuite.IO.WKBReader.AllowedOrdinates*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_AllowedOrdinates" data-uid="NetTopologySuite.IO.WKBReader.AllowedOrdinates">AllowedOrdinates</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating which ordinates can be handled.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -191,11 +195,12 @@ s</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_HandleOrdinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.HandleOrdinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L565">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L605">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_HandleOrdinates_" data-uid="NetTopologySuite.IO.WKBReader.HandleOrdinates*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_HandleOrdinates" data-uid="NetTopologySuite.IO.WKBReader.HandleOrdinates">HandleOrdinates</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a value indicating which ordinates should be handled.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -221,11 +226,12 @@ s</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_HandleSRID.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.HandleSRID%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L559">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L593">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_HandleSRID_" data-uid="NetTopologySuite.IO.WKBReader.HandleSRID*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_HandleSRID" data-uid="NetTopologySuite.IO.WKBReader.HandleSRID">HandleSRID</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating if a possibly encoded SRID value should be handled.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -248,10 +254,45 @@ s</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_IsStrict.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.IsStrict%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L622">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKBReader_IsStrict_" data-uid="NetTopologySuite.IO.WKBReader.IsStrict*"></a>
+  <h4 id="NetTopologySuite_IO_WKBReader_IsStrict" data-uid="NetTopologySuite.IO.WKBReader.IsStrict">IsStrict</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating if the reader should attempt to repair malformed input.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsStrict { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_IO_WKBReader_IsStrict_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p><em>Malformed</em> in this case means the ring has too few points (4),
+or is not closed.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_RepairRings.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.RepairRings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L578">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L631">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_RepairRings_" data-uid="NetTopologySuite.IO.WKBReader.RepairRings*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_RepairRings" data-uid="NetTopologySuite.IO.WKBReader.RepairRings">RepairRings</h4>
@@ -284,7 +325,7 @@ s</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_HexToBytes_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.HexToBytes(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L24">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L27">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_HexToBytes_" data-uid="NetTopologySuite.IO.WKBReader.HexToBytes*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_HexToBytes_System_String_" data-uid="NetTopologySuite.IO.WKBReader.HexToBytes(System.String)">HexToBytes(String)</h4>
@@ -335,7 +376,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_Read_BinaryReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.Read(BinaryReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L132">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L160">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_Read_" data-uid="NetTopologySuite.IO.WKBReader.Read*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_Read_BinaryReader_" data-uid="NetTopologySuite.IO.WKBReader.Read(BinaryReader)">Read(BinaryReader)</h4>
@@ -382,7 +423,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_Read_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.Read(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L119">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L126">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_Read_" data-uid="NetTopologySuite.IO.WKBReader.Read*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_Read_Stream_" data-uid="NetTopologySuite.IO.WKBReader.Read(Stream)">Read(Stream)</h4>
@@ -448,7 +489,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_Read_System_Byte___.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.Read(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L107">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L114">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_Read_" data-uid="NetTopologySuite.IO.WKBReader.Read*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_Read_System_Byte___" data-uid="NetTopologySuite.IO.WKBReader.Read(System.Byte[])">Read(Byte[])</h4>
@@ -514,7 +555,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadCoordinateSequence_BinaryReader_System_Int32_NetTopologySuite_IO_WKBReader_CoordinateSystem_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadCoordinateSequence(BinaryReader%2CSystem.Int32%2CNetTopologySuite.IO.WKBReader.CoordinateSystem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L244">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L272">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadCoordinateSequence_" data-uid="NetTopologySuite.IO.WKBReader.ReadCoordinateSequence*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadCoordinateSequence_BinaryReader_System_Int32_NetTopologySuite_IO_WKBReader_CoordinateSystem_" data-uid="NetTopologySuite.IO.WKBReader.ReadCoordinateSequence(BinaryReader,System.Int32,NetTopologySuite.IO.WKBReader.CoordinateSystem)">ReadCoordinateSequence(BinaryReader, Int32, WKBReader.CoordinateSystem)</h4>
@@ -576,7 +617,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadCoordinateSequenceLineString_BinaryReader_System_Int32_NetTopologySuite_IO_WKBReader_CoordinateSystem_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadCoordinateSequenceLineString(BinaryReader%2CSystem.Int32%2CNetTopologySuite.IO.WKBReader.CoordinateSystem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L311">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L339">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadCoordinateSequenceLineString_" data-uid="NetTopologySuite.IO.WKBReader.ReadCoordinateSequenceLineString*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadCoordinateSequenceLineString_BinaryReader_System_Int32_NetTopologySuite_IO_WKBReader_CoordinateSystem_" data-uid="NetTopologySuite.IO.WKBReader.ReadCoordinateSequenceLineString(BinaryReader,System.Int32,NetTopologySuite.IO.WKBReader.CoordinateSystem)">ReadCoordinateSequenceLineString(BinaryReader, Int32, WKBReader.CoordinateSystem)</h4>
@@ -638,7 +679,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadCoordinateSequenceRing_BinaryReader_System_Int32_NetTopologySuite_IO_WKBReader_CoordinateSystem_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadCoordinateSequenceRing(BinaryReader%2CSystem.Int32%2CNetTopologySuite.IO.WKBReader.CoordinateSystem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L294">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L322">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadCoordinateSequenceRing_" data-uid="NetTopologySuite.IO.WKBReader.ReadCoordinateSequenceRing*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadCoordinateSequenceRing_BinaryReader_System_Int32_NetTopologySuite_IO_WKBReader_CoordinateSystem_" data-uid="NetTopologySuite.IO.WKBReader.ReadCoordinateSequenceRing(BinaryReader,System.Int32,NetTopologySuite.IO.WKBReader.CoordinateSystem)">ReadCoordinateSequenceRing(BinaryReader, Int32, WKBReader.CoordinateSystem)</h4>
@@ -700,7 +741,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadGeometryCollection_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadGeometryCollection(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L484">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L515">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadGeometryCollection_" data-uid="NetTopologySuite.IO.WKBReader.ReadGeometryCollection*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadGeometryCollection_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadGeometryCollection(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadGeometryCollection(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -762,7 +803,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadLinearRing_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadLinearRing(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L343">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L371">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadLinearRing_" data-uid="NetTopologySuite.IO.WKBReader.ReadLinearRing*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadLinearRing_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadLinearRing(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadLinearRing(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -824,7 +865,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadLineString_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadLineString(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L371">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L402">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadLineString_" data-uid="NetTopologySuite.IO.WKBReader.ReadLineString*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadLineString_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadLineString(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadLineString(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -886,7 +927,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadMultiLineString_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadMultiLineString(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L434">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L465">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadMultiLineString_" data-uid="NetTopologySuite.IO.WKBReader.ReadMultiLineString*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadMultiLineString_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadMultiLineString(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadMultiLineString(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -948,7 +989,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadMultiPoint_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadMultiPoint(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L409">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L440">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadMultiPoint_" data-uid="NetTopologySuite.IO.WKBReader.ReadMultiPoint*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadMultiPoint_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadMultiPoint(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadMultiPoint(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -1010,7 +1051,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadMultiPolygon_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadMultiPolygon(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L459">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L490">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadMultiPolygon_" data-uid="NetTopologySuite.IO.WKBReader.ReadMultiPolygon*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadMultiPolygon_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadMultiPolygon(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadMultiPolygon(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -1072,7 +1113,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadPoint_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadPoint(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L358">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L386">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadPoint_" data-uid="NetTopologySuite.IO.WKBReader.ReadPoint*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadPoint_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadPoint(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadPoint(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -1134,7 +1175,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader_ReadPolygon_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader.ReadPolygon(BinaryReader%2CNetTopologySuite.IO.WKBReader.CoordinateSystem%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L386">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L417">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKBReader_ReadPolygon_" data-uid="NetTopologySuite.IO.WKBReader.ReadPolygon*"></a>
   <h4 id="NetTopologySuite_IO_WKBReader_ReadPolygon_BinaryReader_NetTopologySuite_IO_WKBReader_CoordinateSystem_System_Int32_" data-uid="NetTopologySuite.IO.WKBReader.ReadPolygon(BinaryReader,NetTopologySuite.IO.WKBReader.CoordinateSystem,System.Int32)">ReadPolygon(BinaryReader, WKBReader.CoordinateSystem, Int32)</h4>
@@ -1202,7 +1243,7 @@ The hexadecimal digit symbols are case-insensitive.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKBReader.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKBReader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKBReader.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
