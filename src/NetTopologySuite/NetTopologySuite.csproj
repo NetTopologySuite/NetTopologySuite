@@ -7,6 +7,7 @@
     <NoWarn>659,168,1587</NoWarn>
     <EnableApiCompat>true</EnableApiCompat>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApiCompatExcludeAttributeList>ApiCompatExcludeAttributes.txt</ApiCompatExcludeAttributeList>
   </PropertyGroup>
 
   <PropertyGroup Label="Assembly Info">
@@ -31,9 +32,9 @@
 
   <ItemGroup Condition=" '$(EnableApiCompat)' == 'true' ">
     <PackageReference Include="Microsoft.DotNet.ApiCompat" Version="5.0.0-beta.20162.3" PrivateAssets="All" />
-    <PackageDownload Include="NetTopologySuite" Version="[$(NtsMajorVersion).1.0]" PrivateAssets="All" />
+    <PackageDownload Include="NetTopologySuite" Version="[2.2.0]" PrivateAssets="All" />
 
-    <ResolvedMatchingContract Include="$(NugetPackageRoot)nettopologysuite\$(NtsMajorVersion).1.0\lib\netstandard2.0\NetTopologySuite.dll" />
+    <ResolvedMatchingContract Include="$(NugetPackageRoot)nettopologysuite\2.2.0\lib\netstandard2.0\NetTopologySuite.dll" />
   </ItemGroup>
 
 </Project>
