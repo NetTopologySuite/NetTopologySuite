@@ -4,7 +4,8 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
-    /// An implementation of a 2-D KD-Tree. KD-trees provide fast range searching on point data.
+    /// An implementation of a 2-D KD-Tree. KD-trees provide fast range searching
+    /// and fast lookup for point data.
     /// </summary>
     /// <remarks>
     /// This implementation supports detecting and snapping points which are closer
@@ -17,10 +18,22 @@ namespace NetTopologySuite.Index.KdTree
     /// is incremented.
     /// If more than one node in the tree is within tolerance of an inserted point,
     /// the closest and then lowest node is snapped to.
+    /// <para/>
+    /// Note that the structure of a KD-Tree depends on the order of insertion of the points.
+    /// A tree may become imbalanced if the inserted points are coherent
+    /// (e.g.monotonic in one or both dimensions).
+    /// A perfectly balanced tree has depth of only log2(N),
+    /// but an imbalanced tree may be much deeper.
+    /// This has a serious impact on query efficiency.
+    /// Even worse, since recursion is used for querying the tree
+    /// an extremely deep tree may cause a <see cref="System.StackOverflowException"/>.
+    /// One solution to this is to randomize the order of points before insertion
+    /// (e.g.by using <a href = "https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle" > Fisher - Yates shuffling</a>).
     /// </remarks>
     /// <typeparam name="T">The type of the user data object</typeparam>
     /// <author>David Skea</author>
     /// <author>Martin Davis</author>
+    // ReSharper disable once PartialTypeWithSinglePart
     public partial class KdTree<T>
         where T : class
     {
@@ -59,6 +72,7 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         private KdNode<T> _root;
+        // ReSharper disable once NotAccessedField.Local
         private long _numberOfNodes;
         private readonly double _tolerance;
 
@@ -162,7 +176,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </returns>
         private KdNode<T> FindBestMatchNode(Coordinate p)
         {
-            var visitor = new BestMatchVisitor<T>(p, _tolerance);
+            var visitor = new BestMatchVisitor(p, _tolerance);
 
             Query(visitor.QueryEnvelope(), visitor);
             return visitor.Node;
@@ -175,6 +189,7 @@ namespace NetTopologySuite.Index.KdTree
         /// so that tree shape is deterministic.
         /// </summary>
         /// <param name="p">The point to insert</param>
+        /// <param name="data">The data associated with <paramref name="p"/></param>
         /// <returns>
         /// <list type="bullet">
         /// <item><description>The data for the point</description></item>
@@ -188,34 +203,28 @@ namespace NetTopologySuite.Index.KdTree
             bool isOddLevel = true;
             bool isLessThan = true;
 
-            /**
+            /*
              * Traverse the tree, first cutting the plane left-right (by X ordinate)
              * then top-bottom (by Y ordinate)
              */
             while (currentNode != null)
             {
-                // test if point is already a node (not strictly necessary)
-                if (currentNode != null)
-                {
-                    bool isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
+                bool isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
 
-                    // check if point is already in tree (up to tolerance) and if so simply
-                    // return existing node
-                    if (isInTolerance)
-                    {
-                        currentNode.Increment();
-                        return currentNode;
-                    }
+                // check if point is already in tree (up to tolerance) and if so simply
+                // return existing node
+                if (isInTolerance)
+                {
+                    currentNode.Increment();
+                    return currentNode;
                 }
 
                 if (isOddLevel)
                 {
-// ReSharper disable once PossibleNullReferenceException
                     isLessThan = p.X < currentNode.X;
                 }
                 else
                 {
-                    // ReSharper disable once PossibleNullReferenceException
                     isLessThan = p.Y < currentNode.Y;
                 }
                 leafNode = currentNode;
@@ -227,10 +236,11 @@ namespace NetTopologySuite.Index.KdTree
             }
 
             // no node found, add new leaf node to tree
-            _numberOfNodes = _numberOfNodes + 1;
-            var node = new KdNode<T>(p, data);
-            node.Left = null;
-            node.Right = null;
+            _numberOfNodes += 1;
+            var node = new KdNode<T>(p, data) {
+                Left = null,
+                Right = null
+            };
             if (isLessThan)
             {
                 leafNode.Left = node;
@@ -282,6 +292,38 @@ namespace NetTopologySuite.Index.KdTree
 
         }
 
+        private KdNode<T> QueryNodePoint(KdNode<T> currentNode,
+            Coordinate queryPt, bool odd)
+        {
+            if (currentNode == null)
+                return null;
+            if (currentNode.Coordinate.Equals2D(queryPt))
+                return currentNode;
+
+            double ord;
+            double discriminant;
+            if (odd)
+            {
+                ord = queryPt.X;
+                discriminant = currentNode.X;
+            }
+            else
+            {
+                ord = queryPt.Y;
+                discriminant = currentNode.Y;
+            }
+            bool searchLeft = ord < discriminant;
+
+            if (searchLeft)
+            {
+                return QueryNodePoint(currentNode.Left, queryPt, !odd);
+            }
+            else
+            {
+                return QueryNodePoint(currentNode.Right, queryPt, !odd);
+            }
+        }
+
         /// <summary>
         /// Performs a range search of the points in the index.
         /// </summary>
@@ -300,7 +342,7 @@ namespace NetTopologySuite.Index.KdTree
         public IList<KdNode<T>> Query(Envelope queryEnv)
         {
             var result = new List<KdNode<T>>();
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
+            QueryNode(_root, queryEnv, true, new KdNodeVisitor(result));
             return result;
         }
 
@@ -311,10 +353,61 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="result">A collection to accumulate the result nodes into</param>
         public void Query(Envelope queryEnv, IList<KdNode<T>> result)
         {
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
+            QueryNode(_root, queryEnv, true, new KdNodeVisitor(result));
         }
 
-        private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T : class
+        /// <summary>
+        /// Searches for a given point in the index and returns its node if found.
+        /// </summary>
+        /// <param name="queryPt">the point to query</param>
+        /// <returns>the point node, if it is found in the index, or <see langword="null"/> if not</returns>
+        public KdNode<T> Query(Coordinate queryPt)
+        {
+            return QueryNodePoint(Root, queryPt, true);
+        }
+
+        /// <summary>
+        /// Gets a value indicating the depth of the tree
+        /// </summary>
+        /// <returns>The depth of the tree</returns>
+        public int Depth
+        {
+            get => DepthNode(Root);
+        }
+
+        private int DepthNode(KdNode<T> currentNode)
+        {
+            if (currentNode == null)
+                return 0;
+
+            int dL = DepthNode(currentNode.Left);
+            int dR = DepthNode(currentNode.Right);
+            return 1 + (dL > dR ? dL : dR);
+        }
+
+        /// <summary>
+        /// Gets a value indicating the number of items in the tree.
+        /// </summary>
+        /// <returns>The number of items in the tree.</returns>
+        public int Count 
+        {
+            get => CountNode(Root);
+        }
+
+        private static int CountNode(KdNode<T> currentNode)
+        {
+            if (currentNode == null)
+                return 0;
+
+            int sizeL = CountNode(currentNode.Left);
+            int sizeR = CountNode(currentNode.Right);
+
+            return 1 + sizeL + sizeR;
+        }
+
+
+
+        private class KdNodeVisitor : IKdNodeVisitor<T>
         {
             private readonly IList<KdNode<T>> _result;
 
@@ -329,48 +422,48 @@ namespace NetTopologySuite.Index.KdTree
             }
         }
 
-        private class BestMatchVisitor<T> : IKdNodeVisitor<T> where T : class
+        private class BestMatchVisitor : IKdNodeVisitor<T>
         {
 
-            private readonly double tolerance;
-            private KdNode<T> matchNode = null;
-            private double matchDist = 0.0;
-            private Coordinate p;
+            private readonly double _tolerance;
+            private KdNode<T> _matchNode;
+            private double _matchDist;
+            private readonly Coordinate _p;
 
             public BestMatchVisitor(Coordinate p, double tolerance)
             {
-                this.p = p;
-                this.tolerance = tolerance;
+                _p = p;
+                _tolerance = tolerance;
             }
 
-            public KdNode<T> Node => matchNode;
+            public KdNode<T> Node => _matchNode;
 
             public Envelope QueryEnvelope()
             {
-                var queryEnv = new Envelope(p);
-                queryEnv.ExpandBy(tolerance);
+                var queryEnv = new Envelope(_p);
+                queryEnv.ExpandBy(_tolerance);
                 return queryEnv;
             }
 
             public void Visit(KdNode<T> node)
             {
-                double dist = p.Distance(node.Coordinate);
-                bool isInTolerance = dist <= tolerance;
+                double dist = _p.Distance(node.Coordinate);
+                bool isInTolerance = dist <= _tolerance;
                 if (!isInTolerance) return;
                 bool update = false;
-                if (matchNode == null
-                    || dist < matchDist
+                if (_matchNode == null
+                    || dist < _matchDist
                     // if distances are the same, record the lesser coordinate
-                    || (matchNode != null && dist == matchDist
-                        && node.Coordinate.CompareTo(matchNode.Coordinate) < 1))
+                    || (_matchNode != null && dist == _matchDist
+                        && node.Coordinate.CompareTo(_matchNode.Coordinate) < 1))
                 {
                     update = true;
                 }
 
                 if (update)
                 {
-                    matchNode = node;
-                    matchDist = dist;
+                    _matchNode = node;
+                    _matchDist = dist;
                 }
             }
         }

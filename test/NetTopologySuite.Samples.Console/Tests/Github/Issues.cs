@@ -8,11 +8,12 @@ using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.OverlayNG;
 using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Precision;
-using NetTopologySuite.SnapRound;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github
@@ -235,7 +236,8 @@ namespace NetTopologySuite.Samples.Tests.Github
             Debug.WriteLine(res.AsText());
         }
 
-        [Test(Description = "GitHub Issue #125")]
+        [Test(Description = "GitHub Issue #124"), Explicit]
+        [Category("FailureCase")]
         public void Fixing_invalid_polygon_with_Buffer_0_returns_empty_polygon()
         {
             //arrange
@@ -362,7 +364,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             Geometry res = null;
             //                                                                                     |
             //                                                             Some cruel scale factor V
-            Assert.DoesNotThrow(() => res = SnapRoundOverlayFunctions.SnappedIntersection(g1, g2, 0.1));
+            Assert.DoesNotThrow(() => res = OverlayNG.Overlay(g1, g2, SpatialFunction.Intersection, new PrecisionModel(10)));
             Assert.That(res, Is.Not.Null);
             Assert.That(res.IsValid, Is.True);
 
@@ -579,7 +581,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 (595229.059 662774.178, 595292.309 662772.342), (595217.835 662853.417, 595215.34 662774.577))";
 
             // Arrange
-            var geom = new WKTReader(new GeometryFactory(new PrecisionModel(1000))).Read(wkt);
+            var geom = new WKTReader(new NtsGeometryServices(new PrecisionModel(1000))).Read(wkt);
 
             var op = new Polygonizer();
             op.Add(geom);

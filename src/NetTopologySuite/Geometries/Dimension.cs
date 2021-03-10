@@ -18,14 +18,29 @@ namespace NetTopologySuite.Geometries
         Point = 0,
 
         /// <summary>
+        /// Dimension value of a point (0).
+        /// </summary>
+        P = Point,
+
+        /// <summary>
         /// Dimension value of a curve (1).
         /// </summary>
         Curve = 1,
 
         /// <summary>
+        /// Dimension value of a curve (1).
+        /// </summary>
+        L = Curve,
+
+        /// <summary>
         /// Dimension value of a surface (2).
         /// </summary>
         Surface = 2,
+
+        /// <summary>
+        /// Dimension value of a surface (2).
+        /// </summary>
+        A = Surface,
 
         /// <summary>
         /// Dimension value of a empty point (-1).
@@ -40,7 +55,17 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Dimension value for any dimension (= {False, True}).
         /// </summary>
-        Dontcare = -3
+        Dontcare = -3,
+
+        /// <summary>
+        /// Dimension value for a unknown spatial object
+        /// </summary>
+        Unknown = False,
+
+        /// <summary>
+        /// Dimension value for a collapsed surface or curve
+        /// </summary>
+        Collapse = 3
     }
 
     /// <summary>

@@ -127,10 +127,11 @@ namespace NetTopologySuite.IO
             return geoms;
         }
 
-        private void Read(StreamReader bufferedReader, IList<Geometry> geoms)
+        private void Read(StreamReader bufferedReader, ICollection<Geometry> geoms)
         {
+            var tokenizer = _wktReader.Tokenizer(bufferedReader);
             while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms)) {
-                var g = _wktReader.Read(bufferedReader);
+                var g = _wktReader.ReadGeometryTaggedText(tokenizer);
                 if (_count >= Offset )
                     geoms.Add(g);
                 _count++;

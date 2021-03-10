@@ -45,10 +45,17 @@ namespace NetTopologySuite.Geometries
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
         /// </summary>
+        public GeometryFactoryEx(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory, NtsGeometryServices services)
+            : base(precisionModel, srid, coordinateSequenceFactory, services)
+        { }
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
+        /// </summary>
         public GeometryFactoryEx(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
             : base(precisionModel, srid, coordinateSequenceFactory)
         { }
-
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
@@ -101,7 +108,8 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The setter of this property has to be used prior to any call
-        /// to <c>CreatePolygon</c> or <c>"CreateMultiPolygon</c></remarks>
+        /// to <c>CreatePolygon</c>, <c>CreateMultiPolygon</c>, or
+        /// <c>ReplaceSRID</c></remarks>
         /// <seealso cref="GeometryFactory.CreatePolygon(Coordinate[])"/>
         /// <seealso cref="GeometryFactory.CreatePolygon(CoordinateSequence)"/>
         /// <seealso cref="GeometryFactory.CreatePolygon(LinearRing)"/>
@@ -113,7 +121,7 @@ namespace NetTopologySuite.Geometries
             set
             {
                 if (_polygonShellRingOrientation.IsValueCreated && _polygonShellRingOrientation.Value != value)
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("This value is only allowed to be set before anything observes it.");
                 if ((int)value < -1 || (int)value > 1)
                     throw new ArgumentOutOfRangeException();
 
@@ -196,6 +204,17 @@ namespace NetTopologySuite.Geometries
                 polygons[i] = CreatePolygon(polygons[i].Shell, polygons[i].Holes);
 
             return new MultiPolygon(polygons, this);
+        }
+
+        /// <inheritdoc />
+        public override GeometryFactory WithSRID(int srid)
+        {
+            var clone = new GeometryFactoryEx(PrecisionModel, srid, CoordinateSequenceFactory, GeometryServices);
+
+            // ensure that the value is initialized, to minimize the confusion when this is copied.
+            _ = _polygonShellRingOrientation.Value;
+            clone._polygonShellRingOrientation = _polygonShellRingOrientation;
+            return clone;
         }
 
         /// <summary>

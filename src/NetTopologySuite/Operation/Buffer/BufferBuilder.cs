@@ -5,6 +5,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Operation.Overlay;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -25,8 +26,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>Compute the change in depth as an edge is crossed from R to L</summary>
         private static int DepthDelta(Label label)
         {
-            var lLoc = label.GetLocation(0, Positions.Left);
-            var rLoc = label.GetLocation(0, Positions.Right);
+            var lLoc = label.GetLocation(0, Position.Left);
+            var rLoc = label.GetLocation(0, Position.Right);
             if (lLoc == Location.Interior && rLoc == Location.Exterior)
                 return 1;
             if (lLoc == Location.Exterior && rLoc == Location.Interior)

@@ -24,8 +24,8 @@ namespace NetTopologySuite.Index.KdTree
         public KdNode(double x, double y, T data)
         {
             _p = new Coordinate(x, y);
-            this.Left = null;
-            this.Right = null;
+            Left = null;
+            Right = null;
             _count = 1;
             _data = data;
         }
@@ -38,8 +38,8 @@ namespace NetTopologySuite.Index.KdTree
         public KdNode(Coordinate p, T data)
         {
             _p = p.Copy();
-            this.Left = null;
-            this.Right = null;
+            Left = null;
+            Right = null;
             _count = 1;
             _data = data;
         }

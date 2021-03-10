@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private static void CheckStandardNotation(DD x, string expectedStr) {
             string xStr = x.ToStandardNotation();
-            // System.Console.WriteLine("Standard Notation: " + xStr);
+            // TestContext.WriteLine("Standard Notation: " + xStr);
             Assert.AreEqual(expectedStr, xStr);
         }
 
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private static void CheckSciNotation(DD x, string expectedStr) {
             string xStr = x.ToSciNotation();
-            // System.Console.WriteLine("Sci Notation: " + xStr);
+            // TestContext.WriteLine("Sci Notation: " + xStr);
             Assert.AreEqual(xStr, expectedStr);
         }
 
@@ -134,7 +134,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             double err = (xdd - expectedVal).ToDoubleValue();
             double relErr = err / xdd.ToDoubleValue();
 
-            // System.Console.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
+            // TestContext.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
 
             Assert.IsTrue(err <= relErrBound,
                 string.Format(NumberFormatInfo.InvariantInfo,
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             bool foundParseError = false;
             try {
                 DD.Parse(str);
-            } catch (FormatException ex) {
+            } catch (FormatException) {
                 foundParseError = true;
             }
             Assert.IsTrue(foundParseError);
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 double x = xdd.ToDoubleValue();
                 var xSqrt = xdd.Sqrt();
                 string s = xSqrt.ToString();
-                // System.Console.WriteLine((count + ": " + s);
+                // TestContext.WriteLine((count + ": " + s);
 
                 var xSqrt2 = DD.Parse(s);
                 var xx = xSqrt2 * xSqrt2;
@@ -218,7 +218,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 double x = xdd.ToDoubleValue();
                 var xSqr = xdd.Sqr();
                 string s = xSqr.ToString();
-                // System.Console.WriteLine(count + ": " + s);
+                // TestContext.WriteLine(count + ": " + s);
 
                 var xSqr2 = DD.Parse(s);
 
@@ -241,12 +241,12 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var xdd = DD.ValueOf(x);
             var xSqrt = xdd.Sqrt();
             string s = xSqrt.ToString();
-            // System.Console.WriteLine(s);
+            // TestContext.WriteLine(s);
 
             var xSqrt2 = DD.Parse(s);
             var xx = xSqrt2 * xSqrt2;
             string xxStr = xx.ToString();
-            // System.Console.WriteLine("==>  " + xxStr);
+            // TestContext.WriteLine("==>  " + xxStr);
 
             var xx2 = DD.Parse(xxStr);
             double err = Math.Abs(xx2.ToDoubleValue() - x);

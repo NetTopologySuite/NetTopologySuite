@@ -183,7 +183,9 @@ namespace NetTopologySuite.Geometries
                     case 1:
                         return Y;
                 }
-                throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
+                return double.NaN;
+                // disable for now to avoid regression issues
+                //throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
             }
             set
             {

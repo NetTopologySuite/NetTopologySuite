@@ -10,9 +10,9 @@ namespace NetTopologySuite.Tests.NUnit
     class WKTorBReader
     {
 
-        public static Geometry Read(string geomStr, GeometryFactory geomfact)
+        public static Geometry Read(string geomStr, NtsGeometryServices geomServ)
         {
-            var rdr = new WKTorBReader(geomfact);
+            var rdr = new WKTorBReader(geomServ);
             return rdr.Read(geomStr);
         }
 
@@ -42,11 +42,11 @@ namespace NetTopologySuite.Tests.NUnit
         }
 
         private const int MAX_CHARS_TO_CHECK = 6;
-        private readonly GeometryFactory _geomFactory;
+        private readonly NtsGeometryServices _geomServ;
 
-        public WKTorBReader(GeometryFactory geomFact)
+        public WKTorBReader(NtsGeometryServices geomServ)
         {
-            _geomFactory = geomFact;
+            _geomServ = geomServ;
         }
 
         public Geometry Read(string geomStr)
@@ -54,22 +54,22 @@ namespace NetTopologySuite.Tests.NUnit
             string trimStr = geomStr.Trim();
             if (IsWKB(trimStr))
             {
-                return ReadWKBHex(trimStr, _geomFactory);
+                return ReadWKBHex(trimStr, _geomServ);
             }
 
-            return ReadWKT(trimStr, _geomFactory);
+            return ReadWKT(trimStr, _geomServ);
 
         }
 
-        public static Geometry ReadWKT(string wkt, GeometryFactory geomFact)
+        public static Geometry ReadWKT(string wkt, NtsGeometryServices geomServ)
         {
-            var rdr = new WKTReader(geomFact);
+            var rdr = new WKTReader(geomServ);
             return rdr.Read(wkt);
         }
 
-        public static Geometry ReadWKBHex(string wkb, GeometryFactory geomFact)
+        public static Geometry ReadWKBHex(string wkb, NtsGeometryServices geomServ)
         {
-            var rdr = new WKBReader( /*geomFact*/);
+            var rdr = new WKBReader(geomServ);
             return rdr.Read(WKBReader.HexToBytes(wkb));
         }
     }

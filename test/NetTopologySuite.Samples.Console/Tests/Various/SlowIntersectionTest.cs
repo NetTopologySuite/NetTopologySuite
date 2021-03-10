@@ -44,21 +44,21 @@ namespace NetTopologySuite.Tests.Various
         [Test]
         public void TestWithCoordinateArraySequenceFactory()
         {
-            PerformTest(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 0, CoordinateArraySequenceFactory.Instance));
+            PerformTest(new NtsGeometryServices(CoordinateArraySequenceFactory.Instance, PrecisionModel.Floating.Value, 0));
         }
 
         [Test]
         public void TestWithDotSpatialAffineCoordinateSequenceFactory()
         {
-            PerformTest(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 0, DotSpatialAffineCoordinateSequenceFactory.Instance));
+            PerformTest(new NtsGeometryServices(DotSpatialAffineCoordinateSequenceFactory.Instance, PrecisionModel.Floating.Value, 0));
         }
 
-        private static void PerformTest(GeometryFactory factory)
+        private static void PerformTest(NtsGeometryServices gs)
         {
-            if (factory == null)
-                throw new ArgumentNullException("factory");
+            if (gs == null)
+                throw new ArgumentNullException(nameof(gs));
 
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader(gs);
             var g1 = reader.Read(t1);
             Assert.IsNotNull(g1);
             Assert.IsTrue(g1.IsValid);

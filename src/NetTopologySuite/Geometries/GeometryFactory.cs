@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetTopologySuite.Geometries.Implementation;
+using System.Runtime.Serialization;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
 
@@ -38,13 +38,13 @@ namespace NetTopologySuite.Geometries
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
-        public static readonly GeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));
+        public static readonly GeometryFactory FloatingSingle = new GeometryFactory(PrecisionModel.FloatingSingle.Value);
 
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
-        public static readonly GeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
+        public static readonly GeometryFactory Fixed = new GeometryFactory(PrecisionModel.Fixed.Value);
 
         private readonly PrecisionModel _precisionModel;
 
@@ -69,6 +69,35 @@ namespace NetTopologySuite.Geometries
         public int SRID => _srid;
 
         /// <summary>
+        /// Gets a value indicating the geometry overlay function set to use
+        /// </summary>
+        /// <returns>A geometry overlay function set.</returns>
+        internal GeometryOverlay GeometryOverlay
+        {
+            get { return GeometryServices.GeometryOverlay; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating the geometry overlay function set to use
+        /// </summary>
+        /// <returns>A geometry overlay function set.</returns>
+        internal CoordinateEqualityComparer CoordinateEqualityComparer
+        {
+            get { return GeometryServices.CoordinateEqualityComparer; }
+        }
+
+        [NonSerialized]
+        private NtsGeometryServices _services;
+
+        /// <summary>
+        /// Gets a value indicating the <see cref="NtsGeometryServices"/> object that created this factory.
+        /// </summary>
+        public NtsGeometryServices GeometryServices
+        {
+            get => _services;
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="coord"></param>
@@ -81,14 +110,31 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
+        /// Constructs a <c>GeometryFactory</c> that generates Geometries having the given
+        /// <paramref name="precisionModel">precision model</paramref>, <paramref name="srid">spatial-reference ID</paramref>, 
+        /// <paramref name="coordinateSequenceFactory">CoordinateSequence</paramref> and
+        /// <paramref name="services"><c>NtsGeometryServices</c></paramref>.
         /// </summary>
-        public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+        /// <param name="precisionModel">A precision model</param>
+        /// <param name="srid">A spatial reference id</param>
+        /// <param name="coordinateSequenceFactory">A coordinate sequence factory</param>
+        /// <param name="services"><c>NtsGeometryServices</c> object creating this factory</param>
+        public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory,
+            NtsGeometryServices services)
         {
             _precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _srid = srid;
+            _services = services;
+        }
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
+        /// </summary>
+        public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+            : this(precisionModel, srid, coordinateSequenceFactory, NtsGeometryServices.Instance)
+        {
         }
 
         /// <summary>
@@ -106,7 +152,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         public GeometryFactory(PrecisionModel precisionModel) :
-            this(precisionModel, 0, GetDefaultCoordinateSequenceFactory()) { }
+            this(precisionModel, 0, NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
@@ -116,7 +162,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="precisionModel">The PrecisionModel to use.</param>
         /// <param name="srid">The SRID to use.</param>
         public GeometryFactory(PrecisionModel precisionModel, int srid) :
-            this(precisionModel, srid, GetDefaultCoordinateSequenceFactory()) { }
+            this(precisionModel, srid, NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory) { }
 
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having a floating
@@ -657,9 +703,34 @@ namespace NetTopologySuite.Geometries
             return editor.Edit(g, operation);
         }
 
-        private static CoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
+        /// <summary>
+        /// Returns a new <see cref="GeometryFactory"/> whose <see cref="GeometryFactory.SRID"/> is
+        /// the given value and whose other values and behavior are, as near as we possibly can make
+        /// it, the same as our own.
+        /// </summary>
+        /// <param name="srid">
+        /// The <see cref="GeometryFactory.SRID"/> for the result.
+        /// </param>
+        /// <returns>
+        /// The cloned instance.
+        /// </returns>
+        public virtual GeometryFactory WithSRID(int srid)
         {
-            return CoordinateArraySequenceFactory.Instance;
+            return _srid == srid
+                ? this
+                : _services.CreateGeometryFactory(_precisionModel, srid, _coordinateSequenceFactory);
+        }
+
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString()
+        {
+            return $"{GetType().Name}[PM={PrecisionModel}, SRID={SRID}, CSFactory={CoordinateSequenceFactory.GetType().Name}, GeometryOverlay:{GeometryOverlay}]";
+        }
+
+        [OnDeserialized]
+        protected void OnDeserialized(StreamingContext context)
+        {
+            _services = NtsGeometryServices.Instance;
         }
     }
 }

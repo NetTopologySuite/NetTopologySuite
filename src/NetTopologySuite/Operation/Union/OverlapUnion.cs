@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -6,50 +7,56 @@ namespace NetTopologySuite.Operation.Union
 {
     /// <summary>
     /// Unions MultiPolygons efficiently by
-    /// using full topological union only for polygons which may overlap
-    /// by virtue of intersecting the common area of the inputs.
-    /// Other polygons are simply combined with the union result,
+    /// using full topological union only for polygons which may overlap,
+    /// and combining with the remaining polygons.
+    /// Polygons which may overlap are those which intersect the common extent of the inputs.
+    /// Polygons wholly outside this extent must be disjoint to the computed union.
+    /// They can thus be simply combined with the union result,
     /// which is much more performant.
+    /// (There is one caveat to this, which is discussed below).
     /// <para/>
     /// This situation is likely to occur during cascaded polygon union,
     /// since the partitioning of polygons is done heuristically
     /// and thus may group disjoint polygons which can lie far apart.
     /// It may also occur in real world data which contains many disjoint polygons
-    /// (e.g.polygons representing parcels on different street blocks).
+    /// (e.g. polygons representing parcels on different street blocks).
     /// </summary>
     /// <remarks>
     /// <h2>Algorithm</h2>
     /// The overlap region is determined as the common envelope of intersection.
     /// The input polygons are partitioned into two sets:
-    /// <list type="Bullet">
+    /// <list type="bullet">
     /// <item><term>Overlapping</term><description>Polygons which intersect the overlap region, and thus potentially overlap each other</description></item>
-    /// <item><term>Disjoint</term><description>Polygons which are disjoint from(lie wholly outside) the overlap region</description></item>
+    /// <item><term>Disjoint</term><description>Polygons which are disjoint from (lie wholly outside) the overlap region</description></item>
     /// </list>
     /// The Overlapping set is fully unioned, and then combined with the Disjoint set.
     /// Performing a simple combine works because
     /// the disjoint polygons do not interact with each
-    /// other (since the inputs are valid MultiPolygons).
+    /// other(since the inputs are valid MultiPolygons).
     /// They also do not interact with the Overlapping polygons,
     /// since they are outside their envelope.
-    /// <h2>Verification</h2>
-    /// In the general case the Overlapping set of polygons will
-    /// extend beyond the overlap envelope.This means that the union result
+    /// <h2>Discussion</h2>
+    /// In general the Overlapping set of polygons will
+    /// extend beyond the overlap envelope.  This means that the union result
     /// will extend beyond the overlap region.
     /// There is a small chance that the topological
     /// union of the overlap region will shift the result linework enough
     /// that the result geometry intersects one of the Disjoint geometries.
-    /// This case is detected and if it occurs
+    /// This situation is detected and if it occurs
     /// is remedied by falling back to performing a full union of the original inputs.
     /// Detection is done by a fairly efficient comparison of edge segments which
-    /// extend beyond the overlap region.If any segments have changed
+    /// extend beyond the overlap region.  If any segments have changed
     /// then there is a risk of introduced intersections, and full union is performed.
     /// <para/>
     /// This situation has not been observed in JTS using floating precision,
-    /// but it could happen due to snapping.It has been observed
-    /// in other APIs (e.g. GEOS) due to more aggressive snapping.
-    /// And it will be more likely to happen if a snap-rounding overlay is used.
+    /// but it could happen due to snapping.  It has been observed
+    /// in other APIs(e.g.GEOS) due to more aggressive snapping.
+    /// It is more likely to happen if a Snap - Rounding overlay is used.
+    /// <para/>
+    /// <b>NOTE: Test has shown that using this heuristic impairs performance.</b>
     /// </remarks>
-    /// <author>mdavis</author>
+    /// <author>Martin Davis</author>
+    [Obsolete("Due to impairing performance")]
     public class OverlapUnion
     {
         /// <summary>
@@ -65,21 +72,53 @@ namespace NetTopologySuite.Operation.Union
             return union.Union();
         }
 
+        /// <summary>
+        /// Union a pair of geometries,
+        /// using the more performant overlap union algorithm if possible.
+        /// </summary>
+        /// <param name="g0">A geometry to union</param>
+        /// <param name="g1">A geometry to union</param>
+        /// <param name="unionFun">Function to union two geometries</param>
+        /// <returns>The union of the inputs</returns>
+        public static Geometry Union(Geometry g0, Geometry g1, UnionStrategy unionFun)
+        {
+            var union = new OverlapUnion(g0, g1, unionFun);
+            return union.Union();
+        }
+
         private readonly GeometryFactory _geomFactory;
 
         private readonly Geometry _g0;
         private readonly Geometry _g1;
+
+
+        private readonly UnionStrategy _unionFun;
 
         /// <summary>
         /// Creates a new instance for unioning the given geometries.
         /// </summary>
         /// <param name="g0">A geometry to union</param>
         /// <param name="g1">A geometry to union</param>
-        public OverlapUnion(Geometry g0, Geometry g1)
+        public OverlapUnion(Geometry g0, Geometry g1) : this(g0, g1, CascadedPolygonUnion.ClassicUnion)
+        { }
+
+        /// <summary>
+        /// Creates a new instance for unioning the given geometries.
+        /// </summary>
+        /// <param name="g0">A geometry to union</param>
+        /// <param name="g1">A geometry to union</param>
+        /// <param name="unionFun">Function to union two geometries</param>
+        public OverlapUnion(Geometry g0, Geometry g1, UnionStrategy unionFun)
         {
+            if (g0 == null)
+            {
+                throw new ArgumentNullException(nameof(g0));
+            }
+
             _g0 = g0;
             _g1 = g1;
             _geomFactory = g0.Factory;
+            _unionFun = unionFun;
         }
 
         /// <summary>
@@ -172,20 +211,16 @@ namespace NetTopologySuite.Operation.Union
             return _geomFactory.BuildGeometry(intersectingGeoms);
         }
 
-        private static Geometry UnionFull(Geometry geom0, Geometry geom1)
+        private Geometry UnionFull(Geometry geom0, Geometry geom1)
         {
-            try
-            {
-                return geom0.Union(geom1);
-            }
-            catch (TopologyException)
-            {
-                /**
-                 * If the overlay union fails,
-                 * try a buffer union, which often succeeds
-                 */
-                return UnionBuffer(geom0, geom1);
-            }
+            // if both are empty collections, just return a copy of one of them
+            if (geom0.NumGeometries == 0
+                && geom1.NumGeometries == 0)
+                return geom0.Copy();
+
+            var union = _unionFun.Union(geom0, geom1);
+            //var union = geom0.Union(geom1);
+            return union;
         }
 
         /// <summary>

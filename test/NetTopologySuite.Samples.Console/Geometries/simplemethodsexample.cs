@@ -48,8 +48,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         public virtual void Run()
         {
-            var fact = new GeometryFactory();
-            var wktRdr = new WKTReader(fact);
+            var wktRdr = new WKTReader();
 
             string wktA = "POLYGON((40 100, 40 20, 120 20, 120 100, 40 100))";
             string wktB = "LINESTRING(20 80, 80 60, 100 140)";

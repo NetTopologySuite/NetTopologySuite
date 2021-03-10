@@ -1,37 +1,49 @@
 ﻿using System;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
+
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     public class GeometryFactoryExTest : GeometryFactoryTest
     {
+        private static readonly NtsGeometryServices InstanceToUse = new NtsGeometryServicesEx();
         private NtsGeometryServices _oldInstance;
 
         private class NtsGeometryServicesEx : NtsGeometryServices
         {
+            public NtsGeometryServicesEx() : base() {}
+
+            public NtsGeometryServicesEx(CoordinateSequenceFactory csFactory, PrecisionModel pm, int srid,
+                GeometryOverlay go, CoordinateEqualityComparer ceo) : base(csFactory,pm, srid, go, ceo)
+            {
+            }
+
+
             protected override GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid,
                 CoordinateSequenceFactory coordinateSequenceFactory)
             {
-                return new GeometryFactoryEx(precisionModel, srid, coordinateSequenceFactory);
+                return new GeometryFactoryEx(precisionModel, srid, coordinateSequenceFactory, this);
             }
         }
 
-        public GeometryFactoryExTest() : base(new GeometryFactoryEx(PrecModel, 0))
+        public GeometryFactoryExTest()
+            : base(InstanceToUse)
         {
 
         }
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        [SetUp]
+        public void SetUp()
         {
             _oldInstance = NtsGeometryServices.Instance;
-            NtsGeometryServices.Instance = new NtsGeometryServicesEx();
+            NtsGeometryServices.Instance = InstanceToUse;
         }
 
-        [OneTimeTearDown]
-        public void OneTimeTearDown()
+        [TearDown]
+        public void TearDown()
         {
             NtsGeometryServices.Instance = _oldInstance;
         }
@@ -93,6 +105,33 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             gf = new GeometryFactoryEx { OrientationOfExteriorRing = LinearRingOrientation.CounterClockwise };
             Assert.IsTrue(((Polygon)gf.ToGeometry(env)).Shell.IsCCW);
+        }
+
+        [Test]
+        [Category("GitHub Issue")]
+        [Category("Issue437")]
+        public void SettingSRIDShouldCopyFactoryFaithfully()
+        {
+            var pm = new PrecisionModel(10);
+            const int initialSRID = 0;
+            var csf = PackedCoordinateSequenceFactory.FloatFactory;
+            const LinearRingOrientation orientation = LinearRingOrientation.Clockwise;
+
+            var gf = new GeometryFactoryEx(pm, initialSRID, csf)
+            {
+                OrientationOfExteriorRing = orientation,
+            };
+
+            var env = new Envelope(-10, 10, -8, 8);
+            var g = gf.ToGeometry(env);
+
+            const int expectedSRID = 4326;
+            g.SRID = expectedSRID;
+            Assert.That(g.Factory, Is.InstanceOf<GeometryFactoryEx>()
+                                     .With.Property(nameof(GeometryFactoryEx.SRID)).EqualTo(expectedSRID)
+                                     .With.Property(nameof(GeometryFactoryEx.OrientationOfExteriorRing)).EqualTo(orientation)
+                                     .With.Property(nameof(GeometryFactoryEx.PrecisionModel)).EqualTo(pm)
+                                     .With.Property(nameof(GeometryFactoryEx.CoordinateSequenceFactory)).EqualTo(csf));
         }
 
         private static void TestShellRingOrientationEnforcement(LinearRingOrientation ringOrientation)
@@ -211,12 +250,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     Assert.Fail("Setting exterior ring orientation should have failed!");
                 Assert.AreEqual(ringOrientation, gf.OrientationOfExteriorRing);
             }
-            catch (ArgumentOutOfRangeException iae)
+            catch (ArgumentOutOfRangeException)
             {
                 if (failKind != 1)
                     Assert.Fail("Wrong argument");
             }
-            catch (InvalidOperationException isa)
+            catch (InvalidOperationException)
             {
                 if (failKind != 2)
                     Assert.Fail("Setting exterior ring orientation twice!");

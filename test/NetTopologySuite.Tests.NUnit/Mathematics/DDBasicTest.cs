@@ -179,7 +179,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         private static void CheckErrorBound(string tag, DD x, DD y, double errBound)
         {
             var err = (x - y).Abs();
-            //Console.WriteLine(tag + " err=" + err);
+            //TestContext.WriteLine(tag + " err=" + err);
             bool isWithinEps = err.ToDoubleValue() <= errBound;
             if (!isWithinEps)
             {
@@ -214,8 +214,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
             var delta = diff - sum;
 
-            // System.Console.WriteLine("\nA = " + a + ", B = " + b);
-            // System.Console.WriteLine("[DD]     2ab+b^2 = " + sum
+            // TestContext.WriteLine("\nA = " + a + ", B = " + b);
+            // TestContext.WriteLine("[DD]     2ab+b^2 = " + sum
             //                          + "   (a+b)^2 - a^2 = " + diff
             //                          + "   delta = " + delta);
             PrintBinomialSquareDouble(a, b);
@@ -230,7 +230,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             double sum = 2*a*b + b*b;
             double diff = (a + b)*(a + b) - a*a;
-            // Console.WriteLine("[double] 2ab+b^2= " + sum
+            // TestContext.WriteLine("[double] 2ab+b^2= " + sum
             //                   + "   (a+b)^2-a^2= " + diff
             //                   + "   delta= " + (sum - diff));
         }
@@ -275,8 +275,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
             var delta = diff - b2DD;
 
-            // System.Console.WriteLine("\nA = " + a + ", B = " + b);
-            // System.Console.WriteLine("[DD] (a+b)(a-b) = " + abProd
+            // TestContext.WriteLine("\nA = " + a + ", B = " + b);
+            // TestContext.WriteLine("[DD] (a+b)(a-b) = " + abProd
             //                          + "   -((a^2 - b^2) - a^2) = " + diff
             //                          + "   delta = " + delta);
             // printBinomialSquareDouble(a,b);
@@ -294,7 +294,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
             double err = (xdd - rr).ToDoubleValue();
 
-            // System.Console.WriteLine("DD Recip = " + xdd
+            // TestContext.WriteLine("DD Recip = " + xdd
             //                          + " DD delta= " + err
             //                          + " double recip delta= " + (x - 1.0/(1.0/x)));
 
@@ -305,14 +305,14 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             var xdd = new DD(x);
             var pow = xdd.Pow(exp);
-            // System.Console.WriteLine("Pow(" + x + ", " + exp + ") = " + pow);
+            // TestContext.WriteLine("Pow(" + x + ", " + exp + ") = " + pow);
             var pow2 = SlowPow(xdd, exp);
 
             double err = (pow - pow2).ToDoubleValue();
 
             bool isOK = err < errBound;
             if (!isOK)
-                Console.WriteLine("Test slowPow value " + pow2);
+                TestContext.WriteLine("Test slowPow value " + pow2);
 
             Assert.IsTrue(err <= errBound);
         }

@@ -4,6 +4,7 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Overlay
 {
@@ -325,10 +326,10 @@ namespace NetTopologySuite.Operation.Overlay
                          * label of the edge must be updated to reflect the resultant
                          * side locations indicated by the depth values.
                          */
-                        Assert.IsTrue(!depth.IsNull(i, Positions.Left), "depth of Left side has not been initialized");
-                        lbl.SetLocation(i, Positions.Left, depth.GetLocation(i, Positions.Left));
-                        Assert.IsTrue(!depth.IsNull(i, Positions.Right), "depth of Right side has not been initialized");
-                        lbl.SetLocation(i, Positions.Right, depth.GetLocation(i, Positions.Right));
+                        Assert.IsTrue(!depth.IsNull(i, Position.Left), "depth of Left side has not been initialized");
+                        lbl.SetLocation(i, Position.Left, depth.GetLocation(i, Position.Left));
+                        Assert.IsTrue(!depth.IsNull(i, Position.Right), "depth of Right side has not been initialized");
+                        lbl.SetLocation(i, Position.Right, depth.GetLocation(i, Position.Right));
                     }
                 }
             }
@@ -502,7 +503,7 @@ namespace NetTopologySuite.Operation.Overlay
                 // mark all dirEdges with the appropriate label
                 var label = de.Label;
                 if (label.IsArea() && !de.IsInteriorAreaEdge &&
-                    IsResultOfOp(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), opCode))
+                    IsResultOfOp(label.GetLocation(0, Position.Right), label.GetLocation(1, Position.Right), opCode))
                         de.InResult = true;
             }
         }

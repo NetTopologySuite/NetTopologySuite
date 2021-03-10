@@ -50,13 +50,20 @@ namespace NetTopologySuite.Operation.Buffer
     /// </ul>
     /// </para>
     /// <para>
-    /// The buffer algorithm can perform simplification on the input to increase performance.
+    /// The buffer algorithm may perform simplification on the input to increase performance.
     /// The simplification is performed a way that always increases the buffer area
     /// (so that the simplified input covers the original input).
     /// The degree of simplification can be specified with <see cref="BufferParameters.SimplifyFactor"/>,
     /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
     /// Note that if the buffer distance is zero then so is the computed simplify tolerance,
     /// no matter what the simplify factor.
+    /// </para>
+    /// <para>
+    /// Buffer results are always valid geometry.
+    /// Given this, computing a zero-width buffer of an invalid polygonal geometry is
+    /// an effective way to "validify" the geometry.
+    /// Note however that in the case of self-intersecting "bow-tie" geometries,
+    /// only the largest enclosed area will be retained.
     /// </para>
     /// </remarks>
     public class BufferOp
@@ -88,7 +95,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns> a scale factor for the buffer computation</returns>
         private static double PrecisionScaleFactor(Geometry g,
             double distance,
-          int maxPrecisionDigits)
+            int maxPrecisionDigits)
         {
             var env = g.EnvelopeInternal;
             double envMax = MathUtil.Max(
@@ -99,7 +106,7 @@ namespace NetTopologySuite.Operation.Buffer
             double bufEnvMax = envMax + 2 * expandByDistance;
 
             // the smallest power of 10 greater than the buffer envelope
-            int bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
+            int bufEnvPrecisionDigits = (int) (Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
             int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
 
             double scaleFactor = Math.Pow(10.0, minUnitLog10);
@@ -177,7 +184,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly BufferParameters _bufParams = new BufferParameters();
 
         private Geometry _resultGeometry;
-        private Exception _saveException;   // debugging only
+        private Exception _saveException; // debugging only
 
         /// <summary>
         /// Initializes a buffer computation for the given geometry
@@ -248,11 +255,21 @@ namespace NetTopologySuite.Operation.Buffer
                     _saveException = ex;
                     // don't propagate the exception - it will be detected by fact that resultGeometry is null
                 }
+
                 if (_resultGeometry != null) return;
             }
 
             // tried everything - have to bail
             throw _saveException;
+        }
+
+        private void BufferReducedPrecision(int precisionDigits)
+        {
+            double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
+            //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
+
+            var fixedPM = new PrecisionModel(sizeBasedScaleFactor);
+            BufferFixedPrecision(fixedPM);
         }
 
         private void BufferOriginalPrecision()
@@ -273,22 +290,26 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        private void BufferReducedPrecision(int precisionDigits)
+        private void BufferFixedPrecision(PrecisionModel fixedPM)
         {
-            double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
-            //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
+            //System.out.println("recomputing with precision scale factor = " + fixedPM);
 
-            var fixedPrecModel = new PrecisionModel(sizeBasedScaleFactor);
-            BufferFixedPrecision(fixedPrecModel);
-        }
-
-        private void BufferFixedPrecision(PrecisionModel fixedPrecModel)
-        {
-            var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
-                                          fixedPrecModel.Scale);
+            /*
+             * Snap-Rounding provides both robustness
+             * and a fixed output precision.
+             * 
+             * SnapRoundingNoder does not require rounded input, 
+             * so could be used by itself.
+             * But using ScaledNoder may be faster, since it avoids
+             * rounding within SnapRoundingNoder.
+             * (Note this only works for buffering, because
+             * ScaledNoder may invalidate topology.)
+             */
+            var snapNoder = new SnapRoundingNoder(new PrecisionModel(1.0));
+            var noder = new ScaledNoder(snapNoder, fixedPM.Scale);
 
             var bufBuilder = new BufferBuilder(_bufParams);
-            bufBuilder.WorkingPrecisionModel = fixedPrecModel;
+            bufBuilder.WorkingPrecisionModel = fixedPM;
             bufBuilder.Noder = noder;
             // this may throw an exception, if robustness errors are encountered
             _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);

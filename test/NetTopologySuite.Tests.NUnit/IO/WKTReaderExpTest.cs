@@ -11,13 +11,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
     [TestFixture]
     public class WKTReaderExpTest
     {
-        private GeometryFactory fact;
-        private WKTReader rdr;
+        private readonly WKTReader rdr;
 
         public WKTReaderExpTest()
         {
-            fact = new GeometryFactory();
-            rdr = new WKTReader(fact);
+            rdr = new WKTReader();
         }
 
         [Test]
@@ -65,9 +63,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
             {
                 var g = rdr.Read(wkt);
             }
-            catch (ParseException ex)
+            catch (ParseException /*ex*/)
             {
-                //Console.WriteLine(ex.Message);
+                //TestContext.WriteLine(ex.Message);
                 threwParseEx = true;
             }
             Assert.IsTrue(threwParseEx);

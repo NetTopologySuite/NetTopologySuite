@@ -14,13 +14,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             new[]{63.01,52.57},new[]{32.9,44.44}, new[]{79.36,29.8}, new[]{38.17,88.0}, new[]{19.31,49.71},new[]{57.03,19.28},
             new[]{63.76,77.35},new[]{45.26,85.15},new[]{51.71,50.38},new[]{92.16,19.85},new[]{64.18,27.7}, new[]{64.74,65.1},
             new[]{80.07,13.55},new[]{55.54,94.07}};
-        
+
         [Test]
         public void TestCopyToLargerDim()
         {
             var csFactory = new PackedCoordinateSequenceFactory();
             var cs2D = CreateTestSequence(csFactory, 10, 2);
-            var cs3D = csFactory.Create(10, 3);
+            var cs3D = csFactory.Create(10, 3, 0);
             CoordinateSequences.Copy(cs2D, 0, cs3D, 0, cs3D.Count);
             Assert.IsTrue(CoordinateSequences.IsEqual(cs2D, cs3D));
         }
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var csFactory = new PackedCoordinateSequenceFactory();
             var cs3D = CreateTestSequence(csFactory, 10, 3);
-            var cs2D = csFactory.Create(10, 2);
+            var cs2D = csFactory.Create(10, 2, 0);
             CoordinateSequences.Copy(cs3D, 0, cs2D, 0, cs2D.Count);
             Assert.IsTrue(CoordinateSequences.IsEqual(cs2D, cs3D));
         }
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestScrollRing()
         {
-            Console.WriteLine("Testing scrolling of closed ring");
+            TestContext.WriteLine("Testing scrolling of closed ring");
             DoTestScrollRing(CoordinateArraySequenceFactory.Instance, 2);
             DoTestScrollRing(CoordinateArraySequenceFactory.Instance, 3);
             DoTestScrollRing(PackedCoordinateSequenceFactory.DoubleFactory, 2);
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestScroll()
         {
-            Console.WriteLine("Testing scrolling of circular string");
+            TestContext.WriteLine("Testing scrolling of circular string");
             DoTestScroll(CoordinateArraySequenceFactory.Instance, 2);
             DoTestScroll(CoordinateArraySequenceFactory.Instance, 3);
             DoTestScroll(PackedCoordinateSequenceFactory.DoubleFactory, 2);
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestIndexOf()
         {
-            Console.WriteLine("Testing indexOf");
+            TestContext.WriteLine("Testing indexOf");
             DoTestIndexOf(CoordinateArraySequenceFactory.Instance, 2);
             DoTestIndexOf(PackedCoordinateSequenceFactory.DoubleFactory, 5);
             DoTestIndexOf(PackedCoordinateSequenceFactory.FloatFactory, 7);
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestMinCoordinateIndex()
         {
-            Console.WriteLine("Testing minCoordinateIndex");
+            TestContext.WriteLine("Testing minCoordinateIndex");
             DoTestMinCoordinateIndex(CoordinateArraySequenceFactory.Instance, 2);
             DoTestMinCoordinateIndex(PackedCoordinateSequenceFactory.DoubleFactory, 5);
             DoTestMinCoordinateIndex(PackedCoordinateSequenceFactory.FloatFactory, 7);
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestIsRing()
         {
-            Console.WriteLine("Testing isRing");
+            TestContext.WriteLine("Testing isRing");
             DoTestIsRing(CoordinateArraySequenceFactory.Instance, 2);
             DoTestIsRing(PackedCoordinateSequenceFactory.DoubleFactory, 5);
             DoTestIsRing(PackedCoordinateSequenceFactory.FloatFactory, 7);
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestCopy()
         {
-            Console.WriteLine("Testing copy");
+            TestContext.WriteLine("Testing copy");
             DoTestCopy(CoordinateArraySequenceFactory.Instance, 2);
             DoTestCopy(PackedCoordinateSequenceFactory.DoubleFactory, 5);
             DoTestCopy(PackedCoordinateSequenceFactory.FloatFactory, 7);
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestReverse()
         {
-            Console.WriteLine("Testing reverse");
+            TestContext.WriteLine("Testing reverse");
             DoTestReverse(CoordinateArraySequenceFactory.Instance, 2);
             DoTestReverse(PackedCoordinateSequenceFactory.DoubleFactory, 5);
             DoTestReverse(PackedCoordinateSequenceFactory.FloatFactory, 7);
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private static CoordinateSequence CreateSequenceFromOrdinates(CoordinateSequenceFactory csFactory, int dim)
         {
-            var sequence = csFactory.Create(ordinateValues.Length, dim);
+            var sequence = csFactory.Create(ordinateValues.Length, dim, 0);
             for (int i = 0; i < ordinateValues.Length; i++)
             {
                 sequence.SetOrdinate(i, Ordinate.X, ordinateValues[i][0]);
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private static CoordinateSequence CreateTestSequence(CoordinateSequenceFactory csFactory, int size, int dim)
         {
-            var cs = csFactory.Create(size, dim);
+            var cs = csFactory.Create(size, dim, 0);
             // initialize with a data signature where coords look like [1, 10, 100, ...]
             for (int i = 0; i < size; i++)
                 for (int d = 0; d < dim; d++)
@@ -149,13 +149,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var sequence = CreateSequenceFromOrdinates(factory, dimension);
             if (sequence.Count <= 7)
             {
-                Console.WriteLine("sequence has a size of " + sequence.Count + ". Execution of this test needs a sequence " +
+                TestContext.WriteLine("sequence has a size of " + sequence.Count + ". Execution of this test needs a sequence " +
                         "with more than 6 coordinates.");
                 return;
             }
 
-            var fullCopy = factory.Create(sequence.Count, dimension);
-            var partialCopy = factory.Create(sequence.Count - 5, dimension);
+            var fullCopy = factory.Create(sequence.Count, dimension, 0);
+            var partialCopy = factory.Create(sequence.Count - 5, dimension, 0);
 
             // act
             CoordinateSequences.Copy(sequence, 0, fullCopy, 0, sequence.Count);
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var sequence = CreateSequenceFromOrdinates(factory, dimension);
             if (sequence.Count <= 6)
             {
-                Console.WriteLine("sequence has a size of " + sequence.Count + ". Execution of this test needs a sequence " +
+                TestContext.WriteLine("sequence has a size of " + sequence.Count + ". Execution of this test needs a sequence " +
                         "with more than 5 coordinates.");
                 return;
             }
@@ -262,7 +262,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
 
             // arrange
-            //Console.WriteLine("Testing '" + factory.getClass().getSimpleName() + "' with dim=" +dimension );
+            //TestContext.WriteLine("Testing '" + factory.getClass().getSimpleName() + "' with dim=" +dimension );
             var sequence = CreateCircle(factory, dimension, new Coordinate(10, 10), 9d);
             var scrolled = sequence.Copy();
 
@@ -301,7 +301,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             if (num > 4) num = 4;
 
-            var sequence = factory.Create(num, dimension);
+            var sequence = factory.Create(num, dimension, 0);
             if (num == 0) return FillNonPlanarDimensions(sequence);
 
             sequence.SetOrdinate(0, Ordinate.X, 10);
@@ -355,7 +355,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             const double angleCircle = 2 * Math.PI;
             const double angleStep = angleCircle / numSegmentsCircle;
 
-            var sequence = factory.Create(numPoints, dimension);
+            var sequence = factory.Create(numPoints, dimension, 0);
             var pm = new PrecisionModel(100);
             double angle = startAngle;
             for (int i = 0; i < numPoints; i++)

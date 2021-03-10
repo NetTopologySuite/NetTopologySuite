@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
         public void Run(int nPts)
         {
             var pts = RandomPoints(nPts);
-            Console.WriteLine("# pts: " + pts.Count);
+            TestContext.WriteLine("# pts: " + pts.Count);
             var sw = new Stopwatch();
             sw.Start();
             var builder = new DelaunayTriangulationBuilder();
@@ -56,9 +56,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             //var g = builder.GetEdges(GeomFact);
             builder.GetSubdivision();
 
-            Console.WriteLine("  --  Time: " + sw.ElapsedMilliseconds
+            TestContext.WriteLine("  --  Time: " + sw.ElapsedMilliseconds
                               + "  Mem: " + Memory.TotalString);
-            //Console.WriteLine(g);
+            //TestContext.WriteLine(g);
         }
 
         private static readonly Random RND = new Random(998715632);

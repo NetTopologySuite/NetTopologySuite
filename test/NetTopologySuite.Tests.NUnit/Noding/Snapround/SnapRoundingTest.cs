@@ -20,7 +20,16 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string[] polyWithCloseNode = {
                 "POLYGON ((20 0, 20 160, 140 1, 160 160, 160 1, 20 0))"
                 };
-            RunRounding(polyWithCloseNode);
+            CheckRounding(polyWithCloseNode);
+        }
+
+        [Test]
+        public void TestPolyWithCloseNodeFrac()
+        {
+            string[] polyWithCloseNode = {
+                "POLYGON ((20 0, 20 160, 140 0.2, 160 160, 160 0, 20 0))"
+            };
+            CheckRounding(polyWithCloseNode);
         }
 
         [Test]
@@ -30,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                                  "LINESTRING (0 0, 2 0)",
                                  "LINESTRING (0 0, 10 -1)"
                              };
-            RunRounding(geoms);
+            CheckRounding(geoms);
         }
 
         [Test]
@@ -38,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string[] badLines1 = {
                 "LINESTRING ( 171 157, 175 154, 170 154, 170 155, 170 156, 170 157, 171 158, 171 159, 172 160, 176 156, 171 156, 171 159, 176 159, 172 155, 170 157, 174 161, 174 156, 173 156, 172 156 )"
                 };
-            RunRounding(badLines1);
+            CheckRounding(badLines1);
         }
 
         [Test]
@@ -46,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string[] badLines2 = {
                 "LINESTRING ( 175 222, 176 222, 176 219, 174 221, 175 222, 177 220, 174 220, 174 222, 177 222, 175 220, 174 221 )"
                 };
-            RunRounding(badLines2);
+            CheckRounding(badLines2);
         }
 
         [Test]
@@ -54,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string[] collapse1 = {
                 "LINESTRING ( 362 177, 375 164, 374 164, 372 161, 373 163, 372 165, 373 164, 442 58 )"
                 };
-            RunRounding(collapse1);
+            CheckRounding(collapse1);
         }
 
         [Test]
@@ -63,14 +72,14 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string[] collapse2 = {
                 "LINESTRING ( 393 175, 391 173, 390 175, 391 174, 391 173 )"
                 };
-            RunRounding(collapse2);
+            CheckRounding(collapse2);
         }
 
         [Test]
         public void TestLineWithManySelfSnaps()
         {
             string[] line = { "LINESTRING (0 0, 6 4, 8 11, 13 13, 14 12, 11 12, 7 7, 7 3, 4 2)" };
-            RunRounding(line);
+            CheckRounding(line);
         }
 
         [Test]
@@ -78,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             string[] badNoding1 = {
                 "LINESTRING ( 76 47, 81 52, 81 53, 85 57, 88 62, 89 64, 57 80, 82 55, 101 74, 76 99, 92 67, 94 68, 99 71, 103 75, 139 111 )"
                 };
-            RunRounding(badNoding1);
+            CheckRounding(badNoding1);
         }
 
         [Test]
@@ -88,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 "LINESTRING ( 94 68, 99 71 )",
                 "LINESTRING ( 85 57, 88 62 )"
                 };
-            RunRounding(badNoding1Extract);
+            CheckRounding(badNoding1Extract);
         }
         [Test]
         public void TestBadNoding1ExtractShift() {
@@ -97,7 +106,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 "LINESTRING ( 12 13, 17 16 )",
                 "LINESTRING ( 3 2, 6 7 )"
                 };
-            RunRounding(badNoding1ExtractShift);
+            CheckRounding(badNoding1ExtractShift);
         }
 
         [Test, Description("Test from JTS-MailingList")]
@@ -105,10 +114,11 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         {
             {
                 const double scale = 2.0E10;
-                PrecisionModel precisionModel = new PrecisionModel(scale);
-                GeometryFactory geometryFactory = new GeometryFactory(precisionModel);
+                var precisionModel = new PrecisionModel(scale);
+                var gs = new NtsGeometryServices(precisionModel, 0);
+                //var geometryFactory = gs.CreateGeometryFactory();
 
-                var reader = new WKTReader(geometryFactory);
+                var reader = new WKTReader(gs);
                 var lineStringA = (LineString)
                     reader.Read("LINESTRING (-93.40178610435 -235.5437531975, -401.24229900825 403.69365857925)");
                 var lineStringB = (LineString)
@@ -123,7 +133,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 lineStrings.Add(lineStringB);
                 lineStrings.Add(lineStringC);
 
-                var noder = new GeometryNoder(geometryFactory.PrecisionModel);
+                var noder = new GeometryNoder(precisionModel);
                 var nodedLineStrings = noder.Node(lineStrings.ToArray());
 
                 double shortestDistanceToPointBeforeNoding = double.MaxValue;
@@ -144,10 +154,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
 
                 double difference = Math.Abs(shortestDistanceToPointAfterNoding - shortestDistanceToPointBeforeNoding);
 
-                Console.WriteLine("Scale: {0}", scale);
-                Console.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);
-                Console.WriteLine("Distance to point after noding:  {0}", shortestDistanceToPointAfterNoding);
-                Console.WriteLine("Difference is {0} and should be lesser than {1}", difference, 1.0/scale);
+                TestContext.WriteLine("Scale: {0}", scale);
+                TestContext.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);
+                TestContext.WriteLine("Distance to point after noding:  {0}", shortestDistanceToPointAfterNoding);
+                TestContext.WriteLine("Difference is {0} and should be lesser than {1}", difference, 1.0/scale);
 
                 const double roughTolerance = 10.0;
                 Assert.IsTrue(difference < roughTolerance, "this difference should should be lesser than " + 1.0/scale);
@@ -157,7 +167,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
 
         private const double SnapTolerance = 1.0;
 
-        void RunRounding(string[] wkt)
+        private void CheckRounding(string[] wkt)
         {
             var geoms = FromWKT(wkt);
             var pm = new PrecisionModel(SnapTolerance);
@@ -166,7 +176,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             var nodedLines = noder.Node(geoms);
 
             foreach ( var ls in nodedLines)
-                Console.WriteLine(ls);
+                TestContext.WriteLine(ls);
 
             Assert.IsTrue(IsSnapped(nodedLines, SnapTolerance));
 
@@ -181,7 +191,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                     geomList.Add(rdr.Read(wkts[i]));
                 }
                 catch (Exception ex) {
-                    Console.WriteLine(ex.StackTrace);
+                    TestContext.WriteLine(ex.StackTrace);
                 }
             }
             return geomList;

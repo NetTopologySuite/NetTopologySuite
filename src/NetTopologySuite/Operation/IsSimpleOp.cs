@@ -40,8 +40,8 @@ namespace NetTopologySuite.Operation
     /// Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s (rings)
     /// will never satisfy the <tt>touches</tt> predicate at their endpoints, since these are
     /// interior points, not boundary points.
-    /// If it is required to test whether a set of <code>LineString</code>s touch
-    /// only at their endpoints, use <code>IsSimpleOp</code> with {@link BoundaryNodeRule#ENDPOINT_BOUNDARY_RULE}.
+    /// If it is required to test whether a set of <c>LineString</c>s touch
+    /// only at their endpoints, use <c>IsSimpleOp</c> with <see cref="BoundaryNodeRules.EndpointBoundaryRule"/>.
     /// For example, this can be used to validate that a set of lines form a topologically valid
     /// linear network.
     /// </remarks>

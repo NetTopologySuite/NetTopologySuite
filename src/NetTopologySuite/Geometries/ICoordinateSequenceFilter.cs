@@ -46,7 +46,7 @@ namespace NetTopologySuite.Geometries
         /// Once this method returns <c>true</c>, it must
         /// continue to return <c>true</c> on every subsequent call.
         ///</remarks>
-        Boolean Done { get; }
+        bool Done { get; }
 
         ///<summary>
         /// Reports whether the execution of this filter has modified the coordinates of the geometry.
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Geometries
         /// after this filter has finished being executed.
         /// </summary>
         /// <remarks>Most filters can simply return a constant value reflecting whether they are able to change the coordinates.</remarks>
-        Boolean GeometryChanged { get; }
+        bool GeometryChanged { get; }
     }
 
 }

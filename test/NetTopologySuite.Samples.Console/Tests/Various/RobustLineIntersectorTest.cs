@@ -8,7 +8,7 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class RobustLineIntersectorTest : BaseSamples
     {
-        public RobustLineIntersectorTest() : base(GeometryFactory.Fixed) { }
+        public RobustLineIntersectorTest() : base(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed))) { }
 
         [Test]
         public void IntersectionTest()

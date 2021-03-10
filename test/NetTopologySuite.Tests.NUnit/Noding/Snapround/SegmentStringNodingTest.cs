@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             var g = rdr.Read(wkt);
             var strings = new List<ISegmentString>();
             strings.Add(new NodedSegmentString(g.Coordinates, null));
-            new MCIndexSnapRounder(pm).ComputeNodes(strings);
+            new SnapRoundingNoder(pm).ComputeNodes(strings);
 
             var noded = NodedSegmentString.GetNodedSubstrings(strings);
             foreach (var s in noded) {

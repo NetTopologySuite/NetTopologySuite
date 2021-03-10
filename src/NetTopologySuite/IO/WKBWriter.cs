@@ -10,10 +10,35 @@ namespace NetTopologySuite.IO
     /// Writes a Well-Known Binary byte data representation of a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
-    /// WKBWriter stores <see cref="Coordinate" /> X,Y,Z values if <see cref="Coordinate.Z" /> is not <see cref="double.NaN"/>,
-    /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
+    /// There are a few cases which are not specified in the standard.
+    /// The implementation uses a representation which is compatible with
+    /// other common spatial systems (notably, PostGIS).
+    /// <list type="bullet">
+    /// <item><term><see cref="LinearRing"/>s</term><description>are written as <see cref="LineString"/>s.</description></item>
+    /// <item><term>Empty geometries are output as follows</term><description>
+    /// <list type="bullet">
+    /// <item><term><c>Point</c></term><description>A <c>WKBPoint</c> with <c>double.NaN</c> ordinate values</description></item>
+    /// <item><term><c>LineString</c></term><description>A <c>WKBLineString</c> with zero points</description></item>
+    /// <item><term><c>Polygon</c></term><description>currently output as a <c>WKBPolygon</c> with one <c>LinearRing</c> with zero points.
+    /// <i>Note:</i> This is different to other systems. It will change to a <c>WKBPolygon</c> with zero <c>LinearRing</c>s.</description></item>
+    /// <item><term>Multi geometries</term><description>A <c>WKBMulti</c> with zero elements</description></item>
+    /// <item><term><c>GeometryCollection</c></term><description>A <c>WKBGeometryCollection</c> with zero elements</description></item>
+    /// </list>
+    /// </description></item></list>
+    /// <para/>
+    /// This implementation supports the <b>Extended WKB</b> standard.
+    /// Extended WKB allows writing 3-dimensional coordinates
+    /// and the geometry SRID value.
+    /// The presence of 3D coordinates is indicated
+    /// by setting the high bit of the <tt>wkbType</tt> word.
+    /// The presence of a SRID is indicated
+    /// by setting the third bit of the <tt>wkbType</tt> word.
+    /// EWKB format is upward-compatible with the original SFS WKB format.
+    /// <para/>
+    /// This class supports reuse of a single instance to read multiple
+    /// geometries. This class is not thread - safe; each thread should create its own
+    /// instance.
     /// </remarks>
-    // Thanks to Roberto Acioli for Coordinate.Z patch
     public class WKBWriter
     {
         /// <summary>Converts a byte array to a hexadecimal string.</summary>
@@ -106,6 +131,9 @@ namespace NetTopologySuite.IO
                 writer.Write(geom.SRID);
         }
 
+        /// <summary>
+        /// Gets or sets the binary encoding type
+        /// </summary>
         public ByteOrder EncodingType { get; protected set; }
 
         /// <summary>
@@ -247,10 +275,10 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        ///
+        /// Write a <see cref="Coordinate"/>.
         /// </summary>
-        /// <param name="coordinate"></param>
-        /// <param name="writer"></param>
+        /// <param name="coordinate">The coordinate</param>
+        /// <param name="writer">The writer.</param>
         protected void Write(Coordinate coordinate, BinaryWriter writer)
         {
             writer.Write(coordinate.X);
@@ -261,6 +289,12 @@ namespace NetTopologySuite.IO
                 writer.Write(coordinate.M);
         }
 
+        /// <summary>
+        /// Write a <see cref="CoordinateSequence"/>.
+        /// </summary>
+        /// <param name="sequence">The coordinate sequence to write</param>
+        /// <param name="emitSize">A flag indicating if the size of <paramref name="sequence"/> should be written, too.</param>
+        /// <param name="writer">The writer.</param>
         protected void Write(CoordinateSequence sequence, bool emitSize, BinaryWriter writer)
         {
             if (emitSize)
@@ -302,13 +336,11 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(Point point, BinaryWriter writer)
         {
-            ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, point);
-            ////if (Double.IsNaN(point.Coordinate.Z))
-            ////     writer.Write((int)WKBGeometryTypes.WKBPoint);
-            ////else writer.Write((int)WKBGeometryTypes.WKBPointZ);
-            //Write(point.Coordinate, writer);
-            Write(point.CoordinateSequence, false, writer);
+            if (point.IsEmpty)
+                WriteNaNs(_coordinateSize / 8, writer);
+            else
+                Write(point.CoordinateSequence, false, writer);
         }
 
         /// <summary>
@@ -318,14 +350,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(LineString lineString, BinaryWriter writer)
         {
-            ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, lineString);
-            ////if (Double.IsNaN(lineString.Coordinate.Z))
-            ////     writer.Write((int)WKBGeometryTypes.WKBLineString);
-            ////else writer.Write((int)WKBGeometryTypes.WKBLineStringZ);
-            //writer.Write(lineString.NumPoints);
-            //for (int i = 0; i < lineString.Coordinates.Length; i++)
-            //    Write(lineString.Coordinates[i], writer);
             Write(lineString.CoordinateSequence, true, writer);
         }
 
@@ -336,9 +361,6 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(LinearRing ring, BinaryWriter writer)
         {
-            //writer.Write(ring.NumPoints);
-            //for (int i = 0; i < ring.Coordinates.Length; i++)
-            //    Write(ring.Coordinates[i], writer);
             Write(ring.CoordinateSequence, true, writer);
         }
 
@@ -349,11 +371,15 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(Polygon polygon, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, polygon);
-            //if (Double.IsNaN(polygon.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBPolygon);
-            //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);
+
+            // For an empty polygon just write 0 to indicate no rings!
+            if (polygon.IsEmpty)
+            {
+                writer.Write(0);
+                return;
+            }
+
             writer.Write(polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as LinearRing, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
@@ -367,11 +393,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(MultiPoint multiPoint, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiPoint);
-            //if (Double.IsNaN(multiPoint.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
-            //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write(multiPoint.NumGeometries);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as Point, writer);
@@ -384,11 +406,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(MultiLineString multiLineString, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiLineString);
-            //if (Double.IsNaN(multiLineString.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
-            //else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
             writer.Write(multiLineString.NumGeometries);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as LineString, writer);
@@ -401,11 +419,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(MultiPolygon multiPolygon, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiPolygon);
-            //if (Double.IsNaN(multiPolygon.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
-            //else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
             writer.Write(multiPolygon.NumGeometries);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as Polygon, writer);
@@ -418,11 +432,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer"></param>
         protected void Write(GeometryCollection geomCollection, BinaryWriter writer)
         {
-            //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, geomCollection);
-            //if (Double.IsNaN(geomCollection.Coordinate.Z))
-            //     writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
-            //else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
             writer.Write(geomCollection.NumGeometries);
             for (int i = 0; i < geomCollection.NumGeometries; i++)
                 Write(geomCollection.Geometries[i], writer);
@@ -453,7 +463,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Sets corrent length for Byte Stream.
+        /// Sets required length for Byte Stream.
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
@@ -542,8 +552,12 @@ namespace NetTopologySuite.IO
             int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int count = InitCount;
             count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
-            count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
-            count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings
+            if (!geometry.IsEmpty)
+            {
+                count += 4 * (geometry.NumInteriorRings + 1); // Index parts
+                count += geometry.NumPoints * pointSize; // Points in exterior and interior rings
+            }
+
             return count;
         }
 
@@ -591,6 +605,10 @@ namespace NetTopologySuite.IO
         /// <item><description><c>0x20000000</c> flag if geometry's SRID value is written</description></item></list>
         /// </summary>
         private bool _strict = true;
+
+        /// <summary>
+        /// Gets a value indicating if only original WKT elements should be handled
+        /// </summary>
         public bool Strict
         {
             get => _strict;
@@ -603,6 +621,10 @@ namespace NetTopologySuite.IO
         }
 
         private bool _handleSRID;
+
+        /// <summary>
+        /// Gets or sets a value indicating if an encoded SRID value should be handled or ignored.
+        /// </summary>
         public bool HandleSRID
         {
             get => _handleSRID;
@@ -650,6 +672,12 @@ namespace NetTopologySuite.IO
                 _handleOrdinates = value;
                 CalcCoordinateSize();
             }
+        }
+
+        private static void WriteNaNs(int numNaNs, BinaryWriter writer)
+        {
+            for (int i = 0; i<numNaNs; i++)
+                writer.Write(double.NaN);
         }
     }
 }

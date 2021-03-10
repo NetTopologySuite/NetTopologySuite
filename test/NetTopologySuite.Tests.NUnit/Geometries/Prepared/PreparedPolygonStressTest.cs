@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
     /// <author>Martin Davis</author>
     public class PreparedPolygonPredicateStressTest
     {
-        bool testFailed = false;
+        //bool testFailed = false;
 
         [Test]
         [Category("Stress")]

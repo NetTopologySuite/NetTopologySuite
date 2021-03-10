@@ -8,15 +8,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixture]
     public class MinimumDiameterTest
     {
-        private PrecisionModel precisionModel;
-        private GeometryFactory geometryFactory;
-        WKTReader reader;
+        private readonly WKTReader reader;
 
         public MinimumDiameterTest()
         {
-            precisionModel = new PrecisionModel(1);
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            var gs = new NtsGeometryServices(PrecisionModel.Floating.Value, 0);
+            reader = new WKTReader(gs);
         }
 
         [Test]
@@ -57,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void DoMinimumDiameterTest(bool convex, string wkt, Coordinate c0, Coordinate c1)
         {
-            var minimumDiameter = new MinimumDiameter(new WKTReader().Read(wkt), convex).Diameter.Coordinates;
+            var minimumDiameter = new MinimumDiameter(reader.Read(wkt), convex).Diameter.Coordinates;
             double tolerance = 1E-10;
             Assert.AreEqual(c0.X, minimumDiameter[0].X, tolerance);
             Assert.AreEqual(c0.Y, minimumDiameter[0].Y, tolerance);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
@@ -28,18 +29,18 @@ namespace NetTopologySuite.Tests.NUnit.Index
         {
             if (Verbose)
             {
-                //System.Console.WriteLine(Console.WriteLine("===============================");
-                //System.Console.WriteLine("Grid Extent: " + (CellExtent*CellsPerGridSide));
-                //System.Console.WriteLine("Cell Extent: " + CellExtent);
-                //System.Console.WriteLine("Feature Extent: " + FeatureExtent);
-                //System.Console.WriteLine("Cells Per Grid Side: " + CellsPerGridSide);
-                //System.Console.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
+                //TestContext.WriteLine(TestContext.WriteLine("===============================");
+                //TestContext.WriteLine("Grid Extent: " + (CellExtent*CellsPerGridSide));
+                //TestContext.WriteLine("Cell Extent: " + CellExtent);
+                //TestContext.WriteLine("Feature Extent: " + FeatureExtent);
+                //TestContext.WriteLine("Cells Per Grid Side: " + CellsPerGridSide);
+                //TestContext.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
             }
             _sourceData = new List<Envelope>();
             AddSourceData(0, _sourceData);
             AddSourceData(OFFSET, _sourceData);
             if (Verbose)
-                Console.WriteLine("Feature Count: " + _sourceData.Count);
+                TestContext.WriteLine("Feature Count: " + _sourceData.Count);
             Insert(_sourceData, SpatialIndex);
         }
 
@@ -84,8 +85,8 @@ namespace NetTopologySuite.Tests.NUnit.Index
         {
             if (Verbose)
             {
-                //System.Console.WriteLine("---------------");
-                //System.Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
+                //TestContext.WriteLine("---------------");
+                //TestContext.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
             }
             int extraMatchCount = 0;
             int expectedMatchCount = 0;
@@ -113,13 +114,13 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
             if (Verbose)
             {
-                //System.Console.WriteLine("Expected Matches: " + expectedMatchCount);
-                //System.Console.WriteLine("Actual Matches: " + actualMatchCount);
-                //System.Console.WriteLine("Extra Matches: " + extraMatchCount);
-                //System.Console.WriteLine("Query Count: " + queryCount);
-                //System.Console.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double) queryCount));
-                //System.Console.WriteLine("Average Actual Matches: " + (actualMatchCount/(double) queryCount));
-                //System.Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double) queryCount));
+                //TestContext.WriteLine("Expected Matches: " + expectedMatchCount);
+                //TestContext.WriteLine("Actual Matches: " + actualMatchCount);
+                //TestContext.WriteLine("Extra Matches: " + extraMatchCount);
+                //TestContext.WriteLine("Query Count: " + queryCount);
+                //TestContext.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double) queryCount));
+                //TestContext.WriteLine("Average Actual Matches: " + (actualMatchCount/(double) queryCount));
+                //TestContext.WriteLine("Average Extra Matches: " + (extraMatchCount/(double) queryCount));
             }
         }
 

@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestLines()
         {
-            //Console.WriteLine(rect);
+            //TestContext.WriteLine(rect);
 
             var testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestDenseLines()
         {
-            //Console.WriteLine(rect);
+            //TestContext.WriteLine(rect);
 
             var testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             //System.out.println(testGeom);
             if (!intersectsOK || !containsOK)
             {
-                Console.WriteLine(testGeom);
+                TestContext.WriteLine(testGeom);
             }
             Assert.IsTrue(intersectsOK);
             Assert.IsTrue(containsOK);

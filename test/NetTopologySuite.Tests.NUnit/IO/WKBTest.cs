@@ -15,8 +15,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// </summary>
     public class WKBTest
     {
-        private static readonly GeometryFactory GeomFactory = new GeometryFactory();
-        private static readonly WKTReader Rdr = new WKTReader(GeomFactory);
+        private static readonly GeometryFactory GeomFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
+        private static readonly WKTReader Rdr = new WKTReader();
 
         [Test]
         public void BigEndianTest()
@@ -43,6 +43,13 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void TestPointEmpty()
+        {
+            RunWKBTest("POINT EMPTY");
+        }
+
+
+[Test]
         public void TestLineString()
         {
             RunWKBTest("LINESTRING (1 2, 10 20, 100 200)");
@@ -144,9 +151,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         private void RunWKBTestPackedCoordinate(string wkt)
         {
-            var factory = new GeometryFactory(
+            var gs = new NtsGeometryServices(
                 new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double));
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader(gs);
             var g = reader.Read(wkt);
 
             // Since we are using a PCS of dim=2, only check 2-dimensional storage
@@ -210,10 +217,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private static CoordinateSequence SetDimension(CoordinateSequenceFactory fact, CoordinateSequence seq,
             int dimension)
         {
-            if (seq.Dimension == dimension)
+            if (seq.Dimension == dimension && seq.Measures == 0)
                 return seq;
 
-            var res = fact.Create(seq.Count, dimension);
+            var res = fact.Create(seq.Count, dimension, 0);
             dimension = Math.Min(dimension, seq.Dimension);
             for (int i = 0; i < seq.Count; i++)
             {

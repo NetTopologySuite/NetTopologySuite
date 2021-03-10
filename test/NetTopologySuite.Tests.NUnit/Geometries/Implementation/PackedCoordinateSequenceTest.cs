@@ -29,12 +29,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             CheckDim3(factory);
             CheckDim3_M1(factory);
             CheckDim4_M1(factory);
+            CheckDim4(factory);
             CheckDimInvalid(factory);
         }
 
         private void CheckDim2(int size, CoordinateSequenceFactory factory)
         {
-            var seq = factory.Create(size, 2);
+            var seq = factory.Create(size, 2, 0);
 
             InitProgression(seq);
 
@@ -65,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
         private void CheckDim3(CoordinateSequenceFactory factory)
         {
-            var seq = factory.Create(5, 3);
+            var seq = factory.Create(5, 3, 0);
             InitProgression(seq);
 
             Assert.AreEqual(3, seq.Dimension, "Dimension should be 3");
@@ -148,11 +149,38 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(IsEqual(copy2, array));
         }
 
+        public void CheckDim4(CoordinateSequenceFactory factory)
+        {
+            var seq = factory.Create(5, 4, 0);
+            InitProgression(seq);
+
+            Assert.AreEqual(4, seq.Dimension, "Dimension should be 4");
+            Assert.IsTrue(seq.HasZ, "Z should be present");
+            Assert.IsTrue(!seq.HasM, "M should not be present");
+
+            var coord = seq.GetCoordinate(4);
+            Assert.AreEqual(4.0, coord.X);
+            Assert.AreEqual(4.0, coord.Y);
+            Assert.AreEqual(4.0, coord.Z);
+            Assert.AreEqual(4.0, coord[Ordinate.Spatial4]);
+
+            var array = seq.ToCoordinateArray();
+            Assert.AreEqual(coord, array[4]);
+            Assert.IsTrue(coord != array[4]);
+            Assert.IsTrue(IsEqual(seq, array));
+
+            var copy = factory.Create(array);
+            Assert.IsTrue(IsEqual(copy, array));
+
+            var copy2 = factory.Create(seq);
+            Assert.IsTrue(IsEqual(copy2, array));
+        }
+
         /**
          * Disable for now until solution can be found.
          * See Issue 434.
          */
-         [Test]
+        [Test]
         public void TestMixedFactoryWithXY()
         {
             var factoryPacked = new GeometryFactory(new PackedCoordinateSequenceFactory());
@@ -177,7 +205,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 var seq = factory.Create(5, 2, 1);
                 Assert.Fail("Dimension=2/Measure=1 (XM) not supported");
             }
-            catch (ArgumentException expected)
+            catch (ArgumentException)
             {
             }
         }

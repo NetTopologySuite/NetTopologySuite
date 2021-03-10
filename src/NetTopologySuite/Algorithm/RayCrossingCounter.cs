@@ -84,6 +84,10 @@ namespace NetTopologySuite.Algorithm
         // true if the test point lies on an input segment
         private bool _isPointOnSegment;
 
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="p">A coordinate.</param>
         public RayCrossingCounter(Coordinate p)
         {
             _p = p;

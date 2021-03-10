@@ -27,7 +27,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Normalizes the vector <param name="v"></param>
+        /// Normalizes the vector <paramref name="v"/>
         /// </summary>
         /// <param name="v">The normalized <paramref name="v"/></param>
         public static void Normalize(Coordinate v)

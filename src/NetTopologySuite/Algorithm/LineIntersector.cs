@@ -105,10 +105,26 @@ namespace NetTopologySuite.Algorithm
             return dist;
         }
 
+        /// <summary>
+        /// A value indicating the intersection result
+        /// <para/>
+        /// Possible values are:
+        /// <list type="bullet">
+        /// <item><description><see cref="NoIntersection"/></description></item>
+        /// <item><description><see cref="PointIntersection"/></description></item>
+        /// <item><description><see cref="CollinearIntersection"/></description></item>
+        /// </list>
+        /// </summary>
         protected int Result;
 
+        /// <summary>
+        /// Array of coordinate arrays forming the lines
+        /// </summary>
         protected Coordinate[][] InputLines;
 
+        /// <summary>
+        /// Array of
+        /// </summary>
         protected Coordinate[] IntersectionPoint = new Coordinate[2];
 
         /// <summary>
@@ -135,6 +151,9 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         private PrecisionModel _precisionModel;
 
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
         protected LineIntersector()
         {
             InputLines = new Coordinate[2][];
@@ -178,6 +197,9 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public abstract void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2);
 
+        /// <summary>
+        /// Gets a value indicating if the computed intersection is collinear
+        /// </summary>
         protected bool IsCollinear => Result == CollinearIntersection;
 
         /// <summary>
@@ -185,6 +207,10 @@ namespace NetTopologySuite.Algorithm
         /// This function computes both the bool value of the hasIntersection test
         /// and the (approximate) value of the intersection point itself (if there is one).
         /// </summary>
+        /// <param name="p1">The 1st point of the 1st segment</param>
+        /// <param name="p2">The 2nd point of the 1st segment</param>
+        /// <param name="p3">The 1st point of the 2nd segment</param>
+        /// <param name="p4">The 2nd point of the 2nd segment</param>
         public void ComputeIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
             //this.inputLines = new[] { p1, p2, p3, p4 };
@@ -196,6 +222,22 @@ namespace NetTopologySuite.Algorithm
             Result = ComputeIntersect(p1, p2, p3, p4);
         }
 
+        /// <summary>
+        /// Computes the intersection of two line segments, one defined by <paramref name="p1"/> and <paramref name="p2"/>,
+        /// the other by <paramref name="q1"/> and <paramref name="q2"/>.
+        /// </summary>
+        /// <param name="p1">The 1st point of the 1st segment</param>
+        /// <param name="p2">The 2nd point of the 1st segment</param>
+        /// <param name="q1">The 1st point of the 2nd segment</param>
+        /// <param name="q2">The 2nd point of the 2nd segment</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Don't use this function directly, it is not meant for public use.
+        /// Please call <see cref="ComputeIntersection(Coordinate,Coordinate,Coordinate,Coordinate)"/>
+        /// and test <see cref="HasIntersection"/> or <see cref="IsCollinear"/> along with <see cref="IsProper"/> and
+        /// <see cref="IsEndPoint"/>.
+        /// </remarks>
+        // TODO Change to protected!
         public abstract int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
 
         /// <inheritdoc cref="object.ToString()"/>
@@ -214,6 +256,9 @@ namespace NetTopologySuite.Algorithm
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets a value indicating if the intersection is an end-point intersection
+        /// </summary>
         protected bool IsEndPoint => HasIntersection && !_isProper;
 
         /// <summary>
@@ -238,6 +283,9 @@ namespace NetTopologySuite.Algorithm
             return IntersectionPoint[intIndex];
         }
 
+        /// <summary>
+        /// Computes the <see cref="IntersectionLineIndex"/> values.
+        /// </summary>
         protected void ComputeIntLineIndex()
         {
             if (IntersectionLineIndex != null)

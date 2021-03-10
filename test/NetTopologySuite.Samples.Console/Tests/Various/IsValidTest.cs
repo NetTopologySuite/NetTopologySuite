@@ -10,7 +10,8 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class IsValidTest : BaseSamples
     {
-        public IsValidTest() : base(GeometryFactory.Fixed) { }
+        public IsValidTest() : base(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)))
+        { }
 
         [Test]
         public void IsCCWBugTest()
@@ -309,7 +310,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 215397.403687265,159101.283398228 215370.145108237,159064.458615271
 215370.009119945,159063.929280482 215399.247659686)";
 
-            var reader = new WKTReader(GeometryFactory.Fixed);
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)));
             string[] wkts = new[] { wkt1, wkt2, wkt3,};
             var polygonizer = new Polygonizer();
             foreach (string wkt in wkts)

@@ -199,5 +199,11 @@ namespace NetTopologySuite.Index.Quadtree
             var node = new Node<T>(sqEnv, _level - 1);
             return node;
         }
+
+        /// <summary>
+        /// Gets a value indicating the level of this node
+        /// </summary>
+        /// <returns>The level of this node</returns>
+        public int Level => _level;
     }
 }

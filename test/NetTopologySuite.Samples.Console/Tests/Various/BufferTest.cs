@@ -19,7 +19,8 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// <summary>
         /// Initializes a new instance of the <see cref="BufferTest"/> class.
         /// </summary>
-        public BufferTest() : base(GeometryFactory.Fixed) { }
+        public BufferTest() : base(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)))
+        { }
 
         /// <summary>
         ///
@@ -27,7 +28,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestWithDefaultFactory()
         {
-            PerformTest(GeometryFactory.Default);
+            PerformTest(NtsGeometryServices.Instance);
         }
 
         /// <summary>
@@ -36,21 +37,21 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestWithFixedFactory()
         {
-            PerformTest(new GeometryFactory(new PrecisionModel(1000d)));
+            PerformTest(new NtsGeometryServices(new PrecisionModel(1000d)));
         }
 
         /// <summary>
         ///
         /// </summary>
-        private static void PerformTest(GeometryFactory factory)
+        private static void PerformTest(NtsGeometryServices factory)
         {
             var path = new WKTReader(factory).Read(GeomText);
             Assert.IsNotNull(path);
-            Debug.WriteLine(string.Format("Original Points: {0}", path.NumPoints));
+            Debug.WriteLine("Original Points: {0}", path.NumPoints);
 
             var simplified = DouglasPeuckerSimplifier.Simplify(path, 2);
             Assert.IsNotNull(simplified);
-            Debug.WriteLine(string.Format("Simplified Points: {0}", simplified.NumPoints));
+            Debug.WriteLine("Simplified Points: {0}", simplified.NumPoints);
 
             var buffered = simplified.Buffer(1.143);
             Assert.IsNotNull(buffered);
@@ -91,8 +92,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 -2.78834607948959 87.2367672248572, -2.95519284268212
 90.5673638758933, -9.1285807394459 82.6849571608342)";
 
-            var factory = GeometryFactory.Default;
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader();
             var geom = reader.Read(wkt);
             Assert.IsNotNull(geom);
             Assert.IsTrue(geom.IsValid);

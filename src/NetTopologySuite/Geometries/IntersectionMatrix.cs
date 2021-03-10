@@ -7,32 +7,40 @@ namespace NetTopologySuite.Geometries
     /// Models a <b>Dimensionally Extended Nine-Intersection Model (DE-9IM)</b> matrix. 
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// DE-9IM matrices (such as "212FF1FF2")
+    /// DE-9IM matrix values (such as "212FF1FF2")
     /// specify the topological relationship between two <see cref="Geometry"/>s. 
     /// This class can also represent matrix patterns (such as "T*T******")
     /// which are used for matching instances of DE-9IM matrices.
-    /// </para>
-    /// <para>
+    /// <para/>
+    /// DE-9IM matrices are 3x3 matrices with integer entries.
+    /// The matrix indices {0,1,2}
+    /// represent the topological locations
+    /// that occur in a geometry(Interior, Boundary, Exterior).
+    /// These are provided by the constants
+    /// <see cref="Location.Interior"/>, <see cref="Location.Boundary"/>, and <see cref="Location.Exterior"/>.
+    /// <para/>
+    /// When used to specify the topological relationship between two geometries,
+    /// the matrix entries represent the possible dimensions of each intersection:
+    /// <see cref="Dimension.A"/> = 2, <see cref="Dimension.L"/> = 1, <see cref="Dimension.P"/> = 0 and <see cref="Dimension.False"/> = -1.<br/>
+    /// When used to represent a matrix pattern entries can have the additional values
+    /// <see cref="Dimension.True"/> ("T") and <see cref="Dimension.Dontcare"/> ("*"). 
+    /// <para/>
+    /// For a description of the DE-9IM and the spatial predicates derived from it, see the following references:
+    /// <list type="bullet">
+    /// <item><description><i><see href="http://portal.opengeospatial.org/files/?artifact_id=829">OGC 99-049 OpenGIS Simple Features Specification for SQL.</see></i></description></item>
+    /// <item><description>
+    ///     <i><a href="http://portal.opengeospatial.org/files/?artifact_id=25355">OGC 06-103r4 OpenGIS Implementation Standard for Geographic information - Simple feature access - Part 1: Common architecture</a></i>, 
+    ///     Section 6.1.15 (which provides some further details on certain predicate specifications).</description></item>
+    /// <item><description>Wikipedia article on <a href="https://en.wikipedia.org/wiki/DE-9IM">DE-9IM</a></description></item>
+    /// </list>
+    /// <para/>
     /// Methods are provided to:
     /// <list type="bullet">
-    /// <item><description>Set and query the elements of the matrix in a convenient fashion.</description></item>
-    /// <item><description>Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).</description></item>
-    /// <item><description>Test to see if a matrix matches a given pattern string.</description></item>
+    /// <item><description>set and query the elements of the matrix in a convenient fashion</description></item>
+    /// <item><description>convert to and from the standard string representation(specified in SFS Section 2.1.13.2).</description></item>
+    /// <item><description>test if a matrix matches a given pattern string.</description></item>
+    /// <item><description>test if a matrix(possibly with geometry dimensions) matches a standard named spatial predicate</description></item>
     /// </list>
-    /// </para>
-    /// For a description of the DE-9IM and the spatial predicates derived from it, see the <i>
-    /// <see href="http://www.opengis.org/techno/specs.htm">OGC 99-049 OpenGIS Simple Features Specification for SQL.</see></i> as well as 
-    /// <i>OGC 06-103r4 OpenGIS 
-    /// Implementation Standard for Geographic information - 
-    /// Simple feature access - Part 1: Common architecture</i>
-    /// (which provides some further details on certain predicate specifications).
-    /// <para>
-    /// The entries of the matrix are defined by the constants in the <see cref="Dimension"/> enum.
-    /// The indices of the matrix represent the topological locations 
-    /// that occur in a geometry (Interior, Boundary, Exterior).  
-    /// These are provided as constants in the <see cref="Location"/> enum.
-    /// </para>
     /// </remarks>
     public class IntersectionMatrix
     {
@@ -302,11 +310,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is FF*FF****.
+        /// Tests if this matrix matches <c>[FF*FF****]</c>.
         /// </summary>
         /// <returns>
         /// <c>true</c> if the two <see cref="Geometry"/>'s related by
-        /// this <see cref="IntersectionMatrix" /> are disjoint.
+        /// this matrix are disjoint.
         /// </returns>
         public bool IsDisjoint()
         {
@@ -318,11 +326,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if <c>isDisjoint</c> returns false.
+        /// Tests if <c>isDisjoint</c> returns <see langword="false"/>.
         /// </summary>
         /// <returns>
         /// <c>true</c> if the two <see cref="Geometry"/>'s related by
-        /// this <see cref="IntersectionMatrix" /> intersect.
+        /// this matrix intersect.
         /// </returns>
         public bool IsIntersects()
         {
@@ -330,14 +338,14 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
-        /// FT*******, F**T***** or F***T****.
+        /// Tests if this matrix matches
+        /// <c>[FT*******]</c>, <c>[F**T*****]</c> or <c>[F***T****]</c>.
         /// </summary>
         /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="Geometry"/>.</param>
         /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
         /// <c>true</c> if the two <see cref="Geometry"/>
-        /// s related by this <see cref="IntersectionMatrix" /> touch; Returns false
+        /// s related by this matrix touch; Returns false
         /// if both <see cref="Geometry"/>s are points.
         /// </returns>
         public bool IsTouches(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
@@ -360,18 +368,31 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
-        ///  T*T****** (for a point and a curve, a point and an area or a line
-        /// and an area) 0******** (for two curves).
+        /// Tests whether this geometry crosses the
+        /// specified geometry.
         /// </summary>
+        /// <remarks>
+        /// The <c>crosses</c> predicate has the following equivalent definitions:
+        /// <list type="bullet">
+        /// <item><description>The geometries have some but not all interior points in common.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches</description></item>
+        ///   <list type="bullet">
+        ///     <item><description><c>[T*T******]</c> (for P/L, P/A, and L/A situations)</description></item>
+        ///     <item><description><c>[T*****T**]</c> (for L/P, L/A, and A/L situations)</description></item>
+        ///     <item><description><c>[0********]</c> (for L/L situations)</description></item>
+        ///   </list>
+        /// </list>
+        /// For any other combination of dimensions this predicate returns <c>false</c>.
+        /// <para/>
+        /// The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
+        /// JTS extends the definition to apply to L/P, A/P and A/L situations as well.
+        /// This makes the relation symmetric.
+        /// </remarks>
         /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="Geometry"/>.</param>
         /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
         /// <c>true</c> if the two <see cref="Geometry"/>
-        /// s related by this <see cref="IntersectionMatrix" /> cross. For this
-        /// function to return <c>true</c>, the <see cref="Geometry"/>s must
-        /// be a point and a curve; a point and a surface; two curves; or a curve
-        /// and a surface.
+        /// s related by this matrix cross. 
         /// </returns>
         public bool IsCrosses(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
         {
@@ -394,8 +415,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>  
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
-        /// T*F**F***.
+        /// Tests whether this matrix matches <c>[T*F**F***]</c>.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="Geometry"/> is within the second.</returns>
         public bool IsWithin()
@@ -406,8 +426,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
-        /// T*****FF*.
+        /// Tests whether this matrix matches <c>[T*****FF*]</c>
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="Geometry"/> contains the second.</returns>
         public bool IsContains()
@@ -418,8 +437,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is <c>T*****FF*</c>
-        /// or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
+        /// Tests if this matrix matches
+        ///    <c>[T*****FF*]</c>
+        /// or <c>[*T****FF*]</c>
+        /// or <c>[***T**FF*]</c>
+        /// or <c>[****T*FF*]</c>.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="Geometry"/> covers the second</returns>
         public bool IsCovers()
@@ -435,8 +457,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is <c>T*F**F***</c>
-        /// or <c>*TF**F***</c> or <c>**FT*F***</c> or <c>**F*TF***</c>
+        /// Tests if this matrix matches
+        ///    <c>[T*F**F***]</c>
+        /// or <c>[*TF**F***]</c>
+        /// or <c>[**FT*F***]</c>
+        /// or <c>[**F*TF***]</c>.
         /// </summary>
         /// <returns><c>true</c> if the first <see cref="Geometry"/> is covered by the second</returns>
         public bool IsCoveredBy()
@@ -453,12 +478,11 @@ namespace NetTopologySuite.Geometries
 
         /// <summary> 
         /// Tests whether the argument dimensions are equal and 
-        /// this <c>IntersectionMatrix</c> matches
-        /// the pattern <tt>T*F**FFF*</tt>.
+        /// this matrix matches the pattern <c>[T*F**FFF*]</c>.
         /// <para/>
         /// <b>Note:</b> This pattern differs from the one stated in 
         /// <i>Simple feature access - Part 1: Common architecture</i>.
-        /// That document states the pattern as <tt>TFFFTFFFT</tt>.  This would
+        /// That document states the pattern as <c>[TFFFTFFFT]</c>.  This would
         /// specify that
         /// two identical <tt>POINT</tt>s are not equal, which is not desirable behaviour.
         /// The pattern used here has been corrected to compute equality in this situation.
@@ -467,7 +491,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
         /// <c>true</c> if the two <see cref="Geometry"/>s
-        /// related by this <see cref="IntersectionMatrix" /> are equal; the
+        /// related by this matrix are equal; the
         /// <see cref="Geometry"/>s must have the same dimension to be equal.
         /// </returns>
         public bool IsEquals(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
@@ -483,15 +507,17 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
-        ///  T*T***T** (for two points or two surfaces)
-        ///  1*T***T** (for two curves).
+        /// Tests if this matrix matches
+        /// <list type="bullet">
+        /// <item><description><c>[T*T***T**]</c> (for two points or two surfaces)</description></item>
+        /// <item><description><c>[1*T***T**]</c> (for two curves)</description></item>
+        /// </list>
         /// </summary>
         /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="Geometry"/>.</param>
         /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
         /// <c>true</c> if the two <see cref="Geometry"/>
-        /// s related by this <see cref="IntersectionMatrix" /> overlap. For this
+        /// s related by this matrix overlap. For this
         /// function to return <c>true</c>, the <see cref="Geometry"/>s must
         /// be two points, two curves or two surfaces.
         /// </returns>
@@ -512,26 +538,25 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary> 
-        /// Returns whether the elements of this <see cref="IntersectionMatrix" />
-        /// satisfies the required dimension symbols.
+        /// Tests whether this matrix matches the given matrix pattern
         /// </summary>
-        /// <param name="requiredDimensionSymbols"> 
-        /// Nine dimension symbols with which to
-        /// compare the elements of this <see cref="IntersectionMatrix" />. Possible
-        /// values are <c>{T, F, * , 0, 1, 2}</c>.
+        /// <param name="pattern"> 
+        /// A pattern containing nine dimension symbols with which to
+        /// compare the entries of this matrix.Possible
+        /// symbol values are <c>{ T, F, * , 0, 1, 2}</c>.
         /// </param>
         /// <returns>
         /// <c>true</c> if this <see cref="IntersectionMatrix" />
         /// matches the required dimension symbols.
         /// </returns>
-        public bool Matches(string requiredDimensionSymbols)
+        public bool Matches(string pattern)
         {
-            if (requiredDimensionSymbols.Length != 9)
-                throw new ArgumentException("Should be length 9: " + requiredDimensionSymbols);
+            if (pattern.Length != 9)
+                throw new ArgumentException("Should be length 9: " + pattern);
 
             for (int ai = 0; ai < 3; ai++)
                 for (int bi = 0; bi < 3; bi++)
-                    if (!Matches(_matrix[ai, bi], requiredDimensionSymbols[3 * ai + bi]))
+                    if (!Matches(_matrix[ai, bi], pattern[3 * ai + bi]))
                         return false;
             return true;
         }

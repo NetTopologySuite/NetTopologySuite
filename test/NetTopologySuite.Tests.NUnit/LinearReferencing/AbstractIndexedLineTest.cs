@@ -162,7 +162,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var subLine = Read(expected);
             bool isEqual = result.EqualsExact(subLine, 1.0e-5);
             if (!isEqual)
-                Console.WriteLine("Computed result is: " + result);
+                TestContext.WriteLine("Computed result is: " + result);
             Assert.IsTrue(isEqual);
         }
 
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
 
             bool isOk = offsetPt.Distance(expectedPt) < ToleranceDist;
             if (!isOk)
-                Console.WriteLine("Expected = " + expectedPoint + "  Actual = " + offsetPt);
+                TestContext.WriteLine("Expected = " + expectedPoint + "  Actual = " + offsetPt);
             Assert.IsTrue(isOk);
         }
 

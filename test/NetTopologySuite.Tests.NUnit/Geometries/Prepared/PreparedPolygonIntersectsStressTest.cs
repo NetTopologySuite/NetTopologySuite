@@ -17,12 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
     {
         const int MAX_ITER = 10000;
 
-        static PrecisionModel pm = new PrecisionModel();
-        static GeometryFactory fact = new GeometryFactory(pm, 0);
-        static WKTReader wktRdr = new WKTReader(fact);
-        static WKTWriter wktWriter = new WKTWriter();
-
-        bool testFailed = false;
+        //bool testFailed = false;
 
         [Test]
         [Category("Stress")]
@@ -35,8 +30,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         {
             // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             var poly = CreateSineStar(new Coordinate(0, 0), 100, nPts);
-            // System.Console.WriteLine(poly);
-            // System.Console.WriteLine("Running with " + nPts + " points");
+            // TestContext.WriteLine(poly);
+            // TestContext.WriteLine("Running with " + nPts + " points");
             Test(poly);
         }
 
@@ -113,8 +108,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
             if (slowIntersects != fastIntersects)
             {
-                Console.WriteLine(line);
-                Console.WriteLine("Slow = " + slowIntersects + ", Fast = " + fastIntersects);
+                TestContext.WriteLine(line);
+                TestContext.WriteLine("Slow = " + slowIntersects + ", Fast = " + fastIntersects);
                 throw new Exception("Different results found for intersects() !");
             }
         }

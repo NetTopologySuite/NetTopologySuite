@@ -6,7 +6,7 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Models an OGC-style <code>LineString</code>
+    /// Models an OGC-style <c>LineString</c>
     /// </summary>
     /// <remarks>
     /// A LineString consists of a sequence of two or more vertices,
@@ -261,10 +261,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
         [Obsolete("Call Geometry.Reverse()")]
+#pragma warning disable 809
         public override Geometry Reverse()
         {
             return base.Reverse();
         }
+#pragma warning restore 809
 
         /// <summary>
         /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>LINESTRING</c>s.
@@ -332,9 +334,13 @@ namespace NetTopologySuite.Geometries
             if (_points.Count != otherLineString.NumPoints)
                 return false;
 
+            var cec = Factory.CoordinateEqualityComparer;
             for (int i = 0; i < _points.Count; i++)
-                if (!Equal(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
+            {
+                if (!cec.Equals(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
                     return false;
+            }
+
             return true;
         }
 

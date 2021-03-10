@@ -395,7 +395,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Enlarges this <code>Envelope</code> so that it contains
+        /// Enlarges this <c>Envelope</c> so that it contains
         /// the given <see cref="Coordinate"/>.
         /// Has no effect if the point is already on or within the envelope.
         /// </summary>
@@ -600,7 +600,7 @@ namespace NetTopologySuite.Geometries
         /// is disjoint from the region of this <c>Envelope</c>.
         /// </summary>
         /// <param name="other">The <c>Envelope</c> being checked for disjointness</param>
-        /// <returns><c>true</c> if the <code>Envelope</code>s are disjoint</returns>
+        /// <returns><c>true</c> if the <c>Envelope</c>s are disjoint</returns>
         /// <seealso cref="Intersects(NetTopologySuite.Geometries.Envelope)"/>
         public bool Disjoint(Envelope other)
         {

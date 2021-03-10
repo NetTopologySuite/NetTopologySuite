@@ -1,20 +1,13 @@
 using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
     public abstract class StressTestHarness
     {
-        const int MAX_ITER = 10000;
-
-        static readonly PrecisionModel pm = new PrecisionModel();
-        static readonly GeometryFactory fact = new GeometryFactory(pm, 0);
-        static WKTReader _wktRdr = new WKTReader(fact);
-        static WKTWriter _wktWriter = new WKTWriter();
-
         private int _numTargetPts = 1000;
 
         protected StressTestHarness()
@@ -29,13 +22,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         public void Run(int nIter)
         {
-            // System.Console.WriteLine("Running " + nIter + " tests");
+            // TestContext.WriteLine("Running " + nIter + " tests");
             // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             var poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
-            Console.WriteLine(poly);
+            TestContext.WriteLine(poly);
 
-            // System.Console.WriteLine();
-            // System.out.Console.WriteLine("Running with " + nPts + " points");
+            // TestContext.WriteLine();
+            // System.out.TestContext.WriteLine("Running with " + nPts + " points");
             Run(nIter, poly);
         }
 
@@ -99,9 +92,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 count++;
                 var test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
 
-                // Console.WriteLine("Test # " + count);
-                // Console.WriteLine(line);
-                // Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
+                // TestContext.WriteLine("Test # " + count);
+                // TestContext.WriteLine(line);
+                // TestContext.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
                 bool isResultCorrect = CheckResult(target, test);
                 if (!isResultCorrect)
                 {

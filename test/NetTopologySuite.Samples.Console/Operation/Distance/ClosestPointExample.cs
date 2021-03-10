@@ -1,5 +1,4 @@
 using System;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Distance;
 
@@ -11,8 +10,8 @@ namespace NetTopologySuite.Samples.Operation.Distance
     /// </summary>
     public class ClosestPointExample
     {
-        internal static GeometryFactory fact;
-        internal static WKTReader wktRdr;
+        //private static GeometryFactory fact;
+        private readonly WKTReader wktRdr = new WKTReader();
 
         /// <summary>
         ///
@@ -64,6 +63,7 @@ namespace NetTopologySuite.Samples.Operation.Distance
                 Console.WriteLine("Distance = " + distance);
 
                 var closestPt = distOp.NearestPoints();
+                var fact = A.Factory;
                 var closestPtLine = fact.CreateLineString(closestPt);
                 Console.WriteLine("Closest points: " + closestPtLine + " (distance = " + closestPtLine.Length + ")");
             }
@@ -71,15 +71,6 @@ namespace NetTopologySuite.Samples.Operation.Distance
             {
                 Console.WriteLine(ex.StackTrace);
             }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        static ClosestPointExample()
-        {
-            fact = new GeometryFactory();
-            wktRdr = new WKTReader(fact);
         }
     }
 }

@@ -14,8 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
     {
         private const double Tolerance = 0.00005;
 
-        private static readonly GeometryFactory Fact = new GeometryFactory();
-        private static readonly WKTReader rdr = new WKTReader(Fact);
+        private static readonly WKTReader rdr = new WKTReader();
 
         ///<summary>
         /// 2 LineStrings touching at an endpoint

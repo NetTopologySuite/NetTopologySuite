@@ -271,7 +271,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (! p0.Equals(ep0))
                 return false;
             if (Orientation.Index(p0, p1, ep1) == OrientationIndex.Collinear &&
-                QuadrantOp.Quadrant(p0, p1) == QuadrantOp.Quadrant(ep0, ep1) )
+                new Quadrant(p0, p1) == new Quadrant(ep0, ep1) )
                 return true;
             return false;
         }

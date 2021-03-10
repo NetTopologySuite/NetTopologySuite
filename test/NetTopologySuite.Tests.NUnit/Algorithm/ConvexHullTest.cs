@@ -18,9 +18,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         public ConvexHullTest()
         {
-            var precisionModel = new PrecisionModel(1000);
-            _geometryFactory = new GeometryFactory(precisionModel, 0);
-            _reader = new WKTReader(_geometryFactory);
+            var gs = new NtsGeometryServices(new PrecisionModel(1000), 0);
+            _geometryFactory = gs.CreateGeometryFactory();
+            _reader = new WKTReader(gs);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void Test1()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1), 0));
             var lineString = (LineString)reader.Read("LINESTRING (30 220, 240 220, 240 220)");
             var convexHull = (LineString)reader.Read("LINESTRING (30 220, 240 220)");
             Assert.IsTrue(convexHull.EqualsExact(lineString.ConvexHull()));
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void Test2()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1), 0));
             var geometry = reader.Read("MULTIPOINT (130 240, 130 240, 130 240, 570 240, 570 240, 570 240, 650 240)");
             var convexHull = (LineString)reader.Read("LINESTRING (130 240, 650 240)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void Test3()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1), 0));
             var geometry = reader.Read("MULTIPOINT (0 0, 0 0, 10 0)");
             var convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void Test4()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1000), 0));
             var geometry = reader.Read("MULTIPOINT (0 0, 10 0, 10 0)");
             var convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void Test5()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1000), 0));
             var geometry = reader.Read("MULTIPOINT (0 0, 5 0, 10 0)");
             var convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void Test6()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(new PrecisionModel(1000), 0));
             var actualGeometry = reader.Read("MULTIPOINT (0 0, 5 1, 10 0)").ConvexHull();
             var expectedGeometry = reader.Read("POLYGON ((0 0, 5 1, 10 0, 0 0))");
             Assert.IsTrue(actualGeometry.EqualsTopologically(expectedGeometry));
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [Test]
         public void Test7()
         {
-            var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
+            var reader = new WKTReader(new NtsGeometryServices(PrecisionModel.Fixed.Value, 0));
             var geometry = reader.Read("MULTIPOINT (0 0, 0 0, 5 0, 5 0, 10 0, 10 0)");
             var convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));

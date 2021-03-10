@@ -8,9 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class TriangleTest
     {
-        private static readonly PrecisionModel PrecisionModel = new PrecisionModel();
-        private static readonly GeometryFactory GeometryFactory = new GeometryFactory(PrecisionModel, 0);
-        private static readonly WKTReader Reader = new WKTReader(GeometryFactory);
+        private static readonly WKTReader Reader = new WKTReader(new NtsGeometryServices(PrecisionModel.Floating.Value, 0));
 
         private const double Tolerance = 1E-5;
 
@@ -29,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             var t = new Triangle(pt[0], pt[1], pt[2]);
             double z = t.InterpolateZ(p);
-            //System.Console.WriteLine("Z = " + z);
+            //TestContext.WriteLine("Z = " + z);
             Assert.AreEqual(expectedValue, z, Tolerance);
         }
 
@@ -48,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var pt = g.Coordinates;
             var t = new Triangle(pt[0], pt[1], pt[2]);
             double area3D = t.Area3D();
-            //System.Console.WriteLine("area3D = " + area3D);
+            //TestContext.WriteLine("area3D = " + area3D);
             Assert.AreEqual(expectedValue, area3D, Tolerance);
         }
 
@@ -72,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             var t = new Triangle(pt[0], pt[1], pt[2]);
             double signedArea = t.SignedArea();
-            //System.Console.WriteLine("signed area = " + signedArea);
+            //TestContext.WriteLine("signed area = " + signedArea);
             Assert.AreEqual(expectedValue, signedArea, Tolerance);
 
             double area = t.Area();
@@ -98,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             var t = new Triangle(pt[0], pt[1], pt[2]);
             bool isAcute = t.IsAcute();
-            //System.Console.WriteLine("isAcute = " + isAcute);
+            //TestContext.WriteLine("isAcute = " + isAcute);
             Assert.AreEqual(expectedValue, isAcute);
         }
     }

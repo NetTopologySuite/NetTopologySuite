@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -162,7 +163,7 @@ namespace NetTopologySuite.Samples.Technique
 
             public static void Test(string wkt1, string wkt2)
             {
-                var wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 28992));
+                var wktReader = new WKTReader(new NtsGeometryServices(CoordinateArraySequenceFactory.Instance, new PrecisionModel(), 28992));
                 var diff = wktReader.Read(wkt1).Difference(wktReader.Read(wkt2));
 
                 Console.WriteLine(diff);

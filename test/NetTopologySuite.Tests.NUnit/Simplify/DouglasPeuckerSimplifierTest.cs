@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
     [TestFixture]
-    public class DouglasPeuckerSimplifierTest
+    public class DouglasPeuckerSimplifierTest : GeometryTestCase
     {
         [Test]
         public void TestEmptyPolygon()
@@ -183,6 +183,30 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
+
+        /*
+         * Test that a polygon made invalid by simplification
+         * is fixed in a sensible way.
+         * Fixed by buffer(0) area-base orientation
+         * See https://github.com/locationtech/jts/issues/498
+         */
+        [Test]
+        public void TestInvalidPolygonFixed()
+        {
+            CheckDP(
+                "POLYGON ((21.32686 47.78723, 21.32386 47.79023, 21.32186 47.80223, 21.31486 47.81023, 21.32786 47.81123, 21.33986 47.80223, 21.33886 47.81123, 21.32686 47.82023, 21.32586 47.82723, 21.32786 47.82323, 21.33886 47.82623, 21.34186 47.82123, 21.36386 47.82223, 21.40686 47.81723, 21.32686 47.78723))",
+                0.0036,
+                "POLYGON ((21.32686 47.78723, 21.31486 47.81023, 21.32786 47.81123, 21.33986 47.80223, 21.328068201892744 47.823286782334385, 21.33886 47.82623, 21.34186 47.82123, 21.40686 47.81723, 21.32686 47.78723))"
+            );
+        }
+
+        private void CheckDP(string wkt, double tolerance, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var result = DouglasPeuckerSimplifier.Simplify(geom, tolerance);
+            var expected = Read(wktExpected);
+            CheckEqual(expected, result);
+        }
     }
 
     static class DPSimplifierResult
@@ -194,7 +218,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             var ioGeom = new Geometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = DouglasPeuckerSimplifier.Simplify(ioGeom[0], tolerance);
-            //System.Console.WriteLine(ioGeom[1]);
+            //TestContext.WriteLine(ioGeom[1]);
             return ioGeom;
         }
     }

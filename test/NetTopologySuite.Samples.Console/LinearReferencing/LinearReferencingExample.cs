@@ -13,8 +13,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        private static GeometryFactory fact = GeometryFactory.Fixed;
-        private static WKTReader rdr = new WKTReader(fact);
+        private static WKTReader rdr = new WKTReader(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearReferencingExample"/> class.
@@ -90,7 +89,7 @@ Geometry InsertPoint(Geometry geom, Coordinate point)
     var element = (LineString) geom.GetGeometryN(ll.ComponentIndex);
     var oldSeq = element.CoordinateSequence;
     var newSeq = element.Factory.CoordinateSequenceFactory.Create(
-        oldSeq.Count + 1, oldSeq.Dimension);
+        oldSeq.Count + 1, oldSeq.Dimension, oldSeq.Measures);
 
             int j = 0;
     if (ll.SegmentIndex == 0 && ll.SegmentFraction == 0)

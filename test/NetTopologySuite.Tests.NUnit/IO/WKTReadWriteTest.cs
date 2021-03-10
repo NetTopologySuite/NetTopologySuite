@@ -12,7 +12,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
     public class WKTReadWriteTest
     {
         private readonly CoordinateSequenceFactory _csFactory;
-        private readonly GeometryFactory _geometryFactory;
         private readonly WKTReader _reader;
 
         private readonly WKTWriter _writer;
@@ -21,8 +20,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             // We deliberately chose a coordinate sequence factory that can handle 4 dimensions
             _csFactory = PackedCoordinateSequenceFactory.DoubleFactory;
-            _geometryFactory = new GeometryFactory(_csFactory);
-            _reader = new WKTReader(_geometryFactory);
+            var gs = new NtsGeometryServices(_csFactory, PrecisionModel.Floating.Value, 0);
+            _reader = new WKTReader(gs);
 
             _writer = new WKTWriter(4) { OutputOrdinates = Ordinates.XY };
         }
@@ -190,7 +189,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             WaitHandle.WaitAll(waitHandles, 10000);
 
             int after = ((NtsGeometryServices)services).NumFactories;
-            Console.WriteLine("Now {0} factories created", after);
+            TestContext.WriteLine("Now {0} factories created", after);
             Assert.LessOrEqual(after, before + srids.Length);
         }
 
@@ -217,7 +216,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 }
             }
 
-            Console.WriteLine("ThreadId {0} finished Job {1}", Thread.CurrentThread.ManagedThreadId, jobId);
+            TestContext.WriteLine("ThreadId {0} finished Job {1}", Thread.CurrentThread.ManagedThreadId, jobId);
             waitHandle.Set();
         }
 

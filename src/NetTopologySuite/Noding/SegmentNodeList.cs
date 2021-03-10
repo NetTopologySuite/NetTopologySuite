@@ -305,7 +305,7 @@ namespace NetTopologySuite.Noding
                 npts--;
             }
 
-            int ipt = 0;
+            //int ipt = 0;
             coordList.Add(ei0.Coord.Copy(), false);
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
             {

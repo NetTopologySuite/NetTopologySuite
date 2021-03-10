@@ -49,18 +49,28 @@ namespace NetTopologySuite.Noding
         private readonly Coordinate[] _pts;
 
         /// <summary>
-        /// Creates a new segment string from a list of vertices.
+        /// Creates an instance from a list of vertices and optional data object.
         /// </summary>
         /// <param name="pts">The vertices of the segment string.</param>
-        /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public NodedSegmentString(Coordinate[] pts, object data)
+        /// <param name="context">The user-defined data of this segment string (may be null).</param>
+        public NodedSegmentString(Coordinate[] pts, object context)
         {
             _nodeList = new SegmentNodeList(this);
 
             _pts = pts;
-            Context = data;
+            Context = context;
         }
 
+        /// <summary>
+        /// Creates a new instance from a <see cref="ISegmentString"/>.
+        /// </summary>
+        /// <param name="ss">The segment string to use.</param>
+        public NodedSegmentString(ISegmentString ss)
+            :this(ss.Coordinates, ss.Context)
+        {
+            //_pts = ss.Coordinates;
+            //Context = ss.Context;
+        }
         /// <summary>
         /// Gets/Sets the user-defined data for this segment string.
         /// </summary>
@@ -92,6 +102,15 @@ namespace NetTopologySuite.Noding
         ///
         /// </summary>
         public Coordinate[] Coordinates => _pts;
+
+        /// <summary>
+        /// Gets a list of coordinates with all nodes included.
+        /// </summary>
+        /// <returns>An array of coordinates including nodes</returns>
+        public Coordinate[] NodedCoordinates
+        {
+            get => _nodeList.GetSplitCoordinates();
+        }
 
         /// <summary>
         ///

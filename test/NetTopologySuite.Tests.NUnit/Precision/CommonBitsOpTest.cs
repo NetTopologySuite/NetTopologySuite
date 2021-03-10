@@ -12,8 +12,9 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         /// </summary>
         [Test]
         public void TestPackedCoordinateSequence() {
-            var pcsFactory = new GeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory);
-            var geom0 = Read(pcsFactory, "POLYGON ((210 210, 210 220, 220 220, 220 210, 210 210))");
+
+            var pcsServices = new NtsGeometryServices(PackedCoordinateSequenceFactory.DoubleFactory);
+            var geom0 = Read(pcsServices, "POLYGON ((210 210, 210 220, 220 220, 220 210, 210 210))");
             var geom1 = Read("POLYGON ((225 225, 225 215, 215 215, 215 225, 225 225))");
             var cbo = new CommonBitsOp(true);
             var result = cbo.Intersection(geom0, geom1);

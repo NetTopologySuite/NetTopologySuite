@@ -15,6 +15,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="seq">The coordinate sequence to reverse.</param>
         public static void Reverse(CoordinateSequence seq)
         {
+            if (seq.Count <= 1) return;
+
             int last = seq.Count - 1;
             int mid = last / 2;
             for (int i = 0; i <= mid; i++)
@@ -125,7 +127,7 @@ namespace NetTopologySuite.Geometries
 
         private static CoordinateSequence CreateClosedRing(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
         {
-            var newseq = fact.Create(size, seq.Dimension);
+            var newseq = fact.Create(size, seq.Dimension, seq.Measures);
             int n = seq.Count;
             Copy(seq, 0, newseq, 0, n);
             // fill remaining coordinates with start point
@@ -140,7 +142,7 @@ namespace NetTopologySuite.Geometries
         /// Because coordinate sequences are fix in size, extending is done by
         /// creating a new coordinate sequence of the requested size.
         /// <para/>
-        /// The new, trailing coordinate entries (if any) are filled with the last 
+        /// The new, trailing coordinate entries (if any) are filled with the last
         /// coordinate of the input sequence
         /// </summary>
         /// <param name="fact">The factory to use when creating the new sequence.</param>
@@ -296,7 +298,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// Shifts the positions of the coordinates until the coordinate at  <c>firstCoordinateIndex</c>
         /// is first.
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>
@@ -307,7 +309,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// Shifts the positions of the coordinates until the coordinate at  <c>firstCoordinateIndex</c>
         /// is first.
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>

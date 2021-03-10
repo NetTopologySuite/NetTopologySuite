@@ -8,15 +8,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class EnvelopeTest
     {
-        private PrecisionModel precisionModel;
-        private GeometryFactory geometryFactory;
-        WKTReader reader;
+        private readonly GeometryFactory _geometryFactory;
+        private readonly WKTReader _reader;
 
         public EnvelopeTest()
         {
-            precisionModel = new PrecisionModel(1);
-            geometryFactory = new GeometryFactory(precisionModel, 0);
-            reader = new WKTReader(geometryFactory);
+            var gs = new NtsGeometryServices(PrecisionModel.Fixed.Value , 0);
+            _geometryFactory = gs.CreateGeometryFactory();
+            _reader = new WKTReader(gs);
         }
 
         [Test]
@@ -127,10 +126,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestAsGeometry()
         {
-            Assert.IsTrue(geometryFactory.CreatePoint((Coordinate)null).Envelope
+            Assert.IsTrue(_geometryFactory.CreatePoint((Coordinate)null).Envelope
                     .IsEmpty);
 
-            var g = geometryFactory.CreatePoint(new Coordinate(5, 6))
+            var g = _geometryFactory.CreatePoint(new Coordinate(5, 6))
                     .Envelope;
             Assert.IsTrue(!g.IsEmpty);
             Assert.IsTrue(g is Point);
@@ -139,7 +138,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(5, p.X, 1E-1);
             Assert.AreEqual(6, p.Y, 1E-1);
 
-            var l = (LineString)reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            var l = (LineString)_reader.Read("LINESTRING(10 10, 20 20, 30 40)");
             var g2 = l.Envelope;
             Assert.IsTrue(!g2.IsEmpty);
             Assert.IsTrue(g2 is Polygon);
@@ -269,11 +268,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         void checkExpectedEnvelopeGeometry(string wktInput, string wktEnvGeomExpected)
         {
-            var input = reader.Read(wktInput);
-            var envGeomExpected = reader.Read(wktEnvGeomExpected);
+            var input = _reader.Read(wktInput);
+            var envGeomExpected = _reader.Read(wktEnvGeomExpected);
 
             var env = input.EnvelopeInternal;
-            var envGeomActual = geometryFactory.ToGeometry(env);
+            var envGeomActual = _geometryFactory.ToGeometry(env);
             bool isEqual = envGeomActual.EqualsTopologically(envGeomExpected);
             Assert.IsTrue(isEqual);
         }

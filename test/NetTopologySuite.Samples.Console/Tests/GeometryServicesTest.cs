@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NetTopologySuite.Geometries;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.SimpleTests.Tests
 {
@@ -18,12 +19,14 @@ namespace NetTopologySuite.Samples.SimpleTests.Tests
             gf2 = s.CreateGeometryFactory(31466);
             Assert.IsTrue(ReferenceEquals(gf1, gf2));
 
-            var pm1 = s.CreatePrecisionModel(1000);
+            //var pm1 = s.CreatePrecisionModel(1000);
+            var pm1 = new PrecisionModel(1000);
             gf1 = s.CreateGeometryFactory(pm1);
             gf2 = s.CreateGeometryFactory(pm1);
             Assert.IsTrue(ReferenceEquals(gf1, gf2));
 
-            var pm2 = s.CreatePrecisionModel(1000);
+            //var pm2 = s.CreatePrecisionModel(1000);
+            var pm2 = new PrecisionModel(1000);
             gf2 = s.CreateGeometryFactory(pm2);
             Assert.IsTrue(ReferenceEquals(gf1, gf2));
 
@@ -50,8 +53,10 @@ namespace NetTopologySuite.Samples.SimpleTests.Tests
             var gf2 = s.CreateGeometryFactory(31467);
             Assert.IsFalse(ReferenceEquals(gf1, gf2));
 
-            var pm1 = s.CreatePrecisionModel(1000);
-            var pm2 = s.CreatePrecisionModel(100);
+            //var pm1 = s.CreatePrecisionModel(1000);
+            var pm1 = new PrecisionModel(1000);
+            //var pm2 = s.CreatePrecisionModel(100);
+            var pm2 = new PrecisionModel(100);
             gf1 = s.CreateGeometryFactory(pm1);
             gf2 = s.CreateGeometryFactory(pm2);
             Assert.IsFalse(ReferenceEquals(gf1, gf2));

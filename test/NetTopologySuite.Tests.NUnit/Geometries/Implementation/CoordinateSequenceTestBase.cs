@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [Test]
         public void TestZeroLength()
         {
-            var seq = CsFactory.Create(0, 3);
+            var seq = CsFactory.Create(0, 3, 0);
             Assert.IsTrue(seq.Count == 0);
 
             var seq2 = CsFactory.Create((Coordinate[])null);
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             var coords = CreateArray(Size);
 
-            var seq = CsFactory.Create(Size, 3);
+            var seq = CsFactory.Create(Size, 3, 0);
             for (int i = 0; i < seq.Count; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, coords[i].X);
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             var coords = CreateArray(Size);
 
-            var seq = CsFactory.Create(Size, 2);
+            var seq = CsFactory.Create(Size, 2, 0);
             for (int i = 0; i < seq.Count; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, coords[i].X);

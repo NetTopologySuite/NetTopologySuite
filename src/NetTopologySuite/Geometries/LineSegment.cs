@@ -255,8 +255,8 @@ namespace NetTopologySuite.Geometries
         /// fraction along the line defined by this segment.
         /// </summary>
         /// <remarks>
-        /// A fraction of <code>0.0</code> returns the start point of the segment;
-        /// A fraction of <code>1.0</code> returns the end point of the segment.
+        /// A fraction of <c>0.0</c> returns the start point of the segment;
+        /// A fraction of <c>1.0</c> returns the end point of the segment.
         /// If the fraction is &lt; 0.0 or &gt; 1.0 the point returned
         /// will lie before the start or beyond the end of the segment.
         /// </remarks>
@@ -276,8 +276,8 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// A fraction along the line defined by this segment and offset from
         /// the segment by a given distance.
-        /// A fraction of <code>0.0</code> offsets from the start point of the segment;
-        /// A fraction of <code>1.0</code> offsets from the end point of the segment.
+        /// A fraction of <c>0.0</c> offsets from the start point of the segment;
+        /// A fraction of <c>1.0</c> offsets from the end point of the segment.
         /// The computed point is offset to the left of the line if the offset distance is
         /// positive, to the right if negative.
         /// </remarks>

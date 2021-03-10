@@ -20,7 +20,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// <c>CoordinateZM</c>s are two-dimensional points, with an additional Z-ordinate.    
     /// If an Z-ordinate value is not specified or not defined,
-    /// constructed coordinates have a Z-ordinate of <code>NaN</code>
+    /// constructed coordinates have a Z-ordinate of <c>NaN</c>
     /// (which is also the value of <see cref="Coordinate.NullOrdinate"/>).
     /// <para/>
     /// Apart from the basic accessor functions, NTS supports

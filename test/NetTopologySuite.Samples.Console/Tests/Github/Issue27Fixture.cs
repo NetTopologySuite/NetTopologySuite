@@ -39,18 +39,17 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void test_intersection_bug_clipped()
         {
-            var factory = GeometryFactory.Default;
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader();
             var geom = reader.Read(NonNodedIntersection);
             var clipEnv = geom.EnvelopeInternal;
             clipEnv.ExpandBy(BufferValue);
-            var clip = factory.ToGeometry(clipEnv);
+            var clip = geom.Factory.ToGeometry(clipEnv);
             Assert.DoesNotThrow(() => DoIntersection(FromWkb(Poly1Wkb, clip), FromWkb(Poly2Wkb, clip), clip));
         }
 
         private static Geometry FromWkt(string wkt)
         {
-            return new WKTReader(GeometryFactory.Default).Read(wkt);
+            return new WKTReader().Read(wkt);
         }
 
         private static Geometry FromWkb(string wkb, Geometry clip = null)

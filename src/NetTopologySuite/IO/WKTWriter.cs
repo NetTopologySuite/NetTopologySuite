@@ -30,7 +30,7 @@ namespace NetTopologySuite.IO
         {
             // legacy note: JTS's version never checks Z or M, so the things that call this aren't
             // expecting to see them.  the "actual" code to write points handles Z / M just fine.
-            return $"POINT ({Format(p0)})";
+            return $"{WKTConstants.POINT} ({Format(p0)})";
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace NetTopologySuite.IO
             // legacy note: JTS's version never checks Z or M, so the things that call this aren't
             // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
             var buf = new StringBuilder();
-            buf.Append("LINESTRING");
+            buf.Append(WKTConstants.LINESTRING);
             if (seq.Count == 0)
-                buf.Append(" EMPTY");
+                buf.Append($" {WKTConstants.EMPTY}");
             else
             {
                 buf.Append("(");
@@ -60,22 +60,19 @@ namespace NetTopologySuite.IO
             return buf.ToString();
         }
 
-        /**
-         * Generates the WKT for a <tt>LINESTRING</tt>
-         * specified by a {@link CoordinateSequence}.
-         *
-         * @param seq the sequence to write
-         *
-         * @return the WKT string
-         */
+        /// <summary>
+        /// Generates the WKT for a <tt>LINESTRING</tt> specified by an array of <see cref="Coordinate"/>s.
+        /// </summary>
+        /// <param name="coord">An array of coordinates</param>
+        /// <returns>The WKT</returns>
         public static string ToLineString(Coordinate[] coord)
         {
             // legacy note: JTS's version never checks Z or M, so the things that call this aren't
             // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
             var buf = new StringBuilder();
-            buf.Append("LINESTRING ");
+            buf.Append($"{WKTConstants.LINESTRING} ");
             if (coord.Length == 0)
-                buf.Append(" EMPTY");
+                buf.Append($" {WKTConstants.EMPTY}");
             else
             {
                 buf.Append("(");
@@ -100,7 +97,7 @@ namespace NetTopologySuite.IO
         {
             // legacy note: JTS's version never checks Z or M, so the things that call this aren't
             // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
-            return $"LINESTRING ({Format(p0)}, {Format(p1)})";
+            return $"{WKTConstants.LINESTRING} ({Format(p0)}, {Format(p1)})";
         }
 
         internal static string Format(Coordinate p)
@@ -110,7 +107,7 @@ namespace NetTopologySuite.IO
 
         internal static string Format(double x, double y)
         {
-            return OrdinateFormat.Default.Format(x) + " " + OrdinateFormat.Default.Format(y);
+            return $"{OrdinateFormat.Default.Format(x)} {OrdinateFormat.Default.Format(y)}";
         }
 
         /// <summary>
@@ -125,7 +122,7 @@ namespace NetTopologySuite.IO
         /// A <c>NumberFormatInfo</c> that write <c>double</c>s
         /// without scientific notation.
         /// </returns>
-        [Obsolete]
+        [Obsolete("Use CreateOrdinateFormat")]
         internal static NumberFormatInfo CreateFormatter(PrecisionModel precisionModel)
         {
             // the default number of decimal places is 16, which is sufficient
@@ -136,7 +133,7 @@ namespace NetTopologySuite.IO
             return OrdinateFormat.CreateFormat(decimalPlaces);
         }
 
-        private OrdinateFormat CreateOrdinateFormat(PrecisionModel precisionModel)
+        internal static OrdinateFormat CreateOrdinateFormat(PrecisionModel precisionModel)
         {
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.
@@ -150,7 +147,7 @@ namespace NetTopologySuite.IO
         /// A filter implementation to test if a coordinate sequence actually has meaningful values
         /// for an ordinate bit-pattern
         /// </summary>
-        private class CheckOrdinatesFilter : ICoordinateSequenceFilter
+        private class CheckOrdinatesFilter : IEntireCoordinateSequenceFilter
         {
             private readonly Ordinates _checkOrdinateFlags;
             private Ordinates _outputOrdinates;
@@ -175,24 +172,27 @@ namespace NetTopologySuite.IO
             }
 
             /// <inheritdoc />
-            public void Filter(CoordinateSequence seq, int i)
+            public void Filter(CoordinateSequence seq)
             {
-                if (_checkOrdinateFlags.HasFlag(Ordinates.Z) && !_outputOrdinates.HasFlag(Ordinates.Z))
+                for (int i = 0; i < seq.Count; i++)
                 {
-                    if (!double.IsNaN(seq.GetZ(i)))
+                    if (_checkOrdinateFlags.HasFlag(Ordinates.Z) && !_outputOrdinates.HasFlag(Ordinates.Z))
                     {
-                        _outputOrdinates |= Ordinates.Z;
-                    }
-                }
-
-                if (_checkOrdinateFlags.HasFlag(Ordinates.M) && !_outputOrdinates.HasFlag(Ordinates.M))
-                {
-                    if (!double.IsNaN(seq.GetM(i)))
-                    {
-                        _outputOrdinates |= Ordinates.M;
-                        if (_alwaysEmitZWithM)
+                        if (!double.IsNaN(seq.GetZ(i)))
                         {
                             _outputOrdinates |= Ordinates.Z;
+                        }
+                    }
+
+                    if (_checkOrdinateFlags.HasFlag(Ordinates.M) && !_outputOrdinates.HasFlag(Ordinates.M))
+                    {
+                        if (!double.IsNaN(seq.GetM(i)))
+                        {
+                            _outputOrdinates |= Ordinates.M;
+                            if (_alwaysEmitZWithM)
+                            {
+                                _outputOrdinates |= Ordinates.Z;
+                            }
                         }
                     }
                 }
@@ -225,15 +225,23 @@ namespace NetTopologySuite.IO
         private readonly bool _alwaysEmitZWithM;
         private readonly string _missingOrdinateReplacementText = " NaN";
 
-        public WKTWriter() : this(2, false) { }
+        /// <summary>
+        /// Creates an instance of this class which is writing at most 2 dimensions.
+        /// </summary>
+        public WKTWriter() : this(2, false)
+        { }
 
-        public WKTWriter(int outputDimension) : this(outputDimension, false) { }
+        /// <summary>
+        /// Creates an instance of this class which is writing at most <paramref name="outputDimension"/> dimensions.
+        /// </summary>
+        public WKTWriter(int outputDimension) : this(outputDimension, false)
+        { }
 
         private WKTWriter(int outputDimension, bool mssql)
         {
             this.Tab = 2;
             if (outputDimension < 2 || outputDimension > 4)
-                throw new ArgumentException("Output dimension must be in the range [2, 4]", "outputDimension");
+                throw new ArgumentException("Output dimension must be in the range [2, 4]", nameof(outputDimension));
             _outputDimension = outputDimension;
 
             switch (outputDimension)
@@ -260,7 +268,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Gets/sets whther the output woll be formatted
+        /// Gets/sets whether the output will be formatted
         /// </summary>
         public bool Formatted
         {
@@ -485,6 +493,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">the <see cref="Geometry"/> to process.</param>
         /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
         /// <param name="useFormatting">flag indicating that the output should be formatted.</param>
+        /// <param name="level">The indentation level</param>
         /// <param name="writer">the output writer to append to.</param>
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendGeometryTaggedText(Geometry geometry, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
@@ -543,7 +552,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendPointTaggedText(Point point, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("POINT ");
+            writer.Write($"{WKTConstants.POINT} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendSequenceText(point.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
         }
@@ -553,13 +562,14 @@ namespace NetTopologySuite.IO
         /// format, then appends it to the writer.
         /// </summary>
         /// <param name="lineString">The <c>LineString</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
         /// <param name="useFormatting">flag indicating that the output should be formatted</param>
         /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendLineStringTaggedText(LineString lineString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("LINESTRING ");
+            writer.Write($"{WKTConstants.LINESTRING} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendSequenceText(lineString.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
         }
@@ -576,7 +586,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendLinearRingTaggedText(LinearRing linearRing, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("LINEARRING ");
+            writer.Write($"{WKTConstants.LINEARRING} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendSequenceText(linearRing.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
         }
@@ -593,7 +603,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendPolygonTaggedText(Polygon polygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("POLYGON ");
+            writer.Write($"{WKTConstants.POLYGON} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendPolygonText(polygon, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
         }
@@ -610,7 +620,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendMultiPointTaggedText(MultiPoint multipoint, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("MULTIPOINT ");
+            writer.Write($"{WKTConstants.MULTIPOINT} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendMultiPointText(multipoint, outputOrdinates, useFormatting, level, writer, ordinateFormat);
         }
@@ -627,7 +637,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendMultiLineStringTaggedText(MultiLineString multiLineString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("MULTILINESTRING ");
+            writer.Write($"{WKTConstants.MULTILINESTRING} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendMultiLineStringText(multiLineString, outputOrdinates, useFormatting, level, /*false, */writer, ordinateFormat);
         }
@@ -644,7 +654,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendMultiPolygonTaggedText(MultiPolygon multiPolygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("MULTIPOLYGON ");
+            writer.Write($"{WKTConstants.MULTIPOLYGON} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendMultiPolygonText(multiPolygon, outputOrdinates, useFormatting, level, /*false, */writer, ordinateFormat);
         }
@@ -661,7 +671,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendGeometryCollectionTaggedText(GeometryCollection geometryCollection, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            writer.Write("GEOMETRYCOLLECTION ");
+            writer.Write($"{WKTConstants.GEOMETRYCOLLECTION} ");
             AppendOrdinateText(outputOrdinates, writer);
             AppendGeometryCollectionText(geometryCollection, outputOrdinates, useFormatting, level, writer, ordinateFormat);
         }
@@ -751,12 +761,12 @@ namespace NetTopologySuite.IO
 
             if (outputOrdinates.HasFlag(Ordinates.Z))
             {
-                writer.Write('Z');
+                writer.Write(WKTConstants.Z);
             }
 
             if (outputOrdinates.HasFlag(Ordinates.M))
             {
-                writer.Write('M');
+                writer.Write(WKTConstants.M);
             }
         }
 
@@ -776,7 +786,7 @@ namespace NetTopologySuite.IO
         {
             if (seq.Count == 0)
             {
-                writer.Write("EMPTY");
+                writer.Write(WKTConstants.EMPTY);
             }
             else
             {
@@ -813,7 +823,7 @@ namespace NetTopologySuite.IO
         private void AppendPolygonText(Polygon polygon, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             if (polygon.IsEmpty)
-                writer.Write("EMPTY");
+                writer.Write(WKTConstants.EMPTY);
             else
             {
                 if (indentFirst) Indent(useFormatting, level, writer);
@@ -843,7 +853,7 @@ namespace NetTopologySuite.IO
         private void AppendMultiPointText(MultiPoint multiPoint, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             if (multiPoint.IsEmpty)
-                writer.Write("EMPTY");
+                writer.Write(WKTConstants.EMPTY);
             else
             {
                 writer.Write("(");
@@ -874,7 +884,7 @@ namespace NetTopologySuite.IO
         private void AppendMultiLineStringText(MultiLineString multiLineString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             if (multiLineString.IsEmpty)
-                writer.Write("EMPTY");
+                writer.Write(WKTConstants.EMPTY);
             else
             {
                 int level2 = level;
@@ -908,7 +918,7 @@ namespace NetTopologySuite.IO
         private void AppendMultiPolygonText(MultiPolygon multiPolygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             if (multiPolygon.IsEmpty)
-                writer.Write("EMPTY");
+                writer.Write(WKTConstants.EMPTY);
             else
             {
                 int level2 = level;
@@ -941,7 +951,7 @@ namespace NetTopologySuite.IO
         private void AppendGeometryCollectionText(GeometryCollection geometryCollection, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             if (geometryCollection.IsEmpty)
-                writer.Write("EMPTY");
+                writer.Write(WKTConstants.EMPTY);
             else
             {
                 int level2 = level;

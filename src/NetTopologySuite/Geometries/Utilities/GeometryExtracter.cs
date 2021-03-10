@@ -30,7 +30,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Extracts the <code>T</code> elements from a single <see cref="Geometry"/> and returns them in a <see cref="List{T}"/>.
+        /// Extracts the <c>T</c> elements from a single <see cref="Geometry"/> and returns them in a <see cref="List{T}"/>.
         /// </summary>
         /// <param name="geom">the geometry from which to extract</param>
         public static IList<Geometry> Extract<T>(Geometry geom) where T : Geometry

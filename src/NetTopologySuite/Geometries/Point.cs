@@ -199,7 +199,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty != other.IsEmpty)
                 return false;
 
-            return Equal(other.Coordinate, Coordinate, tolerance);
+            return Factory.CoordinateEqualityComparer.Equals(other.Coordinate, Coordinate, tolerance);
         }
 
         /// <summary>
@@ -270,10 +270,12 @@ namespace NetTopologySuite.Geometries
 
         /// <inheritdoc cref="Geometry.Reverse"/>
         [Obsolete("Call Geometry.Reverse()")]
+#pragma warning disable 809
         public override Geometry Reverse()
         {
             return base.Reverse();
         }
+#pragma warning restore 809
 
         /// <summary>
         /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>POINT</c>s.

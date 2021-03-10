@@ -14,8 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
     /// <version>1.7</version>
     public class BoundaryTest
     {
-        private static GeometryFactory fact = new GeometryFactory();
-        private static WKTReader rdr = new WKTReader(fact);
+        private readonly WKTReader _rdr = new WKTReader();
 
         /// <summary>
         /// For testing only.
@@ -90,10 +89,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                             "POINT (100 100)");
         }
 
-        private static void RunBoundaryTest(string wkt, IBoundaryNodeRule bnRule, string wktExpected)
+        private void RunBoundaryTest(string wkt, IBoundaryNodeRule bnRule, string wktExpected)
         {
-            var g = rdr.Read(wkt);
-            var expected = rdr.Read(wktExpected);
+            var g = _rdr.Read(wkt);
+            var expected = _rdr.Read(wktExpected);
 
             var op = new BoundaryOp(g, bnRule);
             var boundary = op.GetBoundary();

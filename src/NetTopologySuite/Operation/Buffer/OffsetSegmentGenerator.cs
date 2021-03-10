@@ -2,6 +2,7 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -77,7 +78,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly LineSegment _seg1 = new LineSegment();
         private readonly LineSegment _offset0 = new LineSegment();
         private readonly LineSegment _offset1 = new LineSegment();
-        private Positions _side = Positions.On;
+        private Position _side = Position.On;
         private bool _hasNarrowConcaveAngle;
 
         public OffsetSegmentGenerator(PrecisionModel precisionModel,
@@ -91,7 +92,7 @@ namespace NetTopologySuite.Operation.Buffer
             _li = new RobustLineIntersector();
             _filletAngleQuantum = Math.PI / 2.0 / bufParams.QuadrantSegments;
 
-            /**
+            /*
              * Non-round joins cause issues with short closing segments, so don't use
              * them. In any case, non-round joins only really make sense for relatively
              * small buffer distances.
@@ -120,13 +121,17 @@ namespace NetTopologySuite.Operation.Buffer
             _maxCurveSegmentError = distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
             _segList = new OffsetSegmentString();
             _segList.PrecisionModel = _precisionModel;
-            /**
+            /*
              * Choose the min vertex separation as a small fraction of the offset distance.
              */
             _segList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
         }
 
-        public void InitSideSegments(Coordinate s1, Coordinate s2, Positions side)
+        [Obsolete("Use InitSideSegments(Coordinate, Coordinate, Geometries.Position)")]
+        public void InitSideSegments(Coordinate s1, Coordinate s2, Positions side) =>
+            InitSideSegments(s1, s1, new Position((int)side));
+
+        public void InitSideSegments(Coordinate s1, Coordinate s2, Position side)
         {
             _s1 = s1;
             _s2 = s2;
@@ -182,8 +187,8 @@ namespace NetTopologySuite.Operation.Buffer
 
             var orientation = Orientation.Index(_s0, _s1, _s2);
             bool outsideTurn =
-                  (orientation == OrientationIndex.Clockwise && _side == Positions.Left)
-              || (orientation == OrientationIndex.CounterClockwise && _side == Positions.Right);
+                  (orientation == OrientationIndex.Clockwise && _side == Position.Left)
+              || (orientation == OrientationIndex.CounterClockwise && _side == Position.Right);
 
             if (orientation == 0)
             { // lines are collinear
@@ -241,7 +246,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         private void AddOutsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
-            /**
+            /*
              * Heuristic: If offset endpoints are very close together,
              * just use one of them as the corner vertex.
              * This avoids problems with computing mitre corners in the case
@@ -279,7 +284,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="addStartPoint"></param>
         private void AddInsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
-            /**
+            /*
              * add intersection point of offset segments (if any)
              */
             _li.ComputeIntersection(_offset0.P0, _offset0.P1, _offset1.P0, _offset1.P1);
@@ -366,9 +371,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the segment <see cref="Positions"/> the offset lies on</param>
         /// <param name="distance">The offset distance</param>
         /// <param name="offset">The points computed for the offset segment</param>
-        private static void ComputeOffsetSegment(LineSegment seg, Positions side, double distance, LineSegment offset)
+        private static void ComputeOffsetSegment(LineSegment seg, Position side, double distance, LineSegment offset)
         {
-            int sideSign = side == Positions.Left ? 1 : -1;
+            int sideSign = side == Position.Left ? 1 : -1;
             double dx = seg.P1.X - seg.P0.X;
             double dy = seg.P1.Y - seg.P0.Y;
             double len = Math.Sqrt(dx * dx + dy * dy);
@@ -391,9 +396,9 @@ namespace NetTopologySuite.Operation.Buffer
             var seg = new LineSegment(p0, p1);
 
             var offsetL = new LineSegment();
-            ComputeOffsetSegment(seg, Positions.Left, _distance, offsetL);
+            ComputeOffsetSegment(seg, Position.Left, _distance, offsetL);
             var offsetR = new LineSegment();
-            ComputeOffsetSegment(seg, Positions.Right, _distance, offsetR);
+            ComputeOffsetSegment(seg, Position.Right, _distance, offsetR);
 
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
@@ -511,7 +516,7 @@ namespace NetTopologySuite.Operation.Buffer
             var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
             var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
 
-            if (_side == Positions.Left)
+            if (_side == Position.Left)
             {
                 _segList.AddPt(bevelEndLeft);
                 _segList.AddPt(bevelEndRight);
@@ -522,13 +527,6 @@ namespace NetTopologySuite.Operation.Buffer
                 _segList.AddPt(bevelEndLeft);
             }
         }
-
-        /**
-         *
-         *
-         * @param offset0
-         * @param offset1
-         */
 
         /// <summary>
         /// Adds a bevel join connecting the two offset segments

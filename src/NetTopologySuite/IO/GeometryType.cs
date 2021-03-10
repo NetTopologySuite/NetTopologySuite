@@ -83,15 +83,15 @@ namespace NetTopologySuite.IO
             get
             {
                 //Leave out Ewkb flags
-                var val = _geometrytype & 0xffffff;
+                uint val = _geometrytype & 0xffffff;
                 if (val > 2000) val -= 2000;
                 if (val > 1000) val -= 1000;
                 return (OgcGeometryType) val;
             }
             set
             {
-                var ewkbFlags = _geometrytype & EwkbFlags;
-                var newGeometryType = (uint) value;
+                uint ewkbFlags = _geometrytype & EwkbFlags;
+                uint newGeometryType = (uint) value;
                 if (HasWkbZ) newGeometryType += 1000;
                 if (HasWkbM) newGeometryType += 2000;
                 _geometrytype = ewkbFlags | newGeometryType;
@@ -185,7 +185,7 @@ namespace NetTopologySuite.IO
             get { return (_geometrytype & EwkbZFlag) == EwkbZFlag; }
             set
             {
-                var gt = _geometrytype & (~EwkbZFlag);
+                uint gt = _geometrytype & (~EwkbZFlag);
                 if (value)
                     gt = _geometrytype | EwkbZFlag;
                 _geometrytype = gt;
@@ -201,7 +201,7 @@ namespace NetTopologySuite.IO
             get { return (_geometrytype & EwkbMFlag) == EwkbMFlag; }
             set
             {
-                var gt = _geometrytype & (~EwkbMFlag);
+                uint gt = _geometrytype & (~EwkbMFlag);
                 if (value)
                     gt = _geometrytype | EwkbMFlag;
                 _geometrytype = gt;
@@ -215,8 +215,8 @@ namespace NetTopologySuite.IO
         public bool HasEwkbSrid
         {
             get { return (_geometrytype & EwkbSridFlag) == EwkbSridFlag; }
-            set { 
-                var gt = _geometrytype & (~EwkbSridFlag);
+            set {
+                uint gt = _geometrytype & (~EwkbSridFlag);
                 if (value)
                     gt = _geometrytype | EwkbSridFlag;
                 _geometrytype = gt;

@@ -16,12 +16,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                                            new Coordinate(0, 0), new Coordinate(0, 10), new Coordinate(10, 10),
                                            new Coordinate(10, 0), new Coordinate(0, 0)
                                        }));
-            Console.WriteLine(geom.AsText());
+            TestContext.WriteLine(geom.AsText());
             var geom2 = geom.Buffer(2d);
-            Console.WriteLine(geom2);
+            TestContext.WriteLine(geom2);
             var geom3 = geom2.Buffer(-2);
             geom3.Normalize();
-            Console.WriteLine(geom3);
+            TestContext.WriteLine(geom3);
         }
     }
 }

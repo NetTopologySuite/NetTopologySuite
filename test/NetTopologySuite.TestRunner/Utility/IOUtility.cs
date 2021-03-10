@@ -25,14 +25,14 @@ namespace Open.Topology.TestRunner.Utility
         //    return result;
         //}
 
-        private static Geometry ReadGeometryFromWKBHexFile(string filename, GeometryFactory geomFact)
+        private static Geometry ReadGeometryFromWKBHexFile(string filename, NtsGeometryServices geomServ)
         {
-            return ReadGeometryFromWkbHexString(File.OpenText(filename).ReadToEnd(), geomFact);
+            return ReadGeometryFromWkbHexString(File.OpenText(filename).ReadToEnd(), geomServ);
         }
 
-        private static Geometry ReadGeometryFromWkbHexString(string wkbHexFile, GeometryFactory geomFact)
+        private static Geometry ReadGeometryFromWkbHexString(string wkbHexFile, NtsGeometryServices geomServ)
         {
-            var reader = new WKBReader();
+            var reader = new WKBReader(geomServ);
             string wkbHex = CleanHex(wkbHexFile);
             return reader.Read(WKBReader.HexToBytes(wkbHex));
         }
@@ -42,9 +42,9 @@ namespace Open.Topology.TestRunner.Utility
             return System.Text.RegularExpressions.Regex.Replace(hexStuff, "[^0123456789ABCDEFabcdef]", "");
         }
 
-        private static Geometry ReadGeometriesFromWktFile(string filename, GeometryFactory geomFact)
+        private static Geometry ReadGeometriesFromWktFile(string filename, NtsGeometryServices geomServ)
         {
-            return ReadGeometriesFromWktString(File.OpenText(filename).ReadToEnd(), geomFact);
+            return ReadGeometriesFromWktString(File.OpenText(filename).ReadToEnd(), geomServ);
         }
 
         /**
@@ -57,15 +57,16 @@ namespace Open.Topology.TestRunner.Utility
          * @throws IOException
          */
 
-        public static Geometry ReadGeometriesFromWktString(string wkt, GeometryFactory geomFact)
+        public static Geometry ReadGeometriesFromWktString(string wkt, NtsGeometryServices geomServ)
         {
-            var reader = new WKTReader(geomFact);
+            var reader = new WKTReader(geomServ);
             var fileReader = new WKTFileReader(new StringReader(wkt), reader);
             var geomList = fileReader.Read();
 
             if (geomList.Count == 1)
                 return geomList[0];
 
+            var geomFact = geomList[0].Factory;
             return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geomList));
         }
 

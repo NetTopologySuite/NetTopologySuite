@@ -134,9 +134,22 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
         [Obsolete("Call Geometry.Reverse()")]
+#pragma warning disable 809
         public override Geometry Reverse()
         {
             return base.Reverse();
+        }
+#pragma warning restore 809
+
+        /// <inheritdoc cref="ReverseInternal"/>
+        protected override Geometry ReverseInternal()
+        {
+            var lineStrings = new LineString[Geometries.Length];
+            for (int i = 0; i < lineStrings.Length; i++)
+            {
+                lineStrings[i] = (LineString)Geometries[i].Reverse();
+            }
+            return new MultiLineString(lineStrings, Factory);
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>

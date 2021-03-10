@@ -12,7 +12,10 @@ namespace NetTopologySuite.IO
     /// (specifically, LineStrings and LinearRings which contain
     /// too few points have vertices added,
     /// and non-closed rings are closed).
-    /// s</remarks>
+    /// <para/>
+    /// Although not defined in the WKB spec, empty points
+    /// are handled if they are represented as a Point with <c>NaN</c> X and Y ordinates.
+    /// </remarks>
     public class WKBReader
     {
         /// <summary>
@@ -76,9 +79,9 @@ namespace NetTopologySuite.IO
         private readonly PrecisionModel _precisionModel;
 
         private readonly NtsGeometryServices _geometryServices;
-        /**
+
+        /*
          * true if structurally invalid input should be reported rather than repaired.
-         * At some point this could be made client-controllable.
          */
         private bool _isStrict;
 
@@ -87,6 +90,10 @@ namespace NetTopologySuite.IO
         /// </summary>
         public WKBReader() : this(NtsGeometryServices.Instance) { }
 
+        /// <summary>
+        /// Creates an instance of this class using the provided <c>NtsGeometryServices</c>
+        /// </summary>
+        /// <param name="services"></param>
         public WKBReader(NtsGeometryServices services)
         {
             services = services ?? NtsGeometryServices.Instance;
@@ -122,7 +129,28 @@ namespace NetTopologySuite.IO
                 return Read(reader);
         }
 
-        protected enum CoordinateSystem { XY = 1, XYZ = 2, XYM = 3, XYZM = 4 };
+        /// <summary>
+        /// WKB Coordinate Systems
+        /// </summary>
+        protected enum CoordinateSystem
+        {
+            /// <summary>
+            /// 2D coordinate system
+            /// </summary>
+            XY = 1,
+            /// <summary>
+            /// 3D coordinate system
+            /// </summary>
+            XYZ = 2,
+            /// <summary>
+            /// 2D coordinate system with additional measure value
+            /// </summary>
+            XYM = 3,
+            /// <summary>
+            /// 3D coordinate system with additional measure value
+            /// </summary>
+            XYZM = 4
+        };
 
         /// <summary>
         ///
@@ -358,7 +386,10 @@ namespace NetTopologySuite.IO
         protected Geometry ReadPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            return factory.CreatePoint(ReadCoordinateSequence(reader, 1, cs));
+            var seq = ReadCoordinateSequence(reader, 1, cs);
+            if (double.IsNaN(seq.GetX(0)) || double.IsNaN(seq.GetY(0)))
+                return factory.CreatePoint();
+            return factory.CreatePoint(seq);
         }
 
         /// <summary>
@@ -556,12 +587,21 @@ namespace NetTopologySuite.IO
             return factory.CreateGeometryCollection(geometries);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating if a possibly encoded SRID value should be handled.
+        /// </summary>
         public bool HandleSRID { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating which ordinates can be handled.
+        /// </summary>
         public Ordinates AllowedOrdinates => Ordinates.XYZM & _sequenceFactory.Ordinates;
 
         private Ordinates _handleOrdinates;
 
+        /// <summary>
+        /// Gets a value indicating which ordinates should be handled.
+        /// </summary>
         public Ordinates HandleOrdinates
         {
             get => _handleOrdinates;
@@ -573,12 +613,26 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Gets or sets whether invalid linear rings should be fixed
+        /// Gets or sets a value indicating if the reader should attempt to repair malformed input.
         /// </summary>
-        public bool RepairRings
+        /// <remarks>
+        /// <i>Malformed</i> in this case means the ring has too few points (4),
+        /// or is not closed.
+        /// </remarks>
+        public bool IsStrict
         {
             get => _isStrict;
             set => _isStrict = value;
+        }
+
+        /// <summary>
+        /// Gets or sets whether invalid linear rings should be fixed
+        /// </summary>
+        [Obsolete("Use !IsStrict")]
+        public bool RepairRings
+        {
+            get => !IsStrict;
+            set => IsStrict = !value;
         }
 
         /// <summary>

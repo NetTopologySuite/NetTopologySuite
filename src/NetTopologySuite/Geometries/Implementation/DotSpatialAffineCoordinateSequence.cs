@@ -197,6 +197,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(this, Ordinates);
         }
 
+        /// <inheritdoc cref="CoordinateSequence.GetCoordinateCopy(int)"/>
         public override Coordinate GetCoordinateCopy(int i)
         {
             int j = 2 * i;
@@ -209,6 +210,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     : new CoordinateZM(_xy[j++], _xy[j], _z[i], _m[i]);
         }
 
+        /// <inheritdoc cref="CoordinateSequence.GetCoordinate(int, Coordinate)"/>
         public override void GetCoordinate(int index, Coordinate coord)
         {
             coord.X = _xy[2 * index];
@@ -278,6 +280,7 @@ namespace NetTopologySuite.Geometries.Implementation
             }
         }
 
+        /// <inheritdoc cref="CoordinateSequence.GetOrdinate(int, int)"/>
         public override double GetOrdinate(int index, int ordinateIndex)
         {
             // if (ordinateIndex == 0 || ordinateIndex == 1)
@@ -299,6 +302,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return Coordinate.NullOrdinate;
         }
 
+        /// <inheritdoc cref="CoordinateSequence.SetOrdinate(int, int, double)"/>
         public override void SetOrdinate(int index, int ordinateIndex, double value)
         {
             // if (ordinateIndex == 0 || ordinateIndex == 1)
@@ -332,10 +336,6 @@ namespace NetTopologySuite.Geometries.Implementation
             _coordinateArrayRef = null;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         private Coordinate[] GetCachedCoords()
         {
             Coordinate[] array = null;
@@ -343,6 +343,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return array;
         }
 
+        /// <inheritdoc cref="CoordinateSequence.ToCoordinateArray()"/>
         public override Coordinate[] ToCoordinateArray()
         {
             var ret = GetCachedCoords();
@@ -391,6 +392,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return ret;
         }
 
+        /// <inheritdoc cref="CoordinateSequence.ExpandEnvelope(Envelope)"/>
         public override Envelope ExpandEnvelope(Envelope env)
         {
             var xy = MemoryMarshal.Cast<double, XYStruct>(_xy);

@@ -1,4 +1,6 @@
 //using System.Collections;
+
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -13,14 +15,16 @@ namespace NetTopologySuite.Noding.Snapround
     /// Snap Rounding assumes that all vertices lie on a uniform grid;
     /// hence the precision model of the input must be fixed precision,
     /// and all the input vertices must be rounded to that precision.
-    /// <para>
+    /// <para/>
     /// This implementation uses a monotone chains and a spatial index to
     /// speed up the intersection tests.
-    /// This implementation appears to be fully robust using an integer precision model.
-    /// It will function with non-integer precision models, but the
-    /// results are not 100% guaranteed to be correctly noded.
-    /// </para>
+    /// <para/>
+    /// <h3>KNOWN BUGS</h3>
+    /// This implementation is not fully robust.
+    /// instead.
     /// </summary>
+    /// <seealse cref="SnapRoundingNoder"/>
+    [Obsolete("Not robust. Use SnapRoundingNoder instead.")]
     public class MCIndexSnapRounder : INoder
     {
         private readonly LineIntersector _li;
@@ -100,7 +104,7 @@ namespace NetTopologySuite.Noding.Snapround
         {
             foreach (var snapPt in snapPts)
             {
-                var hotPixel = new HotPixel(snapPt, _scaleFactor, _li);
+                var hotPixel = new HotPixel(snapPt, _scaleFactor/*, _li*/);
                 _pointSnapper.Snap(hotPixel);
             }
         }
@@ -124,7 +128,7 @@ namespace NetTopologySuite.Noding.Snapround
             var pts0 = e.Coordinates;
             for (int i = 0; i < pts0.Length; i++)
             {
-                var hotPixel = new HotPixel(pts0[i], _scaleFactor, _li);
+                var hotPixel = new HotPixel(pts0[i], _scaleFactor/*, _li*/);
                 bool isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);
                 // if a node is created for a vertex, that vertex must be noded too
                 if (isNodeAdded)

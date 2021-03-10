@@ -13,13 +13,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
     [TestFixture]
     public class RelateBoundaryNodeRuleTest
     {
-        private GeometryFactory fact;
-        private WKTReader rdr;
+        private readonly WKTReader _rdr;
 
         public RelateBoundaryNodeRuleTest()
         {
-            fact = new GeometryFactory();
-            rdr = new WKTReader(fact);
+            _rdr = new WKTReader();
         }
 
         [Test]
@@ -85,11 +83,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 
         void RunRelateTest(string wkt1, string wkt2, IBoundaryNodeRule bnRule, string expectedIM)
         {
-            var g1 = rdr.Read(wkt1);
-            var g2 = rdr.Read(wkt2);
+            var g1 = _rdr.Read(wkt1);
+            var g2 = _rdr.Read(wkt2);
             var im = RelateOp.Relate(g1, g2, bnRule);
             string imStr = im.ToString();
-            //System.Console.WriteLine(imStr);
+            //TestContext.WriteLine(imStr);
             Assert.IsTrue(im.Matches(expectedIM));
         }
     }

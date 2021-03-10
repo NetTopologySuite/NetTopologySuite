@@ -34,6 +34,7 @@ namespace NetTopologySuite.Algorithm
             Result = NoIntersection;
         }
 
+        /// <inheritdoc cref="LineIntersector.ComputeIntersect"/>
         public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             IsProper = false;
@@ -59,6 +60,9 @@ namespace NetTopologySuite.Algorithm
                 (Qp1 < 0 && Qp2 < 0))
                 return NoIntersection;
 
+            /*
+             * Intersection is collinear if each endpoint lies on the other line.
+             */
             bool collinear = Pq1 == 0 && Pq2 == 0 && Qp1 == 0 && Qp2 == 0;
             if (collinear)
                 return ComputeCollinearIntersection(p1, p2, q1, q2);
@@ -76,6 +80,8 @@ namespace NetTopologySuite.Algorithm
              *  the other line, since at this point we know that the inputLines must
              *  intersect.
              */
+            Coordinate p = null;
+            double z = double.NaN;
             if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0)
             {
                 IsProper = false;
@@ -96,24 +102,57 @@ namespace NetTopologySuite.Algorithm
                  * which used to produce the INCORRECT result: (20.31970698357233, 46.76654261437082, NaN)
                  *
                  */
-                if (p1.Equals2D(q1) || p1.Equals2D(q2))
-                    IntersectionPoint[0] = p1;
-                else if (p2.Equals2D(q1) || p2.Equals2D(q2))
-                    IntersectionPoint[0] = p2;
+                if (p1.Equals2D(q1))
+                {
+                    p = p1;
+                    z = zGet(p1, q1);
+                }
+                else if (p1.Equals2D(q2))
+                {
+                    p = p1;
+                    z = zGet(p1, q2);
+                }
+                else if (p2.Equals2D(q1))
+                {
+                    p = p2;
+                    z = zGet(p2, q1);
+                }
+                else if (p2.Equals2D(q2))
+                {
+                    p = p2;
+                    z = zGet(p2, q2);
+                }
+                /**
+                 * Now check to see if any endpoint lies on the interior of the other segment.
+                 */
                 else if (Pq1 == 0)
-                    IntersectionPoint[0] = q1.Copy();
+                {
+                    p = q1;
+                    z = zGetOrInterpolate(q1, p1, p2);
+                }
                 else if (Pq2 == 0)
-                    IntersectionPoint[0] = q2.Copy();
+                {
+                    p = q2;
+                    z = zGetOrInterpolate(q2, p1, p2);
+                }
                 else if (Qp1 == 0)
-                    IntersectionPoint[0] = p1.Copy();
+                {
+                    p = p1;
+                    z = zGetOrInterpolate(p1, q1, q2);
+                }
                 else if (Qp2 == 0)
-                    IntersectionPoint[0] = p2.Copy();
+                {
+                    p = p2;
+                    z = zGetOrInterpolate(p2, q1, q2);
+                }
             }
             else
             {
                 IsProper = true;
-                IntersectionPoint[0] = Intersection(p1, p2, q1, q2);
+                p = Intersection(p1, p2, q1, q2);
+                z = zInterpolate(p, p1, p2, q1, q2);
             }
+            IntersectionPoint[0] = copyWithZ(p, z);
             return PointIntersection;
         }
 
@@ -127,48 +166,72 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            bool p1q1p2 = Envelope.Intersects(p1, p2, q1);
-            bool p1q2p2 = Envelope.Intersects(p1, p2, q2);
-            bool q1p1q2 = Envelope.Intersects(q1, q2, p1);
-            bool q1p2q2 = Envelope.Intersects(q1, q2, p2);
+            bool q1inP = Envelope.Intersects(p1, p2, q1);
+            bool q2inP = Envelope.Intersects(p1, p2, q2);
+            bool p1inQ = Envelope.Intersects(q1, q2, p1);
+            bool p2inQ = Envelope.Intersects(q1, q2, p2);
 
-            if (p1q1p2 && p1q2p2)
+            if (q1inP && q2inP)
             {
-                IntersectionPoint[0] = q1;
-                IntersectionPoint[1] = q2;
+                IntersectionPoint[0] = copyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = copyWithZInterpolate(q2, p1, p2);
                 return CollinearIntersection;
             }
-            if (q1p1q2 && q1p2q2)
+            if (p1inQ && p2inQ)
             {
-                IntersectionPoint[0] = p1;
-                IntersectionPoint[1] = p2;
+                IntersectionPoint[0] = copyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[1] = copyWithZInterpolate(p2, q1, q2);
                 return CollinearIntersection;
             }
-            if (p1q1p2 && q1p1q2)
+            if (q1inP && p1inQ)
             {
-                IntersectionPoint[0] = q1;
-                IntersectionPoint[1] = p1;
-                return q1.Equals(p1) /* && !p1q2p2 && !q1p2q2 */ ? PointIntersection : CollinearIntersection;
+                // if pts are equal Z is chosen arbitrarily
+                IntersectionPoint[0] = copyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = copyWithZInterpolate(p1, q1, q2);
+                return q1.Equals(p1) && !q2inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
-            if (p1q1p2 && q1p2q2)
+            if (q1inP && p2inQ)
             {
-                IntersectionPoint[0] = q1;
-                IntersectionPoint[1] = p2;
-                return q1.Equals(p2) /* && !p1q2p2 && !q1p1q2 */ ? PointIntersection : CollinearIntersection;
+                // if pts are equal Z is chosen arbitrarily
+                IntersectionPoint[0] = copyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = copyWithZInterpolate(p2, q1, q2);
+                return q1.Equals(p2) && !q2inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
-            if (p1q2p2 && q1p1q2)
+            if (q2inP && p1inQ)
             {
-                IntersectionPoint[0] = q2;
-                IntersectionPoint[1] = p1;
-                return q2.Equals(p1) /* && !p1q1p2 && !q1p2q2 */? PointIntersection : CollinearIntersection;
+                // if pts are equal Z is chosen arbitrarily
+                IntersectionPoint[0] = copyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = copyWithZInterpolate(p1, q1, q2);
+                return q2.Equals(p1) && !q1inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
-            if (p1q2p2 && q1p2q2)
+            if (q2inP && p2inQ)
             {
-                IntersectionPoint[0] = q2;
-                IntersectionPoint[1] = p2;
-                return q2.Equals(p2) /* && !p1q1p2 && !q1p1q2 */ ? PointIntersection : CollinearIntersection;
+                // if pts are equal Z is chosen arbitrarily
+                IntersectionPoint[0] = copyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = copyWithZInterpolate(p2, q1, q2);
+                return q2.Equals(p2) && !q1inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
             return NoIntersection;
+        }
+
+        private static Coordinate copyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        {
+            return copyWithZ(p, zGetOrInterpolate(p, p1, p2));
+        }
+
+        private static Coordinate copyWithZ(Coordinate p, double z)
+        {
+            var pCopy = Copy(p);
+            if (!double.IsNaN(z))
+            {
+                pCopy.Z = z;
+            }
+            return pCopy;
+        }
+
+        private static Coordinate Copy(Coordinate p)
+        {
+            return new CoordinateZ(p);
         }
 
         /// <summary>
@@ -312,6 +375,124 @@ namespace NetTopologySuite.Algorithm
                 nearestPt = q2;
             }
             return nearestPt;
+        }
+
+        /**
+         * Gets the Z value of the first argument if present, 
+         * otherwise the value of the second argument.
+         * 
+         * @param p a coordinate, possibly with Z
+         * @param q a coordinate, possibly with Z
+         * @return the Z value if present
+         */
+        private static double zGet(Coordinate p, Coordinate q)
+        {
+            double z = p.Z;
+            if (double.IsNaN(z))
+            {
+                z = q.Z; // may be NaN
+            }
+            return z;
+        }
+
+        /**
+         * Gets the Z value of a coordinate if present, or
+         * interpolates it from the segment it lies on.
+         * If the segment Z values are not fully populate
+         * NaN is returned.
+         * 
+         * @param p a coordinate, possibly with Z 
+         * @param p1 a segment endpoint, possibly with Z
+         * @param p2 a segment endpoint, possibly with Z
+         * @return the extracted or interpolated Z value (may be NaN)
+         */
+        private static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        {
+            double z = p.Z;
+            if (!double.IsNaN(z))
+                return z;
+            return zInterpolate(p, p1, p2); // may be NaN
+        }
+
+        /**
+         * Interpolates a Z value for a point along 
+         * a line segment between two points.
+         * The Z value of the interpolation point (if any) is ignored.
+         * If either segment point is missing Z, 
+         * returns NaN.
+         * 
+         * @param p a coordinate
+         * @param p1 a segment endpoint, possibly with Z
+         * @param p2 a segment endpoint, possibly with Z
+         * @return the interpolated Z value (may be NaN)
+         */
+        private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        {
+            double p1z = p1.Z;
+            double p2z = p2.Z;
+            if (double.IsNaN(p1z))
+            {
+                return p2z; // may be NaN
+            }
+            if (double.IsNaN(p2z))
+            {
+                return p1z; // may be NaN
+            }
+            if (p.Equals2D(p1))
+            {
+                return p1z; // not NaN
+            }
+            if (p.Equals2D(p2))
+            {
+                return p2z; // not NaN
+            }
+            double dz = p2z - p1z;
+            if (dz == 0.0)
+            {
+                return p1z;
+            }
+            // interpolate Z from distance of p along p1-p2
+            double dx = (p2.X - p1.X);
+            double dy = (p2.Y - p1.Y);
+            // seg has non-zero length since p1 < p < p2 
+            double seglen = (dx * dx + dy * dy);
+            double xoff = (p.X - p1.X);
+            double yoff = (p.Y - p1.Y);
+            double plen = (xoff * xoff + yoff * yoff);
+            double frac = Math.Sqrt(plen / seglen);
+            double zoff = dz * frac;
+            double zInterpolated = p1z + zoff;
+            return zInterpolated;
+        }
+
+        /**
+         * Interpolates a Z value for a point along 
+         * two line segments and computes their average.
+         * The Z value of the interpolation point (if any) is ignored.
+         * If one segment point is missing Z that segment is ignored
+         * if both segments are missing Z, returns NaN.
+         * 
+         * @param p a coordinate
+         * @param p1 a segment endpoint, possibly with Z
+         * @param p2 a segment endpoint, possibly with Z
+         * @param q1 a segment endpoint, possibly with Z
+         * @param q2 a segment endpoint, possibly with Z
+         * @return the averaged interpolated Z value (may be NaN)
+         */
+        private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        {
+            double zp = zInterpolate(p, p1, p2);
+            double zq = zInterpolate(p, q1, q2);
+            if (double.IsNaN(zp))
+            {
+                return zq; // may be NaN
+            }
+            if (double.IsNaN(zq))
+            {
+                return zp; // may be NaN
+            }
+            // both Zs have values, so average them
+            return (zp + zq) / 2.0;
         }
     }
 }

@@ -25,16 +25,37 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
+            return OrientationIndex(p1.X, p1.Y, p2.X, p2.Y, q.X, q.Y);
+        }
+
+        /// <summary>
+        /// Returns the index of the direction of the point <c>q</c> relative to
+        /// a vector specified by <c>p1-p2</c>.
+        /// </summary>
+        /// <param name="p1x">The x-ordinate of the origin point of the vector</param>
+        /// <param name="p1y">The y-ordinate of the origin point of the vector</param>
+        /// <param name="p2x">The x-ordinate of the final point of the vector</param>
+        /// <param name="p2y">The y-ordinate of the final point of the vector</param>
+        /// <param name="qx">The x-ordinate of the point to compute the direction to</param>
+        /// <param name="qy">The y-ordinate of the point to compute the direction to</param>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><description>1 if q is counter-clockwise (left) from p1-p2</description></item>
+        /// <item><description>-1 if q is clockwise (right) from p1-p2</description></item>
+        /// <item><description>0 if q is collinear with p1-p2</description></item></list>
+        /// </returns>
+        public static int OrientationIndex(double p1x, double p1y, double p2x, double p2y, double qx, double qy)
+        {
             // fast filter for orientation index
             // avoids use of slow extended-precision arithmetic in many cases
-            int index = OrientationIndexFilter(p1, p2, q);
+            int index = OrientationIndexFilter(p1x, p1y, p2x, p2y, qx, qy);
             if (index <= 1) return index;
 
             // normalize coordinates
-            var dx1 = DD.ValueOf(p2.X) - p1.X;
-            var dy1 = DD.ValueOf(p2.Y) - p1.Y;
-            var dx2 = DD.ValueOf(q.X) - p2.X;
-            var dy2 = DD.ValueOf(q.Y) - p2.Y;
+            var dx1 = DD.ValueOf(p2x) - p1x;
+            var dy1 = DD.ValueOf(p2y) - p1y;
+            var dx2 = DD.ValueOf(qx) - p2x;
+            var dy2 = DD.ValueOf(qy) - p2y;
 
             return ((dx1 * dy2) - (dy1 * dx2)).Signum();
             //return SignOfDet2x2(dx1, dy1, dx2, dy2);
@@ -86,12 +107,12 @@ namespace NetTopologySuite.Algorithm
         /// <item><description>&gt; 1 if the orientation index cannot be computed safely</description></item>>
         /// </list>
         /// </returns>
-        private static int OrientationIndexFilter(Coordinate pa, Coordinate pb, Coordinate pc)
+        private static int OrientationIndexFilter(double pax, double pay, double pbx, double pby, double pcx, double pcy)
         {
             double detsum;
 
-            double detleft = (pa.X - pc.X)*(pb.Y - pc.Y);
-            double detright = (pa.Y - pc.Y)*(pb.X - pc.X);
+            double detleft = (pax - pcx)*(pby - pcy);
+            double detright = (pay - pcy)*(pbx - pcx);
             double det = detleft - detright;
 
             if (detleft > 0.0)

@@ -39,16 +39,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private static void CheckInteriorPoint(string name, IEnumerable<Geometry> geoms)
         {
-            Console.WriteLine(name);
+            TestContext.WriteLine(name);
             var sw = new Stopwatch();
             sw.Start();
             foreach (var g in geoms)
             {
                 CheckInteriorPoint(g);
-                Console.Write(".");
+                TestContext.Write(".");
             }
             sw.Stop();
-            //Console.WriteLine("\n {0}ms\n", sw.ElapsedMilliseconds);
+            //TestContext.WriteLine("\n {0}ms\n", sw.ElapsedMilliseconds);
         }
 
         private static void CheckInteriorPoint(Geometry g)

@@ -1,0 +1,88 @@
+name: Full Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  pack:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+
+    steps:
+    - name: Get source
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.406
+
+    - name: Build
+      run: dotnet build -c Release -v minimal -p:WarningLevel=3
+
+    - name: Test
+      run: dotnet test -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+      shell: bash # defaults disagree on how to quote the filter string
+
+    - name: Pack
+      run: dotnet pack -c Release --no-build -o artifacts -p:NoWarn=NU5105
+
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: NuGet Package Files (${{ matrix.os }})
+        path: artifacts
+
+  deployToMyGet:
+    name: Deploy to MyGet
+    runs-on: ubuntu-latest
+
+    needs: pack
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
+
+    steps:
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.406
+
+    - name: Download Package Files
+      uses: actions/download-artifact@v2
+      with:
+        name: NuGet Package Files (ubuntu-latest)
+        path: artifacts
+
+    - name: Publish Package Files to MyGet
+      run: dotnet nuget push artifacts/*.nupkg -s https://www.myget.org/F/nettopologysuite/api/v3/index.json -k $MYGET_API_KEY
+      shell: bash
+      env:
+        MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
+
+  deployToNuGet:
+    name: Deploy to NuGet
+    runs-on: ubuntu-latest
+
+    needs: pack
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.406
+
+    - name: Download Package Files
+      uses: actions/download-artifact@v2
+      with:
+        name: NuGet Package Files (ubuntu-latest)
+        path: artifacts
+
+    - name: Publish Package Files to NuGet
+      run: dotnet nuget push artifacts/*.nupkg -s https://www.myget.org/F/nettopologysuite/api/v3/index.json -k $NUGET_API_KEY
+      shell: bash
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+

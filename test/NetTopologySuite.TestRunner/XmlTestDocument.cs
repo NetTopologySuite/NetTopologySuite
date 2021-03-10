@@ -191,12 +191,15 @@ namespace Open.Topology.TestRunner
                     switch (go.Value)
                     {
                         case "com.vividsolutions.jtstest.geomop.PreparedGeometryOperation":
+                        case "org.locationtech.jtstest.geomop.PreparedGeometryOperation":
                             geometryOperation = new PreparedGeometryOperation();
                             break;
                         case "com.vividsolutions.jtstest.geomop.BufferValidatedGeometryOperation":
+                        case "org.locationtech.jtstest.geomop.BufferValidatedGeometryOperation":
                             geometryOperation = new BufferValidatedGeometryOperation();
                             break;
                         case "com.vividsolutions.jtstest.geomop.OverlayValidatedGeometryOperation":
+                        case "org.locationtech.jtstest.geomop.OverlayValidatedGeometryOperation":
                             geometryOperation = new OverlayValidatedGeometryOperation();
                             break;
 

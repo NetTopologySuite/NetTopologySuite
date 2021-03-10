@@ -9,10 +9,9 @@ namespace NetTopologySuite.Noding.Snapround
     /// Nodes the linework in a list of <see cref="Geometry"/>s using Snap-Rounding
     /// to a given <see cref="PrecisionModel"/>.
     /// <para>
-    /// The input coordinates are expected to be rounded
-    /// to the given precision model.
-    /// This class does not perform that function.
-    /// <c>GeometryPrecisionReducer"</c> may be used to do this.
+    /// The input coordinates do not need to be rounded to the
+    /// precision model.
+    /// All output coordinates are rounded to the precision model.
     /// </para><para>
     /// This class does <b>not</b> dissolve the output linework,
     /// so there may be duplicate linestrings in the output.
@@ -66,8 +65,7 @@ namespace NetTopologySuite.Noding.Snapround
             }
 
             var segStrings = ToSegmentStrings(lines);
-            //Noder sr = new SimpleSnapRounder(pm);
-            var sr = new MCIndexSnapRounder(_pm);
+            var sr = new SnapRoundingNoder(_pm);
             sr.ComputeNodes(segStrings);
             var nodedLines = sr.GetNodedSubstrings();
 

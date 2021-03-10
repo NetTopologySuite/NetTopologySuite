@@ -18,6 +18,9 @@ namespace NetTopologySuite.Geometries.Implementation
     [Serializable]
     public class CoordinateArraySequence : CoordinateSequence
     {
+        /// <summary>
+        /// Array of coordinates in sequence
+        /// </summary>
         protected Coordinate[] Coordinates;
 
         /// <summary>
@@ -29,7 +32,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         public CoordinateArraySequence(Coordinate[] coordinates)
-            : this(coordinates, CoordinateArrays.Dimension(coordinates), CoordinateArrays.Measures(coordinates)) { }
+            : this(coordinates, GetDimensionAndMeasures(coordinates, out int measures), measures) { }
 
         /// <summary>
         /// Constructs a sequence based on the given array
@@ -38,18 +41,24 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <remarks>The Array is not copied</remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         /// <param name="dimension">The dimension of the coordinates</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public CoordinateArraySequence(Coordinate[] coordinates, int dimension)
-            : this(coordinates, dimension, CoordinateArrays.Measures(coordinates))
+            : this(coordinates, GetDimensionAndMeasures(coordinates, out int measures), measures)
         {
         }
 
         /// <summary>
         /// Constructs a sequence based on the given array
         /// of <see cref="Coordinate"/>s.
+        /// <para/>
+        /// The Array is <b>not</b> copied
+        /// <para/>
+        /// It is your responsibility to ensure the array contains Coordinates of the
+        /// indicated dimension and measures (See <see cref="CoordinateArrays.EnforceConsistency(Coordinate[])"/>).
         /// </summary>
-        /// <remarks>The Array is not copied</remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
         /// <param name="dimension">The dimension of the coordinates</param>
+        /// <param name="measures">The number of measure ordinate values.</param>
         public CoordinateArraySequence(Coordinate[] coordinates, int dimension, int measures)
             : base(coordinates?.Length ?? 0, dimension, measures)
         {
@@ -59,7 +68,7 @@ namespace NetTopologySuite.Geometries.Implementation
             }
             else
             {
-                Coordinates = EnforceArrayConsistency(coordinates);
+                Coordinates = coordinates;
             }
         }
 
@@ -68,7 +77,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         public CoordinateArraySequence(int size)
-            : this(size, 2) { }
+            : this(size, 2, 0) { }
 
         /// <summary>
         /// Constructs a sequence of a given <paramref name="size"/>, populated
@@ -76,6 +85,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         /// <param name="dimension">the dimension of the coordinates</param>
+        [Obsolete("Use an overload that accepts measures.  This overload will be removed in a future release.")]
         public CoordinateArraySequence(int size, int dimension)
             : base(size, dimension, 0)
         {
@@ -91,12 +101,13 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
         /// <param name="dimension">the dimension of the coordinates</param>
+        /// <param name="measures">the number of measures of the coordinates</param>
         public CoordinateArraySequence(int size, int dimension, int measures)
             : base(size, dimension, measures)
         {
             Coordinates = new Coordinate[size];
             for (int i = 0; i < size; i++)
-                Coordinates[i] = CreateCoordinate();
+                Coordinates[i] = Geometries.Coordinates.Create(dimension, measures);
         }
 
         /// <summary>
@@ -119,12 +130,13 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Ensure array contents of the same type, making use of <see cref="CreateCoordinate"/> as needed.
+        /// Ensure array contents of the same type, making use of <see cref="CoordinateSequence.CreateCoordinate"/> as needed.
         /// <para>
         /// A new array will be created if needed to return a consistent result.
         /// </para>
         /// </summary>
         /// <param name="array">array containing consistent coordinate instances</param>
+        [Obsolete("It is the clients responsibility to provide consistent arrays")]
         protected Coordinate[] EnforceArrayConsistency(Coordinate[] array)
         {
             var sample = CreateCoordinate();
@@ -350,6 +362,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return env;
         }
 
+        /// <inheritdoc cref="CoordinateSequence.Reversed()"/>
         public override CoordinateSequence Reversed()
         {
             var coordinates = new Coordinate[Count];
@@ -357,7 +370,7 @@ namespace NetTopologySuite.Geometries.Implementation
             {
                 coordinates[Count - i - 1] = Coordinates[i].Copy();
             }
-            return new CoordinateArraySequence(coordinates, Dimension);
+            return new CoordinateArraySequence(coordinates, Dimension, Measures);
         }
 
         /// <summary>
@@ -380,6 +393,13 @@ namespace NetTopologySuite.Geometries.Implementation
                 return strBuf.ToString();
             }
             else return "()";
+        }
+
+        private static int GetDimensionAndMeasures(Coordinate[] coords, out int measures)
+        {
+            int dimension;
+            (_, dimension, measures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
+            return dimension;
         }
     }
 }

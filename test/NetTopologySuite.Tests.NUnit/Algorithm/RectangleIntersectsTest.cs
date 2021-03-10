@@ -42,8 +42,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private readonly GeometryFactory _geomFact = new GeometryFactory();
 
-        private double baseX;
-        private double baseY;
+        private const double baseX = 0;
+        private const double baseY = 0;
         private double rectSize = 100;
         private Envelope _rectEnv;
         private Coordinate[] _pts;
@@ -71,10 +71,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         public void Run(bool useSegInt, bool useSideInt)
         {
-            if (useSegInt) Console.WriteLine("Using Segment Intersector");
-            if (useSideInt) Console.WriteLine("Using Side Intersector");
+            if (useSegInt) TestContext.WriteLine("Using Segment Intersector");
+            if (useSideInt) TestContext.WriteLine("Using Side Intersector");
 
-            Console.WriteLine("# pts: " + _pts.Length);
+            TestContext.WriteLine("# pts: " + _pts.Length);
 
             var rectSegIntersector = new RectangleLineIntersector(_rectEnv);
             var rectSideIntersector = new SimpleRectangleIntersector(_rectEnv);
@@ -103,8 +103,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 }
             }
             sw.Stop();
-            Console.WriteLine("Finished in " + sw.Elapsed);
-            Console.WriteLine();
+            TestContext.WriteLine("Finished in " + sw.Elapsed);
+            TestContext.WriteLine();
         }
 
         private void RunCompare(bool useSegInt, bool useSideInt)
