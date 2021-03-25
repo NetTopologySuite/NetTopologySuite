@@ -8,8 +8,13 @@ namespace NetTopologySuite.Operation.OverlayNG
 {
     /// <summary>
     /// Unions a collection of geometries in an
-    /// efficient way, using {@link OverlayNG}
+    /// efficient way, using <see cref="OverlayNG"/>
     /// to ensure robust computation.
+    /// <para/>
+    /// This class is most useful for performing UnaryUnion using
+    /// a fixed-precision model.<br/>
+    /// For unary union using floating precision,
+    /// <see cref="OverlayNGRobust.Union(Geometry)"/> should be used.
     /// </summary>
     /// <author>Martin Davis</author>
     public static class UnaryUnionNG
@@ -17,11 +22,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <summary>
         /// Unions a collection of geometries
         /// using a given precision model.
-        /// <para/>
-        /// This class is most useful for performing UnaryUnion using
-        /// a fixed-precision model.
-        /// For unary union using floating precision,
-        /// <see cref="OverlayNGRobust.Union(Geometry)"/> should be used.
+
         /// </summary>
         /// <param name="geom">The geometry to union</param>
         /// <param name="pm">The precision model to use</param>
