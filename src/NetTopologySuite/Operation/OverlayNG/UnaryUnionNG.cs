@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Union;
@@ -20,29 +20,58 @@ namespace NetTopologySuite.Operation.OverlayNG
     public static class UnaryUnionNG
     {
         /// <summary>
-        /// Unions a collection of geometries
+        /// Unions a geometry (which is often a collection)
         /// using a given precision model.
-
         /// </summary>
         /// <param name="geom">The geometry to union</param>
         /// <param name="pm">The precision model to use</param>
-        /// <returns>The union of the geometries</returns>
+        /// <returns>The union of the geometry</returns>
         /// <seealso cref="OverlayNGRobust"/>
         public static Geometry Union(Geometry geom, PrecisionModel pm)
         {
-            if (geom == null)
-            {
-                throw new ArgumentNullException(nameof(geom));
-            }
-
-            var unionSRFun = new UnionStrategy((g0, g1) =>
-                OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm), OverlayUtility.IsFloating(pm));
-
-            var op = new UnaryUnionOp(geom) {
-                UnionStrategy = unionSRFun
+            var op = new UnaryUnionOp(geom) { 
+                UnionStrategy = CreateUnionStrategy(pm)
             };
-
             return op.Union();
+        }
+
+        /// <summary>
+        /// Unions a geometry (which is often a collection)
+        /// using a given precision model.
+        /// </summary>
+        /// <param name="geoms">The geometries to union</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <returns>The union of the geometries</returns>
+        /// <seealso cref="OverlayNGRobust"/>
+        public static Geometry Union(IEnumerable<Geometry> geoms, PrecisionModel pm)
+        {
+            var op = new UnaryUnionOp(geoms) {
+                UnionStrategy = CreateUnionStrategy(pm)
+            };
+            return op.Union();
+        }
+
+        /// <summary>
+        /// Unions a geometry (which is often a collection)
+        /// using a given precision model.
+        /// </summary>
+        /// <param name="geoms">The geometries to union</param>
+        /// <param name="geomFact">The geometry factory to use</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <returns>The union of the geometries</returns>
+        /// <seealso cref="OverlayNGRobust"/>
+        public static Geometry Union(IEnumerable<Geometry> geoms, GeometryFactory geomFact, PrecisionModel pm)
+        {
+            var op = new UnaryUnionOp(geoms, geomFact) {
+                UnionStrategy = CreateUnionStrategy(pm)
+            };
+            return op.Union();
+        }
+
+        private static UnionStrategy CreateUnionStrategy(PrecisionModel pm)
+        {
+            return new UnionStrategy((g0, g1) =>
+                OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm), OverlayUtility.IsFloating(pm));
         }
     }
 }

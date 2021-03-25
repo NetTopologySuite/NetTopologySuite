@@ -418,6 +418,11 @@ namespace NetTopologySuite.Tests.NUnit
 
         protected internal static IEqualityComparer<Geometry> EqualityComparer => new GeometryEqualityComparer();
 
+        /// <summary>
+        /// Gets a value indicating the geometry factory used.
+        /// </summary>
+        protected GeometryFactory GeometryFactory => _geomFactory;
+
         private class GeometryEqualityComparer : IEqualityComparer<Geometry>
         {
             public bool Equals(Geometry x, Geometry y)

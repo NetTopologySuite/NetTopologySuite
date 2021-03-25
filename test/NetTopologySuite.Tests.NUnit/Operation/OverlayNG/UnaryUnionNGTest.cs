@@ -30,12 +30,51 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
                 "POLYGON ((100 200, 150 200, 150 250, 250 250, 250 150, 200 150, 200 100, 100 100, 100 200))");
         }
 
+        [Test]
+        public void TestCollection()
+        {
+            CheckUnaryUnion(new string[] {
+                    "POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200))",
+                    "POLYGON ((300 100, 200 100, 200 200, 300 200, 300 100))",
+                    "POLYGON ((100 300, 200 300, 200 200, 100 200, 100 300))",
+                    "POLYGON ((300 300, 300 200, 200 200, 200 300, 300 300))"
+                },
+                1,
+                "POLYGON ((100 100, 100 200, 100 300, 200 300, 300 300, 300 200, 300 100, 200 100, 100 100))");
+        }
+
+        [Test]
+        public void TestCollectionEmpty()
+        {
+            CheckUnaryUnion(new string[0],
+                1,
+                "GEOMETRYCOLLECTION EMPTY");
+        }
+
+
         private void CheckUnaryUnion(string wkt, double scaleFactor, string wktExpected)
         {
             var geom = Read(wkt);
             var expected = Read(wktExpected);
             var pm = new PrecisionModel(scaleFactor);
             var result = UnaryUnionNG.Union(geom, pm);
+            CheckEqual(expected, result);
+        }
+
+        private void CheckUnaryUnion(string[] wkt, double scaleFactor, string wktExpected)
+        {
+            var geoms = ReadList(wkt);
+            var expected = Read(wktExpected);
+            var pm = new PrecisionModel(scaleFactor);
+            Geometry result;
+            if (geoms.Count == 0)
+            {
+                result = UnaryUnionNG.Union(geoms, base.GeometryFactory, pm);
+            }
+            else
+            {
+                result = UnaryUnionNG.Union(geoms, pm);
+            }
             CheckEqual(expected, result);
         }
     }
