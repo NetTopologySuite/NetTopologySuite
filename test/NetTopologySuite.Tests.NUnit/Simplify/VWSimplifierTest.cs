@@ -47,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         public void TestPolygonSpikeInShell()
         {
             const string geomStr = "POLYGON ((1721355.3 693015.146, 1721318.687 693046.251, 1721306.747 693063.038, 1721367.025 692978.29, 1721355.3 693015.146))";
-            const string result = "POLYGON ((1721355.3 693015.146, 1721367.025 692978.29, 1721318.687 693046.251, 1721355.3 693015.146))";
+            const string result = "POLYGON ((1721355.3 693015.146, 1721318.687 693046.251, 1721367.025 692978.29, 1721355.3 693015.146))";
             new GeometryOperationValidator(
                 VWSimplifierResult.GetResult(
                     geomStr,

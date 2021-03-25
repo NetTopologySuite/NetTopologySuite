@@ -183,7 +183,8 @@ namespace NetTopologySuite.Densify
             /// <returns>A valid area geometry</returns>
             private Geometry CreateValidArea(Geometry roughAreaGeom)
             {
-                if (!_validate) return roughAreaGeom;
+                // if valid no need to process to make valid
+                if (!_validate || roughAreaGeom.IsValid) return roughAreaGeom;
                 return roughAreaGeom.Buffer(0.0);
             }
         }

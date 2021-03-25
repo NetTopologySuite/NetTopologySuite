@@ -185,7 +185,8 @@ namespace NetTopologySuite.Simplify
             /// <returns>A valid area point.</returns>
             private Geometry CreateValidArea(Geometry rawAreaGeom)
             {
-                if (_ensureValidTopology)
+                // if geometry is invalid then make it valid
+                if (_ensureValidTopology && !rawAreaGeom.IsValid)
                     return rawAreaGeom.Buffer(0.0);
                 return rawAreaGeom;
             }

@@ -72,7 +72,8 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             const string geomStr =
                 "POLYGON ((80 200, 240 200, 240 60, 80 60, 80 200), (120 120, 220 120, 180 199, 160 200, 140 199, 120 120))";
             const string resStr =
-                "POLYGON ((80 200, 160 200, 240 200, 240 60, 80 60, 80 200), (160 200, 140 199, 120 120, 220 120, 180 199, 160 200)))";
+                //"POLYGON ((80 200, 160 200, 240 200, 240 60, 80 60, 80 200), (160 200, 140 199, 120 120, 220 120, 180 199, 160 200)))";
+                  "POLYGON((80 200, 240 200, 240 60, 80 60, 80 200), (120 120, 220 120, 180 199, 160 200, 140 199, 120 120))";
             new GeometryOperationValidator(
                     DPSimplifierResult.GetResult(
                         geomStr,
