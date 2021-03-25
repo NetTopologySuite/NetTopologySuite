@@ -326,6 +326,25 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Create a Coordinate of the same type as this Coordinate, using the provided values.
+        /// </summary>
+        /// <remarks>Depending on the actual type the following limitations are in place:
+        /// <list type="table">
+        /// <listheader><term>Coordinate (Sub-)Class</term><description>Limitation</description></listheader>
+        /// <item><term><c>Coordinate</c></term><description><paramref name="z"/>-parameter and <paramref name="m"/>-parameter are silently dropped.</description></item>
+        /// <item><term><c>CoordinateZ</c></term><description><paramref name="m"/>-parameter is silently dropped.</description></item>
+        /// <item><term><c>CoordinateM</c></term><description><paramref name="z"/>-parameter is silently dropped.</description></item>
+        /// <item><term><c>CoordinateZM</c></term><description>No parameter is dropped.</description></item>
+        /// </list>
+        /// </remarks>
+        /// <param name="x">The x-ordinate value, if not provided, it is <c>0d</c>.</param>
+        /// <param name="y">The y-ordinate value, if not provided, it is <c>0d</c>.</param>
+        /// <param name="z">The z-ordinate value, if not provided, it is <see cref="Coordinate.NullOrdinate"/>.</param>
+        /// <param name="m">The m-ordinate value, if not provided, it is <see cref="Coordinate.NullOrdinate"/>.</param>
+        /// <returns>A new <see cref="Coordinate"/></returns>
+        public virtual Coordinate Create(double x = 0, double y = 0, double z = NullOrdinate, double m = NullOrdinate) => new Coordinate(x, y);
+
+        /// <summary>
         /// Computes the 2-dimensional Euclidean distance to another location.
         /// </summary>
         /// <param name="c">A <see cref="Coordinate"/> with which to do the distance comparison.</param>

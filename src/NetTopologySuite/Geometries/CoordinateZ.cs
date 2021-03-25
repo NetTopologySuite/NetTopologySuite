@@ -126,6 +126,18 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Create a Coordinate of the same type as this Coordinate,
+        /// using the provided values for <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/>.
+        /// </summary>
+        /// <remarks>A provided value for <paramref name="m"/> will be silently dropped.</remarks>
+        /// <param name="x">The x-ordinate value, if not provided, it is <c>0d</c>.</param>
+        /// <param name="y">The y-ordinate value, if not provided, it is <c>0d</c>.</param>
+        /// <param name="z">The z-ordinate value, if not provided, it is <see cref="Coordinate.NullOrdinate"/>.</param>
+        /// <param name="m">The m-ordinate value, if not provided, it is <see cref="Coordinate.NullOrdinate"/>.</param>
+        /// <returns>A new <see cref="CoordinateZ"/></returns>
+        public override Coordinate Create(double x = 0d, double y = 0d, double z = NullOrdinate, double m = NullOrdinate) => new CoordinateZ(x, y, z);
+
+        /// <summary>
         /// Returns <c>true</c> if <paramref name="other"/> 
         /// has the same values for X, Y and Z.
         /// </summary>

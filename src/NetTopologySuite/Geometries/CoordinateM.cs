@@ -126,6 +126,18 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Create a Coordinate of the same type as this Coordinate,
+        /// using the provided values for <paramref name="x"/>, <paramref name="y"/> and <paramref name="m"/>.
+        /// </summary>
+        /// <remarks>A provided value for <paramref name="z"/> will be silently dropped.</remarks>
+        /// <param name="x">The x-ordinate value, if not provided, it is <c>0d</c>.</param>
+        /// <param name="y">The y-ordinate value, if not provided, it is <c>0d</c>.</param>
+        /// <param name="z">The z-ordinate value, if not provided, it is <see cref="Coordinate.NullOrdinate"/>.</param>
+        /// <param name="m">The m-ordinate value, if not provided, it is <see cref="Coordinate.NullOrdinate"/>.</param>
+        /// <returns>A new <see cref="CoordinateM"/></returns>
+        public override Coordinate Create(double x = 0d, double y = 0d, double z = NullOrdinate, double m = NullOrdinate) => new CoordinateM(x, y, m);
+
+        /// <summary>
         /// Returns a <c>string</c> of the form <i>(x, y, m=m)</i>.
         /// </summary>
         /// <returns><c>string</c> of the form <i>(x, y, m=m)</i></returns>
@@ -133,14 +145,5 @@ namespace NetTopologySuite.Geometries
         {
             return string.Format(NumberFormatInfo.InvariantInfo, "({0:R}, {1:R}, m={2:R})", X, Y, M);
         }
-
-        ///// <summary>
-        ///// Create a new object as copy of this instance.
-        ///// </summary>
-        ///// <returns></returns>
-        //public override Coordinate Copy()
-        //{
-        //    return new CoordinateM(X, Y, M);
-        //}
     }
 }

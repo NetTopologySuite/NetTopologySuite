@@ -252,6 +252,42 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestCreate()
+        {
+            DoTestCreate(new Coordinate());
+            DoTestCreate(new CoordinateZ());
+            DoTestCreate(new CoordinateM());
+            DoTestCreate(new CoordinateZM());
+        }
+
+        private void DoTestCreate(Coordinate p)
+        {
+            var test = p.Create();
+            Assert.That(test.GetType(), Is.EqualTo(p.GetType()));
+            Assert.That(test.X, Is.EqualTo(0d));
+            Assert.That(test.Y, Is.EqualTo(0d));
+            Assert.That(test.Z, Is.EqualTo(double.NaN));
+            Assert.That(test.M, Is.EqualTo(double.NaN));
+
+
+            test = p.Create(1, 2, 3, 4);
+            Assert.That(test.GetType(), Is.EqualTo(p.GetType()));
+            Assert.That(test.X, Is.EqualTo(1d));
+
+            Assert.That(test.Y, Is.EqualTo(2d));
+
+            if (test is CoordinateZ || test is CoordinateZM)
+                Assert.That(test.Z, Is.EqualTo(3d));
+            else
+                Assert.That(test.Z, Is.EqualTo(double.NaN));
+
+            if (test is CoordinateM || test is CoordinateZM)
+                Assert.That(test.M, Is.EqualTo(4d));
+            else
+                Assert.That(test.M, Is.EqualTo(double.NaN));
+        }
+
+        [Test]
         public void TestCoordinateHash()
         {
             DoTestCoordinateHash(true, new Coordinate(1, 2), new Coordinate(1, 2));

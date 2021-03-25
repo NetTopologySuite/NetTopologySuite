@@ -218,8 +218,13 @@ namespace NetTopologySuite.Geometries
         public double Angle => Math.Atan2(_p1.Y - _p0.Y, _p1.X - _p0.X);
 
         /// <summary>The midpoint of the segment</summary>
-        public Coordinate MidPoint => new Coordinate((_p0.X + _p1.X) / 2,
-            (_p0.Y + _p1.Y) / 2);
+        public Coordinate MidPoint
+        {
+            get
+            {
+                return _p0.Create((_p0.X + _p1.X) / 2d, (_p0.Y + _p1.Y) / 2d);
+            }
+        }
 
         /// <summary>
         /// Computes the distance between this line segment and another one.
@@ -264,10 +269,9 @@ namespace NetTopologySuite.Geometries
         /// <returns> the point at that distance</returns>
         public Coordinate PointAlong(double segmentLengthFraction)
         {
-            var coord = new Coordinate();
-            coord.X = _p0.X + segmentLengthFraction * (_p1.X - _p0.X);
-            coord.Y = _p0.Y + segmentLengthFraction * (_p1.Y - _p0.Y);
-            return coord;
+            return _p0.Create(
+                _p0.X + segmentLengthFraction * (_p1.X - _p0.X),
+                _p0.Y + segmentLengthFraction * (_p1.Y - _p0.Y));
         }
 
         /// <summary>
@@ -311,8 +315,7 @@ namespace NetTopologySuite.Geometries
             double offsetx = segx - uy;
             double offsety = segy + ux;
 
-            var coord = new Coordinate(offsetx, offsety);
-            return coord;
+            return _p0.Create(offsetx, offsety);
         }
 
         /// <summary>Computes the Projection Factor for the projection of the point p
@@ -390,8 +393,7 @@ namespace NetTopologySuite.Geometries
                 return p.Copy();
 
             double r = ProjectionFactor(p);
-            var coord = new Coordinate { X = _p0.X + r * (_p1.X - _p0.X), Y = _p0.Y + r * (_p1.Y - _p0.Y) };
-            return coord;
+            return p.Create(_p0.X + r * (_p1.X - _p0.X), _p0.Y + r * (_p1.Y - _p0.Y));
         }
 
         /// <summary>
@@ -520,7 +522,7 @@ namespace NetTopologySuite.Geometries
             double rx = (-A2subB2 * x - 2 * A * B * y - 2 * A * C) / A2plusB2;
             double ry = (A2subB2 * y - 2 * A * B * x - 2 * B * C) / A2plusB2;
 
-            return new Coordinate(rx, ry);
+            return p.Create(rx, ry);
         }
 
 
