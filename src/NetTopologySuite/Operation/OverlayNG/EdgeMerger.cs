@@ -22,6 +22,11 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// no other coincident edge, or if all coincident edges have the same direction).
     /// This ensures that the overlay output line direction will be as consistent
     /// as possible with input lines.
+    /// <para/>
+    /// The merger also preserves the order of the edges in the input.
+    /// This means that for polygon-line overlay
+    /// the result lines will be in the same order as in the input
+    /// (possibly with multiple result lines for a single input line).
     /// </summary>
     /// <author>Martin Davis</author>
     internal sealed class EdgeMerger
@@ -29,29 +34,20 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public static IList<Edge> Merge(List<Edge> edges)
         {
-            var merger = new EdgeMerger(edges);
-            return merger.Merge();
-        }
+            // use a list to collect the final edges, to preserve order
+            var mergedEdges = new List<Edge>();
+            var edgeMap = new Dictionary<EdgeKey, Edge>();
 
-        private readonly List<Edge> _edges;
-        private readonly Dictionary<EdgeKey, Edge> _edgeMap = new Dictionary<EdgeKey, Edge>();
-
-        public EdgeMerger(List<Edge> edges)
-        {
-            _edges = edges;
-        }
-
-        public IList<Edge> Merge()
-        {
-            foreach (var edge in _edges)
+            foreach (var edge in edges)
             {
                 var edgeKey = EdgeKey.Create(edge);
-                if (!_edgeMap.TryGetValue(edgeKey, out var baseEdge))
+                if (!edgeMap.TryGetValue(edgeKey, out var baseEdge))
                 {
                     // this is the first (and maybe only) edge for this line
-                    _edgeMap.Add(edgeKey, edge);
+                    edgeMap.Add(edgeKey, edge);
                     //Debug.println("edge added: " + edge);
                     //Debug.println(edge.toLineString());
+                    mergedEdges.Add(edge);
                 }
                 else
                 {
@@ -67,7 +63,7 @@ namespace NetTopologySuite.Operation.OverlayNG
                     //Debug.println(edge.toLineString());
                 }
             }
-            return new List<Edge>(_edgeMap.Values);
+            return mergedEdges;
         }
 
     }

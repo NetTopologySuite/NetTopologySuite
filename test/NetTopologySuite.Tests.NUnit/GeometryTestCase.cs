@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit
 
         /**
          * Checks that the normalized values of the expected and actual
-         * geometries are exactly equals.
+         * geometries are exactly equal.
          * 
          * @param expected the expected value
          * @param actual the actual value
@@ -45,6 +45,22 @@ namespace NetTopologySuite.Tests.NUnit
             bool equal = actualNorm.EqualsExact(expectedNorm);
             //var writer = new WKTWriter {MaxCoordinatesPerLine };
             Assert.That(equal, Is.True, string.Format(CHECK_EQUAL_FAIL, expected, actual));
+        }
+
+        /**
+         * Checks that the values of the expected and actual
+         * geometries are exactly equal.
+         * 
+         * @param expected the expected value
+         * @param actual the actual value
+         */
+        protected void CheckEqualExact(Geometry expected, Geometry actual)
+        {
+            bool equal = actual.EqualsExact(expected);
+            if (!equal)
+                TestContext.WriteLine(CHECK_EQUAL_FAIL, expected, actual);
+
+            Assert.That(equal);
         }
 
         protected void CheckEqual(Geometry expected, Geometry actual, double tolerance)
