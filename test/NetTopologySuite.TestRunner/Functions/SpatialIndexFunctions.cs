@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Index.Strtree;
@@ -139,6 +140,20 @@ namespace Open.Topology.TestRunner.Functions
                 }
             });
             return index;
+        }
+
+        public static Geometry MonotoneChains(Geometry geom)
+        {
+            var pts = geom.Coordinates;
+            var chains = MonotoneChainBuilder.GetChains(pts);
+            var lines = new List<LineString>(chains.Count);
+            foreach (var mc in chains)
+            {
+                var mcPts = mc.Coordinates;
+                var line = geom.Factory.CreateLineString(mcPts);
+                lines.Add(line);
+            }
+            return geom.Factory.BuildGeometry(lines);
         }
     }
 }
