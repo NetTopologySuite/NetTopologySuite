@@ -160,7 +160,8 @@ namespace NetTopologySuite.IO
         protected Geometry Read(BinaryReader reader)
         {
             ReadByteOrder(reader);
-            var geometryType = ReadGeometryType(reader, out var cs, out int srid);
+            int srid = _geometryServices.DefaultSRID;
+            var geometryType = ReadGeometryType(reader, out var cs, ref srid);
             switch (geometryType)
             {
                 //Point
@@ -223,7 +224,7 @@ namespace NetTopologySuite.IO
             ((BiEndianBinaryReader)reader).Endianess = byteOrder;
         }
 
-        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)
+        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, ref int srid)
         {
             uint type = reader.ReadUInt32();
             //Determine coordinate system
@@ -237,12 +238,8 @@ namespace NetTopologySuite.IO
                 coordinateSystem = CoordinateSystem.XY;
 
             //Has SRID
-            if ((type & 0x20000000) != 0)
-                srid = reader.ReadInt32();
-            else
-                srid = -1;
-
-            if (!HandleSRID) srid = -1;
+            int newSrid = (type & 0x20000000) != 0 ? reader.ReadInt32() : -1;
+            if (HandleSRID && newSrid >= 0) srid = newSrid;
 
             //Get cs from prefix
             uint ordinate = (type & 0xffff) / 1000;
@@ -446,8 +443,8 @@ namespace NetTopologySuite.IO
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
-                int srid2;
-                var geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes)reader.ReadInt32();
+                int srid2 = srid;
+                var geometryType = ReadGeometryType(reader, out cs2, ref srid2);//(WKBGeometryTypes)reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPoint)
                     throw new ArgumentException("Point feature expected");
                 points[i] = ReadPoint(reader, cs2, srid2) as Point;
@@ -471,8 +468,9 @@ namespace NetTopologySuite.IO
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
-                int srid2;
-                var geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
+                int srid2 = srid;
+                var geometryType = ReadGeometryType(reader, out cs2, ref srid2);//(WKBGeometryTypes)reader.ReadInt32();
+                if (srid2 < 0) srid2 = srid;
                 if (geometryType != WKBGeometryTypes.WKBLineString)
                     throw new ArgumentException("LineString feature expected");
                 strings[i] = ReadLineString(reader, cs2, srid2) as LineString;
@@ -496,8 +494,8 @@ namespace NetTopologySuite.IO
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
-                int srid2;
-                var geometryType = ReadGeometryType(reader, out cs2, out srid2);//(WKBGeometryTypes) reader.ReadInt32();
+                int srid2 = srid;
+                var geometryType = ReadGeometryType(reader, out cs2, ref srid2);//(WKBGeometryTypes)reader.ReadInt32();
                 if (geometryType != WKBGeometryTypes.WKBPolygon)
                     throw new ArgumentException("Polygon feature expected");
                 polygons[i] = ReadPolygon(reader, cs2, srid2) as Polygon;
@@ -523,8 +521,9 @@ namespace NetTopologySuite.IO
             {
                 ReadByteOrder(reader);
                 CoordinateSystem cs2;
-                int srid2;
-                var geometryType = ReadGeometryType(reader, out cs2, out srid2);
+                int srid2 = srid;
+                var geometryType = ReadGeometryType(reader, out cs2, ref srid2);//(WKBGeometryTypes)reader.ReadInt32();
+
                 switch (geometryType)
                 {
                     //Point
@@ -532,7 +531,7 @@ namespace NetTopologySuite.IO
                     case WKBGeometryTypes.WKBPointZ:
                     case WKBGeometryTypes.WKBPointM:
                     case WKBGeometryTypes.WKBPointZM:
-                        geometries[i] = ReadPoint(reader, cs2, srid);
+                        geometries[i] = ReadPoint(reader, cs2, srid2);
                         break;
 
                     //Line String

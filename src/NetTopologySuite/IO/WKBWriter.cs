@@ -65,11 +65,12 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        ///
+        /// Writes the WKB Header for the geometry
         /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="geom"></param>
-        private void WriteHeader(BinaryWriter writer, Geometry geom)
+        /// <param name="writer">The writer</param>
+        /// <param name="geom">The geometry</param>
+        /// <param name="includeSRID">A flag indicating if SRID information is to be written</param>
+        private void WriteHeader(BinaryWriter writer, Geometry geom, bool includeSRID)
         {
             //Byte Order
             WriteByteOrder(writer);
@@ -119,15 +120,18 @@ namespace NetTopologySuite.IO
                 if (!Strict) intGeometryType |= 0x40000000;
             }
 
-            //Flag for SRID if needed
-            if (HandleSRID)
+            // Check if includeSRID is valid
+            includeSRID &= HandleSRID;
+
+            // Flag for SRID if needed
+            if (includeSRID)
                 intGeometryType |= 0x20000000;
 
             //
             writer.Write(intGeometryType);
 
             //Write SRID if needed
-            if (HandleSRID)
+            if (includeSRID)
                 writer.Write(geom.SRID);
         }
 
@@ -143,8 +147,21 @@ namespace NetTopologySuite.IO
         ///     4 bytes for WKBType.
         ///     4 bytes for SRID value
         /// </summary>
-        protected int InitCount => 5 + (HandleSRID ? 4 : 0);
+        [Obsolete("Will be removed in a future version")]
+        protected int InitCount => GetHeaderSize(true);
 
+        /// <summary>
+        /// Calculates the number of bytes required to store (E)WKB Header information.
+        /// </summary>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
+        /// <returns>The size of the </returns>
+        private int GetHeaderSize(bool includeSRID)
+        {
+            return 5 + (HandleSRID && includeSRID ? 4 : 0);
+        }
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
         /// </summary>
@@ -213,7 +230,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public virtual byte[] Write(Geometry geometry)
         {
-            byte[] bytes = GetBytes(geometry);
+            byte[] bytes = GetBuffer(geometry, true);
             Write(geometry, new MemoryStream(bytes));
             return bytes;
         }
@@ -247,24 +264,33 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
         protected void Write(Geometry geometry, BinaryWriter writer)
-        {
-            if (geometry is Point)
-                Write(geometry as Point, writer);
-            else if (geometry is LineString)
-                Write(geometry as LineString, writer);
-            else if (geometry is Polygon)
-                Write(geometry as Polygon, writer);
-            else if (geometry is MultiPoint)
-                Write(geometry as MultiPoint, writer);
-            else if (geometry is MultiLineString)
-                Write(geometry as MultiLineString, writer);
-            else if (geometry is MultiPolygon)
-                Write(geometry as MultiPolygon, writer);
-            else if (geometry is GeometryCollection)
-                Write(geometry as GeometryCollection, writer);
-            else throw new ArgumentException("Geometry not recognized: " + geometry);
-        }
+            => Write(geometry, writer, true);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <param name="writer"></param>
+        /// <param name="includeSRID"></param>
+        private void Write(Geometry geometry, BinaryWriter writer, bool includeSRID)
+        {
+            if (geometry is Point point)
+                Write(point, writer, includeSRID);
+            else if (geometry is LineString lineString)
+                Write(lineString, writer, includeSRID);
+            else if (geometry is Polygon polygon)
+                Write(polygon, writer, includeSRID);
+            else if (geometry is MultiPoint multiPoint)
+                Write(multiPoint, writer, includeSRID);
+            else if (geometry is MultiLineString multiLineString)
+                Write(multiLineString, writer, includeSRID);
+            else if (geometry is MultiPolygon multiPolygon)
+                Write(multiPolygon, writer, includeSRID);
+            else if (geometry is GeometryCollection geometryCollection)
+                Write(geometryCollection, writer, includeSRID);
+            else
+                throw new ArgumentException("Geometry not recognized: " + geometry);
+        }
         /// <summary>
         /// Writes LittleIndian ByteOrder.
         /// </summary>
@@ -330,13 +356,23 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        ///
+        /// Write a point in its WKB format
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="writer"></param>
-        protected void Write(Point point, BinaryWriter writer)
+        /// <param name="point">The point</param>
+        /// <param name="writer">The writer</param>
+        [Obsolete("Will be removed in a future version.")]
+        protected void Write(Point point, BinaryWriter writer) =>
+            Write(point, writer, true);
+
+        /// <summary>
+        /// Write a point in its WKB format
+        /// </summary>
+        /// <param name="point">The point</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="includeSRID">A flag indicating if SRID information should be written</param>
+        private void Write(Point point, BinaryWriter writer, bool includeSRID)
         {
-            WriteHeader(writer, point);
+            WriteHeader(writer, point, includeSRID);
             if (point.IsEmpty)
                 WriteNaNs(_coordinateSize / 8, writer);
             else
@@ -344,34 +380,55 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        ///
+        /// Write a LineString in its WKB format
         /// </summary>
-        /// <param name="lineString"></param>
-        /// <param name="writer"></param>
-        protected void Write(LineString lineString, BinaryWriter writer)
+        /// <param name="lineString">The LineString</param>
+        /// <param name="writer">The writer</param>
+        [Obsolete("Will be removed in a future version.")]
+        protected void Write(LineString lineString, BinaryWriter writer) =>
+            Write(lineString, writer, true);
+
+        /// <summary>
+        /// Write a LineString in its WKB format
+        /// </summary>
+        /// <param name="lineString">The LineString</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="includeSRID">A flag indicating if SRID information should be written</param>
+        private void Write(LineString lineString, BinaryWriter writer, bool includeSRID)
         {
-            WriteHeader(writer, lineString);
+            WriteHeader(writer, lineString, includeSRID);
             Write(lineString.CoordinateSequence, true, writer);
         }
 
         /// <summary>
-        ///
+        /// Write LinearRing information
         /// </summary>
-        /// <param name="ring"></param>
-        /// <param name="writer"></param>
+        /// <param name="ring">The linear ring</param>
+        /// <param name="writer">The writer</param>
+        [Obsolete("Will be removed in a future version.")]
         protected void Write(LinearRing ring, BinaryWriter writer)
         {
             Write(ring.CoordinateSequence, true, writer);
         }
 
         /// <summary>
-        ///
+        /// Write a Polygon in its WKB format
         /// </summary>
-        /// <param name="polygon"></param>
-        /// <param name="writer"></param>
+        /// <param name="polygon">The Polygon</param>
+        /// <param name="writer">The writer</param>
+        [Obsolete("Will be removed in a future version.")]
         protected void Write(Polygon polygon, BinaryWriter writer)
+            => Write(polygon, writer, true);
+
+        /// <summary>
+        /// Write a Polygon in its WKB format
+        /// </summary>
+        /// <param name="polygon">The Polygon</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="includeSRID">A flag indicating if SRID information should be written</param>
+        private void Write(Polygon polygon, BinaryWriter writer, bool includeSRID)
         {
-            WriteHeader(writer, polygon);
+            WriteHeader(writer, polygon, includeSRID);
 
             // For an empty polygon just write 0 to indicate no rings!
             if (polygon.IsEmpty)
@@ -381,9 +438,9 @@ namespace NetTopologySuite.IO
             }
 
             writer.Write(polygon.NumInteriorRings + 1);
-            Write(polygon.ExteriorRing as LinearRing, writer);
+            Write(polygon.ExteriorRing.CoordinateSequence, true, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
-                Write(polygon.InteriorRings[i] as LinearRing, writer);
+                Write(polygon.InteriorRings[i].CoordinateSequence, true, writer);
         }
 
         /// <summary>
@@ -391,12 +448,19 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <param name="writer"></param>
+        [Obsolete("Will be removed in a future version.")]
         protected void Write(MultiPoint multiPoint, BinaryWriter writer)
+            => Write(multiPoint, writer, true);
+
+        private void Write(MultiPoint multiPoint, BinaryWriter writer, bool includeSRID)
         {
-            WriteHeader(writer, multiPoint);
+            WriteHeader(writer, multiPoint, includeSRID);
             writer.Write(multiPoint.NumGeometries);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
-                Write(multiPoint.Geometries[i] as Point, writer);
+            {
+                var point = (Point) multiPoint.Geometries[i];
+                Write(point, writer, point.SRID != multiPoint.SRID);
+            }
         }
 
         /// <summary>
@@ -404,12 +468,19 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <param name="writer"></param>
+        [Obsolete("Will be removed in a future version.")]
         protected void Write(MultiLineString multiLineString, BinaryWriter writer)
+            => Write(multiLineString, writer, true);
+
+        private void Write(MultiLineString multiLineString, BinaryWriter writer, bool includeSRID)
         {
-            WriteHeader(writer, multiLineString);
+            WriteHeader(writer, multiLineString, includeSRID);
             writer.Write(multiLineString.NumGeometries);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
-                Write(multiLineString.Geometries[i] as LineString, writer);
+            {
+                var lineString = (LineString) multiLineString.Geometries[i];
+                Write(lineString, writer, lineString.SRID != multiLineString.SRID);
+            }
         }
 
         /// <summary>
@@ -417,12 +488,19 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <param name="writer"></param>
+        [Obsolete("Will be removed in a future version.")]
         protected void Write(MultiPolygon multiPolygon, BinaryWriter writer)
+            => Write(multiPolygon, writer, true);
+
+        private void Write(MultiPolygon multiPolygon, BinaryWriter writer, bool includeSRID)
         {
-            WriteHeader(writer, multiPolygon);
+            WriteHeader(writer, multiPolygon, includeSRID);
             writer.Write(multiPolygon.NumGeometries);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
-                Write(multiPolygon.Geometries[i] as Polygon, writer);
+            {
+                var polygon = (Polygon)multiPolygon.Geometries[i];
+                Write(polygon, writer, polygon.SRID != multiPolygon.SRID);
+            }
         }
 
         /// <summary>
@@ -430,35 +508,47 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geomCollection"></param>
         /// <param name="writer"></param>
+        [Obsolete("Will be removed in a future version.")]
         protected void Write(GeometryCollection geomCollection, BinaryWriter writer)
+            => Write(geomCollection, writer, true);
+
+        private void Write(GeometryCollection geomCollection, BinaryWriter writer, bool includeSRID)
         {
-            WriteHeader(writer, geomCollection);
+            WriteHeader(writer, geomCollection, includeSRID);
             writer.Write(geomCollection.NumGeometries);
             for (int i = 0; i < geomCollection.NumGeometries; i++)
-                Write(geomCollection.Geometries[i], writer);
+            {
+                var geom = geomCollection.GetGeometryN(i);
+                Write(geom, writer, geom.SRID != geomCollection.SRID);
+            }
         }
 
         /// <summary>
-        /// Sets corrent length for Byte Stream.
+        /// Gets a buffer for the <see cref="MemoryStream"/> to write <paramref name="geometry"/> to.
         /// </summary>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
+        /// <param name="geometry">The geometry to write</param>
+        /// <returns>A buffer</returns>
+        [Obsolete("Will be removed in a future version.")]
         protected byte[] GetBytes(Geometry geometry)
+            => GetBuffer(geometry, true);
+
+        private byte[] GetBuffer(Geometry geometry, bool includeSRID)
         {
-            if (geometry is Point)
-                return new byte[SetByteStream(geometry as Point)];
-            if (geometry is LineString)
-                return new byte[SetByteStream(geometry as LineString)];
-            if (geometry is Polygon)
-                return new byte[SetByteStream(geometry as Polygon)];
-            if (geometry is MultiPoint)
-                return new byte[SetByteStream(geometry as MultiPoint)];
-            if (geometry is MultiLineString)
-                return new byte[SetByteStream(geometry as MultiLineString)];
-            if (geometry is MultiPolygon)
-                return new byte[SetByteStream(geometry as MultiPolygon)];
-            if (geometry is GeometryCollection)
-                return new byte[SetByteStream(geometry as GeometryCollection)];
+            if (geometry is Point point)
+                return new byte[GetRequiredBufferSize(point, includeSRID)];
+            if (geometry is LineString lineString)
+                return new byte[GetRequiredBufferSize(lineString, includeSRID)];
+            if (geometry is Polygon polygon)
+                return new byte[GetRequiredBufferSize(polygon, includeSRID)];
+            if (geometry is MultiPoint multiPoint)
+                return new byte[GetRequiredBufferSize(multiPoint, includeSRID)];
+            if (geometry is MultiLineString multiLineString)
+                return new byte[GetRequiredBufferSize(multiLineString, includeSRID)];
+            if (geometry is MultiPolygon multiPolygon)
+                return new byte[GetRequiredBufferSize(multiPolygon, includeSRID)];
+            if (geometry is GeometryCollection geometryCollection)
+                return new byte[GetRequiredBufferSize(geometryCollection, includeSRID)];
+
             throw new ArgumentException("ShouldNeverReachHere");
         }
 
@@ -467,22 +557,44 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
+        [Obsolete("Will be removed in a future version.")]
         protected virtual int SetByteStream(Geometry geometry)
+        { 
+            if (geometry is Point point)
+                return GetRequiredBufferSize(point, true);
+            if (geometry is LineString lineString)
+                return GetRequiredBufferSize(lineString, true);
+            if (geometry is Polygon polygon)
+                return GetRequiredBufferSize(polygon, true);
+            if (geometry is MultiPoint multiPoint)
+                return GetRequiredBufferSize(multiPoint, true);
+            if (geometry is MultiLineString multiLineString)
+                return GetRequiredBufferSize(multiLineString, true);
+            if (geometry is MultiPolygon multiPolygon)
+                return GetRequiredBufferSize(multiPolygon, true);
+            if (geometry is GeometryCollection geometryCollection)
+                return GetRequiredBufferSize(geometryCollection, true);
+
+            throw new ArgumentException("ShouldNeverReachHere");
+        }
+
+        private int GetRequiredBufferSize(Geometry geometry, bool includeSRID)
         {
-            if (geometry is Point)
-                return SetByteStream(geometry as Point);
-            if (geometry is LineString)
-                return SetByteStream(geometry as LineString);
-            if (geometry is Polygon)
-                return SetByteStream(geometry as Polygon);
-            if (geometry is MultiPoint)
-                return SetByteStream(geometry as MultiPoint);
-            if (geometry is MultiLineString)
-                return SetByteStream(geometry as MultiLineString);
-            if (geometry is MultiPolygon)
-                return SetByteStream(geometry as MultiPolygon);
-            if (geometry is GeometryCollection)
-                return SetByteStream(geometry as GeometryCollection);
+            if (geometry is Point point)
+                return GetRequiredBufferSize(point, includeSRID);
+            if (geometry is LineString lineString)
+                return GetRequiredBufferSize(lineString, includeSRID);
+            if (geometry is Polygon polygon)
+                return GetRequiredBufferSize(polygon, includeSRID);
+            if (geometry is MultiPoint multiPoint)
+                return GetRequiredBufferSize(multiPoint, includeSRID);
+            if (geometry is MultiLineString multiLineString)
+                return GetRequiredBufferSize(multiLineString, includeSRID);
+            if (geometry is MultiPolygon multiPolygon)
+                return GetRequiredBufferSize(multiPolygon, includeSRID);
+            if (geometry is GeometryCollection geometryCollection)
+                return GetRequiredBufferSize(geometryCollection, includeSRID);
+
             throw new ArgumentException("ShouldNeverReachHere");
         }
 
@@ -491,12 +603,16 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
+        [Obsolete("Will be removed in a future version.")]
         protected int SetByteStream(GeometryCollection geometry)
+            => GetRequiredBufferSize(geometry, true);
+
+        private int GetRequiredBufferSize(GeometryCollection geometry, bool includeSRID)
         {
-            int count = InitCount;
+            int count = GetHeaderSize(includeSRID);
             count += 4;
             foreach (var geom in geometry.Geometries)
-                count += SetByteStream(geom);
+                count += GetRequiredBufferSize(geom, geom.SRID != geometry.SRID);
             return count;
         }
 
@@ -506,11 +622,14 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(MultiPolygon geometry)
+            => GetRequiredBufferSize(geometry, true);
+
+        private int GetRequiredBufferSize(MultiPolygon geometry, bool includeSRID)
         {
-            int count = InitCount;
+            int count = GetHeaderSize(includeSRID);
             count += 4;
             foreach (Polygon geom in geometry.Geometries)
-                count += SetByteStream(geom);
+                count += GetRequiredBufferSize(geom, geom.SRID != geometry.SRID );
             return count;
         }
 
@@ -520,11 +639,14 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(MultiLineString geometry)
+            => GetRequiredBufferSize(geometry, true);
+
+        private int GetRequiredBufferSize(MultiLineString geometry, bool includeSRID)
         {
-            int count = InitCount;
+            int count = GetHeaderSize(includeSRID);
             count += 4;
             foreach (LineString geom in geometry.Geometries)
-                count += SetByteStream(geom);
+                count += GetRequiredBufferSize(geom, geom.SRID != geometry.SRID);
             return count;
         }
 
@@ -534,11 +656,14 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(MultiPoint geometry)
+            => GetRequiredBufferSize(geometry, true);
+
+        private int GetRequiredBufferSize(MultiPoint geometry, bool includeSRID)
         {
-            int count = InitCount;
+            int count = GetHeaderSize(includeSRID);
             count += 4;     // NumPoints
             foreach (Point geom in geometry.Geometries)
-                count += SetByteStream(geom);
+                count += GetRequiredBufferSize(geom, geom.SRID != geometry.SRID);
             return count;
         }
 
@@ -548,9 +673,12 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(Polygon geometry)
+            => GetRequiredBufferSize(geometry, true);
+
+        private int GetRequiredBufferSize(Polygon geometry, bool includeSRID)
         {
             int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
-            int count = InitCount;
+            int count = GetHeaderSize(includeSRID);
             count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
             if (!geometry.IsEmpty)
             {
@@ -567,10 +695,13 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(LineString geometry)
+            => GetRequiredBufferSize(geometry, true);
+
+        private int GetRequiredBufferSize(LineString geometry, bool includeSRID)
         {
             int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int numPoints = geometry.NumPoints;
-            int count = InitCount;
+            int count = GetHeaderSize(includeSRID);
             count += 4;                             // NumPoints
             count += pointSize * numPoints;
             return count;
@@ -582,8 +713,11 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected int SetByteStream(Point geometry)
+            => GetRequiredBufferSize(geometry, true);
+
+        private int GetRequiredBufferSize(Point geometry, bool includeSRID)
         {
-            return InitCount + _coordinateSize;
+            return GetHeaderSize(includeSRID) + _coordinateSize;
             //return Double.IsNaN(geometry.Coordinate.Z) ? 21 : 29;
         }
 
