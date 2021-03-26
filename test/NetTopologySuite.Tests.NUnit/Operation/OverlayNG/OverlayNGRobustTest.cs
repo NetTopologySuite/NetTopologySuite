@@ -52,12 +52,63 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 
         // MD 2020-09-14 There is no known test case that requires Snap-Rounding to succeed.
 
-        public static void CheckUnionSuccess(Geometry a, Geometry b)
+
+        [Test]
+        public void TestPolygonsOverlapping()
+        {
+            CheckUnaryUnion("GEOMETRYCOLLECTION (POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200)), POLYGON ((250 250, 250 150, 150 150, 150 250, 250 250)))",
+                "POLYGON ((100 200, 150 200, 150 250, 250 250, 250 150, 200 150, 200 100, 100 100, 100 200))");
+        }
+
+        [Test]
+        public void TestCollection()
+        {
+            CheckUnaryUnion(new [] {
+                    "POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200))",
+                    "POLYGON ((300 100, 200 100, 200 200, 300 200, 300 100))",
+                    "POLYGON ((100 300, 200 300, 200 200, 100 200, 100 300))",
+                    "POLYGON ((300 300, 300 200, 200 200, 200 300, 300 300))"
+                },
+                "POLYGON ((100 100, 100 200, 100 300, 200 300, 300 300, 300 200, 300 100, 200 100, 100 100))");
+        }
+
+        [Test]
+        public void TestCollectionEmpty()
+        {
+            CheckUnaryUnion(new string[0],
+                "GEOMETRYCOLLECTION EMPTY");
+        }
+
+        private void CheckUnaryUnion(string wkt, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var expected = Read(wktExpected);
+            var result = OverlayNGRobust.Union(geom);
+            CheckEqual(expected, result);
+        }
+
+        private void CheckUnaryUnion(string[] wkt, string wktExpected)
+        {
+            var geoms = ReadList(wkt);
+            var expected = Read(wktExpected);
+            Geometry result = null;
+            if (geoms.Count == 0)
+            {
+                result = OverlayNGRobust.Union(geoms, GeometryFactory);
+            }
+            else
+            {
+                result = OverlayNGRobust.Union(geoms);
+            }
+            CheckEqual(expected, result);
+        }
+
+        private static void CheckUnionSuccess(Geometry a, Geometry b)
         {
             CheckOverlaySuccess(a, b, SpatialFunction.Union);
         }
 
-        public static void CheckOverlaySuccess(Geometry a, Geometry b, SpatialFunction opCode)
+        private static void CheckOverlaySuccess(Geometry a, Geometry b, SpatialFunction opCode)
         {
             try
             {
@@ -69,7 +120,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             }
         }
 
-        public static void CheckOverlayFail(Geometry a, Geometry b, SpatialFunction opCode)
+        private static void CheckOverlayFail(Geometry a, Geometry b, SpatialFunction opCode)
         {
             try
             {

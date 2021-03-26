@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snap;
@@ -37,21 +38,47 @@ namespace NetTopologySuite.Operation.OverlayNG
     public sealed class OverlayNGRobust
     {
         /// <summary>
-        /// Computes unary union using robust computation.
+        /// Computes the unary union of a geometry using robust computation.
         /// </summary>
         /// <param name="geom">The geometry to union</param>
         /// <returns>The union result</returns>
         public static Geometry Union(Geometry geom)
         {
-            if (geom == null)
-            {
-                throw new ArgumentNullException(nameof(geom));
-            }
-
-            var unionSRFun = new UnionStrategy((g0, g1) => Overlay(g0, g1, SpatialFunction.Union), true);
-            var op = new UnaryUnionOp(geom) {UnionStrategy = unionSRFun};
+            var op = new UnaryUnionOp(geom) {
+                UnionStrategy = OverlayUnionStrategy
+            };
             return op.Union();
         }
+
+        /// <summary>
+        /// Computes the unary union of a collection of geometries using robust computation.
+        /// </summary>
+        /// <param name="geoms">An enumeration of geometries to union</param>
+        /// <returns>The union result</returns>
+        public static Geometry Union(IEnumerable<Geometry> geoms)
+        {
+            var op = new UnaryUnionOp(geoms) {
+                UnionStrategy = OverlayUnionStrategy
+            };
+            return op.Union();
+        }
+
+        /// <summary>
+        /// Computes the unary union of a collection of geometries using robust computation.
+        /// </summary>
+        /// <param name="geoms">An enumeration of geometries to union</param>
+        /// <param name="geomFact">The geometry factory to use</param>
+        /// <returns>The union of the geometries</returns>
+        public static Geometry Union(IEnumerable<Geometry> geoms, GeometryFactory geomFact)
+        {
+            var op = new UnaryUnionOp(geoms, geomFact) {
+                UnionStrategy = OverlayUnionStrategy
+            };
+            return op.Union();
+        }
+
+        private static readonly UnionStrategy OverlayUnionStrategy =
+            new UnionStrategy((g0, g1) => Overlay(g0, g1, SpatialFunction.Union), true);
 
         /// <summary>
         /// Overlay two geometries, using heuristics to ensure

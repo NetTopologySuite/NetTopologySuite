@@ -60,6 +60,12 @@ The semantics of overlay output are:
   have valid `MultiPolygon` topology.)
 * Empty results are atomic `EMPTY` geometries of dimension appropriate
   to the operation.
+* As far as possible, results preserve the order and direction of the inputs.
+  For instance, a MultiLineString intersection with a Polygon
+  will have resultants which are in the same order and have the same direction
+  as the input lines (assuming the input lines are disjoint).
+  If an input line is split into two or more parts, 
+  they are ordered in the direction of occurence along their parent line.
 
 ## Features
 Functionality
