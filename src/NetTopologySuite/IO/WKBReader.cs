@@ -8,13 +8,20 @@ namespace NetTopologySuite.IO
     /// Converts a Well-Known Binary byte data to a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
+    /// This class reads the format describe in {@link WKBWriter}.
+    /// It partially handles the<b>Extended WKB</b> format used by PostGIS,
+    /// by parsing and storing optional SRID values.
+    /// If a SRID is not specified in an element geometry, it is inherited
+    /// from the parent's SRID.
+    /// The default SRID value depends on <see cref="NtsGeometryServices.DefaultSRID"/>.
+    /// <para/>
+    /// Although not defined in the WKB spec, empty points
+    /// are handled if they are represented as a Point with <c>NaN</c> X and Y ordinates.
+    /// <para/>
     /// The reader repairs structurally-invalid input
     /// (specifically, LineStrings and LinearRings which contain
     /// too few points have vertices added,
     /// and non-closed rings are closed).
-    /// <para/>
-    /// Although not defined in the WKB spec, empty points
-    /// are handled if they are represented as a Point with <c>NaN</c> X and Y ordinates.
     /// </remarks>
     public class WKBReader
     {
