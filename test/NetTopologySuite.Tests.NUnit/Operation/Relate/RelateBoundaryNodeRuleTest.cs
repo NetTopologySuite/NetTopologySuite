@@ -1,15 +1,14 @@
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Relate;
 using NUnit.Framework;
 
-/// <summary>
-/// Tests <see cref="Geometry.Relate" /> with different <see cref="BoundaryNodeRule" />s.
-/// </summary>
-/// <author>Martin Davis</author>
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 {
+    /// <summary>
+    /// Tests <see cref="NetTopologySuite.Geometries.Geometry.Relate(NetTopologySuite.Geometries.Geometry, string, IBoundaryNodeRule)" /> with different <see cref="IBoundaryNodeRule" />s.
+    /// </summary>
+    /// <author>Martin Davis</author>
     [TestFixture]
     public class RelateBoundaryNodeRuleTest
     {
@@ -81,6 +80,32 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "F01FF0102");
         }
 
+        [Test]
+        public void TestPolygonEmptyRing()
+        {
+            string a = "POLYGON EMPTY";
+            string b = "LINESTRING (20 100, 20 220, 120 100, 20 100)";
+
+            // closed line has no boundary under SFS rule
+            RunRelateTest(a, b, BoundaryNodeRules.OgcSfsBoundaryRule, "FFFFFF1F2");
+
+            // closed line has boundary under ENDPOINT rule
+            RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FFFFFF102");
+        }
+
+        [Test]
+        public void TestPolygonEmptyMultiLineStringClosed()
+        {
+            string a = "POLYGON EMPTY";
+            string b = "MULTILINESTRING ((0 0, 0 1), (0 1, 1 1, 1 0, 0 0))";
+
+            // closed line has no boundary under SFS rule
+            RunRelateTest(a, b, BoundaryNodeRules.OgcSfsBoundaryRule, "FFFFFF1F2");
+
+            // closed line has boundary under ENDPOINT rule
+            RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FFFFFF102");
+        }
+
         void RunRelateTest(string wkt1, string wkt2, IBoundaryNodeRule bnRule, string expectedIM)
         {
             var g1 = _rdr.Read(wkt1);
@@ -88,7 +113,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             var im = RelateOp.Relate(g1, g2, bnRule);
             string imStr = im.ToString();
             //TestContext.WriteLine(imStr);
-            Assert.IsTrue(im.Matches(expectedIM));
+            Assert.IsTrue(im.Matches(expectedIM), $"Expected {expectedIM},\nfound    {im}");
         }
     }
 }

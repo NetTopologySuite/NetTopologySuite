@@ -39,6 +39,38 @@ namespace NetTopologySuite.Operation
             return bop.GetBoundary();
         }
 
+        /// <summary>
+        /// Tests if a geometry has a boundary (it is non-empty).<br/>
+        /// The semantics are:
+        /// <list type="bullet">
+        /// <item><description>Empty geometries do not have boundaries.</description></item>
+        /// <item><description>Points do not have boundaries.</description></item>
+        /// <item><description>For linear geometries the existence of the boundary 
+        /// is determined by the <see cref="IBoundaryNodeRule"/>.</description></item>
+        /// <item><description>Non-empty polygons always have a boundary.</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="geom">The geometry providing the boundary</param>
+        /// <param name="boundaryNodeRule">The Boundary Node Rule to use</param>
+        /// <returns><c>true</c> if the boundary exists</returns>
+        public static bool HasBoundary(Geometry geom, IBoundaryNodeRule boundaryNodeRule)
+        {
+            // Note that this does not handle geometry collections with a non-empty linear element
+            if (geom.IsEmpty) return false;
+            switch (geom.Dimension)
+            {
+                case Dimension.P: return false;
+                /*
+                 * Linear geometries might have an empty boundary due to boundary node rule.
+                 */
+                case Dimension.L:
+                    var boundary = BoundaryOp.GetBoundary(geom, boundaryNodeRule);
+                    return !boundary.IsEmpty;
+                case Dimension.A: return true;
+            }
+            return true;
+        }
+
         private readonly Geometry _geom;
         private readonly GeometryFactory _geomFact;
         private readonly IBoundaryNodeRule _bnRule;

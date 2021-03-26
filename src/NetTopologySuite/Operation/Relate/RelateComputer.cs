@@ -49,7 +49,7 @@ namespace NetTopologySuite.Operation.Relate
             // if the Geometries don't overlap there is nothing to do
             if (!_arg[0].Geometry.EnvelopeInternal.Intersects(_arg[1].Geometry.EnvelopeInternal))
             {
-                ComputeDisjointIM(im);
+                ComputeDisjointIM(im, _arg[0].BoundaryNodeRule);
                 return im;
             }
             _arg[0].ComputeSelfNodes(_li, false);
@@ -254,21 +254,55 @@ namespace NetTopologySuite.Operation.Relate
         /// If the Geometries are disjoint, we need to enter their dimension and
         /// boundary dimension in the Ext rows in the IM
         /// </summary>
-        /// <param name="im"></param>
-        private void ComputeDisjointIM(IntersectionMatrix im)
+        /// <param name="im">An intersection matrix</param>
+        /// <param name="boundaryNodeRule">The Boundary Node Rule to use</param>
+        private void ComputeDisjointIM(IntersectionMatrix im, IBoundaryNodeRule boundaryNodeRule)
         {
             var ga = _arg[0].Geometry;
             if (!ga.IsEmpty)
             {
                 im.Set(Location.Interior, Location.Exterior, ga.Dimension);
-                im.Set(Location.Boundary, Location.Exterior, ga.BoundaryDimension);
+                im.Set(Location.Boundary, Location.Exterior, GetBoundaryDim(ga, boundaryNodeRule));
             }
             var gb = _arg[1].Geometry;
             if (!gb.IsEmpty)
             {
                 im.Set(Location.Exterior, Location.Interior, gb.Dimension);
-                im.Set(Location.Exterior, Location.Boundary, gb.BoundaryDimension);
+                im.Set(Location.Exterior, Location.Boundary, GetBoundaryDim(gb, boundaryNodeRule));
             }
+        }
+
+        /// <summary>
+        /// Compute the IM entry for the intersection of the boundary
+        /// of a geometry with the Exterior.
+        /// This is the nominal dimension of the boundary
+        /// unless the boundary is empty, in which case it is <see cref="Dimension.False"/>.
+        /// For linear geometries the Boundary Node Rule determines
+        /// whether the boundary is empty.
+        /// </summary>
+        /// <param name="geom">The geometry providing the boundary</param>
+        /// <param name="boundaryNodeRule">The Boundary Node Rule to use</param>
+        /// <returns>The IM dimension entry</returns>
+        private static Dimension GetBoundaryDim(Geometry geom, IBoundaryNodeRule boundaryNodeRule)
+        {
+            /*
+             * If the geometry has a non-empty boundary
+             * the intersection is the nominal dimension.
+             */
+            if (BoundaryOp.HasBoundary(geom, boundaryNodeRule))
+            {
+                /*
+                 * special case for lines, since Geometry.getBoundaryDimension is not aware
+                 * of Boundary Node Rule.
+                 */
+                if (geom.Dimension == Dimension.L)
+                    return Dimension.P;
+                return geom.BoundaryDimension;
+            }
+            /*
+             * Otherwise intersection is F
+             */
+            return Dimension.False;
         }
 
         /// <summary>
