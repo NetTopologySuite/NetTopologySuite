@@ -179,14 +179,17 @@ namespace NetTopologySuite.Simplify
             /// topology.
             /// Note this only works for area geometries, since buffer always returns
             /// areas.  This also may return empty geometries, if the input
-            /// has no actual area.
+            /// has no actual area.<br/>
+            /// If the input is empty or is not polygonal,
+            /// this ensures that POLYGON EMPTY is returned.
             /// </summary>
             /// <param name="rawAreaGeom">An area point possibly containing self-intersections.</param>
             /// <returns>A valid area point.</returns>
             private Geometry CreateValidArea(Geometry rawAreaGeom)
             {
+                bool isValidArea = rawAreaGeom.Dimension == Dimension.A && rawAreaGeom.IsValid;
                 // if geometry is invalid then make it valid
-                if (_ensureValidTopology && !rawAreaGeom.IsValid)
+                if (_ensureValidTopology && !isValidArea)
                     return rawAreaGeom.Buffer(0.0);
                 return rawAreaGeom;
             }
