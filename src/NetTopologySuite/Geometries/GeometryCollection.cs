@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NetTopologySuite.Utilities;
 
@@ -8,7 +9,7 @@ namespace NetTopologySuite.Geometries
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
     [Serializable]
-    public class GeometryCollection : Geometry, IEnumerable<Geometry>
+    public partial class GeometryCollection : Geometry, IEnumerable<Geometry>
     {
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
@@ -456,19 +457,6 @@ namespace NetTopologySuite.Geometries
                         return false;
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Returns a <c>GeometryCollectionEnumerator</c>:
-        /// this IEnumerator returns the parent geometry as first element.
-        /// In most cases is more useful the code
-        /// <c>geometryCollectionInstance.Geometries.GetEnumerator()</c>:
-        /// this returns an IEnumerator over geometries composing GeometryCollection.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<Geometry> GetEnumerator()
-        {
-            return new GeometryCollectionEnumerator(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
