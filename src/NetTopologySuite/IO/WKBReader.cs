@@ -22,6 +22,12 @@ namespace NetTopologySuite.IO
     /// (specifically, LineStrings and LinearRings which contain
     /// too few points have vertices added,
     /// and non-closed rings are closed).
+    /// <para/>
+    /// The reader handles most errors caused by malformed or malicious WKB data.
+    /// It checks for obviously excessive values of the fields
+    /// <c>numElems</c>, <c>numRings</c>, and <c>numCoords</c>.
+    /// It also checks that the reader does not read beyond the end of the data supplied.
+    /// A <see cref="ParseException"/> is thrown if this situation is detected.
     /// </remarks>
     public class WKBReader
     {
@@ -91,6 +97,7 @@ namespace NetTopologySuite.IO
          * true if structurally invalid input should be reported rather than repaired.
          */
         private bool _isStrict;
+        private int maxNumFieldValue;
 
         /// <summary>
         /// Initialize reader with a standard <see cref="NtsGeometryServices"/>.
@@ -166,56 +173,64 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected Geometry Read(BinaryReader reader)
         {
-            ReadByteOrder(reader);
-            int srid = _geometryServices.DefaultSRID;
-            var geometryType = ReadGeometryType(reader, out var cs, ref srid);
-            switch (geometryType)
+            try
             {
-                //Point
-                case WKBGeometryTypes.WKBPoint:
-                case WKBGeometryTypes.WKBPointZ:
-                case WKBGeometryTypes.WKBPointM:
-                case WKBGeometryTypes.WKBPointZM:
-                    return ReadPoint(reader, cs, srid);
-                //Line String
-                case WKBGeometryTypes.WKBLineString:
-                case WKBGeometryTypes.WKBLineStringZ:
-                case WKBGeometryTypes.WKBLineStringM:
-                case WKBGeometryTypes.WKBLineStringZM:
-                    return ReadLineString(reader, cs, srid);
-                //Polygon
-                case WKBGeometryTypes.WKBPolygon:
-                case WKBGeometryTypes.WKBPolygonZ:
-                case WKBGeometryTypes.WKBPolygonM:
-                case WKBGeometryTypes.WKBPolygonZM:
-                    return ReadPolygon(reader, cs, srid);
-                //Multi Point
-                case WKBGeometryTypes.WKBMultiPoint:
-                case WKBGeometryTypes.WKBMultiPointZ:
-                case WKBGeometryTypes.WKBMultiPointM:
-                case WKBGeometryTypes.WKBMultiPointZM:
-                    return ReadMultiPoint(reader, cs, srid);
-                //Multi Line String
-                case WKBGeometryTypes.WKBMultiLineString:
-                case WKBGeometryTypes.WKBMultiLineStringZ:
-                case WKBGeometryTypes.WKBMultiLineStringM:
-                case WKBGeometryTypes.WKBMultiLineStringZM:
-                    return ReadMultiLineString(reader, cs, srid);
-                //Multi Polygon
-                case WKBGeometryTypes.WKBMultiPolygon:
-                case WKBGeometryTypes.WKBMultiPolygonZ:
-                case WKBGeometryTypes.WKBMultiPolygonM:
-                case WKBGeometryTypes.WKBMultiPolygonZM:
-                    return ReadMultiPolygon(reader, cs, srid);
-                //Geometry Collection
-                case WKBGeometryTypes.WKBGeometryCollection:
-                case WKBGeometryTypes.WKBGeometryCollectionZ:
-                case WKBGeometryTypes.WKBGeometryCollectionM:
-                case WKBGeometryTypes.WKBGeometryCollectionZM:
-                    return ReadGeometryCollection(reader, cs, srid);
-                default:
-                    throw new ArgumentException("Geometry type not recognized. GeometryCode: " + geometryType);
+                ReadByteOrder(reader);
+                int srid = _geometryServices.DefaultSRID;
+                var geometryType = ReadGeometryType(reader, out var cs, ref srid);
+                switch (geometryType)
+                {
+                    //Point
+                    case WKBGeometryTypes.WKBPoint:
+                    case WKBGeometryTypes.WKBPointZ:
+                    case WKBGeometryTypes.WKBPointM:
+                    case WKBGeometryTypes.WKBPointZM:
+                        return ReadPoint(reader, cs, srid);
+                    //Line String
+                    case WKBGeometryTypes.WKBLineString:
+                    case WKBGeometryTypes.WKBLineStringZ:
+                    case WKBGeometryTypes.WKBLineStringM:
+                    case WKBGeometryTypes.WKBLineStringZM:
+                        return ReadLineString(reader, cs, srid);
+                    //Polygon
+                    case WKBGeometryTypes.WKBPolygon:
+                    case WKBGeometryTypes.WKBPolygonZ:
+                    case WKBGeometryTypes.WKBPolygonM:
+                    case WKBGeometryTypes.WKBPolygonZM:
+                        return ReadPolygon(reader, cs, srid);
+                    //Multi Point
+                    case WKBGeometryTypes.WKBMultiPoint:
+                    case WKBGeometryTypes.WKBMultiPointZ:
+                    case WKBGeometryTypes.WKBMultiPointM:
+                    case WKBGeometryTypes.WKBMultiPointZM:
+                        return ReadMultiPoint(reader, cs, srid);
+                    //Multi Line String
+                    case WKBGeometryTypes.WKBMultiLineString:
+                    case WKBGeometryTypes.WKBMultiLineStringZ:
+                    case WKBGeometryTypes.WKBMultiLineStringM:
+                    case WKBGeometryTypes.WKBMultiLineStringZM:
+                        return ReadMultiLineString(reader, cs, srid);
+                    //Multi Polygon
+                    case WKBGeometryTypes.WKBMultiPolygon:
+                    case WKBGeometryTypes.WKBMultiPolygonZ:
+                    case WKBGeometryTypes.WKBMultiPolygonM:
+                    case WKBGeometryTypes.WKBMultiPolygonZM:
+                        return ReadMultiPolygon(reader, cs, srid);
+                    //Geometry Collection
+                    case WKBGeometryTypes.WKBGeometryCollection:
+                    case WKBGeometryTypes.WKBGeometryCollectionZ:
+                    case WKBGeometryTypes.WKBGeometryCollectionM:
+                    case WKBGeometryTypes.WKBGeometryCollectionZM:
+                        return ReadGeometryCollection(reader, cs, srid);
+                    default:
+                        throw new ArgumentException("Geometry type not recognized. GeometryCode: " + geometryType);
+                }
             }
+            catch(Exception ex)
+            {
+                throw new ParseException(ex);
+            }
+            //catch(IOException io)
         }
 
         /// <summary>
@@ -264,6 +279,38 @@ namespace NetTopologySuite.IO
             }
 
             return (WKBGeometryTypes)((type & 0xffff) % 1000);
+        }
+
+        private int ReasonableNumPoints(Stream stream, CoordinateSystem cs)
+        {
+            int remainingBytes = (int)(stream.Length - stream.Position) - 4;
+            if (remainingBytes < 0) return int.MaxValue;
+
+            int size = 16;
+
+            switch (cs)
+            {
+                case CoordinateSystem.XYM:
+                case CoordinateSystem.XYZ:
+                    size = 24;
+                    break;
+                case CoordinateSystem.XYZM:
+                    size = 32;
+                    break;
+            }
+
+            return remainingBytes / size;
+        }
+
+        private int ReadNumField(BinaryReader reader, string fieldName, int reasonableNumField = int.MaxValue)
+        {
+            // num field is unsigned int, but int should do
+            int num = reader.ReadInt32();
+            if (num < 0 || num > reasonableNumField)
+            {
+                throw new ParseException(fieldName + " value is too large");
+            }
+            return (int)num;
         }
 
         /// <summary>
@@ -366,21 +413,6 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Reads a <see cref="LinearRing"/> geometry.
-        /// </summary>
-        /// <param name="reader">The reader</param>
-        /// <param name="cs">The coordinate system</param>
-        /// <param name="srid">The spatial reference id for the geometry.</param>
-        /// <returns>A <see cref="LinearRing"/> geometry</returns>
-        protected LinearRing ReadLinearRing(BinaryReader reader, CoordinateSystem cs, int srid)
-        {
-            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numPoints = reader.ReadInt32();
-            var sequence = ReadCoordinateSequenceRing(reader, numPoints, cs);
-            return factory.CreateLinearRing(sequence);
-        }
-
-        /// <summary>
         /// Reads a <see cref="Point"/> geometry.
         /// </summary>
         /// <param name="reader">The reader</param>
@@ -406,11 +438,26 @@ namespace NetTopologySuite.IO
         protected Geometry ReadLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numPoints = reader.ReadInt32();
+            int numPoints = ReadNumField(reader, "numPoints", ReasonableNumPoints(reader.BaseStream, cs));
             var sequence = ReadCoordinateSequenceLineString(reader, numPoints, cs);
             return factory.CreateLineString(sequence);
         }
 
+
+        /// <summary>
+        /// Reads a <see cref="LinearRing"/> geometry.
+        /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="cs">The coordinate system</param>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="LinearRing"/> geometry</returns>
+        protected LinearRing ReadLinearRing(BinaryReader reader, CoordinateSystem cs, int srid)
+        {
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            int numPoints = ReadNumField(reader, "numPoints", ReasonableNumPoints(reader.BaseStream, cs));
+            var sequence = ReadCoordinateSequenceRing(reader, numPoints, cs);
+            return factory.CreateLinearRing(sequence);
+        }
         /// <summary>
         /// Reads a <see cref="Polygon"/> geometry.
         /// </summary>
@@ -421,16 +468,17 @@ namespace NetTopologySuite.IO
         protected Geometry ReadPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            LinearRing exteriorRing = null;
-            LinearRing[] interiorRings = null;
-            int numRings = reader.ReadInt32();
-            if (numRings > 0)
-            {
-                exteriorRing = ReadLinearRing(reader, cs, srid);
-                interiorRings = new LinearRing[numRings - 1];
-                for (int i = 0; i < numRings - 1; i++)
-                    interiorRings[i] = ReadLinearRing(reader, cs, srid);
-            }
+            int reasonable = ReasonableNumPoints(reader.BaseStream, cs);
+            if (_isStrict) reasonable /= 4;
+            int numRings = ReadNumField(reader, "numRings", reasonable);
+            if (numRings == 0)
+                return factory.CreatePolygon();
+            
+            var exteriorRing = ReadLinearRing(reader, cs, srid);
+            var interiorRings = new LinearRing[numRings - 1];
+            for (int i = 0; i < numRings - 1; i++)
+                interiorRings[i] = ReadLinearRing(reader, cs, srid);
+            
             return factory.CreatePolygon(exteriorRing, interiorRings);
         }
 
@@ -444,7 +492,7 @@ namespace NetTopologySuite.IO
         protected Geometry ReadMultiPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = reader.ReadInt32();
+            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs));
             var points = new Point[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
@@ -469,7 +517,7 @@ namespace NetTopologySuite.IO
         protected Geometry ReadMultiLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = reader.ReadInt32();
+            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs) / 2);
             var strings = new LineString[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
@@ -495,7 +543,7 @@ namespace NetTopologySuite.IO
         protected Geometry ReadMultiPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = reader.ReadInt32();
+            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs));
             var polygons = new Polygon[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
@@ -521,7 +569,7 @@ namespace NetTopologySuite.IO
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
 
-            int numGeometries = reader.ReadInt32();
+            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs));
             var geometries = new Geometry[numGeometries];
 
             for (int i = 0; i < numGeometries; i++)
