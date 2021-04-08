@@ -13,15 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Densify
         {
             CheckDensify("LINESTRING (0 0, 30 40, 35 35)",
                 10,
-                "LINESTRING (0 0, 5 6.666666666666668, 10 13.333333333333336, 15 20, 20 26.66666666666667, 25 33.33333333333334, 30 40, 35 35)");
-        }
-
-        [Test]
-        public void TestBox()
-        {
-            CheckDensify("POLYGON ((10 30, 30 30, 30 10, 10 10, 10 30))",
-                10,
-                "POLYGON ((10 30, 16.666666666666668 30, 23.333333333333336 30, 30 30, 30 23.333333333333332, 30 16.666666666666664, 30 10, 23.333333333333332 10, 16.666666666666664 10, 10 10, 10 16.666666666666668, 10 23.333333333333336, 10 30))");
+                "LINESTRING (0 0, 6 8, 12 16, 18 24, 24 32, 30 40, 35 35)");
         }
 
         [Test]
@@ -52,10 +44,19 @@ namespace NetTopologySuite.Tests.NUnit.Densify
                 10, "POINT (0 0)");
         }
 
-        public void testPolygonEmpty()
+        [Test]
+        public void TestPolygonEmpty()
         {
             CheckDensify("POLYGON EMPTY",
                 10, "POLYGON EMPTY");
+        }
+
+        [Test]
+        public void TestBox()
+        {
+            CheckDensify("POLYGON ((10 30, 30 30, 30 10, 10 10, 10 30))",
+                10,
+                "POLYGON ((10 10, 10 20, 10 30, 20 30, 30 30, 30 20, 30 10, 20 10, 10 10))");
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Densify
         {
             CheckDensifyNoValidate("POLYGON ((10 30, 30 30, 30 10, 10 10, 10 30))",
                 10,
-                "POLYGON ((10 30, 16.666666666666668 30, 23.333333333333336 30, 30 30, 30 23.333333333333332, 30 16.666666666666664, 30 10, 23.333333333333332 10, 16.666666666666664 10, 10 10, 10 16.666666666666668, 10 23.333333333333336, 10 30))");
+                "POLYGON ((10 10, 10 20, 10 30, 20 30, 30 30, 30 20, 30 10, 20 10, 10 10))");
         }
 
         [Test]

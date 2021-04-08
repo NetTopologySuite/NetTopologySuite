@@ -62,7 +62,7 @@ namespace NetTopologySuite.Densify
                     continue;
 
                 // densify the segment
-                int densifiedSegCount = (int) (len/distanceTolerance) + 1;
+                int densifiedSegCount = (int) Math.Ceiling(len/distanceTolerance);
                 double densifiedSegLen = len/densifiedSegCount;
                 for (int j = 1; j < densifiedSegCount; j++)
                 {
