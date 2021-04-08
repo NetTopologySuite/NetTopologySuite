@@ -311,7 +311,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <returns>The magnitude of the largest ordinate</returns>
         private static double OrdinateMagnitude(Geometry geom)
         {
-            if (geom == null) return 0;
+            if (geom == null || geom.IsEmpty) return 0;
             var env = geom.EnvelopeInternal;
             double magMax = Math.Max(
                 Math.Abs(env.MaxX), Math.Abs(env.MaxY));
