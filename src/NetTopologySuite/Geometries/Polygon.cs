@@ -472,9 +472,28 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
+            var poly = (Polygon)o;
+
             var thisShell = _shell;
-            var otherShell = ((Polygon) o).Shell;
-            return thisShell.CompareToSameClass(otherShell);
+            var otherShell = poly._shell;
+            int shellComp = thisShell.CompareToSameClass(otherShell);
+            if (shellComp != 0) return shellComp;
+
+            int nHole1 = NumInteriorRings;
+            int nHole2 = poly.NumInteriorRings;
+            int i = 0;
+            while (i < nHole1 && i < nHole2)
+            {
+                var thisHole = (LinearRing)GetInteriorRingN(i);
+                var otherHole = (LinearRing)poly.GetInteriorRingN(i);
+                int holeComp = thisHole.CompareToSameClass(otherHole);
+                if (holeComp != 0) return holeComp;
+                i++;
+            }
+            if (i < nHole1) return 1;
+            if (i < nHole2) return -1;
+            return 0;
+
         }
 
         /// <summary>
