@@ -25,6 +25,40 @@ namespace NetTopologySuite.Tests.NUnit.Densify
         }
 
         [Test]
+        public void TestLineOfToleranceLength()
+        {
+            CheckDensify("LINESTRING (0 0, 10 0)",
+                10, "LINESTRING (0 0, 10 0)");
+        }
+
+        [Test]
+        public void TestLineWithToleranceLengthSeg()
+        {
+            CheckDensify("LINESTRING (0 0, 12 0, 22 0, 34 0)",
+                10, "LINESTRING (0 0, 6 0, 12 0, 22 0, 28 0, 34 0)");
+        }
+
+        [Test]
+        public void TestLineEmpty()
+        {
+            CheckDensify("LINESTRING EMPTY",
+                10, "LINESTRING EMPTY");
+        }
+
+        [Test]
+        public void TestPointUnchanged()
+        {
+            CheckDensify("POINT (0 0)",
+                10, "POINT (0 0)");
+        }
+
+        public void testPolygonEmpty()
+        {
+            CheckDensify("POLYGON EMPTY",
+                10, "POLYGON EMPTY");
+        }
+
+        [Test]
         public void TestBoxNoValidate()
         {
             CheckDensifyNoValidate("POLYGON ((10 30, 30 30, 30 10, 10 10, 10 30))",

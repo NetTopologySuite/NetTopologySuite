@@ -261,7 +261,14 @@ namespace NetTopologySuite.Geometries.Utilities
             bool isAllValidLinearRings = true;
             var shell = TransformLinearRing(geom.Shell, geom);
 
-            if (shell == null || !(shell is LinearRing) || shell.IsEmpty)
+            // handle empty inputs, or inputs which are made empty
+            bool shellIsNullOrEmpty = shell == null || shell.IsEmpty;
+            if (geom.IsEmpty && shellIsNullOrEmpty)
+            {
+                return Factory.CreatePolygon();
+            }
+
+            if (shellIsNullOrEmpty || !(shell is LinearRing))
                 isAllValidLinearRings = false;
 
             var holes = new List<LineString>();

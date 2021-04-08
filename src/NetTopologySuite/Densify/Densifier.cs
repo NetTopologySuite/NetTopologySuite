@@ -7,8 +7,10 @@ namespace NetTopologySuite.Densify
     /// <summary>
     /// Densifies a geometry by inserting extra vertices along the line segments
     /// contained in the geometry.
-    /// All segments in the created densified geometry will be no longer than
-    /// than the given distance tolerance.
+    /// All segments in the created densified geometry will be <b>no longer</b>
+    /// than the given distance tolerance
+    /// (that is, all segments in the output will have length less than or equal to
+    /// the distance tolerance).
     /// </summary>
     /// <remarks>
     /// Densified polygonal geometries are guaranteed to be topologically correct.
@@ -37,10 +39,10 @@ namespace NetTopologySuite.Densify
         }
 
         /// <summary>
-        /// Densifies a coordinate sequence.
+        /// Densifies a list of coordinates.
         /// </summary>
-        /// <param name="pts">The coordinate sequence to densify</param>
-        /// <param name="distanceTolerance">The distance tolerance (<see cref="DistanceTolerance"/>)</param>
+        /// <param name="pts">The coordinate list</param>
+        /// <param name="distanceTolerance">The densify tolerance</param>
         /// <param name="precModel">The precision model to apply on the new coordinates</param>
         /// <returns>The densified coordinate sequence</returns>
         private static Coordinate[] DensifyPoints(Coordinate[] pts,
@@ -54,20 +56,27 @@ namespace NetTopologySuite.Densify
                 seg.P1 = pts[i + 1];
                 coordList.Add(seg.P0, false);
                 double len = seg.Length;
+
+                // check if no densification is required
+                if (len <= distanceTolerance)
+                    continue;
+
+                // densify the segment
                 int densifiedSegCount = (int) (len/distanceTolerance) + 1;
-                if (densifiedSegCount > 1)
+                double densifiedSegLen = len/densifiedSegCount;
+                for (int j = 1; j < densifiedSegCount; j++)
                 {
-                    double densifiedSegLen = len/densifiedSegCount;
-                    for (int j = 1; j < densifiedSegCount; j++)
-                    {
-                        double segFract = (j*densifiedSegLen)/len;
-                        var p = seg.PointAlong(segFract);
-                        precModel.MakePrecise(p);
-                        coordList.Add(p, false);
-                    }
+                    double segFract = (j*densifiedSegLen)/len;
+                    var p = seg.PointAlong(segFract);
+                    precModel.MakePrecise(p);
+                    coordList.Add(p, false);
                 }
             }
-            coordList.Add(pts[pts.Length - 1], false);
+
+            // this check handles empty sequences
+            if (pts.Length > 0)
+                coordList.Add(pts[pts.Length - 1], false);
+
             return coordList.ToCoordinateArray();
         }
 
@@ -90,7 +99,6 @@ namespace NetTopologySuite.Densify
         /// <summary>
         /// Gets or sets the distance tolerance for the densification. All line segments
         /// in the densified geometry will be no longer than the distance tolerance.
-        /// Simplified geometry will be within this distance of the original geometry.
         /// The distance tolerance must be positive.
         /// </summary>
         public double DistanceTolerance
