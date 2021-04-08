@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixture]
-    public class LineStringImplTest
+    public class LineStringImplTest : GeometryTestCase
     {
         private readonly GeometryFactory geometryFactory;
         private readonly WKTReader reader;
@@ -185,20 +185,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestLinearRingConstructor()
         {
-            try
-            {
-                var ring =
-                  new GeometryFactory().CreateLinearRing(
-                    new Coordinate[] {
-                    new Coordinate(0, 0),
-                    new Coordinate(10, 10),
-                    new Coordinate(0, 0)});
-                Assert.IsTrue(false);
-            }
-            catch (ArgumentException)
-            {
-                Assert.IsTrue(true);
-            }
+            var ring =
+              new GeometryFactory().CreateLinearRing(
+                new Coordinate[] {
+                new Coordinate(0, 0),
+                new Coordinate(10, 10),
+                new Coordinate(0, 0)});
+            var ringFromWKT = Read("LINEARRING (0 0, 10 10, 0 0)");
+            CheckEqual(ring, ringFromWKT);
         }
     }
 }

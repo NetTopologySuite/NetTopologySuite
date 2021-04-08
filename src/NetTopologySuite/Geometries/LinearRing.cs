@@ -10,22 +10,25 @@ namespace NetTopologySuite.Geometries
     /// A <c>LinearRing</c> is a <see cref="LineString"/> which is both closed and simple.
     /// In other words,
     /// the first and last coordinate in the ring must be equal,
-    /// and the interior of the ring must not self-intersect.
+    /// and the ring must not self-intersect.
     /// Either orientation of the ring is allowed.
-    /// <para>
-    /// A ring must have either 0 or 4 or more points.
+    /// <para/>
+    /// A ring must have either 0 or 3 or more points.
     /// The first and last points must be equal (in 2D).
     /// If these conditions are not met, the constructors throw
-    /// an <see cref="ArgumentException"/></para>
+    /// an <see cref="ArgumentException"/><br/>
+    /// A ring with 3 points is invalid, because it is collapsed
+    /// and thus has a self-intersection. It is allowed to be constructed
+    /// so that it can be represented, and repaired if needed.
     /// </remarks>
     [Serializable]
     public class LinearRing : LineString
     {
         /// <summary>
-        /// The minimum number of vertices allowed in a valid non-empty ring (= 4).
+        /// The minimum number of vertices allowed in a valid non-empty ring.
         /// Empty rings with 0 vertices are also valid.
         /// </summary>
-        public const int MinimumValidSize = 4;
+        public const int MinimumValidSize = 3;
 
         /// <summary>
         /// Constructs a <c>LinearRing</c> with the vertices specified
