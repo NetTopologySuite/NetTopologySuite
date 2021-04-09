@@ -676,6 +676,24 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             CheckEqualExact(expected, actual);
         }
 
+        [Test]
+        public void TestPolygonLineVerticalntersection()
+        {
+            var a = Read("POLYGON ((-200 -200, 200 -200, 200 200, -200 200, -200 -200))");
+            var b = Read("LINESTRING (-100 100, -100 -100)");
+            var expected = Read("LINESTRING (-100 100, -100 -100)");
+            CheckEqual(expected, Intersection(a, b));
+        }
+
+        [Test]
+        public void TestPolygonLineHorizontalIntersection()
+        {
+            var a = Read("POLYGON ((10 90, 90 90, 90 10, 10 10, 10 90))");
+            var b = Read("LINESTRING (20 50, 80 50)");
+            var expected = Read("LINESTRING (20 50, 80 50)");
+            CheckEqual(expected, Intersection(a, b));
+        }
+
         //============================================================
 
 

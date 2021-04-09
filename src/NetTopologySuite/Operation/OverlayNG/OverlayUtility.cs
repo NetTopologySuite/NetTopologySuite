@@ -113,10 +113,13 @@ namespace NetTopologySuite.Operation.OverlayNG
         private static double SafeExpandDistance(Envelope env, PrecisionModel pm)
         {
             double envExpandDist;
-            if (pm == null || pm.IsFloating)
+            if (IsFloating(pm))
             {
                 // if PM is FLOAT then there is no scale factor, so add 10%
                 double minSize = Math.Min(env.Height, env.Width);
+                // heuristic to ensure zero-width envelopes don't cause total clipping
+                if (minSize <= 0.0)
+                    minSize = Math.Max(env.Height, env.Width);
                 envExpandDist = SafeEnvBufferFactor * minSize;
             }
             else
