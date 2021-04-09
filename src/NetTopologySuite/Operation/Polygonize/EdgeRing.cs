@@ -57,6 +57,15 @@ namespace NetTopologySuite.Operation.Polygonize
 
                 var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryEdgeRing.Coordinates);
 
+                /*
+                 * If testPt is null it indicates that the hole is exactly surrounded by the tryShell.
+                 * This should not happen for fully noded/dissolved linework.
+                 * For now just ignore this hole and continue - this should produce
+                 * "best effort" output.
+                 * In further could flag this as an error (invalid ring).
+                 */
+                if (testPt == null) continue;
+
                 bool isContained = tryEdgeRing.IsInRing(testPt);
 
                 // check if this new containing ring is smaller than the current minimum ring

@@ -1,20 +1,21 @@
+using System;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
 {
     [TestFixture]
-    public class PolygonizeTest : GeometryTestCase
+    public class PolygonizerTest : GeometryTestCase
     {
         [Test]
-        public void Test1()
+        public void TestEmptyInput()
         {
             CheckPolygonize(new string[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
               new string[] { });
         }
 
         [Test]
-        public void Test2()
+        public void TestPolygonWithTouchingHole()
         {
             CheckPolygonize(new string[]{
                 "LINESTRING (100 180, 20 20, 160 20, 100 180)",
@@ -27,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
         }
 
         [Test]
-        public void Test3()
+        public void TestPolygonWithTouchingHoleAndNotch()
         {
             CheckPolygonize(new string[]{
         "LINESTRING (0 0, 4 0)",
@@ -138,6 +139,18 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
     });
         }
 
+        /**
+         * Input is invalid (non-noded), but Polygonizer should still not fail.
+         * Output is undefined, however.
+         */
+        [Test]
+        public void TestNonNodedWithHoleNotAssignable()
+        {
+            CheckPolygonizeNoError(
+                new []{
+                    "MULTILINESTRING ((10 90, 30 90, 30 30, 70 30, 70 90, 90 90, 90 10, 10 10, 10 90), (30 90, 70 90, 70 30, 30 30, 30 90))"
+                });
+        }
         private void CheckPolygonize(string[] inputWKT, string[] expectedOutputWKT)
         {
             CheckPolygonize(false, inputWKT, expectedOutputWKT);
@@ -150,6 +163,22 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
             var expected = ReadList(expectedWKT);
             var actual = polygonizer.GetPolygons();
             CheckEqual(expected, actual);
+        }
+
+        private void CheckPolygonizeNoError(string[] inputWKT)
+        {
+            var polygonizer = new Polygonizer();
+            polygonizer.Add(ReadList(inputWKT));
+            try
+            {
+                var actual = polygonizer.GetPolygons();
+            }
+            catch (Exception ex)
+            {
+                TestContext.WriteLine(ex.Message);
+                TestContext.WriteLine(ex.StackTrace);
+                Assert.Fail("Polygonizer threw an unexpected error");
+            }
         }
     }
 }
