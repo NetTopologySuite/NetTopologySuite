@@ -59,24 +59,25 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         private string[] DumpSets(int[] nums, DisjointSets dset)
         {
-            int nSet = dset.NumSets;
+            var subsets = dset.ComputeSubsets();
+            int nSet = subsets.Count;
             //System.out.println("# Sets = " + nSet);
             string[] sets = new string[nSet];
             for (int s = 0; s < nSet; s++)
             {
                 //System.out.println("---- Set " + s);
-                int size = dset.GetSetSize(s);
-                string setStr = "";
+                int size = subsets.GetSize(s);
+                string str = "";
                 for (int si = 0; si < size; si++)
                 {
-                    int itemIndex = dset.GetSetItem(s, si);
-                    if (si > 0) setStr += ",";
-                    setStr += nums[itemIndex];
+                    int itemIndex = subsets.GetItem(s, si);
+                    if (si > 0) str += ",";
+                    str += nums[itemIndex];
                 }
 
-                sets[s] = setStr;
+                sets[s] = str;
 
-                TestContext.WriteLine(setStr);
+                //TestContext.WriteLine(str);
             }
 
             return sets;

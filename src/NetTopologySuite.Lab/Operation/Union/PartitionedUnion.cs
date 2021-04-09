@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Union
 {
     public class PartitionedUnion
     {
-        public static Geometry union(Geometry geoms)
+        public static Geometry Union(Geometry geoms)
         {
             var polys = PolygonExtracter.GetPolygons(geoms);
             var op = new PartitionedUnion(polys);
@@ -30,14 +30,28 @@ namespace NetTopologySuite.Operation.Union
             var part = new SpatialPartition(inputPolys, new SPRelation(inputPolys));
     
             //--- compute union of each set
-            var unionGeoms = new List<Geometry>(part.NumSets);
-            int numSets = part.NumSets;
+            var unionGeoms = new List<Geometry>(part.Count);
+            int numSets = part.Count;
             for (int i = 0; i < numSets; i++) {
                 var geom = Union(part, i);
                 unionGeoms.Add(geom);
             }
             var geomFactory = inputPolys[0].Factory;
             return geomFactory.BuildGeometry(unionGeoms);
+        }
+
+        private Geometry Union(SpatialPartition part, int s)
+        {
+            //--- one geom in partition, so just copy it
+            if (part.GetSize(s) == 1)
+                return part.GetGeometry(s, 0);
+
+            var setGeoms = new List<Geometry>();
+            for (int i = 0; i < part.GetSize(s); i++)
+            {
+                setGeoms.Add(part.GetGeometry(s, i));
+            }
+            return CascadedPolygonUnion.Union(setGeoms);
         }
 
         private class SPRelation : SpatialPartition.IRelation
@@ -49,29 +63,11 @@ namespace NetTopologySuite.Operation.Union
                 _inputPolys = inputPolys;
             }
 
-            public bool IsEquivalent(int i1, int i2)
+            public bool IsEquivalent(int i, int j)
             {
-                var pg = PreparedGeometryFactory.Prepare(_inputPolys[i1]);
-                return pg.Intersects(_inputPolys[i2]);
+                var pg = PreparedGeometryFactory.Prepare(_inputPolys[i]);
+                return pg.Intersects(_inputPolys[j]);
             }
-        }
-
-        private Geometry Union(SpatialPartition part, int s)
-        {
-            //--- one geom in partition, so just copy it
-            if (part.GetSetSize(s) == 1)
-            {
-                int i = part.GetSetItem(s, 0);
-                return inputPolys[i].Copy();
-            }
-
-            var setGeoms = new List<Geometry>();
-            for (int i = 0; i < part.GetSetSize(s); i++)
-            {
-                setGeoms.Add(inputPolys[part.GetSetItem(s, i)]);
-            }
-            return CascadedPolygonUnion.Union(setGeoms);
         }
     }
-
 }
