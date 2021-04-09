@@ -85,16 +85,20 @@ namespace NetTopologySuite.Algorithm.Construct
         /// Creates a new instance of a Maximum Inscribed Circle computation.
         /// </summary>
         /// <param name="polygonal">An areal geometry</param>
-        /// <param name="tolerance">The distance tolerance for computing the centre point</param>
+        /// <param name="tolerance">The distance tolerance for computing the centre point
+        /// (must be positive)</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the tolerance is non-positive</exception>
+        /// <exception cref="ArgumentException">Thrown if the input geometry is non-polygonal or empty</exception>
         public MaximumInscribedCircle(Geometry polygonal, double tolerance)
         {
-            if (!(polygonal is IPolygonal)) {
+            if (tolerance <= 0)
+                throw new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be positive");
+
+            if (!(polygonal is IPolygonal))
                 throw new ArgumentException("Input geometry must be a Polygon or MultiPolygon");
-            }
+
             if (polygonal.IsEmpty)
-            {
                 throw new ArgumentException("Empty input geometry is not supported");
-            }
 
             _inputGeom = polygonal;
             _factory = polygonal.Factory;
