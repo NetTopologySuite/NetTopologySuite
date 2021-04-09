@@ -9,21 +9,21 @@ using NetTopologySuite.Index.Strtree;
 
 namespace NetTopologySuite.Operation.Union
 {
-    /**
-     * Unions a sparse set of polygonal geometries.
-     * Sparse means that if the geometries are partioned
-     * into a set of intersecting clusters, the number of clusters
-     * is a significant fraction of the total number of geometries.
-     * The algorithm used provides performance and memory advantages
-     * over the {@link CascadedPolygonUnion} algorithm.
-     * It also has the advantage that it does not alter input geometries
-     * which do not intersect any other input geometry.
-     * <p>
-     * Non-sparse sets will work, but may be slower than using cascaded union.
-     * 
-     * @author mdavis
-     *
-     */
+    /// <summary>
+    /// Unions a set of polygonal geometries by partitioning them
+    /// into connected sets of polygons.
+    /// This works best for a <i>sparse</i> set of polygons.
+    /// Sparse means that if the geometries are partitioned
+    /// into connected sets, the number of clusters
+    /// is a significant fraction of the total number of geometries.
+    /// The algorithm used provides performance and memory advantages
+    /// over the <see cref="CascadedPolygonUnion"/> algorithm.
+    /// It also has the advantage that it does not alter input geometries
+    /// which do not intersect any other input geometry.
+    /// <para/>
+    /// Non-sparse sets will work, but may be slower than using cascaded union.
+    /// </summary>
+    /// <author>mdavis</author>
     public class SparsePolygonUnion
     {
         public static Geometry Union(ICollection<Geometry> geoms)
@@ -168,13 +168,12 @@ namespace NetTopologySuite.Operation.Union
                 }
             }
 
-            /**
-     * Add the other root's nodes to this root's list.
-     * Set the other nodes to have this as root.
-     * Free the other root's node list.
-     * 
-     * @param root the other root node
-     */
+            /// <summary>
+            /// Add the other root's nodes to this root's list.
+            /// Set the other nodes to have this as root.
+            /// Free the other root's node list.
+            /// </summary>
+            /// <param name="root">The other root noe</param>
             private void MergeRoot(PolygonNode root)
             {
                 if (_nodes == root._nodes)
@@ -224,6 +223,7 @@ namespace NetTopologySuite.Operation.Union
         {
             private readonly PolygonNode _queryNode;
             private readonly IPreparedGeometry _prep;
+
             public PolygonNodeVisitor(PolygonNode queryNode)
             {
                 _queryNode = queryNode;
