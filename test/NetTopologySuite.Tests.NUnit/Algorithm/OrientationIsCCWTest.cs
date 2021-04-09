@@ -16,17 +16,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void TestTooFewPoints()
         {
             var pts = new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(2, 2)};
-            bool hasError = false;
-            try
-            {
-                bool isCCW = Orientation.IsCCW(pts);
-                Assert.Fail();
-            }
-            catch (ArgumentException)
-            {
-                hasError = true;
-            }
-            Assert.IsTrue(hasError);
+            bool isCCW = Orientation.IsCCW(pts);
+            // actual value is undefined.  This just confirms no exception
+            Assert.True(true);
         }
 
         [Test]

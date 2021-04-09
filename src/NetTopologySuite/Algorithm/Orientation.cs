@@ -101,7 +101,6 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">An array of <c>Coordinate</c>s forming a ring (with first and last point identical)</param>
         /// <returns><c>true</c> if the ring is oriented counter-clockwise.</returns>
-        /// <exception cref="ArgumentException">Thrown if there are too few points to determine orientation (&lt; 4)</exception>
         public static bool IsCCW(Coordinate[] ring)
         {
             // wrap with an XY CoordinateSequence
@@ -124,15 +123,12 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">A <c>CoordinateSequence</c>s forming a ring (with first and last point identical).</param>
         /// <returns><c>true</c> if the ring is oriented counter-clockwise.</returns>
-        /// <exception cref="ArgumentException">Thrown if there are too few points to determine orientation (&lt; 4)</exception>
         public static bool IsCCW(CoordinateSequence ring)
         {
             // # of points without closing endpoint
             int nPts = ring.Count - 1;
-            // sanity check
-            if (nPts < 3)
-                throw new ArgumentException(
-                    "Ring has fewer than 4 points, so orientation cannot be determined", nameof(ring));
+            // return default value if ring is flat
+            if (nPts < 3) return false;
 
             /*
              * Find first highest point after a lower point, if one exists
