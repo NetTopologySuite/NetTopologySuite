@@ -143,11 +143,9 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             var result = (RawCoordinateSequence)Copy();
 
-            var rawData = result._rawData;
-            for (int i = 0; i < rawData.Length; i++)
+            foreach ((var array, int chunkSize) in result._rawData)
             {
-                var span = rawData[i].Array.Span;
-                int chunkSize = rawData[i].DimensionCount;
+                var span = array.Span;
                 switch (chunkSize)
                 {
                     case 1:
@@ -443,13 +441,6 @@ namespace NetTopologySuite.Geometries.Implementation
             {
                 throw new ArgumentException("Dimension map does not cover all slots in raw data.");
             }
-        }
-
-        private static void Swap<T>(ref T a, ref T b)
-        {
-            var t = a;
-            a = b;
-            b = t;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
