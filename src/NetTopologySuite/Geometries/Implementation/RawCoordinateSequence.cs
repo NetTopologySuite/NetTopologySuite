@@ -33,11 +33,27 @@ namespace NetTopologySuite.Geometries.Implementation
             : base(GetCountIfValid(rawData, dimensionMap), dimensionMap.Length, measures)
         {
             _rawData = new (Memory<double> Array, int DimensionCount)[rawData.Length];
-            for (int i = 0; i < rawData.Length; i++)
+            if (Count == 0)
             {
-                _rawData[i].Array = rawData[i];
-                if (Count != 0)
+                foreach ((int rawDataIndex, int dimensionIndex) in dimensionMap)
                 {
+                    ref int dimensionCount = ref _rawData[rawDataIndex].DimensionCount;
+                    if (dimensionCount <= dimensionIndex)
+                    {
+                        dimensionCount = dimensionIndex + 1;
+                    }
+                }
+
+                for (int i = 0; i < rawData.Length; i++)
+                {
+                    _rawData[i].Array = rawData[i];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < rawData.Length; i++)
+                {
+                    _rawData[i].Array = rawData[i];
                     _rawData[i].DimensionCount = rawData[i].Length / Count;
                 }
             }
@@ -73,6 +89,12 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// The underlying <see cref="Memory{T}"/> and stride.
         /// </returns>
+        /// <remarks>
+        /// Assuming <see cref="CoordinateSequence.Count"/> is nonzero, the first element of the
+        /// returned array holds the first coordinate's value for the requested ordinate, and the
+        /// last element of the returned array holds the last coordinate's value for the requested
+        /// ordinate.
+        /// </remarks>
         public (Memory<double> Array, int Stride) GetRawCoordinatesAndStride(int ordinateIndex)
         {
             if ((uint)ordinateIndex >= (uint)_dimensionMap.Length)
@@ -82,7 +104,12 @@ namespace NetTopologySuite.Geometries.Implementation
 
             (int sourceIndex, int offset) = _dimensionMap[ordinateIndex];
             (var array, int stride) = _rawData[sourceIndex];
-            return (array.Slice(offset), stride);
+            if (!array.IsEmpty)
+            {
+                array = array.Slice(offset, array.Length - stride + 1);
+            }
+
+            return (array, stride);
         }
 
         /// <inheritdoc />
@@ -180,7 +207,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <inheritdoc />
         public override Coordinate[] ToCoordinateArray()
         {
-            if (this.Count == 0)
+            if (Count == 0)
             {
                 return Array.Empty<Coordinate>();
             }
@@ -198,13 +225,14 @@ namespace NetTopologySuite.Geometries.Implementation
 
                 if (MemoryMarshal.TryGetArray(raw[i].Memory, out var arraySegment))
                 {
-                    rawArrays = null;
-                    continue;
+                    rawArrays[i].Array = arraySegment.Array;
+                    rawArrays[i].Offset = arraySegment.Offset;
+                    rawArrays[i].Stride = raw[i].Stride;
                 }
-
-                rawArrays[i].Array = arraySegment.Array;
-                rawArrays[i].Offset = arraySegment.Offset;
-                rawArrays[i].Stride = raw[i].Stride;
+                else
+                {
+                    rawArrays = null;
+                }
             }
 
             var result = new Coordinate[Count];

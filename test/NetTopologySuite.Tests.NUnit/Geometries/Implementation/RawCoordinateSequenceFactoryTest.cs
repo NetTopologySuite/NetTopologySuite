@@ -280,14 +280,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
                         (var actualMemory, int actualStride) = seq.GetRawCoordinatesAndStride(i);
                         Assert.That(actualStride, Is.EqualTo(expectedStride));
-                        if (expectedMemory.Length > actualMemory.Length)
-                        {
-                            Assert.Fail("Expected at least {0} elements for {1}, but got {2}", expectedMemory.Length, ordinate, actualMemory.Length);
-                        }
-                        else
-                        {
-                            Assert.That(actualMemory.Slice(0, expectedMemory.Length), Is.EqualTo(expectedMemory));
-                        }
+                        Assert.That(seq.GetRawCoordinatesAndStride(i), Is.EqualTo((expectedMemory, expectedStride)));
                     }
                 });
         }
