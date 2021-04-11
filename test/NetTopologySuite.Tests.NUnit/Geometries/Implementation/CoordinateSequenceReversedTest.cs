@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
@@ -37,6 +38,114 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             var csf = new NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence(
                 new[] { 0f, 0f, 1f, 4f, 10f, 10f, 2f, 3f, 10f, 0f, 3f, 2f, 0d, 0d, 4d, 1d }, 4, 1);
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceX_Y()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY(
+                new[] { 0d, 1d, 10d, 2d, 10d, 3d, 0d, 4d },
+                new[] { 0d, 4d, 10d, 3d, 0d, 2d, 0d, 1d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceXY()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY(
+                new[] { 0d, 0d, 1d, 4d, 10d, 10d, 2d, 3d, 10d, 0d, 3d, 2d, 0d, 0d, 4d, 1d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceX_Y_Z()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(
+                new[] { 0d, 1d, 10d, 2d, 10d, 3d, 0d, 4d },
+                new[] { 0d, 4d, 10d, 3d, 0d, 2d, 0d, 1d },
+                new[] { 8d, 7d, 6d, 5d, 4d, 3d, 2d, 1d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceXY_Z()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(
+                new[] { 0d, 0d, 1d, 4d, 10d, 10d, 2d, 3d, 10d, 0d, 3d, 2d, 0d, 0d, 4d, 1d },
+                new[] { 8d, 7d, 6d, 5d, 4d, 3d, 2d, 1d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceXYZ()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(
+                new[] { 0d, 0d, 8d, 1d, 4d, 7d, 10d, 10d, 6d, 2d, 3d, 5d, 10d, 0d, 4d, 3d, 2d, 3d, 0d, 0d, 2d, 4d, 1d, 1d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceX_Y_Z_M()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(
+                new[] { 0d, 1d, 10d, 2d, 10d, 3d, 0d, 4d },
+                new[] { 0d, 4d, 10d, 3d, 0d, 2d, 0d, 1d },
+                new[] { 8d, 7d, 6d, 5d, 4d, 3d, 2d, 1d },
+                new[] { -1d, -2d, -3d, -4d, -5d, -6d, -7d, -8d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceXY_Z_M()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(
+                new[] { 0d, 0d, 1d, 4d, 10d, 10d, 2d, 3d, 10d, 0d, 3d, 2d, 0d, 0d, 4d, 1d },
+                new[] { 8d, 7d, 6d, 5d, 4d, 3d, 2d, 1d },
+                new[] { -1d, -2d, -3d, -4d, -5d, -6d, -7d, -8d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceXYZM()
+        {
+            var csf = NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(
+                new[] { 0d, 0d, 8d, -1d, 1d, 4d, 7d, -2d, 10d, 10d, 6d, -3d, 2d, 3d, 5d, -4d, 10d, 0d, 4d, -5d, 3d, 2d, 3d, -6d, 0d, 0d, 2d, -7d, 4d, 1d, 1d, -8d });
+            var csr = csf.Reversed();
+            DoTest(csf, csr);
+        }
+
+        [Test]
+        public void TestRawCoordinateSequenceHighlyAtypical()
+        {
+            // 6 spatial dimensions plus 4 measures = 10 total dimensions.
+            // sprinkle their data throughout the various arrays that we create.
+            // note that Measure3 is not represented, so it goes by itself.
+            Ordinates[] ordinateGroups =
+            {
+                Ordinates.X | Ordinates.M,
+                Ordinates.Y | Ordinates.Z,
+                Ordinates.Spatial4 | Ordinates.Spatial5 | Ordinates.Measure2,
+                Ordinates.Spatial6 | Ordinates.Measure4,
+            };
+            var factory = new NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory(ordinateGroups);
+            var csf = factory.Create(102, 10, 4);
+            for (int i = 0; i < csf.Count; i++)
+            {
+                for (int j = 0; j < csf.Dimension; j++)
+                {
+                    csf.SetOrdinate(i, j, (i * 391) - (j * 23));
+                }
+            }
+
             var csr = csf.Reversed();
             DoTest(csf, csr);
         }
