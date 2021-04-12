@@ -458,17 +458,10 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        /// Returns a <c>GeometryCollectionEnumerator</c>:
-        /// this IEnumerator returns the parent geometry as first element.
-        /// In most cases is more useful the code
-        /// <c>geometryCollectionInstance.Geometries.GetEnumerator()</c>:
-        /// this returns an IEnumerator over geometries composing GeometryCollection.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IEnumerator<Geometry> GetEnumerator()
         {
-            return new GeometryCollectionEnumerator(this);
+            return ((IEnumerable<Geometry>)Geometries).GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
