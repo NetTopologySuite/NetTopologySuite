@@ -133,7 +133,12 @@ namespace NetTopologySuite.IO
             return OrdinateFormat.CreateFormat(decimalPlaces);
         }
 
-        internal static OrdinateFormat CreateOrdinateFormat(PrecisionModel precisionModel)
+        /// <summary>
+        /// Creates an <c>OrdinateFormat</c> based on the provided <c>PrecisionModel</c>.
+        /// </summary>
+        /// <param name="precisionModel">A precision model</param>
+        /// <returns>An <c>OrdinateFormat</c>.</returns>
+        protected internal static OrdinateFormat CreateOrdinateFormat(PrecisionModel precisionModel)
         {
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.
@@ -147,7 +152,7 @@ namespace NetTopologySuite.IO
         /// A filter implementation to test if a coordinate sequence actually has meaningful values
         /// for an ordinate bit-pattern
         /// </summary>
-        private class CheckOrdinatesFilter : IEntireCoordinateSequenceFilter
+        protected class CheckOrdinatesFilter : IEntireCoordinateSequenceFilter
         {
             private readonly Ordinates _checkOrdinateFlags;
             private Ordinates _outputOrdinates;
@@ -222,7 +227,11 @@ namespace NetTopologySuite.IO
 
         // MSSQL overrides
         private readonly bool _skipOrdinateToken;
-        private readonly bool _alwaysEmitZWithM;
+        /// <summary>
+        /// A flag indicating that z-ordinate values should always be
+        /// emitted if m-ordinate are emitted.
+        /// </summary>
+        protected readonly bool AlwaysEmitZWithM;
         private readonly string _missingOrdinateReplacementText = " NaN";
 
         /// <summary>
@@ -237,9 +246,15 @@ namespace NetTopologySuite.IO
         public WKTWriter(int outputDimension) : this(outputDimension, false)
         { }
 
-        private WKTWriter(int outputDimension, bool mssql)
+        /// <summary>
+        /// Creates an instance of this class which is writing at most
+        /// <paramref name="outputDimension"/> dimensions.
+        /// </summary>
+        /// <param name="outputDimension">Number of dimensions written</param>
+        /// <param name="mssql"></param>
+        protected WKTWriter(int outputDimension, bool mssql)
         {
-            this.Tab = 2;
+            Tab = 2;
             if (outputDimension < 2 || outputDimension > 4)
                 throw new ArgumentException("Output dimension must be in the range [2, 4]", nameof(outputDimension));
             _outputDimension = outputDimension;
@@ -262,7 +277,7 @@ namespace NetTopologySuite.IO
             if (mssql)
             {
                 _skipOrdinateToken = true;
-                _alwaysEmitZWithM = true;
+                AlwaysEmitZWithM = true;
                 _missingOrdinateReplacementText = " NULL";
             }
         }
@@ -479,7 +494,7 @@ namespace NetTopologySuite.IO
         private void AppendGeometryTaggedText(Geometry geometry, bool useFormatting, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             // evaluate the ordinates actually present in the geometry
-            var cof = new CheckOrdinatesFilter(_outputOrdinates, _alwaysEmitZWithM);
+            var cof = new CheckOrdinatesFilter(_outputOrdinates, AlwaysEmitZWithM);
             geometry.Apply(cof);
 
             // Append the WKT
@@ -752,7 +767,7 @@ namespace NetTopologySuite.IO
         /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
         /// <param name="writer">the output writer to append to.</param>
         /// <exception cref="IOException">if an error occurs while using the writer.</exception>
-        private void AppendOrdinateText(Ordinates outputOrdinates, TextWriter writer)
+        protected void AppendOrdinateText(Ordinates outputOrdinates, TextWriter writer)
         {
             if (_skipOrdinateToken)
             {
@@ -782,7 +797,7 @@ namespace NetTopologySuite.IO
         /// <param name="indentFirst">flag indicating that the first <see cref="Coordinate"/> of the sequence should be indented for better visibility.</param>
         /// <param name="writer">the output writer to append to.</param>
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
-        private void AppendSequenceText(CoordinateSequence seq, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, OrdinateFormat ordinateFormat)
+        protected void AppendSequenceText(CoordinateSequence seq, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             if (seq.Count == 0)
             {
@@ -820,7 +835,7 @@ namespace NetTopologySuite.IO
         /// <param name="indentFirst">flag indicating that the first <see cref="Coordinate"/> of the sequence should be indented for better visibility.</param>
         /// <param name="writer">the output writer to append to.</param>
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
-        private void AppendPolygonText(Polygon polygon, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, OrdinateFormat ordinateFormat)
+        protected void AppendPolygonText(Polygon polygon, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             if (polygon.IsEmpty)
                 writer.Write(WKTConstants.EMPTY);
@@ -976,7 +991,13 @@ namespace NetTopologySuite.IO
             Indent(useFormatting, level, writer);
         }
 
-        private void Indent(bool useFormatting, int level, TextWriter writer)
+        /// <summary>
+        /// Performs new line and indentation
+        /// </summary>
+        /// <param name="useFormatting">A flag indicating if formatting should be applied at all</param>
+        /// <param name="level">The level of indentation</param>
+        /// <param name="writer">The <c>TextWriter</c></param>
+        protected void Indent(bool useFormatting, int level, TextWriter writer)
         {
             if (!useFormatting || level <= 0) return;
             writer.Write("\n");
