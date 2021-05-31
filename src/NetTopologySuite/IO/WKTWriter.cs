@@ -149,10 +149,23 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
+        /// Evaluates which ordinates are actually present in <paramref name="geometry"/>
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <returns>The output ordinates.</returns>
+        protected Ordinates GetOutputOrdinates(Geometry geometry)
+        {
+            var cof = new CheckOrdinatesFilter(_outputOrdinates, AlwaysEmitZWithM);
+            geometry.Apply(cof);
+
+            return cof.OutputOrdinates;
+        }
+
+        /// <summary>
         /// A filter implementation to test if a coordinate sequence actually has meaningful values
         /// for an ordinate bit-pattern
         /// </summary>
-        protected class CheckOrdinatesFilter : IEntireCoordinateSequenceFilter
+        private class CheckOrdinatesFilter : IEntireCoordinateSequenceFilter
         {
             private readonly Ordinates _checkOrdinateFlags;
             private Ordinates _outputOrdinates;
@@ -494,11 +507,10 @@ namespace NetTopologySuite.IO
         private void AppendGeometryTaggedText(Geometry geometry, bool useFormatting, TextWriter writer, OrdinateFormat ordinateFormat)
         {
             // evaluate the ordinates actually present in the geometry
-            var cof = new CheckOrdinatesFilter(_outputOrdinates, AlwaysEmitZWithM);
-            geometry.Apply(cof);
+            var outputOrdinates = GetOutputOrdinates(geometry);
 
             // Append the WKT
-            AppendGeometryTaggedText(geometry, cof.OutputOrdinates, useFormatting, 0, writer, ordinateFormat);
+            AppendGeometryTaggedText(geometry, outputOrdinates, useFormatting, 0, writer, ordinateFormat);
         }
 
         /// <summary>
