@@ -15,6 +15,14 @@ namespace NetTopologySuite.Geometries
         public CoordinateList() { }
 
         /// <summary>
+        /// Constructs a new list without any coordinates but an initial <paramref name="capacity"/>
+        /// </summary>
+        /// <param name="capacity">The initial capacity of the list.</param>
+        public CoordinateList(int capacity)
+            :base(capacity)
+        { }
+
+        /// <summary>
         /// Constructs a new list from an array of Coordinates, allowing repeated points.
         /// (I.e. this constructor produces a <see cref="CoordinateList"/> with exactly the same set of points
         /// as the input array.)
