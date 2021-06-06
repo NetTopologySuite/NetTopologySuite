@@ -378,19 +378,9 @@ namespace NetTopologySuite.IO
         public virtual string Write(Geometry geometry)
         {
             var sb = new StringBuilder();
-            var sw = new StringWriter(sb);
+            using (var sw = new StringWriter(sb))
+                Write(geometry, sw);
 
-            // determine the precision model
-            var pm = _precisionModel ?? geometry.Factory.PrecisionModel;
-
-            try
-            {
-                WriteFormatted(geometry, false, sw, pm);
-            }
-            catch (IOException)
-            {
-                Assert.ShouldNeverReachHere();
-            }
             return sb.ToString();
         }
 
