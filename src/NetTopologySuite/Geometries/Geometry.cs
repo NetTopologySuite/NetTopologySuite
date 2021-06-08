@@ -1219,8 +1219,9 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public virtual string ToText()
         {
-            var writer = new WKTWriter(3);
-            return writer.Write(this);
+            //var writer = new WKTWriter(3);
+            //return writer.Write(this);
+            return Factory.WKTWriter.Value.Write(this);
         }
 
         /// <summary>
@@ -1241,8 +1242,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
         public virtual byte[] ToBinary()
         {
-            var writer = new WKBWriter();
-            return writer.Write(this);
+            //var writer = new WKBWriter();
+            //return writer.Write(this);
+            return Factory.WKBWriter.Value.Write(this);
         }
 
         /// <summary>
