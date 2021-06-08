@@ -22,13 +22,13 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// </remarks>
     [Serializable]
-    public class LineString : Geometry, ILineal
+    public class LineString : Geometry, ICurve
     {
 
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly LineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
+        public static readonly LineString Empty = new GeometryFactory().CreateLineString();
 
         /// <summary>
         /// The points of this <c>LineString</c>.
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries
             : base(factory)
         {
             if (points == null)
-                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+                points = factory.CoordinateSequenceFactory.Create(0, Ordinates.XY);
             if (points.Count == 1)
                 throw new ArgumentException("Invalid number of points in LineString (found "
                                             + points.Count + " - must be 0 or >= 2)");
@@ -459,39 +459,47 @@ namespace NetTopologySuite.Geometries
         /// <inheritdoc cref="Geometry.IsEquivalentClass"/>
         protected override bool IsEquivalentClass(Geometry other)
         {
-            return other is LineString;
+            return other is ICurve;
         }
 
         /// <inheritdoc cref="Geometry.CompareToSameClass(object)"/>
         protected internal override int CompareToSameClass(object o)
         {
-            Assert.IsTrue(o is LineString);
-
-            var line = (LineString)o;
-            // MD - optimized implementation
-            int i = 0;
-            int j = 0;
-            while (i < _points.Count && j < line.CoordinateSequence.Count)
+            Assert.IsTrue(o is ICurve);
+            if (o is LineString line)
             {
-                int comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
-                if (comparison != 0)
-                    return comparison;
-                i++;
-                j++;
+                // MD - optimized implementation
+                int i = 0;
+                int j = 0;
+                while (i < _points.Count && j < line.CoordinateSequence.Count)
+                {
+                    int comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
+                    if (comparison != 0)
+                        return comparison;
+                    i++;
+                    j++;
+                }
+
+                if (i < _points.Count)
+                    return 1;
+                if (j < line.CoordinateSequence.Count)
+                    return -1;
+                return 0;
             }
-            if (i < _points.Count)
-                return 1;
-            if (j < line.CoordinateSequence.Count)
-                return -1;
-            return 0;
+
+            return CompareToSameClass(((ICurve) o).Flatten());
         }
+
+        LineString ICurve.Flatten() => this;
 
         /// <inheritdoc cref="Geometry.CompareToSameClass(object, IComparer{CoordinateSequence})"/>
         protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
-            Assert.IsTrue(o is LineString);
-            var line = (LineString)o;
-            return comp.Compare(_points, line.CoordinateSequence);
+            Assert.IsTrue(o is ICurve);
+            if (o is LineString line)
+                return comp.Compare(_points, line.CoordinateSequence);
+
+            return CompareToSameClass(((ICurve) o).Flatten(), comp);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

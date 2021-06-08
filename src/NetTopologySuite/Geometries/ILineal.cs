@@ -11,4 +11,22 @@ namespace NetTopologySuite.Geometries
     {
         
     }
+
+    /// <summary>
+    /// Marker interface to identify all <c>Geometry</c> subclasses that have a <c>Dimension</c> of
+    /// <see cref="Dimension.Curve"/> and consist of <b>only</b> <c>1</c> component.
+    /// </summary>
+    public interface ICurve : ILineal
+    {
+        /// <summary>
+        /// Gets a value indicating that this <c>Curve</c> forms a ring
+        /// </summary>
+        bool IsRing { get; }
+
+        /// <summary>
+        /// Creates a flattened version of the (possibly) curved geometry.
+        /// </summary>
+        /// <returns>A flattened geometry</returns>
+        LineString Flatten();
+    }
 }

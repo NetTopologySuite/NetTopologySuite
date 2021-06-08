@@ -30,7 +30,7 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     [Serializable]
-    public class Polygon : Geometry, IPolygonal
+    public class Polygon : Geometry, ISurface<LineString>
     {
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Geometries
             if (shell == null)
                 shell = Factory.CreateLinearRing();
             if (holes == null)
-                holes = new LinearRing[] { };
+                holes = Array.Empty<LinearRing>();
             if (HasNullElements<LinearRing>(holes))
                 throw new ArgumentException("holes must not contain null elements");
             if (shell.IsEmpty && HasNonEmptyElements(holes))
@@ -145,7 +145,8 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (IsEmpty)
-                    return new Coordinate[] { };
+                    return Array.Empty<Coordinate>();
+
                 var coordinates = new Coordinate[NumPoints];
                 int k = -1;
                 var shellCoordinates = _shell.Coordinates;

@@ -9,3 +9,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("6B7EB658-792E-4178-B853-8AEB851513A9")]
 
 [assembly: InternalsVisibleTo("NetTopologySuite.Tests.NUnit, PublicKey=" + Consts.PublicKeyToken)]
+[assembly: InternalsVisibleTo("NetTopologySuite.Curved, PublicKey=" + Consts.PublicKeyToken)]
