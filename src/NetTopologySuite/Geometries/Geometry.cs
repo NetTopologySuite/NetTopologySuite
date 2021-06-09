@@ -1221,7 +1221,7 @@ namespace NetTopologySuite.Geometries
         {
             //var writer = new WKTWriter(3);
             //return writer.Write(this);
-            return Factory.WKTWriter.Value.Write(this);
+            return Factory.GeometryServices.WKTWriter.Write(this);
         }
 
         /// <summary>
@@ -1244,13 +1244,14 @@ namespace NetTopologySuite.Geometries
         {
             //var writer = new WKBWriter();
             //return writer.Write(this);
-            return Factory.WKBWriter.Value.Write(this);
+            return Factory.GeometryServices.WKBWriter.Write(this);
         }
 
         /// <summary>
         /// <see cref="ToBinary" />
         /// </summary>
         /// <returns></returns>
+        [Obsolete("Use ToBinary()")]
         public byte[] AsBinary()
         {
             return ToBinary();

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using NetTopologySuite.IO;
 
 namespace NetTopologySuite
 {
@@ -115,6 +116,9 @@ namespace NetTopologySuite
             DefaultSRID = srid;
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
+
+            _wktReader = new WKTReader(this);
+            _wkbReader = new WKBReader(this);
         }
 
         /// <summary>
@@ -155,6 +159,71 @@ namespace NetTopologySuite
         /// Gets or sets the default precision model
         /// </summary>
         public PrecisionModel DefaultPrecisionModel { get; }
+
+        private WKTWriter _wktWriter = new WKTWriter(3);
+        private WKTReader _wktReader;
+        private WKBWriter _wkbWriter = new WKBWriter();
+        private WKBReader _wkbReader;
+
+        /// <summary>
+        /// Gets a value indicating the <c>WKTWriter</c> used by <see cref="Geometry.ToText()"/>
+        /// </summary>
+        public WKTWriter WKTWriter
+        {
+            get => _wktWriter;
+            protected set
+            {
+                if (value == null)
+                    return;
+
+                _wktWriter = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating a <c>WKTReader</c> to parse <see cref="Geometry"/> objects from WKT
+        /// </summary>
+        public WKTReader WKTReader
+        {
+            get => _wktReader;
+            protected set
+            {
+                if (value == null)
+                    return;
+
+                _wktReader = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating the <c>WKBWriter</c> used by <see cref="Geometry.ToBinary()"/>
+        /// </summary>
+        public WKBWriter WKBWriter
+        {
+            get => _wkbWriter;
+            protected set
+            {
+                if (value == null)
+                    return;
+
+                _wkbWriter = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating a <c>WKBReader</c> to parse <see cref="Geometry"/> objects from WKB
+        /// </summary>
+        public WKBReader WKBReader
+        {
+            get => _wkbReader;
+            protected set
+            {
+                if (value == null)
+                    return;
+
+                _wkbReader = value;
+            }
+        }
 
         internal int NumFactories => m_factories.Count;
 

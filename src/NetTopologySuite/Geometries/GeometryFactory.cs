@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
@@ -46,6 +45,7 @@ namespace NetTopologySuite.Geometries
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
         public static readonly GeometryFactory Fixed = new GeometryFactory(PrecisionModel.Fixed.Value);
+
 
         private readonly PrecisionModel _precisionModel;
 
@@ -127,9 +127,6 @@ namespace NetTopologySuite.Geometries
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _srid = srid;
             _services = services;
-
-            WKTReader = new Lazy<WKTReader>(() => new WKTReader(GeometryServices));
-            WKBReader = new Lazy<WKBReader>(() => new WKBReader(GeometryServices));
         }
 
         /// <summary>
@@ -736,14 +733,5 @@ namespace NetTopologySuite.Geometries
         {
             _services = NtsGeometryServices.Instance;
         }
-
-        public Lazy<WKTWriter> WKTWriter { get; protected set; } = new Lazy<WKTWriter>(() => new WKTWriter(3));
-
-        public Lazy<WKTReader> WKTReader { get; protected set; } //= new Lazy<WKTReader>(=> new WKTReader(GeometryServices); }
-
-        public Lazy<WKBWriter> WKBWriter { get; protected set; } = new Lazy<WKBWriter>(() => new WKBWriter());
-
-        public Lazy<WKBReader> WKBReader { get; protected set; } //= new Lazy<WKTReader>(=> new WKTReader(GeometryServices); }
-
     }
 }
