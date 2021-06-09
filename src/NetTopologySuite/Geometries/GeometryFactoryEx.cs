@@ -6,6 +6,7 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// An extended <see cref="GeometryFactory"/> that is capable of enforcing a ring orientation for polygons.
     /// </summary>
+    [Serializable]
     public class GeometryFactoryEx : GeometryFactory
     {
         /// <summary>
@@ -96,6 +97,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The polygon shell ring orientation enforced by this factory
         /// </summary>
+        [NonSerialized]
         private Lazy<LinearRingOrientation> _polygonShellRingOrientation =
             new Lazy<LinearRingOrientation>(() => DefaultShellRingOrientation);
 
