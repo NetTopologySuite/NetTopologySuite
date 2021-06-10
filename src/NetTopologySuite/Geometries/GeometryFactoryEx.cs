@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite.Geometries
@@ -234,6 +235,13 @@ namespace NetTopologySuite.Geometries
                 ring = (LinearRing)ring.Reverse();
 
             return ring;
+        }
+
+        [OnDeserialized]
+        protected new void OnDeserialized(StreamingContext context)
+        {
+            base.OnDeserialized(context);
+            _polygonShellRingOrientation = new Lazy<LinearRingOrientation>(() => DefaultShellRingOrientation);
         }
     }
 }
