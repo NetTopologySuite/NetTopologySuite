@@ -298,7 +298,7 @@ namespace NetTopologySuite.IO
         /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinateSequence(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
+        protected CoordinateSequence GetCoordinateSequence(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
         {
             if (GetNextEmptyOrOpener(tokens).Equals(WKTConstants.EMPTY))
                 return factory.CoordinateSequenceFactory.Create(0, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
@@ -499,7 +499,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next WKTConstants.EMPTY or "(" in the stream as uppercase text.</returns>
-        private static string GetNextEmptyOrOpener(TokenStream tokens)
+        protected static string GetNextEmptyOrOpener(TokenStream tokens)
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(WKTConstants.Z, StringComparison.OrdinalIgnoreCase))
@@ -560,7 +560,7 @@ namespace NetTopologySuite.IO
         /// <returns>the next word in the stream as uppercase text</returns>
         /// <exception cref="ParseException">if the next token is not a word</exception>
         /// <exception cref="IOException">if an I/O error occurs</exception>
-        private static string LookAheadWord(TokenStream tokens)
+        protected static string LookAheadWord(TokenStream tokens)
         {
             string nextWord = GetNextWord(tokens, false);
             return nextWord;
@@ -575,7 +575,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next ")" or "," in the stream.</returns>
-        private static string GetNextCloserOrComma(TokenStream tokens)
+        protected static string GetNextCloserOrComma(TokenStream tokens)
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(",") || nextWord.Equals(")"))
@@ -613,7 +613,7 @@ namespace NetTopologySuite.IO
         /// <see langword="true"/> to advance the stream, <see langword="false"/> to just peek.
         /// </param>
         /// <returns>The next word in the stream as uppercase text.</returns>
-        private static string GetNextWord(TokenStream tokens, bool advance = true)
+        protected static string GetNextWord(TokenStream tokens, bool advance = true)
         {
             var token = tokens.NextToken(advance) /*as Token*/;
             switch (token)
@@ -738,12 +738,18 @@ namespace NetTopologySuite.IO
                 returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
             else if (type.StartsWith(WKTConstants.GEOMETRYCOLLECTION, StringComparison.OrdinalIgnoreCase))
                 returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
-            else throw new ParseException("Unknown type: " + type);
+            else
+                returned = ReadOtherGeometryText(type, tokens, factory, ordinateFlags);
 
             if (returned == null)
                 throw new NullReferenceException("Error reading geometry");
 
             return returned;
+        }
+
+        internal virtual Geometry ReadOtherGeometryText(string type, TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            throw new ParseException("Unknown type: " + type);
         }
 
         /// <summary>
@@ -860,7 +866,7 @@ namespace NetTopologySuite.IO
         /// A <c>Polygon</c> specified by the next token
         /// in the stream.
         /// </returns>
-        private Polygon ReadPolygonText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        protected Polygon ReadPolygonText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals(WKTConstants.EMPTY))

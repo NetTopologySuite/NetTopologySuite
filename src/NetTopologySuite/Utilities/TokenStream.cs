@@ -4,7 +4,7 @@ using RTools_NTS.Util;
 
 namespace NetTopologySuite.Utilities
 {
-    internal sealed class TokenStream
+    public sealed class TokenStream
     {
         private bool? prevMoveNextResult;
 
