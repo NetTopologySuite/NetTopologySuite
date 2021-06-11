@@ -1,22 +1,5 @@
 namespace NetTopologySuite.IO
 {
-    /*
-    /// <summary>
-    /// Byte order
-    /// </summary>
-    public enum ByteOrder
-    {
-        /// <summary>
-        /// BigEndian
-        /// </summary>
-        BigEndian = 0x00,
-
-        /// <summary>
-        /// LittleEndian
-        /// </summary>
-        LittleEndian = 0x01,
-    }
-    */
     /// <summary>
     /// WKB Geometry Types
     /// </summary>
