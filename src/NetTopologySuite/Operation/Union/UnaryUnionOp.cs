@@ -265,7 +265,7 @@ namespace NetTopologySuite.Operation.Union
         {
 
             var empty = _geomFact.CreatePoint();
-            return SnapIfNeededOverlayOp.Overlay(g0, empty, SpatialFunction.Union);
+            return UnionStrategy.Union(g0, empty);
         }
 
     }
