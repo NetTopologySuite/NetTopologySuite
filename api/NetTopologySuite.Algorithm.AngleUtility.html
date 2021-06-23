@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AngleUtility
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -92,11 +92,35 @@ Unless otherwise noted, methods in this class express angles in radians.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">AngleUtility</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.html">NetTopologySuite.Algorithm</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_AngleUtility_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class AngleUtility : object</code></pre>
+    <pre><code class="lang-csharp hljs">public static class AngleUtility</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -113,7 +137,7 @@ Unless otherwise noted, methods in this class express angles in radians.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const double PiOver2 = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const double PiOver2 = 1.5707963267948966</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -143,7 +167,7 @@ Unless otherwise noted, methods in this class express angles in radians.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const double PiOver4 = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const double PiOver4 = 0.78539816339744828</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,7 +197,7 @@ Unless otherwise noted, methods in this class express angles in radians.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const double PiTimes2 = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const double PiTimes2 = 6.2831853071795862</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -809,7 +833,7 @@ The ring is assumed to be oriented in a clockwise direction.</p>
   <div class="markdown level1 summary"><p>Computes the normalized positive value of an angle, which is the equivalent angle in the range [ 0, 2*Pi ).</p>
 <p>
 E.g.
-<table><thead><tr><th>Function call</th><th>Result</th></tr></thead><tbody><tr><td>NormalizePositive(0.0)</td><td>0.0</td></tr><tr><td>NormalizePositive(-PI)</td><td><see cref="!:System.Math.PI"></see></td></tr><tr><td>NormalizePositive(-2PI)</td><td>0.0</td></tr><tr><td>NormalizePositive(-3PI)</td><td><see cref="!:System.Math.PI"></see></td></tr><tr><td>NormalizePositive(-4PI)</td><td>0.0</td></tr><tr><td>NormalizePositive(PI)</td><td><see cref="!:System.Math.PI"></see></td></tr><tr><td>NormalizePositive(2PI)</td><td>0.0</td></tr><tr><td>NormalizePositive(3PI)</td><td><see cref="!:System.Math.PI"></see></td></tr><tr><td>NormalizePositive(4PI)</td><td>0.0</td></tr></tbody></table>
+<table><thead><tr><th>Function call</th><th>Result</th></tr></thead><tbody><tr><td>NormalizePositive(0.0)</td><td>0.0</td></tr><tr><td>NormalizePositive(-PI)</td><td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.math.pi">PI</a></td></tr><tr><td>NormalizePositive(-2PI)</td><td>0.0</td></tr><tr><td>NormalizePositive(-3PI)</td><td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.math.pi">PI</a></td></tr><tr><td>NormalizePositive(-4PI)</td><td>0.0</td></tr><tr><td>NormalizePositive(PI)</td><td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.math.pi">PI</a></td></tr><tr><td>NormalizePositive(2PI)</td><td>0.0</td></tr><tr><td>NormalizePositive(3PI)</td><td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.math.pi">PI</a></td></tr><tr><td>NormalizePositive(4PI)</td><td>0.0</td></tr></tbody></table>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -966,7 +990,8 @@ E.g.
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

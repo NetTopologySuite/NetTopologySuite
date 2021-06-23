@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PackedCoordinateSequenceFactory
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -109,12 +109,34 @@ and defaults to <code>double</code>.</p>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_GetCommonSequenceParameters_NetTopologySuite_Geometries_Coordinate___">CoordinateSequenceFactory.GetCommonSequenceParameters(Coordinate[])</a>
     </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Implementation.html">NetTopologySuite.Geometries.Implementation</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Implementation_PackedCoordinateSequenceFactory_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PackedCoordinateSequenceFactory : CoordinateSequenceFactory</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class PackedCoordinateSequenceFactory : CoordinateSequenceFactory</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -386,7 +408,8 @@ using the provided dimension and a measure of <code>0</code>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CoordinateSequence Create(double[] packedCoordinates, int dimension)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use an overload that accepts measures.  This overload will be removed in a future release.&quot;)]
+public CoordinateSequence Create(double[] packedCoordinates, int dimension)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -500,10 +523,7 @@ using the provided dimension and a measure of <code>0</code>.</p>
   </span>
   <a id="NetTopologySuite_Geometries_Implementation_PackedCoordinateSequenceFactory_Create_" data-uid="NetTopologySuite.Geometries.Implementation.PackedCoordinateSequenceFactory.Create*"></a>
   <h4 id="NetTopologySuite_Geometries_Implementation_PackedCoordinateSequenceFactory_Create_System_Int32_System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.PackedCoordinateSequenceFactory.Create(System.Int32,System.Int32,System.Int32)">Create(Int32, Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a> of the specified size and dimension
-with measure support. For this to be useful, the <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>
-implementation must be mutable.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -522,22 +542,17 @@ implementation must be mutable.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">size</span></td>
-        <td><p>The number of coordinates in the sequence</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">dimension</span></td>
-        <td><p>The dimension of the coordinates in the sequence (if user-specifiable,
-otherwise ignored)</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">measures</span></td>
-        <td><p>The number of measures of the coordinates in the sequence (if user-specifiable,
-otherwise ignored)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -558,11 +573,6 @@ otherwise ignored)</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_Create_System_Int32_System_Int32_System_Int32_">CoordinateSequenceFactory.Create(Int32, Int32, Int32)</a></div>
-  <h5 id="NetTopologySuite_Geometries_Implementation_PackedCoordinateSequenceFactory_Create_System_Int32_System_Int32_System_Int32__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If the requested dimension or measures are larger than the CoordinateSequence implementation
-can provide, then a sequence of maximum possible dimension should be created.
-An error should not be thrown.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_PackedCoordinateSequenceFactory_Create_System_Single___System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.PackedCoordinateSequenceFactory.Create(System.Single%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -578,7 +588,8 @@ using the provided dimension and a measure of <code>0</code>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CoordinateSequence Create(float[] packedCoordinates, int dimension)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use an overload that accepts measures.  This overload will be removed in a future release.&quot;)]
+public CoordinateSequence Create(float[] packedCoordinates, int dimension)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -699,7 +710,8 @@ using the provided dimension and a measure of <code>0</code>.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace NetTopologySuite.Operation.OverlayNG
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -145,6 +145,12 @@ However, it loses the information that the polygonal results
 have valid <code>MultiPolygon</code> topology.)</li>
 <li>Empty results are atomic <code>EMPTY</code> geometries of dimension appropriate
 to the operation.</li>
+<li>As far as possible, results preserve the order and direction of the inputs.
+For instance, a MultiLineString intersection with a Polygon
+will have resultants which are in the same order and have the same direction
+as the input lines (assuming the input lines are disjoint).
+If an input line is split into two or more parts,
+they are ordered in the direction of occurence along their parent line.</li>
 </ul>
 <h2 id="features">Features</h2>
 <p>Functionality</p>
@@ -415,8 +421,13 @@ if clipping was not used).
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.html">UnaryUnionNG</a></h4>
       <section><p>Unions a collection of geometries in an
-efficient way, using {@link OverlayNG}
+efficient way, using <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a>
 to ensure robust computation.</p>
+<p>
+This class is most useful for performing UnaryUnion using
+a fixed-precision model.<br>
+For unary union using floating precision,
+<a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html#NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_NetTopologySuite_Geometries_Geometry_">Union(Geometry)</a> should be used.
 </section>
 </article>
           </div>
@@ -431,7 +442,8 @@ to ensure robust computation.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

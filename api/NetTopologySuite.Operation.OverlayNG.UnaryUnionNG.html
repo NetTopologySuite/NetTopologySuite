@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class UnaryUnionNG
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -84,8 +84,13 @@
   <h1 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG" data-uid="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG" class="text-break">Class UnaryUnionNG
   </h1>
   <div class="markdown level0 summary"><p>Unions a collection of geometries in an
-efficient way, using {@link OverlayNG}
+efficient way, using <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a>
 to ensure robust computation.</p>
+<p>
+This class is most useful for performing UnaryUnion using
+a fixed-precision model.<br>
+For unary union using floating precision,
+<a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html#NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_NetTopologySuite_Geometries_Geometry_">Union(Geometry)</a> should be used.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -93,11 +98,35 @@ to ensure robust computation.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">UnaryUnionNG</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.OverlayNG.html">NetTopologySuite.Operation.OverlayNG</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class UnaryUnionNG : object</code></pre>
+    <pre><code class="lang-csharp hljs">public static class UnaryUnionNG</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -110,13 +139,8 @@ to ensure robust computation.</p>
   </span>
   <a id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_" data-uid="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union*"></a>
   <h4 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.PrecisionModel)">Union(Geometry, PrecisionModel)</h4>
-  <div class="markdown level1 summary"><p>Unions a collection of geometries
+  <div class="markdown level1 summary"><p>Unions a geometry (which is often a collection)
 using a given precision model.</p>
-<p>
-This class is most useful for performing UnaryUnion using
-a fixed-precision model.
-For unary union using floating precision,
-<a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html#NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_NetTopologySuite_Geometries_Geometry_">Union(Geometry)</a> should be used.
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -158,12 +182,140 @@ For unary union using floating precision,
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td><p>The union of the geometries</p>
+        <td><p>The union of the geometry</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html">OverlayNGRobust</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.GeometryFactory%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/UnaryUnionNG.cs/#L63">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_" data-uid="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.GeometryFactory,NetTopologySuite.Geometries.PrecisionModel)">Union(IEnumerable&lt;Geometry&gt;, GeometryFactory, PrecisionModel)</h4>
+  <div class="markdown level1 summary"><p>Unions a geometry (which is often a collection)
+using a given precision model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms, GeometryFactory geomFact, PrecisionModel pm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>The geometries to union</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">geomFact</span></td>
+        <td><p>The geometry factory to use</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td><p>The precision model to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The union of the geometries</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_NetTopologySuite_Geometries_PrecisionModel__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html">OverlayNGRobust</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/UnaryUnionNG.cs/#L46">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_" data-uid="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.PrecisionModel)">Union(IEnumerable&lt;Geometry&gt;, PrecisionModel)</h4>
+  <div class="markdown level1 summary"><p>Unions a geometry (which is often a collection)
+using a given precision model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms, PrecisionModel pm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>The geometries to union</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td><p>The precision model to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The union of the geometries</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Operation_OverlayNG_UnaryUnionNG_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_PrecisionModel__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html">OverlayNGRobust</a></div>
   </div>
@@ -178,12 +330,13 @@ For unary union using floating precision,
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_UnaryUnionNG.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.UnaryUnionNG%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/UnaryUnionNG.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/OverlayNG/UnaryUnionNG.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

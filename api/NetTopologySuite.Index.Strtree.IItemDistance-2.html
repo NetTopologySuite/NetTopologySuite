@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IItemDistance&lt;T, TItem&gt;
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -95,7 +95,7 @@ That is, if the two arguments are the same object,
 the distance returned should be non-zero.
 If it is required that only pairs of <strong>distinct</strong> items be returned,
 the distance function must be <em>anti-reflexive</em>,
-and must return <see cref="!:double.MaxValue"></see> for identical arguments.
+and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a> for identical arguments.
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.Strtree.html">NetTopologySuite.Index.Strtree</a></h6>
@@ -103,6 +103,7 @@ and must return <see cref="!:double.MaxValue"></see> for identical arguments.
   <h5 id="NetTopologySuite_Index_Strtree_IItemDistance_2_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IItemDistance&lt;T, TItem&gt;
+
     where T : IIntersectable&lt;T&gt;, IExpandable&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
@@ -182,6 +183,22 @@ and must return <see cref="!:double.MaxValue"></see> for identical arguments.
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the metric is not applicable to the arguments</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -198,7 +215,8 @@ and must return <see cref="!:double.MaxValue"></see> for identical arguments.
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

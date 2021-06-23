@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class WKTWriter
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -99,11 +99,35 @@ not define a special tag for LinearRings. The standard tag to use is
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">WKTWriter</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.IO.html">NetTopologySuite.IO</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_IO_WKTWriter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WKTWriter : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class WKTWriter</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -323,6 +347,22 @@ Note: The precision model is applied to all ordinate values, not just x and y.
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the size is non-positive</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -620,13 +660,13 @@ WKT format.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry%2CStream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry%2CSystem.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKTWriter.cs/#L374">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKTWriter_Write_" data-uid="NetTopologySuite.IO.WKTWriter.Write*"></a>
-  <h4 id="NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_Stream_" data-uid="NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry,Stream)">Write(Geometry, Stream)</h4>
+  <h4 id="NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_Stream_" data-uid="NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry,System.IO.Stream)">Write(Geometry, Stream)</h4>
   <div class="markdown level1 summary"><p>Converts a <code>Geometry</code> to its Well-known Text representation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -651,7 +691,7 @@ WKT format.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
         <td><span class="parametername">stream</span></td>
         <td><p>A <code>Stream</code> to write into</p>
 </td>
@@ -660,13 +700,13 @@ WKT format.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry%2CTextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry%2CSystem.IO.TextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKTWriter.cs/#L397">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKTWriter_Write_" data-uid="NetTopologySuite.IO.WKTWriter.Write*"></a>
-  <h4 id="NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_TextWriter_" data-uid="NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry,TextWriter)">Write(Geometry, TextWriter)</h4>
+  <h4 id="NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_" data-uid="NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry,System.IO.TextWriter)">Write(Geometry, TextWriter)</h4>
   <div class="markdown level1 summary"><p>Converts a <code>Geometry</code> to its Well-known Text representation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -691,7 +731,7 @@ WKT format.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">TextWriter</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></td>
         <td><span class="parametername">writer</span></td>
         <td></td>
       </tr>
@@ -751,13 +791,13 @@ Features Specification), with newlines and spaces.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry%2CTextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry%2CSystem.IO.TextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/WKTWriter.cs/#L438">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKTWriter_WriteFormatted_" data-uid="NetTopologySuite.IO.WKTWriter.WriteFormatted*"></a>
-  <h4 id="NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_TextWriter_" data-uid="NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry,TextWriter)">WriteFormatted(Geometry, TextWriter)</h4>
+  <h4 id="NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_" data-uid="NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry,System.IO.TextWriter)">WriteFormatted(Geometry, TextWriter)</h4>
   <div class="markdown level1 summary"><p>Same as <code>write</code>, but with newlines and spaces to make the
 well-known text more readable.</p>
 </div>
@@ -783,7 +823,7 @@ well-known text more readable.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">TextWriter</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></td>
         <td><span class="parametername">writer</span></td>
         <td></td>
       </tr>
@@ -805,7 +845,8 @@ well-known text more readable.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

@@ -1,0 +1,1192 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RawCoordinateSequenceFactory
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RawCoordinateSequenceFactory
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory" class="text-break">Class RawCoordinateSequenceFactory
+  </h1>
+  <div class="markdown level0 summary"><p>Factory for creating <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instances.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a></div>
+    <div class="level2"><span class="xref">RawCoordinateSequenceFactory</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_Ordinates">CoordinateSequenceFactory.Ordinates</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_Create_NetTopologySuite_Geometries_Coordinate___">CoordinateSequenceFactory.Create(Coordinate[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_Create_NetTopologySuite_Geometries_CoordinateSequence_">CoordinateSequenceFactory.Create(CoordinateSequence)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_Create_System_Int32_System_Int32_">CoordinateSequenceFactory.Create(Int32, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_Create_System_Int32_NetTopologySuite_Geometries_Ordinates_">CoordinateSequenceFactory.Create(Int32, Ordinates)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_GetCommonSequenceParameters_NetTopologySuite_Geometries_Coordinate___">CoordinateSequenceFactory.GetCommonSequenceParameters(Coordinate[])</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Implementation.html">NetTopologySuite.Geometries.Implementation</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class RawCoordinateSequenceFactory : CoordinateSequenceFactory</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Ordinates__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.%23ctor(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Ordinates%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L35">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Ordinates__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.#ctor(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Ordinates})">RawCoordinateSequenceFactory(IEnumerable&lt;Ordinates&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.html">RawCoordinateSequenceFactory</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RawCoordinateSequenceFactory(IEnumerable&lt;Ordinates&gt; ordinateGroups)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a>&gt;</td>
+        <td><span class="parametername">ordinateGroups</span></td>
+        <td><p>A sequence of zero or more <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags representing ordinate values
+that should be allocated together.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Ordinates___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Any flags not represented in <code data-dev-comment-type="paramref" class="paramref">ordinateGroups</code>, and any spatial or
+measure dimensions beyond the 16th, will be allocated together, SoA-style.</p>
+<p>
+Elements without any bits set will be silently ignored.
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">ordinateGroups</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when a given flag appears in more than one element of
+<code data-dev-comment-type="paramref" class="paramref">ordinateGroups</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_Create_System_Int32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.Create(System.Int32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L465">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_Create_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.Create*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_Create_System_Int32_System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.Create(System.Int32,System.Int32,System.Int32)">Create(Int32, Int32, Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override CoordinateSequence Create(int size, int dimension, int measures)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">size</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">measures</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html#NetTopologySuite_Geometries_CoordinateSequenceFactory_Create_System_Int32_System_Int32_System_Int32_">CoordinateSequenceFactory.Create(Int32, Int32, Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXY_System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY(System.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L117">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXY_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXY_System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY(System.Memory{System.Double})">CreateXY(Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given array for reading
+and writing X and Y data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXY(Memory&lt;double&gt; xy)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">xy</span></td>
+        <td><p>An array of X and Y values, laid out as
+<code>[x0, y0, x1, y1, x2, y2, ..., xn, yn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXY_System_Memory_System_Double___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The resulting instance is essentially a <a class="xref" href="NetTopologySuite.Geometries.Implementation.PackedDoubleCoordinateSequence.html">PackedDoubleCoordinateSequence</a>
+with slightly more overhead, so the main reason to prefer this over that one would be if
+you <strong>really</strong> need to avoid copying the data to fit it into that format.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the length of <code data-dev-comment-type="paramref" class="paramref">xy</code> is not a multiple of 2.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXY_System_Memory_System_Double__System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY(System.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L85">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXY_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXY_System_Memory_System_Double__System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXY(System.Memory{System.Double},System.Memory{System.Double})">CreateXY(Memory&lt;Double&gt;, Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given arrays for reading
+and writing X and Y data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXY(Memory&lt;double&gt; x, Memory&lt;double&gt; y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">x</span></td>
+        <td><p>An array of X values, laid out as
+<code>[x0, x1, x2, ..., xn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">y</span></td>
+        <td><p>An array of Y values, laid out as
+<code>[y0, y1, y2, ..., yn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given arrays.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the input arrays do not contain data for the same number of coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM(System.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L335">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM(System.Memory{System.Double})">CreateXYM(Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given array for reading
+and writing X, Y, and M data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYM(Memory&lt;double&gt; xym)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">xym</span></td>
+        <td><p>An array of X, Y, and M values, laid out as
+<code>[x0, y0, m0, x1, y1, m1, x2, y2, m2, ..., xn, yn, mn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The resulting instance is essentially a <a class="xref" href="NetTopologySuite.Geometries.Implementation.PackedDoubleCoordinateSequence.html">PackedDoubleCoordinateSequence</a>
+with slightly more overhead, so the main reason to prefer this over that one would be if
+you <strong>really</strong> need to avoid copying the data to fit it into that format.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the length of <code data-dev-comment-type="paramref" class="paramref">xym</code> is not a multiple of 3.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double__System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM(System.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L298">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double__System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM(System.Memory{System.Double},System.Memory{System.Double})">CreateXYM(Memory&lt;Double&gt;, Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given array for reading
+and writing X, Y, and M data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYM(Memory&lt;double&gt; xy, Memory&lt;double&gt; m)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">xy</span></td>
+        <td><p>An array of X and Y values, laid out as
+<code>[x0, y0, x1, y1, x2, y2, ..., xn, yn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">m</span></td>
+        <td><p>An array of M values, laid out as
+<code>[m0, m1, m2, ..., mn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double__System_Memory_System_Double___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The resulting instance is essentially a <a class="xref" href="NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequence.html">DotSpatialAffineCoordinateSequence</a>
+with slightly more overhead, so the main reason to prefer this over that one would be if
+you <strong>really</strong> need to avoid copying the data to fit it into that format.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the length of <code data-dev-comment-type="paramref" class="paramref">xy</code> is not a multiple of 2, or when the
+input arrays do not contain data for the same number of coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM(System.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L261">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYM_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYM(System.Memory{System.Double},System.Memory{System.Double},System.Memory{System.Double})">CreateXYM(Memory&lt;Double&gt;, Memory&lt;Double&gt;, Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given arrays for reading
+and writing X, Y, and M data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYM(Memory&lt;double&gt; x, Memory&lt;double&gt; y, Memory&lt;double&gt; m)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">x</span></td>
+        <td><p>An array of X values, laid out as
+<code>[x0, x1, x2, ..., xn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">y</span></td>
+        <td><p>An array of Y values, laid out as
+<code>[y0, y1, y2, ..., yn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">m</span></td>
+        <td><p>An array of M values, laid out as
+<code>[m0, m1, m2, ..., mn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given arrays.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the input arrays do not contain data for the same number of coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(System.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L226">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(System.Memory{System.Double})">CreateXYZ(Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given array for reading
+and writing X, Y, and Z data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYZ(Memory&lt;double&gt; xyz)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">xyz</span></td>
+        <td><p>An array of X, Y, and Z values, laid out as
+<code>[x0, y0, z0, x1, y1, z1, x2, y2, z2, ..., xn, yn, zn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The resulting instance is essentially a <a class="xref" href="NetTopologySuite.Geometries.Implementation.PackedDoubleCoordinateSequence.html">PackedDoubleCoordinateSequence</a>
+with slightly more overhead, so the main reason to prefer this over that one would be if
+you <strong>really</strong> need to avoid copying the data to fit it into that format.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the length of <code data-dev-comment-type="paramref" class="paramref">xyz</code> is not a multiple of 3.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double__System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(System.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L189">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double__System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(System.Memory{System.Double},System.Memory{System.Double})">CreateXYZ(Memory&lt;Double&gt;, Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given array for reading
+and writing X, Y, and Z data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYZ(Memory&lt;double&gt; xy, Memory&lt;double&gt; z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">xy</span></td>
+        <td><p>An array of X and Y values, laid out as
+<code>[x0, y0, x1, y1, x2, y2, ..., xn, yn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">z</span></td>
+        <td><p>An array of Z values, laid out as
+<code>[z0, z1, z2, ..., zn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double__System_Memory_System_Double___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The resulting instance is essentially a <a class="xref" href="NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequence.html">DotSpatialAffineCoordinateSequence</a>
+with slightly more overhead, so the main reason to prefer this over that one would be if
+you <strong>really</strong> need to avoid copying the data to fit it into that format.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the length of <code data-dev-comment-type="paramref" class="paramref">xy</code> is not a multiple of 2, or when the
+input arrays do not contain data for the same number of coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(System.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L152">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZ_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZ(System.Memory{System.Double},System.Memory{System.Double},System.Memory{System.Double})">CreateXYZ(Memory&lt;Double&gt;, Memory&lt;Double&gt;, Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given arrays for reading
+and writing X, Y, and Z data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYZ(Memory&lt;double&gt; x, Memory&lt;double&gt; y, Memory&lt;double&gt; z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">x</span></td>
+        <td><p>An array of X values, laid out as
+<code>[x0, x1, x2, ..., xn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">y</span></td>
+        <td><p>An array of Y values, laid out as
+<code>[y0, y1, y2, ..., yn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">z</span></td>
+        <td><p>An array of Z values, laid out as
+<code>[z0, z1, z2, ..., zn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given arrays.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the input arrays do not contain data for the same number of coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(System.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L452">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(System.Memory{System.Double})">CreateXYZM(Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given array for reading
+and writing X, Y, Z, and M data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYZM(Memory&lt;double&gt; xyzm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">xyzm</span></td>
+        <td><p>An array of X, Y, Z, and M values, laid out as
+<code>[x0, y0, z0, m0, x1, y1, z1, m1, x2, y2, z2, m2, ..., xn, yn, zn, mn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The resulting instance is essentially a <a class="xref" href="NetTopologySuite.Geometries.Implementation.PackedDoubleCoordinateSequence.html">PackedDoubleCoordinateSequence</a>
+with slightly more overhead, so the main reason to prefer this over that one would be if
+you <strong>really</strong> need to avoid copying the data to fit it into that format.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the length of <code data-dev-comment-type="paramref" class="paramref">xyzm</code> is not a multiple of 4.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(System.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L415">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(System.Memory{System.Double},System.Memory{System.Double},System.Memory{System.Double})">CreateXYZM(Memory&lt;Double&gt;, Memory&lt;Double&gt;, Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given array for reading
+and writing X, Y, Z, and M data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYZM(Memory&lt;double&gt; xy, Memory&lt;double&gt; z, Memory&lt;double&gt; m)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">xy</span></td>
+        <td><p>An array of X and Y values, laid out as
+<code>[x0, y0, x1, y1, x2, y2, ..., xn, yn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">z</span></td>
+        <td><p>An array of Z values, laid out as
+<code>[z0, z1, z2, ..., zn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">m</span></td>
+        <td><p>An array of M values, laid out as
+<code>[m0, m1, m2, ..., mn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The resulting instance is essentially a <a class="xref" href="NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequence.html">DotSpatialAffineCoordinateSequence</a>
+with slightly more overhead, so the main reason to prefer this over that one would be if
+you <strong>really</strong> need to avoid copying the data to fit it into that format.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the length of <code data-dev-comment-type="paramref" class="paramref">xy</code> is not a multiple of 2, or when the
+input arrays do not contain data for the same number of coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(System.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D%2CSystem.Memory%7BSystem.Double%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L374">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory_CreateXYZM_System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__System_Memory_System_Double__" data-uid="NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.CreateXYZM(System.Memory{System.Double},System.Memory{System.Double},System.Memory{System.Double},System.Memory{System.Double})">CreateXYZM(Memory&lt;Double&gt;, Memory&lt;Double&gt;, Memory&lt;Double&gt;, Memory&lt;Double&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> that uses the given arrays for reading
+and writing X, Y, Z, and M data ignoring the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> flags that were passed
+into the constructor for this factory instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static RawCoordinateSequence CreateXYZM(Memory&lt;double&gt; x, Memory&lt;double&gt; y, Memory&lt;double&gt; z, Memory&lt;double&gt; m)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">x</span></td>
+        <td><p>An array of X values, laid out as
+<code>[x0, x1, x2, ..., xn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">y</span></td>
+        <td><p>An array of Y values, laid out as
+<code>[y0, y1, y2, ..., yn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">z</span></td>
+        <td><p>An array of Z values, laid out as
+<code>[z0, z1, z2, ..., zn]</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.memory-1">Memory</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>&gt;</td>
+        <td><span class="parametername">m</span></td>
+        <td><p>An array of M values, laid out as
+<code>[m0, m1, m2, ..., mn]</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a> instance that's backed by the given arrays.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the input arrays do not contain data for the same number of coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_RawCoordinateSequenceFactory.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Implementation/RawCoordinateSequenceFactory.cs/#L9" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

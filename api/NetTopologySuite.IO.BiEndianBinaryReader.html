@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class BiEndianBinaryReader
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -83,39 +83,116 @@
   
   <h1 id="NetTopologySuite_IO_BiEndianBinaryReader" data-uid="NetTopologySuite.IO.BiEndianBinaryReader" class="text-break">Class BiEndianBinaryReader
   </h1>
-  <div class="markdown level0 summary"><p>Extends the <see cref="!:BinaryReader"></see> class to allow reading values in the specified format.</p>
+  <div class="markdown level0 summary"><p>Extends the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader">BinaryReader</a> class to allow reading values in the specified format.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">BiEndianBinaryReader</span></div>
+    <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader">BinaryReader</a></div>
+    <div class="level2"><span class="xref">BiEndianBinaryReader</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.close#System_IO_BinaryReader_Close">BinaryReader.Close()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.dispose#System_IO_BinaryReader_Dispose">BinaryReader.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.dispose#System_IO_BinaryReader_Dispose_System_Boolean_">BinaryReader.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.fillbuffer#System_IO_BinaryReader_FillBuffer_System_Int32_">BinaryReader.FillBuffer(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.peekchar#System_IO_BinaryReader_PeekChar">BinaryReader.PeekChar()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.read#System_IO_BinaryReader_Read">BinaryReader.Read()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.read#System_IO_BinaryReader_Read_System_Byte___System_Int32_System_Int32_">BinaryReader.Read(Byte[], Int32, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.read#System_IO_BinaryReader_Read_System_Char___System_Int32_System_Int32_">BinaryReader.Read(Char[], Int32, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.read7bitencodedint#System_IO_BinaryReader_Read7BitEncodedInt">BinaryReader.Read7BitEncodedInt()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readboolean#System_IO_BinaryReader_ReadBoolean">BinaryReader.ReadBoolean()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readbyte#System_IO_BinaryReader_ReadByte">BinaryReader.ReadByte()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readbytes#System_IO_BinaryReader_ReadBytes_System_Int32_">BinaryReader.ReadBytes(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readchar#System_IO_BinaryReader_ReadChar">BinaryReader.ReadChar()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readchars#System_IO_BinaryReader_ReadChars_System_Int32_">BinaryReader.ReadChars(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readsbyte#System_IO_BinaryReader_ReadSByte">BinaryReader.ReadSByte()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.basestream#System_IO_BinaryReader_BaseStream">BinaryReader.BaseStream</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.IO.html">NetTopologySuite.IO</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_IO_BiEndianBinaryReader_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BiEndianBinaryReader : BinaryReader</code></pre>
+    <pre><code class="lang-csharp hljs">public class BiEndianBinaryReader : BinaryReader, IDisposable</code></pre>
   </div>
   <h5 id="NetTopologySuite_IO_BiEndianBinaryReader_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>While <a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html">BiEndianBinaryReader</a> extends <see cref="!:BinaryReader"></see>
+  <div class="markdown level0 remarks"><p>While <a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html">BiEndianBinaryReader</a> extends <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader">BinaryReader</a>
 adding methods for reading integer values (<a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html#NetTopologySuite_IO_BiEndianBinaryReader_ReadInt32">ReadInt32()</a>)
 and double values (<a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html#NetTopologySuite_IO_BiEndianBinaryReader_ReadDouble">ReadDouble()</a>) in the specified format,
-this implementation overrides methods, such <see cref="!:BinaryReader.ReadInt32"></see>
-and <see cref="!:BinaryReader.ReadDouble"></see> and more,
+this implementation overrides methods, such <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readint32#System_IO_BinaryReader_ReadInt32">ReadInt32()</a>
+and <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readdouble#System_IO_BinaryReader_ReadDouble">ReadDouble()</a> and more,
 for reading values in the specified by <a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html#NetTopologySuite_IO_BiEndianBinaryReader_Endianess">Endianess</a> format.</p>
 </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_BiEndianBinaryReader__ctor_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.BiEndianBinaryReader.%23ctor(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_BiEndianBinaryReader__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.BiEndianBinaryReader.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/BiEndianBinaryReader.cs/#L24">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_BiEndianBinaryReader__ctor_" data-uid="NetTopologySuite.IO.BiEndianBinaryReader.#ctor*"></a>
-  <h4 id="NetTopologySuite_IO_BiEndianBinaryReader__ctor_Stream_" data-uid="NetTopologySuite.IO.BiEndianBinaryReader.#ctor(Stream)">BiEndianBinaryReader(Stream)</h4>
+  <h4 id="NetTopologySuite_IO_BiEndianBinaryReader__ctor_System_IO_Stream_" data-uid="NetTopologySuite.IO.BiEndianBinaryReader.#ctor(System.IO.Stream)">BiEndianBinaryReader(Stream)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html">BiEndianBinaryReader</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -134,7 +211,7 @@ for reading values in the specified by <a class="xref" href="NetTopologySuite.IO
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
         <td><span class="parametername">stream</span></td>
         <td><p>The stream.</p>
 </td>
@@ -143,13 +220,13 @@ for reading values in the specified by <a class="xref" href="NetTopologySuite.IO
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_BiEndianBinaryReader__ctor_Stream_NetTopologySuite_IO_ByteOrder_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.BiEndianBinaryReader.%23ctor(Stream%2CNetTopologySuite.IO.ByteOrder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_BiEndianBinaryReader__ctor_System_IO_Stream_NetTopologySuite_IO_ByteOrder_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.BiEndianBinaryReader.%23ctor(System.IO.Stream%2CNetTopologySuite.IO.ByteOrder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/BiEndianBinaryReader.cs/#L32">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_BiEndianBinaryReader__ctor_" data-uid="NetTopologySuite.IO.BiEndianBinaryReader.#ctor*"></a>
-  <h4 id="NetTopologySuite_IO_BiEndianBinaryReader__ctor_Stream_NetTopologySuite_IO_ByteOrder_" data-uid="NetTopologySuite.IO.BiEndianBinaryReader.#ctor(Stream,NetTopologySuite.IO.ByteOrder)">BiEndianBinaryReader(Stream, ByteOrder)</h4>
+  <h4 id="NetTopologySuite_IO_BiEndianBinaryReader__ctor_System_IO_Stream_NetTopologySuite_IO_ByteOrder_" data-uid="NetTopologySuite.IO.BiEndianBinaryReader.#ctor(System.IO.Stream,NetTopologySuite.IO.ByteOrder)">BiEndianBinaryReader(Stream, ByteOrder)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html">BiEndianBinaryReader</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -168,7 +245,7 @@ for reading values in the specified by <a class="xref" href="NetTopologySuite.IO
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
         <td><span class="parametername">input</span></td>
         <td><p>The supplied stream.</p>
 </td>
@@ -265,6 +342,8 @@ and advances the current position of the stream by sixteen bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readdecimal#System_IO_BinaryReader_ReadDecimal">BinaryReader.ReadDecimal()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -324,6 +403,8 @@ and advances the current position of the stream by eight bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readdouble#System_IO_BinaryReader_ReadDouble">BinaryReader.ReadDouble()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -383,6 +464,8 @@ and advances the current position of the stream by two bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readint16#System_IO_BinaryReader_ReadInt16">BinaryReader.ReadInt16()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -442,6 +525,8 @@ and advances the current position of the stream by four bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readint32#System_IO_BinaryReader_ReadInt32">BinaryReader.ReadInt32()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -501,6 +586,8 @@ and advances the current position of the stream by eight bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readint64#System_IO_BinaryReader_ReadInt64">BinaryReader.ReadInt64()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -560,6 +647,8 @@ and advances the current position of the stream by four bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readsingle#System_IO_BinaryReader_ReadSingle">BinaryReader.ReadSingle()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -619,6 +708,8 @@ The string is prefixed with the length, encoded as an integer seven bits at a ti
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readstring#System_IO_BinaryReader_ReadString">BinaryReader.ReadString()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -660,7 +751,8 @@ and advances the position of the stream by two bytes.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override ushort ReadUInt16()</code></pre>
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public override ushort ReadUInt16()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -678,6 +770,8 @@ and advances the position of the stream by two bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readuint16#System_IO_BinaryReader_ReadUInt16">BinaryReader.ReadUInt16()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -719,7 +813,8 @@ and advances the position of the stream by four bytes.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override uint ReadUInt32()</code></pre>
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public override uint ReadUInt32()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -737,6 +832,8 @@ and advances the position of the stream by four bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readuint32#System_IO_BinaryReader_ReadUInt32">BinaryReader.ReadUInt32()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -778,7 +875,8 @@ and advances the position of the stream by eight bytes.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override ulong ReadUInt64()</code></pre>
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public override ulong ReadUInt64()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -796,6 +894,8 @@ and advances the position of the stream by eight bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader.readuint64#System_IO_BinaryReader_ReadUInt64">BinaryReader.ReadUInt64()</a></div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -822,6 +922,10 @@ and advances the position of the stream by eight bytes.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
 </article>
           </div>
           
@@ -838,7 +942,8 @@ and advances the position of the stream by eight bytes.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

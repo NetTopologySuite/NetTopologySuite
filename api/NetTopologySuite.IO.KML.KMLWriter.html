@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class KMLWriter
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -95,11 +95,35 @@ element can be used.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">KMLWriter</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.IO.KML.html">NetTopologySuite.IO.KML</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_IO_KML_KMLWriter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class KMLWriter : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class KMLWriter</code></pre>
   </div>
   <h5 id="NetTopologySuite_IO_KML_KMLWriter_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Output elements are indented to provide a
@@ -139,7 +163,7 @@ number of coordinates per line can be specified.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AltitudeModeAbsolute = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string AltitudeModeAbsolute = &quot;absolute&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -169,7 +193,7 @@ number of coordinates per line can be specified.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AltitudeModeClampToGround = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string AltitudeModeClampToGround = &quot;clampToGround &quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -199,7 +223,7 @@ number of coordinates per line can be specified.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string AltitudeModeRelativeToGround = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string AltitudeModeRelativeToGround = &quot;relativeToGround  &quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -496,54 +520,14 @@ This overrides any Z value present in the Geometry coordinates.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_StringBuilder_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry%2CStringBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/KML/KMLWriter.cs/#L212">View Source</a>
-  </span>
-  <a id="NetTopologySuite_IO_KML_KMLWriter_Write_" data-uid="NetTopologySuite.IO.KML.KMLWriter.Write*"></a>
-  <h4 id="NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_StringBuilder_" data-uid="NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry,StringBuilder)">Write(Geometry, StringBuilder)</h4>
-  <div class="markdown level1 summary"><p>Appends the KML representation of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> to a <see cref="!:StringBuilder"></see>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Write(Geometry geom, StringBuilder sb)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td><span class="parametername">geom</span></td>
-        <td><p>the geometry to write</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">StringBuilder</span></td>
-        <td><span class="parametername">sb</span></td>
-        <td><p>the buffer to write into</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry%2CTextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry%2CSystem.IO.TextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/KML/KMLWriter.cs/#L201">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_KML_KMLWriter_Write_" data-uid="NetTopologySuite.IO.KML.KMLWriter.Write*"></a>
-  <h4 id="NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_TextWriter_" data-uid="NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry,TextWriter)">Write(Geometry, TextWriter)</h4>
-  <div class="markdown level1 summary"><p>Writes the KML representation of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> to a <see cref="!:TextWriter"></see>.</p>
+  <h4 id="NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_" data-uid="NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry,System.IO.TextWriter)">Write(Geometry, TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes the KML representation of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> to a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -567,9 +551,49 @@ This overrides any Z value present in the Geometry coordinates.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">TextWriter</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></td>
         <td><span class="parametername">writer</span></td>
         <td><p>the writer to write to</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_System_Text_StringBuilder_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry%2CSystem.Text.StringBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/IO/KML/KMLWriter.cs/#L212">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_KML_KMLWriter_Write_" data-uid="NetTopologySuite.IO.KML.KMLWriter.Write*"></a>
+  <h4 id="NetTopologySuite_IO_KML_KMLWriter_Write_NetTopologySuite_Geometries_Geometry_System_Text_StringBuilder_" data-uid="NetTopologySuite.IO.KML.KMLWriter.Write(NetTopologySuite.Geometries.Geometry,System.Text.StringBuilder)">Write(Geometry, StringBuilder)</h4>
+  <div class="markdown level1 summary"><p>Appends the KML representation of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> to a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.stringbuilder">StringBuilder</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Write(Geometry geom, StringBuilder sb)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>the geometry to write</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.text.stringbuilder">StringBuilder</a></td>
+        <td><span class="parametername">sb</span></td>
+        <td><p>the buffer to write into</p>
 </td>
       </tr>
     </tbody>
@@ -723,7 +747,8 @@ and altitude mode code.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

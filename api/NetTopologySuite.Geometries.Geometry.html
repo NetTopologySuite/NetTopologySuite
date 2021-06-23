@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Geometry
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -97,13 +97,30 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Geometry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Geometry : IComparable, IComparable&lt;Geometry&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public abstract class Geometry : IComparable, IComparable&lt;Geometry&gt;</code></pre>
   </div>
   <h5 id="NetTopologySuite_Geometries_Geometry_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>
@@ -287,7 +304,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNameGeometryCollection = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNameGeometryCollection = &quot;GeometryCollection&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -317,7 +334,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNameLinearRing = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNameLinearRing = &quot;LinearRing&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -347,7 +364,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNameLineString = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNameLineString = &quot;LineString&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,7 +394,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNameMultiLineString = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNameMultiLineString = &quot;MultiLineString&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -407,7 +424,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNameMultiPoint = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNameMultiPoint = &quot;MultiPoint&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -437,7 +454,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNameMultiPolygon = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNameMultiPolygon = &quot;MultiPolygon&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -467,7 +484,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNamePoint = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNamePoint = &quot;Point&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -497,7 +514,7 @@ Geometries can be used effectively in .Net collections.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TypeNamePolygon = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TypeNamePolygon = &quot;Polygon&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2255,15 +2272,31 @@ This is also the result for the buffers of degenerate (zero-area) polygons.
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if <code>g</code> is a <code>GeometryCollection</code>, but not one of its subclasses.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_Compare_List_NetTopologySuite_Geometries_Geometry__List_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.Compare(List%7BNetTopologySuite.Geometries.Geometry%7D%2CList%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_Compare_System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.Compare(System.Collections.Generic.List%7BNetTopologySuite.Geometries.Geometry%7D%2CSystem.Collections.Generic.List%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Geometry.cs/#L2067">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Geometry_Compare_" data-uid="NetTopologySuite.Geometries.Geometry.Compare*"></a>
-  <h4 id="NetTopologySuite_Geometries_Geometry_Compare_List_NetTopologySuite_Geometries_Geometry__List_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.Geometry.Compare(List{NetTopologySuite.Geometries.Geometry},List{NetTopologySuite.Geometries.Geometry})">Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Geometry_Compare_System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.Geometry.Compare(System.Collections.Generic.List{NetTopologySuite.Geometries.Geometry},System.Collections.Generic.List{NetTopologySuite.Geometries.Geometry})">Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Returns the first non-zero result of <code>CompareTo</code> encountered as
 the two <code>Collection</code>s are iterated over. If, by the time one of
 the iterations is complete, no non-zero result has been encountered,
@@ -2287,13 +2320,13 @@ before b, a negative number.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">a</span></td>
         <td><p>A <code>Collection</code> of <code>IComparable</code>s.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">b</span></td>
         <td><p>A <code>Collection</code> of <code>IComparable</code>s.</p>
 </td>
@@ -2442,13 +2475,13 @@ compared, etc.
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.CompareTo(System.Object%2CIComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.CompareTo(System.Object%2CSystem.Collections.Generic.IComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Geometry.cs/#L1939">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Geometry_CompareTo_" data-uid="NetTopologySuite.Geometries.Geometry.CompareTo*"></a>
-  <h4 id="NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Geometry.CompareTo(System.Object,IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Geometry.CompareTo(System.Object,System.Collections.Generic.IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</h4>
   <div class="markdown level1 summary"><p>Returns whether this <code>Geometry</code> is greater than, equal to,
 or less than another <code>Geometry</code>, using the given <see paramref="IComparer{CoordinateSequence}"></see>.</p>
 </div>
@@ -2474,7 +2507,7 @@ or less than another <code>Geometry</code>, using the given <see paramref="IComp
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IComparer</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
         <td><span class="parametername">comp</span></td>
         <td><p>A <code>IComparer&lt;CoordinateSequence&gt;</code></p>
 </td>
@@ -2500,7 +2533,7 @@ Specifications.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence___remarks">Remarks</h5>
+  <h5 id="NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If their classes are different, they are compared using the following
 ordering:</p>
 <ul><li>Point (lowest),</li><li>MultiPoint,</li><li>LineString,</li><li>LinearRing,</li><li>MultiLineString,</li><li>Polygon,</li><li>MultiPolygon,</li><li>GeometryCollection (highest).</li></ul>
@@ -2564,16 +2597,16 @@ Specifications.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.CompareToSameClass(System.Object%2CIComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.CompareToSameClass(System.Object%2CSystem.Collections.Generic.IComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Geometry.cs/#L2054">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Geometry_CompareToSameClass_" data-uid="NetTopologySuite.Geometries.Geometry.CompareToSameClass*"></a>
-  <h4 id="NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Geometry.CompareToSameClass(System.Object,IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Geometry.CompareToSameClass(System.Object,System.Collections.Generic.IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</h4>
   <div class="markdown level1 summary"><p>Returns whether this <code>Geometry</code> is greater than, equal to,
 or less than another <code>Geometry</code> of the same class.
-using the given <see cref="!:IComparer&lt;CoordinateSequence>"></see>.</p>
+using the given <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2597,7 +2630,7 @@ using the given <see cref="!:IComparer&lt;CoordinateSequence>"></see>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IComparer</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
         <td><span class="parametername">comp</span></td>
         <td><p>The comparer</p>
 </td>
@@ -3192,6 +3225,22 @@ Non-empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.h
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if the argument has a factory with a different <code>GeometryOverlay</code> object assigned</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_Disjoint_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.Disjoint(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -3297,6 +3346,22 @@ and another <code>Geometry</code> g.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if g is null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_Equal_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.Equal(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -3310,7 +3375,8 @@ and another <code>Geometry</code> g.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected static bool Equal(Coordinate a, Coordinate b, double tolerance)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Will be removed in a future version&quot;)]
+protected static bool Equal(Coordinate a, Coordinate b, double tolerance)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -3468,6 +3534,8 @@ to a given <tt>Object</tt>.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a></div>
   <h5 id="NetTopologySuite_Geometries_Geometry_Equals_System_Object__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If the argument <tt>Object</tt> is not a <code>Geometry</code>,
 the result is <code>false</code>.
@@ -3884,6 +3952,8 @@ or <code>this</code>, if the geometry is not a collection.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_GetOrdinates_NetTopologySuite_Geometries_Ordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.GetOrdinates(NetTopologySuite.Geometries.Ordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -3893,7 +3963,7 @@ or <code>this</code>, if the geometry is not a collection.</p>
   </span>
   <a id="NetTopologySuite_Geometries_Geometry_GetOrdinates_" data-uid="NetTopologySuite.Geometries.Geometry.GetOrdinates*"></a>
   <h4 id="NetTopologySuite_Geometries_Geometry_GetOrdinates_NetTopologySuite_Geometries_Ordinate_" data-uid="NetTopologySuite.Geometries.Geometry.GetOrdinates(NetTopologySuite.Geometries.Ordinate)">GetOrdinates(Ordinate)</h4>
-  <div class="markdown level1 summary"><p>Gets an array of <see cref="!:System.Double"></see> ordinate values</p>
+  <div class="markdown level1 summary"><p>Gets an array of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a> ordinate values</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -3999,7 +4069,8 @@ or <code>this</code>, if the geometry is not a collection.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasNullElements(object[] array)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use HasNullElements&lt;T&gt;&quot;)]
+public static bool HasNullElements(object[] array)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -4037,19 +4108,20 @@ or <code>this</code>, if the geometry is not a collection.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_HasNullElements__1_IEnumerable___0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.HasNullElements%60%601(IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_HasNullElements__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.HasNullElements%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Geometry.cs/#L312">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Geometry_HasNullElements_" data-uid="NetTopologySuite.Geometries.Geometry.HasNullElements*"></a>
-  <h4 id="NetTopologySuite_Geometries_Geometry_HasNullElements__1_IEnumerable___0__" data-uid="NetTopologySuite.Geometries.Geometry.HasNullElements``1(IEnumerable{``0})">HasNullElements&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Geometry_HasNullElements__1_System_Collections_Generic_IEnumerable___0__" data-uid="NetTopologySuite.Geometries.Geometry.HasNullElements``1(System.Collections.Generic.IEnumerable{``0})">HasNullElements&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Returns true if the array contains any <code>null</code> elements.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static bool HasNullElements&lt;T&gt;(IEnumerable&lt;T&gt; array)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -4063,7 +4135,7 @@ or <code>this</code>, if the geometry is not a collection.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</td>
         <td><span class="parametername">array</span></td>
         <td><p>an array to validate.</p>
 </td>
@@ -4176,6 +4248,16 @@ Non-empty heterogeneous <a class="xref" href="NetTopologySuite.Geometries.Geomet
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a></td>
         <td><p>if a robustness error occurs.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if the argument is a non-empty heterogeneous <code>GeometryCollection</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if the argument has a factory with a different <code>GeometryOverlay</code> object assigned</p>
 </td>
       </tr>
     </tbody>
@@ -4733,6 +4815,22 @@ Non-empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.h
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if the argument has a factory with a different <code>GeometryOverlay</code> object assigned</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_ToBinary.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.ToBinary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -4795,7 +4893,7 @@ NO features or XLink are implemented here!</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">XmlReader</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -4834,6 +4932,8 @@ Features Specification.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Geometry_ToText.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Geometry.ToText%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -5069,6 +5169,16 @@ Non-empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.h
         <td><p>Thrown if a robustness error occurs</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown if either input is a non-empty GeometryCollection</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if the argument has a factory with a different <code>GeometryOverlay</code> object assigned</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 id="NetTopologySuite_Geometries_Geometry_Union_NetTopologySuite_Geometries_Geometry__seealso">See Also</h5>
@@ -5247,7 +5357,10 @@ this subtle limitation, see <a class="xref" href="NetTopologySuite.Geometries.Ge
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">IComparable&lt;&gt;</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
   </div>
 </article>
           </div>
@@ -5265,7 +5378,8 @@ this subtle limitation, see <a class="xref" href="NetTopologySuite.Geometries.Ge
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

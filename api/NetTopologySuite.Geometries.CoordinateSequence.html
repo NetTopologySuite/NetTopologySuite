@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CoordinateSequence
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.45.0.0">
+    <meta name="generator" content="docfx 2.58.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -61,11 +61,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -110,13 +110,39 @@ The new Geometries will use the custom CoordinateSequence implementation.
       <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.html">CoordinateArraySequence</a></div>
       <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequence.html">DotSpatialAffineCoordinateSequence</a></div>
       <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.Implementation.PackedCoordinateSequence.html">PackedCoordinateSequence</a></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html">RawCoordinateSequence</a></div>
       <div class="level2"><a class="xref" href="NetTopologySuite.Operation.Distance3D.AxisPlaneCoordinateSequence.html">AxisPlaneCoordinateSequence</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_CoordinateSequence_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class CoordinateSequence : object</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public abstract class CoordinateSequence</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -162,6 +188,28 @@ The new Geometries will use the custom CoordinateSequence implementation.
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">measures</span></td>
         <td><p>The value for <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Measures">Measures</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when any argument is negative.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">dimension</code> and <code data-dev-comment-type="paramref" class="paramref">measures</code> specify fewer
+than two (2) spatial dimensions.</p>
 </td>
       </tr>
     </tbody>
@@ -1088,6 +1136,22 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Copy">Copy()</a> returned <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_SetM_System_Int32_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.SetM(System.Int32%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1440,7 +1504,7 @@ is present in this sequence; otherwise, -1.  This parameter is passed uninitiali
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceEx.html#NetTopologySuite_Geometries_CoordinateSequenceEx_GetHashCode_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_Func_System_Int32_System_Int32__">CoordinateSequenceEx.GetHashCode(CoordinateSequence, Int32, Func&lt;Int32, Int32&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceEx.html#NetTopologySuite_Geometries_CoordinateSequenceEx_GetHashCode_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_System_Func_System_Int32_System_Int32__">CoordinateSequenceEx.GetHashCode(CoordinateSequence, Int32, Func&lt;Int32, Int32&gt;)</a>
   </div>
 </article>
           </div>
@@ -1458,7 +1522,8 @@ is present in this sequence; otherwise, -1.  This parameter is passed uninitiali
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
