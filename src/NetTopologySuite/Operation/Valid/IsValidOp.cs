@@ -10,7 +10,7 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
-    /// Implements the algorithsm required to compute the <see cref="Geometry.IsValid" />
+    /// Implements the algorithms required to compute the <see cref="Geometry.IsValid" />
     /// method for <see cref="Geometry" />s.
     /// See the documentation for the various geometry types for a specification of validity.
     /// </summary>
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Operation.Valid
 
         private readonly Geometry _parentGeometry;  // the base Geometry to be validated
 
-        /**
+        /*
          * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the ESRI SDE model).
          */
         private bool _isSelfTouchingRingFormingHoleValid;
@@ -143,10 +143,10 @@ namespace NetTopologySuite.Operation.Valid
 
             if (g.IsEmpty) return;
 
-            if (g is Point)
-                CheckValid((Point) g);
-            else if (g is MultiPoint)
-                CheckValid((MultiPoint) g);
+            if (g is Point pt)
+                CheckValid(pt);
+            else if (g is MultiPoint mpt)
+                CheckValid(mpt);
             else if (g is LinearRing) // LineString also handles LinearRings
                 CheckValid((LinearRing) g);
             else if (g is LineString)
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(Point g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates(g.CoordinateSequence);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(MultiPoint g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates(g);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(LineString g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates(g.CoordinateSequence);
             if (_validErr != null) return;
             var graph = new GeometryGraph(0, g);
             CheckTooFewPoints(graph);
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="g"></param>
         private void CheckValid(LinearRing g)
         {
-            CheckInvalidCoordinates(g.Coordinates);
+            CheckInvalidCoordinates(g.CoordinateSequence);
             if (_validErr != null) return;
             CheckClosedRing(g);
             if (_validErr != null) return;
@@ -294,37 +294,34 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="coords"></param>
-        private void CheckInvalidCoordinates(Coordinate[] coords)
+        private void CheckInvalidCoordinates(CoordinateSequence coords)
         {
-            foreach (var c in coords)
-            {
-                if (!IsValidCoordinate(c))
-                {
-                    _validErr = new TopologyValidationError(TopologyValidationErrors.InvalidCoordinate, c);
-                    return;
-                }
-            }
+            var flt = new InvalidCoordinateFilter();
+            flt.Filter(coords);
+            if (flt.HasInvalidCoordinate)
+                _validErr = new TopologyValidationError(TopologyValidationErrors.InvalidCoordinate, flt.InvalidCoordinate);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="poly"></param>
+        private void CheckInvalidCoordinates(Geometry geometry)
+        {
+            var flt = new InvalidCoordinateFilter();
+            geometry.Apply(flt);
+
+            if (flt.HasInvalidCoordinate)
+                _validErr = new TopologyValidationError(TopologyValidationErrors.InvalidCoordinate, flt.InvalidCoordinate);
+        }
+
         private void CheckInvalidCoordinates(Polygon poly)
         {
-            CheckInvalidCoordinates(poly.ExteriorRing.Coordinates);
+            CheckInvalidCoordinates(poly.ExteriorRing.CoordinateSequence);
             if (_validErr != null) return;
             foreach (var ls in poly.InteriorRings)
             {
-                CheckInvalidCoordinates(ls.Coordinates);
+                CheckInvalidCoordinates(ls.CoordinateSequence);
                 if (_validErr != null) return;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="poly"></param>
         private void CheckClosedRings(Polygon poly)
         {
             CheckClosedRing(poly.Shell);
@@ -336,10 +333,6 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ring"></param>
         private void CheckClosedRing(LinearRing ring)
         {
             if (ring.IsEmpty)
@@ -352,10 +345,6 @@ namespace NetTopologySuite.Operation.Valid
                     ring.GetCoordinateN(0));
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="graph"></param>
         private void CheckTooFewPoints(GeometryGraph graph)
         {
             if (graph.HasTooFewPoints)
@@ -366,10 +355,6 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="graph"></param>
         private void CheckConsistentArea(GeometryGraph graph)
         {
             var cat = new ConsistentAreaTester(graph);
@@ -391,7 +376,6 @@ namespace NetTopologySuite.Operation.Valid
         /// This is required by OGC topology rules (but not by other models
         /// such as ESRI SDE, which allow inverted shells and exverted holes).
         /// </summary>
-        /// <param name="graph"></param>
         private void CheckNoSelfIntersectingRings(GeometryGraph graph)
         {
             for (IEnumerator i = graph.GetEdgeEnumerator(); i.MoveNext(); )
@@ -626,6 +610,80 @@ namespace NetTopologySuite.Operation.Valid
             if (!cit.IsInteriorsConnected())
                 _validErr = new TopologyValidationError(TopologyValidationErrors.DisconnectedInteriors,
                     cit.Coordinate);
+        }
+
+        private class InvalidCoordinateFilter : IEntireCoordinateSequenceFilter
+        {
+            /// <summary>
+            /// Gets or sets the sequence index that is being investigated
+            /// </summary>
+            public int SequenceIndex { get; set; } = -1;
+
+            /// <summary>
+            /// Gets or sets the offset of the coordinate
+            /// </summary>
+            private int Offset { get; set; }
+
+            /// <inheritdoc cref="IEntireCoordinateSequenceFilter.Done"/>
+            public bool Done { get; private set; }
+
+            /// <inheritdoc cref="IEntireCoordinateSequenceFilter.GeometryChanged"/>
+            /// <returns>Always <c>false</c></returns>
+            public bool GeometryChanged { get => false; }
+
+            /// <summary>
+            /// Gets a value indicating the index of the coordinate that is invalid
+            /// </summary>
+            public int InvalidCoordinateIndex { get; private set; } = -1;
+
+            /// <summary>
+            /// Gets a value indicating the index of the coordinate that is invalid
+            /// </summary>
+            public int InvalidCoordinateIndexInSequence { get; private set; } = -1;
+            /// <summary>
+            /// Gets a value indicating the invalid coordinate value
+            /// </summary>
+            public Coordinate InvalidCoordinate { get; private set; }
+
+            /// <summary>
+            /// Gets a value indicating if the geometry that this filter was applied to
+            /// has an invalid coordinate.
+            /// </summary>
+            public bool HasInvalidCoordinate
+            {
+                get => InvalidCoordinateIndex >= 0;
+            }
+
+            public void Filter(CoordinateSequence seq)
+            {
+                SequenceIndex++;
+                for (int i = 0; i < seq.Count; i++)
+                {
+                    if (!CheckValidCoordinate(seq.GetX(i), seq.GetY(i)))
+                    {
+                        InvalidCoordinateIndex = Offset + i;
+                        InvalidCoordinateIndexInSequence = i;
+                        InvalidCoordinate = seq.GetCoordinateCopy(i);
+                        Done = true;
+
+                        return;
+                    }
+                }
+                Offset += seq.Count;
+            }
+
+            private bool CheckValidCoordinate(double x, double y)
+            {
+                if (double.IsNaN(x))
+                    return false;
+                if (double.IsInfinity(x))
+                    return false;
+                if (double.IsNaN(y))
+                    return false;
+                if (double.IsInfinity(y))
+                    return false;
+                return true;
+            }
         }
     }
 }
