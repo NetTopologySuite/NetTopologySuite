@@ -217,7 +217,7 @@ namespace NetTopologySuite.Geometries
             if (index2 < 0 || sequence2.Count <= index2)
                 throw new ArgumentOutOfRangeException(nameof(index2));
 
-            int numDimensions = Math.Min(sequence1.Dimension, sequence1.Dimension);
+            int numDimensions = Math.Min(sequence1.Dimension, sequence2.Dimension);
             for (int dimension = 0; dimension < numDimensions; dimension++)
             {
                 double v1 = sequence1.GetOrdinate(index1, dimension);
