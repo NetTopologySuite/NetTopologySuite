@@ -747,7 +747,7 @@ namespace NetTopologySuite.IO
             return returned;
         }
 
-        internal virtual Geometry ReadOtherGeometryText(string type, TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        protected virtual Geometry ReadOtherGeometryText(string type, TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             throw new ParseException("Unknown type: " + type);
         }
