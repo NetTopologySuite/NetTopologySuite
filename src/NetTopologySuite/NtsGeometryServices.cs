@@ -107,7 +107,8 @@ namespace NetTopologySuite
         /// <param name="srid">The default spatial reference ID</param>
         /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
         /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
-        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel,
+            int srid,
             GeometryOverlay geometryOverlay, CoordinateEqualityComparer coordinateEqualityComparer)
         {
             DefaultCoordinateSequenceFactory = coordinateSequenceFactory ??
@@ -117,8 +118,33 @@ namespace NetTopologySuite
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
 
-            _wktReader = new WKTReader(this);
-            _wkbReader = new WKBReader(this);
+            WKTReader = new WKTReader(this);
+            WKTWriter = new WKTWriter(3);
+            WKBReader = new WKBReader(this);
+            WKBWriter = new WKBWriter();
+        }
+
+        /// <summary>
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/>, a spatial reference Id (<paramref name="srid"/>) and
+        /// a <see cref="Geometries.GeometryOverlay"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
+        /// <param name="precisionModel">The precision model.</param>
+        /// <param name="srid">The default spatial reference ID</param>
+        /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
+        /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
+        protected NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
+            GeometryOverlay geometryOverlay, CoordinateEqualityComparer coordinateEqualityComparer,
+            Func<NtsGeometryServices, WKTReader> fnWKTReader, Func<NtsGeometryServices, WKTWriter> fnWKTWriter,
+            Func<NtsGeometryServices, WKBReader> fnWKBReader, Func<NtsGeometryServices, WKBWriter> fnWKBWriter)
+            : this(coordinateSequenceFactory, precisionModel, srid, geometryOverlay, coordinateEqualityComparer)
+        {
+
+            WKTReader = fnWKTReader?.Invoke(this) ?? throw new ArgumentException("Delegate or result is null", nameof(fnWKTReader));
+            WKTWriter = fnWKTWriter?.Invoke(this) ?? throw new ArgumentNullException("Delegate or result is null", nameof(fnWKTWriter));
+            WKBReader = fnWKBReader?.Invoke(this) ?? throw new ArgumentException("Delegate or result is null", nameof(fnWKBReader));
+            WKBWriter = fnWKBWriter?.Invoke(this) ?? throw new ArgumentNullException("Delegate or result is null", nameof(fnWKBWriter));
         }
 
         /// <summary>
@@ -160,70 +186,25 @@ namespace NetTopologySuite
         /// </summary>
         public PrecisionModel DefaultPrecisionModel { get; }
 
-        private WKTWriter _wktWriter = new WKTWriter(3);
-        private WKTReader _wktReader;
-        private WKBWriter _wkbWriter = new WKBWriter();
-        private WKBReader _wkbReader;
-
         /// <summary>
         /// Gets a value indicating the <c>WKTWriter</c> used by <see cref="Geometry.ToText()"/>
         /// </summary>
-        public WKTWriter WKTWriter
-        {
-            get => _wktWriter;
-            protected set
-            {
-                if (value == null)
-                    return;
-
-                _wktWriter = value;
-            }
-        }
+        public WKTWriter WKTWriter { get; }
 
         /// <summary>
         /// Gets a value indicating a <c>WKTReader</c> to parse <see cref="Geometry"/> objects from WKT
         /// </summary>
-        public WKTReader WKTReader
-        {
-            get => _wktReader;
-            protected set
-            {
-                if (value == null)
-                    return;
-
-                _wktReader = value;
-            }
-        }
+        public WKTReader WKTReader { get; }
 
         /// <summary>
         /// Gets a value indicating the <c>WKBWriter</c> used by <see cref="Geometry.ToBinary()"/>
         /// </summary>
-        public WKBWriter WKBWriter
-        {
-            get => _wkbWriter;
-            protected set
-            {
-                if (value == null)
-                    return;
-
-                _wkbWriter = value;
-            }
-        }
+        public WKBWriter WKBWriter { get; }
 
         /// <summary>
         /// Gets a value indicating a <c>WKBReader</c> to parse <see cref="Geometry"/> objects from WKB
         /// </summary>
-        public WKBReader WKBReader
-        {
-            get => _wkbReader;
-            protected set
-            {
-                if (value == null)
-                    return;
-
-                _wkbReader = value;
-            }
-        }
+        public WKBReader WKBReader { get; }
 
         internal int NumFactories => m_factories.Count;
 
