@@ -22,7 +22,7 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// </remarks>
     [Serializable]
-    public class LineString : Geometry, ICurve
+    public class LineString : Curve
     {
 
         /// <summary>
@@ -145,25 +145,6 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override Dimension Dimension => Dimension.Curve;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                if (IsClosed)
-                {
-                    return Dimension.False;
-                }
-                return Dimension.Point;
-            }
-        }
 
         /// <summary>
         ///
@@ -188,7 +169,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the start point of this <c>LINESTRING</c>
         /// </summary>
-        public Point StartPoint
+        public override Point StartPoint
         {
             get
             {
@@ -201,7 +182,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the end point of this <c>LINESTRING</c>
         /// </summary>
-        public Point EndPoint
+        public override Point EndPoint
         {
             get
             {
@@ -214,7 +195,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating if this <c>LINESTRING</c> is closed.
         /// </summary>
-        public virtual bool IsClosed
+        public override bool IsClosed
         {
             get
             {
@@ -223,11 +204,6 @@ namespace NetTopologySuite.Geometries
                 return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating if this <c>LINESTRING</c> forms a ring.
-        /// </summary>
-        public bool IsRing => IsClosed && IsSimple;
 
         /// <summary>
         /// Returns the name of this object's interface.
@@ -459,13 +435,13 @@ namespace NetTopologySuite.Geometries
         /// <inheritdoc cref="Geometry.IsEquivalentClass"/>
         protected override bool IsEquivalentClass(Geometry other)
         {
-            return other is ICurve;
+            return other is Curve;
         }
 
         /// <inheritdoc cref="Geometry.CompareToSameClass(object)"/>
         protected internal override int CompareToSameClass(object o)
         {
-            Assert.IsTrue(o is ICurve);
+            Assert.IsTrue(o is Curve, "Not a Curve");
             if (o is LineString line)
             {
                 // MD - optimized implementation
@@ -487,19 +463,26 @@ namespace NetTopologySuite.Geometries
                 return 0;
             }
 
-            return CompareToSameClass(((ICurve) o).Flatten());
-        }
+            if (o is ILinearizable<LineString> linearizable)
+                return CompareToSameClass(linearizable.Linearize());
 
-        LineString ICurve.Flatten() => this;
+            Assert.IsTrue(false, out var ex ,"Can't be linearized to a LineString");
+            throw ex;
+        }
 
         /// <inheritdoc cref="Geometry.CompareToSameClass(object, IComparer{CoordinateSequence})"/>
         protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
-            Assert.IsTrue(o is ICurve);
+            Assert.IsTrue(o is Curve, "Not an ICurve");
             if (o is LineString line)
                 return comp.Compare(_points, line.CoordinateSequence);
 
-            return CompareToSameClass(((ICurve) o).Flatten(), comp);
+            if (o is ILinearizable<LineString> linearizable)
+                return CompareToSameClass(linearizable.Linearize());
+
+            Assert.IsTrue(false, out var ex, "Can't be linearized to a LineString");
+            throw ex;
+
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

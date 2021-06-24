@@ -15,7 +15,8 @@ namespace NetTopologySuite.Utilities
         /// <param name="assertion">The assertion value</param>
         public static void IsTrue(bool assertion)
         {
-            IsTrue(assertion, null);
+            if (!IsTrue(assertion, out var ex))
+                throw ex;
         }
 
         /// <summary>
@@ -27,10 +28,26 @@ namespace NetTopologySuite.Utilities
         /// <param name="message">A message describing the failure condition.</param>
         public static void IsTrue(bool assertion, string message)
         {
-            if (assertion) return;
-            if (message == null)
-                throw new AssertionFailedException();
-            throw new AssertionFailedException(message);
+            if (!IsTrue(assertion, out var ex, message))
+                throw ex;
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="assertion"/> is <c>true</c>
+        /// <para/>
+        /// If the test fails, <see cref="AssertionFailedException"/> with <paramref name="message"/> is thrown.
+        /// </summary>
+        /// <param name="assertion">The assertion value</param>
+        /// <param name="ex">An exception</param>
+        /// <param name="message">A message describing the failure condition.</param>
+        public static bool IsTrue(bool assertion, out AssertionFailedException ex, string message = null)
+        {
+            ex = null;
+            if (assertion) return true;
+            ex = message == null
+                ? new AssertionFailedException()
+                : new AssertionFailedException(message);
+            return false;
         }
 
         /// <summary>

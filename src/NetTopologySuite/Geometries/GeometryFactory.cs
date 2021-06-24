@@ -46,7 +46,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public static readonly GeometryFactory Fixed = new GeometryFactory(PrecisionModel.Fixed.Value);
 
-
         private readonly PrecisionModel _precisionModel;
 
         /// <summary>

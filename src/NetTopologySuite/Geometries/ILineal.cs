@@ -11,45 +11,4 @@ namespace NetTopologySuite.Geometries
     {
         
     }
-
-    /// <summary>
-    /// Marker interface to identify all <c>Geometry</c> subclasses that have a <c>Dimension</c> of
-    /// <see cref="Dimension.Curve"/> and consist of <b>only</b> <c>1</c> component.
-    /// </summary>
-    public interface ICurve : ILineal
-    {
-        /// <summary>
-        /// Gets a value indicating that this <c>Curve</c> forms a ring.<br/>
-        /// A curve forms a ring if it <see cref="IsClosed"/> and <see cref="Geometry.IsSimple"/>
-        /// </summary>
-        bool IsRing { get; }
-
-        /// <summary>
-        /// Gets a value indicating that this <c>Curve</c> is closed.<br/>
-        /// A curve is closed if <c><see cref="StartPoint"/> == <see cref="EndPoint"/></c>.
-        /// </summary>
-        bool IsClosed { get; }
-
-        /// <summary>
-        /// Gets a value indicating the 
-        /// </summary>
-        CoordinateSequence CoordinateSequence { get; }
-
-        Coordinate GetCoordinateN(int index);
-
-        bool IsCoordinate(Coordinate coordinate);
-
-        Point GetPointN(int n);
-
-        Point StartPoint { get; }
-
-        Point EndPoint { get; }
-
-        /// <summary>
-        /// Creates a flattened version of the (possibly) curved geometry.
-        /// </summary>
-        /// <returns>A flattened geometry</returns>
-        LineString Flatten();
-
-    }
 }

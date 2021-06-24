@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
 {
@@ -30,7 +31,7 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     [Serializable]
-    public class Polygon : Geometry, ISurface<LineString>
+    public class Polygon : Surface<LineString>
     {
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
@@ -90,7 +91,7 @@ namespace NetTopologySuite.Geometries
                 holes = Array.Empty<LinearRing>();
             if (HasNullElements<LinearRing>(holes))
                 throw new ArgumentException("holes must not contain null elements");
-            if (shell.IsEmpty && HasNonEmptyElements(holes))
+            if (shell.IsEmpty && HasNonEmptyElements<LinearRing>(holes))
                 throw new ArgumentException("shell is empty but holes are not");
 
             _shell = shell;
@@ -214,37 +215,6 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns the dimension of this geometry.
-        /// </summary>
-        /// <remarks>
-        /// The dimension of a geometry is is the topological
-        /// dimension of its embedding in the 2-D Euclidean plane.
-        /// In the NTS spatial model, dimension values are in the set {0,1,2}.
-        /// <para>
-        /// Note that this is a different concept to the dimension of
-        /// the vertex <see cref="Coordinate"/>s.
-        /// The geometry dimension can never be greater than the coordinate dimension.
-        /// For example, a 0-dimensional geometry (e.g. a Point)
-        /// may have a coordinate dimension of 3 (X,Y,Z).
-        /// </para>
-        /// </remarks>
-        /// <returns>
-        /// The topological dimensions of this geometry
-        /// </returns>
-        public override Dimension Dimension => Dimension.Surface;
-
-        /// <summary>
-        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
-        /// </summary>
-        /// <returns>
-        /// The dimension of the boundary of the class implementing this
-        /// interface, whether or not this object is the empty point. Returns
-        /// <c>Dimension.False</c> if the boundary is the empty point.
-        /// </returns>
-        /// NOTE: make abstract and remove setter
-        public override Dimension BoundaryDimension => Dimension.Curve;
-
-        /// <summary>
         ///
         /// </summary>
         public override bool IsEmpty => _shell.IsEmpty;
@@ -252,12 +222,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public LineString ExteriorRing => _shell;
+        public override LineString ExteriorRing => _shell;
 
         /// <summary>
         ///
         /// </summary>
-        public int NumInteriorRings => _holes.Length;
+        public override int NumInteriorRings => _holes.Length;
 
         /// <summary>
         ///
@@ -269,7 +239,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public LineString GetInteriorRingN(int n)
+        public override LineString GetInteriorRingN(int n)
         {
             return _holes[n];
         }
@@ -473,27 +443,37 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            var poly = (Polygon)o;
-
-            var thisShell = _shell;
-            var otherShell = poly._shell;
-            int shellComp = thisShell.CompareToSameClass(otherShell);
-            if (shellComp != 0) return shellComp;
-
-            int nHole1 = NumInteriorRings;
-            int nHole2 = poly.NumInteriorRings;
-            int i = 0;
-            while (i < nHole1 && i < nHole2)
+            Assert.IsTrue(o is ISurface, "Not a Surface");
+            if (o is Polygon poly)
             {
-                var thisHole = (LinearRing)GetInteriorRingN(i);
-                var otherHole = (LinearRing)poly.GetInteriorRingN(i);
-                int holeComp = thisHole.CompareToSameClass(otherHole);
-                if (holeComp != 0) return holeComp;
-                i++;
+
+                var thisShell = _shell;
+                var otherShell = poly._shell;
+                int shellComp = thisShell.CompareToSameClass(otherShell);
+                if (shellComp != 0) return shellComp;
+
+                int nHole1 = NumInteriorRings;
+                int nHole2 = poly.NumInteriorRings;
+                int i = 0;
+                while (i < nHole1 && i < nHole2)
+                {
+                    var thisHole = (LinearRing) GetInteriorRingN(i);
+                    var otherHole = (LinearRing) poly.GetInteriorRingN(i);
+                    int holeComp = thisHole.CompareToSameClass(otherHole);
+                    if (holeComp != 0) return holeComp;
+                    i++;
+                }
+
+                if (i < nHole1) return 1;
+                if (i < nHole2) return -1;
+                return 0;
             }
-            if (i < nHole1) return 1;
-            if (i < nHole2) return -1;
-            return 0;
+
+            if (o is ILinearizable<Polygon> linearizable)
+                return CompareToSameClass(linearizable.Linearize());
+
+            Assert.IsTrue(false, out var ex, "Can't be linearized to a Polygon");
+            throw ex;
 
         }
 
