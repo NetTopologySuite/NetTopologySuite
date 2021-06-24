@@ -9,7 +9,7 @@ namespace NetTopologySuite.Geometries
     public interface ISurface : IPolygonal { }
 
     /// <summary>
-    /// Interface to identify all <c>Geometry</c> subclasses that have a <c>Dimension</c> of <see cref="Geometries.Dimension.Surface"/>
+    /// Abstract base class for geometries that have a <c>Dimension</c> of <see cref="Geometries.Dimension.Surface"/>
     /// and only have <b>one</b> component.
     /// </summary>
     [Serializable]

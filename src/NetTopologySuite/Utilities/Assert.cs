@@ -35,11 +35,12 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Tests if <paramref name="assertion"/> is <c>true</c>
         /// <para/>
-        /// If the test fails, <see cref="AssertionFailedException"/> with <paramref name="message"/> is thrown.
+        /// If the test fails, an <see cref="AssertionFailedException"/> with <paramref name="message"/> is created.
         /// </summary>
         /// <param name="assertion">The assertion value</param>
         /// <param name="ex">An exception</param>
         /// <param name="message">A message describing the failure condition.</param>
+        /// <returns>The value of <paramref name="assertion"/>.</returns>
         public static bool IsTrue(bool assertion, out AssertionFailedException ex, string message = null)
         {
             ex = null;

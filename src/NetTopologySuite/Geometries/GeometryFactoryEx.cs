@@ -238,7 +238,7 @@ namespace NetTopologySuite.Geometries
         }
 
         [OnDeserialized]
-        protected new void OnDeserialized(StreamingContext context)
+        protected override void OnDeserialized(StreamingContext context)
         {
             base.OnDeserialized(context);
             _polygonShellRingOrientation = new Lazy<LinearRingOrientation>(() => DefaultShellRingOrientation);

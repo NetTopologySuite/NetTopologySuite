@@ -107,8 +107,7 @@ namespace NetTopologySuite
         /// <param name="srid">The default spatial reference ID</param>
         /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
         /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
-        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel,
-            int srid,
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
             GeometryOverlay geometryOverlay, CoordinateEqualityComparer coordinateEqualityComparer)
         {
             DefaultCoordinateSequenceFactory = coordinateSequenceFactory ??
@@ -134,6 +133,10 @@ namespace NetTopologySuite
         /// <param name="srid">The default spatial reference ID</param>
         /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
         /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
+        /// <param name="fnWKTReader">A delegate to create a <c>WKTReader</c> for this instance.</param>
+        /// <param name="fnWKTWriter">A delegate to create a <c>WKTWriter</c> for this instance.</param>
+        /// <param name="fnWKBReader">A delegate to create a <c>WKBReader</c> for this instance.</param>
+        /// <param name="fnWKBWriter">A delegate to create a <c>WKBWriter</c> for this instance.</param>
         protected NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
             GeometryOverlay geometryOverlay, CoordinateEqualityComparer coordinateEqualityComparer,
             Func<NtsGeometryServices, WKTReader> fnWKTReader, Func<NtsGeometryServices, WKTWriter> fnWKTWriter,

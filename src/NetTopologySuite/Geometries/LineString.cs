@@ -169,7 +169,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the start point of this <c>LINESTRING</c>
         /// </summary>
-        public override Point StartPoint
+        public sealed override Point StartPoint
         {
             get
             {
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the end point of this <c>LINESTRING</c>
         /// </summary>
-        public override Point EndPoint
+        public sealed override Point EndPoint
         {
             get
             {
