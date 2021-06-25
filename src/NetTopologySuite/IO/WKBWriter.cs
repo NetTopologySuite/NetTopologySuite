@@ -174,7 +174,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The size of the </returns>
         protected int GetHeaderSize(bool includeSRID)
@@ -317,8 +317,15 @@ namespace NetTopologySuite.IO
                 throw new ArgumentException("Geometry not recognized: " + geometry);
         }
 
-        
-        protected virtual bool WriteOtherGeometry(Geometry geometry, BinaryWriter writer, bool includeSrid)
+        /// <summary>
+        /// Extension point for writing geometries not supported by this writer
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <param name="writer">The binary writer</param>
+        /// <param name="includeSRID">A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.</param>
+        /// <returns><c>true</c> if the geometry was written, otherwise <c>false</c>.</returns>
+        protected virtual bool WriteOtherGeometry(Geometry geometry, BinaryWriter writer, bool includeSRID)
         {
             return false;
         }
@@ -355,7 +362,7 @@ namespace NetTopologySuite.IO
         /// <param name="sequence">The coordinate sequence to write</param>
         /// <param name="emitSize">A flag indicating if the size of <paramref name="sequence"/> should be written, too.</param>
         /// <param name="writer">The writer.</param>
-        //[Obsolete("Will be made private in a future version.")]
+        //[Obsolete("Ignore this obsolete message!")]
         protected void Write(CoordinateSequence sequence, bool emitSize, BinaryWriter writer)
         {
             if (emitSize)
@@ -406,7 +413,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         private void Write(Point point, BinaryWriter writer, bool includeSRID)
         {
@@ -435,12 +442,14 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         private void Write(LineString lineString, BinaryWriter writer, bool includeSRID)
         {
             WriteHeader(writer, lineString, includeSRID);
+#pragma warning disable 618
             Write(lineString.CoordinateSequence, true, writer);
+#pragma warning restore 618
         }
 
         /// <summary>
@@ -470,7 +479,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         private void Write(Polygon polygon, BinaryWriter writer, bool includeSRID)
         {
@@ -484,9 +493,11 @@ namespace NetTopologySuite.IO
             }
 
             writer.Write(polygon.NumInteriorRings + 1);
+#pragma warning disable 618
             Write(polygon.ExteriorRing.CoordinateSequence, true, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
                 Write(polygon.InteriorRings[i].CoordinateSequence, true, writer);
+#pragma warning restore 618
         }
 
         /// <summary>
@@ -505,7 +516,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         private void Write(MultiPoint multiPoint, BinaryWriter writer, bool includeSRID)
         {
@@ -534,7 +545,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         private void Write(MultiLineString multiLineString, BinaryWriter writer, bool includeSRID)
         {
@@ -563,7 +574,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         private void Write(MultiPolygon multiPolygon, BinaryWriter writer, bool includeSRID)
         {
@@ -592,7 +603,7 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         private void Write(GeometryCollection geomCollection, BinaryWriter writer, bool includeSRID)
         {
@@ -620,7 +631,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry to write</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>A buffer</returns>
         private byte[] GetBuffer(Geometry geometry, bool includeSRID)
@@ -680,7 +691,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         protected int GetRequiredBufferSize(Geometry geometry, bool includeSRID)
@@ -706,6 +717,13 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("ShouldNeverReachHere");
         }
 
+        /// <summary>
+        /// Computes the length of a buffer to write <paramref name="geometry"/> in its WKB format.
+        /// </summary>
+        /// <param name="geometry">The geometry to write</param>
+        /// <param name="includeSRID">A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.</param>
+        /// <returns>The number of bytes required or <c>0</c> if the implementation can't handle </returns>
         protected virtual int GetOtherGeometryRequiredBufferSize(Geometry geometry, bool includeSRID)
         {
             return 0;
@@ -726,7 +744,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(GeometryCollection geometry, bool includeSRID)
@@ -753,7 +771,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(MultiPolygon geometry, bool includeSRID)
@@ -780,7 +798,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(MultiLineString geometry, bool includeSRID)
@@ -807,7 +825,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(MultiPoint geometry, bool includeSRID)
@@ -834,7 +852,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(Polygon geometry, bool includeSRID)
@@ -866,7 +884,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(LineString geometry, bool includeSRID)
@@ -894,7 +912,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry">The geometry</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
-        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// The value is <c>&amp;&amp;</c>-combined with <c>HandleSRID</c>.
         /// </param>
         /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(Point geometry, bool includeSRID)

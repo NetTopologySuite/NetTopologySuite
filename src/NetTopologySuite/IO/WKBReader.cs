@@ -8,7 +8,7 @@ namespace NetTopologySuite.IO
     /// Converts a Well-Known Binary byte data to a <c>Geometry</c>.
     /// </summary>
     /// <remarks>
-    /// This class reads the format describe in {@link WKBWriter}.
+    /// This class reads the format described in <see cref="WKBWriter"/>.
     /// It partially handles the <b>Extended WKB</b> format used by PostGIS,
     /// by parsing and storing optional SRID values.
     /// If a SRID is not specified in an element geometry, it is inherited
@@ -88,16 +88,26 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("Invalid hex digit: " + hex);
         }
 
+
+        /// <summary>
+        /// A coordinate sequence factory
+        /// </summary>
         protected readonly CoordinateSequenceFactory SequenceFactory;
+
+        /// <summary>
+        /// A precision model
+        /// </summary>
         protected readonly PrecisionModel PrecisionModel;
 
+        /// <summary>
+        /// A GeometryServices object
+        /// </summary>
         protected readonly NtsGeometryServices GeometryServices;
 
         /*
          * true if structurally invalid input should be reported rather than repaired.
          */
         private bool _isStrict;
-        private int maxNumFieldValue;
 
         /// <summary>
         /// Initialize reader with a standard <see cref="NtsGeometryServices"/>.
@@ -167,14 +177,16 @@ namespace NetTopologySuite.IO
         };
 
         /// <summary>
-        ///
+        /// Reads a <see cref="Geometry"/> in binary WKB format using the provided <see cref="BinaryReader"/>.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        /// <param name="reader">The reader</param>
+        /// <returns>The geometry read</returns>
+        /// <exception cref="ParseException"> if the WKB data is ill-formed.</exception>
         protected Geometry Read(BinaryReader reader)
         {
             return ReadGeometry(reader/*, CoordinateSystem.XY*/, GeometryServices.DefaultSRID);
         }
+
 
         protected Geometry ReadGeometry(BinaryReader reader/*, CoordinateSystem csIn*/, int sridIn)
         {
@@ -193,7 +205,7 @@ namespace NetTopologySuite.IO
             }
         }
 
-        protected Geometry ReadGeometry(WKBGeometryTypes geometryType, BinaryReader reader, CoordinateSystem cs, int srid)
+        private Geometry ReadGeometry(WKBGeometryTypes geometryType, BinaryReader reader, CoordinateSystem cs, int srid)
         {
             // Probe for other geometry
             var otherGeometry = ReadOtherGeometry((uint) geometryType, reader, cs, srid);
@@ -249,13 +261,13 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Extension Point for
+        /// Extension point for reading other geometry types
         /// </summary>
-        /// <param name="geometryType"></param>
-        /// <param name="reader"></param>
-        /// <param name="coordinateSystem"></param>
-        /// <param name="srid"></param>
-        /// <returns></returns>
+        /// <param name="geometryType">The geometry type</param>
+        /// <param name="reader">The binary reader</param>
+        /// <param name="coordinateSystem">The coordinate system</param>
+        /// <param name="srid">The spatial reference id</param>
+        /// <returns>The geometry read, or <c>null</c>.</returns>
         protected virtual Geometry ReadOtherGeometry(uint geometryType,
             BinaryReader reader, CoordinateSystem coordinateSystem, int srid)
         {
@@ -266,7 +278,7 @@ namespace NetTopologySuite.IO
         ///
         /// </summary>
         /// <param name="reader"></param>
-        protected void ReadByteOrder(BinaryReader reader)
+        private void ReadByteOrder(BinaryReader reader)
         {
             var byteOrder = (ByteOrder)reader.ReadByte();
             if (_isStrict && byteOrder != ByteOrder.BigEndian && byteOrder != ByteOrder.LittleEndian)
@@ -275,7 +287,7 @@ namespace NetTopologySuite.IO
             ((BiEndianBinaryReader)reader).Endianess = byteOrder;
         }
 
-        protected WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, ref int srid)
+        private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, ref int srid)
         {
             uint type = reader.ReadUInt32();
             //Determine coordinate system
@@ -310,6 +322,12 @@ namespace NetTopologySuite.IO
             return (WKBGeometryTypes)((type & 0xffff) % 1000);
         }
 
+        /// <summary>
+        /// Computes a reasonable value for the number of coordinates to read.
+        /// </summary>
+        /// <param name="stream">The stream</param>
+        /// <param name="cs">The coordinate system.</param>
+        /// <returns>A number</returns>
         protected int ReasonableNumPoints(Stream stream, CoordinateSystem cs)
         {
             int remainingBytes = (int)(stream.Length - stream.Position) - 4;
@@ -331,6 +349,14 @@ namespace NetTopologySuite.IO
             return remainingBytes / size;
         }
 
+        /// <summary>
+        /// Reads an <see cref="int"/> field and checks if the value is reasonable.
+        /// </summary>
+        /// <remarks>A value is reasonable if it is not negative and less than or equal to <paramref name="reasonableNumField"/>.</remarks>
+        /// <param name="reader">The reader</param>
+        /// <param name="fieldName">The name of the field</param>
+        /// <param name="reasonableNumField">A reasonable value</param>
+        /// <returns>The value read if it is reasonable, otherwise <see cref="ParseException"/> is thrown.</returns>
         protected int ReadNumField(BinaryReader reader, string fieldName, int reasonableNumField = int.MaxValue)
         {
             // num field is unsigned int, but int should do
