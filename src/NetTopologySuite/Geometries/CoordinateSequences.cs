@@ -199,6 +199,37 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Test whether two <c>Coordinate</c>s in two <c>CoordinateSequence</c>s are equal.<br/>
+        /// To be equal, they do not need to be of the same dimension,
+        /// but the ordinate values for the smallest dimension of the two
+        /// must be equal.
+        /// Two <c>NaN</c> ordinates values are considered to be equal.
+        /// </summary>
+        /// <param name="sequence1">The first sequence</param>
+        /// <param name="index1">The index of the coordinate on <paramref name="sequence1"/></param>
+        /// <param name="sequence2">The second sequence</param>
+        /// <param name="index2">The index of the coordinate on <paramref name="sequence2"/></param>
+        /// <returns></returns>
+        public static bool IsEqualAt(CoordinateSequence sequence1, int index1, CoordinateSequence sequence2, int index2)
+        {
+            if (index1 < 0 || sequence1.Count <= index1)
+                throw new ArgumentOutOfRangeException(nameof(index1));
+            if (index2 < 0 || sequence2.Count <= index2)
+                throw new ArgumentOutOfRangeException(nameof(index2));
+
+            int numDimensions = Math.Min(sequence1.Dimension, sequence2.Dimension);
+            for (int dimension = 0; dimension < numDimensions; dimension++)
+            {
+                double v1 = sequence1.GetOrdinate(index1, dimension);
+                double v2 = sequence2.GetOrdinate(index2, dimension);
+                if (!v1.Equals(v2))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Creates a string representation of a <see cref="CoordinateSequence"/>.
         /// The format is:
         /// <para>
@@ -361,6 +392,51 @@ namespace NetTopologySuite.Geometries
                 }
             }
             return -1;
+        }
+
+        /// <summary>
+        /// Gets a value indicating the index of the first coordinate in the sequence.
+        /// </summary>
+        /// <remarks>The returned value is either <c>0</c> or, in case the sequence is empty, <c>-1</c></remarks>.
+        /// <param name="sequence">The sequence</param>
+        /// <returns>An index</returns>
+        public static int FirstIndex(this CoordinateSequence sequence)
+        {
+            return sequence.Count == 0 ? -1 : 0;
+        }
+
+        /// <summary>
+        /// Gets a value indicating the index of the last coordinate in the sequence.
+        /// </summary>
+        /// <remarks>The returned value is either <c><see cref="CoordinateSequence.Count"/> - 1</c> or, in case the sequence is empty, <c>-1</c></remarks>.
+        /// <param name="sequence">The sequence</param>
+        /// <returns>An index</returns>
+        public static int LastIndex(this CoordinateSequence sequence)
+        {
+            return sequence.Count - 1;
+        }
+
+        /// <summary>
+        /// Gets the first coordinate in the sequence.
+        /// </summary>
+        /// <remarks>The returned value is either a <see cref="Coordinate"/> or, in case the sequence is empty, <c>null</c></remarks>.
+        /// <param name="sequence">The sequence</param>
+        /// <returns>A coordinate</returns>
+        public static Coordinate First(this CoordinateSequence sequence)
+        {
+            int index = sequence.FirstIndex();
+            return index < 0 ? null : sequence.GetCoordinate(index);
+        }
+
+        /// <summary>
+        /// Gets the last coordinate in the sequence.
+        /// </summary>
+        /// <remarks>The returned value is either a <see cref="Coordinate"/> or, in case the sequence is empty, <c>null</c></remarks>.
+        /// <returns>A coordinate</returns>
+        public static Coordinate Last(this CoordinateSequence sequence)
+        {
+            int index = sequence.LastIndex();
+            return index < 0 ? null : sequence.GetCoordinate(index);
         }
     }
 }

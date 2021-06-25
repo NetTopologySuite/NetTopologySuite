@@ -728,9 +728,12 @@ namespace NetTopologySuite.Geometries
         }
 
         [OnDeserialized]
-        protected void OnDeserialized(StreamingContext context)
+        protected virtual void OnDeserialized(StreamingContext context)
         {
-            _services = NtsGeometryServices.Instance;
+            if (!(context.Context is NtsGeometryServices services))
+                services = NtsGeometryServices.Instance;
+
+            _services = services;
         }
     }
 }

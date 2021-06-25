@@ -424,7 +424,11 @@ namespace NetTopologySuite.Geometries
         ///<inheritdoc cref="Geometry.CompareToSameClass(object, IComparer{CoordinateSequence})"/>
         protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
-            var gc = (GeometryCollection) o;
+            if (!(o is GeometryCollection gc))
+            {
+                Assert.IsTrue(false, out var ex, "Not a GeometryCollection");
+                throw ex;
+            }
 
             int n1 = NumGeometries;
             int n2 = gc.NumGeometries;

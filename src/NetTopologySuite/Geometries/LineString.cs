@@ -22,13 +22,13 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// </remarks>
     [Serializable]
-    public class LineString : Geometry, ILineal
+    public class LineString : Curve
     {
 
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly LineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
+        public static readonly LineString Empty = new GeometryFactory().CreateLineString();
 
         /// <summary>
         /// The points of this <c>LineString</c>.
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries
             : base(factory)
         {
             if (points == null)
-                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+                points = factory.CoordinateSequenceFactory.Create(0, Ordinates.XY);
             if (points.Count == 1)
                 throw new ArgumentException("Invalid number of points in LineString (found "
                                             + points.Count + " - must be 0 or >= 2)");
@@ -145,25 +145,6 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override Dimension Dimension => Dimension.Curve;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                if (IsClosed)
-                {
-                    return Dimension.False;
-                }
-                return Dimension.Point;
-            }
-        }
 
         /// <summary>
         ///
@@ -188,7 +169,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the start point of this <c>LINESTRING</c>
         /// </summary>
-        public Point StartPoint
+        public sealed override Point StartPoint
         {
             get
             {
@@ -201,7 +182,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the end point of this <c>LINESTRING</c>
         /// </summary>
-        public Point EndPoint
+        public sealed override Point EndPoint
         {
             get
             {
@@ -214,7 +195,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating if this <c>LINESTRING</c> is closed.
         /// </summary>
-        public virtual bool IsClosed
+        public override bool IsClosed
         {
             get
             {
@@ -223,11 +204,6 @@ namespace NetTopologySuite.Geometries
                 return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating if this <c>LINESTRING</c> forms a ring.
-        /// </summary>
-        public bool IsRing => IsClosed && IsSimple;
 
         /// <summary>
         /// Returns the name of this object's interface.
@@ -459,39 +435,54 @@ namespace NetTopologySuite.Geometries
         /// <inheritdoc cref="Geometry.IsEquivalentClass"/>
         protected override bool IsEquivalentClass(Geometry other)
         {
-            return other is LineString;
+            return other is Curve;
         }
 
         /// <inheritdoc cref="Geometry.CompareToSameClass(object)"/>
         protected internal override int CompareToSameClass(object o)
         {
-            Assert.IsTrue(o is LineString);
-
-            var line = (LineString)o;
-            // MD - optimized implementation
-            int i = 0;
-            int j = 0;
-            while (i < _points.Count && j < line.CoordinateSequence.Count)
+            Assert.IsTrue(o is Curve, "Not a Curve");
+            if (o is LineString line)
             {
-                int comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
-                if (comparison != 0)
-                    return comparison;
-                i++;
-                j++;
+                // MD - optimized implementation
+                int i = 0;
+                int j = 0;
+                while (i < _points.Count && j < line.CoordinateSequence.Count)
+                {
+                    int comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
+                    if (comparison != 0)
+                        return comparison;
+                    i++;
+                    j++;
+                }
+
+                if (i < _points.Count)
+                    return 1;
+                if (j < line.CoordinateSequence.Count)
+                    return -1;
+                return 0;
             }
-            if (i < _points.Count)
-                return 1;
-            if (j < line.CoordinateSequence.Count)
-                return -1;
-            return 0;
+
+            if (o is ILinearizable<LineString> linearizable)
+                return CompareToSameClass(linearizable.Linearize());
+
+            Assert.IsTrue(false, out var ex ,"Can't be linearized to a LineString");
+            throw ex;
         }
 
         /// <inheritdoc cref="Geometry.CompareToSameClass(object, IComparer{CoordinateSequence})"/>
         protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
-            Assert.IsTrue(o is LineString);
-            var line = (LineString)o;
-            return comp.Compare(_points, line.CoordinateSequence);
+            Assert.IsTrue(o is Curve, "Not an ICurve");
+            if (o is LineString line)
+                return comp.Compare(_points, line.CoordinateSequence);
+
+            if (o is ILinearizable<LineString> linearizable)
+                return CompareToSameClass(linearizable.Linearize());
+
+            Assert.IsTrue(false, out var ex, "Can't be linearized to a LineString");
+            throw ex;
+
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

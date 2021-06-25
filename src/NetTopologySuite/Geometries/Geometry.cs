@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Buffer;
@@ -188,7 +187,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The factory for this point.</returns>
         public GeometryFactory Factory => _factory;
 
-        /**
+        /*
          * An object reference which can be used to carry ancillary data defined
          * by the client.
          */
@@ -213,6 +212,11 @@ namespace NetTopologySuite.Geometries
         /// The bounding box of this <c>Geometry</c>.
         /// </summary>
         private Envelope _envelope;
+
+        /// <summary>
+        /// Cached result of <see cref="IsSimple"/>.
+        /// </summary>
+        private bool? _isSimple;
 
         /// <summary>
         /// Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
@@ -282,14 +286,27 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if any of the <c>Geometry</c>s
         /// <c>IsEmpty</c> methods return <c>false</c>.
         /// </returns>
+        [Obsolete]
         protected static bool HasNonEmptyElements(Geometry[] geometries)
+        {
+            return HasNonEmptyElements<Geometry>(geometries);
+        }
+
+        /// <summary>
+        /// Returns true if the array contains any non-empty <c>Geometry</c>s.
+        /// </summary>
+        /// <param name="geometries"> an array of <c>Geometry</c>s; no elements may be <c>null</c></param>
+        /// <returns>
+        /// <c>true</c> if any of the <c>Geometry</c>s
+        /// <c>IsEmpty</c> methods return <c>false</c>.
+        /// </returns>
+        protected static bool HasNonEmptyElements<T>(IEnumerable<T> geometries) where T: Geometry
         {
             foreach (var g in geometries)
                 if (!g.IsEmpty)
                     return true;
             return false;
         }
-
         /// <summary>
         /// Returns true if the array contains any <c>null</c> elements.
         /// </summary>
@@ -421,8 +438,12 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                var isSimpleOp = new IsSimpleOp(this);
-                return isSimpleOp.IsSimple();
+                if (!_isSimple.HasValue)
+                {
+                    var isSimpleOp = new IsSimpleOp(this);
+                    _isSimple = isSimpleOp.IsSimple();
+                }
+                return _isSimple.Value;
             }
         }
 
@@ -646,6 +667,7 @@ namespace NetTopologySuite.Geometries
         public void GeometryChangedAction()
         {
             _envelope = null;
+            _isSimple = null;
         }
 
         /// <summary>
@@ -1219,8 +1241,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public string ToText()
         {
-            var writer = new WKTWriter(3);
-            return writer.Write(this);
+            return Factory.GeometryServices.WKTWriter.Write(this);
         }
 
         /// <summary>
@@ -1240,8 +1261,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The Well-known Binary representation of this <c>Geometry</c>.</returns>
         public byte[] ToBinary()
         {
-            var writer = new WKBWriter();
-            return writer.Write(this);
+            return Factory.GeometryServices.WKBWriter.Write(this);
         }
 
         /// <summary>
@@ -1260,8 +1280,28 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public XmlReader ToGMLFeature()
         {
+            Geometry geomToWrite;
+            switch (this)
+            {
+                case ILinearizable<MultiPolygon> mp:
+                    geomToWrite = mp.Linearize();
+                    break;
+                case ILinearizable<MultiLineString> mls:
+                    geomToWrite = mls.Linearize();
+                    break;
+                case ILinearizable<Polygon> p:
+                    geomToWrite = p.Linearize();
+                    break;
+                case ILinearizable<LineString> ls:
+                    geomToWrite = ls.Linearize();
+                    break;
+                default:
+                    geomToWrite = this;
+                    break;
+            }
+
             var writer = new GMLWriter();
-            return writer.Write(this);
+            return writer.Write(geomToWrite);
         }
 
         /// <summary>
