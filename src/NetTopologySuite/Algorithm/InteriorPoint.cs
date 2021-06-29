@@ -65,9 +65,14 @@ namespace NetTopologySuite.Algorithm
                 return null;
 
             Coordinate interiorPt;
-            //TODO: determine highest non-empty dimension
-            switch (geom.Dimension)
+            //var dim = geom.Dimension;
+            var dim = EffectiveDimension(geom);
+            switch (dim)
             {
+                case Dimension.False:
+                    // This should not happen, but just in case.
+                    return null;
+
                 case Dimension.Point:
                     interiorPt = InteriorPointPoint.GetInteriorPoint(geom);
                     break;
@@ -83,5 +88,31 @@ namespace NetTopologySuite.Algorithm
 
             return interiorPt;
         }
-    }
+        private static Dimension EffectiveDimension(Geometry geom)
+        {
+            var dimFilter = new EffectiveDimensionFilter();
+            geom.Apply(dimFilter);
+            return dimFilter.Dimension;
+        }
+
+        private class EffectiveDimensionFilter : IGeometryFilter
+        {
+            private Dimension _dim = Geometries.Dimension.False;
+
+            public Dimension Dimension { get => _dim; }
+
+
+            public void Filter(Geometry elem)
+            {
+                if (elem is GeometryCollection)
+                    return;
+                if (!elem.IsEmpty)
+                {
+                    var elemDim = elem.Dimension;
+                    if (elemDim > _dim) _dim = elemDim;
+                }
+            }
+        }
+
+}
 }

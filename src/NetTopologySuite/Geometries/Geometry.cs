@@ -777,10 +777,10 @@ namespace NetTopologySuite.Geometries
         /// </list>
         /// </item>
         /// </list>
-        /// For any other combination of dimensions this predicate returns <c>false</c>.
+        /// For the A/A and P/P situations this predicate returns <c>false</c>.
         /// <para>
         /// The SFS defined this predicate only for P/L, P/A, L/L, and L/A situations.
-        /// In order to make the relation symmetric,
+        /// To make the relation symmetric,
         /// NTS extends the definition to apply to L/P, A/P and A/L situations as well.
         /// </para>
         /// </remarks>

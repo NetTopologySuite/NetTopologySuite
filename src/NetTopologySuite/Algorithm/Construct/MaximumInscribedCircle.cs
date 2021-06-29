@@ -6,12 +6,6 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Algorithm.Construct
 {
-    /**
-     * 
-     * 
-     * @author Martin Davis
-     *
-     */
     /// <summary>
     /// Constructs the Maximum Inscribed Circle for a
     /// polygonal <see cref="Geometry"/>, up to a specified tolerance.
