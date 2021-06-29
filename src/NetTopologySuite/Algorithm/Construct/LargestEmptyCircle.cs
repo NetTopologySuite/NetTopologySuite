@@ -32,6 +32,9 @@ namespace NetTopologySuite.Algorithm.Construct
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
+    /// <see cref="MaximumInscribedCircle"/>
+    /// <see cref="InteriorPoint"/>
+    /// <see cref="Centroid"/>
     public class LargestEmptyCircle
     {
         /// <summary>

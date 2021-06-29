@@ -1,4 +1,5 @@
 ﻿using System;
+using NetTopologySuite.Algorithm.Construct;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -7,15 +8,28 @@ namespace NetTopologySuite.Algorithm
     /// Computes an interior point of a <see cref="Geometry"/>.
     /// An interior point is guaranteed to lie in the interior of the Geometry,
     /// if it possible to calculate such a point exactly.
+    /// For collections the interior point is computed for the collection of
+    /// non-empty elements of highest dimension.
     /// Otherwise, the point may lie on the boundary of the geometry.
-    /// <para>
+    /// <para/>
     /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
-    /// </para>
+    /// <h2>Algorithm</h2>
+    /// The point is chosen to be "close to the center" of the geometry.
+    /// The location depends on the dimension of the input:
+    /// <list type="bullet">
+    /// <item><term>Dimension 2</term><description>the interior point is constructed in the middle of the longest interior segment
+    /// of a line bisecting the area.</description></item>
+    /// <item><term>Dimension 1</term><description>the interior point is the interior or boundary vertex closest to the centroid.</description></item>
+    /// <item><term>Dimension 0</term><description>the point is the point closest to the centroid.</description></item>
+    /// </list>
+    /// <see cref="Centroid"/>
+    /// <see cref="MaximumInscribedCircle"/>
+    /// <see cref="LargestEmptyCircle"/>
     /// </summary>
     public static class InteriorPoint
     {
         /// <summary>
-        /// Compute a location of an interior point in a <see cref="Geometry"/>.
+        /// Computes a location of an interior point in a <see cref="Geometry"/>.
         /// <para/>
         /// Handles all geometry types.
         /// </summary>
@@ -35,7 +49,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Compute a location of an interior point in a <see cref="Geometry"/>.
+        /// Computes a location of an interior point in a <see cref="Geometry"/>.
         /// <para/>
         /// Handles all geometry types.
         /// </summary>
@@ -51,6 +65,7 @@ namespace NetTopologySuite.Algorithm
                 return null;
 
             Coordinate interiorPt;
+            //TODO: determine highest non-empty dimension
             switch (geom.Dimension)
             {
                 case Dimension.Point:

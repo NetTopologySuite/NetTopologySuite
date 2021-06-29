@@ -1,4 +1,5 @@
 ﻿using System;
+using NetTopologySuite.Algorithm.Construct;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -6,13 +7,9 @@ namespace NetTopologySuite.Algorithm
 
     /// <summary>
     /// Computes the centroid of a <see cref="Geometry"/> of any dimension.
-    /// If the geometry is nominally of higher dimension,
-    /// but has lower <i>effective</i> dimension
-    /// (i.e. contains only components
-    /// having zero length or area),
-    /// the centroid will be computed as for the equivalent lower-dimension geometry.
-    /// If the input geometry is empty, a
-    /// <c>null</c> Coordinate is returned.
+    /// For collections the centroid is computed for the collection of
+    /// non-empty elements of highest dimension.
+    /// The centroid of an empty geometry is <c>null</c>
     /// </summary>
     /// <remarks>
     /// Algorithm
@@ -33,6 +30,9 @@ namespace NetTopologySuite.Algorithm
     /// </list>
     /// If the input geometries are empty, a <c>null</c> Coordinate is returned.
     /// </remarks>
+    /// <see cref="InteriorPoint"/>
+    /// <see cref="MaximumInscribedCircle"/>
+    /// <see cref="LargestEmptyCircle"/>
     /// <version>1.7</version>
     public class Centroid
     {
