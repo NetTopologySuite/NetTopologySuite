@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace NetTopologySuite.Geometries
 {
@@ -217,6 +218,27 @@ namespace NetTopologySuite.Geometries
                 Y = value.Y;
             }
         }
+
+        /// <summary>Gets a value indicating if the <c>Coordinate</c>
+        /// has valid x- and y ordinate values
+        /// <para/>
+        /// An ordinate value is valid iff it is finite.
+        /// </summary>
+        /// <returns><c>true</c> if the coordinate is valid</returns>
+        /// <see cref="double.IsInfinity"/>
+        /// <see cref="double.IsNaN"/>
+        public bool IsValid 
+        {
+            get
+            {
+                if (!/*double.*/IsFinite(X)) return false;
+                if (!/*double.*/IsFinite(Y)) return false;
+                return true;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsFinite(double value) => !double.IsInfinity(value) && !double.IsNaN(value);
 
         /// <summary>
         /// Returns whether the planar projections of the two <c>Coordinate</c>s are equal.

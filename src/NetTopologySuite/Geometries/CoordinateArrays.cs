@@ -314,10 +314,10 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Returns whether Equals returns true for any two consecutive
-        /// coordinates in the given array.
+        /// Returns whether <see cref="Coordinate.Equals(object)"/> returns true
+        /// for any two consecutive coordinates in the given array.
         /// </summary>
-        /// <param name="coord">Array of Coordinates.</param>
+        /// <param name="coord">An array of <c>Coordinate</c>s.</param>
         /// <returns>true if coord has repeated points; false otherwise.</returns>
         public static bool HasRepeatedPoints(Coordinate[] coord)
         {
@@ -348,13 +348,56 @@ namespace NetTopologySuite.Geometries
         /// constructs a new array containing no repeated points.
         /// Otherwise, returns the argument.
         /// </summary>
-        /// <param name="coord"></param>
-        /// <returns></returns>
+        /// <param name="coord">An array of <c>Coordinate</c>s</param>
+        /// <returns>The array with repeated coordinates removed</returns>
         public static Coordinate[] RemoveRepeatedPoints(Coordinate[] coord)
         {
             if (!HasRepeatedPoints(coord))
                 return coord;
             var coordList = new CoordinateList(coord, false);
+            return coordList.ToCoordinateArray();
+        }
+
+        /// <summary>
+        /// Tests whether an array has any repeated or invalid coordinates.
+        /// </summary>
+        /// <param name="coord">An array of coordinates</param>
+        /// <returns><c>true</c> if the array contains repeated or invalid coordinates</returns>
+        /// <see cref="Coordinate.IsValid"/>
+        public static bool HasRepeatedOrInvalid(Coordinate[] coord)
+        {
+            if (!coord[0].IsValid)
+                return true;
+
+            for (int i = 1; i < coord.Length; i++)
+            {
+                if (!coord[i].IsValid)
+                    return true;
+                if (coord[i - 1].Equals(coord[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// If the coordinate array argument has repeated or invalid points,
+        /// constructs a new array containing no repeated points.
+        /// Otherwise, returns the argument.
+        /// </summary>
+        /// <param name="coord">An array of coordinates</param>
+        /// <returns>The array with repeated or invalid coordinates removed.</returns>
+        /// <see cref="HasRepeatedOrInvalid"/>
+        /// <see cref="Coordinate.IsValid"/>
+        public static Coordinate[] RemoveRepeatedAndInvalidPoints(Coordinate[] coord)
+        {
+            if (!HasRepeatedOrInvalid(coord)) return coord;
+            var coordList = new CoordinateList();
+            for (int i = 0; i < coord.Length; i++) {
+                if (!coord[i].IsValid) continue;
+                coordList.Add(coord[i], false);
+            }
             return coordList.ToCoordinateArray();
         }
 

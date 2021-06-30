@@ -76,6 +76,14 @@ namespace NetTopologySuite.Operation.Buffer
             set => _workingNoder = value;
         }
 
+        /// <summary>
+        /// Sets whether the offset curve is generated
+        /// using the inverted orientation of input rings.
+        /// This allows generating a buffer(0) polygon from the smaller lobes
+        /// of self-crossing rings.
+        /// </summary>
+        public bool InvertOrientation { get; set; }
+
         public Geometry Buffer(Geometry g, double distance)
         {
             var precisionModel = _workingPrecisionModel;
@@ -88,6 +96,7 @@ namespace NetTopologySuite.Operation.Buffer
             var curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
 
             var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+            curveSetBuilder.InvertOrientation = InvertOrientation;
 
             var bufferSegStrList = curveSetBuilder.GetCurves();
 

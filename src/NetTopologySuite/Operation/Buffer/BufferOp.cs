@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 using NetTopologySuite.Noding;
@@ -178,6 +179,66 @@ namespace NetTopologySuite.Operation.Buffer
             return geomBuf;
         }
 
+        /// <summary>
+        /// Buffers a geometry with distance zero.
+        /// The result can be computed using the maximum-signed-area orientation,
+        /// or by combining both orientations.
+        /// <para/>
+        /// This can be used to fix an invalid polygonal geometry to be valid
+        /// (i.e.with no self-intersections).
+        /// For some uses(e.g.fixing the result of a simplification)
+        /// a better result is produced by using only the max-area orientation.
+        /// Other uses (e.g.fixing geometry) require both orientations to be used.
+        /// <para/>
+        /// This function is for INTERNAL use only.
+        /// </summary>
+        /// <param name="geom">The polygonal geometry to buffer by zero</param>
+        /// <param name="isBothOrientations">A flag indicating if both orientations of input rings should be used</param>
+        /// <returns>The buffered polygonal geometry</returns>
+        internal static Geometry BufferByZero(Geometry geom, bool isBothOrientations)
+        {
+            //--- compute buffer using maximum signed-area orientation
+            var buf0 = geom.Buffer(0);
+            if (!isBothOrientations) return buf0;
+
+            //-- compute buffer using minimum signed-area orientation
+            var op = new BufferOp(geom);
+            op.InvertOrientation = true;
+            var buf0Inv = op.GetResultGeometry(0);
+
+            //-- the buffer results should be non-adjacent, so combining is safe
+            return Combine(buf0, buf0Inv);
+        }
+
+        /// <summary>
+        /// Combines the elements of two polygonal geometries together.
+        /// The input geometries must be non-adjacent, to avoid
+        /// creating an invalid result.
+        /// </summary>
+        /// <param name="poly0">A polygonal geometry (which may be empty)</param>
+        /// <param name="poly1">Another polygonal geometry (which may be empty)</param>
+        /// <returns>A combined polygonal geometry</returns>
+        private static Geometry Combine(Geometry poly0, Geometry poly1)
+        {
+            // short-circuit - handles case where geometry is valid
+            if (poly1.IsEmpty) return poly0;
+            if (poly0.IsEmpty) return poly1;
+
+            var polys = new List<Polygon>();
+            ExtractPolygons(poly0, polys);
+            ExtractPolygons(poly1, polys);
+            if (polys.Count == 1) return polys[0];
+            return poly0.Factory.CreateMultiPolygon(GeometryFactory.ToPolygonArray(polys));
+        }
+
+        private static void ExtractPolygons(Geometry poly0, ICollection<Polygon> polys)
+        {
+            for (int i = 0; i < poly0.NumGeometries; i++)
+            {
+                polys.Add((Polygon)poly0.GetGeometryN(i));
+            }
+        }
+
         private readonly Geometry _argGeom;
         private double _distance;
 
@@ -206,6 +267,8 @@ namespace NetTopologySuite.Operation.Buffer
             _argGeom = g;
             _bufParams = bufParams;
         }
+
+        private bool InvertOrientation { get; set; }
 
         /// <summary>
         /// Sets the number of segments used to approximate a angle fillet
@@ -277,7 +340,7 @@ namespace NetTopologySuite.Operation.Buffer
             try
             {
                 // use fast noding by default
-                var bufBuilder = new BufferBuilder(_bufParams);
+                var bufBuilder = CreateBufferBuilder();
                 _resultGeometry = bufBuilder.Buffer(_argGeom, _distance);
             }
             catch (Exception ex)
@@ -288,6 +351,12 @@ namespace NetTopologySuite.Operation.Buffer
                 // testing ONLY - propagate exception
                 //throw ex;
             }
+        }
+        private BufferBuilder CreateBufferBuilder()
+        {
+            var bufBuilder = new BufferBuilder(_bufParams);
+            bufBuilder.InvertOrientation = InvertOrientation;
+            return bufBuilder;
         }
 
         private void BufferFixedPrecision(PrecisionModel fixedPM)
@@ -308,7 +377,7 @@ namespace NetTopologySuite.Operation.Buffer
             var snapNoder = new SnapRoundingNoder(new PrecisionModel(1.0));
             var noder = new ScaledNoder(snapNoder, fixedPM.Scale);
 
-            var bufBuilder = new BufferBuilder(_bufParams);
+            var bufBuilder = CreateBufferBuilder();
             bufBuilder.WorkingPrecisionModel = fixedPM;
             bufBuilder.Noder = noder;
             // this may throw an exception, if robustness errors are encountered

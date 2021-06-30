@@ -34,6 +34,33 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the offset curve is generated
+        /// using the inverted orientation of input rings.
+        /// This allows generating a buffer(0) polygon from the smaller lobes
+        /// of self-crossing rings.
+        /// </summary>
+        public bool InvertOrientation { get; set; }
+
+        /// <summary>
+        /// Computes orientation of a ring using a signed-area orientation test.
+        /// For invalid (self-crossing) rings this ensures the largest enclosed area
+        /// is taken to be the interior of the ring.
+        /// This produces a more sensible result when
+        /// used for repairing polygonal geometry via buffer-by-zero.
+        /// For buffer  use the lower robustness of orientation-by-area
+        /// doesn't matter, since narrow or flat rings
+        /// produce an acceptable offset curve for either orientation.
+        /// </summary>
+        /// <param name="coord">The ring coordinates</param>
+        /// <returns>true if the ring is CCW</returns>
+        private bool IsRingCCW(Coordinate[] coord)
+        {
+            bool isCCW = Orientation.IsCCWArea(coord);
+            //--- invert orientation if required
+            if (InvertOrientation) return !isCCW;
+            return isCCW;
+        }
+        /// <summary>
         /// Computes the set of raw offset curves for the buffer.
         /// Each offset curve has an attached {Label} indicating
         /// its left and right location.
@@ -112,6 +139,9 @@ namespace NetTopologySuite.Operation.Buffer
             if (_distance <= 0.0)
                 return;
             var coord = p.Coordinates;
+            // skip if coordinate is invalid
+            if (coord.Length >= 1 && !coord[0].IsValid)
+                return;
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
             AddCurve(curve, Location.Exterior, Location.Interior);
         }
@@ -120,7 +150,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             if (_curveBuilder.IsLineOffsetEmpty(_distance)) return;
 
-            var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            var coord = Clean(line.Coordinates);
             /*
              * Rings (closed lines) are generated with a continuous curve, 
              * with no end arcs. This produces better quality linework, 
@@ -141,6 +171,15 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
+        /// Keeps only valid coordinates, and removes repeated points.
+        /// </summary>
+        /// <param name="coords">The coordinates to clean</param>
+        /// <returns>An array of clean coordinates</returns>
+        private static Coordinate[] Clean(Coordinate[] coords)
+        {
+            return CoordinateArrays.RemoveRepeatedAndInvalidPoints(coords);
+        }
+        /// <summary>
         ///
         /// </summary>
         /// <param name="p"></param>
@@ -155,7 +194,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
 
             var shell = p.Shell;
-            var shellCoord = CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
+            var shellCoord = Clean(shell.Coordinates);
             // optimization - don't bother computing buffer
             // if the polygon would be completely eroded
             if (_distance < 0.0 && IsErodedCompletely(shellCoord, _distance))
@@ -170,7 +209,7 @@ namespace NetTopologySuite.Operation.Buffer
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 var hole = (LinearRing)p.GetInteriorRingN(i);
-                var holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
+                var holeCoord = Clean(hole.Coordinates);
 
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
@@ -218,18 +257,8 @@ namespace NetTopologySuite.Operation.Buffer
 
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;
-            /*
-             * Use area-based orientation test, 
-             * to ensure that for invalid rings the largest enclosed area
-             * is used to determine orientation.
-             * This produces a more sensible result especially when
-             * used for validifying polygonal geometry via buffer-by-zero.
-             * For buffering use, the lower robustness of ccw-by-area
-             * doesn't matter, since very narrow or flat rings
-             * produce an acceptable offset curve for either orientation.
-             */
-            if (coord.Length >= LinearRing.MinimumValidSize
-                && Orientation.IsCCWArea(coord))
+            bool isCCW = IsRingCCW(coord);
+            if (coord.Length >= LinearRing.MinimumValidSize && isCCW)
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;
