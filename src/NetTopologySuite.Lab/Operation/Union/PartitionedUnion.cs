@@ -18,9 +18,9 @@ namespace NetTopologySuite.Operation.Union
     /// It also has the advantage that it does not alter input geometries
     /// which do not intersect any other input geometry.
     /// <para/>
-    /// Non-sparse sets will work, but may be slower than using cascaded union.
+    /// Non-sparse sets are computed correctly, but may be slower than using cascaded union.
     /// </summary>
-    /// <author>mdavis</author>
+    /// <author>Martin Davis</author>
     public class PartitionedUnion
     {
         public static Geometry Union(Geometry geoms)
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Operation.Union
             return CascadedPolygonUnion.Union(setGeoms);
         }
 
-        private class SPRelation : SpatialPartition.IRelation
+        private class SPRelation : SpatialPartition.IEquivalenceRelation
         {
             private readonly Geometry[] _inputPolys;
 

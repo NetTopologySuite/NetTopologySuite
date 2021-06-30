@@ -46,7 +46,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="i">An item index</param>
         /// <param name="j">Another item index</param>
         /// <returns><c>true</c> if items are in the same subset</returns>
-        public bool IsSameSubset(int i, int j)
+        public bool IsInSameSubset(int i, int j)
         {
             return FindRoot(i) == FindRoot(j);
         }
