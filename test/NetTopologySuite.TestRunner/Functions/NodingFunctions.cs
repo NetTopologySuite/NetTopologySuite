@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
+using NetTopologySuite.Noding.Snap;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Precision;
 using NetTopologySuite.Utilities;
@@ -14,7 +16,7 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static bool IsNodingValid(Geometry geom)
         {
-            var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var nv = new FastNodingValidator(SegmentStringUtil.ExtractBasicSegmentStrings(geom));
             return nv.IsValid;
         }
 
@@ -28,7 +30,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static Geometry FindOneNode(Geometry geom)
         {
-            var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var nv = new FastNodingValidator(SegmentStringUtil.ExtractBasicSegmentStrings(geom));
             bool temp = nv.IsValid;
             var intPts = nv.Intersections;
             if (intPts.Count == 0) return null;
@@ -37,8 +39,10 @@ namespace Open.Topology.TestRunner.Functions
 
         public static Geometry FindNodes(Geometry geom)
         {
-            var intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return FunctionsUtil.GetFactoryOrDefault((Geometry)null).CreateMultiPointFromCoords(CoordinateArrays.ToCoordinateArray(intPts));
+            var intPts = FastNodingValidator.ComputeIntersections(
+                SegmentStringUtil.ExtractBasicSegmentStrings(geom));
+            return FunctionsUtil.GetFactoryOrDefault((Geometry)null)
+                .CreateMultiPointFromCoords(CoordinateArrays.ToCoordinateArray(intPts));
         }
 
         private static Coordinate[] Dedup(IList<Coordinate> ptsList)
@@ -73,7 +77,7 @@ namespace Open.Topology.TestRunner.Functions
         private static void ProcessNodes(Geometry geom, NodingIntersectionFinder intFinder)
         {
             var noder = new MCIndexNoder(intFinder);
-            noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            noder.ComputeNodes(SegmentStringUtil.ExtractBasicSegmentStrings(geom));
         }
 
         public static Geometry MCIndexNodingWithPrecision(Geometry geom, double scaleFactor)
@@ -95,57 +99,32 @@ namespace Open.Topology.TestRunner.Functions
             return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
 
-        /// <summary>
-        /// Reduces precision pointwise, then snap-rounds.
-        /// Note that output set may not contain non-unique linework
-        /// (and thus cannot be used as input to Polygonizer directly).
-        /// UnaryUnion is one way to make the linework unique.
-        /// </summary>
-        /// <param name="geom">A geometry containing linework to node</param>
-        /// <param name="scaleFactor">The precision model scale factor to use</param>
-        /// <returns>The noded, snap-rounded linework</returns>
-        public static Geometry SnapRoundWithPrecision(
-            Geometry geom, double scaleFactor)
+
+        public static Geometry snappingNoder(Geometry geom, Geometry geom2, double snapDistance)
         {
-            var pm = new PrecisionModel(scaleFactor);
-
-            var roundedGeom = GeometryPrecisionReducer.ReducePointwise(geom, pm);
-
-            var geomList = new List<Geometry>();
-            geomList.Add(roundedGeom);
-
-            var noder = new GeometryNoder(pm);
-            var lines = noder.Node(geomList);
-
-            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines);
-        }
-        /// <summary>
-        /// Runs a ScaledNoder on input.
-        /// Input vertices should be rounded to precision model.
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <param name="scaleFactor"></param>
-        /// <returns>The noded geometry</returns>
-        public static Geometry ScaledNoding(Geometry geom, double scaleFactor)
-        {
-            var segs = CreateSegmentStrings(geom);
-            var fixedPM = new PrecisionModel(scaleFactor);
-            var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
-                fixedPM.Scale);
+            var segs = SegmentStringUtil.ExtractNodedSegmentStrings(geom);
+            if (geom2 != null) {
+                foreach (var seg in SegmentStringUtil.ExtractNodedSegmentStrings(geom2))
+                    segs.Add(seg);
+            }
+            var noder = new SnappingNoder(snapDistance);
             noder.ComputeNodes(segs);
             var nodedSegStrings = noder.GetNodedSubstrings();
-            return SegmentStringUtil.ToGeometry(nodedSegStrings, geom.Factory);
+            return SegmentStringUtil.ToGeometry(nodedSegStrings, FunctionsUtil.GetFactoryOrDefault(geom));
         }
 
-        private static List<ISegmentString> CreateSegmentStrings(Geometry geom)
+        public static Geometry snapRoundingNoder(Geometry geom, Geometry geom2, double scaleFactor)
         {
-            var segs = new List<ISegmentString>();
-            var lines = LinearComponentExtracter.GetLines(geom);
-            foreach (LineString line in lines)
+            var segs = SegmentStringUtil.ExtractNodedSegmentStrings(geom);
+            if (geom2 != null)
             {
-                segs.Add(new BasicSegmentString(line.Coordinates, null));
+                foreach (var seg in SegmentStringUtil.ExtractNodedSegmentStrings(geom2))
+                    segs.Add(seg);
             }
-            return segs;
-        }
-    }
+            var pm = new PrecisionModel(scaleFactor);
+            var noder = new SnapRoundingNoder(pm);
+            noder.ComputeNodes(segs);
+            var nodedSegStrings = noder.GetNodedSubstrings();
+            return SegmentStringUtil.ToGeometry(nodedSegStrings, FunctionsUtil.GetFactoryOrDefault(geom));
+        }    }
 }

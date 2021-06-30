@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
@@ -13,8 +15,8 @@ namespace NetTopologySuite.Noding
     {
         /// <summary>
         /// Extracts all linear components from a given <see cref="Geometry"/>
-        /// to <see cref="ISegmentString"/>s.
-        /// The <see cref="ISegmentString"/> data item is set to be the source <see cref="Geometry"/>.
+        /// to <see cref="ISegmentString"/>s.<br/>
+        /// The <see cref="ISegmentString"/>'s data item is set to be the source <see cref="Geometry"/>.
         /// </summary>
         /// <param name="geom">The <see cref="Geometry"/> to extract from.</param>
         /// <returns>a list of <see cref="ISegmentString"/>s.</returns>
@@ -25,8 +27,8 @@ namespace NetTopologySuite.Noding
 
         /// <summary>
         /// Extracts all linear components from a given <see cref="Geometry"/>
-        /// to <see cref="ISegmentString"/>s.
-        /// The <see cref="ISegmentString"/> data item is set to be the source <see cref="Geometry"/>.
+        /// to <see cref="NodedSegmentString"/>s.<br/>
+        /// The <see cref="NodedSegmentString"/>'s data item is set to be the source <see cref="Geometry"/>.
         /// </summary>
         /// <param name="geom">The <see cref="Geometry"/> to extract from.</param>
         /// <returns>a list of <see cref="ISegmentString"/>s.</returns>
@@ -38,6 +40,24 @@ namespace NetTopologySuite.Noding
             {
                 var pts = line.Coordinates;
                 segStr.Add(new NodedSegmentString(pts, geom));
+            }
+            return segStr;
+        }
+
+        /// <summary>
+        /// Extracts all linear components from a given <see cref="Geometry"/> to <see cref="BasicSegmentString"/>s.
+        /// The <see cref="BasicSegmentString"/>'s data item is set to be the source Geometry.
+        /// </summary>
+        /// <param name="geom">The <see cref="Geometry"/> to extract from.</param>
+        /// <returns>a list of <see cref="ISegmentString"/>s.</returns>
+        public static IList<ISegmentString> ExtractBasicSegmentStrings(Geometry geom)
+        {
+            var segStr = new List<ISegmentString>();
+            var lines = LinearComponentExtracter.GetLines(geom);
+            foreach (var line in lines)
+            {
+                var pts = line.Coordinates;
+                segStr.Add(new BasicSegmentString(pts, geom));
             }
             return segStr;
         }
