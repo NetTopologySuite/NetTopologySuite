@@ -852,7 +852,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendMultiPointText(MultiPoint multiPoint, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            if (multiPoint.IsEmpty)
+            if (multiPoint.NumGeometries == 0)
                 writer.Write(WKTConstants.EMPTY);
             else
             {
@@ -883,7 +883,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendMultiLineStringText(MultiLineString multiLineString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            if (multiLineString.IsEmpty)
+            if (multiLineString.NumGeometries == 0)
                 writer.Write(WKTConstants.EMPTY);
             else
             {
@@ -917,7 +917,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendMultiPolygonText(MultiPolygon multiPolygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            if (multiPolygon.IsEmpty)
+            if (multiPolygon.NumGeometries == 0)
                 writer.Write(WKTConstants.EMPTY);
             else
             {
@@ -950,7 +950,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
         private void AppendGeometryCollectionText(GeometryCollection geometryCollection, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
         {
-            if (geometryCollection.IsEmpty)
+            if (geometryCollection.NumGeometries == 0)
                 writer.Write(WKTConstants.EMPTY);
             else
             {

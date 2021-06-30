@@ -117,6 +117,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             Assert.AreEqual("MULTIPOINT ((10 10), (20 20))", _writer.Write(_reader.Read("MULTIPOINT ((10 10), (20 20))")));
             Assert.AreEqual("MULTIPOINT EMPTY", _writer.Write(_reader.Read("MULTIPOINT EMPTY")));
+            Assert.AreEqual("MULTIPOINT (EMPTY, EMPTY)", _writer.Write(_reader.Read("MULTIPOINT (EMPTY, EMPTY)")));
         }
 
         [Test]
@@ -124,6 +125,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             Assert.AreEqual("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))", _writer.Write(_reader.Read("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))")));
             Assert.AreEqual("MULTILINESTRING EMPTY", _writer.Write(_reader.Read("MULTILINESTRING EMPTY")));
+            Assert.AreEqual("MULTILINESTRING (EMPTY, EMPTY)", _writer.Write(_reader.Read("MULTILINESTRING (EMPTY, EMPTY)")));
         }
 
         [Test]
@@ -131,6 +133,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             Assert.AreEqual("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))", _writer.Write(_reader.Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))")));
             Assert.AreEqual("MULTIPOLYGON EMPTY", _writer.Write(_reader.Read("MULTIPOLYGON EMPTY")));
+            Assert.AreEqual("MULTIPOLYGON (EMPTY, EMPTY)", _writer.Write(_reader.Read("MULTIPOLYGON (EMPTY, EMPTY)")));
         }
 
         [Test]
@@ -140,6 +143,15 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))")));
             Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))")));
             Assert.AreEqual("GEOMETRYCOLLECTION EMPTY", _writer.Write(_reader.Read("GEOMETRYCOLLECTION EMPTY")));
+        }
+
+        [Test]
+        public void TestReadGeometryCollectionEmptyWithElements()
+        {
+            Assert.AreEqual("GEOMETRYCOLLECTION (POINT EMPTY)",
+                _writer.Write(_reader.Read("GEOMETRYCOLLECTION ( POINT EMPTY )")));
+            Assert.AreEqual("GEOMETRYCOLLECTION (POINT EMPTY, LINESTRING EMPTY)",
+                _writer.Write(_reader.Read("GEOMETRYCOLLECTION ( POINT EMPTY, LINESTRING EMPTY )")));
         }
 
         [Test]

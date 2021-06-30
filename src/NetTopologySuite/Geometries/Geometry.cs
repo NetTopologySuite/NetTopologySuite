@@ -436,6 +436,10 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Tests whether the set of points covered in this <c>Geometry</c> is empty.
+        /// <para/>
+        /// Note this test is for topological emptiness, not structural emptiness.<br/>
+        /// A collection containing only empty elements is reported as empty.<br/>
+        /// To check structural emptiness use <see cref="NumGeometries"/>.
         /// </summary>
         /// <returns><c>true</c> if this <c>Geometry</c> does not cover any points.</returns>
         public abstract bool IsEmpty { get; }

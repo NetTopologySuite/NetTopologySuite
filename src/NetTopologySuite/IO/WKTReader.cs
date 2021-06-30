@@ -827,7 +827,7 @@ namespace NetTopologySuite.IO
             if (IsOldNtsMultiPointSyntaxAllowed)
             {
                 string nextWord = LookAheadWord(tokens);
-                if (nextWord != "(")
+                if (nextWord != "(" && nextWord != WKTConstants.EMPTY)
                 {
                     return factory.CreateMultiPoint(
                         GetCoordinateSequenceOldMultiPoint(factory, tokens, ordinateFlags));
