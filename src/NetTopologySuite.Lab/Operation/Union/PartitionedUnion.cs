@@ -6,6 +6,21 @@ using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Operation.Union
 {
+    /// <summary>
+    /// Unions a set of polygonal geometries by partitioning them
+    /// into connected sets of polygons.<br/>
+    /// This works best for a <i>sparse</i> set of polygons.
+    /// Sparse means that if the geometries are partioned
+    /// into connected sets, the number of sets
+    /// is a significant fraction of the total number of geometries.<br/>
+    /// The algorithm used provides performance and memory advantages
+    /// over the <see cref="CascadedPolygonUnion"/> algorithm.<br/>
+    /// It also has the advantage that it does not alter input geometries
+    /// which do not intersect any other input geometry.
+    /// <para/>
+    /// Non-sparse sets will work, but may be slower than using cascaded union.
+    /// </summary>
+    /// <author>mdavis</author>
     public class PartitionedUnion
     {
         public static Geometry Union(Geometry geoms)

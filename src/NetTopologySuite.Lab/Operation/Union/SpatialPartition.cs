@@ -6,7 +6,7 @@ namespace NetTopologySuite.Operation.Union
 {
     /// <summary>
     /// Computes a partition of a set of geometries into disjoint subsets,
-    /// based on a provided equivalence relation.
+    /// based on a provided equivalence <see cref="IRelation"/>.<br/>
     /// Uses a spatial index for efficient processing.
     /// </summary>
     /// <author>mdavis</author>
@@ -33,14 +33,9 @@ namespace NetTopologySuite.Operation.Union
             return _sets.GetSize(s);
         }
 
-        public int GetItem(int s, int i)
-        {
-            return _sets.GetItem(s, i);
-        }
-
         public Geometry GetGeometry(int s, int i)
         {
-            return _geoms[GetItem(s, i)];
+            return _geoms[_sets.GetItem(s, i)];
         }
 
         private DisjointSets.Subsets Build(IRelation rel)
@@ -57,7 +52,7 @@ namespace NetTopologySuite.Operation.Union
                 index.Query(queryGeom.EnvelopeInternal, new SpatialPartitionVisitor(rel, dset, queryIndex));
             }
 
-            return dset.ComputeSubsets();
+            return dset.GetSubsets();
         }
 
         private STRtree<int> CreateIndex(/*Geometry[] geoms*/)

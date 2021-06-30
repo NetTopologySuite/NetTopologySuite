@@ -7,6 +7,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     public class DisjointSetsTest
     {
         [Test]
+        public void TestEmpty()
+        {
+            int[] nums = Array.Empty<int>();
+            CheckIntsModulo(nums, 3, new string[] { });
+        }
+
+        [Test]
+        public void TestSingleItem()
+        {
+            int[] nums = new int[] { 11 };
+            CheckIntsModulo(nums, 3, new string[] { "11",});
+        }
+
+        [Test]
         public void TestIntsModulo3()
         {
             int[] nums = new int[]
@@ -59,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         private string[] DumpSets(int[] nums, DisjointSets dset)
         {
-            var subsets = dset.ComputeSubsets();
+            var subsets = dset.GetSubsets();
             int nSet = subsets.Count;
             //System.out.println("# Sets = " + nSet);
             string[] sets = new string[nSet];
