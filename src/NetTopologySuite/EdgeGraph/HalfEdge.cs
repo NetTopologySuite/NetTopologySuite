@@ -174,14 +174,33 @@ namespace NetTopologySuite.EdgeGraph
         /// Gets the previous edge CW around the origin
         /// vertex of this edge,
         /// with that vertex being its destination.
+        /// <para/>
+        /// It is always true that <c>e.Next.Prev == e</c>
+        /// <para/>
+        /// Note that this requires a scan of the origin edges,
+        /// so may not be efficient for some uses.
         /// </summary>
         /// <returns>The previous edge CW around the origin vertex</returns>
-        public HalfEdge Prev => Sym.Next.Sym;
+        public HalfEdge Prev {
+            get
+            {
+                var curr = this;
+                HalfEdge prev = null;
+                do {
+                    prev = curr;
+                    curr = curr.ONext;
+                } while (curr != this);
+
+                return prev.Sym;
+            }
+        }
 
         /// <summary>
         /// Gets the next edge CCW around the origin of this edge,
         /// with the same origin.<br/>
         /// If the origin vertex has degree <c>1</c> then this is the edge itself.
+        /// <para/>
+        /// <c>e.ONext</c> is equal to <c>e.Sym.Next()</c>
         /// </summary>
         /// <returns>The next edge around the origin</returns>
         public HalfEdge ONext => Sym.Next;

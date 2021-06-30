@@ -32,6 +32,12 @@ namespace NetTopologySuite.EdgeGraph
             return new HalfEdge(orig);
         }
 
+        /// <summary>
+        /// Creates a <see cref="HalfEdge"/> pair, using the <c>HalfEdge</c> type of the graph subclass
+        /// </summary>
+        /// <param name="p0"></param>
+        /// <param name="p1"></param>
+        /// <returns>A <see cref="HalfEdge"/> pair</returns>
         private HalfEdge Create(Coordinate p0, Coordinate p1)
         {
             var e0 = CreateEdge(p0);
@@ -107,6 +113,11 @@ namespace NetTopologySuite.EdgeGraph
             return e;
         }
 
+        /// <summary>
+        /// Gets all <see cref="HalfEdge"/>s in the graph.
+        /// Both edges of edge pairs are included.
+        /// </summary>
+        /// <returns>An enumeration of the graph edges</returns>
         public IEnumerable<HalfEdge> GetVertexEdges()
         {
             return vertexMap.Values;

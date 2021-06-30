@@ -57,9 +57,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             CheckNext(e2, e2.SymOE);
             CheckNext(e3, e3.SymOE);
 
-            CheckPrev(e1, e3.SymOE);
-            CheckPrev(e2, e1.SymOE);
-            CheckPrev(e3, e2.SymOE);
+            CheckPrev(e1, e2.SymOE);
+            CheckPrev(e2, e3.SymOE);
+            CheckPrev(e3, e1.SymOE);
         }
 
         /**
