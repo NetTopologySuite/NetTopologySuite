@@ -106,10 +106,9 @@ namespace NetTopologySuite.Geometries
             return new MultiPoint(points, Factory);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public override bool IsValid => true;
+        /// <inheritdoc cref="Geometry.IsValid"/>
+        // Note: this is left here for API compatibility!
+        public override bool IsValid => base.IsValid;
 
         /// <summary>
         ///
