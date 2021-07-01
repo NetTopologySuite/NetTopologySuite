@@ -177,7 +177,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>An array of clean coordinates</returns>
         private static Coordinate[] Clean(Coordinate[] coords)
         {
-            return CoordinateArrays.RemoveRepeatedAndInvalidPoints(coords);
+            return CoordinateArrays.RemoveRepeatedOrInvalidPoints(coords);
         }
         /// <summary>
         ///

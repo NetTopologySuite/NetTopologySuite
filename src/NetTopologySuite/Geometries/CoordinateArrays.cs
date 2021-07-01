@@ -364,7 +364,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coord">An array of coordinates</param>
         /// <returns><c>true</c> if the array contains repeated or invalid coordinates</returns>
         /// <see cref="Coordinate.IsValid"/>
-        public static bool HasRepeatedOrInvalid(Coordinate[] coord)
+        public static bool HasRepeatedOrInvalidPoints(Coordinate[] coord)
         {
             if (!coord[0].IsValid)
                 return true;
@@ -388,11 +388,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord">An array of coordinates</param>
         /// <returns>The array with repeated or invalid coordinates removed.</returns>
-        /// <see cref="HasRepeatedOrInvalid"/>
+        /// <see cref="HasRepeatedOrInvalidPoints"/>
         /// <see cref="Coordinate.IsValid"/>
-        public static Coordinate[] RemoveRepeatedAndInvalidPoints(Coordinate[] coord)
+        public static Coordinate[] RemoveRepeatedOrInvalidPoints(Coordinate[] coord)
         {
-            if (!HasRepeatedOrInvalid(coord)) return coord;
+            if (!HasRepeatedOrInvalidPoints(coord)) return coord;
             var coordList = new CoordinateList();
             for (int i = 0; i < coord.Length; i++) {
                 if (!coord[i].IsValid) continue;

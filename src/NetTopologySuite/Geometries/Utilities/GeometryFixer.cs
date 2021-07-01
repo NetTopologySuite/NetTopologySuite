@@ -224,7 +224,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>An array of clean coordinates</returns>
         private static Coordinate[] FixCoordinates(Coordinate[] pts)
         {
-            var ptsClean = CoordinateArrays.RemoveRepeatedAndInvalidPoints(pts);
+            var ptsClean = CoordinateArrays.RemoveRepeatedOrInvalidPoints(pts);
             return CoordinateArrays.CopyDeep(ptsClean);
         }
 
