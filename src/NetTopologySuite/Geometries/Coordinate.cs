@@ -237,6 +237,13 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <summary>
+        /// Predicate to check if a <see cref="double"/> value is finite.
+        /// <para/>
+        /// It is finite if both <see cref="double.IsInfinity"/> and <see cref="double.IsNaN"/> return <c>false</c>
+        /// </summary>
+        /// <param name="value">The value to test</param>
+        /// <returns><c>value</c></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsFinite(double value) => !double.IsInfinity(value) && !double.IsNaN(value);
 

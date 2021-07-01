@@ -298,6 +298,9 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected override Envelope ComputeEnvelopeInternal()
         {
+            return new Envelope(_points);
+
+            /*
             if (IsEmpty)
                 return new Envelope();
 
@@ -317,6 +320,7 @@ namespace NetTopologySuite.Geometries
                 maxy = maxy > coordinates[i].Y ? maxy : coordinates[i].Y;
             }
             return new Envelope(minx, maxx, miny, maxy);
+             */
         }
 
         /// <summary>

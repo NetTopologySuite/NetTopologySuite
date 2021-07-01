@@ -700,5 +700,85 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             CheckEqual(expected, result);
         }
 
+
+        /**
+         * Following tests check "inverted ring" issue.
+         * https://github.com/locationtech/jts/issues/472
+         */
+
+        [Test]
+        public void TestPolygon4NegBufferEmpty()
+        {
+            string wkt = "POLYGON ((666360.09 429614.71, 666344.4 429597.12, 666358.47 429584.52, 666374.5 429602.33, 666360.09 429614.71))";
+            CheckBufferEmpty(wkt, -9, false);
+            CheckBufferEmpty(wkt, -10, true);
+            CheckBufferEmpty(wkt, -15, true);
+            CheckBufferEmpty(wkt, -18, true);
+        }
+
+        [Test]
+        public void TestPolygon5NegBufferEmpty()
+        {
+            string wkt = "POLYGON ((6 20, 16 20, 21 9, 9 0, 0 10, 6 20))";
+            CheckBufferEmpty(wkt, -8, false);
+            CheckBufferEmpty(wkt, -8.6, true);
+            CheckBufferEmpty(wkt, -9.6, true);
+            CheckBufferEmpty(wkt, -11, true);
+        }
+
+        [Test]
+        public void TestPolygonHole5BufferNoHole()
+        {
+            string wkt = "POLYGON ((-6 26, 29 26, 29 -5, -6 -5, -6 26), (6 20, 16 20, 21 9, 9 0, 0 10, 6 20))";
+            CheckBufferHasHole(wkt, 8, true);
+            CheckBufferHasHole(wkt, 8.6, false);
+            CheckBufferHasHole(wkt, 9.6, false);
+            CheckBufferHasHole(wkt, 11, false);
+        }
+
+        /**
+         * Tests that an inverted ring curve in an element of a MultiPolygon is removed
+         */
+        [Test]
+        public void TestMultiPolygonElementRemoved()
+        {
+            string wkt = "MULTIPOLYGON (((30 18, 14 0, 0 13, 16 30, 30 18)), ((180 210, 60 50, 154 6, 270 40, 290 130, 250 190, 180 210)))";
+            CheckBufferNumGeometries(wkt, -9, 2);
+            CheckBufferNumGeometries(wkt, -10, 1);
+            CheckBufferNumGeometries(wkt, -15, 1);
+            CheckBufferNumGeometries(wkt, -18, 1);
+        }
+
+        private void CheckBufferEmpty(string wkt, double dist, bool isEmptyExpected)
+        {
+            var a = Read(wkt);
+            var result = a.Buffer(dist);
+            Assert.That(result.IsEmpty, Is.EqualTo(isEmptyExpected));
+        }
+
+        private void CheckBufferHasHole(string wkt, double dist, bool isHoleExpected)
+        {
+            var a = Read(wkt);
+            var result = a.Buffer(dist);
+            Assert.That(HasHole(result), Is.EqualTo(isHoleExpected));
+        }
+
+        private void CheckBufferNumGeometries(string wkt, double dist, int numExpected)
+        {
+            var a = Read(wkt);
+            var result = a.Buffer(dist);
+            Assert.That(result.NumGeometries, Is.EqualTo(numExpected));
+        }
+
+        private static bool HasHole(Geometry geom)
+        {
+            for (int i = 0; i < geom.NumGeometries; i++)
+            {
+                var poly = (Polygon)geom.GetGeometryN(i);
+                if (poly.NumInteriorRings > 0) return true;
+            }
+            return false;
+        }
+
     }
 }

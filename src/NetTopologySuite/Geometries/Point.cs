@@ -179,9 +179,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected override Envelope ComputeEnvelopeInternal()
         {
-            if (IsEmpty)
-                return new Envelope();
-            return new Envelope(Coordinate.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
+            return new Envelope(_coordinates);
         }
 
         /// <summary>

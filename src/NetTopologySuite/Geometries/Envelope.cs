@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -129,6 +130,28 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Creates an <c>Envelope</c> for a region defined by an enumeration of <c>Coordinate</c>s.
+        /// </summary>
+        /// <param name="pts">The <c>Coordinates</c>.</param>
+        public Envelope(IEnumerable<Coordinate> pts) : this()
+        {
+            if (pts == null)
+                return;
+
+            foreach (var pt in pts)
+                ExpandToInclude(pt);
+        }
+
+        /// <summary>
+        /// Creates an <c>Envelope</c> for a region defined by a <c>CoordinateSequence</c>s.
+        /// </summary>
+        /// <param name="sequence">The <c>CoordinateSequence</c>.</param>
+        public Envelope(CoordinateSequence sequence) : this()
+        {
+            sequence.ExpandEnvelope(this);
+        }
+
+        /// <summary>
         /// Create an <c>Envelope</c> from an existing Envelope.
         /// </summary>
         /// <param name="env">The Envelope to initialize from.</param>
@@ -154,6 +177,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="y2">The second y-value.</param>
         public void Init(double x1, double x2, double y1, double y2)
         {
+            if (double.IsNaN(x1) || double.IsNaN(x2) || double.IsNaN(y1) || double.IsNaN(y2))
+                throw new ArgumentException("An ordinate value is double.NaN");
+
             if (x1 < x2)
             {
                 _minX = x1;
@@ -414,6 +440,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="y">The value to lower the minimum y to or to raise the maximum y to.</param>
         public void ExpandToInclude(double x, double y)
         {
+            if (double.IsNaN(x) || double.IsNaN(y))
+                return;
+
             if (IsNull)
             {
                 _minX = x;

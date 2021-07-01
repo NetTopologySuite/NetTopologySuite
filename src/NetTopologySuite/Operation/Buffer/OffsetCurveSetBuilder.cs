@@ -199,7 +199,7 @@ namespace NetTopologySuite.Operation.Buffer
             // if the polygon would be completely eroded
             if (_distance < 0.0 && IsErodedCompletely(shellCoord, _distance))
                 return;
-            // don't attemtp to buffer a polygon with too few distinct vertices
+            // don't attempt to buffer a polygon with too few distinct vertices
             if (_distance <= 0.0 && shellCoord.Length < 3)
                 return;
 
@@ -265,18 +265,105 @@ namespace NetTopologySuite.Operation.Buffer
                 side = side.Opposite;
             }
             var curve = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
+
+            /*
+             * If the offset curve has inverted completely it will produce
+             * an unwanted artifact in the result, so skip it. 
+             */
+            if (IsRingCurveInverted(coord, offsetDistance, curve))
+            {
+                return;
+            }
             AddCurve(curve, leftLoc, rightLoc);
         }
 
+        private const int MAX_INVERTED_RING_SIZE = 9;
+        private const double NEARNESS_FACTOR = 0.99;
+
         /// <summary>
-        /// The ringCoord is assumed to contain no repeated points.
+        /// Tests whether the offset curve for a ring is fully inverted.
+        /// An inverted ("inside-out") curve occurs in some specific situations
+        /// involving a buffer distance which should result in a fully-eroded (empty) buffer.
+        /// It can happen that the sides of a small, convex polygon
+        /// produce offset segments which all cross one another to form
+        /// a curve with inverted orientation.<br/>
+        /// This happens at buffer distances slightly greater than the distance at
+        /// which the buffer should disappear.<br/>
+        /// The inverted curve will produce an incorrect non-empty buffer (for a shell)
+        /// or an incorrect hole (for a hole).
+        /// It must be discarded from the set of offset curves used in the buffer.
+        /// Heuristics are used to reduce the number of cases which area checked,
+        /// for efficiency and correctness.
+        /// <para/>
+        /// See <a href="https://github.com/locationtech/jts/issues/472"/>
+        /// </summary>
+        /// <param name="inputPts">the input ring</param>
+        /// <param name="distance">the buffer distance</param>
+        /// <param name="curvePts">the generated offset curve</param>
+        /// <returns>true if the offset curve is inverted</returns>
+        private static bool IsRingCurveInverted(Coordinate[] inputPts, double distance, Coordinate[] curvePts)
+        {
+            if (distance == 0.0) return false;
+            /*
+             * Only proper rings can invert.
+             */
+            if (inputPts.Length <= 3) return false;
+            /*
+             * Heuristic based on low chance that a ring with many vertices will invert.
+             * This low limit ensures this test is fairly efficient.
+             */
+            if (inputPts.Length >= MAX_INVERTED_RING_SIZE) return false;
+
+            /*
+             * An inverted curve has no more points than the input ring.
+             * This also eliminates concave inputs (which will produce fillet arcs)
+             */
+            if (curvePts.Length > inputPts.Length) return false;
+
+            /*
+             * Check if the curve vertices are all closer to the input ring
+             * than the buffer distance.
+             * If so, the curve is NOT a valid buffer curve.
+             */
+            double distTol = NEARNESS_FACTOR * Math.Abs(distance);
+            double maxDist = MaxDistance(curvePts, inputPts);
+            bool isCurveTooClose = maxDist < distTol;
+            return isCurveTooClose;
+        }
+
+        /// <summary>
+        /// Computes the maximum distance out of a set of points to a linestring.
+        /// </summary>
+        /// <param name="pts">The points</param>
+        /// <param name="line">The linestring vertices</param>
+        /// <returns>The maximum distance</returns>
+        private static double MaxDistance(Coordinate[] pts, Coordinate[] line)
+        {
+            double maxDistance = 0;
+            foreach (var p in pts)
+            {
+                double dist = DistanceComputer.PointToSegmentString(p, line);
+                if (dist > maxDistance)
+                {
+                    maxDistance = dist;
+                }
+            }
+            return maxDistance;
+        }
+
+
+        /// <summary>
+        /// Tests whether a ring buffer is eroded completely (is empty)
+        /// based on simple heuristics.
+        /// <para/>
+        /// The <paramref name="ringCoord"/> is assumed to contain no repeated points.
         /// It may be degenerate (i.e. contain only 1, 2, or 3 points).
         /// In this case it has no area, and hence has a minimum diameter of 0.
         /// </summary>
         /// <param name="ringCoord"></param>
         /// <param name="bufferDistance"></param>
         /// <returns></returns>
-        private bool IsErodedCompletely(Coordinate[] ringCoord, double bufferDistance)
+        private static bool IsErodedCompletely(Coordinate[] ringCoord, double bufferDistance)
         {
             // degenerate ring has no area
             if (ringCoord.Length < 4)
@@ -287,21 +374,14 @@ namespace NetTopologySuite.Operation.Buffer
             if (ringCoord.Length == 4)
                 return IsTriangleErodedCompletely(ringCoord, bufferDistance);
 
-            /*
-             * The following is a heuristic test to determine whether an
-             * inside buffer will be eroded completely.
-             * It is based on the fact that the minimum diameter of the ring pointset
-             * provides an upper bound on the buffer distance which would erode the
-             * ring.
-             * If the buffer distance is less than the minimum diameter, the ring
-             * may still be eroded, but this will be determined by
-             * a full topological computation.
-             *
-             */
-            var ring = _inputGeom.Factory.CreateLinearRing(ringCoord);
-            var md = new MinimumDiameter(ring);
-            double minDiam = md.Length;
-            return minDiam < 2 * Math.Abs(bufferDistance);
+            // if envelope is narrower than twice the buffer distance, ring is eroded
+            var env = new Envelope(ringCoord);
+            double envMinDimension = Math.Min(env.Height, env.Width);
+            if (bufferDistance < 0.0
+                && 2 * Math.Abs(bufferDistance) > envMinDimension)
+                return true;
+
+            return false;
         }
 
         /// <summary>

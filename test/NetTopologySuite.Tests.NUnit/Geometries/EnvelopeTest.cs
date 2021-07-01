@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -57,6 +60,75 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var e4 = new Envelope(300, 301, 300, 301);
             Assert.IsTrue(e1.Contains(e4));
             Assert.IsTrue(e1.Intersects(e4));
+        }
+
+        [Test]
+        public void TestDiscardNaN()
+        {
+            Assert.That(() => new Envelope(1d, double.NaN, 1d, double.NaN), Throws.ArgumentException);
+            Assert.That(() => new  Envelope(double.NaN, 1d, double.NaN, 1d), Throws.ArgumentException);
+
+
+
+            var env = new Envelope(new Coordinate(double.NegativeInfinity, double.NegativeInfinity), new Coordinate(double.PositiveInfinity, double.PositiveInfinity));
+            Assert.That(env.IsNull, Is.False);
+
+            env.Init();
+            Assert.That(env.IsNull, Is.True);
+            env.ExpandToInclude(double.NaN, 1d);
+            Assert.That(env.IsNull, Is.True);
+            env.ExpandToInclude(1d, double.NaN);
+            Assert.That(env.IsNull, Is.True);
+        }
+
+        [Test]
+        public void TestConstructorWithCoordinates()
+        {
+            var coords = new Coordinate[9];
+            for (int i = 1; i <= coords.Length; i++)
+                coords[i - 1] = new Coordinate(i, i);
+
+            Envelope env = null;
+            Assert.That(() => env = new Envelope(coords), Throws.Nothing);
+            Assert.That(env, Is.Not.Null);
+            Assert.That(env.MinX, Is.EqualTo(1d));
+            Assert.That(env.MinY, Is.EqualTo(1d));
+            Assert.That(env.MaxX, Is.EqualTo(9d));
+            Assert.That(env.MaxY, Is.EqualTo(9d));
+        }
+
+        [TestCaseSource("CSFactories")]
+        public void TestConstructorWithSequence(CoordinateSequenceFactory csFactory)
+        {
+            if (csFactory == null)
+                Assert.Inconclusive();
+
+            var cs = csFactory.Create(9, 2, 0);
+            for (int i = 1; i <= cs.Count; i++)
+            {
+                cs.SetX(i - 1, i);
+                cs.SetY(i - 1, i);
+            }
+
+            Envelope env = null;
+            Assert.That(() => env = new Envelope(cs), Throws.Nothing);
+            Assert.That(env, Is.Not.Null);
+            Assert.That(env.MinX, Is.EqualTo(1d));
+            Assert.That(env.MinY, Is.EqualTo(1d));
+            Assert.That(env.MaxX, Is.EqualTo(9d));
+            Assert.That(env.MaxY, Is.EqualTo(9d));
+        }
+
+        private static IEnumerable<CoordinateSequenceFactory> CSFactories
+        {
+            get
+            {
+                yield return CoordinateArraySequenceFactory.Instance;
+                yield return PackedCoordinateSequenceFactory.DoubleFactory;
+                yield return PackedCoordinateSequenceFactory.FloatFactory;
+                yield return DotSpatialAffineCoordinateSequenceFactory.Instance;
+                yield return new RawCoordinateSequenceFactory(new[] {Ordinates.XY});
+            }
         }
 
         [Test]
