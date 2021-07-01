@@ -32,7 +32,7 @@
   <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' == 'True' ">
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.github.$(GITHUB_ACTION)</NtsBuildMetadata>
+    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.github.$(GITHUB_RUN_ID)</NtsBuildMetadata>
 
     <NtsOfficialRelease Condition=" '$(GITHUB_REF)' == 'refs/heads/master' And '$(GITHUB_EVENT_NAME)' == 'push' ">true</NtsOfficialRelease>
   </PropertyGroup>
