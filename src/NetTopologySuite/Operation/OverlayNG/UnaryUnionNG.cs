@@ -70,8 +70,10 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         private static UnionStrategy CreateUnionStrategy(PrecisionModel pm)
         {
-            return new UnionStrategy((g0, g1) =>
-                OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm), OverlayUtility.IsFloating(pm));
+            bool isFloating = OverlayUtility.IsFloating(pm);
+            return new UnionStrategy((g0, g1) => isFloating
+                ? OverlayNGRobust.Overlay(g0, g1, SpatialFunction.Union)
+                : OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm), true);
         }
     }
 }
