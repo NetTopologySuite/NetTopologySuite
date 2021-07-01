@@ -319,7 +319,7 @@ namespace NetTopologySuite.Geometries.Utilities
             {
                 return holes[0];
             }
-
+            // TODO: replace with holes.union() once OverlayNG is the default
             var holesUnion = OverlayNGRobust.Union(holes);
             return holesUnion;
         }
@@ -350,6 +350,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 return _factory.CreateMultiPolygon();
             }
 
+            // TODO: replace with polys.union() once OverlayNG is the default
             var result = OverlayNGRobust.Union(polys);
             return result;
         }

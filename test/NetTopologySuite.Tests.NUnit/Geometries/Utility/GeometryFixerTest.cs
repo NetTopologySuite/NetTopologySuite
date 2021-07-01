@@ -184,6 +184,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         //----------------------------------------
 
+        /**
+         * Self-crossing LineStrings are valid, so are unchanged
+         */
         [Test]
         public void TestMultiLineStringSelfCross()
         {
@@ -369,7 +372,31 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
                 "GEOMETRYCOLLECTION (POINT EMPTY, LINESTRING EMPTY, POLYGON EMPTY)");
         }
 
-//================================================
+        //----------------------------------------
+
+        [Test]
+        public void TestPolygonZBowtie()
+        {
+            CheckFixZ("POLYGON Z ((10 90 1, 90 10 9, 90 90 9, 10 10 1, 10 90 1))",
+                "MULTIPOLYGON Z(((10 10 1, 10 90 1, 50 50 5, 10 10 1)), ((50 50 5, 90 90 9, 90 10 9, 50 50 5)))");
+        }
+
+        [Test]
+        public void TestPolygonZHoleOverlap()
+        {
+            CheckFixZ("POLYGON Z ((10 90 1, 60 90 6, 60 10 6, 10 10 1, 10 90 1), (20 80 2, 90 80 9, 90 20 9, 20 20 2, 20 80 2))",
+                "POLYGON Z((10 10 1, 10 90 1, 60 90 6, 60 80 6, 20 80 2, 20 20 2, 60 20 6, 60 10 6, 10 10 1))");
+        }
+
+        [Test]
+        public void TestMultiLineStringZKeepCollapse()
+        {
+            CheckFixZKeepCollapse("MULTILINESTRING Z ((10 10 1, 90 90 9), (10 10 1, 10 10 2, 10 10 3))",
+                "GEOMETRYCOLLECTION Z (POINT (10 10 1), LINESTRING (10 10 1, 90 90 9))");
+        }
+
+
+        //================================================
 
 
         private void CheckFix(string wkt, string wktExpected)
@@ -438,5 +465,38 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
             return false;
         }
+
+        private void CheckFixZ(string wkt, string wktExpected)
+        {
+            var geom = Read(wkt);
+            CheckFixZ(geom, false, wktExpected);
+        }
+
+        private void CheckFixZKeepCollapse(string wkt, string wktExpected)
+        {
+            var geom = Read(wkt);
+            CheckFixZ(geom, true, wktExpected);
+        }
+
+        private void CheckFixZ(Geometry input, bool keepCollapse, string wktExpected)
+        {
+            Geometry actual;
+            if (keepCollapse)
+            {
+                var fixer = new GeometryFixer(input);
+                fixer.KeepCollapsed = true;
+                actual = fixer.GetResult();
+            }
+            else
+            {
+                actual = GeometryFixer.Fix(input);
+            }
+
+            Assert.That(actual.IsValid, Is.True, "Result is invalid");
+
+            var expected = Read(wktExpected);
+            CheckEqualXYZ(expected, actual);
+        }
+
     }
 }
