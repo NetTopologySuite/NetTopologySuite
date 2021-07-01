@@ -686,7 +686,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// has the value:
         /// <blockquote><pre>
         /// |  xScale      0  dx |
-        /// |  1      yScale  dy |
+        /// |  0      yScale  dy |
         /// |  0           0   1 |
         /// </pre></blockquote>
         /// </remarks>
