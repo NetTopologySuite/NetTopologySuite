@@ -77,12 +77,33 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         }
 
         [Test]
+        public void TestPolygonAll()
+        {
+            CheckIsSimpleAll("POLYGON ((0 0, 7 0, 6 -1, 6 -0.1, 6 0.1, 3 5.9, 3 6.1, 3.1 6, 2.9 6, 0 0))",
+                BoundaryNodeRules.Mod2BoundaryRule,
+                "MULTIPOINT((6 0), (3 6))");
+        }
+
+        [Test]
         public void TestMultiPointAll()
         {
-            CheckIsSimpleAll("MULTIPOINT ((1 1), (2 2), (2 2), (3 3), (4 4), (4 4), (5 5), (5 5))",
+            CheckIsSimpleAll("MULTIPOINT((1 1), (1 2), (1 2), (1 3), (1 4), (1 4), (1 5), (1 5))",
                 BoundaryNodeRules.Mod2BoundaryRule,
-                "MULTIPOINT((2 2), (4 4), (5 5))");
+                "MULTIPOINT((1 2), (1 4), (1 5))");
         }
+
+        [Test]
+        public void TestGeometryCollectionAll()
+        {
+            CheckIsSimpleAll("GEOMETRYCOLLECTION(MULTILINESTRING ((10 20, 90 20), (10 30, 90 30), (50 40, 50 10)), " +
+                             "MULTIPOINT((1 1), (1 2), (1 2), (1 3), (1 4), (1 4), (1 5), (1 5)), "+
+                             "POLYGON ((0 0, 7 0, 6 -1, 6 -0.1, 6 0.1, 3 5.9, 3 6.1, 3.1 6, 2.9 6, 0 0))"+
+                             ")",
+                BoundaryNodeRules.Mod2BoundaryRule,
+                "MULTIPOINT((50 20), (50 30), (1 2), (1 4), (1 5), (6 0), (3 6))");
+        }
+
+
 
         private void CheckIsSimple(string wkt, IBoundaryNodeRule bnRule, bool expectedResult)
         {

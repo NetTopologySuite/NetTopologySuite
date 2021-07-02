@@ -194,8 +194,8 @@ namespace NetTopologySuite.Operation.Valid
                     if (!FindAllLocations)
                         break;
                 }
-
-                points.Add(p);
+                else
+                    points.Add(p);
             }
 
             return res;
@@ -210,14 +210,19 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns><c>true</c> if the geometry is simple</returns>
         private bool IsSimplePolygonal(Geometry geom)
         {
+            bool res = true;
             var rings = LinearComponentExtracter.GetLines(geom);
             foreach (var ring in rings)
             {
                 if (!IsSimpleLinearGeometry(ring))
-                    return false;
+                {
+                    res = false;
+                    if (!FindAllLocations)
+                        break;
+                }
             }
 
-            return true;
+            return res;
         }
 
         /// <summary>
@@ -228,14 +233,19 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns><c>true</c> if the geometry is simple</returns>
         private bool IsSimpleGeometryCollection(Geometry geom)
         {
+            bool res = true;
             for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var comp = geom.GetGeometryN(i);
                 if (!ComputeSimple(comp))
-                    return false;
+                {
+                    res = false;
+                    if (!FindAllLocations)
+                        break;
+                }
             }
 
-            return true;
+            return res;
         }
 
         private bool IsSimpleLinearGeometry(Geometry geom)
