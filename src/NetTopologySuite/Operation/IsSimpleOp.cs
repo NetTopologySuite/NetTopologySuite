@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -45,6 +46,7 @@ namespace NetTopologySuite.Operation
     /// For example, this can be used to validate that a set of lines form a topologically valid
     /// linear network.
     /// </remarks>
+    [Obsolete("Replaced by NetTopologySuite.Operation.Valid.IsSimpleOp")]
     public class IsSimpleOp
     {
         private readonly Geometry _inputGeom;

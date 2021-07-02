@@ -421,7 +421,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                var isSimpleOp = new IsSimpleOp(this);
+                var isSimpleOp = new Operation.Valid.IsSimpleOp(this);
                 return isSimpleOp.IsSimple();
             }
         }

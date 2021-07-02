@@ -14,7 +14,7 @@ namespace NetTopologySuite.Algorithm
     /// in specific situations (for instance, linear network topology
     /// usually follows the <see cref="BoundaryNodeRules.EndPointBoundaryNodeRule"/>.)
     /// Some JTS operations
-    /// (such as <see cref="RelateOp"/>, <see cref="BoundaryOp"/> and <see cref="IsSimpleOp"/>)
+    /// (such as <see cref="RelateOp"/>, <see cref="BoundaryOp"/> and <see cref="Operation.Valid.IsSimpleOp"/>)
     /// allow the BoundaryNodeRule to be specified,
     /// and respect the supplied rule when computing the results of the operation.
     /// <para/>
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Algorithm
     /// <author>Martin Davis</author>
     /// <seealso cref="RelateOp"/>
     /// <seealso cref="BoundaryOp"/>
-    /// <seealso cref="IsSimpleOp"/>
+    /// <seealso cref="Operation.Valid.IsSimpleOp"/>
     /// <seealso cref="PointLocator"/>
     public interface IBoundaryNodeRule
     {
