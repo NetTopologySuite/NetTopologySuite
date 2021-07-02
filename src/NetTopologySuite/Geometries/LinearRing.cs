@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries
             if (!IsEmpty && !base.IsClosed)
                 throw new ArgumentException("points must form a closed linestring");
             if (CoordinateSequence.Count >= 1 && CoordinateSequence.Count < MinimumValidSize)
-                throw new ArgumentException("Number of points must be 0 or >3");
+                throw new ArgumentException($"Number of points must be 0 or >={MinimumValidSize}");
         }
 
         /// <summary>
