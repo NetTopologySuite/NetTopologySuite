@@ -144,7 +144,7 @@ namespace NetTopologySuite.Operation
         }
 
         /// <summary>Semantics for GeometryCollection is
-        /// simple iff all components are simple.</summary>
+        /// simple if all components are simple.</summary>
         /// <param name="geom">A GeometryCollection</param>
         /// <returns><c>true</c> if the geometry is simple</returns>
         private bool IsSimpleGeometryCollection(Geometry geom)

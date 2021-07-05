@@ -93,8 +93,8 @@ namespace NetTopologySuite.Operation.Predicate
         private bool IsPointContainedInBoundary(Coordinate pt)
         {
 
-            /**
-             * contains = false iff the point is properly contained in the rectangle.
+            /*
+             * contains = false if the point is properly contained in the rectangle.
              *
              * This code assumes that the point lies in the rectangle envelope
              */

@@ -306,7 +306,7 @@ namespace NetTopologySuite.Algorithm.Construct
 
             public int CompareTo(Cell o)
             {
-                // A cell is greater iff its maximum distance is larger.
+                // A cell is greater if its maximum distance is larger.
                 return (int)(o.MaxDistance - this.MaxDistance);
             }
         }

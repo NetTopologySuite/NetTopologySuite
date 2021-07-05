@@ -227,7 +227,7 @@ namespace NetTopologySuite.Operation.Valid
 
         /// <summary>
         /// Semantics for GeometryCollection is
-        /// simple iff all components are simple.
+        /// simple if all components are simple.
         /// </summary>
         /// <param name="geom">A geometry collection</param>
         /// <returns><c>true</c> if the geometry is simple</returns>

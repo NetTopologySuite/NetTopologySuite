@@ -81,7 +81,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns><see langword="true"/> if the angle is acute.</returns>
         public static bool IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            // relies on fact that A dot B is positive iff A ang B is acute
+            // relies on fact that A dot B is positive if A ang B is acute
             double dx0 = p0.X - p1.X;
             double dy0 = p0.Y - p1.Y;
             double dx1 = p2.X - p1.X;
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns><see langword="true"/> if the angle is obtuse.</returns>
         public static bool IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            // relies on fact that A dot B is negative iff A ang B is obtuse
+            // relies on fact that A dot B is negative if A ang B is obtuse
             double dx0 = p0.X - p1.X;
             double dy0 = p0.Y - p1.Y;
             double dx1 = p2.X - p1.X;

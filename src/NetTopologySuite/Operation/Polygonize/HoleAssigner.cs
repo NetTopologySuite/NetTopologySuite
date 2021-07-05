@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
         /// The algorithm used depends on the fact that:
         /// <list type="Bullet">
-        /// <item><term>ring A contains ring B iff envelope(ring A) contains envelope(ring B)</term></item>
+        /// <item><term>ring A contains ring B if envelope(ring A) contains envelope(ring B)</term></item>
         /// </list>
         /// This routine is only safe to use if the chosen point of the hole
         /// is known to be properly contained in a shell

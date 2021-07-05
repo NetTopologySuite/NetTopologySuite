@@ -81,7 +81,7 @@ namespace NetTopologySuite.Algorithm
 
         /// <summary>
         /// A <see cref="IBoundaryNodeRule"/> specifies that points are in the
-        /// boundary of a lineal geometry iff
+        /// boundary of a lineal geometry if
         /// the point lies on the boundary of an odd number
         /// of components.
         /// Under this rule <see cref="LinearRing"/>s and closed

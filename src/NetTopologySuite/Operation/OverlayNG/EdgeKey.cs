@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// A key for sorting and comparing edges in a noded arrangement.
     /// Relies on the fact that in a correctly noded arrangement
     /// edges are identical (up to direction)
-    /// iff they have their first segment in common.
+    /// if they have their first segment in common.
     /// </summary>
     /// <author>Martin Davis</author>
     internal sealed class EdgeKey : IComparable<EdgeKey>

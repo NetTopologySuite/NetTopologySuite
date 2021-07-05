@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries.Prepared
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A Geometry A <c>containsProperly</c> another Geometry B iff
+    /// A Geometry A <c>containsProperly</c> another Geometry B if
     /// all points of B are contained in the Interior of A.
     /// Equivalently, B is contained in A AND B does not intersect
     /// the Boundary of A.

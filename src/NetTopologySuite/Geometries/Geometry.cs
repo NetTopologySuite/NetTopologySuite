@@ -408,9 +408,9 @@ namespace NetTopologySuite.Geometries
         /// tests for this condition and reports <c>false</c> if it is not met.
         /// (This is a looser test than checking for validity).</description></item>
         /// <item><description>Linear rings have the same semantics.</description></item>
-        /// <item><description>Linear geometries are simple iff they do not self-intersect at points
+        /// <item><description>Linear geometries are simple if they do not self-intersect at points
         /// other than boundary points.</description></item>
-        /// <item><description>Zero-dimensional geometries (points) are simple iff they have no
+        /// <item><description>Zero-dimensional geometries (points) are simple if they have no
         /// repeated points.</description></item>
         /// <item><description>Empty <c>Geometry</c>s are always simple.</description></item>
         /// </list>

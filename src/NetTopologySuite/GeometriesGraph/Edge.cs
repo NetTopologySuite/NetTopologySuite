@@ -279,7 +279,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Equals is defined to be:
         /// e1 equals e2
-        /// iff
+        /// if
         /// the coordinates of e1 are the same or the reverse of the coordinates in e2.
         /// </summary>
         /// <param name="o"></param>
@@ -295,7 +295,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Equals is defined to be:
         /// e1 equals e2
-        /// iff
+        /// if
         /// the coordinates of e1 are the same or the reverse of the coordinates in e2.
         /// </summary>
         /// <param name="e"></param>

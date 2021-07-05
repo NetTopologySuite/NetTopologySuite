@@ -222,7 +222,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>Gets a value indicating if the <c>Coordinate</c>
         /// has valid x- and y ordinate values
         /// <para/>
-        /// An ordinate value is valid iff it is finite.
+        /// An ordinate value is valid if it is finite.
         /// </summary>
         /// <returns><c>true</c> if the coordinate is valid</returns>
         /// <see cref="double.IsInfinity"/>

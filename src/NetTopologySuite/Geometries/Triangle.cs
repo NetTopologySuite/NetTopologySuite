@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Tests whether a triangle is acute. A triangle is acute iff all interior
+        /// Tests whether a triangle is acute. A triangle is acute if all interior
         /// angles are acute. This is a strict test - right triangles will return
         /// <tt>false</tt> A triangle which is not acute is either right or obtuse.
         /// <para/>
@@ -411,7 +411,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Tests whether this triangle is acute. A triangle is acute iff all interior
+        /// Tests whether this triangle is acute. A triangle is acute if all interior
         /// angles are acute. This is a strict test - right triangles will return
         /// <tt>false</tt> A triangle which is not acute is either right or obtuse.
         /// <para/>

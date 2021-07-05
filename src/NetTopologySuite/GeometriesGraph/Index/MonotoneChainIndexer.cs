@@ -9,7 +9,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// allow for fast searching of intersections.
     /// <para>
     /// Specifically, a sequence of contiguous line segments
-    /// is a monotone chain iff all the vectors defined by the oriented segments
+    /// is a monotone chain if all the vectors defined by the oriented segments
     /// lies in the same quadrant.
     /// </para><para>
     /// Monotone Chains have the following useful properties:
