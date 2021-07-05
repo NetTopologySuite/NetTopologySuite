@@ -167,7 +167,7 @@ namespace NetTopologySuite.Algorithm
         {
             double anglePrev = Angle(p1, p0);
             double angleNext = Angle(p1, p2);
-            return System.Math.Abs(angleNext - anglePrev);
+            return NormalizePositive(angleNext - anglePrev);
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Shape.Random;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
@@ -78,5 +80,58 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.Normalize(4 * Math.PI), 0.0, Tolerance);
 
         }
+
+        [Test]
+        public void TestInteriorAngle()
+        {
+            var p1 = new Coordinate(1, 2);
+            var p2 = new Coordinate(3, 2);
+            var p3 = new Coordinate(2, 1);
+
+            // Tests all interior angles of a triangle "POLYGON ((1 2, 3 2, 2 1, 1 2))"
+            Assert.AreEqual(45, AngleUtility.ToDegrees(AngleUtility.InteriorAngle(p1, p2, p3)), 0.01);
+            Assert.AreEqual(90, AngleUtility.ToDegrees(AngleUtility.InteriorAngle(p2, p3, p1)), 0.01);
+            Assert.AreEqual(45, AngleUtility.ToDegrees(AngleUtility.InteriorAngle(p3, p1, p2)), 0.01);
+            // Tests interior angles greater than 180 degrees
+            Assert.AreEqual(315, AngleUtility.ToDegrees(AngleUtility.InteriorAngle(p3, p2, p1)), 0.01);
+            Assert.AreEqual(270, AngleUtility.ToDegrees(AngleUtility.InteriorAngle(p1, p3, p2)), 0.01);
+            Assert.AreEqual(315, AngleUtility.ToDegrees(AngleUtility.InteriorAngle(p2, p1, p3)), 0.01);
+        }
+
+        /// <summary>
+        /// Tests interior angle calculation using a number of random triangles
+        /// </summary>
+        [Test]
+        public void TestInteriorAngle_randomTriangles()
+        {
+            var geometryFactory = new GeometryFactory();
+            var coordinateSequenceFactory = geometryFactory.CoordinateSequenceFactory;
+            for (int i = 0; i < 100; i++)
+            {
+                var builder = new RandomPointsBuilder();
+                builder.NumPoints = 3;
+                var threeRandomPoints = builder.GetGeometry();
+                var triangle = geometryFactory.CreatePolygon(
+                        CoordinateSequences.EnsureValidRing(
+                                coordinateSequenceFactory,
+                                coordinateSequenceFactory.Create(threeRandomPoints.Coordinates)
+                        )
+                );
+                // Triangle coordinates in clockwise order
+                var c = Orientation.IsCCW(triangle.Coordinates)
+                        ? triangle.Reverse().Coordinates
+                        : triangle.Coordinates;
+                double sumOfInteriorAngles = AngleUtility.InteriorAngle(c[0], c[1], c[2])
+                        + AngleUtility.InteriorAngle(c[1], c[2], c[0])
+                        + AngleUtility.InteriorAngle(c[2], c[0], c[1]);
+                Assert.AreEqual(
+                        Math.PI,
+                        sumOfInteriorAngles,
+                        0.01,
+                        i + ": The sum of the angles of a triangle is not equal to two right angles for points: " + c.Select(i => i.ToString())
+                );
+            }
+        }
+
     }
 }
