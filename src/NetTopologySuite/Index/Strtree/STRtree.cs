@@ -11,9 +11,11 @@ namespace NetTopologySuite.Index.Strtree
     /// <para/>
     /// The STR packed R-tree is simple to implement and maximizes space
     /// utilization; that is, as many leaves as possible are filled to capacity.
-    /// Overlap between nodes is far less than in a basic R-tree. However, once the
-    /// tree has been built (explicitly or on the first call to <see cref="Query"/>), items may
-    /// not be added or removed.
+    /// Overlap between nodes is far less than in a basic R-tree.
+    /// However, the index is semi-static; once the tree has been built
+    /// (which happens automatically upon the first query), items may
+    /// not be added.<br/>
+    /// Items may be removed from the tree using <see cref="Remove"/>.
     /// <para/>
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
