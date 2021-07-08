@@ -7,15 +7,9 @@ using RTools_NTS.Util;
 
 namespace Open.Topology.TestRunner.Utility
 {
-    /**
-     *  Useful string utilities
-     *
-     *@author     jaquino
-     *@created    June 22, 2001
-     *
-     * @version 1.7
-     */
 
+    /// <summary>Useful string utilities</summary>
+    /// <author>jaquino</author>
     public class StringUtil
     {
         public static readonly string NewLine = Environment.NewLine;
@@ -30,39 +24,41 @@ namespace Open.Topology.TestRunner.Utility
             return s;
         }
 
-        /**
-         * Capitalizes the given string.
-         *
-         * @param s the string to capitalize
-         * @return the capitalized string
-         */
-
+        /// <summary>
+        /// Capitalizes the given string.
+        /// </summary>
+        /// <param name="s">The string to capitalize</param>
+        /// <returns>The capitalized string</returns>
         public static string Capitalize(string s)
         {
             return char.ToUpper(s[0]) + s.Substring(1);
         }
 
-        /**
-         *  Returns true if s can be converted to an int.
-         */
-
+        /// <summary>
+        /// Returns <c>true</c> if <paramref name="s"/> can be converted to an <see cref="int"/>.
+        /// </summary>
+        /// <param name="s">The string to test</param>
         public static bool IsInteger(string s)
         {
-            int val;
-            if (int.TryParse(s, out val))
+            if (int.TryParse(s, out _))
                 return true;
             return false;
         }
 
-        /**
-         *  Returns an throwable's stack trace
-         */
-
+        /// <summary>
+        /// Returns <paramref name="t"/>'s stack trace
+        /// </summary>
+        /// <param name="t">The exception</param>
         public static string GetStackTrace(Exception t)
         {
             return t.StackTrace;
         }
 
+        /// <summary>
+        /// Returns <paramref name="t"/>'s stack trace up to <paramref name="depth"/>.
+        /// </summary>
+        /// <param name="t">The exception</param>
+        /// <param name="depth">The depth</param>
         public static string GetStackTrace(Exception t, int depth)
         {
             string stackTrace = "";
@@ -83,55 +79,60 @@ namespace Open.Topology.TestRunner.Utility
             return stackTrace;
         }
 
-        /**
-         *  Converts the milliseconds value into a String of the form "9d 22h 15m 8s".
-         */
-
+        /// <summary>
+        /// Converts the milliseconds value into a String of the form "9d 22h 15m 8s".
+        /// </summary>
+        /// <param name="milliseconds">A milliseconds value</param>
         public static string GetTimeString(long milliseconds)
         {
             long remainder = milliseconds;
             long days = remainder/86400000;
-            remainder = remainder%86400000;
+            remainder %= 86400000;
             long hours = remainder/3600000;
-            remainder = remainder%3600000;
+            remainder %= 3600000;
             long minutes = remainder/60000;
-            remainder = remainder%60000;
+            remainder %= 60000;
             long seconds = remainder/1000;
             return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
         }
 
-        /**
-         *  Returns true if substring is indeed a substring of string.
-         *  Case-insensitive.
-         */
-
-        public static bool ContainsIgnoreCase(string wholeString, string substring)
+        /// <summary>
+        /// Returns true if substring is indeed a substring of string.<br/>
+        /// Case-insensitive.
+        /// </summary>
+        /// <param name="wholeString">A string</param>
+        /// <param name="subString">A string</param>
+        public static bool ContainsIgnoreCase(string wholeString, string subString)
         {
-            return Contains(wholeString.ToLowerInvariant(), substring.ToLowerInvariant());
+            return Contains(wholeString.ToLowerInvariant(), subString.ToLowerInvariant());
         }
 
-        /**
-         *  Returns true if substring is indeed a substring of string.
-         */
-
-        public static bool Contains(string wholeString, string substring)
+        /// <summary>
+        /// Returns true if substring is indeed a substring of string.
+        /// </summary>
+        /// <param name="wholeString">A string</param>
+        /// <param name="subString">A string</param>
+        public static bool Contains(string wholeString, string subString)
         {
-            return wholeString.IndexOf(substring) > -1;
+            return wholeString.IndexOf(subString, StringComparison.InvariantCulture) > -1;
         }
 
-        /**
-         *  Returns a string with all occurrences of oldChar replaced by newStr
-         */
-
-        public static string Replace(string str, char oldChar, string newStr)
+        /// <summary>
+        /// Returns <paramref name="original"/> with all occurrences of <paramref name="oldChar"/> replaced by
+        /// <paramref name="newString"/>.
+        /// </summary>
+        /// <param name="original">The original string</param>
+        /// <param name="oldChar">The char to replace</param>
+        /// <param name="newString">The replace string</param>
+        public static string Replace(string original, char oldChar, string newString)
         {
             var buf = new StringBuilder();
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < original.Length; i++)
             {
-                char ch = str[i];
+                char ch = original[i];
                 if (ch == oldChar)
                 {
-                    buf.Append(newStr);
+                    buf.Append(newString);
                 }
                 else
                 {
@@ -141,21 +142,23 @@ namespace Open.Topology.TestRunner.Utility
             return buf.ToString();
         }
 
-        /**
-         *  Returns a String of the given length consisting entirely of the given
-         *  character
-         */
-
+        /// <summary>
+        /// Returns a String of the given length consisting entirely of the given
+        /// character
+        /// </summary>
+        /// <param name="ch">The character</param>
+        /// <param name="count">The number of repetitions of <paramref name="ch"/></param>
         public static string StringOfChar(char ch, int count)
         {
-            var buf = new StringBuilder();
-            for (int i = 0; i < count; i++)
-            {
-                buf.Append(ch);
-            }
-            return buf.ToString();
+            return new string(ch, count);
         }
 
+        /// <summary>
+        /// Indents a (multiline) string
+        /// </summary>
+        /// <param name="original">The original string</param>
+        /// <param name="spaces">The number of spaces to indent</param>
+        /// <returns>The indented string</returns>
         public static string Indent(string original, int spaces)
         {
             string indent = StringOfChar(' ', spaces);
@@ -171,31 +174,29 @@ namespace Open.Topology.TestRunner.Utility
             return indented;
         }
 
-        /**
-         *  Returns the elements of v in uppercase
-         */
-
+        /// <summary>
+        /// Returns the elements of <paramref name="v"/> in uppercase
+        /// </summary>
         public static IEnumerable<string> ToUpperCase(IEnumerable<string> v)
         {
             foreach (string s in v)
                 yield return s.ToUpperInvariant();
         }
 
-        /**
-         *  Returns the elements of v in lowercase
-         */
-
+        /// <summary>
+        /// Returns the elements of <paramref name="v"/> in lowercase
+        /// </summary>
         public static IEnumerable<string> ToLowerCase(IEnumerable<string> v)
         {
             foreach (string s in v)
                 yield return s.ToLowerInvariant();
         }
 
-        /**
-         *  Returns the elements of c separated by commas and enclosed in
-         *  single-quotes
-         */
 
+        /// <summary>
+        /// Returns the elements of c separated by commas and enclosed in
+        /// single-quotes
+        /// </summary>
         public static string ToCommaDelimitedStringInQuotes<T>(ICollection<T> c)
         {
             if (c == null || c.Count == 0)
@@ -210,10 +211,9 @@ namespace Open.Topology.TestRunner.Utility
             return result.ToString();
         }
 
-        /**
-         *  Returns the elements of c separated by commas. c must not be empty.
-         */
-
+        /// <summary>
+        /// Returns the elements of c separated by commas. c must not be empty.
+        /// </summary>
         public static string ToCommaDelimitedString<T>(ICollection<T> c)
         {
             if (c == null || c.Count == 0)
@@ -228,32 +228,28 @@ namespace Open.Topology.TestRunner.Utility
             return result.ToString();
         }
 
-        /**
-         *  Converts the comma-delimited string into a List of trimmed strings.
-         */
-
+        /// <summary>
+        /// Converts the comma-delimited string into a List of trimmed strings.
+        /// </summary>
         public static List<string> FromCommaDelimitedString(string s)
         {
             var result = new List<string>(s.Split(','));
             return result;
         }
 
-        /**
-         *  If s is null, returns "null"; otherwise, returns s.
-         */
-
+ 
+        /// <summary>If <paramref name="s"/> is <c>null</c>, returns &quot;null&quot;;<br/>Otherwise <c>false</c></summary>
         public static string ToStringNeverNull<T>(T o)
             where T : class
         {
             return o == null ? "null" : o.ToString();
         }
 
-        /**
-         *  Replaces all instances of the String o with the String n in the
-         *  StringBuffer orig if all is true, or only the first instance if all is
-         *  false. Posted by Steve Chapel <schapel@breakthr.com> on UseNet
-         */
-
+        /// <summary>
+        /// Replaces all instances of the String <paramref name="o"/> with the String <paramref name="n"/> in the
+        /// StringBuffer <paramref name="orig"/> if <paramref name="all"/> is <c>true</c>, or only the first instance if <paramref name="all"/> is
+        /// <c>false</c>.<br/>Posted by Steve Chapel &lt;schapel@breakthr.com&gt; on UseNet
+        /// </summary>
         public static void Replace(StringBuilder orig, string o, string n, bool all)
         {
             if (orig == null || o == null || o.Length == 0 || n == null)
@@ -279,51 +275,55 @@ namespace Open.Topology.TestRunner.Utility
             }
         }
 
-        /**
-         *  Returns original with all occurrences of oldSubstring replaced by
-         *  newSubstring
-         */
-
+        /// <summary>
+        /// Returns <paramref name="original"/> with all occurrences of <paramref name="oldSubstring"/> replaced by
+        /// <paramref name="newSubstring"/>.
+        /// </summary>
         public static string ReplaceAll(string original, string oldSubstring, string newSubstring)
         {
             return Replace(original, oldSubstring, newSubstring, true);
         }
 
-        /**
-         *  Returns original with the first occurrenc of oldSubstring replaced by
-         *  newSubstring
-         */
-
+        /// <summary>
+        /// Returns <paramref name="original"/> with the first occurrence of <paramref name="oldSubstring"/> replaced by
+        /// <paramref name="newSubstring"/>.
+        /// </summary>
         public static string ReplaceFirst(string original, string oldSubstring, string newSubstring)
         {
             return Replace(original, oldSubstring, newSubstring, false);
         }
 
-        /**
-         *  Pads the String with the given character until it has the given length. If
-         *  original is longer than the given length, returns original.
-         */
-
+        /// <summary>
+        /// Pads the String with the given character until it has the given length. <br/>
+        /// If <paramref name="original"/> is longer than the given <paramref name="length"/>, returns original.
+        /// </summary>
+        /// <param name="original">The original string</param>
+        /// <param name="length">The pad length</param>
+        /// <param name="padChar">The pad character</param>
         public static string LeftPad(string original, int length, char padChar)
         {
             return original.PadLeft(length, padChar);
         }
 
-        /**
-         *  Pads the String with the given character until it has the given length. If
-         *  original is longer than the given length, returns original.
-         */
-
+        /// <summary>
+        /// Pads the String with the given character until it has the given length. <br/>
+        /// If <paramref name="original"/> is longer than the given <paramref name="length"/>, returns original.
+        /// </summary>
+        /// <param name="original">The original string</param>
+        /// <param name="length">The pad length</param>
+        /// <param name="padChar">The pad character</param>
         public static string RightPad(string original, int length, char padChar)
         {
             return original.PadRight(length, padChar);
         }
 
-        /**
-         *  Removes the HTML tags from the given String, inserting line breaks at
-         *  appropriate places. Needs a little work.
-         */
 
+        /// <summary>
+        /// Removes the HTML tags from the given String, inserting line breaks at
+        /// appropriate places. 
+        /// </summary>
+        /// <remarks>Needs a little work.</remarks>
+        /// <param name="original">The original string</param>
         public static string StripHTMLTags(string original)
         {
             //Strip the tags from the HTML description
@@ -368,10 +368,9 @@ namespace Open.Topology.TestRunner.Utility
             return buffer.ToString();
         }
 
-        /**
-         *  Returns d as a string truncated to the specified number of decimal places
-         */
-
+        /// <summary>
+        /// Returns <paramref name="d"/> as a string truncated to the specified number of decimal places
+        /// </summary>
         public static string Format(double d, int decimals)
         {
             double factor = Math.Pow(10, decimals);
@@ -379,11 +378,9 @@ namespace Open.Topology.TestRunner.Utility
             return ((int) Math.Floor(digits/factor)) + "." + ((int) (digits%factor));
         }
 
-        /**
-         *  Line-wraps s by inserting CR-LF instead of the first space after the nth
-         *  column.
-         */
-
+        /// <summary>
+        /// Line-wraps <paramref name="s"/> by inserting &quot;\n&quot; instead of the first space after the <paramref name="n"/>th column.
+        /// </summary>
         public static string Split(string s, int n)
         {
             var b = new StringBuilder();
@@ -408,10 +405,9 @@ namespace Open.Topology.TestRunner.Utility
             return b.ToString();
         }
 
-        /**
-         *  Removes vowels from the string. Case-insensitive.
-         */
-
+        /// <summary>
+        /// Removes vowels from the string.<br/>
+        /// Case-insensitive.</summary>
         public static string RemoveVowels(string s)
         {
             string result = s;
@@ -428,11 +424,9 @@ namespace Open.Topology.TestRunner.Utility
             return result;
         }
 
-        /**
-         *  Removes vowels from the string except those that start words.
-         *  Case-insensitive.
-         */
-
+        /// <summary>
+        /// Removes vowels from the string except those that start words.<br/>
+        /// Case-insensitive.</summary>
         public static string RemoveVowelsSkipStarts(string s)
         {
             string result = s;
@@ -450,11 +444,10 @@ namespace Open.Topology.TestRunner.Utility
             return result;
         }
 
-        /**
-         *  Replaces consecutive instances of characters with single instances.
-         *  Case-insensitive.
-         */
-
+        /// <summary>
+        /// Replaces consecutive instances of characters with single instances.
+        /// Case-insensitive.
+        /// </summary>
         public static string RemoveConsecutiveDuplicates(string s)
         {
             string previous = "??";
@@ -471,12 +464,14 @@ namespace Open.Topology.TestRunner.Utility
             return result.ToString();
         }
 
-        /**
-         *  Returns the position of the first occurrence of the given character found
-         *  in s starting at start. Ignores text within pairs of parentheses. Returns
-         *  -1 if no occurrence is found.
-         */
-
+        /// <summary>
+        /// Returns the position of the first occurrence of the given character found
+        /// in s starting at start. Ignores text within pairs of parentheses. Returns
+        /// -1 if no occurrence is found.
+        /// </summary>
+        /// <param name="c">The char to find</param>
+        /// <param name="s">The string to search</param>
+        /// <param name="start">The position to start at.</param>
         public static int IndexOfIgnoreParentheses(char c, string s, int start)
         {
             int level = 0;
@@ -499,27 +494,29 @@ namespace Open.Topology.TestRunner.Utility
             return -1;
         }
 
-        /**
-         *  Returns original with occurrences of oldSubstring replaced by
-         *  newSubstring. Set all to true to replace all occurrences, or false to
-         *  replace the first occurrence only.
-         */
-
+        /// <summary>
+        /// Returns <paramref name="original"/> with occurrences of <paramref name="oldSubString"/> replaced by
+        /// <paramref name="newSubString"/>. Set <paramref name="all"/> to <c>true</c> to replace all occurrences, or <c>false</c> to
+        /// replace the first occurrence only.
+        /// </summary>
+        /// <param name="original">The original string</param>
+        /// <param name="oldSubString">The string to replace</param>
+        /// <param name="newSubString">The replace string</param>
+        /// <param name="all">A flag indicating if all occurrences should be replaced</param>
         public static string Replace(
             string original,
-            string oldSubstring,
-            string newSubstring,
+            string oldSubString,
+            string newSubString,
             bool all)
         {
             var b = new StringBuilder(original);
-            Replace(b, oldSubstring, newSubstring, all);
+            Replace(b, oldSubString, newSubString, all);
             return b.ToString();
         }
 
-        /**
-         *  Replaces vowels that start words with a special code
-         */
-
+        /// <summary>
+        /// Replaces vowels that start words with a special code
+        /// </summary>
         private static string EncodeStartingVowels(string s)
         {
             string result = s;
@@ -536,10 +533,9 @@ namespace Open.Topology.TestRunner.Utility
             return result;
         }
 
-        /**
-         *  Decodes strings returned by #encodeStartingVowels
-         */
-
+        /// <summary>
+        /// Decodes strings returned by <see cref="EncodeStartingVowels"/>
+        /// </summary>
         private static string DecodeStartingVowels(string s)
         {
             string result = s;
@@ -560,6 +556,11 @@ namespace Open.Topology.TestRunner.Utility
         //Subject: Re: special html characters and java???
         //Newsgroups: comp.lang.java.help
         //Date: 2000/09/16
+        /// <summary>
+        /// Escape special characters in <paramref name="s"/> for HTML
+        /// </summary>
+        /// <param name="s">The string</param>
+        /// <returns>The escaped HTML string</returns>
         public static string EscapeHTML(string s)
         {
             Replace(s, "\r\n", "\n", true);
@@ -596,6 +597,10 @@ namespace Open.Topology.TestRunner.Utility
         }
 
         //Based on code from http://developer.java.sun.com/developer/qow/archive/104/index.html
+        /// <summary>
+        /// Gets the name of the current method/function
+        /// </summary>
+        /// <returns>The name of the method/function</returns>
         public static string CurrentMethodName()
         {
             try
@@ -605,9 +610,12 @@ namespace Open.Topology.TestRunner.Utility
             catch (Exception e)
             {
                 string callStack = e.StackTrace;
-                int atPos = callStack.IndexOf("at");
-                atPos = callStack.IndexOf("at", atPos + 1);
-                int parenthesisPos = callStack.IndexOf("(", atPos);
+                if (string.IsNullOrWhiteSpace(callStack))
+                    return string.Empty;
+
+                int atPos = callStack.IndexOf("at", StringComparison.CurrentCulture);
+                atPos = callStack.IndexOf("at", atPos + 1, StringComparison.InvariantCulture);
+                int parenthesisPos = callStack.IndexOf("(", atPos, StringComparison.InvariantCulture);
                 return callStack.Substring(atPos + 3, parenthesisPos);
             }
         }
