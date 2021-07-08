@@ -394,12 +394,16 @@ namespace NetTopologySuite.Operation.Valid
         private void CheckNoSelfIntersectingRing(EdgeIntersectionList eiList)
         {
             var nodeSet = new HashSet<Coordinate>();
-            bool isFirst = true;
             foreach(var ei in eiList)
             {
-                if (isFirst)
+                /*
+                 * Do not count start point, so start/end node is not counted as a self-intersection.
+                 * Another segment with a node in same location will still trigger an invalid error.
+                 * (Note that the edgeIntersectionList may not contain the start/end node, 
+                 * due to noding short-circuiting.)
+                 */
+                if (IsStartNode(ei))
                 {
-                    isFirst = false;
                     continue;
                 }
                 if (nodeSet.Contains(ei.Coordinate))
@@ -407,8 +411,16 @@ namespace NetTopologySuite.Operation.Valid
                     _validErr = new TopologyValidationError(TopologyValidationErrors.RingSelfIntersection, ei.Coordinate);
                     return;
                 }
-                else nodeSet.Add(ei.Coordinate);
+                else
+                {
+                    nodeSet.Add(ei.Coordinate);
+                }
             }
+        }
+
+        private static bool IsStartNode(EdgeIntersection ei)
+        {
+            return ei.SegmentIndex == 0 && ei.Distance == 0.0;
         }
 
         /// <summary>
