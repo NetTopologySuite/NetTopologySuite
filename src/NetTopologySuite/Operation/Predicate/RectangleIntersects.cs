@@ -260,7 +260,7 @@ namespace NetTopologySuite.Operation.Predicate
 
         protected override void Visit(Geometry geom)
         {
-            /**
+            /*
              * It may be the case that the rectangle and the
              * envelope of the geometry component are disjoint,
              * so it is worth checking this simple condition.

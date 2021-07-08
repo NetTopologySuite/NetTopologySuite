@@ -391,7 +391,7 @@ namespace NetTopologySuite.Operation.Linemerge
 
                 // test end edge before start edge, to make result stable
                 // (ie. if both are good starts, pick the actual start
-                if (endEdge.ToNode.Degree == 1 && endEdge.EdgeDirection == false)
+                if (endEdge.ToNode.Degree == 1 && !endEdge.EdgeDirection)
                 {
                     hasObviousStartNode = true;
                     flipSeq = true;
