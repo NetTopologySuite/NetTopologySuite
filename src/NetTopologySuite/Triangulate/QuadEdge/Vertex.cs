@@ -30,8 +30,40 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private const int ORIGIN = 5;
         private const int DESTINATION = 6;
 
+
+        
+        private int id; // ID of the vertex	
         private readonly Coordinate _p;
+        private bool border;
         // private int edgeNumber = -1;
+
+        /// <summary>	
+        /// Default constructor	
+        /// </summary>	
+        public Vertex()
+        { }
+
+        /// <summary>	
+        /// Creates an instance of this class using the given id	
+        /// </summary>	
+        /// <param name="id">ID of the vertex</param>	
+        public Vertex(int id)
+        {
+            this.id = id;
+        }
+
+
+        /// <summary>	
+        /// Creates an instance of this class using the given id	
+        /// </summary>	
+        /// <param name="id">ID of the vertex</param>	
+        /// <param name="border">defines if the vertex is a border vertex or not in the triangulation framework</param>	
+        public Vertex(int id, bool border)
+        {
+            this.id = id;
+            this.border = border;
+        }
+
 
         /// <summary>
         /// Creates an instance of this class using the given x- and y-ordinate valuse
@@ -63,6 +95,39 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             _p = p.Copy();
         }
 
+
+        /// <summary>	
+        /// Creates an instance of this class using a clone of the given <see cref="Coordinate"/>.	
+        /// </summary>	
+        /// <param name="id">ID of the vertex</param>	
+        /// <param name="p">The coordinate</param>	
+        public Vertex(int id, Coordinate p)
+        {
+            this.id = id;
+            _p = p.Copy();
+        }
+        /// <summary>	
+        /// Creates an instance of this class using a clone of the given <see cref="Coordinate"/>.	
+        /// </summary>	
+        /// <param name="id">ID of the vertex</param>	
+        /// <param name="p">The coordinate</param>	
+        /// <param name="border">defines if the vertex is a border vertex or not in the triangulation framework</param>	
+        public Vertex(int id, Coordinate p, bool border)
+        {
+            this.id = id;
+            this.border = border;
+            _p = p.Copy();
+        }
+        /// <summary>	
+        /// Gets the ID of the vertex.	
+        /// </summary>	
+        public int Id
+        {
+            get => this.id;
+            set => this.id = value;
+        }
+
+
         /// <summary>
         /// Gets the x-ordinate value
         /// </summary>
@@ -86,6 +151,17 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the coordinate
         /// </summary>
         public Coordinate Coordinate => _p;
+
+
+        /// <summary>	
+        /// Returns true if the vertex is a border vertex of the triangulation framework, false otherwise.	
+        /// </summary>	
+        public bool IsBorder
+        {
+            get => this.border;
+            set => this.border = value;
+        }
+
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
