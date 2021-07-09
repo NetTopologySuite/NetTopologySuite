@@ -15,6 +15,14 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Assert.That(voronoi.EnvelopeInternal.Equals(clip.EnvelopeInternal));
         }
 
+        [Test]
+        public void TestClipEnvelopeBig()
+        {
+            var sites = Read("MULTIPOINT ((50 100), (50 50), (100 50), (100 100))");
+            var clip = Read("POLYGON ((-1000 1000, 1000 1000, 1000 -1000, -1000 -1000, -1000 1000))");
+            var voronoi = VoronoiDiagram(sites, clip);
+            Assert.That(voronoi.EnvelopeInternal.Equals(clip.EnvelopeInternal));
+        }
         private const double TRIANGULATION_TOLERANCE = 0.0;
 
         public static Geometry VoronoiDiagram(Geometry sitesGeom, Geometry clipGeom)

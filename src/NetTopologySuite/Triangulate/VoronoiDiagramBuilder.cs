@@ -85,19 +85,19 @@ namespace NetTopologySuite.Triangulate
             _diagramEnv = _clipEnv;
             if (_diagramEnv == null)
             {
-                /** 
-                 * If no user-provided clip env, 
+                /* 
+                 * If no user-provided clip envelope, 
                  * create one which encloses all the sites,
-                 * with a buffer around the edges.
+                 * with a 50% buffer around the edges.
                  */
-                _diagramEnv = siteEnv;
-                // add a buffer around the sites envelope
+                _diagramEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
+                // add a 50% buffer around the sites envelope
                 double expandBy = _diagramEnv.Diameter;
                 _diagramEnv.ExpandBy(expandBy);
             }
 
             var vertices = DelaunayTriangulationBuilder.ToVertices(_siteCoords);
-            _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
+            _subdiv = new QuadEdgeSubdivision(_diagramEnv, _tolerance);
             var triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
