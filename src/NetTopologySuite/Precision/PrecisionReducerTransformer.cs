@@ -4,33 +4,32 @@ using NetTopologySuite.Operation.OverlayNG;
 
 namespace NetTopologySuite.Precision
 {
-    class PrecisionReducerTransformer : GeometryTransformer
+    /// <summary>
+    /// A transformer to reduce the precision of geometry in a
+    /// topologically valid way.<br/>
+    /// Repeated points are removed.
+    /// If geometry elements collapse below their valid length,
+    /// they may be removed
+    /// by specifying <c>isRemoveCollapsed</c> as <c>true</c>.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    internal class PrecisionReducerTransformer : GeometryTransformer
     {
 
 
-        public static Geometry Reduce(Geometry geom, PrecisionModel targetPM)
+        public static Geometry Reduce(Geometry geom, PrecisionModel targetPM, bool isRemoveCollapsed)
         {
-            return Reduce(geom, targetPM, false);
-        }
-
-        public static Geometry Reduce(Geometry geom, PrecisionModel targetPM, bool isPointwise)
-        {
-            var trans = new PrecisionReducerTransformer(targetPM, isPointwise);
+            var trans = new PrecisionReducerTransformer(targetPM, isRemoveCollapsed);
             return trans.Transform(geom);
         }
 
         private readonly PrecisionModel _targetPm;
-        private readonly bool _isPointwise = false;
+        private readonly bool _isRemoveCollapsed;
 
-        PrecisionReducerTransformer(PrecisionModel targetPM)
-            : this(targetPM, false)
-        {
-        }
-
-        PrecisionReducerTransformer(PrecisionModel targetPM, bool isPointwise)
+        PrecisionReducerTransformer(PrecisionModel targetPM, bool isRemoveCollapsed)
         {
             _targetPm = targetPM;
-            _isPointwise = isPointwise;
+            _isRemoveCollapsed = isRemoveCollapsed;
         }
 
         protected override CoordinateSequence TransformCoordinates(
@@ -39,19 +38,11 @@ namespace NetTopologySuite.Precision
             if (coordinates.Count == 0)
                 return null;
 
-            Coordinate[] coordsReduce;
-            if (_isPointwise)
-            {
-                coordsReduce = ReducePointwise(coordinates);
-            }
-            else
-            {
-                coordsReduce = ReduceCompress(coordinates);
-            }
+            var coordsReduce = ReduceCompress(coordinates);
 
             /*
-             * Check to see if the removal of repeated points collapsed the coordinate
-             * List to an invalid length for the type of the parent geometry. It is not
+             * Check if the removal of repeated points collapsed the coordinate
+             * list to an invalid length for the type of the parent geometry. It is not
              * necessary to check for Point collapses, since the coordinate list can
              * never collapse to less than one point. If the length is invalid, return
              * the full-length coordinate array first computed, or null if collapses are
@@ -62,15 +53,36 @@ namespace NetTopologySuite.Precision
             if (parent is LineString)
                 minLength = 2;
             if (parent is LinearRing)
-                minLength = 4;
+                minLength = LinearRing.MinimumValidSize;
 
-            // collapse - return null so parent is removed or empty
+            /*
+             * Handle collapse. If specified return null so parent geometry is removed or empty,
+             * otherwise extend to required length.
+             */
             if (coordsReduce.Length < minLength)
             {
-                return null;
-            }
+                if (_isRemoveCollapsed)
+                {
+                    return null;
+                }
 
+                coordsReduce = Extend(coordsReduce, minLength);
+            }
             return Factory.CoordinateSequenceFactory.Create(coordsReduce);
+
+        }
+
+        private Coordinate[] Extend(Coordinate[] coords, int minLength)
+        {
+            if (coords.Length >= minLength)
+                return coords;
+            var exCoords = new Coordinate[minLength];
+            for (int i = 0; i < exCoords.Length; i++)
+            {
+                int iSrc = i < coords.Length ? i : coords.Length - 1;
+                exCoords[i] = coords[iSrc].Copy();
+            }
+            return exCoords;
         }
 
         private Coordinate[] ReduceCompress(CoordinateSequence coordinates)
@@ -84,49 +96,20 @@ namespace NetTopologySuite.Precision
                 noRepeatCoordList.Add(coord, false);
             }
 
-            // remove repeated points, to simplify returned geometry as much as possible
+            // remove repeated points, to simplify geometry as much as possible
             var noRepeatCoords = noRepeatCoordList.ToCoordinateArray();
             return noRepeatCoords;
         }
 
-        private Coordinate[] ReducePointwise(CoordinateSequence coordinates)
-        {
-            var coordReduce = new Coordinate[coordinates.Count];
-            // copy coordinates and reduce
-            for (int i = 0; i < coordinates.Count; i++)
-            {
-                var coord = coordinates.GetCoordinate(i).Copy();
-                _targetPm.MakePrecise(coord);
-                coordReduce[i] = coord;
-            }
-
-            return coordReduce;
-        }
-
+        /// <inheritdoc cref="GeometryTransformer.TransformPolygon"/>
         protected override Geometry TransformPolygon(Polygon geom, Geometry parent)
         {
-            if (_isPointwise)
-            {
-                var trans = base.TransformPolygon(geom, parent);
-                /*
-                 * For some reason the base transformer may return non-polygonal geoms here.
-                 * Check this and return an empty polygon instead.
-                 */
-                if (trans is Polygon)
-                    return trans;
-                return Factory.CreatePolygon();
-            }
-
             return ReduceArea(geom);
         }
 
+        /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon"/>
         protected override Geometry TransformMultiPolygon(MultiPolygon geom, Geometry parent)
         {
-            if (_isPointwise)
-            {
-                return base.TransformMultiPolygon(geom, parent);
-            }
-
             return ReduceArea(geom);
         }
 

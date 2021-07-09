@@ -8,7 +8,7 @@ namespace NetTopologySuite.Precision
     /// Reduces the precision of a <see cref="Geometry"/>
     /// according to the supplied <see cref="PrecisionModel"/>,
     /// ensuring that the result is topologically valid,
-    /// ensuring that the result is valid (unless specified otherwise).
+    /// ensuring that the result is valid, unless specified otherwise.
     /// <para/>
     /// By default the reduced result is topologically valid
     /// (i.e. <see cref="Geometry.IsValid"/> is true).
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Precision
     /// By default the geometry precision model is not changed.
     /// This can be overridden by using <see cref="ChangePrecisionModel"/><c> = true</c>.
     /// <para/>
-    /// Normally collapsed components(e.g.lines collapsing to a point)
+    /// Normally, collapsed components (e.g.lines collapsing to a point)
     /// are not included in the result.
     /// This behavior can be changed by using <see cref="RemoveCollapsedComponents"/> = <c>true</c>.
     /// </summary>
@@ -127,7 +127,11 @@ namespace NetTopologySuite.Precision
         /// due to input geometry is invalid.</exception>
         public Geometry Reduce(Geometry geom)
         {
-            var reduced = PrecisionReducerTransformer.Reduce(geom, _targetPM, _isPointwise);
+            Geometry reduced;
+            if (_isPointwise)
+                reduced = PointwisePrecisionReducerTransformer.Reduce(geom, _targetPM);
+            else
+                reduced = PrecisionReducerTransformer.Reduce(geom, _targetPM, _removeCollapsed);
 
             // TODO: incorporate this in the Transformer above
             if (_changePrecisionModel)

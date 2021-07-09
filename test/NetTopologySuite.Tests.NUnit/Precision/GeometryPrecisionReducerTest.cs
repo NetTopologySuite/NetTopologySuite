@@ -10,8 +10,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
     {
         //private readonly PrecisionModel _pmFloat;
         private readonly PrecisionModel _pmFixed1;
-        private readonly GeometryPrecisionReducer _reducer;
-        private readonly GeometryPrecisionReducer _reducerKeepCollapse;
 
         //private readonly GeometryFactory _gfFloat;
         readonly WKTReader _reader;
@@ -20,14 +18,10 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         {
             //_pmFloat = new PrecisionModel();
             _pmFixed1 = new PrecisionModel(1);
-            _reducer = new GeometryPrecisionReducer(_pmFixed1);
-            _reducerKeepCollapse = new GeometryPrecisionReducer(_pmFixed1);
 
             //_gfFloat = new GeometryFactory(_pmFloat, 0);
             //_reader = new WKTReader(_gfFloat);
             _reader = new WKTReader(NtsGeometryServices.Instance);
-
-            _reducerKeepCollapse.RemoveCollapsedComponents = false;
         }
 
         [Test]
@@ -84,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         public void TestLine()
 
         {
-            CheckReduceExact("LINESTRING ( 0 0, 0 1.4 )",
+            CheckReduce("LINESTRING ( 0 0, 0 1.4 )",
                 "LINESTRING (0 0, 0 1)");
         }
 
@@ -92,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         public void TestLineNotNoded()
 
         {
-            CheckReduceExact("LINESTRING(1 1, 3 3, 9 9, 5.1 5, 2.1 2)",
+            CheckReduce("LINESTRING(1 1, 3 3, 9 9, 5.1 5, 2.1 2)",
                 "LINESTRING(1 1, 3 3, 9 9, 5 5, 2 2)");
         }
 
@@ -100,15 +94,15 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         public void TestLineRemoveCollapse()
 
         {
-            CheckReduceExact("LINESTRING ( 0 0, 0 .4 )",
+            CheckReduce("LINESTRING ( 0 0, 0 .4 )",
                 "LINESTRING EMPTY");
         }
 
-        [Test, Ignore("Disabled for now. Throws Exception")]
+        [Test]
         public void TestLineKeepCollapse()
 
         {
-            CheckReduceExactSameFactory(_reducerKeepCollapse,
+            CheckReduceKeepCollapse(1,
                 "LINESTRING ( 0 0, 0 .4 )",
                 "LINESTRING ( 0 0, 0 0 )");
         }
@@ -117,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         public void TestPoint()
 
         {
-            CheckReduceExact("POINT(1.1 4.9)",
+            CheckReduce("POINT(1.1 4.9)",
                 "POINT(1 5)");
         }
 
@@ -125,7 +119,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         public void TestMultiPoint()
 
         {
-            CheckReduceExact("MULTIPOINT( (1.1 4.9),(1.2 4.8), (3.3 6.6))",
+            CheckReduce("MULTIPOINT( (1.1 4.9),(1.2 4.8), (3.3 6.6))",
                 "MULTIPOINT((1 5), (1 5), (3 7))");
         }
 
@@ -212,27 +206,22 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             Assert.That(actual.Factory, Is.EqualTo(expected.Factory), "Factories are not the same");
         }
 
-        private void CheckReduceExact(string wkt, string wktExpected)
-        {
-            CheckReduceExactSameFactory(_reducer, wkt, wktExpected);
-        }
-
-        private void CheckReduceExactSameFactory(GeometryPrecisionReducer reducer,
+        private void CheckReduceKeepCollapse(
+            double scaleFactor,
             string wkt,
             string wktExpected)
         {
-            var g = Read(wkt);
-            var expected = Read(wktExpected);
-            var actual = reducer.Reduce(g);
-            Assert.That(actual.EqualsExact(expected), Is.True);
-            Assert.That(expected.Factory, Is.EqualTo(expected.Factory));
-        }
-
-        private void CheckReduceExact(double scaleFactor, string wkt, string wktExpected)
-        {
             var pm = new PrecisionModel(scaleFactor);
             var reducer = new GeometryPrecisionReducer(pm);
-            CheckReduceExactSameFactory(reducer, wkt, wktExpected);
+            reducer.RemoveCollapsedComponents = false;
+            CheckReduce(reducer, wkt, wktExpected);
+        }
+
+        private void CheckReduce(
+            string wkt,
+            string wktExpected)
+        {
+            CheckReduce(1, wkt, wktExpected);
         }
 
         private void CheckReduce(double scaleFactor, string wkt, string wktExpected)
@@ -242,13 +231,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             CheckReduce(reducer, wkt, wktExpected);
         }
 
-        private void CheckReduce(
-            string wkt,
-            string wktExpected)
-        {
-            CheckReduce(_reducer, wkt, wktExpected);
-        }
-        
         private void CheckReduce(
             GeometryPrecisionReducer reducer,
             string wkt,
