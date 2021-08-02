@@ -292,7 +292,7 @@ namespace NetTopologySuite.Operation.Valid
             CheckRingsTooFewPoints(g);
             if (HasInvalidError) return false;
 
-            var areaAnalyzer = new AreaTopologyAnalyzer(g, _isInvertedRingValid);
+            var areaAnalyzer = new PolygonTopologyAnalyzer(g, _isInvertedRingValid);
 
             CheckAreaIntersections(areaAnalyzer);
             if (HasInvalidError) return false;
@@ -328,7 +328,7 @@ namespace NetTopologySuite.Operation.Valid
                 if (HasInvalidError) return false;
             }
 
-            var areaAnalyzer = new AreaTopologyAnalyzer(g, _isInvertedRingValid);
+            var areaAnalyzer = new PolygonTopologyAnalyzer(g, _isInvertedRingValid);
 
             CheckAreaIntersections(areaAnalyzer);
             if (HasInvalidError) return false;
@@ -484,7 +484,7 @@ namespace NetTopologySuite.Operation.Valid
             return numPts >= minSize;
         }
 
-        private void CheckAreaIntersections(AreaTopologyAnalyzer areaAnalyzer)
+        private void CheckAreaIntersections(PolygonTopologyAnalyzer areaAnalyzer)
         {
             if (areaAnalyzer.HasIntersection)
             {
@@ -514,7 +514,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="ring">The linear ring to check</param>
         private void CheckSelfIntersectingRing(LinearRing ring)
         {
-            var intPt = AreaTopologyAnalyzer.FindSelfIntersection(ring);
+            var intPt = PolygonTopologyAnalyzer.FindSelfIntersection(ring);
             if (intPt != null)
             {
                 LogInvalid(TopologyValidationErrors.RingSelfIntersection,
@@ -620,7 +620,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <item><description>shells do not partially overlap</description></item>
         /// <item><description>shells do not touch along an edge</description></item>
         /// <item><description>no duplicate rings exist</description></item></list>
-        /// These have been confirmed by the <see cref="AreaTopologyAnalyzer"/>.
+        /// These have been confirmed by the <see cref="PolygonTopologyAnalyzer"/>.
         /// </summary>
         private void CheckShellsNotNested(MultiPolygon mp)
         {
@@ -665,7 +665,7 @@ namespace NetTopologySuite.Operation.Valid
             var shell0 = shell.GetCoordinateN(0);
             var shell1 = shell.GetCoordinateN(1);
 
-            if (!AreaTopologyAnalyzer.IsSegmentInRing(shell0, shell1, polyShell))
+            if (!PolygonTopologyAnalyzer.IsSegmentInRing(shell0, shell1, polyShell))
                 return null;
 
             /*
@@ -676,7 +676,7 @@ namespace NetTopologySuite.Operation.Valid
             {
                 var hole = (LinearRing)poly.GetInteriorRingN(i);
                 if (hole.EnvelopeInternal.Covers(shell.EnvelopeInternal)
-                    && AreaTopologyAnalyzer.IsSegmentInRing(shell0, shell1, hole))
+                    && PolygonTopologyAnalyzer.IsSegmentInRing(shell0, shell1, hole))
                 {
                     return null;
                 }
@@ -689,7 +689,7 @@ namespace NetTopologySuite.Operation.Valid
             return shell0;
         }
 
-        private void CheckInteriorDisconnected(AreaTopologyAnalyzer areaAnalyzer)
+        private void CheckInteriorDisconnected(PolygonTopologyAnalyzer areaAnalyzer)
         {
             if (areaAnalyzer.IsInteriorDisconnectedByRingCycle())
                 LogInvalid(TopologyValidationErrors.DisconnectedInteriors,

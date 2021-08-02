@@ -7,11 +7,11 @@ using NetTopologySuite.Noding;
 namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
-    /// Analyzes the topology of areal geometry
+    /// Analyzes the topology of polygonal geometry
     /// to determine whether it is valid.
     /// </summary>
     /// <author>Martin Davis</author>
-    class AreaTopologyAnalyzer
+    class PolygonTopologyAnalyzer
     {
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns>A self-intersection point if one exists, or <c>null</c></returns>
         public static Coordinate FindSelfIntersection(LinearRing ring)
         {
-            var ata = new AreaTopologyAnalyzer(ring, false);
+            var ata = new PolygonTopologyAnalyzer(ring, false);
             if (ata.HasIntersection)
                 return ata.IntersectionLocation;
             return null;
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Operation.Valid
                 rPrev = rNext;
                 rNext = temp;
             }
-            return AreaNode.IsInteriorSegment(p0, rPrev, rNext, p1);
+            return PolygonNode.IsInteriorSegment(p0, rPrev, rNext, p1);
         }
 
         /// <summary>
@@ -136,15 +136,20 @@ namespace NetTopologySuite.Operation.Valid
         private readonly Geometry _inputGeom;
         private readonly bool _isInvertedRingValid;
 
-        private InvalidIntersectionFinder _intFinder;
+        private readonly PolygonIntersectionAnalyzer _intFinder;
         private List<PolygonRing> _polyRings;
         private Coordinate _disconnectionPt;
 
-        public AreaTopologyAnalyzer(Geometry geom, bool isInvertedRingValid)
+        public PolygonTopologyAnalyzer(Geometry geom, bool isInvertedRingValid)
         {
             _inputGeom = geom;
             _isInvertedRingValid = isInvertedRingValid;
-            Analyze();
+            if (!geom.IsEmpty)
+            {
+                var segStrings = CreateSegmentStrings(geom, isInvertedRingValid);
+                _polyRings = GetPolygonRings(segStrings);
+                _intFinder = AnalyzeIntersections(segStrings);
+            }
         }
 
         public bool HasIntersection
@@ -170,7 +175,7 @@ namespace NetTopologySuite.Operation.Valid
         /// the touching graph of all holes in a polygon.
         /// <para/>
         /// If inverted rings disconnect the interior
-        /// via a self-touch, this is checked by the <see cref="InvalidIntersectionFinder"/>.
+        /// via a self-touch, this is checked by the <see cref="PolygonIntersectionAnalyzer"/>.
         /// If inverted rings are part of a disconnected ring chain
         /// this is detected here.  
         /// </summary>
@@ -208,23 +213,16 @@ namespace NetTopologySuite.Operation.Valid
             return _disconnectionPt != null;
         }
 
-        private void Analyze()
+        private PolygonIntersectionAnalyzer AnalyzeIntersections(IList<ISegmentString> segStrings)
         {
-            if (_inputGeom.IsEmpty) return;
-            _intFinder = ComputeIntersections(_inputGeom);
-        }
-
-        private InvalidIntersectionFinder ComputeIntersections(Geometry geom)
-        {
-            var segStrings = ExtractSegmentStrings(geom);
-            var segInt = new InvalidIntersectionFinder(_isInvertedRingValid);
+            var segInt = new PolygonIntersectionAnalyzer(_isInvertedRingValid);
             var noder = new MCIndexNoder();
             noder.SegmentIntersector = segInt;
             noder.ComputeNodes(segStrings);
             return segInt;
         }
 
-        private List<ISegmentString> ExtractSegmentStrings(Geometry geom)
+        private static IList<ISegmentString> CreateSegmentStrings(Geometry geom, bool isInvertedRingValid)
         {
             var segStrings = new List<ISegmentString>();
             if (geom is LinearRing ring) {
@@ -239,10 +237,9 @@ namespace NetTopologySuite.Operation.Valid
 
                 //--- polygons with no holes do not need connected interior analysis
                 PolygonRing shellRing = null;
-                if (hasHoles || _isInvertedRingValid)
+                if (hasHoles || isInvertedRingValid)
                 {
                     shellRing = new PolygonRing((LinearRing)poly.ExteriorRing);
-                    AddPolygonRing(shellRing);
                 }
                 segStrings.Add(CreateSegString((LinearRing)poly.ExteriorRing, shellRing));
 
@@ -251,13 +248,29 @@ namespace NetTopologySuite.Operation.Valid
                     var hole = (LinearRing)poly.GetInteriorRingN(j);
                     if (hole.IsEmpty) continue;
                     var holeRing = new PolygonRing(hole, j, shellRing);
-                    AddPolygonRing(holeRing);
                     segStrings.Add(CreateSegString(hole, holeRing));
                 }
             }
             return segStrings;
         }
 
+        private static List<PolygonRing> GetPolygonRings(IList<ISegmentString> segStrings)
+        {
+            List<PolygonRing> polyRings = null;
+            foreach(var ss in segStrings)
+            {
+                var polyRing = (PolygonRing)ss.Context;
+                if (polyRing != null)
+                {
+                    if (polyRings == null)
+                    {
+                        polyRings = new List<PolygonRing>();
+                    }
+                    polyRings.Add(polyRing);
+                }
+            }
+            return polyRings;
+        }
         private void AddPolygonRing(PolygonRing polyRing)
         {
             if (_polyRings == null)

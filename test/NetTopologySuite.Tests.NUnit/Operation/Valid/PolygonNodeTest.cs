@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 {
-    public class AreaNodeTest : GeometryTestCase
+    public class PolygonNodeTest : GeometryTestCase
     {
 
 
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             var a = ReadPts(wktA);
             var b = ReadPts(wktB);
             // assert: a[1] = b[1]
-            bool isValid = !AreaNode.IsCrossing(a[1], a[0], a[2], b[0], b[2]);
+            bool isValid = !PolygonNode.IsCrossing(a[1], a[0], a[2], b[0], b[2]);
             Assert.That(isValid, Is.EqualTo(isExpectedValid));
         }
 

@@ -5,10 +5,10 @@ namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Functions to compute topological information
-    /// about nodes (ring intersections) in areal geometry.
+    /// about nodes (ring intersections) in polygonal geometry.
     /// </summary>
     /// <author>Martin Davis</author>
-    static class AreaNode
+    static class PolygonNode
     {
         /// <summary>
         /// Check if the edges at a node between two rings (or one ring) cross.

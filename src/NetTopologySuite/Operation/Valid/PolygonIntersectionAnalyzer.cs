@@ -6,7 +6,16 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Operation.Valid
 {
-    internal class InvalidIntersectionFinder : ISegmentIntersector
+    /// <summary>Finds and analyzes intersections in and between polygons,
+    /// to determine if they are valid.
+    /// <para/>
+    /// The <see cref="ISegmentString"/>s which are analyzed can have <see cref="PolygonRing"/>s
+    /// attached. If so they will be updated with intersection information
+    /// to support further validity analysis which must be done after
+    /// basic intersection validity has been confirmed.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    internal class PolygonIntersectionAnalyzer : ISegmentIntersector
     {
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly List<Coordinate> _intersectionPts = new List<Coordinate>();
@@ -16,7 +25,11 @@ namespace NetTopologySuite.Operation.Valid
         private bool _hasDoubleTouch;
         private readonly bool _isInvertedRingValid;
 
-        public InvalidIntersectionFinder(bool isInvertedRingValid)
+        /// <summary>
+        /// Creates a new finder, allowing for the mode where inverted rings are valid.
+        /// </summary>
+        /// <param name="isInvertedRingValid"><c>true</c> if inverted rings are valid.</param>
+        public PolygonIntersectionAnalyzer(bool isInvertedRingValid)
         {
             _isInvertedRingValid = isInvertedRingValid;
         }
@@ -64,10 +77,12 @@ namespace NetTopologySuite.Operation.Valid
         private bool FindInvalidIntersection(ISegmentString ss0, int segIndex0,
             ISegmentString ss1, int segIndex1)
         {
-            var p00 = ss0.Coordinates[segIndex0];
-            var p01 = ss0.Coordinates[segIndex0 + 1];
-            var p10 = ss1.Coordinates[segIndex1];
-            var p11 = ss1.Coordinates[segIndex1 + 1];
+            var coordinates = ss0.Coordinates;
+            var p00 = coordinates[segIndex0];
+            var p01 = coordinates[segIndex0 + 1];
+            coordinates = ss1.Coordinates;
+            var p10 = coordinates[segIndex1];
+            var p11 = coordinates[segIndex1 + 1];
 
             _li.ComputeIntersection(p00, p01, p10, p11);
 
@@ -144,7 +159,7 @@ namespace NetTopologySuite.Operation.Valid
                 e11 = p11;
             }
 
-            _hasCrossing = AreaNode.IsCrossing(intPt, e00, e01, e10, e11);
+            _hasCrossing = PolygonNode.IsCrossing(intPt, e00, e01, e10, e11);
             if (_hasCrossing)
                 return true;
 
@@ -164,7 +179,7 @@ namespace NetTopologySuite.Operation.Valid
              * Also check for an invalid double-touch situation,
              * if the rings are different.
              */
-            bool isDoubleTouch = PolygonRing.AddTouch((PolygonRing) ss0.Context, (PolygonRing) ss1.Context, intPt);
+            bool isDoubleTouch = AddDoubleTouch(ss0, ss1, intPt);
             if (isDoubleTouch && !isSameSegString)
             {
                 _hasDoubleTouch = true;
@@ -174,6 +189,11 @@ namespace NetTopologySuite.Operation.Valid
             return false;
         }
 
+        private bool AddDoubleTouch(ISegmentString ss0, ISegmentString ss1, Coordinate intPt)
+        {
+            return PolygonRing.AddTouch((PolygonRing)ss0.Context, (PolygonRing)ss1.Context, intPt);
+        }
+
         private void AddSelfTouch(ISegmentString ss, Coordinate intPt, Coordinate e00, Coordinate e01, Coordinate e10,
             Coordinate e11)
         {
@@ -181,7 +201,7 @@ namespace NetTopologySuite.Operation.Valid
             if (polyRing == null)
             {
                 throw new InvalidOperationException(
-                    "SegmentString missing PolygonRing data when checking valid self-touches");
+                    "SegmentString missing PolygonRing data when checking self-touches");
             }
 
             polyRing.AddSelfTouch(intPt, e00, e01, e10, e11);

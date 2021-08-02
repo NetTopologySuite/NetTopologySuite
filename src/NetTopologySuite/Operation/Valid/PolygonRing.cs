@@ -477,7 +477,7 @@ namespace NetTopologySuite.Operation.Valid
              * Note that either corner and either of the other edges could be used to test.
              * The situation is fully symmetrical.
              */
-            bool isInteriorSeg = AreaNode.IsInteriorSegment(_nodePt, _e00, _e01, _e10);
+            bool isInteriorSeg = PolygonNode.IsInteriorSegment(_nodePt, _e00, _e01, _e10);
             bool isExterior = isInteriorOnRight ? !isInteriorSeg : isInteriorSeg;
             return isExterior;
         }
