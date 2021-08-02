@@ -2,4 +2,5 @@
 uid: NetTopologySuite.Operation.Valid
 summary: *content
 ---
-Provides classes for testing the validity of geometries.
+Classes for testing the validity and simplicity of geometries,
+as defined in the OGC Simple Features specification.

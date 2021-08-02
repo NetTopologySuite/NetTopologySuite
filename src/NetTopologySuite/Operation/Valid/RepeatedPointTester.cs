@@ -12,45 +12,52 @@ namespace NetTopologySuite.Operation.Valid
     {
 
         // save the repeated coord found (if any)
-        private Coordinate repeatedCoord;
+        private Coordinate _repeatedCoord;
 
         /// <summary>
-        ///
+        /// Gets a value indicating the location of the repeated point
         /// </summary>
-        public Coordinate Coordinate => repeatedCoord;
+        public Coordinate Coordinate => _repeatedCoord;
 
         /// <summary>
-        ///
+        /// Checks if a geometry has a repeated point
         /// </summary>
-        /// <param name="g"></param>
-        /// <returns></returns>
+        /// <param name="g">The geometry to test</param>
+        /// <returns><c>true</c> if the geometry has a repeated point, otherwise <c>false</c></returns>
         public bool HasRepeatedPoint(Geometry g)
         {
-            if (g.IsEmpty)  return false;
-            if (g is Point) return false;
-            else if (g is MultiPoint) return false;
-            // LineString also handles LinearRings
-            else if (g is LineString)
-                return HasRepeatedPoint((g).Coordinates);
-            else if (g is Polygon)
-                return HasRepeatedPoint((Polygon) g);
-            else if (g is GeometryCollection)
-                return HasRepeatedPoint((GeometryCollection) g);
-            else  throw new NotSupportedException(g.GetType().FullName);
+            if (g.IsEmpty)
+                return false;
+
+            switch (g)
+            {
+                case Point _:
+                case MultiPoint _:
+                    return false;
+                // LineString also handles LinearRings
+                case LineString ls:
+                    return HasRepeatedPoint(ls.CoordinateSequence);
+                case Polygon pg:
+                    return HasRepeatedPoint(pg);
+                case GeometryCollection gc:
+                    return HasRepeatedPoint(gc);
+                default:
+                    throw new NotSupportedException(g.GetType().FullName);
+            }
         }
 
         /// <summary>
-        ///
+        /// Checks if an array of <c>Coordinate</c>s has a repeated point
         /// </summary>
-        /// <param name="coord"></param>
-        /// <returns></returns>
+        /// <param name="coord">An array of coordinates</param>
+        /// <returns><c>true</c> if <paramref name="coord"/> has a repeated point, otherwise <c>false</c></returns>
         public bool HasRepeatedPoint(Coordinate[] coord)
         {
             for (int i = 1; i < coord.Length; i++)
             {
                 if (coord[i - 1].Equals(coord[i]))
                 {
-                    repeatedCoord = coord[i];
+                    _repeatedCoord = coord[i];
                     return true;
                 }
             }
@@ -58,25 +65,40 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        ///
+        /// Checks if an array of <c>Coordinate</c>s has a repeated point
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
+        /// <param name="sequence">A coordinate sequence</param>
+        /// <returns><c>true</c> if <paramref name="sequence"/> has a repeated point, otherwise <c>false</c></returns>
+        public bool HasRepeatedPoint(CoordinateSequence sequence)
+        {
+            if (sequence.Count < 2)
+                return false;
+
+            var last = sequence.GetCoordinate(0);
+            for (int i = 1; i < sequence.Count; i++)
+            {
+                var curr = sequence.GetCoordinate(i);
+                if (curr.Equals(last))
+                {
+                    _repeatedCoord = curr.Copy();
+                    return true;
+                }
+
+                last = curr;
+            }
+            return false;
+        }
+
         private bool HasRepeatedPoint(Polygon p)
         {
-            if (HasRepeatedPoint(p.ExteriorRing.Coordinates))
+            if (HasRepeatedPoint(p.ExteriorRing.CoordinateSequence))
                 return true;
             for (int i = 0; i < p.NumInteriorRings; i++)
-                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates))
+                if (HasRepeatedPoint(p.GetInteriorRingN(i).CoordinateSequence))
                     return true;
             return false;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="gc"></param>
-        /// <returns></returns>
         private bool HasRepeatedPoint(GeometryCollection gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++)

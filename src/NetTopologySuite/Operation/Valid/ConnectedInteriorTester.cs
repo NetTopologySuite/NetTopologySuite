@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -17,6 +18,7 @@ namespace NetTopologySuite.Operation.Valid
     /// - one or more holes form a ring around a subset of the interior.
     /// If a disconnected situation is found the location of the problem is recorded.
     /// </summary>
+    [Obsolete]
     public class ConnectedInteriorTester
     {
         /// <summary>

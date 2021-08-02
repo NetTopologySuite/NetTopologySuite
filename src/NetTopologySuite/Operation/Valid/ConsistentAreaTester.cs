@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -15,6 +16,7 @@ namespace NetTopologySuite.Operation.Valid
     /// Testing for duplicate rings.
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
+    [Obsolete]
     public class ConsistentAreaTester
     {
         private readonly LineIntersector li = new RobustLineIntersector();

@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index;
@@ -8,13 +8,12 @@ using NetTopologySuite.Index.Strtree;
 
 namespace NetTopologySuite.Operation.Valid
 {
-    /**
-     * Tests whether any of a set of {@link LinearRing}s are
-     * nested inside another ring in the set, using a spatial
-     * index to speed up the comparisons.
-     *
-     * @version 1.7
-     */
+    /// <summary>
+    /// Tests whether any of a set of <see cref="LinearRing"/>s are
+    /// nested inside another ring in the set, using a spatial
+    /// index to speed up the comparisons.
+    /// </summary>
+    [Obsolete]
     public class IndexedNestedRingTester
     {
         private readonly GeometryGraph _graph;  // used to find non-node vertices
@@ -60,7 +59,7 @@ namespace NetTopologySuite.Operation.Valid
                     var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
                     // Diego Guidi: removed => see Issue 121
                     //Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
-                    /**
+                    /*
                      * If no non-node pts can be found, this means
                      * that the searchRing touches ALL of the innerRing vertices.
                      * This indicates an invalid polygon, since either

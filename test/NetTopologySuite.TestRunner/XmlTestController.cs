@@ -25,7 +25,7 @@ namespace Open.Topology.TestRunner
         {
             if (m_listFileNames != null)
                 m_listFileNames.Clear();
-       }
+        }
 
         public void Reset()
         {

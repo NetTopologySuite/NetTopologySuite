@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     ///<author>Martin Davis</author>
     ///<version>1.7</version>
     [TestFixture]
-    public class ValidSelfTouchingRingFormingHoleTest
+    public class ValidSelfTouchingRingTest
     {
         private static WKTReader rdr = new WKTReader();
 
