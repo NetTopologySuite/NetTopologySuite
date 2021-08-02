@@ -43,10 +43,12 @@ namespace NetTopologySuite.Noding.Snap
             // don't bother intersecting a segment with itself
             if (seg0 == seg1 && segIndex0 == segIndex1) return;
 
-            var p00 = seg0.Coordinates[segIndex0];
-            var p01 = seg0.Coordinates[segIndex0 + 1];
-            var p10 = seg1.Coordinates[segIndex1];
-            var p11 = seg1.Coordinates[segIndex1 + 1];
+            var coordinates = seg0.Coordinates;
+            var p00 = coordinates[segIndex0];
+            var p01 = coordinates[segIndex0 + 1];
+            coordinates = seg1.Coordinates;
+            var p10 = coordinates[segIndex1];
+            var p11 = coordinates[segIndex1 + 1];
 
             /*
              * Don't node intersections which are just 

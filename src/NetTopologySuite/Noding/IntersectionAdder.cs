@@ -39,22 +39,22 @@ namespace NetTopologySuite.Noding
         /// <summary>
         ///
         /// </summary>
-        public int NumIntersections = 0;
+        public int NumIntersections;
 
         /// <summary>
         ///
         /// </summary>
-        public int NumInteriorIntersections = 0;
+        public int NumInteriorIntersections;
 
         /// <summary>
         ///
         /// </summary>
-        public int NumProperIntersections = 0;
+        public int NumProperIntersections;
 
         /// <summary>
         ///
         /// </summary>
-        public int NumTests = 0;
+        public int NumTests;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntersectionAdder"/> class.
