@@ -39,8 +39,22 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [Test]
         public void TestInvalidSimplePolygonRingSelfIntersection()
         {
-            CheckInvalid(TopologyValidationErrors.RingSelfIntersection,
+            CheckInvalid(TopologyValidationErrors.SelfIntersection,
                 "POLYGON ((10 90, 90 10, 90 90, 10 10, 10 90))");
+        }
+
+        [Test]
+        public void TestInvalidPolygonInverted()
+        {
+            CheckInvalid(TopologyValidationErrors.RingSelfIntersection,
+                "POLYGON ((70 250, 40 500, 100 400, 70 250, 80 350, 60 350, 70 250))");
+        }
+
+        [Test]
+        public void TestInvalidPolygonSelfCrossing()
+        {
+            CheckInvalid(TopologyValidationErrors.SelfIntersection,
+                "POLYGON ((70 250, 70 500, 80 400, 40 400, 70 250))");
         }
 
         [Test]

@@ -88,11 +88,9 @@ namespace NetTopologySuite.Operation.Valid
             /*
              * Check for an intersection in the interior of both segments.
              * Collinear intersections by definition contain an interior intersection.
-             * They occur in either a zero-width spike or gore,
-             * or adjacent rings.
              */
             if (_li.IsProper)
-                return SelfIntersectionCode(isSameSegString);
+                return TopologyValidationErrors.SelfIntersection;
 
             /*
              * Now know there is exactly one intersection, 
@@ -112,6 +110,8 @@ namespace NetTopologySuite.Operation.Valid
             /*
              * Under OGC semantics, rings cannot self-intersect.
              * So the intersection is invalid.
+             *
+             * The return of 'RingSelfIntersection' is to match the previous IsValid semantics.
              */
             if (isSameSegString && !_isInvertedRingValid)
             {
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Operation.Valid
             bool hasCrossing = PolygonNode.IsCrossing(intPt, e00, e01, e10, e11);
             if (hasCrossing)
             {
-                return SelfIntersectionCode(isSameSegString);
+                return TopologyValidationErrors.SelfIntersection;
             }
 
             /*
@@ -180,11 +180,6 @@ namespace NetTopologySuite.Operation.Valid
             return TopologyValidationErrors.NoInvalidIntersection;
         }
 
-        private static TopologyValidationErrors SelfIntersectionCode(bool isSameRing)
-        {
-            return isSameRing ? TopologyValidationErrors.RingSelfIntersection
-                : TopologyValidationErrors.SelfIntersection;
-        }
         private bool AddDoubleTouch(ISegmentString ss0, ISegmentString ss1, Coordinate intPt)
         {
             return PolygonRing.AddTouch((PolygonRing)ss0.Context, (PolygonRing)ss1.Context, intPt);
