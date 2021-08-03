@@ -38,7 +38,18 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckOrientation(pts);
         }
 
-        [Test /*, ExpectedException(typeof(AssertionException))*/]
+        [Test, Explicit, Category("FailureCase")]
+        public void TestJTS750()
+        {
+          Coordinate[] pts = {
+            new Coordinate(0, 100),
+            new Coordinate(1, 102.1082),
+            new Coordinate(3, 106.3246),
+          };
+          CheckOrientation(pts);
+        }
+
+[Test /*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW2()
         {
             // this case fails because subtraction of small from large loses precision
