@@ -300,7 +300,7 @@ namespace NetTopologySuite.Operation.Valid
             CheckHolesOutsideShell(g);
             if (HasInvalidError) return false;
 
-            CheckHolesNotNested(g);
+            CheckHolesNested(g);
             if (HasInvalidError) return false;
 
             CheckInteriorDisconnected(areaAnalyzer);
@@ -343,11 +343,11 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < g.NumGeometries; i++)
             {
                 var p = (Polygon) g.GetGeometryN(i);
-                CheckHolesNotNested(p);
+                CheckHolesNested(p);
                 if (HasInvalidError) return false;
             }
 
-            CheckShellsNotNested(g);
+            CheckShellsNested(g);
             if (HasInvalidError) return false;
 
             CheckInteriorDisconnected(areaAnalyzer);
@@ -486,26 +486,12 @@ namespace NetTopologySuite.Operation.Valid
 
         private void CheckAreaIntersections(PolygonTopologyAnalyzer areaAnalyzer)
         {
-            if (areaAnalyzer.HasIntersection)
+            if (areaAnalyzer.HasInvalidIntersection)
             {
-                LogInvalid(TopologyValidationErrors.SelfIntersection,
+                LogInvalid(areaAnalyzer.InvalidCode,
                     areaAnalyzer.IntersectionLocation);
                 return;
             }
-
-            if (areaAnalyzer.HasDoubleTouch)
-            {
-                LogInvalid(TopologyValidationErrors.DisconnectedInteriors,
-                    areaAnalyzer.IntersectionLocation);
-                return;
-            }
-
-            if (areaAnalyzer.IsInteriorDisconnectedBySelfTouch())
-            {
-                LogInvalid(TopologyValidationErrors.DisconnectedInteriors,
-                    areaAnalyzer.DisconnectionLocation);
-            }
-
         }
 
         /// <summary>
@@ -538,7 +524,6 @@ namespace NetTopologySuite.Operation.Valid
 
             var shell = poly.ExteriorRing;
             bool isShellEmpty = shell.IsEmpty;
-            var pir = new IndexedPointInAreaLocator(shell);
 
             for (int i = 0; i < poly.NumInteriorRings; i++)
             {
@@ -552,7 +537,7 @@ namespace NetTopologySuite.Operation.Valid
                 }
                 else
                 {
-                    invalidPt = FindHoleOutsideShellPoint(pir, hole);
+                    invalidPt = FindHoleOutsideShellPoint(hole, shell);
                 }
 
                 if (invalidPt != null)
@@ -566,41 +551,36 @@ namespace NetTopologySuite.Operation.Valid
 
         /// <summary>
         /// Checks if a polygon hole lies inside its shell
-        /// and if not returns the point indicating this.
+        /// and if not returns a point indicating this.
         /// The hole is known to be wholly inside or outside the shell,
-        /// so it suffices to find a single point which is interior or exterior.
-        /// A valid hole may only have a single point touching the shell
-        /// (since otherwise it creates a disconnected interior).
-        /// So there should be at least one point which is interior or exterior,
-        /// and this should be the first or second point tested.
+        /// so it suffices to find a single point which is interior or exterior,
+        /// or check the edge topology at a point on the boundary of the shell.
         /// </summary>
-        /// <param name="shellLocator"></param>
-        /// <param name="hole"></param>
-        /// <returns>A hole point outside the shell, or <c>null</c> if valid.</returns>
-        private Coordinate FindHoleOutsideShellPoint(IPointOnGeometryLocator shellLocator, LineString hole)
+        /// <param name="hole">The hole to test</param>
+        /// <param name="shell">The polygon shell to test against</param>
+        /// <returns>A hole point outside the shell, or <c>null</c> if it is inside.</returns>
+        private Coordinate FindHoleOutsideShellPoint(LineString hole, LineString shell)
         {
-            for (int i = 0; i < hole.NumPoints - 1; i++)
-            {
-                var holePt = hole.GetCoordinateN(i);
-                var loc = shellLocator.Locate(holePt);
-                if (loc == Location.Boundary) continue;
-                if (loc == Location.Interior) return null;
-                /*
-                 * Location is EXTERIOR, so hole is outside shell
-                 */
-                return holePt;
-            }
+            var holePt0 = hole.GetCoordinateN(0);
+            var holePt1 = hole.GetCoordinateN(1);
+            /*
+             * If hole envelope is not covered by shell, it must be outside
+             */
+            if (!shell.EnvelopeInternal.Covers(hole.EnvelopeInternal))
+                return holePt0;
 
-            return null;
+            if (PolygonTopologyAnalyzer.IsSegmentInRing(holePt0, holePt1, shell))
+                return null;
+            return holePt0;
         }
 
         /// <summary>
-        /// Tests if any polygon hole is nested inside another.
+        /// Checks if any polygon hole is nested inside another.
         /// Assumes that holes do not cross (overlap),
         /// This is checked earlier.
         /// </summary>
         /// <param name="poly">The polygon with holes to test</param>
-        private void CheckHolesNotNested(Polygon poly)
+        private void CheckHolesNested(Polygon poly)
         {
             // skip test if no holes are present
             if (poly.NumInteriorRings <= 0) return;
@@ -614,7 +594,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// Tests that no element polygon is in the interior of another element polygon.
+        /// Checks that no element polygon is in the interior of another element polygon.
         /// <para/>Preconditions:
         /// <list type="bullet">
         /// <item><description>shells do not partially overlap</description></item>
@@ -622,7 +602,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <item><description>no duplicate rings exist</description></item></list>
         /// These have been confirmed by the <see cref="PolygonTopologyAnalyzer"/>.
         /// </summary>
-        private void CheckShellsNotNested(MultiPolygon mp)
+        private void CheckShellsNested(MultiPolygon mp)
         {
             for (int i = 0; i < mp.NumGeometries; i++)
             {
@@ -689,11 +669,11 @@ namespace NetTopologySuite.Operation.Valid
             return shell0;
         }
 
-        private void CheckInteriorDisconnected(PolygonTopologyAnalyzer areaAnalyzer)
+        private void CheckInteriorDisconnected(PolygonTopologyAnalyzer analyzer)
         {
-            if (areaAnalyzer.IsInteriorDisconnectedByRingCycle())
+            if (analyzer.IsInteriorDisconnected())
                 LogInvalid(TopologyValidationErrors.DisconnectedInteriors,
-                    areaAnalyzer.DisconnectionLocation);
+                    analyzer.DisconnectionLocation);
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace NetTopologySuite.Operation.Valid
     /// This is the case if there is no "chain" of touching rings
     /// (which would partition off part of the interior).
     /// This is equivalent to the touch graph having no cycles.
+    /// Thus the touch graph of a valid polygon is a forest - a set of disjoint trees.
     /// <para/>
     /// Also, in a valid polygon two rings can touch only at a single location,
     /// since otherwise they disconnect a portion of the interior between them.
@@ -19,13 +20,11 @@ namespace NetTopologySuite.Operation.Valid
     /// (so the touch relation representation for a polygon ring does not need to support
     /// more than one touch location for each adjacent ring).
     /// <para/>
-    /// Thus the touch graph of a valid polygon is a forest - a set of disjoint trees.
-    /// <para/>
     /// The cycle detection algorithm works for polygon rings which also contain self-touches
     /// (inverted shells and exverted holes).
     /// <para/>
     /// Polygons with no holes do not need to be checked for
-    /// a connected interior(unless self-touches are allowed).
+    /// a connected interior, unless self-touches are allowed.
     /// <para/>
     /// The class also records the topology at self-touch nodes,
     /// to support checking if an invalid self-touch disconnects the polygon.
@@ -70,20 +69,21 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// Finds a location (if any) where a chain of rings forms a cycle
+        /// Finds a location (if any) where a chain of holes forms a cycle
         /// in the ring touch graph.
+        /// The shell may form part of the chain as well.
         /// This indicates that a set of holes disconnects the interior of a polygon.
         /// </summary>
         /// <param name="polyRings">The list of rings to check</param>
         /// <returns>A vertex contained in a ring cycle or <c>null</c> if none is found.</returns>
-        public static Coordinate FindTouchCycleLocation(IEnumerable<PolygonRing> polyRings)
+        public static Coordinate FindHoleCycleLocation(IEnumerable<PolygonRing> polyRings)
         {
             foreach (var polyRing in polyRings)
             {
                 if (!polyRing.IsInTouchSet)
                 {
-                    var touchCycleLoc = polyRing.FindTouchCycleLocation();
-                    if (touchCycleLoc != null) return touchCycleLoc;
+                    var holeCycleLoc = polyRing.FindHoleCycleLocation();
+                    if (holeCycleLoc != null) return holeCycleLoc;
                 }
             }
             return null;
@@ -119,11 +119,6 @@ namespace NetTopologySuite.Operation.Valid
         /// Serves as the id for the graph partition induced by the touch relation.
         /// </summary>
         private PolygonRing _touchSetRoot;
-
-        /// <summary>
-        /// The parent of this ring in the touch tree graph.
-        /// </summary>
-        private PolygonRing _touchTreeParent;
 
         // lazily created
 
@@ -192,17 +187,6 @@ namespace NetTopologySuite.Operation.Valid
             set => _touchSetRoot = value;
         }
 
-        private PolygonRing Parent
-        {
-            get => _touchTreeParent;
-            set => _touchTreeParent = value;
-        }
-
-        private bool IsChildOf(PolygonRing ring)
-        {
-            return _touchTreeParent == ring;
-        }
-
         private bool HasTouches
         {
             get => _touches != null && _touches.Count != 0;
@@ -268,13 +252,13 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// Detects whether the subgraph of rings linked by touch to this ring
-        /// contains a touch cycle.
-        /// If no cycles are detected, the subgraph of touching rings is a tree.
-        /// The subgraph is marked using this ring as the root.
+        /// Detects whether the subgraph of holes linked by touch to this ring
+        /// contains a hole cycle.
+        /// If no cycles are detected, the set of touching rings is a tree.
+        /// The set is marked using this ring as the root.
         /// </summary>
-        /// <returns>A vertex om a ring cycle or <c>null</c> if no cycle found</returns>
-        private Coordinate FindTouchCycleLocation()
+        /// <returns>A vertex om a hole cycle or <c>null</c> if no cycle found</returns>
+        private Coordinate FindHoleCycleLocation()
         {
             //--- the touch set including this ring is already processed
             if (IsInTouchSet) return null;
@@ -282,16 +266,18 @@ namespace NetTopologySuite.Operation.Valid
             //--- scan the touch set tree rooted at this ring
             // Assert: this.touchSetRoot is null
             var root = this;
-            root.Parent = root;
             root.TouchSetRoot = root;
 
-            var ringStack = new Queue<PolygonRing>();
-            ringStack.Enqueue(root);
+            if (!HasTouches)
+                return null;
+
+            var ringStack = new Queue<PolygonRingTouch>();
+            Init(root, ringStack);
 
             while (ringStack.Count > 0)
             {
-                var ring = ringStack.Dequeue();
-                var touchCyclePt = ScanForTouchCycle(root, ring, ringStack);
+                var touch = ringStack.Dequeue();
+                var touchCyclePt = ScanForHoleCycle(touch, root, ringStack);
                 if (touchCyclePt != null)
                 {
                     return touchCyclePt;
@@ -300,47 +286,56 @@ namespace NetTopologySuite.Operation.Valid
             return null;
         }
 
-        /// <summary>
-        /// Scans the rings touching a given ring,
-        /// and checks if they are already part of its ring subgraph set.
-        /// If so, a ring cycle has been detected.
-        /// Otherwise, each touched ring is added to the current subgraph set,
-        /// and queued to be scanned in turn.
-        /// </summary>
-        /// <param name="root">The root of the touch subgraph</param>
-        /// <param name="ring">The ring being processed</param>
-        /// <param name="ringQueue">The queue of rings to scan</param>
-        private Coordinate ScanForTouchCycle(PolygonRing root, PolygonRing ring, Queue<PolygonRing> ringQueue)
+        private static void Init(PolygonRing root,
+            Queue<PolygonRingTouch> touchStack)
         {
-            if (!ring.HasTouches)
-                return null;
-
-            //-- check the touched rings
-            //--- either they form a touch cycle, or they are pushed on stack for processing
-            foreach (var touch in ring.Touches)
+            foreach (var touch in root.Touches)
             {
-                var touchRing = touch.Ring;
+                touch.Ring.TouchSetRoot = root;
+                touchStack.Enqueue(touch);
+            }
+        }
+
+        /// <summary>
+        /// Scans for a hole cycle starting at a given touch.
+        /// </summary>
+        /// <param name="currentTouch">The touch to investigate</param>
+        /// <param name="root">The root of the touch subgraph</param>
+        /// <param name="touchQueue">The queue of rings to scan</param>
+        private Coordinate ScanForHoleCycle(PolygonRingTouch currentTouch, PolygonRing root, Queue<PolygonRingTouch> touchQueue)
+        {
+            var ring = currentTouch.Ring;
+            var currentPt = currentTouch.Coordinate;
+            /*
+             * Scan the touched rings
+             * Either they form a hole cycle, or they are added to the touch set
+             * and pushed on the stack for scanning
+             */
+            foreach(var touch in ring.Touches)
+            {
                 /*
-                 * There is always a link back to the touch-tree parent of the ring, 
-                 * so don't include it.
-                 * (I.e. the ring touches the parent ring which originally 
-                 * added this ring to the stack)
+                 * Don't check touches at the entry point
+                 * to avoid trivial cycles.
+                 * They will already be processed or on the stack
+                 * from the previous ring (which touched
+                 * all the rings at that point as well)
                  */
-                if (ring.IsChildOf(touchRing))
+                if (currentPt.Equals2D(touch.Coordinate))
                     continue;
 
                 /*
                  * Test if the touched ring has already been 
-                 * reached via a different path in the tree.
-                 * This indicates a touching ring cycle has been found. 
-                 * This is invalid.
+                 * reached via a different touch path in the tree.
+                 * This is indicated by it already being marked as
+                 * part of the touch set.
+                 * This indicates a hole cycle has been found.
                  */
+                var touchRing = touch.Ring;
                 if (touchRing.TouchSetRoot == root)
                     return touch.Coordinate;
 
-                touchRing.Parent = ring;
                 touchRing.TouchSetRoot = root;
-                ringQueue.Enqueue(touchRing);
+                touchQueue.Enqueue(touch);
             }
             return null;
         }

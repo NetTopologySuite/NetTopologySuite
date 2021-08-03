@@ -10,10 +10,14 @@ namespace NetTopologySuite.Operation.Valid
     /// nested inside another hole, using a spatial
     /// index to speed up the comparisons.
     /// <para/>
-    /// Assumes that the holes and polygon shell do not cross
-    /// (are properly nested).
-    /// Does not check the case where every vertex of a hole touches another
-    /// hole; this is invalid, and must be checked elsewhere. 
+    /// The logic assumes that the holes do not overlap and have no collinear segments
+    /// (so they are properly nested, and there are no duplicate holes).
+    /// <para/>
+    /// The situation where every vertex of a hole touches another hole
+    /// is invalid because either the hole is nested,
+    /// or else it disconnects the polygon interior.
+    /// This class detects the nested situation.
+    /// The disconnected interior situation must be checked elsewhere.
     /// </summary>
     class IndexedNestedHoleTester
     {
@@ -39,8 +43,18 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating a point on a nested hole, if one exists.
+        /// </summary>
+        /// <returns>A point on a nested hole, or <c>null</c> if none are nested</returns>
         public Coordinate NestedPoint { get => _nestedPt; }
 
+        /// <summary>
+        /// Tests if any hole is nested (contained) within another hole.
+        /// <b>This is invalid</b>.
+        /// The <see cref="NestedPoint"/> will be set to reflect this.
+        /// </summary>
+        /// <returns><c>true</c> if some hole is nested.</returns>
         public bool IsNested()
         {
             for (int i = 0; i < _polygon.NumInteriorRings; i++)
@@ -48,45 +62,32 @@ namespace NetTopologySuite.Operation.Valid
                 var hole = (LinearRing)_polygon.GetInteriorRingN(i);
 
                 var results = _index.Query(hole.EnvelopeInternal);
-                for (int j = 0; j < results.Count; j++)
+                foreach (var testHole in results)
                 {
-                    var testHole = results[j];
                     if (hole == testHole)
                         continue;
 
                     /*
-                     * Hole is not covered by in test hole,
-                     * so cannot be inside
+                     * Hole is not fully covered by in test hole, so cannot be nested
                      */
                     if (!testHole.EnvelopeInternal.Covers(hole.EnvelopeInternal))
                         continue;
 
-                    if (IsHoleInsideHole(hole, testHole))
+                    /*
+                     * Checks nesting via a point-in-polygon test, 
+                     * or if the point lies on the boundary via 
+                     * the topology of the incident edges.
+                     */
+                    var holePt0 = hole.GetCoordinateN(0);
+                    var holePt1 = hole.GetCoordinateN(1);
+                    if (PolygonTopologyAnalyzer.IsSegmentInRing(holePt0, holePt1, testHole))
+                    {
+                        _nestedPt = holePt0;
                         return true;
+                    }
                 }
             }
             return false;
         }
-
-        private bool IsHoleInsideHole(LinearRing hole, LinearRing testHole)
-        {
-            var testPts = testHole.CoordinateSequence;
-            for (int i = 0; i < hole.NumPoints; i++)
-            {
-                var holePt = hole.GetCoordinateN(i);
-                var loc = PointLocation.LocateInRing(holePt, testPts);
-                switch (loc)
-                {
-                    case Location.Exterior: return false;
-                    case Location.Interior:
-                        _nestedPt = holePt;
-                        return true;
-                }
-                // location is BOUNDARY, so keep trying points
-            }
-            return false;
-        }
-
-
     }
 }

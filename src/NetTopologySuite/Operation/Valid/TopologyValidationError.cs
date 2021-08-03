@@ -9,6 +9,10 @@ namespace NetTopologySuite.Operation.Valid
     public enum TopologyValidationErrors
     {
         /// <summary>
+        /// </summary>
+        NoInvalidIntersection = -1,
+
+        /// <summary>
         /// Indicates that a hole of a polygon lies partially
         /// or completely in the exterior of the shell.
         /// </summary>

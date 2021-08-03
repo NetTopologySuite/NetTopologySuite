@@ -22,8 +22,8 @@ namespace NetTopologySuite.Operation.Valid
         public static Coordinate FindSelfIntersection(LinearRing ring)
         {
             var ata = new PolygonTopologyAnalyzer(ring, false);
-            if (ata.HasIntersection)
-                return ata.IntersectionLocation;
+            if (ata.HasInvalidIntersection)
+                return ata.InvalidLocation;
             return null;
         }
 
@@ -32,9 +32,9 @@ namespace NetTopologySuite.Operation.Valid
         /// <para/>
         /// Preconditions:
         /// <list type="bullet">
-        /// <item><description>The segment does not cross the ring</description></item>
-        /// <item><description>One or both of the segment endpoints may lie on the ring</description></item>
-        /// <item><description>The ring is valid</description></item>
+        /// <item><description>The segment intersects the ring only at the endpoints</description></item>
+        /// <item><description>One, none or both of the segment endpoints may lie on the ring</description></item>
+        /// <item><description>The ring does not self-cross, but it may self-touch</description></item>
         /// </list>
         /// </summary>
         /// <param name="p0">A segment vertex</param>
@@ -64,9 +64,9 @@ namespace NetTopologySuite.Operation.Valid
         /// <para/>
         /// Preconditions:
         /// <list type="bullet">
-        /// <item><description>The segment does not cross the ring</description></item>
+        /// <item><description>The segment does not intersect the ring other than at the endpoints</description></item>
         /// <item><description>The segment vertex p0 lies on the ring</description></item>
-        /// <item><description>The ring is valid</description></item>
+        /// <item><description>The ring does not self-cross, but it may self-touch</description></item>
         /// </list>
         /// This works for both shells and holes, but the caller must know
         /// the ring role.
@@ -133,29 +133,26 @@ namespace NetTopologySuite.Operation.Valid
             return iPrev;
         }
 
-        private readonly Geometry _inputGeom;
         private readonly bool _isInvertedRingValid;
 
-        private readonly PolygonIntersectionAnalyzer _intFinder;
+        private PolygonIntersectionAnalyzer _intFinder;
         private List<PolygonRing> _polyRings;
         private Coordinate _disconnectionPt;
 
         public PolygonTopologyAnalyzer(Geometry geom, bool isInvertedRingValid)
         {
-            _inputGeom = geom;
             _isInvertedRingValid = isInvertedRingValid;
-            if (!geom.IsEmpty)
-            {
-                var segStrings = CreateSegmentStrings(geom, isInvertedRingValid);
-                _polyRings = GetPolygonRings(segStrings);
-                _intFinder = AnalyzeIntersections(segStrings);
-            }
+            Analyze(geom);
         }
 
-        public bool HasIntersection
+        public bool HasInvalidIntersection
         {
-            get => _intFinder.HasIntersection;
+            get => _intFinder.IsInvalid;
         }
+
+        public TopologyValidationErrors InvalidCode => _intFinder.InvalidCode;
+
+        public Coordinate InvalidLocation => _intFinder.InvalidLocation;
 
         public bool HasDoubleTouch
         {
@@ -164,8 +161,49 @@ namespace NetTopologySuite.Operation.Valid
 
         public Coordinate IntersectionLocation
         {
-            get => _intFinder.IntersectionLocation;
+            get => _intFinder.InvalidLocation;
         }
+
+        /**
+         * Tests whether the interior of the polygonal geometry is
+         * disconnected.
+         * If true, the disconnection location is available from 
+         * {@link #getDisconnectionLocation()}.
+         * 
+         * @return true if the interior is disconnected
+         */
+        public bool IsInteriorDisconnected()
+        {
+            /*
+             * May already be set by a double-touching hole
+             */
+            if (_disconnectionPt != null)
+            {
+                return true;
+            }
+            if (_isInvertedRingValid)
+            {
+                CheckInteriorDisconnectedBySelfTouch();
+                if (_disconnectionPt != null)
+                {
+                    return true;
+                }
+            }
+            CheckInteriorDisconnectedByHoleCycle();
+            if (_disconnectionPt != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Gets a location where the polyonal interior is disconnected.
+         * {@link #isInteriorDisconnected()} must be called first.
+         * 
+         * @return the location of an interior disconnection, or null
+         */
+        public Coordinate DisconnectionLocation => _disconnectionPt;
 
         /// <summary>
         /// Tests whether any polygon with holes has a disconnected interior
@@ -180,21 +218,16 @@ namespace NetTopologySuite.Operation.Valid
         /// this is detected here.  
         /// </summary>
         /// <returns><c>true</c> if a polygon has a disconnected interior.</returns>
-        public bool IsInteriorDisconnectedByRingCycle()
+        public bool CheckInteriorDisconnectedByHoleCycle()
         {
             /*
              * PolyRings will be null for empty, no hole or LinearRing inputs
              */
             if (_polyRings != null)
             {
-                _disconnectionPt = PolygonRing.FindTouchCycleLocation(_polyRings);
+                _disconnectionPt = PolygonRing.FindHoleCycleLocation(_polyRings);
             }
             return _disconnectionPt != null;
-        }
-
-        public Coordinate DisconnectionLocation
-        {
-            get => _disconnectionPt;
         }
 
         /// <summary>
@@ -204,13 +237,27 @@ namespace NetTopologySuite.Operation.Valid
         /// the rings not self-crossing (winding).
         /// </summary>
         /// <returns><c>true</c> if an area interior is disconnected by a self-touch</returns>
-        public bool IsInteriorDisconnectedBySelfTouch()
+        public void CheckInteriorDisconnectedBySelfTouch()
         {
             if (_polyRings != null)
             {
                 _disconnectionPt = PolygonRing.FindInteriorSelfNode(_polyRings);
             }
-            return _disconnectionPt != null;
+        }
+
+        private void Analyze(Geometry geom)
+        {
+            if (geom.IsEmpty)
+                return;
+            var segStrings = CreateSegmentStrings(geom, _isInvertedRingValid);
+            _polyRings = GetPolygonRings(segStrings);
+            _intFinder = AnalyzeIntersections(segStrings);
+
+            if (_intFinder.HasDoubleTouch)
+            {
+                _disconnectionPt = _intFinder.DoubleTouchLocation;
+                return;
+            }
         }
 
         private PolygonIntersectionAnalyzer AnalyzeIntersections(IList<ISegmentString> segStrings)

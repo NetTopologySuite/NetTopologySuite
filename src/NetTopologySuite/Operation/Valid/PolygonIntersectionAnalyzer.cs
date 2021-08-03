@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
@@ -17,13 +16,15 @@ namespace NetTopologySuite.Operation.Valid
     /// <author>Martin Davis</author>
     internal class PolygonIntersectionAnalyzer : ISegmentIntersector
     {
-        private readonly LineIntersector _li = new RobustLineIntersector();
-        private readonly List<Coordinate> _intersectionPts = new List<Coordinate>();
-        private bool _hasProperInt;
-        private bool _hasIntersection;
-        private bool _hasCrossing;
-        private bool _hasDoubleTouch;
+        //private const int NoInvalidIntersection = -1;
         private readonly bool _isInvertedRingValid;
+
+        private readonly LineIntersector _li = new RobustLineIntersector();
+        private TopologyValidationErrors _invalidCode = TopologyValidationErrors.NoInvalidIntersection;
+        private Coordinate _invalidLocation;
+
+        private bool _hasDoubleTouch;
+        private Coordinate _doubleTouchLocation;
 
         /// <summary>
         /// Creates a new finder, allowing for the mode where inverted rings are valid.
@@ -34,29 +35,17 @@ namespace NetTopologySuite.Operation.Valid
             _isInvertedRingValid = isInvertedRingValid;
         }
 
-        public bool IsDone
-        {
-            get => _hasIntersection || _hasDoubleTouch;
-        }
+        public bool IsDone => IsInvalid || _hasDoubleTouch;
 
-        public Coordinate IntersectionLocation
-        {
-            get
-            {
-                if (_intersectionPts.Count == 0) return null;
-                return _intersectionPts[0];
-            }
-        }
+        public bool IsInvalid => _invalidCode >= 0;
 
-        public bool HasDoubleTouch
-        {
-            get => _hasDoubleTouch;
-        }
+        public TopologyValidationErrors InvalidCode => _invalidCode;
 
-        public bool HasIntersection
-        {
-            get => _intersectionPts.Count > 0;
-        }
+        public Coordinate InvalidLocation => _invalidLocation;
+
+        public bool HasDoubleTouch => _hasDoubleTouch;
+
+        public Coordinate DoubleTouchLocation => _doubleTouchLocation;
 
         public void ProcessIntersections(ISegmentString ss0, int segIndex0, ISegmentString ss1, int segIndex1)
         {
@@ -65,16 +54,21 @@ namespace NetTopologySuite.Operation.Valid
             bool isSameSegment = isSameSegString && segIndex0 == segIndex1;
             if (isSameSegment) return;
 
-            _hasIntersection = FindInvalidIntersection(ss0, segIndex0, ss1, segIndex1);
+            var code = FindInvalidIntersection(ss0, segIndex0, ss1, segIndex1);
 
-            if (_hasIntersection)
+            /*
+             * Ensure that invalidCode is only set once, 
+             * since the short-circuiting in {@link SegmentIntersector} is not guaranteed
+             * to happen immediately.
+             */
+            if (code != TopologyValidationErrors.NoInvalidIntersection)
             {
-                // found an intersection!
-                _intersectionPts.Add(_li.GetIntersection(0));
+                _invalidCode = code;
+                _invalidLocation = _li.GetIntersection(0);
             }
         }
 
-        private bool FindInvalidIntersection(ISegmentString ss0, int segIndex0,
+        private TopologyValidationErrors FindInvalidIntersection(ISegmentString ss0, int segIndex0,
             ISegmentString ss1, int segIndex1)
         {
             var coordinates = ss0.Coordinates;
@@ -86,22 +80,17 @@ namespace NetTopologySuite.Operation.Valid
 
             _li.ComputeIntersection(p00, p01, p10, p11);
 
-            if (!_li.HasIntersection) return false;
+            if (!_li.HasIntersection)
+                return TopologyValidationErrors.NoInvalidIntersection;
 
             /*
              * Check for an intersection in the interior of both segments.
-             */
-            _hasProperInt = _li.IsProper;
-            if (_hasProperInt)
-                return true;
-
-            /*
-             * Check for collinear segments (which produces two intersection points).
-             * This is invalid - either a zero-width spike or gore,
+             * Collinear intersections by definition contain an interior intersection.
+             * They occur in either a zero-width spike or gore,
              * or adjacent rings.
              */
-            _hasProperInt = _li.IntersectionNum >= 2;
-            if (_hasProperInt) return true;
+            if (_li.IsProper)
+                return TopologyValidationErrors.SelfIntersection;
 
             /*
              * Now know there is exactly one intersection, 
@@ -117,9 +106,7 @@ namespace NetTopologySuite.Operation.Valid
             bool isSameSegString = ss0 == ss1;
             bool isAdjacentSegments = isSameSegString && IsAdjacentInRing(ss0, segIndex0, segIndex1);
             // Assert: intersection is an endpoint of both segs
-            if (isAdjacentSegments) return false;
-
-            // TODO: allow ring self-intersection - if NOT using OGC semantics
+            if (isAdjacentSegments) return TopologyValidationErrors.NoInvalidIntersection;
 
             /*
              * Under OGC semantics, rings cannot self-intersect.
@@ -127,7 +114,7 @@ namespace NetTopologySuite.Operation.Valid
              */
             if (isSameSegString && !_isInvertedRingValid)
             {
-                return true;
+                return TopologyValidationErrors.SelfIntersection;
             }
 
             /*
@@ -137,7 +124,7 @@ namespace NetTopologySuite.Operation.Valid
              * This simplifies following logic, by removing the segment endpoint case.
              */
             if (intPt.Equals2D(p01) || intPt.Equals2D(p11))
-                return false;
+                return TopologyValidationErrors.NoInvalidIntersection;
 
             /*
              * Check topology of a vertex intersection.
@@ -159,9 +146,11 @@ namespace NetTopologySuite.Operation.Valid
                 e11 = p11;
             }
 
-            _hasCrossing = PolygonNode.IsCrossing(intPt, e00, e01, e10, e11);
-            if (_hasCrossing)
-                return true;
+            bool hasCrossing = PolygonNode.IsCrossing(intPt, e00, e01, e10, e11);
+            if (hasCrossing)
+            {
+                return TopologyValidationErrors.SelfIntersection;
+            }
 
             /*
              * If allowing inverted rings, record a self-touch to support later checking
@@ -183,10 +172,11 @@ namespace NetTopologySuite.Operation.Valid
             if (isDoubleTouch && !isSameSegString)
             {
                 _hasDoubleTouch = true;
-                return true;
+                _doubleTouchLocation = intPt;
+                // TODO: for poly-hole or hole-hole touch, check if it has bad topology.  If so return invalid code
             }
 
-            return false;
+            return TopologyValidationErrors.NoInvalidIntersection;
         }
 
         private bool AddDoubleTouch(ISegmentString ss0, ISegmentString ss1, Coordinate intPt)
