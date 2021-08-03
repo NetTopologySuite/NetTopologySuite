@@ -603,69 +603,15 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckShellsNested(MultiPolygon mp)
         {
-            for (int i = 0; i < mp.NumGeometries; i++)
+            // skip test if only one shell present
+            if (mp.NumGeometries <= 1) return;
+
+            var nestedTester = new IndexedNestedPolygonTester(mp);
+            if (nestedTester.IsNested())
             {
-                var p = (Polygon) mp.GetGeometryN(i);
-                if (p.IsEmpty)
-                    continue;
-                var shell = (LinearRing)p.ExteriorRing;
-                for (int j = 0; j < mp.NumGeometries; j++)
-                {
-                    if (i == j) continue;
-                    var p2 = (Polygon) mp.GetGeometryN(j);
-                    var invalidPt = FindShellSegmentInPolygon(shell, p2);
-                    if (invalidPt != null)
-                    {
-                        LogInvalid(TopologyValidationErrors.NestedShells,
-                            invalidPt);
-                        return;
-                    }
-                }
+                LogInvalid(TopologyValidationErrors.NestedShells,
+                    nestedTester.NestedPoint);
             }
-        }
-
-        /// <summary>
-        /// Finds a point of a shell segment which lies inside a polygon, if any.
-        /// The shell is assume to touch the polyon only at shell vertices,
-        /// and does not cross the polygon.
-        /// </summary>
-        /// <param name="shell">The shell to test</param>
-        /// <param name="poly">The polygon to test</param>
-        /// <returns>An interior segment point, or null if the shell is nested correctly</returns>
-        private Coordinate FindShellSegmentInPolygon(LinearRing shell, Polygon poly)
-        {
-            var polyShell = poly.ExteriorRing;
-            if (polyShell.IsEmpty) return null;
-
-            //--- if envelope is not covered --> not nested
-            if (!poly.EnvelopeInternal.Covers(shell.EnvelopeInternal))
-                return null;
-
-            var shell0 = shell.GetCoordinateN(0);
-            var shell1 = shell.GetCoordinateN(1);
-
-            if (!PolygonTopologyAnalyzer.IsSegmentInRing(shell0, shell1, polyShell))
-                return null;
-
-            /*
-             * Check if the shell is inside a hole (if there are any). 
-             * If so this is valid.
-             */
-            for (int i = 0; i < poly.NumInteriorRings; i++)
-            {
-                var hole = (LinearRing)poly.GetInteriorRingN(i);
-                if (hole.EnvelopeInternal.Covers(shell.EnvelopeInternal)
-                    && PolygonTopologyAnalyzer.IsSegmentInRing(shell0, shell1, hole))
-                {
-                    return null;
-                }
-            }
-
-            /*
-             * The shell is contained in the polygon, but is not contained in a hole.
-             * This is invalid.
-             */
-            return shell0;
         }
 
         private void CheckInteriorDisconnected(PolygonTopologyAnalyzer analyzer)
