@@ -83,6 +83,8 @@ namespace NetTopologySuite.Operation.Valid
             if (!_li.HasIntersection)
                 return TopologyValidationErrors.NoInvalidIntersection;
 
+            bool isSameSegString = ss0 == ss1;
+
             /*
              * Check for an intersection in the interior of both segments.
              * Collinear intersections by definition contain an interior intersection.
@@ -90,7 +92,7 @@ namespace NetTopologySuite.Operation.Valid
              * or adjacent rings.
              */
             if (_li.IsProper)
-                return TopologyValidationErrors.SelfIntersection;
+                return SelfIntersectionCode(isSameSegString);
 
             /*
              * Now know there is exactly one intersection, 
@@ -103,7 +105,6 @@ namespace NetTopologySuite.Operation.Valid
              * (since they are not collinear).
              * This is valid.
              */
-            bool isSameSegString = ss0 == ss1;
             bool isAdjacentSegments = isSameSegString && IsAdjacentInRing(ss0, segIndex0, segIndex1);
             // Assert: intersection is an endpoint of both segs
             if (isAdjacentSegments) return TopologyValidationErrors.NoInvalidIntersection;
@@ -114,7 +115,7 @@ namespace NetTopologySuite.Operation.Valid
              */
             if (isSameSegString && !_isInvertedRingValid)
             {
-                return TopologyValidationErrors.SelfIntersection;
+                return TopologyValidationErrors.RingSelfIntersection;
             }
 
             /*
@@ -149,7 +150,7 @@ namespace NetTopologySuite.Operation.Valid
             bool hasCrossing = PolygonNode.IsCrossing(intPt, e00, e01, e10, e11);
             if (hasCrossing)
             {
-                return TopologyValidationErrors.SelfIntersection;
+                return SelfIntersectionCode(isSameSegString);
             }
 
             /*
@@ -179,6 +180,11 @@ namespace NetTopologySuite.Operation.Valid
             return TopologyValidationErrors.NoInvalidIntersection;
         }
 
+        private static TopologyValidationErrors SelfIntersectionCode(bool isSameRing)
+        {
+            return isSameRing ? TopologyValidationErrors.RingSelfIntersection
+                : TopologyValidationErrors.SelfIntersection;
+        }
         private bool AddDoubleTouch(ISegmentString ss0, ISegmentString ss1, Coordinate intPt)
         {
             return PolygonRing.AddTouch((PolygonRing)ss0.Context, (PolygonRing)ss1.Context, intPt);

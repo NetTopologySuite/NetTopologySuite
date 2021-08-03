@@ -27,21 +27,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [Test]
         public void TestZeroAreaPolygon()
         {
-            var g = Read("POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
-            Assert.That(() => g.IsValid, Throws.Nothing);
+            CheckInvalid("POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
         }
 
         [Test]
         public void TestValidSimplePolygon()
         {
-            CheckValid(
-                "POLYGON ((10 89, 90 89, 90 10, 10 10, 10 89))");
+            CheckValid("POLYGON ((10 89, 90 89, 90 10, 10 10, 10 89))");
         }
 
         [Test]
         public void TestInvalidSimplePolygonRingSelfIntersection()
         {
-            CheckInvalid(TopologyValidationErrors.SelfIntersection,
+            CheckInvalid(TopologyValidationErrors.RingSelfIntersection,
                 "POLYGON ((10 90, 90 10, 90 90, 10 10, 10 90))");
         }
 
@@ -140,32 +138,27 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [Test]
         public void TestLineString()
         {
-            var g = Read("LINESTRING(0 0, 0 0)");
-            Assert.That(() => g.IsValid, Throws.Nothing);
+            CheckInvalid("LINESTRING(0 0, 0 0)");
         }
 
         [Test]
         public void TestLinearRingTriangle()
         {
-            var g = Read(
-                "LINEARRING (100 100, 150 200, 200 100, 100 100)");
-            Assert.That(g.IsValid);
+            CheckValid("LINEARRING (100 100, 150 200, 200 100, 100 100)");
         }
 
         [Test]
         public void TestLinearRingSelfCrossing()
         {
-            var g = Read(
+            CheckInvalid(TopologyValidationErrors.RingSelfIntersection,
                 "LINEARRING (150 100, 300 300, 100 300, 350 100, 150 100)");
-            Assert.That(!g.IsValid);
         }
 
         [Test]
         public void TestLinearRingSelfCrossing2()
         {
-            var g = Read(
+            CheckInvalid(TopologyValidationErrors.RingSelfIntersection,
                 "LINEARRING (0 0, 100 100, 100 0, 0 100, 0 0)");
-            Assert.That(!g.IsValid);
         }
 
         //=============================================
@@ -178,8 +171,15 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         private void CheckValid(bool isExpectedValid, string wkt)
         {
             var geom = Read(wkt);
-            bool isValid = geom.IsValid;
-            Assert.That(isValid, Is.EqualTo(isExpectedValid));
+            bool? isValid = null;
+            Assert.That(() => isValid = geom.IsValid, Throws.Nothing);
+            Assert.That(isValid.HasValue);
+            Assert.That(isValid.Value, Is.EqualTo(isExpectedValid));
+        }
+
+        private void CheckInvalid(string wkt)
+        {
+            CheckValid(false, wkt);
         }
 
 
