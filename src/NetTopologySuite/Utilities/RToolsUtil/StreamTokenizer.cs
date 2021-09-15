@@ -705,6 +705,18 @@ namespace RTools_NTS.Util
         }
 
         /// <summary>
+        /// Construct and set this object's TextReader to the one specified.
+        /// </summary>
+        /// <param name="sr">The TextReader to read from.</param>
+        /// <param name="tokenizerSettings">Tokenizer settings.</param>
+        public StreamTokenizer(TextReader sr, StreamTokenizerSettings tokenizerSettings)
+        {
+            settings = tokenizerSettings;
+            Initialize();
+            textReader = sr;
+        }
+
+        /// <summary>
         /// Construct and set a string to tokenize.
         /// </summary>
         /// <param name="str">The string to tokenize.</param>
@@ -723,8 +735,11 @@ namespace RTools_NTS.Util
             nextTokenSb = new CharBuffer(1024);
 
             InitializeStream();
-            settings = new StreamTokenizerSettings();
-            settings.SetDefaults();
+            if (null == settings)
+            {
+                settings = new StreamTokenizerSettings();
+                settings.SetDefaults();
+            }
 
             expSb = new CharBuffer();
             tmpSb = new CharBuffer();

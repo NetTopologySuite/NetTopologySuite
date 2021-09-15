@@ -44,6 +44,8 @@ namespace NetTopologySuite.IO
 
         private static readonly CoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
 
+        private static readonly StreamTokenizerSettings tokenizerSettings;
+
         private NtsGeometryServices _ntsGeometryServices;
 
         private int? _overriddenDefaultSRID;
@@ -55,6 +57,23 @@ namespace NetTopologySuite.IO
          * true if structurally invalid input should be reported rather than repaired.
          */
         private bool _isStrict = true;
+
+        static WKTReader()
+        {
+            tokenizerSettings = new StreamTokenizerSettings();
+            tokenizerSettings.SetDefaults();
+            // set tokenizer to NOT parse numbers
+            tokenizerSettings.ResetCharTypeTable();
+            tokenizerSettings.WordChars('a', 'z');
+            tokenizerSettings.WordChars('A', 'Z');
+            ////tokenizer.Settings.WordChars(128 + 32, 255);
+            tokenizerSettings.WordChars('0', '9');
+            tokenizerSettings.WordChars('-', '-');
+            tokenizerSettings.WordChars('+', '+');
+            tokenizerSettings.WordChars('.', '.');
+            tokenizerSettings.WhitespaceChars(0, ' ');
+            tokenizerSettings.CommentChar('#');
+        }
 
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
@@ -203,19 +222,7 @@ namespace NetTopologySuite.IO
 
         internal TokenStream Tokenizer(TextReader reader)
         {
-            var tokenizer = new StreamTokenizer(reader);
-
-            // set tokenizer to NOT parse numbers
-            tokenizer.Settings.ResetCharTypeTable();
-            tokenizer.Settings.WordChars('a', 'z');
-            tokenizer.Settings.WordChars('A', 'Z');
-            ////tokenizer.Settings.WordChars(128 + 32, 255);
-            tokenizer.Settings.WordChars('0', '9');
-            tokenizer.Settings.WordChars('-', '-');
-            tokenizer.Settings.WordChars('+', '+');
-            tokenizer.Settings.WordChars('.', '.');
-            tokenizer.Settings.WhitespaceChars(0, ' ');
-            tokenizer.Settings.CommentChar('#');
+            var tokenizer = new StreamTokenizer(reader, tokenizerSettings);
             return new TokenStream(tokenizer.GetEnumerator());
         }
 

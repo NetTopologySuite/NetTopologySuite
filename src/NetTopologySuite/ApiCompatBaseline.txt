@@ -1,0 +1,3 @@
+Compat issues with assembly NetTopologySuite:
+CannotChangeAttribute : Attribute 'System.Runtime.CompilerServices.IteratorStateMachineAttribute' on 'RTools_NTS.Util.StreamTokenizer.GetEnumerator()' changed from '[IteratorStateMachineAttribute(typeof(StreamTokenizer.<GetEnumerator>d__33))]' in the contract to '[IteratorStateMachineAttribute(typeof(StreamTokenizer.<GetEnumerator>d__34))]' in the implementation.
+Total Issues: 1
