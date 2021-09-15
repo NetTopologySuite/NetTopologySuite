@@ -44,7 +44,7 @@ namespace NetTopologySuite.IO
 
         private static readonly CoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
 
-        private static readonly StreamTokenizerSettings tokenizerSettings;
+        private static readonly StreamTokenizerSettings TokenizerSettings = CreateDefaultStreamTokenizerSettings();
 
         private NtsGeometryServices _ntsGeometryServices;
 
@@ -58,9 +58,9 @@ namespace NetTopologySuite.IO
          */
         private bool _isStrict = true;
 
-        static WKTReader()
+        private static StreamTokenizerSettings CreateDefaultStreamTokenizerSettings()
         {
-            tokenizerSettings = new StreamTokenizerSettings();
+            var tokenizerSettings = new StreamTokenizerSettings();
             tokenizerSettings.SetDefaults();
             // set tokenizer to NOT parse numbers
             tokenizerSettings.ResetCharTypeTable();
@@ -73,6 +73,7 @@ namespace NetTopologySuite.IO
             tokenizerSettings.WordChars('.', '.');
             tokenizerSettings.WhitespaceChars(0, ' ');
             tokenizerSettings.CommentChar('#');
+            return tokenizerSettings;
         }
 
         /// <summary>
@@ -222,7 +223,7 @@ namespace NetTopologySuite.IO
 
         internal TokenStream Tokenizer(TextReader reader)
         {
-            var tokenizer = new StreamTokenizer(reader, tokenizerSettings);
+            var tokenizer = new StreamTokenizer(reader, TokenizerSettings);
             return new TokenStream(tokenizer.GetEnumerator());
         }
 
