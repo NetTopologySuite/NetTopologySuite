@@ -199,8 +199,6 @@ namespace NetTopologySuite.Index.Quadtree
             _root.Visit(searchEnv, visitor);
         }
 
-        ISpatialIndexEx<T>
-
         /// <summary>
         /// Return a list of all items in the Quadtree.
         /// </summary>
