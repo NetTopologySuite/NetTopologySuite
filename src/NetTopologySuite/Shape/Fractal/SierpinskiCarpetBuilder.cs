@@ -6,8 +6,6 @@ namespace NetTopologySuite.Shape.Fractal
 {
     public class SierpinskiCarpetBuilder : GeometricShapeBuilder
     {
-        //private CoordinateList coordList = new CoordinateList();
-
         public SierpinskiCarpetBuilder(GeometryFactory geomFactory)
             :base(geomFactory)
         {
