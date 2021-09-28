@@ -336,8 +336,8 @@ namespace NetTopologySuite.Geometries.Implementation
         public override Envelope ExpandEnvelope(Envelope env)
         {
             int dim = Dimension;
-            for (int i = 0; i < _coords.Length; i += dim)
-                env.ExpandToInclude(_coords[i], _coords[i + 1]);
+            for (int i = 1; i < _coords.Length; i += dim)
+                env.ExpandToInclude(_coords[i - 1], _coords[i]);
             return env;
         }
 
