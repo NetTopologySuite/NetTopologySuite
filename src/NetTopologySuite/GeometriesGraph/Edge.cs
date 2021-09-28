@@ -16,8 +16,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// Updates an IM from the label for an edge.
         /// Handles edges from both L and A geometries.
         /// </summary>
-        /// <param name="im"></param>
-        /// <param name="label"></param>
+        /// <param name="im">An intersection matrix</param>
+        /// <param name="label">A label</param>
         public static void UpdateIM(Label label, IntersectionMatrix im)
         {
             im.SetAtLeastIfValid(label.GetLocation(0, Geometries.Position.On), label.GetLocation(1, Geometries.Position.On), Dimension.Curve);
@@ -177,6 +177,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// An Edge is collapsed if it is an Area edge and it consists of
         /// two segments which are equal and opposite (eg a zero-width V).
         /// </summary>
+        /// <returns><c>true</c> if edge is consisting of two segments
+        /// which are equal and of oppose orientation (Zero-width V area edge)
+        /// </returns>
         public bool IsCollapsed
         {
             get
@@ -224,9 +227,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// Adds EdgeIntersections for one or both
         /// intersections found for a segment of an edge to the edge intersection list.
         /// </summary>
-        /// <param name="li"></param>
-        /// <param name="segmentIndex"></param>
-        /// <param name="geomIndex"></param>
+        /// <param name="li">A line intersector</param>
+        /// <param name="segmentIndex">A segment index</param>
+        /// <param name="geomIndex">A geometry index</param>
         public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
             for (int i = 0; i < li.IntersectionNum; i++)
@@ -238,10 +241,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// An intersection that falls exactly on a vertex of the edge is normalized
         /// to use the higher of the two possible segmentIndexes.
         /// </summary>
-        /// <param name="li"></param>
-        /// <param name="segmentIndex"></param>
-        /// <param name="geomIndex"></param>
-        /// <param name="intIndex"></param>
+        /// <param name="li">A line intersector</param>
+        /// <param name="segmentIndex">A segment index</param>
+        /// <param name="geomIndex">A geometry index</param>
+        /// <param name="intIndex">The intersection index (0 or 1)</param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
             var intPt = li.GetIntersection(intIndex).Copy();
@@ -350,10 +353,13 @@ namespace NetTopologySuite.GeometriesGraph
             return base.GetHashCode();
         }
 
+        /// <summary>
+        /// Check if coordinate sequences of the Edges are identical. 
+        /// </summary>
+        /// <param name="e">The edge to test</param>
         /// <returns>
         /// <c>true</c> if the coordinate sequences of the Edges are identical.
         /// </returns>
-        /// <param name="e"></param>
         public bool IsPointwiseEqual(Edge e)
         {
             if (Points.Length != e.Points.Length)

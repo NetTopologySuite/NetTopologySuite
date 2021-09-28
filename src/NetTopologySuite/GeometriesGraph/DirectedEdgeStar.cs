@@ -140,9 +140,9 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// Update incomplete dirEdge labels from the labelling for the node.
+        /// Update incomplete dirEdge labels from the labeling for the node.
         /// </summary>
-        /// <param name="nodeLabel"></param>
+        /// <param name="nodeLabel">The label to apply</param>
         public void UpdateLabelling(Label nodeLabel)
         {
             foreach (DirectedEdge de in Edges)

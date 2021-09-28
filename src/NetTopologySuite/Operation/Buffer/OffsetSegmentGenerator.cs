@@ -18,53 +18,54 @@ namespace NetTopologySuite.Operation.Buffer
     /// <author>Martin Davis</author>
     internal class OffsetSegmentGenerator
     {
-        /**
-         * Factor which controls how close offset segments can be to
-         * skip adding a filler or mitre.
-         */
+        /// <summary>
+        /// Factor which controls how close offset segments can be to
+        /// skip adding a filler or mitre.
+        /// </summary>
         private const double OffsetSegmentSeparationFactor = 1.0E-3;
 
-        /**
-         * Factor which controls how close curve vertices on inside turns can be to be snapped
-         */
+        /// <summary>
+        /// Factor which controls how close curve vertices on inside turns can be to be snapped
+        /// </summary>
         private const double InsideTurnVertexSnapDistanceFactor = 1.0E-3;
 
-        /**
-         * Factor which controls how close curve vertices can be to be snapped
-         */
+        /// <summary>
+        /// Factor which controls how close curve vertices can be to be snapped
+        /// </summary>
         private const double CurveVertexSnapDistanceFactor = 1.0E-6;
 
-        /**
-         * Factor which determines how short closing segs can be for round buffers
-         */
+        /// <summary>
+        /// Factor which determines how short closing segs can be for round buffers
+        /// </summary>
         private const int MaxClosingSegLenFactor = 80;
 
-        /**
-         * the max error of approximation (distance) between a quad segment and the true fillet curve
-         */
+        /// <summary>
+        /// The max error of approximation (distance) between a quad segment and the true fillet curve
+        /// </summary>
         private double _maxCurveSegmentError;
 
-        /**
-         * The angle quantum with which to approximate a fillet curve
-         * (based on the input # of quadrant segments)
-         */
+        /// <summary>
+        /// The angle quantum with which to approximate a fillet curve
+        /// (based on the input # of quadrant segments)
+        /// </summary>
         private readonly double _filletAngleQuantum;
 
-        /**
-         * The Closing Segment Length Factor controls how long
-         * "closing segments" are.  Closing segments are added
-         * at the middle of inside corners to ensure a smoother
-         * boundary for the buffer offset curve.
-         * In some cases (particularly for round joins with default-or-better
-         * quantization) the closing segments can be made quite short.
-         * This substantially improves performance (due to fewer intersections being created).
-         *
-         * A closingSegFactor of 0 results in lines to the corner vertex
-         * A closingSegFactor of 1 results in lines halfway to the corner vertex
-         * A closingSegFactor of 80 results in lines 1/81 of the way to the corner vertex
-         * (this option is reasonable for the very common default situation of round joins
-         * and quadrantSegs >= 8)
-         */
+        /// <summary>
+        /// The Closing Segment Length Factor controls how long
+        /// "closing segments" are.  Closing segments are added
+        /// at the middle of inside corners to ensure a smoother
+        /// boundary for the buffer offset curve.
+        /// In some cases (particularly for round joins with default-or-better
+        /// quantization) the closing segments can be made quite short.
+        /// This substantially improves performance (due to fewer intersections being created).
+        /// <list type="bullet">
+        /// <item><description>A closingSegFactor of 0 results in lines to the corner vertex</description></item>
+        /// <item><description>A closingSegFactor of 1 results in lines halfway to the corner vertex</description></item>
+        /// <item><description> A closingSegFactor of 80 results in lines 1/81 of the way to the corner vertex
+        /// (this option is reasonable for the very common default situation of round joins
+        /// and quadrantSegs >= 8)</description></item>
+        /// </list>
+        /// </summary>
         private readonly int _closingSegLengthFactor = 1;
 
         private OffsetSegmentString _segList;
@@ -334,7 +335,7 @@ namespace NetTopologySuite.Operation.Buffer
                     // add endpoint of this segment offset
                     _segList.AddPt(_offset0.P1);
 
-                    /**
+                    /*
                      * Add "closing segment" of required length.
                      */
                     if (_closingSegLengthFactor > 0)
@@ -348,7 +349,7 @@ namespace NetTopologySuite.Operation.Buffer
                     }
                     else
                     {
-                        /**
+                        /*
                          * This branch is not expected to be used except for testing purposes.
                          * It is equivalent to the JTS 1.9 logic for closing segments
                          * (which results in very poor performance for large buffer distances)
@@ -448,7 +449,7 @@ namespace NetTopologySuite.Operation.Buffer
             LineSegment offset1,
             double distance)
         {
-            /**
+            /*
              * This computation is unstable if the offset segments are nearly collinear.
              * However, this situation should have been eliminated earlier by the check
              * for whether the offset segment endpoints are almost coincident

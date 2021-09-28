@@ -231,7 +231,7 @@ namespace NetTopologySuite.Index.Quadtree
 
         /// <summary>
         ///
-        /// </summary>
+        /// </summary>  
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
         private void VisitItems(Envelope searchEnv, IItemVisitor<T> visitor)
@@ -240,6 +240,24 @@ namespace NetTopologySuite.Index.Quadtree
             for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )
                 visitor.VisitItem(i.Current);
         }
+
+        public IEnumerable<T> Query(Envelope searchEnv, Func<T, bool> predicate)
+        {
+            if (!IsSearchMatch(searchEnv))
+                yield break;
+
+            foreach (var item in Items)
+                if (predicate(item))
+                    yield return item;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (Subnode[i] == null) continue;
+                foreach (var item in Subnode[i].Query(searchEnv, predicate))
+                    yield return item;
+            }
+        }
+
 
         /// <summary>
         ///

@@ -44,9 +44,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// </summary>
         private bool _isAllowMixedResult = !OverlayNG.STRICT_MODE_DEFAULT;
 
-        /**
-         * 
-         */
+
         /// <summary>
         /// Allow lines created by area topology collapses
         /// to appear in the result.<br/>
@@ -261,7 +259,7 @@ namespace NetTopologySuite.Operation.OverlayNG
                 if (!edge.IsInResultLine) continue;
                 if (edge.IsVisited) continue;
 
-                /**
+                /*
                  * Choose line start point as a node.
                  * Nodes in the line graph are degree-1 or degree >= 3 edges.
                  * 

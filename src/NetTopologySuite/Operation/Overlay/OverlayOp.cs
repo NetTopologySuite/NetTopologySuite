@@ -628,7 +628,7 @@ namespace NetTopologySuite.Operation.Overlay
                     resultDimension = dim0;
                     break;
                 case SpatialFunction.SymDifference:
-                    /**
+                    /*
                      * This result is chosen because
                      * <pre>
                      * SymDiff = Union(Diff(A, B), Diff(B, A)

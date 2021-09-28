@@ -58,7 +58,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             OverlayEdge currResultIn = null;
             do
             {
-                /**
+                /*
                  * If an edge is linked this node has already been processed
                  * so can skip further processing
                  */

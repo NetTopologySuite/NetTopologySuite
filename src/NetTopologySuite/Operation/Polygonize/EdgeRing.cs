@@ -256,7 +256,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         public bool IsInRing(Coordinate pt)
         {
-            /**
+            /*
              * Use an indexed point-in-polygon for performance
              */
             return Location.Exterior != Locator.Locate(pt);

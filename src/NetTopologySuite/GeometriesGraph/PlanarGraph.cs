@@ -25,7 +25,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
         /// </summary>
-        /// <param name="nodes"></param>
+        /// <param name="nodes">A collection of <c>Node</c>s</param>
         public static void LinkResultDirectedEdges(IList<Node> nodes)
         {
             foreach (var node in nodes)
@@ -48,16 +48,16 @@ namespace NetTopologySuite.GeometriesGraph
         protected IList<EdgeEnd> edgeEndList = new List<EdgeEnd>();
 
         /// <summary>
-        ///
+        /// Creates an instance of this class using the provided <see cref="NodeFactory"/>
         /// </summary>
-        /// <param name="nodeFact"></param>
+        /// <param name="nodeFact">A factory to create <c>Node</c>s</param>
         public PlanarGraph(NodeFactory nodeFact)
         {
             _nodes = new NodeMap(nodeFact);
         }
 
         /// <summary>
-        ///
+        /// Creates an instance of this class using the default <see cref="NodeFactory"/>.
         /// </summary>
         public PlanarGraph()
         {
@@ -152,10 +152,13 @@ namespace NetTopologySuite.GeometriesGraph
             return _nodes.AddNode(coord);
         }
 
+        /// <summary>
+        /// Searches for a <c>Node</c> at <c>Coordinate</c> position <paramref name="coord"/>
+        /// </summary>
+        /// <param name="coord">A <c>Coordinate</c> position</param>
         /// <returns>
-        /// The node if found; null otherwise
+        /// The node if found; <c>null</c> otherwise
         /// </returns>
-        /// <param name="coord"></param>
         public Node Find(Coordinate coord)
         {
             return _nodes.Find(coord);
@@ -165,7 +168,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Add a set of edges to the graph.  For each edge two DirectedEdges
         /// will be created.  DirectedEdges are NOT linked by this method.
         /// </summary>
-        /// <param name="edgesToAdd"></param>
+        /// <param name="edgesToAdd">A set of <c>Edge</c>s to add.</param>
         public void AddEdges(IList<Edge> edgesToAdd)
         {
             // create all the nodes for the edges
@@ -209,7 +212,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Returns the EdgeEnd which has edge e as its base edge
         /// (MD 18 Feb 2002 - this should return a pair of edges).
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>Edge</c></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public EdgeEnd FindEdgeEnd(Edge e)
         {
@@ -221,8 +224,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Returns the edge whose first two coordinates are p0 and p1.
         /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
+        /// <param name="p0">The 1st <c>Coordinate</c></param>
+        /// <param name="p1">The 2nd <c>Coordinate</c></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public Edge FindEdge(Coordinate p0, Coordinate p1)
         {
@@ -240,9 +243,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// Returns the edge which starts at p0 and whose first segment is
         /// parallel to p1.
         /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
+        /// <param name="p0">Starting <c>Coordinate</c></param>
+        /// <param name="p1"><c>Coordinate</c> used to establish direction</param>
+        /// <returns>The matching edge, if found <c>null</c> if the edge was not found.</returns>
         public Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
         {
             for (int i = 0; i < _edges.Count; i++)

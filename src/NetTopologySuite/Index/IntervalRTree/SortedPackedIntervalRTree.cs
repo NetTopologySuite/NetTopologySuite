@@ -59,7 +59,7 @@ namespace NetTopologySuite.Index.IntervalRTree
 
             lock (_leavesLock)
             {
-                /**
+                /*
                  * if leaves is empty then nothing has been inserted.
                  * In this case it is safe to leave the tree in an open state
                  */

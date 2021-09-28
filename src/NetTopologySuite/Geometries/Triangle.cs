@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     public class Triangle
     {
-        /**
+        /*
          * The coordinates of the vertices of the triangle
          */
         private Coordinate _p0, _p1, _p2;

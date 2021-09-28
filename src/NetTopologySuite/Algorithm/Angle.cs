@@ -162,7 +162,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">A point of the ring</param>
         /// <param name="p1">The next point of the ring</param>
         /// <param name="p2">The next point of the ring</param>
-        /// <returns>The interior angle based at <see paramref="p1"/>p1</returns>
+        /// <returns>The interior angle based at <paramref name="p1"/></returns>
         public static double InteriorAngle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             double anglePrev = Angle(p1, p0);

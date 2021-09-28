@@ -42,7 +42,7 @@ namespace NetTopologySuite.Algorithm
             if (ring.Length < 3)
                 return 0.0;
             double sum = 0.0;
-            /**
+            /*
              * Based on the Shoelace formula.
              * http://en.wikipedia.org/wiki/Shoelace_formula
              */
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Algorithm
             int n = ring.Count;
             if (n < 3)
                 return 0.0;
-            /**
+            /*
              * Based on the Shoelace formula.
              * http://en.wikipedia.org/wiki/Shoelace_formula
              */

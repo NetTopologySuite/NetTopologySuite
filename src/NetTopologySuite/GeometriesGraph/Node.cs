@@ -13,9 +13,6 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         private Coordinate _coord;
 
-        /// <summary>
-        ///
-        /// </summary>
         private EdgeEndStar _edges;
 
         /// <summary>
@@ -31,8 +28,9 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating the position of this 
         /// </summary>
+        /// <returns>The position of this <c>Node</c></returns>
         public override Coordinate Coordinate
         {
             get => _coord;
@@ -40,8 +38,9 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating the <c>EdgeEndStar</c> of this <c>Node</c>
         /// </summary>
+        /// <returns>The <c>EdgeEndStar</c> of this <c>Node</c></returns>
         public EdgeEndStar Edges
         {
             get => _edges;
@@ -66,21 +65,19 @@ namespace NetTopologySuite.GeometriesGraph
             return false;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc cref="GraphComponent.IsIsolated"/>
         public override bool IsIsolated => (Label.GeometryCount == 1);
 
-        /// <summary>
+        /// <inheritdoc cref="GraphComponent.ComputeIM"/>
+        /// <remarks>
         /// Basic nodes do not compute IMs.
-        /// </summary>
-        /// <param name="im"></param>
+        /// </remarks>
         public override void ComputeIM(IntersectionMatrix im) { }
 
         /// <summary>
         /// Add the edge to the list of edges at this node.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>EdgeEnd</c></param>
         public void Add(EdgeEnd e)
         {
             // Assert: start pt of e is equal to node point
@@ -89,9 +86,9 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Merges <paramref name="n"/>'s <see cref="GraphComponent.Label"/> with this <c>Node</c>'s <c>Label</c>.
         /// </summary>
-        /// <param name="n"></param>
+        /// <param name="n">A <c>Node</c></param>
         public void MergeLabel(Node n)
         {
             MergeLabel(n.Label);
@@ -103,12 +100,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// The location for the corresponding node LabelElement is set to the result,
         /// as long as the location is non-null.
         /// </summary>
-        /// <param name="label2"></param>
-        public void MergeLabel(Label label2)
+        /// <param name="label">The <c>Label</c> to merge</param>
+        public void MergeLabel(Label label)
         {
             for (int i = 0; i < 2; i++)
             {
-                var loc = ComputeMergedLocation(label2, i);
+                var loc = ComputeMergedLocation(label, i);
                 var thisLoc = Label.GetLocation(i);
                 if (thisLoc == Location.Null)
                     Label.SetLocation(i, loc);
@@ -131,7 +128,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Updates the label of a node to BOUNDARY,
         /// obeying the mod-2 boundaryDetermination rule.
         /// </summary>
-        /// <param name="argIndex"></param>
+        /// <param name="argIndex">An index for a <see cref="TopologyLocation"/> (<c>0</c> or <c>1</c>)</param>
         public void SetLabelBoundary(int argIndex)
         {
             if (Label == null) return;

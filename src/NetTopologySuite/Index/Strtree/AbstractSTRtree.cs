@@ -47,7 +47,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private volatile bool _built, _building;
 
-        /**
+        /*
          * Set to <tt>null</tt> when index is built, to avoid retaining memory.
          */
         private IList<IBoundable<T, TItem>> _itemBoundables = new List<IBoundable<T,TItem>>();

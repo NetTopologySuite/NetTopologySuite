@@ -76,6 +76,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">An array of coordinates representing the ring (which must have
         /// first point identical to last point)</param>
         /// <returns><c>true</c> if p is inside ring</returns>
+        /// <seealso cref="LocateInRing(Coordinate, Coordinate[])"/>
         public static bool IsInRing(Coordinate p, Coordinate[] ring)
         {
             return LocateInRing(p, ring) != Location.Exterior;

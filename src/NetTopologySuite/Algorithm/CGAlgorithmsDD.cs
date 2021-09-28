@@ -19,9 +19,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q">the point to compute the direction to</param>
         /// <returns>
         /// <list type="bullet">
-        /// <item><description>1 if q is counter-clockwise (left) from p1-p2</description></item>
-        /// <item><description>-1 if q is clockwise (right) from p1-p2</description></item>
-        /// <item><description>0 if q is collinear with p1-p2</description></item></list>
+        /// <item><description><c>1</c> if q is counter-clockwise (left) from p1-p2</description></item>
+        /// <item><description><c>-1</c> if q is clockwise (right) from p1-p2</description></item>
+        /// <item><description><c>0</c> if q is collinear with p1-p2</description></item></list>
         /// </returns>
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
@@ -40,9 +40,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="qy">The y-ordinate of the point to compute the direction to</param>
         /// <returns>
         /// <list type="bullet">
-        /// <item><description>1 if q is counter-clockwise (left) from p1-p2</description></item>
-        /// <item><description>-1 if q is clockwise (right) from p1-p2</description></item>
-        /// <item><description>0 if q is collinear with p1-p2</description></item></list>
+        /// <item><description><c>1</c> if q is counter-clockwise (left) from p1-p2</description></item>
+        /// <item><description><c>-1</c> if q is clockwise (right) from p1-p2</description></item>
+        /// <item><description><c>0</c> if q is collinear with p1-p2</description></item></list>
         /// </returns>
         public static int OrientationIndex(double p1x, double p1y, double p2x, double p2y, double qx, double qy)
         {
@@ -101,6 +101,12 @@ namespace NetTopologySuite.Algorithm
         /// <para/>
         /// Uses an approach due to Jonathan Shewchuk, which is in the public domain.
         /// </summary>
+        /// <param name="pax">The x-ordinate of point A</param>
+        /// <param name="pay">The y-ordinate of point A</param>
+        /// <param name="pbx">The x-ordinate of point B</param>
+        /// <param name="pby">The y-ordinate of point B</param>
+        /// <param name="pcx">The x-ordinate of point C</param>
+        /// <param name="pcy">The y-ordinate of point C</param>
         /// <returns>
         /// <list type="bullet">
         /// <item><description>The orientation index if it can be computed safely</description></item>

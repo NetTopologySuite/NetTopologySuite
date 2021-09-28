@@ -129,7 +129,7 @@ namespace NetTopologySuite.Index.Chain
 
             if (_env == null)
             {
-                /**
+                /*
                  * The monotonicity property allows fast envelope determination
                  */
                 var p0 = _pts[_start];

@@ -390,7 +390,7 @@ namespace NetTopologySuite.EdgeGraph
         /// When applied to a list of edges originating at the same point,
         /// this produces a CCW ordering of the edges around the point.
         /// Using the obvious algorithm of computing the angle is not robust,
-        /// since the angle calculation is susceptible to roundoff error.
+        /// since the angle calculation is susceptible to round off error.
         /// </summary>
         /// <remarks>
         /// A robust algorithm is:

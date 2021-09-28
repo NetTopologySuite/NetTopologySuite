@@ -35,7 +35,7 @@ namespace NetTopologySuite.Operation.Distance
     /// </author>
     public class IndexedFacetDistance
     {
-        private static readonly FacetSequenceDistance FACET_SEQ_DIST = new FacetSequenceDistance();
+        private static readonly FacetSequenceDistance FacetSeqDist = new FacetSequenceDistance();
 
         /// <summary>
         /// Computes the distance between facets of two geometries.
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Distance
         }
 
         private readonly STRtree<FacetSequence> _cachedTree;
-        private Geometry baseGeometry;
+        private readonly Geometry _baseGeometry;
 
         /// <summary>
         /// Creates a new distance-finding instance for a given target <see cref="Geometry"/>.
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g1">A Geometry, which may be of any type.</param>
         public IndexedFacetDistance(Geometry g1)
         {
-            baseGeometry = g1;
+            _baseGeometry = g1;
             _cachedTree = FacetSequenceTreeBuilder.BuildSTRtree(g1);
         }
 
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Operation.Distance
         public double Distance(Geometry g)
         {
             var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
-            var obj = _cachedTree.NearestNeighbour(tree2, FACET_SEQ_DIST);
+            var obj = _cachedTree.NearestNeighbour(tree2, FacetSeqDist);
             var fs1 = obj[0];
             var fs2 = obj[1];
             return fs1.Distance(fs2);
@@ -128,7 +128,7 @@ namespace NetTopologySuite.Operation.Distance
         public GeometryLocation[] NearestLocations(Geometry g)
         {
             var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
-            var obj = _cachedTree.NearestNeighbour(tree2, FACET_SEQ_DIST);
+            var obj = _cachedTree.NearestNeighbour(tree2, FacetSeqDist);
             var fs1 = obj[0];
             var fs2 = obj[1];
             return fs1.NearestLocations(fs2);
@@ -165,33 +165,13 @@ namespace NetTopologySuite.Operation.Distance
         public bool IsWithinDistance(Geometry g, double maxDistance)
         {
             // short-ciruit check
-            double envDist = baseGeometry.EnvelopeInternal.Distance(g.EnvelopeInternal);
+            double envDist = _baseGeometry.EnvelopeInternal.Distance(g.EnvelopeInternal);
             if (envDist > maxDistance)
                 return false;
 
             var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
-            return _cachedTree.IsWithinDistance(tree2, FACET_SEQ_DIST, maxDistance);
+            return _cachedTree.IsWithinDistance(tree2, FacetSeqDist, maxDistance);
         }
-
-        /**
-         * Tests whether the base geometry lies within
-         * a specified distance of the given geometry.
-         *
-         //* @param g the geometry to test
-         //* @param maximumDistance the maximum distance to test
-         //* @return true if the geometry lies with the specified distance
-         */
-        // TODO: implement this
-        /*
-        public boolean isWithinDistance(Geometry g, double maximumDistance)
-        {
-          STRtree tree2 = FacetSequenceTreeBuilder.build(g);
-          double dist = findMinDistance(cachedTree.getRoot(), tree2.getRoot(), maximumDistance);
-          if (dist <= maximumDistance)
-            return false;
-          return true;
-        }
-        */
 
         private class FacetSequenceDistance : IItemDistance<Envelope, FacetSequence>
         {

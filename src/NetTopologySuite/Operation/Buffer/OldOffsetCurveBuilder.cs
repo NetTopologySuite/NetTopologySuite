@@ -19,61 +19,61 @@ namespace NetTopologySuite.Operation.Buffer
     [Obsolete]
     public class OldOffsetCurveBuilder
     {
-        /**
-         * The angle quantum with which to approximate a fillet curve
-         * (based on the input # of quadrant segments)
-         */
+        /// <summary>
+        /// The angle quantum with which to approximate a fillet curve
+        /// (based on the input # of quadrant segments)
+        /// </summary>
         private readonly double _filletAngleQuantum;
 
-        /**
-         * the max error of approximation (distance) between a quad segment and the true fillet curve
-         */
+        /// <summary>
+        /// The max error of approximation (distance) between a quad segment and the true fillet curve
+        /// </summary>
         private double _maxCurveSegmentError;
 
         //private const double MinCurveVertexFactor = 1.0E-6;
-        /**
-         * Factor which controls how close curve vertices can be to be snapped
-         */
+        /// <summary>
+        /// Factor which controls how close curve vertices can be to be snapped
+        /// </summary>
         private const double CurveVertexSnapDistanceFactor = 1.0E-6;
 
-        /**
-         * Factor which controls how close offset segments can be to
-         * skip adding a filler or mitre.
-         */
-        private const double OFFSET_SEGMENT_SEPARATION_FACTOR = 1.0E-3;
+        /// <summary>
+        /// Factor which controls how close offset segments can be to
+        /// skip adding a filler or mitre.
+        /// </summary>
+        private const double OffsetSegmentSeparationFactor = 1.0E-3;
 
-        /**
-         * Factor which controls how close curve vertices on inside turns can be to be snapped
-         */
-        private const double INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR = 1.0E-3;
+        /// <summary>
+        /// Factor which controls how close curve vertices on inside turns can be to be snapped
+        /// </summary>
+        private const double InsideTurnVertexSnapDistanceFactor = 1.0E-3;
 
-        /**
-         * Factor which determines how short closing segs can be for round buffers
-         */
-        private const int MAX_CLOSING_SEG_FRACTION = 80;
+        /// <summary>
+        /// Factor which determines how short closing segs can be for round buffers
+        /// </summary>
+        private const int MaxClosingSegFraction = 80;
 
         private double _distance;
         private readonly PrecisionModel _precisionModel;
 
         private readonly BufferParameters _bufParams;
 
-        /**
-         * The Closing Segment Factor controls how long
-         * "closing segments" are.  Closing segments are added
-         * at the middle of inside corners to ensure a smoother
-         * boundary for the buffer offset curve.
-         * In some cases (particularly for round joins with default-or-better
-         * quantization) the closing segments can be made quite short.
-         * This substantially improves performance (due to fewer intersections being created).
-         *
-         * A closingSegFactor of 0 results in lines to the corner vertex
-         * A closingSegFactor of 1 results in lines halfway to the corner vertex
-         * A closingSegFactor of 80 results in lines 1/81 of the way to the corner vertex
-         * (this option is reasonable for the very common default situation of round joins
-         * and quadrantSegs >= 8)
-         *
-         */
-        private readonly int closingSegFactor = 1;
+
+        /// <summary>
+        /// The Closing Segment Factor controls how long
+        /// "closing segments" are.  Closing segments are added
+        /// at the middle of inside corners to ensure a smoother
+        /// boundary for the buffer offset curve.<br/>
+        /// In some cases (particularly for round joins with default-or-better
+        /// quantization) the closing segments can be made quite short.
+        /// This substantially improves performance (due to fewer intersections being created).
+        /// <br/>
+        /// A closingSegFactor of 0 results in lines to the corner vertex<br/>
+        /// A closingSegFactor of 1 results in lines halfway to the corner vertex<br/>
+        /// A closingSegFactor of 80 results in lines 1/81 of the way to the corner vertex
+        /// (this option is reasonable for the very common default situation of round joins
+        /// and quadrantSegs >= 8)
+        /// </summary>
+        private readonly int _closingSegFactor = 1;
 
         private OffsetCurveVertexList _vertexList;
         private readonly LineIntersector _li;
@@ -91,14 +91,14 @@ namespace NetTopologySuite.Operation.Buffer
             _li = new RobustLineIntersector();
             _filletAngleQuantum = Math.PI / 2.0 / bufParams.QuadrantSegments;
 
-            /**
+            /*
              * Non-round joins cause issues with short closing segments,
              * so don't use them.  In any case, non-round joins
              * only really make sense for relatively small buffer distances.
              */
             if (bufParams.QuadrantSegments >= 8
                 && bufParams.JoinStyle == JoinStyle.Round)
-                closingSegFactor = MAX_CLOSING_SEG_FRACTION;
+                _closingSegFactor = MaxClosingSegFraction;
         }
 
         /// <summary>
@@ -189,23 +189,21 @@ namespace NetTopologySuite.Operation.Buffer
             _vertexList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
         }
 
-        /**
-        * Use a value which results in a potential distance error which is
-        * significantly less than the error due to
-        * the quadrant segment discretization.
-        * For QS = 8 a value of 100 is reasonable.
-        * This should produce a maximum of 1% distance error.
-        */
+        /// <summary>
+        /// Use a value which results in a potential distance error which is
+        /// significantly less than the error due to
+        /// the quadrant segment discretization.
+        /// For QS = 8 a value of 100 is reasonable.
+        /// This should produce a maximum of 1% distance error.
+        /// </summary>
         private const double SimplifyFactor = 400.0;
 
-        /**
-        * Computes the distance tolerance to use during input
-        * line simplification.
-        *
-        * @param distance the buffer distance
-        * @return the simplification tolerance
-        */
-
+        /// <summary>
+        /// Computes the distance tolerance to use during input
+        /// line simplification.
+        /// </summary>
+        /// <param name="bufDistance">The buffer distance</param>
+        /// <returns>The simplification tolerance</returns>
         private static double SimplifyTolerance(double bufDistance)
         {
             return bufDistance / SimplifyFactor;
@@ -352,7 +350,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void AddCollinear(bool addStartPoint)
         {
-            /**
+            /*
              * This test could probably be done more efficiently,
              * but the situation of exact collinearity should be fairly rare.
              */
@@ -395,14 +393,14 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="addStartPoint"></param>
         private void AddOutsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
-            /**
+            /*
              * Heuristic: If offset endpoints are very close together,
              * just use one of them as the corner vertex.
              * This avoids problems with computing mitre corners in the case
              * where the two segments are almost parallel
              * (which is hard to compute a robust intersection for).
              */
-            if (_offset0.P1.Distance(_offset1.P0) < _distance * OFFSET_SEGMENT_SEPARATION_FACTOR)
+            if (_offset0.P1.Distance(_offset1.P0) < _distance * OffsetSegmentSeparationFactor)
             {
                 _vertexList.AddPt(_offset0.P1);
                 return;
@@ -467,30 +465,30 @@ namespace NetTopologySuite.Operation.Buffer
                  * close, don't add closing segments but simply use one of the offset
                  * points
                  */
-                if (_offset0.P1.Distance(_offset1.P0) < _distance * INSIDE_TURN_VERTEX_SNAP_DISTANCE_FACTOR)
+                if (_offset0.P1.Distance(_offset1.P0) < _distance * InsideTurnVertexSnapDistanceFactor)
                 {
                     _vertexList.AddPt(_offset0.P1);
                 }
                 else
                 {
-                    /**
+                    /*
                      * Add "closing segment" of required length.
                      */
                     _vertexList.AddPt(_offset0.P1);
 
                     // add closing segments of required length
-                    if (closingSegFactor > 0)
+                    if (_closingSegFactor > 0)
                     {
-                        var mid0 = new Coordinate((closingSegFactor * _offset0.P1.X + _s1.X) / (closingSegFactor + 1),
-                            (closingSegFactor * _offset0.P1.Y + _s1.Y) / (closingSegFactor + 1));
+                        var mid0 = new Coordinate((_closingSegFactor * _offset0.P1.X + _s1.X) / (_closingSegFactor + 1),
+                            (_closingSegFactor * _offset0.P1.Y + _s1.Y) / (_closingSegFactor + 1));
                         _vertexList.AddPt(mid0);
-                        var mid1 = new Coordinate((closingSegFactor * _offset1.P0.X + _s1.X) / (closingSegFactor + 1),
-                           (closingSegFactor * _offset1.P0.Y + _s1.Y) / (closingSegFactor + 1));
+                        var mid1 = new Coordinate((_closingSegFactor * _offset1.P0.X + _s1.X) / (_closingSegFactor + 1),
+                           (_closingSegFactor * _offset1.P0.Y + _s1.Y) / (_closingSegFactor + 1));
                         _vertexList.AddPt(mid1);
                     }
                     else
                     {
-                        /**
+                        /*
                          * This branch is not expected to be used except for testing purposes.
                          * It is equivalent to the JTS 1.9 logic for closing segments
                          * (which results in very poor performance for large buffer distances)

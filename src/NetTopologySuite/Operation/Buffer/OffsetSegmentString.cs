@@ -14,12 +14,12 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly List<Coordinate> _ptList;
         private PrecisionModel _precisionModel;
 
-        /**
-         * The distance below which two adjacent points on the curve
-         * are considered to be coincident.
-         * This is chosen to be a small fraction of the offset distance.
-         */
-        private double _minimimVertexDistance;
+        /// <summary>
+        /// The distance below which two adjacent points on the curve
+        /// are considered to be coincident.<br/>
+        /// This is chosen to be a small fraction of the offset distance.
+        /// </summary>
+        private double _minimumVertexDistance;
 
         public OffsetSegmentString()
         {
@@ -34,8 +34,8 @@ namespace NetTopologySuite.Operation.Buffer
 
         public double MinimumVertexDistance
         {
-            get => _minimimVertexDistance;
-            set => _minimimVertexDistance = value;
+            get => _minimumVertexDistance;
+            set => _minimumVertexDistance = value;
         }
 
         public void AddPt(Coordinate pt)
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return false;
             var lastPt = _ptList[_ptList.Count - 1];
             double ptDist = pt.Distance(lastPt);
-            if (ptDist < _minimimVertexDistance)
+            if (ptDist < _minimumVertexDistance)
                 return true;
             return false;
         }

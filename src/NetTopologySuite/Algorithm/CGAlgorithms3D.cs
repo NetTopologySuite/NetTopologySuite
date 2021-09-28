@@ -90,8 +90,8 @@ namespace NetTopologySuite.Algorithm
         public static double DistanceSegmentSegment(
                 Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {
-            /**
-             * This calculation is susceptible to roundoff errors when
+            /*
+             * This calculation is susceptible to round off errors when
              * passed large ordinate values.
              * It may be possible to improve this by using {@link DD} arithmetic.
              */
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Algorithm
             if (C.Equals2D(B) && C.Z.Equals(B.Z))
                 return DistancePointSegment(C, A, B);
 
-            /**
+            /*
              * Algorithm derived from http://softsurfer.com/Archive/algorithm_0106/algorithm_0106.htm
              */
             double a = Vector3D.Dot(A, B, A, B);
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Algorithm
             double t;
             if (denom <= 0.0)
             {
-                /**
+                /*
                  * The lines are parallel.
                  * In this case solve for the parameters s and t by assuming s is 0.
                  */
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Algorithm
             {
                 return DistancePointSegment(D, A, B);
             }
-            /**
+            /*
              * The closest points are in interiors of segments,
              * so compute them directly
              */

@@ -605,7 +605,7 @@ namespace NetTopologySuite.Geometries
         {
             var geoms = new List<Geometry>();
 
-            /**
+            /*
              * Determine some facts about the geometries in the list
              */
             Type geomClass = null;
@@ -628,7 +628,7 @@ namespace NetTopologySuite.Geometries
                     hasGeometryCollection = true;
             }
 
-            /**
+            /*
              * Now construct an appropriate geometry to return
              */
 

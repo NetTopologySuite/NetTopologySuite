@@ -190,13 +190,11 @@ namespace NetTopologySuite.Mathematics
             _lo = dd._lo;
         }
 
-        /**
-         * Creates a new DoubleDouble with value equal to the argument.
-         *
-         * @param str the value to initialize by
-         * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
-         */
-
+        /// <summary>
+        /// Creates a new <see cref="DD"/> with value equal to the argument.
+        /// </summary>
+        /// <param name="str">The value to initialize by</param>
+        /// <exception cref="FormatException"> if <paramref name="str"/> is not a valid representation of a number</exception>
         public DD(string str)
             : this(Parse(str))
         {
@@ -279,79 +277,6 @@ namespace NetTopologySuite.Mathematics
             return lhs + new DD(-rhs, 0);
         }
 
-        //public DD SelfAdd(DD y)
-        //{
-        //    return SelfAdd(y._hi, y._lo);
-        //}
-
-        ///// <summary>
-        ///// Adds the argument to the value of <tt>this</tt>.
-        ///// To prevent altering constants,
-        ///// this method <b>must only</b> be used on values known to
-        ///// be newly created.
-        ///// </summary>
-        ///// <param name="y">The addend</param>
-        ///// <returns>this object, increased by <paramref name="y"/></returns>
-        //public DD SelfAdd(double y)
-        //{
-        //    return SelfAdd(y, 0.0);
-        //}
-
-        //private DD SelfAdd(double yhi, double ylo)
-        //{
-        //    double H, h, T, t, S, s, e, f;
-        //    S = _hi + yhi;
-        //    T = _lo + ylo;
-        //    e = S - _hi;
-        //    f = T - _lo;
-        //    s = S - e;
-        //    t = T - f;
-        //    s = (yhi - e) + (_hi - s);
-        //    t = (ylo - f) + (_lo - t);
-        //    e = s + T;
-        //    H = S + e;
-        //    h = e + (S - H);
-        //    e = t + h;
-
-        //    double zhi = H + e;
-        //    double zlo = e + (H - zhi);
-        //    _hi = zhi;
-        //    _lo = zlo;
-        //    return this;
-        //}
-
-        ///**
-        // * Subtracts the argument from the value of <tt>this</tt>.
-        // * To prevent altering constants,
-        // * this method <b>must only</b> be used on values known to
-        // * be newly created.
-        // *
-        // * @param y the addend
-        // * @return this object, decreased by y
-        // */
-
-        //public DD SelfSubtract(DD y)
-        //{
-        //    if (IsNaN(this)) return this;
-        //    return SelfAdd(-y._hi, -y._lo);
-        //}
-
-        ///**
-        // * Subtracts the argument from the value of <tt>this</tt>.
-        // * To prevent altering constants,
-        // * this method <b>must only</b> be used on values known to
-        // * be newly created.
-        // *
-        // * @param y the addend
-        // * @return this object, decreased by y
-        // */
-
-        //public DD SelfSubtract(double y)
-        //{
-        //    if (IsNaN(this)) return this;
-        //    return SelfAdd(-y, 0.0);
-        //}
-
         /// <summary>
         /// Subtracts the argument from the value of <tt>this</tt>.
         /// </summary>
@@ -402,55 +327,6 @@ namespace NetTopologySuite.Mathematics
             return new DD(zhi, zlo);
         }
 
-        /*
-        private DD SelfMultiply(double yhi, double ylo)
-        {
-            double C = Split*_hi;
-            double hx = C - _hi;
-            double c = Split*yhi;
-            hx = C - hx;
-            double tx = _hi - hx;
-            double hy = c - yhi;
-            C = _hi*yhi;
-            hy = c - hy;
-            double ty = yhi - hy;
-            c = ((((hx*hy - C) + hx*ty) + tx*hy) + tx*ty) + (_hi*ylo + _lo*yhi);
-            double zhi = C + c;
-            hx = C - zhi;
-            double zlo = c + hx;
-            _hi = zhi;
-            _lo = zlo;
-            return this;
-        }
-        */
-
-        ///// <summary>
-        ///// Divides this object by the argument, returning <tt>this</tt>.
-        ///// To prevent altering constants,
-        ///// this method <b>must only</b> be used on values known to
-        ///// be newly created.
-        ///// </summary>
-        ///// <param name="y">the value to divide by</param>
-        ///// <returns>this object, divided by y</returns>
-        //public DD SelfDivide(DD y)
-        //{
-        //    return SelfDivide(y._hi, y._lo);
-        //}
-
-        ///**
-        // * Divides this object by the argument, returning <tt>this</tt>.
-        // * To prevent altering constants,
-        // * this method <b>must only</b> be used on values known to
-        // * be newly created.
-        // *
-        // * @param y the value to divide by
-        // * @return this object, divided by y
-        // */
-        ////public DD SelfDivide(double y)
-        //{
-        //    return SelfDivide(y, 0.0);
-        //}
-
         /// <summary>
         /// Divides <paramref name="lhs"/> by <paramref name="rhs"/>.
         /// </summary>
@@ -490,34 +366,10 @@ namespace NetTopologySuite.Mathematics
             return new DD(u, (C - u) + c);
         }
 
-        //private DD SelfDivide(double yhi, double ylo)
-        //{
-        //    double hc, tc, hy, ty, C, c, U, u;
-        //    C = _hi/yhi;
-        //    c = Split*C;
-        //    hc = c - C;
-        //    u = Split*yhi;
-        //    hc = c - hc;
-        //    tc = C - hc;
-        //    hy = u - yhi;
-        //    U = C*yhi;
-        //    hy = u - hy;
-        //    ty = yhi - hy;
-        //    u = (((hc*hy - U) + hc*ty) + tc*hy) + tc*ty;
-        //    c = ((((_hi - U) - u) + _lo) - C*ylo)/yhi;
-        //    u = C + c;
-
-        //    _hi = u;
-        //    _lo = (C - u) + c;
-        //    return this;
-        //}
-
-        /**
-         * Returns a DoubleDouble whose value is  <tt>1 / this</tt>.
-         *
-         * @return the reciprocal of this value
-         */
-
+        /// <summary>
+        /// Returns a <see cref="DD"/> whose value is <c>1 / this</c>.
+        /// </summary>
+        /// <returns>The reciprocal of this value</returns>
         public DD Reciprocal()
         {
             double hc, tc, hy, ty, C, c, U, u;
@@ -827,23 +679,19 @@ namespace NetTopologySuite.Mathematics
          *------------------------------------------------------------
          */
 
-        /**
-         * Converts this value to the nearest double-precision number.
-         *
-         * @return the nearest double-precision number to this value
-         */
-
+        /// <summary>
+        /// Converts this value to the nearest <see cref="double"/> number.
+        /// </summary>
+        /// <returns>The nearest <see cref="double"/> value</returns>
         public double ToDoubleValue()
         {
             return _hi + _lo;
         }
 
-        /**
-         * Converts this value to the nearest integer.
-         *
-         * @return the nearest integer to this value
-         */
-
+        /// <summary>
+        /// Converts this value to the nearest <see cref="int"/> value.
+        /// </summary>
+        /// <returns>The nearest <see cref="int"/> value</returns>
         public int ToIntValue()
         {
             return (int) _hi;
@@ -1098,20 +946,20 @@ namespace NetTopologySuite.Mathematics
             return digitsWithDecimal + expStr;
         }
 
-        /**
-         * Extracts the significant digits in the decimal representation of the argument.
-         * A decimal point may be optionally inserted in the string of digits
-         * (as long as its position lies within the extracted digits
-         * - if not, the caller must prepend or append the appropriate zeroes and decimal point).
-         *
-         * @param y the number to extract ( >= 0)
-         * @param decimalPointPos the position in which to insert a decimal point
-         * @return the string containing the significant digits and possibly a decimal point
-         */
-
+        /// <summary>
+        /// Extracts the significant digits in the decimal representation of the argument.
+        /// A decimal point may be optionally inserted in the string of digits
+        /// (as long as its position lies within the extracted digits
+        /// - if not, the caller must prepend or append the appropriate zeroes and decimal point).
+        /// </summary>
+        /// <param name="insertDecimalPoint"></param>
+        /// <param name="magnitudes"></param>
+        /// <returns>The string containing the significant digits and possibly a decimal point</returns>
         private string ExtractSignificantDigits(bool insertDecimalPoint, int[] magnitudes)
         {
+            // The number to extract (>= 0)
             var y = this.Abs();
+
             // compute *correct* magnitude of y
             int mag = Magnitude(y._hi);
             var scale = Ten.Pow(mag);
@@ -1141,7 +989,7 @@ namespace NetTopologySuite.Mathematics
                 int digit = (int) y._hi;
                 //      System.out.println("printDump: [" + i + "] digit: " + digit + "  y: " + y.dump() + "  buf: " + buf);
 
-                /**
+                /*
                  * This should never happen, due to heuristic checks on remainder below
                  */
                 if (digit < 0 || digit > 9)
@@ -1149,7 +997,7 @@ namespace NetTopologySuite.Mathematics
                     //        System.out.println("digit > 10 : " + digit);
                     //        throw new IllegalStateException("Internal errror: found digit = " + digit);
                 }
-                /**
+                /*
                  * If a negative remainder is encountered, simply terminate the extraction.
                  * This is robust, but maybe slightly inaccurate.
                  * My current hypothesis is that negative remainders only occur for very small lo components,
@@ -1179,14 +1027,14 @@ namespace NetTopologySuite.Mathematics
                     y += Ten;
 
                 bool continueExtractingDigits = true;
-                /**
+                /*
                  * Heuristic check: if the remaining portion of
                  * y is non-positive, assume that output is complete
                  */
                 //      if (y.hi <= 0.0)
                 //        if (y.hi < 0.0)
                 //        continueExtractingDigits = false;
-                /**
+                /*
                  * Check if remaining digits will be 0, and if so don't output them.
                  * Do this by comparing the magnitude of the remainder with the expected precision.
                  */
@@ -1224,7 +1072,7 @@ namespace NetTopologySuite.Mathematics
             double xAbs = Math.Abs(x);
             double xLog10 = Math.Log(xAbs)/Math.Log(10);
             int xMag = (int) Math.Floor(xLog10);
-            /**
+            /*
              * Since log computation is inexact, there may be an off-by-one error
              * in the computed magnitude.
              * Following tests that magnitude is correct, and adjusts it if not

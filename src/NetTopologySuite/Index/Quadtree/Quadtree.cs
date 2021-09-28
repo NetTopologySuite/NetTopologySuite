@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Index.Quadtree
 {
@@ -192,11 +193,13 @@ namespace NetTopologySuite.Index.Quadtree
         public void Query(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             /*
-            * the items that are matched are the items in quads which
-            * overlap the search envelope
-            */
+             * the items that are matched are the items in quads which
+             * overlap the search envelope
+             */
             _root.Visit(searchEnv, visitor);
         }
+
+        ISpatialIndexEx<T>
 
         /// <summary>
         /// Return a list of all items in the Quadtree.
@@ -228,5 +231,37 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         /// <returns>The root node of this QuadTree</returns>
         public Root<T> Root => _root;
+    }
+
+    /// <summary>
+    /// Item visitor that specifically excludes a predefined area.
+    /// </summary>
+    /// <typeparam name="T">The type of the items to visit</typeparam>
+    public class ExcludingItemVisitor<T> : IItemVisitor<T> where T:Geometry
+    {
+        private readonly Envelope _exclude;
+        private readonly List<T> _items = new List<T>();
+
+        /// <summary>
+        /// Initialize with <paramref name="exclude"/>
+        /// </summary>
+        /// <param name="exclude"></param>
+        public ExcludingItemVisitor(Envelope exclude)
+        {
+            _exclude = exclude;
+        }
+
+        /// <inheritdoc cref="IItemVisitor{T}.VisitItem"/>>
+        public void VisitItem(T item)
+        {
+            // If we have no intersection with _exclude, add it.
+            if (!_exclude.Intersects(item.EnvelopeInternal))
+                _items.Add(item);
+        }
+
+        /// <summary>
+        /// Get a value indicating the gathered items
+        /// </summary>
+        public IList<T> Items => _items;
     }
 }

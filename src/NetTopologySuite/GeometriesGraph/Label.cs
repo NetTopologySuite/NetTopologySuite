@@ -45,7 +45,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Construct a Label with a single location for both Geometries.
         /// Initialize the locations to Null.
         /// </summary>
-        /// <param name="onLoc"></param>
+        /// <param name="onLoc">A location value</param>
         public Label(Location onLoc)
         {
             elt[0] = new TopologyLocation(onLoc);
@@ -56,8 +56,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// Construct a Label with a single location for both Geometries.
         /// Initialize the location for the Geometry index.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="onLoc"></param>
+        /// <param name="geomIndex">A geometry index, <c>0</c>, or <c>1</c>.</param>
+        /// <param name="onLoc">A location value for <b>On</b></param>
         public Label(int geomIndex, Location onLoc)
         {
             elt[0] = new TopologyLocation(Location.Null);
@@ -69,9 +69,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// Construct a Label with On, Left and Right locations for both Geometries.
         /// Initialize the locations for both Geometries to the given values.
         /// </summary>
-        /// <param name="onLoc"></param>
-        /// <param name="leftLoc"></param>
-        /// <param name="rightLoc"></param>
+        /// <param name="onLoc">A location value for <b>On</b></param>
+        /// <param name="leftLoc">A location value for <b>Left</b></param>
+        /// <param name="rightLoc">A location value for <b>Right</b></param>
         public Label(Location onLoc, Location leftLoc, Location rightLoc)
         {
             elt[0] = new TopologyLocation(onLoc, leftLoc, rightLoc);
@@ -82,10 +82,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// Construct a Label with On, Left and Right locations for both Geometries.
         /// Initialize the locations for the given Geometry index.
         /// </summary>
-        /// <param name="geomIndex"></param>
-        /// <param name="onLoc"></param>
-        /// <param name="leftLoc"></param>
-        /// <param name="rightLoc"></param>
+        /// <param name="geomIndex">A geometry index, <c>0</c>, or <c>1</c>.</param>
+        /// <param name="onLoc">A location value for <b>On</b></param>
+        /// <param name="leftLoc">A location value for <b>Left</b></param>
+        /// <param name="rightLoc">A location value for <b>Right</b></param>
         public Label(int geomIndex, Location onLoc, Location leftLoc, Location rightLoc)
         {
             elt[0] = new TopologyLocation(Location.Null, Location.Null, Location.Null);
@@ -96,7 +96,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Construct a Label with the same values as the argument Label.
         /// </summary>
-        /// <param name="lbl"></param>
+        /// <param name="lbl">A <c>Label</c></param>
         public Label(Label lbl)
         {
             elt[0] = new TopologyLocation(lbl.elt[0]);
@@ -104,7 +104,8 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Performs <see cref="TopologyLocation.Flip"/> on both
+        /// <see cref="TopologyLocation"/>s of this <c>Label</c>
         /// </summary>
         public  void Flip()
         {
@@ -138,7 +139,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public  Location GetLocation(int geomIndex)
+        public Location GetLocation(int geomIndex)
         {
             return elt[geomIndex].Get(Geometries.Position.On);
         }
@@ -205,9 +206,9 @@ namespace NetTopologySuite.GeometriesGraph
 
         /// <summary>
         /// Merge this label with another one.
-        /// Merging updates any null attributes of this label with the attributes from lbl.
+        /// Merging updates any null attributes of this label with the attributes from <paramref name="lbl"/>.
         /// </summary>
-        /// <param name="lbl"></param>
+        /// <param name="lbl">The <c>Label</c> to merge</param>
         public  void Merge(Label lbl)
         {
             for (int i = 0; i < 2; i++)
@@ -326,7 +327,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Converts one GeometryLocation to a Line location.
         /// </summary>
-        /// <param name="geomIndex"></param>
+        /// <param name="geomIndex">The index of the <c>TopologyLocation</c> to convert (<c>0</c> or <c>1</c>)</param>
         public  void ToLine(int geomIndex)
         {
             if (elt[geomIndex].IsArea)

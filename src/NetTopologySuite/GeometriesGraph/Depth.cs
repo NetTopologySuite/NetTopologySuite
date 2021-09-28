@@ -30,7 +30,7 @@ namespace NetTopologySuite.GeometriesGraph
             return @null;
         }
 
-        private readonly int[,] depth = new int[2,3];
+        private readonly int[,] _depth = new int[2,3];
 
         /// <summary>
         ///
@@ -40,7 +40,7 @@ namespace NetTopologySuite.GeometriesGraph
             // initialize depth array to a sentinel value
             for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 3; j++)
-                    depth[i,j] = @null;
+                    _depth[i,j] = @null;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int GetDepth(int geomIndex, Geometries.Position posIndex)
         {
-            return depth[geomIndex, (int)posIndex];
+            return _depth[geomIndex, (int)posIndex];
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="depthValue"></param>
         public void SetDepth(int geomIndex, Geometries.Position posIndex, int depthValue)
         {
-            depth[geomIndex, (int)posIndex] = depthValue;
+            _depth[geomIndex, (int)posIndex] = depthValue;
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Location GetLocation(int geomIndex, Geometries.Position posIndex)
         {
-            if (depth[geomIndex, (int)posIndex] <= 0)
+            if (_depth[geomIndex, (int)posIndex] <= 0)
                 return Location.Exterior;
             return Location.Interior;
         }
@@ -130,19 +130,20 @@ namespace NetTopologySuite.GeometriesGraph
         public void Add(int geomIndex, Positions posIndex, Location _location)
         {
             if (_location == Location.Interior)
-                depth[geomIndex, (int)posIndex]++;
+                _depth[geomIndex, (int)posIndex]++;
         }
 
         /// <summary>
         /// A Depth object is null (has never been initialized) if all depths are null.
         /// </summary>
+        /// <returns><c>true</c> if depth is null (has never been initialized)</returns>
         public bool IsNull()
         {
                 for (int i = 0; i < 2; i++)
                 {
                     for (int j = 0; j < 3; j++)
                     {
-                        if (depth[i,j] != @null)
+                        if (_depth[i,j] != @null)
                             return false;
                     }
                 }
@@ -156,7 +157,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public bool IsNull(int geomIndex)
         {
-            return depth[geomIndex,1] == @null;
+            return _depth[geomIndex,1] == @null;
         }
 
         /// <summary>
@@ -177,7 +178,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public bool IsNull(int geomIndex, Geometries.Position posIndex)
         {
-            return depth[geomIndex,(int)posIndex] == @null;
+            return _depth[geomIndex,(int)posIndex] == @null;
         }
 
         /// <summary>
@@ -195,8 +196,8 @@ namespace NetTopologySuite.GeometriesGraph
                     {
                         // initialize depth if it is null, otherwise add this location value
                         if (IsNull(i, new Geometries.Position(j)))
-                             depth[i,j]  = DepthAtLocation(loc);
-                        else depth[i,j] += DepthAtLocation(loc);
+                             _depth[i,j]  = DepthAtLocation(loc);
+                        else _depth[i,j] += DepthAtLocation(loc);
                     }
                 }
             }
@@ -209,7 +210,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int GetDelta(int geomIndex)
         {
-            return depth[geomIndex, (int)Geometries.Position.Right] - depth[geomIndex, (int)Geometries.Position.Left];
+            return _depth[geomIndex, (int)Geometries.Position.Right] - _depth[geomIndex, (int)Geometries.Position.Left];
         }
 
         /// <summary>
@@ -226,17 +227,17 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 if (! IsNull(i))
                 {
-                    int minDepth = depth[i,1];
-                    if (depth[i,2] < minDepth)
-                    minDepth = depth[i,2];
+                    int minDepth = _depth[i,1];
+                    if (_depth[i,2] < minDepth)
+                    minDepth = _depth[i,2];
 
                     if (minDepth < 0) minDepth = 0;
                     for (int j = 1; j < 3; j++)
                     {
                         int newValue = 0;
-                        if (depth[i,j] > minDepth)
+                        if (_depth[i,j] > minDepth)
                             newValue = 1;
-                        depth[i,j] = newValue;
+                        _depth[i,j] = newValue;
                     }
                 }
             }
@@ -248,7 +249,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("A: {0},{1} B: {2},{3}", this.depth[0,1], this.depth[0,2], this.depth[1,1], this.depth[1,2]);
+            return string.Format("A: {0},{1} B: {2},{3}", this._depth[0,1], this._depth[0,2], this._depth[1,1], this._depth[1,2]);
         }
     }
 

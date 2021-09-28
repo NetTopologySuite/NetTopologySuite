@@ -122,7 +122,7 @@ namespace NetTopologySuite.LinearReferencing
             var it = new LinearIterator(_linearGeom);
             while (it.HasNext())
             {
-                /**
+                /*
                  * Special handling is required for the situation when the
                  * length references exactly to a component endpoint.
                  * In this case, the endpoint location of the current component

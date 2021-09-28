@@ -287,13 +287,12 @@ namespace NetTopologySuite.Algorithm.Construct
             return potentialIncrease > _tolerance;
         }
 
-        /**
-         * Initializes the queue with a grid of cells covering 
-         * the extent of the area.
-         * 
-         * @param env the area extent to cover
-         * @param cellQueue the queue to initialize
-         */
+        /// <summary>
+        /// Initializes the queue with a grid of cells covering
+        /// the extent of the area.
+        /// </summary>
+        /// <param name="env">The area extent to cover</param>
+        /// <param name="cellQueue">The queue to initialize</param>
         private void CreateInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue)
         {
             double minX = env.MinX;

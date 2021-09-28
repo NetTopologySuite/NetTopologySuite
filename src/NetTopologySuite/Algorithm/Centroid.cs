@@ -12,7 +12,7 @@ namespace NetTopologySuite.Algorithm
     /// The centroid of an empty geometry is <c>null</c>
     /// </summary>
     /// <remarks>
-    /// Algorithm
+    /// <h3>Algorithm</h3>
     /// <list type="bullet">
     /// <item><description><b>Dimension 2</b> - the centroid ic computed
     /// as a weighted sum of the centroids
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The computed centroid, or null if the input is empty</returns>
         public Coordinate GetCentroid()
         {
-            /**
+            /*
              * The centroid is computed from the highest dimension components present in the input.
              * I.e. areas dominate lineal geometry, which dominates points.
              * Degenerate geometry are computed using their effective dimension

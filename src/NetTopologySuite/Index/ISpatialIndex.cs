@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index
 {
@@ -44,5 +46,11 @@ namespace NetTopologySuite.Index
         /// <param name="item">The item to remove.</param>
         /// <returns> <c>true</c> if the item was found.</returns>
         bool Remove(Envelope itemEnv, T item);
+    }
+
+    public interface ISpatialIndexEx<T> : ISpatialIndex<T>
+    {
+        IEnumerable<T> Query(Envelope extent);
+        IEnumerable<T> Query(Envelope extent, Func<T, bool> predicate);
     }
 }

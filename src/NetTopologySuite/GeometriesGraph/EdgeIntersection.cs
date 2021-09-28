@@ -38,11 +38,11 @@ namespace NetTopologySuite.GeometriesGraph
         public double Distance => _distance;
 
         /// <summary>
-        ///
+        /// Creates an instance of this class
         /// </summary>
-        /// <param name="coord"></param>
-        /// <param name="segmentIndex"></param>
-        /// <param name="dist"></param>
+        /// <param name="coord">The point of intersection</param>
+        /// <param name="segmentIndex">The index of the containing line segment in the parent edge</param>
+        /// <param name="dist">The edge distance or this point along the containing line segment</param>
         public EdgeIntersection(Coordinate coord, int segmentIndex, double dist)
         {
             _coordinate = coord.Copy();
@@ -50,11 +50,8 @@ namespace NetTopologySuite.GeometriesGraph
             _distance = dist;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+
+        /// <inheritdoc cref="IComparable.CompareTo"/>
         public int CompareTo(object obj)
         {
             var other = (EdgeIntersection) obj;
@@ -62,14 +59,14 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Comparison with segment and distance.
         /// </summary>
-        /// <param name="segmentIndex"></param>
-        /// <param name="dist"></param>
+        /// <param name="segmentIndex">The index of the containing line segment</param>
+        /// <param name="dist">The distance of this point along the containing line segment</param>
         /// <returns>
-        /// -1 this EdgeIntersection is located before the argument location,
-        /// 0 this EdgeIntersection is at the argument location,
-        /// 1 this EdgeIntersection is located after the argument location.
+        /// <c>-1</c> this EdgeIntersection is located before the argument location,
+        /// <c>0</c> this EdgeIntersection is at the argument location,
+        /// <c>1</c> this EdgeIntersection is located after the argument location.
         /// </returns>
         public int Compare(int segmentIndex, double dist)
         {

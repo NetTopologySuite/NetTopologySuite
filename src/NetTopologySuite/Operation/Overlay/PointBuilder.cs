@@ -37,7 +37,7 @@ namespace NetTopologySuite.Operation.Overlay
         public IList<Geometry> Build(SpatialFunction opCode)
         {
             ExtractNonCoveredResultNodes(opCode);
-            /**
+            /*
              * It can happen that connected result nodes are still covered by
              * result geometries, so must perform this filter.
              * (For instance, this can happen during topology collapse).
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Operation.Overlay
                 if (n.Edges.Degree == 0 || opCode == SpatialFunction.Intersection)
                 {
 
-                    /**
+                    /*
                      * For nodes on edges, only INTERSECTION can result in edge nodes being included even
                      * if none of their incident edges are included
                      */

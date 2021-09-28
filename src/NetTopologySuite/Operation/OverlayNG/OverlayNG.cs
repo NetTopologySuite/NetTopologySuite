@@ -14,6 +14,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// <summary>
     /// Computes the geometric overlay of two <see cref="Geometry"/>s,
     /// using an explicit precision model to allow robust computation.
+    /// <para/>
     /// The overlay can be used to determine any of the
     /// following set-theoretic operations (boolean combinations) of the geometries:
     /// <list type="bullet">

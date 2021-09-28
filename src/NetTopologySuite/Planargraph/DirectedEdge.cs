@@ -143,7 +143,7 @@ namespace NetTopologySuite.Planargraph
         /// Returns 1 if this DirectedEdge has a greater angle with the
         /// positive x-axis than b", 0 if the DirectedEdges are collinear, and -1 otherwise.
         /// Using the obvious algorithm of simply computing the angle is not robust,
-        /// since the angle calculation is susceptible to roundoff. A robust algorithm
+        /// since the angle calculation is susceptible to round off. A robust algorithm
         /// is:
         /// first compare the quadrants. If the quadrants are different, it it
         /// trivial to determine which vector is "greater".
@@ -163,7 +163,7 @@ namespace NetTopologySuite.Planargraph
         /// Returns 1 if this DirectedEdge has a greater angle with the
         /// positive x-axis than b", 0 if the DirectedEdges are collinear, and -1 otherwise.
         /// Using the obvious algorithm of simply computing the angle is not robust,
-        /// since the angle calculation is susceptible to roundoff. A robust algorithm
+        /// since the angle calculation is susceptible to round off. A robust algorithm
         /// is:
         /// first compare the quadrants. If the quadrants are different, it it
         /// trivial to determine which vector is "greater".

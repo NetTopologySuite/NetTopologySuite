@@ -31,12 +31,11 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             _g = g;
         }
 
-        /**
-         * Set the sides on which to generate offset points.
-         *
-         * @param doLeft
-         * @param doRight
-         */
+        /// <summary>
+        /// Set the sides on which to generate offset points.
+        /// </summary>
+        /// <param name="doLeft"></param>
+        /// <param name="doRight"></param>
         public void SetSidesToGenerate(bool doLeft, bool doRight)
         {
             _doLeft = doLeft;

@@ -22,7 +22,7 @@ namespace NetTopologySuite.Noding
             return Math.Abs(i1 - i2) == 1;
         }
 
-        /**
+        /*
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */

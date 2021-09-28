@@ -188,7 +188,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The factory for this point.</returns>
         public GeometryFactory Factory => _factory;
 
-        /**
+        /*
          * An object reference which can be used to carry ancillary data defined
          * by the client.
          */

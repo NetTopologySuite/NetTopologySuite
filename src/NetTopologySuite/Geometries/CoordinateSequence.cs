@@ -25,9 +25,9 @@ namespace NetTopologySuite.Geometries
     ///// <remarks>
     ///// For an example see <see cref="ExtendedCoordinateSample"/>
     ///// </remarks>
-    ///// <seealso cref="NetTopologySuite.Geometries.Implementation.CoordinateArraySequenceFactory"/>
+    /// <seealso cref="Implementation.CoordinateArraySequenceFactory"/>
     ///// <seealso cref="NetTopologySuite.Geometries.Implementation.ExtendedCoordinateExample"/>
-    ///// <seealso cref="NetTopologySuite.Geometries.Implementation.PackedCoordinateSequenceFactory"/>
+    /// <seealso cref="Implementation.PackedCoordinateSequenceFactory"/>
     [Serializable]
     public abstract class CoordinateSequence
     {

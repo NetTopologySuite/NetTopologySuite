@@ -164,14 +164,13 @@ namespace NetTopologySuite.Operation.Valid
             get => _intFinder.InvalidLocation;
         }
 
-        /**
-         * Tests whether the interior of the polygonal geometry is
-         * disconnected.
-         * If true, the disconnection location is available from 
-         * {@link #getDisconnectionLocation()}.
-         * 
-         * @return true if the interior is disconnected
-         */
+        /// <summary>
+        /// Tests whether the interior of the polygonal geometry is
+        /// disconnected.<br/>
+        /// If true, the disconnection location is available from 
+        /// <see cref="DisconnectionLocation"/>.
+        /// </summary>
+        /// <returns><c>true</c> if the interior is disconnected</returns>
         public bool IsInteriorDisconnected()
         {
             /*
@@ -197,12 +196,11 @@ namespace NetTopologySuite.Operation.Valid
             return false;
         }
 
-        /**
-         * Gets a location where the polyonal interior is disconnected.
-         * {@link #isInteriorDisconnected()} must be called first.
-         * 
-         * @return the location of an interior disconnection, or null
-         */
+        /// <summary>
+        /// Gets a location where the polyonal interior is disconnected.<br/>
+        /// <see cref="IsInteriorDisconnected"/> must be called first.
+        /// </summary>
+        /// <returns>The location of an interior disconnection, or <c>null</c></returns>
         public Coordinate DisconnectionLocation => _disconnectionPt;
 
         /// <summary>

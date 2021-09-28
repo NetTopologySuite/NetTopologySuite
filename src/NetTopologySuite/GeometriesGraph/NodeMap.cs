@@ -13,9 +13,9 @@ namespace NetTopologySuite.GeometriesGraph
         private readonly NodeFactory _nodeFact;
 
         /// <summary>
-        ///
+        /// Creates an instance of this class using the provided <see cref="NodeFactory"/>.
         /// </summary>
-        /// <param name="nodeFact"></param>
+        /// <param name="nodeFact">A factory to create <c>Node</c>s</param>
         public NodeMap(NodeFactory nodeFact)
         {
             _nodeFact = nodeFact;
@@ -24,7 +24,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// This method expects that a node has a coordinate value.
         /// </summary>
-        /// <param name="coord"></param>
+        /// <param name="coord">A <c>Coordinate</c></param>
+        /// <returns>The <c>Node</c> for the provided <c>Coordinate</c> <paramref name="coord"/></returns>
         public Node AddNode(Coordinate coord)
         {
             Node node;
@@ -37,10 +38,13 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Adds a <c>Node</c> to this <c>NodeMap</c>.
+        /// If a <c>Node</c> with the same <see cref="Node.Coordinate"/>
+        /// is already present in this <c>NodeMap</c>,
+        /// their <see cref="GraphComponent.Label"/>s are merged.
         /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
+        /// <param name="n">The <c>Node</c> to add</param>
+        /// <returns>Either <paramref name="n"/> or a <c>Node</c> with merged <c>Label</c>s</returns>
         public Node AddNode(Node n)
         {
             var node = _nodeMap[n.Coordinate];
@@ -58,7 +62,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// (if one does not already exist in this map).
         /// Adds the EdgeEnd to the (possibly new) node.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>EdgeEnd</c></param>
         public void Add(EdgeEnd e)
         {
             var p = e.Coordinate;
@@ -66,10 +70,13 @@ namespace NetTopologySuite.GeometriesGraph
             n.Add(e);
         }
 
+        /// <summary>
+        /// Searches for a <c>Node</c> at <paramref name="coord"/> position.
+        /// </summary>
+        /// <param name="coord">A <c>Coordinate</c></param>
         /// <returns>
-        /// The node if found; null otherwise.
+        /// The node if found; <c>null</c> otherwise.
         /// </returns>
-        /// <param name="coord"></param>
         public Node Find(Coordinate coord)
         {
             Node res;

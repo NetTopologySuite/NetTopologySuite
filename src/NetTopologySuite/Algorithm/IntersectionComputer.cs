@@ -16,7 +16,7 @@ namespace NetTopologySuite.Algorithm
         /// <para/>
         /// In general it is not possible to accurately compute
         /// the intersection point of two lines, due to
-        /// numerical roundoff.
+        /// numerical round off.
         /// This is particularly true when the input lines are nearly parallel.
         /// This routine uses numerical conditioning on the input values
         /// to ensure that the computed value should be very close to the correct value.

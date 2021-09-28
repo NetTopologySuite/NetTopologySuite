@@ -32,7 +32,7 @@ namespace NetTopologySuite.Precision
                     false);
             var noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
-            /**
+            /*
              * Check to see if the removal of repeated points collapsed the coordinate
              * List to an invalid length for the type of the parent geometry. It is not
              * necessary to check for Point collapses, since the coordinate list can

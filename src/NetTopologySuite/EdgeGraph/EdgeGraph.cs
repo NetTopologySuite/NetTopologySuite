@@ -19,7 +19,7 @@ namespace NetTopologySuite.EdgeGraph
     /// </remarks>
     public class EdgeGraph
     {
-        private readonly IDictionary<Coordinate, HalfEdge> vertexMap = new Dictionary<Coordinate, HalfEdge>();
+        private readonly IDictionary<Coordinate, HalfEdge> _vertexMap = new Dictionary<Coordinate, HalfEdge>();
 
         /// <summary>
         /// Creates a single HalfEdge.
@@ -66,7 +66,7 @@ namespace NetTopologySuite.EdgeGraph
             // Return it if found.
             // Otherwise, use a found edge with same origin (if any) to construct new edge.
             HalfEdge eAdj;
-            bool eAdjFound = vertexMap.TryGetValue(orig, out eAdj);
+            bool eAdjFound = _vertexMap.TryGetValue(orig, out eAdj);
             HalfEdge eSame = null;
             if (eAdjFound)
                 eSame = eAdj.Find(dest);
@@ -102,14 +102,14 @@ namespace NetTopologySuite.EdgeGraph
             var e = Create(orig, dest);
             if (eAdj != null)
                 eAdj.Insert(e);
-            else vertexMap.Add(orig, e);
+            else _vertexMap.Add(orig, e);
 
             HalfEdge eAdjDest;
-            bool eAdjDestFound = vertexMap.TryGetValue(dest, out eAdjDest);
+            bool eAdjDestFound = _vertexMap.TryGetValue(dest, out eAdjDest);
             var sym = e.Sym;
             if (eAdjDestFound)
                 eAdjDest.Insert(sym);
-            else vertexMap.Add(dest, sym);
+            else _vertexMap.Add(dest, sym);
             return e;
         }
 
@@ -120,7 +120,7 @@ namespace NetTopologySuite.EdgeGraph
         /// <returns>An enumeration of the graph edges</returns>
         public IEnumerable<HalfEdge> GetVertexEdges()
         {
-            return vertexMap.Values;
+            return _vertexMap.Values;
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace NetTopologySuite.EdgeGraph
         /// <returns>an edge with the given orig and dest, or null if none exists</returns>
         public HalfEdge FindEdge(Coordinate orig, Coordinate dest)
         {
-            var e = vertexMap[orig];
+            var e = _vertexMap[orig];
             return e == null ? null : e.Find(dest);
         }
     }

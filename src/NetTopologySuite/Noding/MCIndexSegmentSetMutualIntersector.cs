@@ -60,16 +60,16 @@ namespace NetTopologySuite.Noding
         /// for all <i>candidate</i> intersections between
         /// the given collection of SegmentStrings and the set of indexed segments.
         /// </summary>
-        /// <param name="segmentStrings"></param>
-        /// <param name="segmentIntersector"></param>
-        public void Process(IEnumerable<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
+        /// <param name="segStrings">A set of segments to intersect</param>
+        /// <param name="segInt">The <c>SegmentIntersector</c> to use</param>
+        public void Process(IEnumerable<ISegmentString> segStrings, ISegmentIntersector segInt)
         {
             var monoChains = new List<MonotoneChain>();
-            foreach (var segStr in segmentStrings)
+            foreach (var segStr in segStrings)
             {
                 AddToMonoChains(segStr, monoChains);
             }
-            IntersectChains(monoChains, segmentIntersector);
+            IntersectChains(monoChains, segInt);
             //    System.out.println("MCIndexBichromaticIntersector: # chain overlaps = " + nOverlaps);
             //    System.out.println("MCIndexBichromaticIntersector: # oct chain overlaps = " + nOctOverlaps);
         }

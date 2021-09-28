@@ -160,7 +160,7 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public bool IsInRing(Coordinate pt)
         {
-            /**
+            /*
              * Use an indexed point-in-polygon for performance
              */
             return Location.Exterior != GetLocator().Locate(pt);

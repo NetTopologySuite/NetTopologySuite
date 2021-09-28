@@ -130,7 +130,7 @@ namespace NetTopologySuite.Operation.Union
         {
             var overlapEnv = OverlapEnvelope(_g0, _g1);
 
-            /**
+            /*
              * If no overlap, can just combine the geometries
              */
             if (overlapEnv.IsNull)

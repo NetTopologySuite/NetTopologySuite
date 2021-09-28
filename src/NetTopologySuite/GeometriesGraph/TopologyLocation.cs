@@ -46,9 +46,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// parameters are Location.Null, Location.Exterior, Location.Boundary,
         /// and Location.Interior.
         /// </summary>
-        /// <param name="on"></param>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
+        /// <param name="on"><c>Location</c> for <b>On</b> position</param>
+        /// <param name="left"><c>Location</c> for <b>Left</b> position</param>
+        /// <param name="right"><c>Location</c> for <b>Right</b> position</param>
         public TopologyLocation(Location on, Location left, Location right)
         {
             Init(3);

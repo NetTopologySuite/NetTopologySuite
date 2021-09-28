@@ -21,14 +21,13 @@ namespace NetTopologySuite.Geometries
     /// Constructive methods (such as bool operations) always round computed
     /// coordinates to the appropriate precision model.
     /// Currently three types of precision model are supported:
-    /// <para>
-    /// Floating: represents full double precision floating point.
-    /// This is the default precision model used in NTS
-    /// FloatingSingle: represents single precision floating point.
-    /// Fixed: represents a model with a fixed number of decimal places.
-    /// </para>
-    /// A Fixed Precision Model is specified by a scale factor.
-    /// The scale factor specifies the size of the grid which numbers are rounded to.
+    /// <list type="table">
+    /// <item><term>Floating</term><description>Represents full double precision floating point.
+    /// This is the default precision model used in NTS</description></item>
+    /// <item><term>FloatingSingle</term><description>Represents single precision floating point</description></item>
+    /// <item><term>Fixed</term><description>Represents a model with a fixed number of decimal places.A Fixed Precision Model is specified by a scale factor.
+    /// The scale factor specifies the size of the grid which numbers are rounded to.</description></item>
+    /// </list>
     /// Input coordinates are mapped to fixed coordinates according to the following
     /// equations:
     /// <list type="bullet">

@@ -70,24 +70,24 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        /**
-         *  the minimum x-coordinate
-         */
+        /// <summary>
+        /// The minimum x-coordinate
+        /// </summary>
         private double _minX;
 
-        /*
-         *  the maximum x-coordinate
-         */
+        /// <summary>
+        /// The maximum x-coordinate
+        /// </summary>
         private double _maxX;
 
-        /*
-         * the minimum y-coordinate
-         */
+        /// <summary>
+        /// The minimum y-coordinate
+        /// </summary>
         private double _minY;
 
-        /*
-         *  the maximum y-coordinate
-         */
+        /// <summary>
+        /// The maximum y-coordinate
+        /// </summary>
         private double _maxY;
 
         /// <summary>

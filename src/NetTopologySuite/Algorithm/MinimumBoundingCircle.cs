@@ -43,7 +43,7 @@ namespace NetTopologySuite.Algorithm
     /// <author>Martin Davis</author>
     public class MinimumBoundingCircle
     {
-        /**
+        /*
          * The algorithm used is based on the one by Jon Rokne in
          * the article "An Easy Bounding Circle" in <i>Graphic Gems II</i>.
          */
@@ -277,7 +277,7 @@ namespace NetTopologySuite.Algorithm
                 return;
             }
 
-            /**
+            /*
              * The problem is simplified by reducing to the convex hull.
              * Computing the convex hull also has the useful effect of eliminating duplicate points
              */
@@ -294,7 +294,7 @@ namespace NetTopologySuite.Algorithm
                 CoordinateArrays.CopyDeep(hullPts, 0, pts, 0, hullPts.Length - 1);
             }
 
-            /**
+            /*
              * Optimization for the trivial case where the CH has fewer than 3 points
              */
             if (pts.Length <= 2)
@@ -309,7 +309,7 @@ namespace NetTopologySuite.Algorithm
             // find a point Q such that the angle that PQ makes with the x-axis is minimal
             var Q = PointWitMinAngleWithX(pts, P);
 
-            /**
+            /*
              * Iterate over the remaining points to find
              * a pair or triplet of points which determine the minimal circle.
              * By the design of the algorithm,
@@ -320,27 +320,30 @@ namespace NetTopologySuite.Algorithm
             {
                 var R = PointWithMinAngleWithSegment(pts, P, Q);
 
-                // if PRQ is obtuse, then MBC is determined by P and Q
                 if (AngleUtility.IsObtuse(P, R, Q))
                 {
+                    // if PRQ is obtuse, then MBC is determined by P and Q
                     _extremalPts = new Coordinate[] { P.Copy(), Q.Copy() };
                     return;
                 }
-                // if RPQ is obtuse, update baseline and iterate
-                if (AngleUtility.IsObtuse(R, P, Q))
+                else if (AngleUtility.IsObtuse(R, P, Q))
                 {
+                    // if RPQ is obtuse, update baseline and iterate
                     P = R;
                     continue;
                 }
-                // if RQP is obtuse, update baseline and iterate
-                if (AngleUtility.IsObtuse(R, Q, P))
+                else if (AngleUtility.IsObtuse(R, Q, P))
                 {
+                    // if RQP is obtuse, update baseline and iterate
                     Q = R;
                     continue;
                 }
-                // otherwise all angles are acute, and the MBC is determined by the triangle PQR
-                _extremalPts = new Coordinate[] { P.Copy(), Q.Copy(), R.Copy() };
-                return;
+                else
+                {
+                    // otherwise all angles are acute, and the MBC is determined by the triangle PQR
+                    _extremalPts = new Coordinate[] { P.Copy(), Q.Copy(), R.Copy() };
+                    return;
+                }
             }
             Assert.ShouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!");
         }
@@ -366,7 +369,7 @@ namespace NetTopologySuite.Algorithm
                 var p = pts[i];
                 if (p == P) continue;
 
-                /**
+                /*
                  * The sin of the angle is a simpler proxy for the angle itself
                  */
                 double dx = p.X - P.X;

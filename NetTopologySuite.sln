@@ -35,6 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Lab", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{35443CE1-50D9-4F9D-B6D9-BADFD43D010C}"
 	ProjectSection(SolutionItems) = preProject
+		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Construct.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Construct.md
 		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Distance.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Distance.md
 		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Locate.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Locate.md
 		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Match.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Match.md

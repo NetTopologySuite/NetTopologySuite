@@ -48,7 +48,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Geometry.Intersection"/>
         public virtual Geometry Intersection(Geometry a, Geometry b)
         {
-            /**
+            /*
              * TODO: MD - add optimization for P-A case using Point-In-Polygon
              */
             // special case: if one input is empty ==> empty

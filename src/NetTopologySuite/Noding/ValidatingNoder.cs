@@ -33,6 +33,7 @@ namespace NetTopologySuite.Noding
         /// Checks whether the output of the wrapped noder is fully noded.
         /// Throws an exception if it is not.
         /// </summary>
+        /// <exception cref="TopologyException"></exception>
         public void ComputeNodes(IList<ISegmentString> segStrings)
         {
             _noder.ComputeNodes(segStrings);

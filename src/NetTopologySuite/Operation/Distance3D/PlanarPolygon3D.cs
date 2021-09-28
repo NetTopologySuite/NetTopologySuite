@@ -1,6 +1,8 @@
-﻿using NetTopologySuite.Algorithm;
+﻿using System;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Distance3D
 {
@@ -19,8 +21,12 @@ namespace NetTopologySuite.Operation.Distance3D
 
         private readonly Plane3D _plane;
         private readonly Polygon _poly;
-        private readonly Plane _facingPlane = Mathematics.Plane.Undefined;
+        private readonly Plane _facingPlane;
 
+        /// <summary>
+        /// Creates an instance of this class using the provided <see cref="Polygon"/>.
+        /// </summary>
+        /// <param name="poly">The polygon</param>
         public PlanarPolygon3D(Polygon poly)
         {
             _poly = poly;
@@ -48,16 +54,15 @@ namespace NetTopologySuite.Operation.Distance3D
             return new Plane3D(normal, basePt);
         }
 
-        /**
-         * Computes an average normal vector from a list of polygon coordinates.
-         * Uses Newell's method, which is based
-         * on the fact that the vector with components
-         * equal to the areas of the projection of the polygon onto
-         * the Cartesian axis planes is normal.
-         *
-         * @param seq the sequence of coordinates for the polygon
-         * @return a normal vector
-         */
+        /// <summary>
+        /// Computes an average normal vector from a list of polygon coordinates.
+        /// Uses Newell's method, which is based
+        /// on the fact that the vector with components
+        /// equal to the areas of the projection of the polygon onto
+        ///  the Cartesian axis planes is normal.
+        /// </summary>
+        /// <param name="seq">The sequence of coordinates for the polygon</param>
+        /// <returns>A normal vector</returns>
         private static Vector3D AverageNormal(CoordinateSequence seq)
         {
             int n = seq.Count;
@@ -79,15 +84,14 @@ namespace NetTopologySuite.Operation.Distance3D
             return norm;
         }
 
-        /**
-         * Computes a point which is the average of all coordinates
-         * in a sequence.
-         * If the sequence lies in a single plane,
-         * the computed point also lies in the plane.
-         *
-         * @param seq a coordinate sequence
-         * @return a Coordinate with averaged ordinates
-         */
+        /// <summary>
+        /// Computes a point which is the average of all coordinates
+        /// in a sequence.<br/>
+        /// If the sequence lies in a single plane,
+        /// the computed point also lies in the plane.
+        /// </summary>
+        /// <param name="seq">A coordinate sequence</param>
+        /// <returns>A Coordinate with averaged ordinates </returns>
         private static Coordinate AveragePoint(CoordinateSequence seq)
         {
             var a = new CoordinateZ(0, 0, 0);
@@ -104,10 +108,21 @@ namespace NetTopologySuite.Operation.Distance3D
             return a;
         }
 
+        /// <summary>
+        /// Gets a value indicating the plane
+        /// </summary>
         public Plane3D Plane => _plane;
 
+        /// <summary>
+        /// Gets a value indicating the polygon
+        /// </summary>
         public Polygon Polygon => _poly;
 
+        /// <summary>
+        /// Checks if <paramref name="intPt"/> intersects with this <see cref="PlanarPolygon3D"/>.
+        /// </summary>
+        /// <param name="intPt">The point to check</param>
+        /// <returns><c>true</c> if <c>intPt</c> intersects this <c>PlanarPolygon3d</c>.</returns>
         public bool Intersects(Coordinate intPt)
         {
             if (Location.Exterior == Locate(intPt, _poly.ExteriorRing))
@@ -129,8 +144,17 @@ namespace NetTopologySuite.Operation.Distance3D
             return RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
 
+        /// <summary>
+        /// Checks if the point <paramref name="pt"/> intersects with <paramref name="ring"/> when projected to this instance's facing plane
+        /// </summary>
+        /// <param name="pt">A point</param>
+        /// <param name="ring">A ring</param>
+        /// <returns><c>true</c> if point and linestring intersect</returns>
         public bool Intersects(Coordinate pt, LineString ring)
         {
+            if (!ring.IsClosed)
+                throw new ArgumentException("Not forming a ring.", nameof(ring));
+
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
             var ptProj = Project(pt, _facingPlane);

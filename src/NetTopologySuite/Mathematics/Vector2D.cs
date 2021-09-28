@@ -59,14 +59,10 @@ namespace NetTopologySuite.Mathematics
             return new Vector2D(from, to);
         }
 
-        /**
-         * The X component of this vector.
-         */
+        /// <summary>The X component of this vector</summary>
         private readonly double _x;
 
-        /**
-         * The Y component of this vector.
-         */
+        ///<summary>The Y component of this vector.</summary>
         private readonly double _y;
 
         /// <summary>

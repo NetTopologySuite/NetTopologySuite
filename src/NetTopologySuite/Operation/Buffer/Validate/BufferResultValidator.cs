@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     {
         public static bool Verbose;
 
-        /**
+        /*
          * Maximum allowable fraction of buffer distance the
          * actual distance can differ by.
          * 1% sometimes causes an error - 1.2% should be safe.

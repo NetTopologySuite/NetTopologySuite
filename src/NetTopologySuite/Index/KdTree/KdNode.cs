@@ -47,31 +47,37 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets x-ordinate of this node
         /// </summary>
+        /// <returns>The <c>x</c>-ordinate</returns>
         public double X => _p.X;
 
         /// <summary>
         /// Gets y-ordinate of this node
         /// </summary>
+        /// <returns>The <c>y</c>-ordinate</returns>
         public double Y => _p.Y;
 
         /// <summary>
         /// Gets the location of this node
         /// </summary>
+        /// <returns>The <c>Coordinate</c></returns>
         public Coordinate Coordinate => _p;
 
         /// <summary>
         /// Gets the user data object associated with this node.
         /// </summary>
+        /// <returns>The user data</returns>
         public T Data => _data;
 
         /// <summary>
         /// Gets or sets the left node of the tree
         /// </summary>
+        /// <returns>The left node</returns>
         public KdNode<T> Left { get; set; }
 
         /// <summary>
         /// Gets or sets the right node of the tree
         /// </summary>
+        /// <returns>The right node</returns>
         public KdNode<T> Right { get; set; }
 
         // Increments counts of points at this location

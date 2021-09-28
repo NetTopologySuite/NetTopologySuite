@@ -150,6 +150,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
+        /// <returns>A list of <c>DirectedEdge</c>s</returns>
         public IList<DirectedEdge> Edges => _edges;
 
         /// <summary>
@@ -291,7 +292,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// This method will cause the ring to be computed.
         /// It will also check any holes, if they have been assigned.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="p">The point to test</param>
+        /// <returns><c>true</c> if the ring contains point <paramref name="p"/></returns>
         public bool ContainsPoint(Coordinate p)
         {
             var shell = LinearRing;

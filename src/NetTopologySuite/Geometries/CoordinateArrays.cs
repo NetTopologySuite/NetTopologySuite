@@ -691,13 +691,12 @@ namespace NetTopologySuite.Geometries
             return env;
         }
 
-        /**
-         * Extracts the coordinates which intersect an {@link Envelope}.
-         *
-         * @param coordinates the coordinates to scan
-         * @param env the envelope to intersect with
-         * @return an array of the coordinates which intersect the envelope
-         */
+        /// <summary>
+        /// Extracts the coordinates which intersect an <see cref="Envelope"/>.
+        /// </summary>
+        /// <param name="coordinates">The coordinates to scan</param>
+        /// <param name="env">The envelope to intersect with</param>
+        /// <returns>An array of coordinates which intersect with the envelope</returns>
         public static Coordinate[] Intersection(Coordinate[] coordinates, Envelope env)
         {
             var coordList = new CoordinateList();

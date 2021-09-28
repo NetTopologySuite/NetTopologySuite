@@ -388,7 +388,7 @@ namespace NetTopologySuite.Index.Strtree
                 var bndPair = priQ.Poll();
                 double pairDistance = bndPair.Distance;
 
-                /**
+                /*
                  * If the distance for the first node in the queue
                  * is >= the current minimum distance, all other nodes
                  * in the queue must also have a greater distance.
@@ -398,7 +398,7 @@ namespace NetTopologySuite.Index.Strtree
                 if (pairDistance >= distanceLowerBound)
                     break;
 
-                /**
+                /*
                  * If the pair members are leaves
                  * then their distance is the exact lower bound.
                  * Update the distanceLowerBound to reflect this
@@ -413,7 +413,7 @@ namespace NetTopologySuite.Index.Strtree
                 }
                 else
                 {
-                    /**
+                    /*
                      * Otherwise, expand one side of the pair,
                      * (the choice of which side to expand is heuristically determined)
                      * and insert the new expanded pairs into the queue
@@ -430,37 +430,34 @@ namespace NetTopologySuite.Index.Strtree
             return null;
         }
 
-
-        /**
-         * Tests whether some two items from this tree and another tree
-         * lie within a given distance.
-         * {@link ItemDistance} is used as the distance metric.
-         * A Branch-and-Bound tree traversal algorithm is used
-         * to provide an efficient search.
-         * 
-         * @param tree another tree
-         * @param itemDist a distance metric applicable to the items in the trees
-         * @param maxDistance the distance limit for the search
-         * @return true if there are items within the distance
-         */
+        /// <summary>
+        /// Tests whether some two items from this tree and another tree
+        /// lie within a given distance.
+        /// <see cref="IItemDistance{T, TItem}"/> is used as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// </summary>
+        /// <param name="tree">Another tree</param>
+        /// <param name="itemDist">A distance metric applicable to the items in the trees</param>
+        /// <param name="maxDistance">The distance limit for the search</param>
+        /// <returns><c>true</c> if there are items within the distance</returns>
         public bool IsWithinDistance(STRtree<TItem> tree, IItemDistance<Envelope, TItem> itemDist, double maxDistance)
         {
             var bp = new BoundablePair<TItem>(Root, tree.Root, itemDist);
             return IsWithinDistance(bp, maxDistance);
         }
 
-        /**
-         * Performs a withinDistance search on the tree node pairs.
-         * This is a different search algorithm to nearest neighbour.
-         * It can utilize the {@link BoundablePair#maximumDistance()} between
-         * tree nodes to confirm if two internal nodes must
-         * have items closer than the maxDistance,
-         * and short-circuit the search.
-         * 
-         * @param initBndPair the initial pair containing the tree root nodes
-         * @param maxDistance the maximum distance to search for
-         * @return true if two items lie within the given distance
-         */
+        /// <summary>
+        /// Performs a withinDistance search on the tree node pairs.
+        /// This is a different search algorithm to nearest neighbour.
+        /// It can utilize the <see cref="BoundablePair{TItem}.MaximumDistance"/> between
+        /// tree nodes to confirm if two internal nodes must
+        /// have items closer than the maxDistance,
+        /// and short-circuit the search.
+        /// </summary>
+        /// <param name="initBndPair">The initial pair containing the tree root nodes</param>
+        /// <param name="maxDistance">The maximum distance to search for</param>
+        /// <returns><c>true</c> if two items lie within the given distance</returns>
         private bool IsWithinDistance(BoundablePair<TItem> initBndPair, double maxDistance)
         {
             double distanceUpperBound = double.PositiveInfinity;
@@ -475,7 +472,7 @@ namespace NetTopologySuite.Index.Strtree
                 var bndPair = priQ.Poll();
                 double pairDistance = bndPair.Distance;
 
-                /**
+                /*
                  * If the distance for the first pair in the queue
                  * is > maxDistance, other pairs
                  * in the queue must also have a greater distance.
@@ -485,7 +482,7 @@ namespace NetTopologySuite.Index.Strtree
                 if (pairDistance > maxDistance)
                     return false;
 
-                /**
+                /*
                  * If the maximum distance between the nodes
                  * is less than the maxDistance,
                  * than all items in the nodes must be 
@@ -498,7 +495,7 @@ namespace NetTopologySuite.Index.Strtree
                  */
                 if (bndPair.MaximumDistance() <= maxDistance)
                     return true;
-                /**
+                /*
                  * If the pair items are leaves
                  * then their actual distance is an upper bound.
                  * Update the distanceUpperBound to reflect this
@@ -508,7 +505,7 @@ namespace NetTopologySuite.Index.Strtree
                     // assert: currentDistance < minimumDistanceFound
                     distanceUpperBound = pairDistance;
 
-                    /**
+                    /*
                      * If the items are closer than maxDistance
                      * can terminate with result = true.
                      */
@@ -517,7 +514,7 @@ namespace NetTopologySuite.Index.Strtree
                 }
                 else
                 {
-                    /**
+                    /*
                      * Otherwise, expand one side of the pair, 
                      * and insert the expanded pairs into the queue.
                      * The choice of which side to expand is determined heuristically.
@@ -579,7 +576,7 @@ namespace NetTopologySuite.Index.Strtree
                 var bndPair = priQ.Poll();
                 double pairDistance = bndPair.Distance;
 
-                /**
+                /*
                  * If the distance for the first node in the queue
                  * is >= the current maximum distance in the k queue , all other nodes
                  * in the queue must also have a greater distance.
@@ -590,7 +587,7 @@ namespace NetTopologySuite.Index.Strtree
                 {
                     break;
                 }
-                /**
+                /*
                  * If the pair members are leaves
                  * then their distance is the exact lower bound.
                  * Update the distanceLowerBound to reflect this
@@ -622,7 +619,7 @@ namespace NetTopologySuite.Index.Strtree
                 }
                 else
                 {
-                    /**
+                    /*
                      * Otherwise, expand one side of the pair,
                      * (the choice of which side to expand is heuristically determined)
                      * and insert the new expanded pairs into the queue
@@ -637,7 +634,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private static TItem[] GetItems(PriorityQueue<BoundablePair<TItem>> kNearestNeighbors)
         {
-            /**
+            /*
              * Iterate the K Nearest Neighbour Queue and retrieve the item from each BoundablePair
              * in this queue
              */

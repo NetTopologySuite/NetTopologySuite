@@ -416,7 +416,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            /**
+            /*
              * MD - 9 Aug 2010 It seems that the basic algorithm is slightly orientation
              * dependent, when computing the orientation of a point very close to a
              * line. This is possibly due to the arithmetic in the translation to the

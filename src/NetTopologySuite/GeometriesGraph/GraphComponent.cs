@@ -8,7 +8,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// that form a graph.  Each GraphComponent can carry a
     /// Label.
     /// </summary>
-    abstract public class GraphComponent
+    public abstract class GraphComponent
     {
         /// <summary>
         ///
@@ -97,12 +97,13 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>
         /// A coordinate in this component (or null, if there are none).
         /// </returns>
-        abstract public Coordinate Coordinate { get; protected set; }
+        public abstract Coordinate Coordinate { get; protected set; }
 
         /// <summary>
         /// Compute the contribution to an IM for this component.
         /// </summary>
-        abstract public void ComputeIM(IntersectionMatrix im);
+        /// <param name="im">An <c>IntersectionMatrix</c></param>
+        public abstract void ComputeIM(IntersectionMatrix im);
 
         /// <summary>
         /// An isolated component is one that does not intersect or touch any other
@@ -110,13 +111,13 @@ namespace NetTopologySuite.GeometriesGraph
         /// only a single Geometry.
         /// </summary>
         /// <returns><c>true</c> if this component is isolated.</returns>
-        abstract public bool IsIsolated { get; }
+        public abstract bool IsIsolated { get; }
 
         /// <summary>
         /// Update the IM with the contribution for this component.
         /// A component only contributes if it has a labelling for both parent geometries.
         /// </summary>
-        /// <param name="im"></param>
+        /// <param name="im">An <c>IntersectionMatrix</c></param>
         public void UpdateIM(IntersectionMatrix im)
         {
             Assert.IsTrue(_label.GeometryCount >= 2, "found partial label");

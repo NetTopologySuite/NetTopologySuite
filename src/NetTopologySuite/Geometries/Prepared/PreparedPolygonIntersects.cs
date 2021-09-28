@@ -46,7 +46,7 @@ namespace NetTopologySuite.Geometries.Prepared
             bool isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
             if (isInPrepGeomArea)
                 return true;
-            /**
+            /*
              * If input contains only points, then at
              * this point it is known that none of them are contained in the target
              */

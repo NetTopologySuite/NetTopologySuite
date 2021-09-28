@@ -45,6 +45,9 @@ namespace NetTopologySuite.Dissolve
         private readonly DissolveEdgeGraph _graph;
         private readonly IList<Geometry> _lines = new List<Geometry>();
 
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
         public LineDissolver()
         {
             _graph = new DissolveEdgeGraph();

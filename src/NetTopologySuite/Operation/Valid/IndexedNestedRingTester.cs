@@ -83,7 +83,7 @@ namespace NetTopologySuite.Operation.Valid
             return true;
         }
 
-        /**
+        /*
          * An implementation of an optimization introduced in GEOS
          * https://github.com/libgeos/geos/pull/255/commits/1bf16cdf5a4827b483a1f712e0597ccb243f58cb
          * 

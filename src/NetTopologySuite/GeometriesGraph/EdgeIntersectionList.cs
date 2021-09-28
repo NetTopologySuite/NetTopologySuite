@@ -31,9 +31,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// Adds an intersection into the list, if it isn't already there.
         /// The input segmentIndex and dist are expected to be normalized.
         /// </summary>
-        /// <param name="intPt"></param>
-        /// <param name="segmentIndex"></param>
-        /// <param name="dist"></param>
+        /// <param name="intPt">The point of intersection</param>
+        /// <param name="segmentIndex">The index of the containing line segment in the parent edge</param>
+        /// <param name="dist">The edge distance of this point along the containing line segment</param>
         /// <returns>The EdgeIntersection found or added.</returns>
         public EdgeIntersection Add(Coordinate intPt, int segmentIndex, double dist)
         {

@@ -104,7 +104,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Creates a vector with the direction and magnitude
+        /// Creates a new vector with the direction and magnitude
         /// of the difference between the <paramref name="to"/>
         /// and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Creates a vector with the given <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> components
+        /// Creates a new vector with the given <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> components
         /// </summary>
         /// <param name="x">The x component</param>
         /// <param name="y">The y component</param>
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Creates a <see cref="Vector3D"/> using a <see cref="Vector2D"/> plus a value for <paramref name="z"/> component
+        /// Creates a new <see cref="Vector3D"/> using a <see cref="Vector2D"/> plus a value for <paramref name="z"/> component
         /// </summary>
         /// <param name="value">A vector containing the values with which to initialize the X and Y components.</param>
         /// <param name="z">Initial value for the Z component of the vector.</param>

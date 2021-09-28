@@ -138,15 +138,20 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Implements the total order relation:
         /// a has a greater angle with the positive x-axis than b.
+        /// <para/>
         /// Using the obvious algorithm of simply computing the angle is not robust,
-        /// since the angle calculation is obviously susceptible to roundoff.
+        /// since the angle calculation is obviously susceptible to round off.
+        /// <para/>
         /// A robust algorithm is:
-        /// - first compare the quadrant.  If the quadrants
-        /// are different, it it trivial to determine which vector is "greater".
-        /// - if the vectors lie in the same quadrant, the computeOrientation function
-        /// can be used to decide the relative orientation of the vectors.
+        /// <list type="bullet">
+        /// <item><description>first compare the quadrant.  If the quadrants
+        /// are different, it it trivial to determine which vector is "greater".</description></item>
+        /// <item><description>if the vectors lie in the same quadrant, the computeOrientation function
+        /// can be used to decide the relative orientation of the vectors.</description></item>
+        /// </list>
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An EdgeEnd</param>
+        /// <returns>The <see cref="OrientationIndex"/> of <paramref name="e"/> compared to <c>this</c> <see cref="EdgeEnd"/>.</returns>
         public int CompareDirection(EdgeEnd e)
         {
             if (_dx == e._dx && _dy == e._dy)

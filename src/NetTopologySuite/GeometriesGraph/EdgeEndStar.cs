@@ -39,15 +39,15 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Insert a EdgeEnd into this EdgeEndStar.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>EdgeEnd</c></param>
         abstract public void Insert(EdgeEnd e);
 
         /// <summary>
         /// Insert an EdgeEnd into the map, and clear the edgeList cache,
         /// since the list of edges has now changed.
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="obj"></param>
+        /// <param name="e">An EdgeEnd</param>
+        /// <param name="obj">An EdgeEnd</param>
         protected void InsertEdgeEnd(EdgeEnd e, EdgeEnd obj)
         {
             edgeMap[e] = obj;
@@ -80,6 +80,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// once an iterator is requested, it is likely that insertion into
         /// the map is complete).
         /// </summary>
+        /// <returns>Access to ordered list of edges.</returns>
         public IEnumerator<EdgeEnd> GetEnumerator()
         {
             return Edges.GetEnumerator();

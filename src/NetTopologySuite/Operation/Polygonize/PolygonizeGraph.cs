@@ -9,7 +9,7 @@ namespace NetTopologySuite.Operation.Polygonize
     /// <summary>
     /// Represents a planar graph of edges that can be used to compute a
     /// polygonization, and implements the algorithms to compute the
-    /// EdgeRings formed by the graph.
+    /// <see cref="EdgeRing"/>s formed by the graph.
     /// The marked flag on DirectedEdges is used to indicate that a directed edge
     /// has be logically deleted from the graph.
     /// </summary>

@@ -60,7 +60,7 @@ namespace NetTopologySuite.Simplify
 
             bool isValidToSimplify = true;
 
-            /**
+            /*
              * Following logic ensures that there is enough points in the output line.
              * If there is already more points than the minimum, there's nothing to check.
              * Otherwise, if in the worst case there wouldn't be enough points,

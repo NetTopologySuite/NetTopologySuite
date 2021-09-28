@@ -178,7 +178,7 @@ namespace NetTopologySuite.Operation.Union
             var points = _extracter.GetExtract(Dimension.Point);
             var lines = _extracter.GetExtract(Dimension.Curve);
             var polygons = _extracter.GetExtract(Dimension.Surface);
-            /**
+            /*
              * For points and lines, only a single union operation is
              * required, since the OGC model allows self-intersecting
              * MultiPoint and MultiLineStrings.

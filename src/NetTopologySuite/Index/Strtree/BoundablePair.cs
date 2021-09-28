@@ -139,7 +139,7 @@ namespace NetTopologySuite.Index.Strtree
             bool isComp1 = IsComposite(_boundable1);
             bool isComp2 = IsComposite(_boundable2);
 
-            /**
+            /*
              * HEURISTIC: If both boundable are composite,
              * choose the one with largest area to expand.
              * Otherwise, simply expand whichever is composite.

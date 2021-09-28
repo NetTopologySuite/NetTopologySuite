@@ -11,8 +11,12 @@ namespace NetTopologySuite.GeometriesGraph
     {
         /// <summary>
         /// Computes the factor for the change in depth when moving from one location to another.
-        /// E.g. if crossing from the Interior to the Exterior the depth decreases, so the factor is -1.
+        /// E.g. if crossing from the <see cref="Location.Interior"/> to the <see cref="Location.Exterior"/>
+        /// the depth decreases, so the factor is -1.
         /// </summary>
+        /// <param name="currLocation">The current location</param>
+        /// <param name="nextLocation">The next location</param>
+        /// <returns>Change of depth moving from <paramref name="currLocation"/> to <paramref name="nextLocation"/></returns>
         public static int DepthFactor(Location currLocation, Location nextLocation)
         {
             if (currLocation == Location.Exterior && nextLocation == Location.Interior)
@@ -22,9 +26,7 @@ namespace NetTopologySuite.GeometriesGraph
             return 0;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+
         private bool _isForward;
 
         private bool _isInResult;
@@ -121,10 +123,10 @@ namespace NetTopologySuite.GeometriesGraph
         public void SetDepth(Positions position, int depthVal) => SetDepth(new Geometries.Position((int)position), depthVal);
 
         /// <summary>
-        ///
+        /// Set depth for a position
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="depthVal"></param>
+        /// <param name="position">The position to update</param>
+        /// <param name="depthVal">The depth at the provided position</param>
         public void SetDepth(Geometries.Position position, int depthVal)
         {
             if (_depth[(int)position] != -999)
@@ -148,12 +150,15 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// VisitedEdge get property returns <c>true</c> if bot Visited
+        /// Gets or sets a value indicating if both Visited
         /// and Sym.Visited are <c>true</c>.
-        /// VisitedEdge set property marks both DirectedEdges attached to a given Edge.
+        /// <para/>
+        /// Setting the property marks both DirectedEdges attached to a given Edge.
+        /// <para/>
         /// This is used for edges corresponding to lines, which will only
         /// appear oriented in a single direction in the result.
         /// </summary>
+        /// <returns></returns>
         public bool VisitedEdge
         {
             get => Visited && _sym.Visited;
@@ -193,10 +198,14 @@ namespace NetTopologySuite.GeometriesGraph
         public DirectedEdge NextMin { get; set; }
 
         /// <summary>
-        /// This edge is a line edge if
-        /// at least one of the labels is a line label
-        /// any labels which are not line labels have all Location = Exterior.
+        /// Gets a value indicating if this edge is a line edge.
+        /// <para/>It is if
+        /// <list type="bullet">
+        /// <item><description>at least one of the labels is a line label</description></item>
+        /// <item><description>any labels which are not line labels have all Location = Exterior.</description></item>
+        /// </list>
         /// </summary>
+        /// <returns><c>true</c> if edge is a line edge</returns>
         public bool IsLineEdge
         {
             get
@@ -250,8 +259,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// The other is computed depending on the Location
         /// transition and the depthDelta of the edge.
         /// </summary>
-        /// <param name="depth"></param>
-        /// <param name="position"></param>
+        /// <param name="position">The position to update</param>
+        /// <param name="depth">The depth at the provided position</param>
         [Obsolete("Use SetEdgeDepths(Topology.Postion, int)")]
         public void SetEdgeDepths(Positions position, int depth)
         {
@@ -264,8 +273,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// The other is computed depending on the Location
         /// transition and the depthDelta of the edge.
         /// </summary>
-        /// <param name="depth"></param>
-        /// <param name="position"></param>
+        /// <param name="position">The position to update</param>
+        /// <param name="depth">The depth at the provided position</param>
         public void SetEdgeDepths(Geometries.Position position, int depth)
         {
             // get the depth transition delta from R to Curve for this directed Edge

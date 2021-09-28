@@ -420,14 +420,14 @@ namespace NetTopologySuite.Operation.Distance3D
                 seq.GetCoordinate(i + 1, p1);
                 double d1 = poly.Plane.OrientedDistance(p1);
 
-                /**
+                /*
                  * If the oriented distances of the segment endpoints have the same sign,
                  * the segment does not cross the plane, and is skipped.
                  */
                 if (d0 * d1 > 0)
                     continue;
 
-                /**
+                /*
                  * Compute segment-plane intersection point
                  * which is then used for a point-in-polygon test.
                  * The endpoint distances to the plane d0 and d1
@@ -547,22 +547,16 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-        /**
-         * Computes a point at a distance along a segment
-         * specified by two relatively proportional values.
-         * The fractional distance along the segment is d0/(d0+d1).
-         *
-         * @param p0
-         *            start point of the segment
-         * @param p1
-         *            end point of the segment
-         * @param d0
-         *            proportional distance from start point to computed point
-         * @param d1
-         *            proportional distance from computed point to end point
-         * @return the computed point
-         */
-
+        /// <summary>
+        /// Computes a point at a distance along a segment
+        /// specified by two relatively proportional values.
+        /// The fractional distance along the segment is d0/(d0+d1).
+        /// </summary>
+        /// <param name="p0">Start point of the segment.</param>
+        /// <param name="p1">End point of the segment</param>
+        /// <param name="d0">Proportional distance from start point to computed point</param>
+        /// <param name="d1">Proportional distance from computed point to end point</param>
+        /// <returns>The computed point</returns>
         private static Coordinate SegmentPoint(Coordinate p0, Coordinate p1, double d0,
                                                double d1)
         {

@@ -11,4 +11,9 @@ namespace NetTopologySuite.Index
         /// <param name="item">The index item to be visited.</param>
         void VisitItem(T item);
     }
+
+    public interface ILimitingItemVisitor<in T> : IItemVisitor<T>
+    {
+        bool IsDone { get; }
+    }
 }

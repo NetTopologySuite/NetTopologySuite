@@ -22,7 +22,7 @@ namespace NetTopologySuite.Noding
     /// by setting <see cref="InteriorIntersectionsOnly"/>.
     /// <para/>
     /// By default only the first intersection is found,
-    /// but all can be found by setting {@link #setFindAllIntersections(boolean)
+    /// but all can be found by setting <see cref="FindAllIntersections"/>.
     /// </summary>
     public class NodingIntersectionFinder : ISegmentIntersector
     {

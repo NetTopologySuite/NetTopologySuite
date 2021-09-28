@@ -12,7 +12,7 @@ namespace NetTopologySuite.Noding
     /// i.e. noding is repeated until no further intersections are detected.
     /// <para>
     /// Iterated noding using a <see cref="PrecisionModels.Floating" /> precision model is not guaranteed to converge,
-    /// due to roundoff error. This problem is detected and an exception is thrown.
+    /// due to round off error. This problem is detected and an exception is thrown.
     /// Clients can choose to rerun the noding using a lower precision model.
     /// </para>
     /// </summary>

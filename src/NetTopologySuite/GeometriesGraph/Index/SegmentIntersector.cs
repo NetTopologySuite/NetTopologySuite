@@ -44,8 +44,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         public int NumTests;
 
         private IList<Node>[] _bdyNodes;
-        private bool _isDone = false;
-        private bool _isDoneWhenProperInt = false;
+        private bool _isDone;
+        private bool _isDoneWhenProperInt;
 
         /// <summary>
         ///
@@ -96,12 +96,14 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// an endpoint equal to the intersection, which according to SFS semantics
         /// can result in the point being on the Boundary of the Geometry.
         /// </summary>
+        /// <returns>Indicates a proper intersection with an interior to at least two line segments</returns>
         public bool HasProperIntersection => _hasProper;
 
         /// <summary>
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this SegmentIntersector.
         /// </summary>
+        /// <returns>Indicates a proper interior intersection</returns>
         public bool HasProperInteriorIntersection => _hasProperInterior;
 
         /// <summary>
@@ -110,10 +112,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// Note that closed edges require a special check for the point shared by the beginning
         /// and end segments.
         /// </summary>
-        /// <param name="e0"></param>
-        /// <param name="segIndex0"></param>
-        /// <param name="e1"></param>
-        /// <param name="segIndex1"></param>
+        /// <param name="e0">An Edge</param>
+        /// <param name="segIndex0">The segment index of <paramref name="e0"/></param>
+        /// <param name="e1">Another Edge</param>
+        /// <param name="segIndex1">The segment index of <paramref name="e1"/></param>
         private bool IsTrivialIntersection(Edge e0, int segIndex0, Edge e1, int segIndex1)
         {
             if (ReferenceEquals(e0, e1))

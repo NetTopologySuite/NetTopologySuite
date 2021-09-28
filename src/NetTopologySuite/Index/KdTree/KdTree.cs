@@ -141,7 +141,7 @@ namespace NetTopologySuite.Index.KdTree
                 return _root;
             }
 
-            /**
+            /*
              * Check if the point is already in the tree, up to tolerance.
              * If tolerance is zero, this phase of the insertion can be skipped.
              */

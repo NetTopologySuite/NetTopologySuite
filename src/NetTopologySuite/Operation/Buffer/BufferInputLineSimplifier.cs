@@ -109,7 +109,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns></returns>
         private bool DeleteShallowConcavities()
         {
-            /**
+            /*
              * Do not simplify end line segments of the line string.
              * This ensures that end caps are generated consistently.
              */

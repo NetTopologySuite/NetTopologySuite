@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// <returns>A sequence which projects coordinates</returns>
         public static CoordinateSequence ProjectToXY(CoordinateSequence seq)
         {
-            /**
+            /*
          * This is just a no-op, but return a wrapper
          * to allow better testing
          */

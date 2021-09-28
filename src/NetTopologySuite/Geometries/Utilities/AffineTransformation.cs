@@ -25,18 +25,18 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <para>
     /// An affine transformation can be represented by a 3x3
     /// matrix in the following form:
-    /// <blockquote><pre>
-    /// T = | m00 m01 m02 |
-    ///     | m10 m11 m12 |
+    /// <blockquote><code>
+    /// T = | m00 m01 m02 |<br/>
+    ///     | m10 m11 m12 |<br/>
     ///     |  0   0   1  |
-    /// </pre></blockquote>
+    /// </code></blockquote>
     /// A coordinate P = (x, y) can be transformed to a new coordinate P' = (x', y')
     /// by representing it as a 3x1 matrix and using matrix multiplication to compute:
-    /// <blockquote><pre>
-    /// | x' |  = T x | x |
-    /// | y' |        | y |
+    /// <blockquote><code>
+    /// | x' |  = T x | x |<br/>
+    /// | y' |        | y |<br/>
     /// | 1  |        | 1 |
-    /// </pre></blockquote>
+    /// </code></blockquote>
     /// </para>
     /// <h3>Transformation Composition</h3>
     /// <para>
@@ -319,11 +319,11 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <remarks>
         /// The identity transformation has the matrix:
-        /// <blockquote><pre>
-        /// | 1 0 0 |
-        /// | 0 1 0 |
+        /// <blockquote><code>
+        /// | 1 0 0 |<br/>
+        /// | 0 1 0 |<br/>
         /// | 0 0 1 |
-        /// </pre></blockquote>
+        /// </code></blockquote>
         /// </remarks>
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToIdentity()
@@ -391,11 +391,11 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <remarks>
         /// <para>
         /// The determinant is computed as:
-        /// <blockquote><pre>
-        /// | m00 m01 m02 |
-        /// | m10 m11 m12 | = m00 * m11 - m01 * m10
+        /// <blockquote><code>
+        /// | m00 m01 m02 |<br/>
+        /// | m10 m11 m12 | = m00 * m11 - m01 * m10<br/>
         /// |  0   0   1  |
-        /// </pre></blockquote>
+        /// </code></blockquote>
         /// </para>
         /// <para>
         /// If the determinant is zero,
@@ -417,38 +417,37 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <remarks>
         /// <para>
-        /// * The inverse is the transformation which when
-        /// * composed with this one produces the identity
-        /// * transformation.
-        /// * A transformation has an inverse if and only if it
-        /// * is not singular (i.e. its
-        /// * determinant is non-zero).
-        /// * Geometrically, an transformation is non-invertible
-        /// * if it maps the plane to a line or a point.
-        /// * If no inverse exists this method
-        /// * will throw a <see cref="NoninvertibleTransformationException"/>.
+        /// The inverse is the transformation which when
+        /// composed with this one produces the identity
+        /// transformation.
+        /// A transformation has an inverse if and only if it
+        /// is not singular (i.e. its
+        /// determinant is non-zero).
+        /// Geometrically, an transformation is non-invertible
+        /// if it maps the plane to a line or a point.
+        /// If no inverse exists this method
+        /// will throw a <see cref="NoninvertibleTransformationException"/>.
         /// </para>
         /// <para>
-        /// * The matrix of the inverse is equal to the
-        /// * inverse of the matrix for the transformation.
-        /// * It is computed as follows:
-        /// * <blockquote><pre>
-        /// *                 1
-        /// * inverse(A)  =  ---   x  adjoint(A)
-        /// *                det
-        /// *
-        /// *
-        /// *             =   1       |  m11  -m01   m01*m12-m02*m11  |
-        /// *                ---   x  | -m10   m00  -m00*m12+m10*m02  |
-        /// *                det      |  0     0     m00*m11-m10*m01  |
-        /// *
-        /// *
-        /// *
-        /// *             = |  m11/det  -m01/det   m01*m12-m02*m11/det |
-        /// *               | -m10/det   m00/det  -m00*m12+m10*m02/det |
-        /// *               |   0           0          1               |
-        /// *
-        /// * </pre></blockquote>
+        /// The matrix of the inverse is equal to the
+        /// inverse of the matrix for the transformation.
+        /// It is computed as follows:
+        /// <blockquote><code>
+        ///                 1
+        /// inverse(A)  =  ---   x  adjoint(A)
+        ///                det
+        /// 
+        /// 
+        ///             =   1       |  m11  -m01   m01*m12-m02*m11  |
+        ///                ---   x  | -m10   m00  -m00*m12+m10*m02  |
+        ///                det      |  0     0     m00*m11-m10*m01  |
+        /// 
+        /// 
+        /// 
+        ///             = |  m11/det  -m01/det   m01*m12-m02*m11/det |
+        ///               | -m10/det   m00/det  -m00*m12+m10*m02/det |
+        ///               |   0           0          1               |
+        /// </code></blockquote>
         /// </para>
         /// </remarks>
         /// <returns>A new inverse transformation</returns>
@@ -536,12 +535,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <remarks>
         /// The transformation for a reflection
         /// is computed by:
-        /// <blockquote><pre>
+        /// <blockquote><code>
         /// d = sqrt(x<sup>2</sup> + y<sup>2</sup>)
         /// sin = x / d;
         /// cos = x / d;
         /// T<sub>ref</sub> = T<sub>rot(sin, cos)</sub> x T<sub>scale(1, -1)</sub> x T<sub>rot(-sin, cos)</sub>
-        /// </pre></blockquote>
+        /// </code></blockquote>
         /// </remarks>
         /// <param name="x"> the x-component of the reflection line vector</param>
         /// <param name="y"> the y-component of the reflection line vector</param>
@@ -553,9 +552,9 @@ namespace NetTopologySuite.Geometries.Utilities
                 throw new ArgumentException("Reflection vector must be non-zero");
             }
 
-            /**
+            /*
              * Handle special case - x = y.
-             * This case is specified explicitly to avoid roundoff error.
+             * This case is specified explicitly to avoid round off error.
              */
             if (x == y)
             {

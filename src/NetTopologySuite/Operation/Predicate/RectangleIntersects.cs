@@ -62,7 +62,7 @@ namespace NetTopologySuite.Operation.Predicate
             if (!_rectEnv.Intersects(geom.EnvelopeInternal))
                 return false;
 
-            /**
+            /*
              * Test if rectangle envelope intersects any component envelope.
              * This handles Point components as well
              */
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Operation.Predicate
             if (visitor.Intersects)
                 return true;
 
-            /**
+            /*
              * Test if any rectangle vertex is contained in the target geometry
              */
             var ecpVisitor = new GeometryContainsPointVisitor(_rectangle);
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Operation.Predicate
             if (ecpVisitor.ContainsPoint)
                 return true;
 
-            /**
+            /*
              * Test if any target geometry line segment intersects the rectangle
              */
             var riVisitor = new RectangleIntersectsSegmentVisitor(_rectangle);

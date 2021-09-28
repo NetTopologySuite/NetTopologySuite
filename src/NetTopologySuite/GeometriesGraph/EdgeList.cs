@@ -29,7 +29,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// Insert an edge unless it is already in the list.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>Edge</c></param>
         public void Add(Edge e)
         {
             _edges.Add(e);
@@ -57,10 +57,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// If there is an edge equal to e already in the list, return it.
         /// Otherwise return null.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>Edge</c></param>
         /// <returns>
-        /// equal edge, if there is one already in the list,
-        /// null otherwise.
+        /// The equal edge, if there is one already in the list,
+        /// <c>null</c> otherwise.
         /// </returns>
         public Edge FindEqualEdge(Edge e)
         {
@@ -100,10 +100,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// If the edge e is already in the list, return its index.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>Edge</c></param>
         /// <returns>
-        /// Index, if e is already in the list,
-        /// -1 otherwise.
+        /// The index, if e is already in the list,
+        /// <c>-1</c> otherwise.
         /// </returns>
         public int FindEdgeIndex(Edge e)
         {

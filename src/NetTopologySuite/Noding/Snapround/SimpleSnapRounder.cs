@@ -84,7 +84,7 @@ namespace NetTopologySuite.Noding.Snapround
         private List<NodedSegmentString> SnapRound(IList<ISegmentString> segStrings)
         {
             var inputSS = CreateNodedStrings(segStrings);
-            /**
+            /*
              * Determine hot pixels for intersections and vertices.
              * This is done BEFORE the input lines are rounded,
              * to avoid distorting the line arrangement 
@@ -133,13 +133,12 @@ namespace NetTopologySuite.Noding.Snapround
             return p2;
         }
 
-        /**
-         * Gets a list of the rounded coordinates.
-         * Duplicate (collapsed) coordinates are removed.
-         * 
-         * @param pts the coordinates to round
-         * @return array of rounded coordinates
-         */
+        /// <summary>
+        /// Gets a list of the rounded coordinates.
+        /// Duplicate (collapsed) coordinates are removed.
+        /// </summary>
+        /// <param name="pts">The coordinates to round</param>
+        /// <returns>An array of rounded coordinates</returns>
         private Coordinate[] Round(IEnumerable<Coordinate> pts)
         {
             var roundPts = new CoordinateList();

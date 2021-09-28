@@ -48,14 +48,14 @@ namespace NetTopologySuite.Operation.Distance
                         delegate(Geometry geom)
                             {
                                 CoordinateSequence seq;
-                                if (geom is LineString)
+                                if (geom is LineString ls)
                                 {
-                                    seq = ((LineString) geom).CoordinateSequence;
+                                    seq = ls.CoordinateSequence;
                                     AddFacetSequences(geom, seq, sections);
                                 }
-                                else if (geom is Point)
+                                else if (geom is Point pt)
                                 {
-                                    seq = ((Point) geom).CoordinateSequence;
+                                    seq = pt.CoordinateSequence;
                                     AddFacetSequences(geom, seq, sections);
                                 }
                             }));

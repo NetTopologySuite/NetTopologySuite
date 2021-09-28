@@ -30,6 +30,12 @@ namespace NetTopologySuite.GeometriesGraph
             return boundaryCount % 2 == 1;
         }*/
 
+        /// <summary>
+        /// Determine boundary
+        /// </summary>
+        /// <param name="boundaryNodeRule">The boundary node rule to apply for determination of the boundary</param>
+        /// <param name="boundaryCount">The number of component boundaries that a point occurs in.</param>
+        /// <returns><see cref="Location.Boundary"/> or <see cref="Location.Interior"/></returns>
         public static Location DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
         {
             return boundaryNodeRule.IsInBoundary(boundaryCount)
@@ -299,10 +305,10 @@ namespace NetTopologySuite.GeometriesGraph
             InsertEdge(e);
 
             /*
-            * Add the boundary points of the LineString, if any.
-            * Even if the LineString is closed, add both points as if they were endpoints.
-            * This allows for the case that the node already exists and is a boundary point.
-            */
+             * Add the boundary points of the LineString, if any.
+             * Even if the LineString is closed, add both points as if they were endpoints.
+             * This allows for the case that the node already exists and is a boundary point.
+             */
             Assert.IsTrue(coord.Length >= 2, "found LineString with single point");
             InsertBoundaryPoint(_argIndex, coord[0]);
             InsertBoundaryPoint(_argIndex, coord[coord.Length - 1]);
@@ -312,7 +318,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Add an Edge computed externally.  The label on the Edge is assumed
         /// to be correct.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">An <c>Edge</c></param>
         public void AddEdge(Edge e)
         {
             InsertEdge(e);
@@ -326,7 +332,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Add a point computed externally.  The point is assumed to be a
         /// Point Geometry part, which has a location of INTERIOR.
         /// </summary>
-        /// <param name="pt"></param>
+        /// <param name="pt">A <c>Coordinate</c></param>
         public void AddPoint(Coordinate pt)
         {
             InsertPoint(_argIndex, pt, Location.Interior);

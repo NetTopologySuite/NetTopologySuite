@@ -153,7 +153,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             foreach (var segStr in nodedSegStrings)
             {
-                /**
+                /*
                  * Discard edges which have zero length,
                  * since they carry no information and cause problems with topology building
                  */

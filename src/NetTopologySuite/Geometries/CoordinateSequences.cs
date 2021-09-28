@@ -187,12 +187,13 @@ namespace NetTopologySuite.Geometries
                 {
                     double v1 = cs1.GetOrdinate(i, d);
                     double v2 = cs2.GetOrdinate(i, d);
-                    if (cs1.GetOrdinate(i, d) == cs2.GetOrdinate(i, d))
+                    if (v1 == v2)
                         continue;
                     // special check for NaNs
-                    if (double.IsNaN(v1) && double.IsNaN(v2))
+                    else if (double.IsNaN(v1) && double.IsNaN(v2))
                         continue;
-                    return false;
+                    else
+                        return false;
                 }
             }
             return true;

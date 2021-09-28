@@ -122,7 +122,7 @@ namespace NetTopologySuite.Algorithm
                     p = p2;
                     z = zGet(p2, q2);
                 }
-                /**
+                /*
                  * Now check to see if any endpoint lies on the interior of the other segment.
                  */
                 else if (Pq1 == 0)
@@ -377,7 +377,7 @@ namespace NetTopologySuite.Algorithm
             return nearestPt;
         }
 
-        /**
+        /*
          * Gets the Z value of the first argument if present, 
          * otherwise the value of the second argument.
          * 
@@ -395,17 +395,16 @@ namespace NetTopologySuite.Algorithm
             return z;
         }
 
-        /**
-         * Gets the Z value of a coordinate if present, or
-         * interpolates it from the segment it lies on.
-         * If the segment Z values are not fully populate
-         * NaN is returned.
-         * 
-         * @param p a coordinate, possibly with Z 
-         * @param p1 a segment endpoint, possibly with Z
-         * @param p2 a segment endpoint, possibly with Z
-         * @return the extracted or interpolated Z value (may be NaN)
-         */
+        /// <summary>
+        /// Gets the Z value of a coordinate if present, or
+        /// interpolates it from the segment it lies on.
+        /// If the segment Z values are not fully populate
+        /// NaN is returned.
+        /// </summary>
+        /// <param name="p">A coordinate, possibly with Z</param>
+        /// <param name="p1">A segment endpoint, possibly with Z</param>
+        /// <param name="p2">A segment endpoint, possibly with Z</param>
+        /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
         private static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double z = p.Z;
@@ -414,18 +413,17 @@ namespace NetTopologySuite.Algorithm
             return zInterpolate(p, p1, p2); // may be NaN
         }
 
-        /**
-         * Interpolates a Z value for a point along 
-         * a line segment between two points.
-         * The Z value of the interpolation point (if any) is ignored.
-         * If either segment point is missing Z, 
-         * returns NaN.
-         * 
-         * @param p a coordinate
-         * @param p1 a segment endpoint, possibly with Z
-         * @param p2 a segment endpoint, possibly with Z
-         * @return the interpolated Z value (may be NaN)
-         */
+        /// <summary>
+        /// Interpolates a Z value for a point along
+        /// a line segment between two points.
+        /// The Z value of the interpolation point (if any) is ignored.
+        /// If either segment point is missing Z,
+        /// returns NaN.
+        /// </summary>
+        /// <param name="p">A coordinate, possibly with Z</param>
+        /// <param name="p1">A segment endpoint, possibly with Z</param>
+        /// <param name="p2">A segment endpoint, possibly with Z</param>
+        /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
         private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double p1z = p1.Z;
@@ -465,20 +463,19 @@ namespace NetTopologySuite.Algorithm
             return zInterpolated;
         }
 
-        /**
-         * Interpolates a Z value for a point along 
-         * two line segments and computes their average.
-         * The Z value of the interpolation point (if any) is ignored.
-         * If one segment point is missing Z that segment is ignored
-         * if both segments are missing Z, returns NaN.
-         * 
-         * @param p a coordinate
-         * @param p1 a segment endpoint, possibly with Z
-         * @param p2 a segment endpoint, possibly with Z
-         * @param q1 a segment endpoint, possibly with Z
-         * @param q2 a segment endpoint, possibly with Z
-         * @return the averaged interpolated Z value (may be NaN)
-         */
+        /// <summary>
+        /// Interpolates a Z value for a point along
+        /// two line segments and computes their average.
+        /// The Z value of the interpolation point (if any) is ignored.
+        /// If one segment point is missing Z that segment is ignored
+        /// if both segments are missing Z, returns NaN.
+        /// </summary>
+        /// <param name="p">A coordinate</param>
+        /// <param name="p1">A segment endpoint, possibly with Z</param>
+        /// <param name="p2">A segment endpoint, possibly with Z</param>
+        /// <param name="q1">A segment endpoint, possibly with Z</param>
+        /// <param name="q2">A segment endpoint, possibly with Z</param>
+        /// <returns>The averaged interpolated Z value (may be NaN)</returns>    
         private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             double zp = zInterpolate(p, p1, p2);
