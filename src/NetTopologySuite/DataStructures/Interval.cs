@@ -71,7 +71,14 @@ namespace NetTopologySuite.DataStructures
         ///<inheritdoc/>
         public override int GetHashCode()
         {
-            return 52876 ^ Min.GetHashCode();
+            const int prime = 31;
+            // ReSharper disable NonReadonlyMemberInGetHashCode
+            long temp = BitConverter.DoubleToInt64Bits(Max);
+            int result = prime + (int)(temp ^ (temp >> 32));
+            temp = BitConverter.DoubleToInt64Bits(Min);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            // ReSharper restore NonReadonlyMemberInGetHashCode
+            return result;
         }
 
         ///<inheritdoc/>

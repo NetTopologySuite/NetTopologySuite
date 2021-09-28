@@ -1040,6 +1040,27 @@ namespace NetTopologySuite.Geometries.Utilities
              */
         }
 
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            // ReSharper disable NonReadonlyMemberInGetHashCode
+            const int prime = 31;
+            long temp = BitConverter.DoubleToInt64Bits(_m00);
+            int result = prime + (int)(temp ^ (temp >> 32));
+            temp = BitConverter.DoubleToInt64Bits(_m01);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            temp = BitConverter.DoubleToInt64Bits(_m02);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            temp = BitConverter.DoubleToInt64Bits(_m10);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            temp = BitConverter.DoubleToInt64Bits(_m11);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            temp = BitConverter.DoubleToInt64Bits(_m12);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            return result;
+            // ReSharper restore NonReadonlyMemberInGetHashCode
+        }
+
         public bool Equals(AffineTransformation trans)
         {
             if (trans == null)

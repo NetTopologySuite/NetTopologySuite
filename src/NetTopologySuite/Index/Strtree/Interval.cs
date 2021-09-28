@@ -81,13 +81,18 @@ namespace NetTopologySuite.Index.Strtree
             return _min == other._min && _max == other._max;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
+        ///<inheritdoc/>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            const int prime = 31;
+            // ReSharper disable NonReadonlyMemberInGetHashCode
+            long temp = BitConverter.DoubleToInt64Bits(_max);
+            int result = prime + (int)(temp ^ (temp >> 32));
+            temp = BitConverter.DoubleToInt64Bits(_min);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            // ReSharper restore NonReadonlyMemberInGetHashCode
+            return result;
         }
+
     }
 }

@@ -295,6 +295,27 @@ namespace NetTopologySuite.GeometriesGraph
             return Equals(o as Edge);
         }
 
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            const int prime = 31;
+            // ReSharper disable NonReadonlyMemberInGetHashCode
+            int result = prime + _pts.Length;
+            if (_pts.Length > 0)
+            {
+                var p0 = _pts[0];
+                var p1 = _pts[_pts.Length - 1];
+                if (1 == p0.CompareTo(p1))
+                {
+                    p0 = _pts[_pts.Length - 1];
+                    p1 = _pts[0];
+                }
+                result = prime * result + p0.GetHashCode();
+                result = prime * result + p1.GetHashCode();
+            }
+            // ReSharper restore NonReadonlyMemberInGetHashCode
+            return result;
+        }
         /// <summary>
         /// Equals is defined to be:
         /// e1 equals e2
@@ -344,14 +365,6 @@ namespace NetTopologySuite.GeometriesGraph
             return !(obj1 == obj2);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
 
         /// <summary>
         /// Check if coordinate sequences of the Edges are identical. 

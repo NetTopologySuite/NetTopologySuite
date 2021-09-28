@@ -157,13 +157,6 @@ namespace NetTopologySuite.Geometries
             _scale = pm._scale;
         }
 
-        /// <summary>
-        /// Return HashCode.
-        /// </summary>
-        public override int GetHashCode()
-        {
-            return _modelType.GetHashCode() ^ _scale.GetHashCode();
-        }
 
         /// <summary>
         /// Tests whether the precision model supports floating point.
@@ -312,6 +305,16 @@ namespace NetTopologySuite.Geometries
             return Equals((PrecisionModel)other);
         }
 
+
+        /// <inheritdoc cref="object.GetHashCode()"/>>
+        public override int GetHashCode()
+        {
+            const int prime = 31;
+            int result = prime + _modelType.GetHashCode();
+            long temp = BitConverter.DoubleToInt64Bits(_scale);
+            result = prime * result + (int)(temp ^ (temp >> 32));
+            return result;
+        }
         /// <summary>
         ///
         /// </summary>
