@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Geometries
@@ -54,10 +56,177 @@ namespace NetTopologySuite.Geometries
         /// <param name="length">The number of coordinates to copy</param>
         public static void Copy(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos, int length)
         {
+            // Attempt shortcuts
+            if (src is PackedDoubleCoordinateSequence srcPD && dest is PackedDoubleCoordinateSequence destPD)
+            {
+                if (TryRawCopy(srcPD, srcPos, destPD, destPos, length))
+                    return;
+            }
+            else if (src is PackedFloatCoordinateSequence srcPF && dest is PackedFloatCoordinateSequence destPF)
+            {
+                if (TryRawCopy(srcPF, srcPos, destPF, destPos, length))
+                    return;
+            }
+            else if (src is DotSpatialAffineCoordinateSequence srcDS && dest is DotSpatialAffineCoordinateSequence destDS)
+            {
+                if (TryRawCopy(srcDS, srcPos, destDS, destPos, length))
+                    return;
+            }
+
+            GetCommonOrdinateIndices(src, dest, out int[] srcIndices, out int[] destIndices);
+
+            // Copy one by one
             for (int i = 0; i < length; i++)
-                CopyCoord(src, srcPos + i, dest, destPos + i);
+                CopyCoord(src, srcPos + i, srcIndices, dest, destPos + i, destIndices);
         }
 
+        /// <summary>
+        /// Get the common ordinate indices of two <c>CoordinateSequence</c>s.
+        /// </summary>
+        /// <param name="seq0">A <c>CoordinateSequence</c></param>
+        /// <param name="seq1">A <c>CoordinateSequence</c></param>
+        /// <param name="seq0Indices">The array of common ordinate indices as in <paramref name="seq0"/></param>
+        /// <param name="seq1Indices">The array of common ordinate indices as in <paramref name="seq1"/></param>
+        private static void GetCommonOrdinateIndices(CoordinateSequence seq0, CoordinateSequence seq1,
+            out int[] seq0Indices, out int[] seq1Indices)
+        {
+            var srcIndexList = new List<int>(16);
+            var destIndexList = new List<int>(16);
+            var commonOrdinates = seq0.Ordinates & seq1.Ordinates;
+            var ordinatesChecked = Ordinates.None;
+
+            // Check all spatial and non-spatial ordinate values
+            for (int i = 0; i < 16; i++)
+            {
+                // if indices of all common ordinates were gathered then exit
+                if (commonOrdinates == ordinatesChecked)
+                    break;
+
+                // investigate spatial ordinate
+                var ordinate = (Ordinates)(1 << i);
+
+                // is ordinate common to both sequences?
+                if ((commonOrdinates & ordinate) == ordinate)
+                {
+                    seq0.TryGetOrdinateIndex((Ordinate)i, out int index);
+                    srcIndexList.Add(index);
+                    seq1.TryGetOrdinateIndex((Ordinate)i, out index);
+                    destIndexList.Add(index);
+                    ordinatesChecked |= ordinate;
+                }
+
+                // investigate non-spatial ordinate
+                ordinate = (Ordinates)(1 << (i+16));
+
+                // is ordinate common to both sequences?
+                if ((commonOrdinates & ordinate) == ordinate)
+                {
+                    seq0.TryGetOrdinateIndex((Ordinate)i, out int index);
+                    srcIndexList.Add(index);
+                    seq1.TryGetOrdinateIndex((Ordinate)i, out index);
+                    destIndexList.Add(index);
+                    ordinatesChecked |= ordinate;
+                }
+            }
+
+            seq0Indices = srcIndexList.ToArray();
+            seq1Indices = destIndexList.ToArray();
+        }
+
+        /// <summary>
+        /// Copies a section of a <see cref="PackedDoubleCoordinateSequence"/> to another <see cref="PackedDoubleCoordinateSequence"/>.
+        /// The sequences must have same dimensions.
+        /// </summary>
+        /// <param name="src">The sequence to copy coordinates from</param>
+        /// <param name="srcPos">The starting index of the coordinates to copy</param>
+        /// <param name="dest">The sequence to which the coordinates should be copied to</param>
+        /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
+        /// <param name="length">The number of coordinates to copy</param>
+        private static bool TryRawCopy(PackedDoubleCoordinateSequence src, int srcPos, PackedDoubleCoordinateSequence dest, int destPos, int length)
+        {
+            if (src.Ordinates != dest.Ordinates)
+                return false;
+
+            if (srcPos + length > src.Count || destPos + length > dest.Count)
+                return false;
+
+            double[] srcRaw = src.GetRawCoordinates();
+            double[] destRaw = dest.GetRawCoordinates();
+            int srcOffset = srcPos * src.Dimension;
+            int destOffset = destPos * dest.Dimension;
+
+            Array.Copy(srcRaw, srcOffset, destRaw, destOffset, length * src.Dimension);
+            dest.ReleaseCoordinateArray();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Copies a section of a <see cref="PackedFloatCoordinateSequence"/> to another <see cref="PackedFloatCoordinateSequence"/>.
+        /// The sequences must have same dimensions.
+        /// </summary>
+        /// <param name="src">The sequence to copy coordinates from</param>
+        /// <param name="srcPos">The starting index of the coordinates to copy</param>
+        /// <param name="dest">The sequence to which the coordinates should be copied to</param>
+        /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
+        /// <param name="length">The number of coordinates to copy</param>
+        public static bool TryRawCopy(PackedFloatCoordinateSequence src, int srcPos, PackedFloatCoordinateSequence dest, int destPos, int length)
+        {
+            if (src.Ordinates != dest.Ordinates)
+                return false;
+
+            if (srcPos + length > src.Count || destPos + length > dest.Count)
+                return false;
+
+            float[] srcRaw = src.GetRawCoordinates();
+            float[] destRaw = dest.GetRawCoordinates();
+            int srcOffset = srcPos * src.Dimension;
+            int destOffset = destPos * dest.Dimension;
+
+            Array.Copy(srcRaw, srcOffset, destRaw, destOffset, length * src.Dimension);
+            dest.ReleaseCoordinateArray();
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Copies a section of a <see cref="PackedDoubleCoordinateSequence"/> to another <see cref="PackedDoubleCoordinateSequence"/>.
+        /// The sequences must have same dimensions.
+        /// </summary>
+        /// <param name="src">The sequence to copy coordinates from</param>
+        /// <param name="srcPos">The starting index of the coordinates to copy</param>
+        /// <param name="dest">The sequence to which the coordinates should be copied to</param>
+        /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
+        /// <param name="length">The number of coordinates to copy</param>
+        private static bool TryRawCopy(DotSpatialAffineCoordinateSequence src, int srcPos, DotSpatialAffineCoordinateSequence dest, int destPos, int length)
+        {
+            if (srcPos + length > src.Count || destPos + length > dest.Count)
+                return false;
+
+            // Copy XY
+            double[] srcRaw = src.XY;
+            double[] destRaw = dest.XY;
+            int srcOffset = srcPos * 2;
+            int destOffset = destPos * 2;
+            Array.Copy(srcRaw, srcOffset, destRaw, destOffset, 2 * length);
+
+            // Copy Z
+            srcRaw = src.Z;
+            destRaw = dest.Z;
+            if (srcRaw != null && destRaw != null)
+                Array.Copy(srcRaw, srcPos, destRaw, destPos, length);
+
+            // Copy M
+            srcRaw = src.M;
+            destRaw = dest.M;
+            if (srcRaw != null && destRaw != null)
+                Array.Copy(srcRaw, srcPos, destRaw, destPos, length);
+
+            dest.ReleaseCoordinateArray();
+
+            return true;
+        }
         /// <summary>
         /// Copies a coordinate of a <see cref="CoordinateSequence"/> to another <see cref="CoordinateSequence"/>.
         /// The sequences may have different dimensions;
@@ -69,14 +238,22 @@ namespace NetTopologySuite.Geometries
         /// <param name="destPos">The index of the coordinate in <see paramref="dest"/></param>
         public static void CopyCoord(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos)
         {
-            int minDim = Math.Min(src.Dimension, dest.Dimension);
-            for (int dim = 0; dim < minDim; dim++)
-            {
-                double value = src.GetOrdinate(srcPos, dim);
-                dest.SetOrdinate(destPos, dim, value);
-            }
+            GetCommonOrdinateIndices(src, dest, out int[] srcIndices, out int[] destIndices);
+            CopyCoord(src, srcPos, srcIndices, dest, destPos, destIndices);
         }
 
+        private static void CopyCoord(CoordinateSequence src, int srcPos, int[] srcIndices,
+                                      CoordinateSequence dest, int destPos, int[] destIndices)
+        {
+            if (srcIndices.Length != destIndices.Length)
+                throw new ArgumentException(nameof(destIndices));
+
+            for (int dim = 0; dim < srcIndices.Length; dim++)
+            {
+                double value = src.GetOrdinate(srcPos, srcIndices[dim]);
+                dest.SetOrdinate(destPos, destIndices[dim], value);
+            }
+        }
         /// <summary>
         /// Tests whether a <see cref="CoordinateSequence"/> forms a valid <see cref="LinearRing"/>,
         /// by checking the sequence length and closure
