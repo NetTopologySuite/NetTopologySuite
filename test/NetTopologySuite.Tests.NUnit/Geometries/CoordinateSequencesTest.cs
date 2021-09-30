@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.PortableExecutable;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
@@ -108,10 +109,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestCopyDifferent3rd()
         {
             TestContext.WriteLine("Testing copy");
-            DoTestCopyDifferent3rd(CoordinateArraySequenceFactory.Instance);
-            DoTestCopyDifferent3rd(PackedCoordinateSequenceFactory.DoubleFactory);
-            DoTestCopyDifferent3rd(PackedCoordinateSequenceFactory.FloatFactory);
-            DoTestCopyDifferent3rd(DotSpatialAffineCoordinateSequenceFactory.Instance);
+            DoTestCopyDifferentDim(CoordinateArraySequenceFactory.Instance);
+            DoTestCopyDifferentDim(PackedCoordinateSequenceFactory.DoubleFactory);
+            DoTestCopyDifferentDim(PackedCoordinateSequenceFactory.FloatFactory);
+            DoTestCopyDifferentDim(DotSpatialAffineCoordinateSequenceFactory.Instance);
         }
 
         [Test]
@@ -188,11 +189,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             // ToDo test if dimensions don't match
         }
 
-        private static void DoTestCopyDifferent3rd(CoordinateSequenceFactory factory)
+        private static void DoTestCopyDifferentDim(CoordinateSequenceFactory factory)
         {
 
             // arrange
-            var sequence = CreateSequenceFromOrdinates(factory, 3, 0);
+            var sequence = CreateSequenceFromOrdinates(factory, 4, 1);
             if (sequence.Count <= 7)
             {
                 TestContext.WriteLine("sequence has a size of " + sequence.Count + ". Execution of this test needs a sequence " +
@@ -210,12 +211,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             // assert
             for (int i = 0; i < fullCopy.Count; i++)
             {
-                CheckCoordinateAt(sequence, i, fullCopy, i, 2);
+                CheckCoordinateAt(sequence, i, fullCopy, i, Ordinates.XYM);
             }
 
             for (int i = 0; i < partialCopy.Count; i++)
             {
-                CheckCoordinateAt(sequence, 2 + i, partialCopy, i, 2);
+                CheckCoordinateAt(sequence, 2 + i, partialCopy, i, Ordinates.XYM);
             }
 
         }
@@ -346,6 +347,25 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
+        private static void CheckCoordinateAt(CoordinateSequence seq1, int pos1,
+            CoordinateSequence seq2, int pos2, Ordinates toCheck)
+        {
+            Assert.AreEqual(seq1.GetOrdinate(pos1, Ordinate.X), seq2.GetOrdinate(pos2, Ordinate.X),
+                "unexpected x-ordinate at pos " + pos2);
+            Assert.AreEqual(seq1.GetOrdinate(pos1, Ordinate.Y), seq2.GetOrdinate(pos2, Ordinate.Y),
+                "unexpected y-ordinate at pos " + pos2);
+
+            // check additional ordinates
+            for (var j = Ordinate.Spatial3; j <= Ordinate.Measure16; j++)
+            {
+                var coFlag = (Ordinates)(1 << (int)j);
+                if ((coFlag & toCheck) == coFlag)
+                {
+                    Assert.AreEqual(seq1.GetOrdinate(pos1, j), seq2.GetOrdinate(pos2, j),
+                        "unexpected " + j + "-ordinate at pos " + pos2);
+                }
+            }
+        }
         private static CoordinateSequence CreateAlmostRing(CoordinateSequenceFactory factory, int dimension, int num)
         {
 

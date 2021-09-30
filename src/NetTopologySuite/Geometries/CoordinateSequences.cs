@@ -103,29 +103,31 @@ namespace NetTopologySuite.Geometries
                     break;
 
                 // investigate spatial ordinate
-                var ordinate = (Ordinates)(1 << i);
+                var ordinateFlag = (Ordinates)(1 << i);
+                var ordinate = (Ordinate)i;
 
                 // is ordinate common to both sequences?
-                if ((commonOrdinates & ordinate) == ordinate)
+                if ((commonOrdinates & ordinateFlag) == ordinateFlag)
                 {
-                    seq0.TryGetOrdinateIndex((Ordinate)i, out int index);
+                    seq0.TryGetOrdinateIndex(ordinate, out int index);
                     srcIndexList.Add(index);
-                    seq1.TryGetOrdinateIndex((Ordinate)i, out index);
+                    seq1.TryGetOrdinateIndex(ordinate, out index);
                     destIndexList.Add(index);
-                    ordinatesChecked |= ordinate;
+                    ordinatesChecked |= ordinateFlag;
                 }
 
                 // investigate non-spatial ordinate
-                ordinate = (Ordinates)(1 << (i+16));
+                ordinateFlag = (Ordinates)(1 << (i+16));
+                ordinate = (Ordinate)(i + 16);
 
                 // is ordinate common to both sequences?
-                if ((commonOrdinates & ordinate) == ordinate)
+                if ((commonOrdinates & ordinateFlag) == ordinateFlag)
                 {
-                    seq0.TryGetOrdinateIndex((Ordinate)i, out int index);
+                    seq0.TryGetOrdinateIndex(ordinate, out int index);
                     srcIndexList.Add(index);
-                    seq1.TryGetOrdinateIndex((Ordinate)i, out index);
+                    seq1.TryGetOrdinateIndex(ordinate, out index);
                     destIndexList.Add(index);
-                    ordinatesChecked |= ordinate;
+                    ordinatesChecked |= ordinateFlag;
                 }
             }
 
