@@ -87,7 +87,7 @@ namespace NetTopologySuite.Precision
 
         private Coordinate[] ReduceCompress(CoordinateSequence coordinates)
         {
-            var noRepeatCoordList = new CoordinateList();
+            var noRepeatCoordList = new CoordinateList(coordinates.Count);
             // copy coordinates and reduce
             for (int i = 0; i < coordinates.Count; i++)
             {

@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         private Coordinate[] ClipToBoxEdge(Coordinate[] pts, int edgeIndex, bool closeRing)
         {
             // TODO: is it possible to avoid copying array 4 times?
-            var ptsClip = new CoordinateList();
+            var ptsClip = new CoordinateList(pts.Length);
 
             var p0 = pts[pts.Length - 1];
             for (int i = 0; i < pts.Length; i++)

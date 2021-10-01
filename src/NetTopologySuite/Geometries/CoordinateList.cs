@@ -15,6 +15,14 @@ namespace NetTopologySuite.Geometries
         public CoordinateList() { }
 
         /// <summary>
+        /// Constructs a new list without any coordinates but an initial capacity
+        /// </summary>
+        /// <param name="capacity">The initial capacity of the list.</param>
+        public CoordinateList(int capacity)
+            : base(capacity)
+        { }
+
+        /// <summary>
         /// Constructs a new list from an array of Coordinates, allowing repeated points.
         /// (I.e. this constructor produces a <see cref="CoordinateList"/> with exactly the same set of points
         /// as the input array.)
@@ -245,7 +253,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The copied object.</returns>
         public object Clone()
         {
-            var copy = new CoordinateList();
+            var copy = new CoordinateList(Capacity);
             foreach (var c in this)
                 copy.Add(c.Copy());
             return copy;

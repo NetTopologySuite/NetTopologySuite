@@ -159,7 +159,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private Coordinate[] CollapseLine()
         {
-            var coordList = new CoordinateList();
+            var coordList = new CoordinateList(_inputLine.Length);
             for (int i = 0; i < _inputLine.Length; i++)
             {
                 if (_isDeleted[i] != Delete)

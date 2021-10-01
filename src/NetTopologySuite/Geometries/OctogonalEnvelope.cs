@@ -402,7 +402,7 @@ namespace NetTopologySuite.Geometries
             pm.MakePrecise(py10);
             pm.MakePrecise(py11);
 
-            var coordList = new CoordinateList();
+            var coordList = new CoordinateList(9);
             coordList.Add(px00, false);
             coordList.Add(px01, false);
             coordList.Add(py10, false);
