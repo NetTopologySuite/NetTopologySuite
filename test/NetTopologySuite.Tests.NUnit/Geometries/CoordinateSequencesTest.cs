@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection.PortableExecutable;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -105,14 +106,29 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestCopy(DotSpatialAffineCoordinateSequenceFactory.Instance, 4);
         }
 
-        [Test]
-        public void TestCopyDifferent3rd()
+        [TestCaseSource(nameof(CsFactories))]
+        public void TestCopyDifferentDim(CoordinateSequenceFactory csFactory)
         {
-            TestContext.WriteLine("Testing copy");
-            DoTestCopyDifferentDim(CoordinateArraySequenceFactory.Instance);
-            DoTestCopyDifferentDim(PackedCoordinateSequenceFactory.DoubleFactory);
-            DoTestCopyDifferentDim(PackedCoordinateSequenceFactory.FloatFactory);
-            DoTestCopyDifferentDim(DotSpatialAffineCoordinateSequenceFactory.Instance);
+            TestContext.WriteLine($"Testing copy with different dimensions using {csFactory}");
+            DoTestCopyDifferentDim(csFactory);
+        }
+
+
+        [TestCaseSource(nameof(CsFactories))]
+        public void TestIsEqual(CoordinateSequenceFactory csFactory)
+        {
+            TestContext.WriteLine("Testing equality");
+            int dim1 = 2, dim2 = 4, measures1 = 0, measures2 = 1;
+            if (csFactory is PackedCoordinateSequenceFactory) {
+                dim1 = 7; measures1 = 3;
+                dim2 = 9; measures2 = 2;
+            }
+            var seq1 = CreateTestSequenceM(csFactory, 20, dim1, measures1);
+            var seq2 = CreateTestSequenceM(csFactory, 20, dim2, measures2);
+
+            Assert.That(CoordinateSequences.IsEqual(seq1, seq2), Is.True);
+            Assert.That(CoordinateSequences.IsEqualAt(seq1, 4, seq2, 4), Is.True);
+            Assert.That(CoordinateSequences.IsEqualAt(seq1, 5, seq2, 4), Is.False);
         }
 
         [Test]
@@ -145,6 +161,21 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return cs;
         }
 
+        private static CoordinateSequence CreateTestSequenceM(CoordinateSequenceFactory csFactory, int size, int dim,
+            int measures)
+        {
+            var cs = csFactory.Create(size, dim, measures);
+            // initialize with a data signature where coords look like [1, 10, 100, ...]
+            int spatial = dim - measures;
+            for (int i = 0; i < size; i++) {
+                for (int d = 0; d < spatial; d++)
+                    cs.SetOrdinate(i, d, i * Math.Pow(10, d));
+                for (int d = 0; d < measures; d++)
+                    cs.SetOrdinate(i, spatial + d, i * 100 + d + 1);
+            }
+        
+            return cs;
+        }
 
         private static void DoTestReverse(CoordinateSequenceFactory factory, int dimension)
         {
@@ -444,6 +475,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
 
             return sequence;
+        }
+
+        public static IEnumerable CsFactories
+        {
+            get
+            {
+                yield return CoordinateArraySequenceFactory.Instance;
+                yield return PackedCoordinateSequenceFactory.DoubleFactory;
+                yield return PackedCoordinateSequenceFactory.FloatFactory;
+                yield return DotSpatialAffineCoordinateSequenceFactory.Instance;
+            }
         }
     }
 }
