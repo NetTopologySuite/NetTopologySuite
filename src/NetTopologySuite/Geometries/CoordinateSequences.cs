@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Geometries
@@ -54,8 +56,124 @@ namespace NetTopologySuite.Geometries
         /// <param name="length">The number of coordinates to copy</param>
         public static void Copy(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos, int length)
         {
+            // Attempt shortcuts
+            if (src is PackedDoubleCoordinateSequence srcPD && dest is PackedDoubleCoordinateSequence destPD)
+            {
+                if (TryRawCopy(srcPD, srcPos, destPD, destPos, length))
+                    return;
+            }
+            else if (src is PackedFloatCoordinateSequence srcPF && dest is PackedFloatCoordinateSequence destPF)
+            {
+                if (TryRawCopy(srcPF, srcPos, destPF, destPos, length))
+                    return;
+            }
+            else if (src is DotSpatialAffineCoordinateSequence srcDS && dest is DotSpatialAffineCoordinateSequence destDS)
+            {
+                if (TryRawCopy(srcDS, srcPos, destDS, destPos, length))
+                    return;
+            }
+
+            // Test for max ordinate indices to copy
+            int minSpatial = Math.Min(src.Spatial, dest.Spatial);
+            int minMeasures = Math.Min(src.Measures, dest.Measures);
+
+            // Copy one by one
             for (int i = 0; i < length; i++)
-                CopyCoord(src, srcPos + i, dest, destPos + i);
+                CopyCoord(src, srcPos + i, dest, destPos + i, minSpatial, minMeasures);
+        }
+
+        /// <summary>
+        /// Copies a section of a <see cref="PackedDoubleCoordinateSequence"/> to another <see cref="PackedDoubleCoordinateSequence"/>.
+        /// The sequences must have same dimensions.
+        /// </summary>
+        /// <param name="src">The sequence to copy coordinates from</param>
+        /// <param name="srcPos">The starting index of the coordinates to copy</param>
+        /// <param name="dest">The sequence to which the coordinates should be copied to</param>
+        /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
+        /// <param name="length">The number of coordinates to copy</param>
+        private static bool TryRawCopy(PackedDoubleCoordinateSequence src, int srcPos, PackedDoubleCoordinateSequence dest, int destPos, int length)
+        {
+            if (src.Ordinates != dest.Ordinates)
+                return false;
+
+            if (srcPos + length > src.Count || destPos + length > dest.Count)
+                return false;
+
+            double[] srcRaw = src.GetRawCoordinates();
+            double[] destRaw = dest.GetRawCoordinates();
+            int srcOffset = srcPos * src.Dimension;
+            int destOffset = destPos * dest.Dimension;
+
+            Array.Copy(srcRaw, srcOffset, destRaw, destOffset, length * src.Dimension);
+            dest.ReleaseCoordinateArray();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Copies a section of a <see cref="PackedFloatCoordinateSequence"/> to another <see cref="PackedFloatCoordinateSequence"/>.
+        /// The sequences must have same dimensions.
+        /// </summary>
+        /// <param name="src">The sequence to copy coordinates from</param>
+        /// <param name="srcPos">The starting index of the coordinates to copy</param>
+        /// <param name="dest">The sequence to which the coordinates should be copied to</param>
+        /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
+        /// <param name="length">The number of coordinates to copy</param>
+        public static bool TryRawCopy(PackedFloatCoordinateSequence src, int srcPos, PackedFloatCoordinateSequence dest, int destPos, int length)
+        {
+            if (src.Ordinates != dest.Ordinates)
+                return false;
+
+            if (srcPos + length > src.Count || destPos + length > dest.Count)
+                return false;
+
+            float[] srcRaw = src.GetRawCoordinates();
+            float[] destRaw = dest.GetRawCoordinates();
+            int srcOffset = srcPos * src.Dimension;
+            int destOffset = destPos * dest.Dimension;
+
+            Array.Copy(srcRaw, srcOffset, destRaw, destOffset, length * src.Dimension);
+            dest.ReleaseCoordinateArray();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Copies a section of a <see cref="PackedDoubleCoordinateSequence"/> to another <see cref="PackedDoubleCoordinateSequence"/>.
+        /// The sequences must have same dimensions.
+        /// </summary>
+        /// <param name="src">The sequence to copy coordinates from</param>
+        /// <param name="srcPos">The starting index of the coordinates to copy</param>
+        /// <param name="dest">The sequence to which the coordinates should be copied to</param>
+        /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
+        /// <param name="length">The number of coordinates to copy</param>
+        private static bool TryRawCopy(DotSpatialAffineCoordinateSequence src, int srcPos, DotSpatialAffineCoordinateSequence dest, int destPos, int length)
+        {
+            if (srcPos + length > src.Count || destPos + length > dest.Count)
+                return false;
+
+            // Copy XY
+            double[] srcRaw = src.XY;
+            double[] destRaw = dest.XY;
+            int srcOffset = srcPos * 2;
+            int destOffset = destPos * 2;
+            Array.Copy(srcRaw, srcOffset, destRaw, destOffset, 2 * length);
+
+            // Copy Z
+            srcRaw = src.Z;
+            destRaw = dest.Z;
+            if (srcRaw != null && destRaw != null)
+                Array.Copy(srcRaw, srcPos, destRaw, destPos, length);
+
+            // Copy M
+            srcRaw = src.M;
+            destRaw = dest.M;
+            if (srcRaw != null && destRaw != null)
+                Array.Copy(srcRaw, srcPos, destRaw, destPos, length);
+
+            dest.ReleaseCoordinateArray();
+
+            return true;
         }
 
         /// <summary>
@@ -69,12 +187,33 @@ namespace NetTopologySuite.Geometries
         /// <param name="destPos">The index of the coordinate in <see paramref="dest"/></param>
         public static void CopyCoord(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos)
         {
-            int minDim = Math.Min(src.Dimension, dest.Dimension);
-            for (int dim = 0; dim < minDim; dim++)
-            {
-                double value = src.GetOrdinate(srcPos, dim);
-                dest.SetOrdinate(destPos, dim, value);
-            }
+            int minSpatial = Math.Min(src.Spatial, dest.Spatial);
+            int minMeasures = Math.Min(src.Measures, dest.Measures);
+            CopyCoord(src, srcPos, dest, destPos, minSpatial, minMeasures);
+        }
+
+        /// <summary>
+        /// Copies a coordinate of a <see cref="CoordinateSequence"/> to another <see cref="CoordinateSequence"/>.
+        /// The sequences may have different dimensions;
+        /// in this case only the common dimensions are copied.
+        /// </summary>
+        /// <param name="src">The sequence to copy coordinate from</param>
+        /// <param name="srcPos">The index of the coordinate to copy</param>
+        /// <param name="dest">The sequence to which the coordinate should be copied to</param>
+        /// <param name="destPos">The index of the coordinate in <see paramref="dest"/></param>
+        /// <param name="numSpatial">The number of spatial ordinates to copy</param>
+        /// <param name="numMeasures">The number of measure ordinates to copy</param>
+        private static void CopyCoord(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos,
+            int numSpatial, int numMeasures)
+        {
+            // Copy spatial ordinates
+            for (int dim = 0; dim < numSpatial; dim++)
+                dest.SetOrdinate(destPos, dim, src.GetOrdinate(srcPos, dim));
+
+            // Copy measure ordinates
+            for (int measure = 0; measure < numMeasures; measure++)
+                dest.SetOrdinate(destPos, dest.Spatial + measure,
+                    src.GetOrdinate(srcPos, src.Spatial + measure));
         }
 
         /// <summary>
@@ -127,13 +266,13 @@ namespace NetTopologySuite.Geometries
 
         private static CoordinateSequence CreateClosedRing(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
         {
-            var newseq = fact.Create(size, seq.Dimension, seq.Measures);
+            var newSeq = fact.Create(size, seq.Dimension, seq.Measures);
             int n = seq.Count;
-            Copy(seq, 0, newseq, 0, n);
+            Copy(seq, 0, newSeq, 0, n);
             // fill remaining coordinates with start point
             for (int i = n; i < size; i++)
-                Copy(seq, 0, newseq, i, 1);
-            return newseq;
+                Copy(seq, 0, newSeq, i, 1);
+            return newSeq;
         }
 
         /// <summary>
@@ -151,7 +290,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The extended sequence</returns>
         public static CoordinateSequence Extend(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
         {
-            var newSeq = fact.Create(size, seq.Ordinates);
+            var newSeq = fact.Create(size, seq.Dimension, seq.Measures);
             int n = seq.Count;
             Copy(seq, 0, newSeq, 0, n);
             // fill remaining coordinates with end point, if it exists
@@ -171,31 +310,76 @@ namespace NetTopologySuite.Geometries
         /// must be equal.
         /// Two <c>NaN</c> ordinates values are considered to be equal.
         /// </summary>
-        /// <param name="cs1">a CoordinateSequence</param>
-        /// <param name="cs2">a CoordinateSequence</param>
+        /// <param name="seq1">a CoordinateSequence</param>
+        /// <param name="seq2">a CoordinateSequence</param>
         /// <returns><c>true</c> if the sequences are equal in the common dimensions</returns>
-        public static bool IsEqual(CoordinateSequence cs1, CoordinateSequence cs2)
+        public static bool IsEqual(CoordinateSequence seq1, CoordinateSequence seq2)
         {
-            int cs1Size = cs1.Count;
-            int cs2Size = cs2.Count;
+            int cs1Size = seq1.Count;
+            int cs2Size = seq2.Count;
             if (cs1Size != cs2Size)
                 return false;
-            int dim = Math.Min(cs1.Dimension, cs2.Dimension);
+
+            int minSpatial = Math.Min(seq1.Spatial, seq2.Spatial);
+            int minMeasures = Math.Min(seq1.Measures, seq2.Measures);
             for (int i = 0; i < cs1Size; i++)
             {
-                for (int d = 0; d < dim; d++)
-                {
-                    double v1 = cs1.GetOrdinate(i, d);
-                    double v2 = cs2.GetOrdinate(i, d);
-                    if (v1 == v2)
-                        continue;
-                    // special check for NaNs
-                    else if (double.IsNaN(v1) && double.IsNaN(v2))
-                        continue;
-                    else
-                        return false;
-                }
+                if (!IsEqualAt(seq1, i, seq2, i, minSpatial, minMeasures))
+                    return false;
             }
+            return true;
+        }
+
+        /// <summary>
+        /// Tests whether two <c>Coordinate</c>s <see cref="CoordinateSequence"/>s are equal.
+        /// They do not need to be of the same dimension,
+        /// but the ordinate values for the common ordinates of the two
+        /// must be equal.
+        /// Two <c>NaN</c> ordinates values are considered to be equal.
+        /// </summary>
+        /// <param name="seq1">A CoordinateSequence</param>
+        /// <param name="pos1">The index of the <c>Coordinate</c> in <paramref name="seq1"/>.</param>
+        /// <param name="seq2">a CoordinateSequence</param>
+        /// <param name="pos2">The index of the <c>Coordinate</c> in <paramref name="seq2"/>.</param>
+        /// <returns><c>true</c> if the sequences are equal in the common dimensions</returns>
+        public static bool IsEqualAt(CoordinateSequence seq1, int pos1, CoordinateSequence seq2, int pos2)
+        {
+            int minSpatial = Math.Min(seq1.Spatial, seq2.Spatial);
+            int minMeasures = Math.Min(seq1.Measures, seq2.Measures);
+            return IsEqualAt(seq1, pos1, seq2, pos2, minSpatial, minMeasures);
+        }
+
+        /// <summary>
+        /// Tests whether two <c>Coordinate</c>s <see cref="CoordinateSequence"/>s are equal.
+        /// They do not need to be of the same dimension,
+        /// but the ordinate values for the common ordinates of the two
+        /// must be equal.
+        /// Two <c>NaN</c> ordinates values are considered to be equal.
+        /// </summary>
+        /// <param name="seq1">A CoordinateSequence</param>
+        /// <param name="pos1">The index of the <c>Coordinate</c> in <paramref name="seq1"/>.</param>
+        /// <param name="seq2">a CoordinateSequence</param>
+        /// <param name="pos2">The index of the <c>Coordinate</c> in <paramref name="seq2"/>.</param>
+        /// <param name="numSpatial">The number of spatial ordinates to compare</param>
+        /// <param name="numMeasures">The number of measure ordinates to compare</param>
+        /// <returns><c>true</c> if the sequences are equal in the common dimensions</returns>
+        private static bool IsEqualAt(CoordinateSequence seq1, int pos1, CoordinateSequence seq2, int pos2,
+            int numSpatial, int numMeasures)
+        {
+            for (int i = 0; i < numSpatial; i++)
+            {
+                double v1 = seq1.GetOrdinate(pos1, i);
+                double v2 = seq2.GetOrdinate(pos2, i);
+                if (!v1.Equals(v2)) return false;
+            }
+
+            for (int i = 0; i < numMeasures; i++)
+            {
+                double v1 = seq1.GetOrdinate(pos1, seq1.Spatial + i);
+                double v2 = seq2.GetOrdinate(pos2, seq2.Spatial + i);
+                if (!v1.Equals(v2)) return false;
+            }
+
             return true;
         }
 
