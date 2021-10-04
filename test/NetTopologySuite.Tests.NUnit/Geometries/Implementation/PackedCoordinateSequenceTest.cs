@@ -44,12 +44,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(!seq.HasM, "M should not be present");
 
             int indexLast = size - 1;
-            double valLast = indexLast;
+            double valLast = indexLast * 10;
 
             var coord = seq.GetCoordinate(indexLast);
             Assert.IsTrue(coord.GetType() == typeof(Coordinate));
-            Assert.AreEqual(valLast, coord.X);
-            Assert.AreEqual(valLast, coord.Y);
+            Assert.AreEqual(valLast + 0, coord.X);
+            Assert.AreEqual(valLast + 1, coord.Y);
 
             var array = seq.ToCoordinateArray();
             Assert.AreEqual(coord, array[indexLast]);
@@ -76,9 +76,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var coord = seq.GetCoordinate(4);
             Assert.IsTrue(coord.GetType() == typeof(CoordinateZ));
             var coordZ = (CoordinateZ) coord;
-            Assert.AreEqual(4.0, coord.X);
-            Assert.AreEqual(4.0, coord.Y);
-            Assert.AreEqual(4.0, coordZ.Z);
+            Assert.AreEqual(40.0, coord.X);
+            Assert.AreEqual(41.0, coord.Y);
+            Assert.AreEqual(42.0, coordZ.Z);
 
             var array = seq.ToCoordinateArray();
             Assert.AreEqual(coord, array[4]);
@@ -104,9 +104,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var coord = seq.GetCoordinate(4);
             Assert.IsTrue(coord is CoordinateM);
             var coordM = (CoordinateM) coord;
-            Assert.AreEqual(4.0, coord.X);
-            Assert.AreEqual(4.0, coord.Y);
-            Assert.AreEqual(4.0, coordM.M);
+            Assert.AreEqual(40.0, coord.X);
+            Assert.AreEqual(41.0, coord.Y);
+            Assert.AreEqual(42.0, coordM.M);
 
             var array = seq.ToCoordinateArray();
             Assert.AreEqual(coord, array[4]);
@@ -132,10 +132,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var coord = seq.GetCoordinate(4);
             Assert.IsTrue(coord is CoordinateZM);
             var coordZM = (CoordinateZM) coord;
-            Assert.AreEqual(4.0, coord.X);
-            Assert.AreEqual(4.0, coord.Y);
-            Assert.AreEqual(4.0, coordZM.Z);
-            Assert.AreEqual(4.0, coordZM.M);
+            Assert.AreEqual(40.0, coord.X);
+            Assert.AreEqual(41.0, coord.Y);
+            Assert.AreEqual(42.0, coordZM.Z);
+            Assert.AreEqual(43.0, coordZM.M);
 
             var array = seq.ToCoordinateArray();
             Assert.AreEqual(coord, array[4]);
@@ -159,10 +159,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(!seq.HasM, "M should not be present");
 
             var coord = seq.GetCoordinate(4);
-            Assert.AreEqual(4.0, coord.X);
-            Assert.AreEqual(4.0, coord.Y);
-            Assert.AreEqual(4.0, coord.Z);
-            Assert.AreEqual(4.0, coord[Ordinate.Spatial4]);
+            Assert.AreEqual(40.0, coord.X);
+            Assert.AreEqual(41.0, coord.Y);
+            Assert.AreEqual(42.0, coord.Z);
+            Assert.AreEqual(43.0, coord[Ordinate.Spatial4]);
 
             var array = seq.ToCoordinateArray();
             Assert.AreEqual(coord, array[4]);
@@ -210,15 +210,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             }
         }
 
-        private static void InitProgression(CoordinateSequence seq)
-        {
-            for (int index = 0; index < seq.Count; index++)
-            {
-                for (int ordinateIndex = 0; ordinateIndex < seq.Dimension; ordinateIndex++)
-                {
-                    seq.SetOrdinate(index, ordinateIndex, index);
-                }
-            }
-        }
+        //private static void InitProgression(CoordinateSequence seq)
+        //{
+        //    for (int index = 0; index < seq.Count; index++)
+        //    {
+        //        for (int ordinateIndex = 0; ordinateIndex < seq.Dimension; ordinateIndex++)
+        //        {
+        //            seq.SetOrdinate(index, ordinateIndex, index);
+        //        }
+        //    }
+        //}
     }
 }
