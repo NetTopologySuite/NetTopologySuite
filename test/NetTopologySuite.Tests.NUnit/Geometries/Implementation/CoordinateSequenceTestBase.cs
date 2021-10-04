@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         }
 
         [Test]
-        public void testSerializable() {
+        public void TestSerializable() {
             var coords = CreateArray(Size);
             var seq = CsFactory.Create(coords);
             // throws exception if not serializable
@@ -254,6 +254,54 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             }
             return true;
         }
+
+        [Test]
+        public void TestFirstAndLast()
+        {
+            // Empty sequence
+            var cs = CsFactory.Create(0, 3, 1);
+            Assert.That(cs.First, Is.Null);
+            Assert.That(cs.Last, Is.Null);
+
+            // CoordinateSequence with one point
+            cs = CsFactory.Create(1, 4, 1);
+            cs.SetX(0, 1d);
+            cs.SetY(0, 2d);
+            cs.SetM(0, 4d);
+
+            Assert.That(cs.First, Is.TypeOf<CoordinateZM>());
+            Assert.That(NtsGeometryServices.Instance.CoordinateEqualityComparer.Equals(cs.First, cs.Last), Is.True);
+            Assert.That(cs.First.X, Is.EqualTo(1d));
+            Assert.That(cs.First.Y, Is.EqualTo(2d));
+            //Undefined
+            //Assert.That(double.IsNaN(cs.First.Z), Is.True);
+            Assert.That(cs.First.M, Is.EqualTo(4d));
+
+            // CoordinateSequence with several points, not a ring
+            cs = CsFactory.Create(5, 3, 0);
+            InitProgression(cs);
+
+            Assert.That(cs.First, Is.TypeOf<CoordinateZ>());
+            Assert.That(NtsGeometryServices.Instance.CoordinateEqualityComparer.Equals(cs.First, cs.Last), Is.False);
+            Assert.That(cs.First.X, Is.EqualTo(0d));
+            Assert.That(cs.First.Y, Is.EqualTo(1d));
+            Assert.That(cs.First.Z, Is.EqualTo(2d));
+            Assert.That(cs.Last.X, Is.EqualTo(40d));
+            Assert.That(cs.Last.Y, Is.EqualTo(41d));
+            Assert.That(cs.Last.Z, Is.EqualTo(42d));
+        }
+
+        protected static void InitProgression(CoordinateSequence seq)
+        {
+            for (int index = 0; index < seq.Count; index++)
+            {
+                for (int ordinateIndex = 0; ordinateIndex < seq.Dimension; ordinateIndex++)
+                {
+                    seq.SetOrdinate(index, ordinateIndex, 10 * index + ordinateIndex);
+                }
+            }
+        }
+
     }
 }
 

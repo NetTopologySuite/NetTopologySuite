@@ -31,9 +31,9 @@ namespace NetTopologySuite.Geometries
     [Serializable]
     public abstract class CoordinateSequence
     {
-        private readonly int _zIndex = -1;
+        private readonly int _zIndex;
 
-        private readonly int _mIndex = -1;
+        private readonly int _mIndex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoordinateSequence"/> class.
@@ -331,6 +331,26 @@ namespace NetTopologySuite.Geometries
             return TryGetOrdinateIndex(ordinate, out int ordinateIndex)
                 ? GetOrdinate(index, ordinateIndex)
                 : Coordinate.NullOrdinate;
+        }
+
+        /// <summary>
+        /// Gets a value indicating the first <c>Coordinate</c> in this sequence.<br/>
+        /// For <c>LineString</c>s e.g. this is the starting point.
+        /// </summary>
+        /// <returns>First <c>Coordinate</c> in sequence or <c>null</c> if empty.</returns>
+        public Coordinate First
+        {
+            get => Count > 0 ? GetCoordinate(0) : null;
+        }
+
+        /// <summary>
+        /// Gets a value indicating the last <c>Coordinate</c> in this sequence.<br/>
+        /// For <c>LineString</c>s e.g. this is the ending point.
+        /// </summary>
+        /// <returns>Last <c>Coordinate</c> in sequence or <c>null</c> if empty.</returns>
+        public Coordinate Last
+        {
+            get => Count > 0 ? GetCoordinate(Count - 1) : null;
         }
 
         /// <summary>
