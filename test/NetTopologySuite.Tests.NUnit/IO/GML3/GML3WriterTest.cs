@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML3
 
         private static XName GML3Name(string localName)
         {
-            return XName.Get(localName, "http://www.opengis.net/gml");
+            return XName.Get(localName, "http://www.opengis.net/gml/3.2");
         }
 
         private static XDocument ToGML3(Geometry geom)

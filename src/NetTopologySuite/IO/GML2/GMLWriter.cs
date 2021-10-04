@@ -22,6 +22,7 @@ namespace NetTopologySuite.IO.GML2
         private const int InitValue = 150;
         private const int CoordSize = 200;
         private readonly GMLVersion _gmlVersion;
+        private readonly string _gmlNs;
 
         /// <summary>
         /// Formatter for double values of coordinates
@@ -38,11 +39,14 @@ namespace NetTopologySuite.IO.GML2
 
         internal GMLWriter(GMLVersion gmlVersion)
         {
+            _gmlVersion = gmlVersion;
             switch (gmlVersion)
             {
                 case GMLVersion.Two:
+                    _gmlNs = $"{GMLElements.gmlNS}";
+                    break;
                 case GMLVersion.Three:
-                    _gmlVersion = gmlVersion;
+                    _gmlNs = $"{GMLElements.gmlNS}/3.2";
                     break;
 
                 default:
@@ -76,7 +80,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="stream"></param>
         public void Write(Geometry geometry, Stream stream)
         {
-            var settings = new XmlWriterSettings()
+            var settings = new XmlWriterSettings
             {
                 NamespaceHandling = NamespaceHandling.OmitDuplicates,
                 Indent = true,
@@ -84,7 +88,7 @@ namespace NetTopologySuite.IO.GML2
             };
             var writer = XmlWriter.Create(stream, settings);
 
-            //writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
+            //writer.WriteStartElement(GMLElements.gmlPrefix, "GML", _gmlNs);
 
             Write(geometry, writer);
             //writer.WriteEndElement();
@@ -100,14 +104,14 @@ namespace NetTopologySuite.IO.GML2
         {
             if (_gmlVersion == GMLVersion.Two)
             {
-                writer.WriteStartElement(GMLElements.gmlPrefix, "coord", GMLElements.gmlNS);
-                writer.WriteElementString(GMLElements.gmlPrefix, "X", GMLElements.gmlNS, coordinate.X.ToString("g", NumberFormatter));
-                writer.WriteElementString(GMLElements.gmlPrefix, "Y", GMLElements.gmlNS, coordinate.Y.ToString("g", NumberFormatter));
+                writer.WriteStartElement(GMLElements.gmlPrefix, "coord", _gmlNs);
+                writer.WriteElementString(GMLElements.gmlPrefix, "X", _gmlNs, coordinate.X.ToString("g", NumberFormatter));
+                writer.WriteElementString(GMLElements.gmlPrefix, "Y", _gmlNs, coordinate.Y.ToString("g", NumberFormatter));
                 writer.WriteEndElement();
             }
             else
             {
-                writer.WriteStartElement(GMLElements.gmlPrefix, "pos", GMLElements.gmlNS);
+                writer.WriteStartElement(GMLElements.gmlPrefix, "pos", _gmlNs);
                 writer.WriteValue(string.Format(NumberFormatter, "{0} {1}", coordinate.X, coordinate.Y));
                 writer.WriteEndElement();
             }
@@ -142,7 +146,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void WriteCoordinates(CoordinateSequence coordinates, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "coordinates" : "posList", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "coordinates" : "posList", _gmlNs);
             var sb = new StringBuilder();
             string coordsFormatter = _gmlVersion == GMLVersion.Two ? "{0},{1} " : "{0} {1} ";
             for (int i = 0, cnt = coordinates.Count; i < cnt; i++)
@@ -209,7 +213,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(Point point, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "Point", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "Point", _gmlNs);
             Write(point.Coordinate, writer);
             writer.WriteEndElement();
         }
@@ -221,7 +225,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(LineString lineString, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "LineString", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "LineString", _gmlNs);
             WriteCoordinates(lineString.CoordinateSequence, writer);
             writer.WriteEndElement();
         }
@@ -233,7 +237,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(LinearRing linearRing, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "LinearRing", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "LinearRing", _gmlNs);
             WriteCoordinates(linearRing.CoordinateSequence, writer);
             writer.WriteEndElement();
         }
@@ -245,13 +249,13 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(Polygon polygon, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", GMLElements.gmlNS);
-            writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "outerBoundaryIs" : "exterior", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", _gmlNs);
+            writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "outerBoundaryIs" : "exterior", _gmlNs);
             Write(polygon.ExteriorRing as LinearRing, writer);
             writer.WriteEndElement();
             for (int i = 0; i < polygon.NumInteriorRings; i++)
             {
-                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "innerBoundaryIs" : "interior", GMLElements.gmlNS);
+                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "innerBoundaryIs" : "interior", _gmlNs);
                 Write(polygon.GetInteriorRingN(i) as LinearRing, writer);
                 writer.WriteEndElement();
             }
@@ -265,7 +269,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(MultiPoint multiPoint, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiPoint", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiPoint", _gmlNs);
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
@@ -273,14 +277,14 @@ namespace NetTopologySuite.IO.GML2
             }
             for (int i = 0; i < multiPoint.NumGeometries; i++)
             {
-                writer.WriteStartElement("pointMember", GMLElements.gmlNS);
+                writer.WriteStartElement("pointMember", _gmlNs);
                 Write(multiPoint.Geometries[i] as Point, writer);
                 writer.WriteEndElement();
             }
 
             if (multiPoint.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
             {
-                writer.WriteStartElement("pointMember", GMLElements.gmlNS);
+                writer.WriteStartElement("pointMember", _gmlNs);
                 writer.WriteEndElement();
             }
 
@@ -294,7 +298,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(MultiLineString multiLineString, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiLineString" : "MultiCurve", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiLineString" : "MultiCurve", _gmlNs);
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
@@ -302,14 +306,14 @@ namespace NetTopologySuite.IO.GML2
             }
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
-                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "lineStringMember" : "curveMember", GMLElements.gmlNS);
+                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "lineStringMember" : "curveMember", _gmlNs);
                 Write(multiLineString.Geometries[i] as LineString, writer);
                 writer.WriteEndElement();
             }
 
             if (multiLineString.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
             {
-                writer.WriteStartElement("lineStringMember", GMLElements.gmlNS);
+                writer.WriteStartElement("lineStringMember", _gmlNs);
                 writer.WriteEndElement();
             }
 
@@ -323,7 +327,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(MultiPolygon multiPolygon, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiPolygon" : "MultiSurface", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiPolygon" : "MultiSurface", _gmlNs);
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
@@ -331,14 +335,14 @@ namespace NetTopologySuite.IO.GML2
             }
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
-                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "polygonMember" : "surfaceMember", GMLElements.gmlNS);
+                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "polygonMember" : "surfaceMember", _gmlNs);
                 Write(multiPolygon.Geometries[i] as Polygon, writer);
                 writer.WriteEndElement();
             }
 
             if (multiPolygon.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
             {
-                writer.WriteStartElement("polygonMember", GMLElements.gmlNS);
+                writer.WriteStartElement("polygonMember", _gmlNs);
                 writer.WriteEndElement();
             }
 
@@ -352,7 +356,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(GeometryCollection geometryCollection, XmlWriter writer)
         {
-            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiGeometry", GMLElements.gmlNS);
+            writer.WriteStartElement(GMLElements.gmlPrefix, "MultiGeometry", _gmlNs);
             if (_gmlVersion == GMLVersion.Two)
             {
                 // Required in version 2
@@ -360,14 +364,14 @@ namespace NetTopologySuite.IO.GML2
             }
             for (int i = 0; i < geometryCollection.NumGeometries; i++)
             {
-                writer.WriteStartElement("geometryMember", GMLElements.gmlNS);
+                writer.WriteStartElement("geometryMember", _gmlNs);
                 Write(geometryCollection.Geometries[i], writer);
                 writer.WriteEndElement();
             }
 
             if (geometryCollection.NumGeometries == 0 && _gmlVersion == GMLVersion.Two)
             {
-                writer.WriteStartElement("geometryMember", GMLElements.gmlNS);
+                writer.WriteStartElement("geometryMember", _gmlNs);
                 writer.WriteEndElement();
             }
 

@@ -25,7 +25,7 @@ namespace NetTopologySuite.IO.GML2
         /// <summary>
         /// Initialize reader with a standard <see cref="GeometryFactory"/>.
         /// </summary>
-        public GMLReader() : this(GeometryFactory.Default) { }
+        public GMLReader() : this(NtsGeometryServices.Instance.CreateGeometryFactory()) { }
 
         /// <summary>
         /// Initialize reader with the given <see cref="GeometryFactory"/>.
