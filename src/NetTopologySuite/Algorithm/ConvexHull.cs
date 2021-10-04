@@ -310,7 +310,7 @@ namespace NetTopologySuite.Algorithm
         private static Coordinate[] ComputeOctRing(Coordinate[] inputPts)
         {
             var octPts = ComputeOctPts(inputPts);
-            var coordList = new CoordinateList();
+            var coordList = new CoordinateList(octPts.Length + 1);
             coordList.Add(octPts, false);
 
             // points must all lie in a line

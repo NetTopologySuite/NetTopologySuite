@@ -49,7 +49,7 @@ namespace NetTopologySuite.Simplify
                 _usePt[i] = true;
 
             SimplifySection(0, _pts.Length - 1);
-            var coordList = new CoordinateList();
+            var coordList = new CoordinateList(_pts.Length);
             for (int i = 0; i < _pts.Length; i++)
                 if (_usePt[i])
                     coordList.Add(_pts[i].Copy());

@@ -107,7 +107,7 @@ namespace NetTopologySuite.Simplify
             // good idea anyway, we want to make sure we don't output the same
             // coord multiple times in a row, so we pass "false" for the second
             // parameter to "Add".
-            var list = new CoordinateList();
+            var list = new CoordinateList(nodes.Length);
 
             list.Add(_pts[0], false);
             for (int i = 0; i < nodes.Length; i++)

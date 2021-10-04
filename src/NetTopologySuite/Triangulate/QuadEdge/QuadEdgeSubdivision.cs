@@ -927,8 +927,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 qe = qe.OPrev;
             } while (qe != startQE);
 
-            var coordList = new CoordinateList();
-            coordList.AddAll(cellPts, false);
+            var coordList = new CoordinateList(cellPts, false);
+            //coordList.AddAll(cellPts, false);
             coordList.CloseRing();
 
             if (coordList.Count < 4)

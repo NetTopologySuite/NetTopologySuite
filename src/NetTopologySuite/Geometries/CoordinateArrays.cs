@@ -393,7 +393,7 @@ namespace NetTopologySuite.Geometries
         public static Coordinate[] RemoveRepeatedOrInvalidPoints(Coordinate[] coord)
         {
             if (!HasRepeatedOrInvalidPoints(coord)) return coord;
-            var coordList = new CoordinateList();
+            var coordList = new CoordinateList(coord.Length);
             for (int i = 0; i < coord.Length; i++) {
                 if (!coord[i].IsValid) continue;
                 coordList.Add(coord[i], false);
@@ -699,7 +699,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>An array of coordinates which intersect with the envelope</returns>
         public static Coordinate[] Intersection(Coordinate[] coordinates, Envelope env)
         {
-            var coordList = new CoordinateList();
+            var coordList = new CoordinateList(coordinates.Length);
             for (int i = 0; i < coordinates.Length; i++)
             {
                 var c = coordinates[i];

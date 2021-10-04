@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private static CoordinateList CoordList(params double[] ords)
         {
-            var cl = new CoordinateList();
+            var cl = new CoordinateList(ords.Length / 2);
             for (int i = 0; i < ords.Length; i += 2)
             {
                 cl.Add(new Coordinate(ords[i], ords[i + 1]), false);
