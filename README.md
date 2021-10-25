@@ -19,7 +19,7 @@ To get you started, we have set up an introductory [Getting Started](https://git
 A [wiki page](https://github.com/NetTopologySuite/NetTopologySuite/wiki/Upgrading-to-2.0-from-1.x) has been started to try to document the breaking changes in 2.0 when coming from 1.x.
 
 ## Install with NuGet package manager
-### Stable [![NuGet Status](http://img.shields.io/nuget/v/NetTopologySuite.svg?style=flat)](http://www.nuget.org/packages/NetTopologySuite/) [![Build Status](https://github.com/NetTopologySuite/NetTopologySuite/actions/workflows/full-ci.yml/badge.svg?branch=master)](https://github.com/NetTopologySuite/NetTopologySuite/actions/workflows/full-ci.yml)
+### Stable [![NuGet Status](http://img.shields.io/nuget/v/NetTopologySuite.svg?style=flat)](http://www.nuget.org/packages/NetTopologySuite/) [![Build Status](https://github.com/NetTopologySuite/NetTopologySuite/actions/workflows/full-ci.yml/badge.svg?branch=main)](https://github.com/NetTopologySuite/NetTopologySuite/actions/workflows/full-ci.yml)
 Stable releases are hosted on the default NuGet feed. You can install them using the following command on the package manager command line
 ```
 PM> Install-Package NetTopologySuite
