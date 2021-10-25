@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace NetTopologySuite.Noding
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -125,7 +125,7 @@ The set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">IS
 i.e. noding is repeated until no further intersections are detected.</p>
 <p>
 Iterated noding using a <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a> precision model is not guaranteed to converge,
-due to roundoff error. This problem is detected and an exception is thrown.
+due to round off error. This problem is detected and an exception is thrown.
 Clients can choose to rerun the noding using a lower precision model.
 </p>
 </section>
@@ -169,7 +169,7 @@ Non-noded intersections include:
 by setting <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersectionsOnly">InteriorIntersectionsOnly</a>.</p>
 <p>
 By default only the first intersection is found,
-but all can be found by setting {@link #setFindAllIntersections(boolean)
+but all can be found by setting <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_FindAllIntersections">FindAllIntersections</a>.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.NodingValidator.html">NodingValidator</a></h4>
       <section><p>Validates that a collection of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s is correctly noded.
@@ -312,7 +312,7 @@ Octants are numbered as follows:</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Noding.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Noding.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

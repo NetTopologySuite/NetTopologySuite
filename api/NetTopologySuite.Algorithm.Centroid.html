@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Centroid
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -84,13 +84,9 @@
   <h1 id="NetTopologySuite_Algorithm_Centroid" data-uid="NetTopologySuite.Algorithm.Centroid" class="text-break">Class Centroid
   </h1>
   <div class="markdown level0 summary"><p>Computes the centroid of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> of any dimension.
-If the geometry is nominally of higher dimension,
-but has lower <em>effective</em> dimension
-(i.e. contains only components
-having zero length or area),
-the centroid will be computed as for the equivalent lower-dimension geometry.
-If the input geometry is empty, a
-<code>null</code> Coordinate is returned.</p>
+For collections the centroid is computed for the collection of
+non-empty elements of highest dimension.
+The centroid of an empty geometry is <code>null</code></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,7 +125,7 @@ If the input geometry is empty, a
     <pre><code class="lang-csharp hljs">public class Centroid</code></pre>
   </div>
   <h5 id="NetTopologySuite_Algorithm_Centroid_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Algorithm</p>
+  <div class="markdown level0 remarks"><h3>Algorithm</h3>
 <ul><li><strong>Dimension 2</strong> - the centroid ic computed
 as a weighted sum of the centroids
 of a decomposition of the area into (possibly overlapping) triangles.
@@ -147,10 +143,10 @@ If the input geometries are empty, a <code>null</code> Coordinate is returned.
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Centroid.cs/#L81">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Centroid.cs/#L81">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Centroid__ctor_" data-uid="NetTopologySuite.Algorithm.Centroid.#ctor*"></a>
   <h4 id="NetTopologySuite_Algorithm_Centroid__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.Centroid.#ctor(NetTopologySuite.Geometries.Geometry)">Centroid(Geometry)</h4>
@@ -182,10 +178,10 @@ If the input geometries are empty, a <code>null</code> Coordinate is returned.
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid_GetCentroid.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid.GetCentroid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid_GetCentroid.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid.GetCentroid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Centroid.cs/#L122">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Centroid.cs/#L122">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Centroid_GetCentroid_" data-uid="NetTopologySuite.Algorithm.Centroid.GetCentroid*"></a>
   <h4 id="NetTopologySuite_Algorithm_Centroid_GetCentroid" data-uid="NetTopologySuite.Algorithm.Centroid.GetCentroid">GetCentroid()</h4>
@@ -214,10 +210,10 @@ If the input geometries are empty, a <code>null</code> Coordinate is returned.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid_GetCentroid_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid.GetCentroid(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid_GetCentroid_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid.GetCentroid(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Centroid.cs/#L46">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Centroid.cs/#L46">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Centroid_GetCentroid_" data-uid="NetTopologySuite.Algorithm.Centroid.GetCentroid*"></a>
   <h4 id="NetTopologySuite_Algorithm_Centroid_GetCentroid_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.Centroid.GetCentroid(NetTopologySuite.Geometries.Geometry)">GetCentroid(Geometry)</h4>
@@ -270,10 +266,10 @@ If the input geometries are empty, a <code>null</code> Coordinate is returned.
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Centroid.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Centroid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/Centroid.cs/#L37" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Centroid.cs/#L37" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

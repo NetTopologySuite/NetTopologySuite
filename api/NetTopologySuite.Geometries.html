@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace NetTopologySuite.Geometries
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -142,25 +142,7 @@ This data object is suitable for use with coordinate sequences with
       <section><p>Useful utility functions for handling Coordinate objects.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></h4>
-      <section><p>The internal representation of a list of coordinates inside a Geometry.</p>
-<p>
-This allows Geometries to store their
-points using something other than the NTS <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> class.
-For example, a storage-efficient implementation
-might store coordinate sequences as an array of x&apos;s
-and an array of y&apos;s.
-Or a custom coordinate class might support extra attributes like M-values.
-</p>
-<p>
-Implementing a custom coordinate storage structure
-requires implementing the <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a> and
-<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a> abstract classes.
-To use the custom CoordinateSequence, create a
-new <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> parameterized by the CoordinateSequenceFactory
-The <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> can then be used to create new <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s.
-The new Geometries will use the custom CoordinateSequence implementation.
-</p>
-</section>
+      <section></section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceComparator.html">CoordinateSequenceComparator</a></h4>
       <section><p>Compares two <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>s.</p>
 </section>
@@ -427,7 +409,7 @@ The first 16 spatial and 16 measure dimensions may also be accessed this way.
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Geometries.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Geometries.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

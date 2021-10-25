@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace NetTopologySuite.Algorithm
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -112,13 +112,9 @@ Unless otherwise noted, methods in this class express angles in radians.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Algorithm.Centroid.html">Centroid</a></h4>
       <section><p>Computes the centroid of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> of any dimension.
-If the geometry is nominally of higher dimension,
-but has lower <em>effective</em> dimension
-(i.e. contains only components
-having zero length or area),
-the centroid will be computed as for the equivalent lower-dimension geometry.
-If the input geometry is empty, a
-<code>null</code> Coordinate is returned.</p>
+For collections the centroid is computed for the collection of
+non-empty elements of highest dimension.
+The centroid of an empty geometry is <code>null</code></p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Algorithm.CGAlgorithms3D.html">CGAlgorithms3D</a></h4>
       <section><p>Basic computational geometry algorithms
@@ -145,10 +141,19 @@ of computing intersections between line segments.</p>
       <section><p>Computes an interior point of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
 An interior point is guaranteed to lie in the interior of the Geometry,
 if it possible to calculate such a point exactly.
+For collections the interior point is computed for the collection of
+non-empty elements of highest dimension.
 Otherwise, the point may lie on the boundary of the geometry.</p>
 <p>
 The interior point of an empty geometry is <code>POINT EMPTY</code>.
-</p>
+<h2>Algorithm</h2>
+The point is chosen to be &quot;close to the center&quot; of the geometry.
+The location depends on the dimension of the input:
+<ul><li>Dimension 2the interior point is constructed in the middle of the longest interior segment
+of a line bisecting the area.</li><li>Dimension 1the interior point is the interior or boundary vertex closest to the centroid.</li><li>Dimension 0the point is the point closest to the centroid.</li></ul>
+<a class="xref" href="NetTopologySuite.Algorithm.Centroid.html">Centroid</a>
+<a class="xref" href="NetTopologySuite.Algorithm.Construct.MaximumInscribedCircle.html">MaximumInscribedCircle</a>
+<a class="xref" href="NetTopologySuite.Algorithm.Construct.LargestEmptyCircle.html">LargestEmptyCircle</a>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Algorithm.InteriorPointArea.html">InteriorPointArea</a></h4>
       <section><p>Computes a point in the interior of an areal geometry.
@@ -272,7 +277,7 @@ However, other kinds of Boundary Node Rules are appropriate
 in specific situations (for instance, linear network topology
 usually follows the <span class="xref">NetTopologySuite.Algorithm.BoundaryNodeRules.EndPointBoundaryNodeRule</span>.)
 Some JTS operations
-(such as <a class="xref" href="NetTopologySuite.Operation.Relate.RelateOp.html">RelateOp</a>, <a class="xref" href="NetTopologySuite.Operation.BoundaryOp.html">BoundaryOp</a> and <a class="xref" href="NetTopologySuite.Operation.IsSimpleOp.html">IsSimpleOp</a>)
+(such as <a class="xref" href="NetTopologySuite.Operation.Relate.RelateOp.html">RelateOp</a>, <a class="xref" href="NetTopologySuite.Operation.BoundaryOp.html">BoundaryOp</a> and <a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html">IsSimpleOp</a>)
 allow the BoundaryNodeRule to be specified,
 and respect the supplied rule when computing the results of the operation.</p>
 <p>
@@ -306,7 +311,7 @@ This interface and its subclasses follow the <tt>Strategy</tt> design pattern.
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Algorithm.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Algorithm.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

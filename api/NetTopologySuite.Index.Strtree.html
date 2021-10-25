@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace NetTopologySuite.Index.Strtree
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -136,9 +136,11 @@ For two-dimensional spatial data.</p>
 <p>
 The STR packed R-tree is simple to implement and maximizes space
 utilization; that is, as many leaves as possible are filled to capacity.
-Overlap between nodes is far less than in a basic R-tree. However, once the
-tree has been built (explicitly or on the first call to <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html#NetTopologySuite_Index_Strtree_STRtree_1_Query_NetTopologySuite_Geometries_Envelope_">Query(Envelope)</a>), items may
-not be added or removed.
+Overlap between nodes is far less than in a basic R-tree.
+However, the index is semi-static; once the tree has been built
+(which happens automatically upon the first query), items may
+not be added.<br>
+Items may be removed from the tree using <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html#NetTopologySuite_Index_Strtree_STRtree_1_Remove_NetTopologySuite_Geometries_Envelope__0_">Remove(Envelope, TItem)</a>.
 <p>
 Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
 Application To GIS. Morgan Kaufmann, San Francisco, 2002.
@@ -176,7 +178,7 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Index.Strtree.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Index.Strtree.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

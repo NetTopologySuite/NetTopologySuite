@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "D:/Development/Source/Repos/NetTopologySuite/doc",
+  "source_base_path": "d:/Development/Source/Repos/NetTopologySuite/doc",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -29,7 +29,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "ku2/PJo/+V/Joa2dGL0vLusXVP/DsJAtL4F3JanAAFQ="
+          "hash": "Ru5Fj9sOy2PQgoM435rrLBu5Ce2UfEsIGC3lMlDToGI="
         }
       },
       "is_incremental": false,
@@ -41,7 +41,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.AngleUtility.html",
-          "hash": "I8gmWx6MtFKOf6EDW4x4XuHHEdb6MnMSYLYCwd0sIqg="
+          "hash": "Zbar4epqC/YTyvrS+ulY2oyKBFa8S25S0MVEv1SnZMs="
         }
       },
       "is_incremental": false,
@@ -53,7 +53,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Area.html",
-          "hash": "lJA/K11aG/OpM6UjBwcvmSPgVAasSZOETIKWvlaX5es="
+          "hash": "64/vYEwOYqwJ8k4zVkzpN5mv6cxxj7+8aBvvzZigFFw="
         }
       },
       "is_incremental": false,
@@ -65,7 +65,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.BoundaryNodeRules.html",
-          "hash": "gSZ+K1Av9PMCapS1e1DnMFI2rrxbJQJAZKEQRXQDJnA="
+          "hash": "ANtiFOcDIGKVsCDt/LnoThLm2KzG0qi9lOaZARpJxkc="
         }
       },
       "is_incremental": false,
@@ -77,7 +77,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.CGAlgorithms3D.html",
-          "hash": "fcbdXUjGuY6Bng5xipRhdNncsNxWkgWWaQhQy82F2ZA="
+          "hash": "L9s3hyq77jAjKkASUys6BFHmklQRh29j3uRbabQ5E28="
         }
       },
       "is_incremental": false,
@@ -89,7 +89,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.CGAlgorithmsDD.html",
-          "hash": "tHAosqg3bGkgNpp4AxTW6Tr3qy9htEvxhTKnDQqIOBU="
+          "hash": "seIf7b1hSmv0eqRfi1XGpPbReTQG65m4Bb6nLitUXo4="
         }
       },
       "is_incremental": false,
@@ -101,7 +101,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Centroid.html",
-          "hash": "dSLoqD0TQhaDhm4K/OqXYRPxVhssXpabnT4uuNsQjy0="
+          "hash": "OXWNDRZsTeTzyKLBbdBVzk8BB62NI8cPdn7NruqJX9w="
         }
       },
       "is_incremental": false,
@@ -113,7 +113,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Construct.LargestEmptyCircle.html",
-          "hash": "1Sj3jByw7oNYvZp+o+qqcMdBzMqKAZwwggd/yraRx4M="
+          "hash": "KQP0FmaFgPhtsX2hDNc93GJaVsFS05o/jyLTznPkv/c="
         }
       },
       "is_incremental": false,
@@ -125,7 +125,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Construct.MaximumInscribedCircle.html",
-          "hash": "/CG8B9rKNgzIORTX98JRyMdMBVCZ9tGt7I32I30QiW0="
+          "hash": "jw7xLN/Tg0GaCf/pjfDRDHcuR08gZuBuP2SESasdMVM="
         }
       },
       "is_incremental": false,
@@ -137,7 +137,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Construct.html",
-          "hash": "mJqK3Pfane5W0p5buyExCqqG7+/GFmMXAxkSaX8PT94="
+          "hash": "V7Id8Tv2G6J/Cs7MjUVgKwVyFBn0JVX2k+kIKNvb+So="
         }
       },
       "is_incremental": false,
@@ -149,7 +149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.ConvexHull.html",
-          "hash": "/i/wNS7ESEImLa2QZ4jOHoh1OLl88gywrHB6LhCXXt4="
+          "hash": "JfcAvSJxm/larHZpO0PL5ReTv7C9/CeNzILDzISUWEM="
         }
       },
       "is_incremental": false,
@@ -161,7 +161,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxDensifiedByFractionDistanceFilter.html",
-          "hash": "09jneeKTJnJt1T4GtYTC3rOTAzhaxtIsW39b9vWbAPs="
+          "hash": "rv7mRMkS1mXrwyFL7qv3YB9oGo2gqIoN6y4knIZEDa8="
         }
       },
       "is_incremental": false,
@@ -173,7 +173,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.MaxPointDistanceFilter.html",
-          "hash": "bRV9F59xEOjF3vboxSVKqmgYRsg1x8cvUP+CXUG4CMM="
+          "hash": "rcL37EFRL8viwLL3mYD4F620x4Ox0ZFvpaWY/d8rktk="
         }
       },
       "is_incremental": false,
@@ -185,7 +185,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Distance.DiscreteHausdorffDistance.html",
-          "hash": "tsXjPKDTxEfMI6Nau/vnmbFd1FqPobDWUo6gITXuEAU="
+          "hash": "m9E2Of33y2cDNg8hz7uhwPXYWBAr7lMjyAk15M0RPUw="
         }
       },
       "is_incremental": false,
@@ -197,7 +197,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Distance.DistanceToPoint.html",
-          "hash": "1IDlcMCy3g1qOF+cLnCuv5EXdt2cGT+2vIEzDPQSwKE="
+          "hash": "jVjKOOQari2oq0BfjS0/PMKE7Ygmyu7FyChq3Mz0flY="
         }
       },
       "is_incremental": false,
@@ -209,7 +209,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Distance.PointPairDistance.html",
-          "hash": "o/rzFNiYIf6sLSQk2gSbbML8RlLTTGXO/O46ThQC5WM="
+          "hash": "VRy4kvSD2VDpmOxrup3ldvZRrDODiQrACjVmVRfu1Rw="
         }
       },
       "is_incremental": false,
@@ -221,7 +221,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Distance.html",
-          "hash": "CE48l009c7wIkZl6hLuCxqjjNIyOwy288chGpT7MXSo="
+          "hash": "mWzFuDgzHSIKBZe2HhQQJl91WqOAw/laf+VA5xUku3Y="
         }
       },
       "is_incremental": false,
@@ -233,7 +233,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.DistanceComputer.html",
-          "hash": "4Fc+8m9i6xNigVKx1PVUZZUp4639cTwdooK0mPFZ5H8="
+          "hash": "ZODX3FgkQ5VUM5I9RyW+mHwQR+sIc6gUIWe/183hrR4="
         }
       },
       "is_incremental": false,
@@ -245,7 +245,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.HCoordinate.html",
-          "hash": "/OLC2W1HtZFT+Jx6V6eda6tGRC48afenNz24riehXEg="
+          "hash": "p+hipFbrvEoAXPt6oiQq/ZsGrrWgKlaRXFA+ouAn1aI="
         }
       },
       "is_incremental": false,
@@ -257,7 +257,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.IBoundaryNodeRule.html",
-          "hash": "rA390h3hBFS9AR5tdg6YmssPE9KCW8ksl/nfe+Gcq3Y="
+          "hash": "BDqR8kBPqu1VXWVnNAo0aBP79KhyOxoh29O9LIcVU/4="
         }
       },
       "is_incremental": false,
@@ -269,7 +269,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.IPointInAreaLocator.html",
-          "hash": "v7I/j0dR83ITC6pDFPYvxz30FO6LkLf5RaHg38WKdJY="
+          "hash": "DmAcbB+UZMWpJiihY3Lom9st1ZegS2m0/QDoE1G3LNg="
         }
       },
       "is_incremental": false,
@@ -281,7 +281,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.InteriorPoint.html",
-          "hash": "AUbtiOeXoqorejmuztqPAozLcUdhGmJx+bPKDGnYcD4="
+          "hash": "DYDPZ0JoqObelQK23VoUieO4gPNj8JSex5dJy8kAExQ="
         }
       },
       "is_incremental": false,
@@ -293,7 +293,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.InteriorPointArea.html",
-          "hash": "L4E3LP5d+2jphs4qaCNgO5cvH8HexYWQmvr1MVOlFoU="
+          "hash": "Z9lh1sIIFxt3cogSwp5M7UYs/J6oRgjKpSS8jRnFjC0="
         }
       },
       "is_incremental": false,
@@ -305,7 +305,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.InteriorPointLine.html",
-          "hash": "EETbOwOnjDk5PJ9mhYiBF/zbOMb/5nanIAPWXEt9FMU="
+          "hash": "oT/YDkywflThTyvnMNatVoZzmSs5dCDaIW+sPRvMANo="
         }
       },
       "is_incremental": false,
@@ -317,7 +317,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.InteriorPointPoint.html",
-          "hash": "+I3ZVsGejcck9HzSiuTtDOPCDpcS/Qg4p+M7I39iUcw="
+          "hash": "kFEuyMHZh74xKkPhvCOy0AwV+3dir+k2tBGFpL7Q89Q="
         }
       },
       "is_incremental": false,
@@ -329,7 +329,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.IntersectionComputer.html",
-          "hash": "RcWRNWuDUNCMzDc9lPgSZNzwkA/dBq+DoYav0iVgHPM="
+          "hash": "4DfCIHIXFNQ+iESODqNp+c9N0saLZbYFLjNFX+5lbXo="
         }
       },
       "is_incremental": false,
@@ -341,7 +341,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Length.html",
-          "hash": "6W5YOmT0bkMxFadNLTvzwm0k4UfNWtyPSRffIs0BSpc="
+          "hash": "LWzSRslwCXPehS5DxvkpS8Y27JL9uK1CR8X/XW6fcf4="
         }
       },
       "is_incremental": false,
@@ -353,7 +353,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.LineIntersector.html",
-          "hash": "fAPP+tUj0Uu/nFX0ibuWctCaFFu07cmDWoyJeCjxSOw="
+          "hash": "CvTpXUVKxPrX3MlvQY9AnLomaMa235CSi8Vi637k3ds="
         }
       },
       "is_incremental": false,
@@ -365,7 +365,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Locate.IPointOnGeometryLocator.html",
-          "hash": "R/fFgEa6nZSXApB0+5qxDS2q232Xyi3cy/3BDrDCTP4="
+          "hash": "qcqlqU2F9Fr/hA5tSs1KLA/HbZjB3xt50x2MD5Y3pVk="
         }
       },
       "is_incremental": false,
@@ -377,7 +377,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Locate.IndexedPointInAreaLocator.html",
-          "hash": "g9SFxzuZT/rDqVByz9f7HYReLSIL0dSh1M/yBRmwFBY="
+          "hash": "3y501ImFiytIgf+U0UVIoODMhVIuGy117UTNSaLR/2E="
         }
       },
       "is_incremental": false,
@@ -389,7 +389,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Locate.PointOnGeometryLocatorExtensions.html",
-          "hash": "NKszT85MHjP7Ap7T2bKD+iCtUYOy5kc4BIKFLonDX7k="
+          "hash": "EtDu/8GGVvKiKCWRW949LGuakHe2uAHWaiUZCWJMm6U="
         }
       },
       "is_incremental": false,
@@ -401,7 +401,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Locate.SimplePointInAreaLocator.html",
-          "hash": "X5zA8w4sEsjpX4QbGSzC60yPRNddwSwASQPenNTFFyY="
+          "hash": "DTYT0qaGJivvILV8HX3CFlTX+HqbrbMYmifC8cETdO0="
         }
       },
       "is_incremental": false,
@@ -413,7 +413,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Locate.html",
-          "hash": "R0bkRoFhJHwl7sMnj3S3iN8VPP+EXcAM5fglXXW5694="
+          "hash": "7XYZX+J49dwCT33fp+mRWdYN9tukcmFbInuCxCDSuoM="
         }
       },
       "is_incremental": false,
@@ -425,7 +425,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Match.AreaSimilarityMeasure.html",
-          "hash": "LVMCxOla90YMmHaPfGZEPOjOno1nX+kMOHKi8TEyEJk="
+          "hash": "XKg6oVL5+o4FQ/ecTAAZOS+Up2LCDT0cd6mtQTFKmAg="
         }
       },
       "is_incremental": false,
@@ -437,7 +437,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Match.HausdorffSimilarityMeasure.html",
-          "hash": "WYPX+53sowwDQkTwnYOJtLkj9qNzwhhxy0KXNpMYR04="
+          "hash": "tJCqmb0y2Ot7NRSVpg+Y9KZcvuDJW9ra6VA7xymBNys="
         }
       },
       "is_incremental": false,
@@ -449,7 +449,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Match.ISimilarityMeasure.html",
-          "hash": "ZHOE0F+Uc5NuP+G1OWosioJ4LsFAs/HMVTlrrxKHDxQ="
+          "hash": "X9JkuLS+Pijg2B7AgOfRUZEzYmko3M5MdoZFet9z7rs="
         }
       },
       "is_incremental": false,
@@ -461,7 +461,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Match.SimilarityMeasureCombiner.html",
-          "hash": "yrLv2XZHFX5j4KNgnNvCd4+nBuNzEZN6+loyUxm9ecw="
+          "hash": "qQIMRHASlUV0VkCO6Se8m7e5M4/3YjDtCusmji/rmrU="
         }
       },
       "is_incremental": false,
@@ -473,7 +473,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Match.html",
-          "hash": "w/KlSauhRuHhb3Do9BdXSoTEcWGSUVLyjTv6Ut0Zxpw="
+          "hash": "AvGnMKXZ+OIs0wpM5sFrVklPsqGQoEhgAV08Vvz8zas="
         }
       },
       "is_incremental": false,
@@ -485,7 +485,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.MinimumBoundingCircle.html",
-          "hash": "1cdFSeK1rioHYROhB4PkJdkVsu/GZWuYLc3FeU6AGUY="
+          "hash": "W+l7gjN/swpDjKy/5uF/xq8QbDVUmA9crKULfHx4ToA="
         }
       },
       "is_incremental": false,
@@ -497,7 +497,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.MinimumDiameter.html",
-          "hash": "J3/kktBU+sx3OENqyCnZaJ8Jam4Sn1l6LCwRWhspBuE="
+          "hash": "l1HHa+yJfI6u9v5POnCpP+ArwdxCr+h7dGDVyH19yAo="
         }
       },
       "is_incremental": false,
@@ -509,7 +509,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.NotRepresentableException.html",
-          "hash": "KXQ/wGcOMENtsrjLY4ijY+tttzsunI7Jfwfyz87AWJM="
+          "hash": "dAjzEyxfkYgrb3YT2huDLaAUhIr2O4cWasCcnQc1mcM="
         }
       },
       "is_incremental": false,
@@ -521,7 +521,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.Orientation.html",
-          "hash": "tUqGR80i0R725t/y88M4amFJ7TORFbgPlsJef5PFsas="
+          "hash": "gxIqWgy1XYdft415gmalrGyvpxqCWKqY4iDJEmMkiV8="
         }
       },
       "is_incremental": false,
@@ -533,7 +533,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.OrientationIndex.html",
-          "hash": "4+0fxwyMSJmJfhh+h+tpjCMkTJqgV6r+WX6AlFugOMI="
+          "hash": "XwYfOPB+yk2sSh6po/duwN+3wJZbRr4/7vgpmXLeMGQ="
         }
       },
       "is_incremental": false,
@@ -545,7 +545,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.PointLocation.html",
-          "hash": "ZKDMvpREQivaG0bgX3/+681AP0SfN8tk7ayi88TR3VI="
+          "hash": "I/b/Yny3gVMF9+RSk9Wo7/dIBzYong1zQ5oI2mgtnPY="
         }
       },
       "is_incremental": false,
@@ -557,7 +557,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.PointLocator.html",
-          "hash": "17teJgQ6aVMidZbj2RzHf8Pzon32DeZIhudyfh04o1k="
+          "hash": "tSXe5rl90SVVJeEjDAeDqRLp5O1y3sZ7DoiCmZ/gRqY="
         }
       },
       "is_incremental": false,
@@ -569,7 +569,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.RayCrossingCounter.html",
-          "hash": "ajImyiZohZczF2aNJsbRRu+a0LF5j1MRUqTA0gU2KRA="
+          "hash": "DfwZ7/lbd6uL0Lut69lnX5EFWgZxSSQkEHEuOAPs6Vw="
         }
       },
       "is_incremental": false,
@@ -581,7 +581,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.RectangleLineIntersector.html",
-          "hash": "FI1ZvmSF2C54vjml4zzM7lWPmR/v6s9YMLG6Ge/EqVQ="
+          "hash": "NLNJTAec2pG586BYGAFlxltbbiP+IvYoK+O6zpkMjjo="
         }
       },
       "is_incremental": false,
@@ -593,7 +593,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.RobustDeterminant.html",
-          "hash": "Y3Y9m4eyISq1OPf9AKucu7z6NYf9MsMGIINRJ+Wq7Jg="
+          "hash": "YhqM+oM8BKSes84zlsKU4/ZLod8x07LzH3z+8464eXM="
         }
       },
       "is_incremental": false,
@@ -605,7 +605,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.RobustLineIntersector.html",
-          "hash": "Wh8mvbI94lziDW1Kp24SVXMavRDTrznPAvq83MJcPEM="
+          "hash": "OcdYI4qLhfYgbgg35FDNP2gqF6PxNsm/EOaVSOmLTR8="
         }
       },
       "is_incremental": false,
@@ -617,7 +617,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Algorithm.html",
-          "hash": "+lysLNoWPyd1ks9w+0+ZmceLrUGTtAfO6WX6X3DBX9s="
+          "hash": "5Ml2r/qPfXEU2wZKhrABgCCCiNJCW5xZuY7CfzEf06w="
         }
       },
       "is_incremental": false,
@@ -629,7 +629,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.DataStructures.Interval.html",
-          "hash": "RXFNr7QHvZ4guRvqv1oLnpEsDLmwTMfsnckw1P0kIxc="
+          "hash": "oe/u9s19DRyK6YwoUV6a3pPbGJdaS7O9u5enkIDkmqo="
         }
       },
       "is_incremental": false,
@@ -641,7 +641,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.DataStructures.html",
-          "hash": "IIvDdgajFOZaYRreVY1jD+QXXHcS43cHjTLTLSg5EVM="
+          "hash": "7kMViYXAMJ0kW2j21zxe41wIkHtPj2Nsr3Hsj34Qiyw="
         }
       },
       "is_incremental": false,
@@ -653,7 +653,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Densify.Densifier.html",
-          "hash": "jgBe5qI/dM9zNEM49brvAoK1OQ6nFffsWtqWr6j3L6g="
+          "hash": "YeIzNbYn5xdhX45P6H6IOHLJt4FS+ID8trTpNYu1SKA="
         }
       },
       "is_incremental": false,
@@ -665,7 +665,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Densify.html",
-          "hash": "Ny4B4cLUSmYn6jb7XBFqirYheXx/IHDnsYc96a/HPfc="
+          "hash": "DkstnEzSk+KNSSDumT4XCk5NxVrf49lo/Eree73ynpg="
         }
       },
       "is_incremental": false,
@@ -677,7 +677,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Dissolve.DissolveEdgeGraph.html",
-          "hash": "zojk3M/Aw3hmE/tu7qTYC0mo8AH47j6utsX3HQlH2rc="
+          "hash": "2Ms2ZbyXbd2CtExzMYQ3dAJ4x31dAk7flqVEXXunABw="
         }
       },
       "is_incremental": false,
@@ -689,7 +689,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Dissolve.DissolveHalfEdge.html",
-          "hash": "JJuiTUtNT8449T89ksv335oasZXY50g9jzZW9Mnutow="
+          "hash": "m407PThJq64r+lcDxbl1d59vTuAzxb+77yPvW/T2rho="
         }
       },
       "is_incremental": false,
@@ -701,7 +701,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Dissolve.LineDissolver.html",
-          "hash": "5fEcAVVJuGCRPaxCm7ww4FeyWrrFAkO5X3oE4XRUI8Q="
+          "hash": "rXSa1SxXwo3LvCLbBrO10z9M/lcaPwBVtx69S7LUl14="
         }
       },
       "is_incremental": false,
@@ -713,7 +713,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Dissolve.html",
-          "hash": "hOGdfVkyqonBu39ERyqBj5nJjz32DtYHXJzQQuJbg6o="
+          "hash": "Vyh+5CRy6prKksu4vGBbWED7a4Kei7mSp/PgoDcFCzg="
         }
       },
       "is_incremental": false,
@@ -725,7 +725,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.EdgeGraph.EdgeGraph.html",
-          "hash": "lF3+5ZDrk3E3umWeI+ipIgtx/nGUh7hGEdJDy2xQT3U="
+          "hash": "RAHS3UhPCZtyw7E3sa9Ee8vkmdwDLye9Gj0zhTofQzU="
         }
       },
       "is_incremental": false,
@@ -737,7 +737,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.EdgeGraph.EdgeGraphBuilder.html",
-          "hash": "JEjXsepwJ/lNwAFWTaJg2BRg/BZynW63/ETLJImWoyE="
+          "hash": "YtpEZ9iCshjyYCMiLfcpsKGx1fYqu4KjnJ3kYZQBHzo="
         }
       },
       "is_incremental": false,
@@ -749,7 +749,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.EdgeGraph.HalfEdge.html",
-          "hash": "Ht2mn5kR/SMgQCD7rf8rYdFyiUkN9T/vyBW+UjFm6Mw="
+          "hash": "4vjwvKmriVjST9uySDfxf1us7tLeofnZEpbYbHAd/j0="
         }
       },
       "is_incremental": false,
@@ -761,7 +761,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.EdgeGraph.MarkHalfEdge.html",
-          "hash": "wIgmcP0iyi1vurzVkmS0daKYtSxu5YjDD7VDR4267Lw="
+          "hash": "FuhBFESAIWONA4qg/BJvHaS7hCFANz0HKiiFZEDg9t4="
         }
       },
       "is_incremental": false,
@@ -773,7 +773,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.EdgeGraph.html",
-          "hash": "ebyZLU0GDxyV1cmOIzJFbcUo//x/o0R4fKAOjz6JyTg="
+          "hash": "VPIykzE0uDz7Jhb6HnbCLsG0Buc7kTNTbuJWxupSuR8="
         }
       },
       "is_incremental": false,
@@ -785,7 +785,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Coordinate.html",
-          "hash": "BSEHZmMBueSXxWMmnKHRqc88DAWApXJGze2qVfvdX8I="
+          "hash": "87gINBzuZe0i92ocKWupBNpW2XUxixsSJmgAiUuVn2U="
         }
       },
       "is_incremental": false,
@@ -797,7 +797,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateArrays.BidirectionalComparator.html",
-          "hash": "8rMGQt1KUb2N8Tt/lwT1V6gIXun43hxtHkx+MGbIz10="
+          "hash": "WRIgY29Xmj0WgRjjVz6U5+WXPbTMnSiln3S6OFvszko="
         }
       },
       "is_incremental": false,
@@ -809,7 +809,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateArrays.ForwardComparator.html",
-          "hash": "6Mmw+6Km5IzyYDKyhhb410EOKGLsdh4e56JZt6cPTeE="
+          "hash": "8K8iAsVhaW6+U8/AmMwA7gIgpGofCcoVllWqhNIkxNo="
         }
       },
       "is_incremental": false,
@@ -821,7 +821,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateArrays.html",
-          "hash": "nFwAGDvegs/sAxa6y0HITAbShCoGkc3ZeiflH2ieDP0="
+          "hash": "YRpraXG9+rJaxOv2PGI2MvHKIg9cY7KzPKSAQtlVF3Y="
         }
       },
       "is_incremental": false,
@@ -833,7 +833,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateEqualityComparer.html",
-          "hash": "5UbqlfhheZNs+gGpCB+6CbIBUD9W80Lg+k+2vI4vb5g="
+          "hash": "CbIgvo3U/fh9ouOnh/xRhRRvAEMrpstD20V5x7i7fpA="
         }
       },
       "is_incremental": false,
@@ -845,7 +845,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateList.html",
-          "hash": "QPWEL+kc/4CZAVhyyZJwZB07BIYYjaZkH1zZp0lbrdw="
+          "hash": "UH0tNPiDEvMdfLpbtxk8bFNBMtI3x5AS66yU4E0PZ6A="
         }
       },
       "is_incremental": false,
@@ -857,7 +857,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateM.html",
-          "hash": "nuDZXL8rN+gO4iG2bzB+DXt47c5t0ZTqRHa/+VkIuVI="
+          "hash": "SJQ887js25jrTMT5vo4d+bT2UJZBi/a8B1MbJYgBPKI="
         }
       },
       "is_incremental": false,
@@ -869,7 +869,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateSequence.html",
-          "hash": "IhNtu/phVmb24f3Pjd2KSv4+ZriQ+Erszg7LmLDG+wE="
+          "hash": "mtanLp+4Oj48Na6Z6X6yQMQRXfUppdKKAgus4sMD76k="
         }
       },
       "is_incremental": false,
@@ -881,7 +881,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateSequenceComparator.html",
-          "hash": "Nwo5auFYEH5+6pw9Q5QuIya7eF0812gSVE10e8I1SgI="
+          "hash": "AZyG10hPYUrU2+KcqHcC7RlarFqSFvR7SjArA+/593A="
         }
       },
       "is_incremental": false,
@@ -893,7 +893,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateSequenceEx.html",
-          "hash": "mQeViTl9IaAznOm6q5lgqm6oXl8FFGMSQkFYTTK9mDo="
+          "hash": "EPNyaFSssqf+R6wSLNT8jVwlnul1l08pFXDtJWFKzOA="
         }
       },
       "is_incremental": false,
@@ -905,7 +905,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateSequenceFactory.html",
-          "hash": "gfHMDHic2hDZV7Xr/iBgnBR/Q8QGXI4OdHAG0+TXQHU="
+          "hash": "a9AfdIdkFWPb3p8Ej3dNah+ihesaQWGszf3NuXdYui0="
         }
       },
       "is_incremental": false,
@@ -917,7 +917,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateSequences.html",
-          "hash": "JbalkjaWWzlHwAsCtLYTLYqXL62GizIrXW996q+RAms="
+          "hash": "CS1dCgwsY6nBJqVA727T0MB5uRbJqgUllw7GowwWNBk="
         }
       },
       "is_incremental": false,
@@ -929,7 +929,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateZ.html",
-          "hash": "qb90qNA4R4HsLiKVTsAPdbmJSv8/EiEhF6sL4AUbrR8="
+          "hash": "TxCbZ+KPKfwRcmtX8BLdVtgqhUejn9sTu4aMVWqbBbk="
         }
       },
       "is_incremental": false,
@@ -941,7 +941,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.CoordinateZM.html",
-          "hash": "KpHeTELzZLg6a4UnRbKxjnD1PBJ9P+YlQKSmqwsJAsg="
+          "hash": "xIEZQoAE/j9t1dNXlgpqM6oc6FpAlsDZL/UNSMlJSyo="
         }
       },
       "is_incremental": false,
@@ -953,7 +953,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Coordinates.html",
-          "hash": "qRExofG1FwHcAFfytQphmShKwtyWwohruyJoU3bstzA="
+          "hash": "o+06rqyFepB+MhldQmxi2fb+2xhgkLTvDaULOgoI9X0="
         }
       },
       "is_incremental": false,
@@ -965,7 +965,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Dimension.html",
-          "hash": "up0i8lcponKSWaBAKBlaXAXgbRGLzV+T1oLweuA/+Cc="
+          "hash": "T7u6rd9LTTHe+bHZSz4JIsWtXSMH+vHVYqIM3Y9C5iY="
         }
       },
       "is_incremental": false,
@@ -977,7 +977,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.DimensionUtility.html",
-          "hash": "kr3NMlhqGGjxqiMc+M6NWDDJLHwpH8co1A1E80fvcJc="
+          "hash": "1CfU3ZgRDF1tQqaITComXqCUIODx+ecqWG/R2rbozd4="
         }
       },
       "is_incremental": false,
@@ -989,7 +989,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Envelope.html",
-          "hash": "BNrethvXKFDlKyq4uYTbbv4Q1cNTzJP2xZLLOuzuM/Q="
+          "hash": "EX1qElseK34Ws/6yAhgZLZDg6GvCsvi8QuagSex0P+0="
         }
       },
       "is_incremental": false,
@@ -1001,7 +1001,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.FilterMethod.html",
-          "hash": "Sed8nnH2DqIR1ofcN5IkK7A+QemQdCwKpwKTB900gdU="
+          "hash": "0EN4XHXn7ZU+QihjK1529hv7qGFflaNB51V3yKcvSx0="
         }
       },
       "is_incremental": false,
@@ -1013,7 +1013,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Geometry.SortIndexValue.html",
-          "hash": "c59YVPPoa1ooL1UBr21w4WytbsGOxPifwrTAJ5s7Ai4="
+          "hash": "sfO20birxWTby+zWSTVWNwOhTuh8KMUTv/EEeUmsXGo="
         }
       },
       "is_incremental": false,
@@ -1025,7 +1025,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Geometry.html",
-          "hash": "LaSnTCo5SU7k7wLzimyj5XS27CcxuL45PYohzNG44KQ="
+          "hash": "gW8R9nuPxRbH7rMfRV90nI3h3Hy9JANO5gTQrCwjazU="
         }
       },
       "is_incremental": false,
@@ -1037,7 +1037,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.GeometryCollection.html",
-          "hash": "bIScfAZRum9eewYNOlB6eFGLDzLVWrmkzJxi2SPiMcs="
+          "hash": "fWd8oyccDSUhRHontRak1D+Xieuf8t0HYFjD1eWEMeo="
         }
       },
       "is_incremental": false,
@@ -1049,7 +1049,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.GeometryCollectionEnumerator.html",
-          "hash": "e1pDqCZvbbIeeriKkVoaxj8ThKlntOaMP0PmKEXY/f4="
+          "hash": "n0e0dccXZ5ijwtdNR0KMu1tjtivw9jFfXtCn/6iSae8="
         }
       },
       "is_incremental": false,
@@ -1061,7 +1061,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.GeometryComponentFilter.html",
-          "hash": "JfxGgcAtZl5M4f0rxJ8lD0uhzfLxOEh+Wi6BCQ24J50="
+          "hash": "4GnUU1uA4Ed754mkdsxtoToBqdFNU2nCp8I1piJDvrc="
         }
       },
       "is_incremental": false,
@@ -1073,7 +1073,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.GeometryFactory.html",
-          "hash": "E92s4GFFqxaxnL7jb0kFHLXrRk7JmunKh5mcKuBoSFk="
+          "hash": "5sGiaXYgyRd8Z7ZUk97p+fhdeTcubWVcznbYXiZIXh0="
         }
       },
       "is_incremental": false,
@@ -1085,7 +1085,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.GeometryFactoryEx.html",
-          "hash": "afn5wAZMfcvlKXGNSw3czCliwSDcGCfDPOpDOyJvgNM="
+          "hash": "1f6+okYQ9iVMA8INXPKt7mub4eXmA/5AwgDs3Kt/jG0="
         }
       },
       "is_incremental": false,
@@ -1097,7 +1097,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.GeometryOverlay.html",
-          "hash": "NSYuh7Cm7acK0zk5scDZJoDzIEAAOdCG6iUVPZlYav4="
+          "hash": "v23tYwQSW/0CLOMN9EGDieVtj/aIZ8zFpsJPInBAfVk="
         }
       },
       "is_incremental": false,
@@ -1109,7 +1109,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IBoundable-2.html",
-          "hash": "o49m9hIXtZBPoFfbngAdjad2Ka8ogQ3QBDEJJkVh0bU="
+          "hash": "I7CTzTWxv6jynrMSmmAMNJp5M+CeJBIxcqom6giaV8w="
         }
       },
       "is_incremental": false,
@@ -1121,7 +1121,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.ICoordinateFilter.html",
-          "hash": "Ecj6Ur+DIRopUNdlBcfWJMOk1XHVY5QHmfoVVokc8js="
+          "hash": "Z8ytiPvNJ+CHKnkBaJGQoa/0Jf4uYd5BnSJ5KMkzdck="
         }
       },
       "is_incremental": false,
@@ -1133,7 +1133,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.ICoordinateSequenceFilter.html",
-          "hash": "Sxl8fW57GFk73h5nDzJc22mGcHqV5GHso7ZrCWY5b04="
+          "hash": "HmmYOzT0NIBf8C49QePlgdwMX4F7qBoJTgC/i5T4H04="
         }
       },
       "is_incremental": false,
@@ -1145,7 +1145,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter.html",
-          "hash": "rAvBLjTf06xgigSRLpsverufrGblywW1RFiR+bKuTzg="
+          "hash": "XoC74Qh+lYLK1QvfV33Gntk1skR+Jw2lecXaGo7scyQ="
         }
       },
       "is_incremental": false,
@@ -1157,7 +1157,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IExpandable-1.html",
-          "hash": "4b21afWFUubLKzsIa9eIcSIWUkmklYsGlzdT+/rqogo="
+          "hash": "f8j7XEfs3HGXLoKzy+H7GkzfqOPsfIHnWO7481ohhPU="
         }
       },
       "is_incremental": false,
@@ -1169,7 +1169,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IGeometryComponentFilter.html",
-          "hash": "fgPLs52jaZ2rwqvhuZs/SGMRqfoY9oEW5zwNsVrSRJw="
+          "hash": "0tS++Fl82Se09Y6+Cqb5WW2eYaAXyyKDnLzq4ZqRW78="
         }
       },
       "is_incremental": false,
@@ -1181,7 +1181,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IGeometryFilter.html",
-          "hash": "DN2k8kKw56MkPq/CHNw85KSUsR2ycf5K1ivAyS4SXAM="
+          "hash": "63ysVZ+3zDyK/g36Env7IZA6WCDBeCurkcjp9rWgqIw="
         }
       },
       "is_incremental": false,
@@ -1193,7 +1193,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IIntersectable-1.html",
-          "hash": "ctCFdX1fvHVLHRb+HPaPVXzAC7axgG+rSGmGOt32NDk="
+          "hash": "YRbX/Roo86jo6E+/zCFELGcDsKGu/9l8MHsbo6kBzHA="
         }
       },
       "is_incremental": false,
@@ -1205,7 +1205,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.ILineal.html",
-          "hash": "ugnFauuU8jILGHNomg9pw4j401gi5ZGM8YSuE2g4g/I="
+          "hash": "m7rMbdTblfEPovGvJUDH1ab7bUgYBqsU8BhcDqFtU/E="
         }
       },
       "is_incremental": false,
@@ -1217,7 +1217,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IPolygonal.html",
-          "hash": "bZBqDLjpyRZwoAtJ3kfIANwLxeNWLS8ZG+ppyyFtvrs="
+          "hash": "FHNlONYZnrkgt7EgdSpY9TW/seEVIJtvL9mHAGgrl+8="
         }
       },
       "is_incremental": false,
@@ -1229,7 +1229,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IPuntal.html",
-          "hash": "lBnpJRdlJMW68d4WrTkMQsAXP9EyIZWA36nJdLHyWUc="
+          "hash": "28abGErwNLQ6RzIzreAs25P2qn+Q6nmJoEOfvfd1Q0E="
         }
       },
       "is_incremental": false,
@@ -1241,7 +1241,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.html",
-          "hash": "0nUg6DwTXI7mDVjjUlCs9YIaoBFFZaAZCnoBl2fIVJ0="
+          "hash": "FPYO3RzegVgkud/DFM4wU18axp0GJ486lUSvL0lDjRs="
         }
       },
       "is_incremental": false,
@@ -1253,7 +1253,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.CoordinateArraySequenceFactory.html",
-          "hash": "LODvS4yOXfcbDv5qSmMC/pu82pWP3BixA3m2LX3+w9Y="
+          "hash": "VvnD303VZbJxDhZCuU016G4/zia2DEglSt/DR4OZyI0="
         }
       },
       "is_incremental": false,
@@ -1265,7 +1265,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequence.html",
-          "hash": "/J3FnhAyNvsjqgPnRlj7N8nid2/LUoy4Ob5i+5d7kGY="
+          "hash": "A3RTdIAZqjbSG1wNSTRMdIzZb6VUGZ4MZcsDg0tWtww="
         }
       },
       "is_incremental": false,
@@ -1277,7 +1277,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.html",
-          "hash": "t07RhtTPwOfkrWtLGYeVTWH1WJh3pVA4o5fJ+tEaP4k="
+          "hash": "P0w/iIatYSLcOOd4XWZp2F7EJN1CxgHyW269oIcK6Fs="
         }
       },
       "is_incremental": false,
@@ -1289,7 +1289,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.PackedCoordinateSequence.html",
-          "hash": "xGQo4+myYeHB1D2XG2RI6viRehCXfiknQagCaayBj3E="
+          "hash": "+fWj4fp0oRSkZNKfi/KqIr2SihCT8HrsD55PSQ0UNNc="
         }
       },
       "is_incremental": false,
@@ -1301,7 +1301,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.PackedCoordinateSequenceFactory.PackedType.html",
-          "hash": "Ibn3X+k4K6qESFozqh6MjK7CA2AObuStry+Ve1lDaYo="
+          "hash": "PXfidTdv2+JUA1KpSR4ayMAaeCENy1agaP124SUUJxI="
         }
       },
       "is_incremental": false,
@@ -1313,7 +1313,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.PackedCoordinateSequenceFactory.html",
-          "hash": "uYRIvbQ8g0nBK3z46jxCrZ2N8m66zFz+6nz/sCyx/q4="
+          "hash": "6D/gbpUn5If4TFRQh5UktLCDfRfetVWxV5dvIDUb3fU="
         }
       },
       "is_incremental": false,
@@ -1325,7 +1325,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.PackedDoubleCoordinateSequence.html",
-          "hash": "TT8RWde/Z2MVBZ+r3ydV/BJTZa6orCtrPXLRm0pqZv4="
+          "hash": "qawGXWw5gDybwz2696TuF+cXhfCYL4dU0yU44b7n+qo="
         }
       },
       "is_incremental": false,
@@ -1337,7 +1337,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence.html",
-          "hash": "TGJGmQe/QaVc0GeVtIAiO2KuIEQhX8/XsLJw2fPFOwQ="
+          "hash": "ueI4hhPlzCaR8atg0Utdm5xN/UVMjbV8EZLq+xFr5po="
         }
       },
       "is_incremental": false,
@@ -1349,7 +1349,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.RawCoordinateSequence.html",
-          "hash": "qy1+MA31HphL/mCwJhu9DJCxE25DNRW6vETdL4mwfx4="
+          "hash": "Nu2T7Uw/+O+WHbySjw6OmIQseByHunj2guBnY8ujfow="
         }
       },
       "is_incremental": false,
@@ -1361,7 +1361,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.RawCoordinateSequenceFactory.html",
-          "hash": "3+fq+W5d6Cy+lKLvt7t80P0/QR9RmnA1p7KOb5yt2zA="
+          "hash": "3C2Jd3ltXhKritGqHLixOWR1FXtvtckw2IngUNdzh3Q="
         }
       },
       "is_incremental": false,
@@ -1373,7 +1373,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Implementation.html",
-          "hash": "qkXBnJW86DLLhhzbZ42x26aWHgO6IagwJqUfYsZiYb0="
+          "hash": "Amjo//i7bTBfzFeQIMbpuPYWuAjfjagksRlZ5JErYtQ="
         }
       },
       "is_incremental": false,
@@ -1385,7 +1385,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.IntersectionMatrix.html",
-          "hash": "EVAB8SvD8BaHk/ls7BG1EXq129kDdbuufksxjjHtSwM="
+          "hash": "nb5mzwGBiV+xNGB8HsJ2cDXU2m0CzMbFzhCGO+bsmiA="
         }
       },
       "is_incremental": false,
@@ -1397,7 +1397,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.LineSegment.html",
-          "hash": "ddQJQEFNbp4HKtzjPU/4fRlCom0455wP2SLIK6gwVzA="
+          "hash": "4KlIjM1O2hM8MtrOKGzhGpQxqkvA0y5YVqJpmBtj5FY="
         }
       },
       "is_incremental": false,
@@ -1409,7 +1409,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.LineString.html",
-          "hash": "FrFmnVYdeT1hz5qWlFmQUhAyi8gJX1UpCpm5MFnpDeQ="
+          "hash": "F1uWwRly7NW5xhrIS1cm5lXRBp2qESDPhEszsm19Je4="
         }
       },
       "is_incremental": false,
@@ -1421,7 +1421,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.LinearRing.html",
-          "hash": "EQ/NqgTSEsutTbvXVfT2KWym7+T8aJff+LH77VzmB24="
+          "hash": "yCb83Q3O5ROX6y8uJ8zZEpAVca/lwtt/L2f3nNYSD9Q="
         }
       },
       "is_incremental": false,
@@ -1433,7 +1433,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.LinearRingOrientation.html",
-          "hash": "nfS1cjh6Wtgj0E08t1XM9aXTjPF0P+6jeu9CZg0YSoo="
+          "hash": "kULOOBUOmEBgVHSyruqvgjonQWU7syQe9Mlw6ynMZz0="
         }
       },
       "is_incremental": false,
@@ -1445,7 +1445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Location.html",
-          "hash": "GjH+FFJDg8iNjFgseJ5YRazrobUgI4YuObCaIgBUSco="
+          "hash": "vZEtW2bwWdasS2teuDfR/MvFkXtbRsNgf6dZH+nt8IU="
         }
       },
       "is_incremental": false,
@@ -1457,7 +1457,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.LocationUtility.html",
-          "hash": "ri7Ye9px1kJLKQpOyyTdcC8onJ8F6GIhZRnNttEvR+E="
+          "hash": "+vVV6KqrgFmub+Aql0gHxP14qgQ/a9NcqrZa/nRD3Og="
         }
       },
       "is_incremental": false,
@@ -1469,7 +1469,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.MultiLineString.html",
-          "hash": "3DClECzV+VGvtAsy95es2yUapgw+cMAEWKgu4oA6h/I="
+          "hash": "MWC+7Q/Hkt5wLGd8aeZVTeApR/ILiENlddh8K1G1tO4="
         }
       },
       "is_incremental": false,
@@ -1481,7 +1481,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.MultiPoint.html",
-          "hash": "G+minI9foJXhaL5eMIMUXyV5JM6JLWAW55o1Bw1nYnY="
+          "hash": "OT1oFAppU4x8WnZrClAh/S6n62VNXSeXT2eR+K+TBc0="
         }
       },
       "is_incremental": false,
@@ -1493,7 +1493,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.MultiPolygon.html",
-          "hash": "dC4ILQRiodoZhq6Y4fqNPraVIS/4Eda8li0vN9w5UEs="
+          "hash": "0Hbm6x49T5Mmfltw4akrFFQnpfeUoh0gYDbJRF/rPTc="
         }
       },
       "is_incremental": false,
@@ -1505,7 +1505,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.OctagonalEnvelope.html",
-          "hash": "He5j3O25K2+MZugnhOPWwg4iMvoWd1nk+Ao/M9oPzNI="
+          "hash": "oKumGmqbGUkDFCK8okJde9hTL9evOW/woGhI6Kj2ipg="
         }
       },
       "is_incremental": false,
@@ -1517,7 +1517,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.OgcCompliantGeometryFactory.html",
-          "hash": "d1UoFRUKV0JeDU2a0W7ibc305KIweJYtPByUSCPCUZc="
+          "hash": "gNQCV2Gs7CzuGo2hQlEDvJSsrYBzrHvFU15KeUcfScQ="
         }
       },
       "is_incremental": false,
@@ -1529,7 +1529,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.OgcGeometryType.html",
-          "hash": "oKtYWjiylWnCoPHJfWPKBHd14WVSPNp0RuYnf/LlTIQ="
+          "hash": "R6RW0O/b7Pv5K+bxrxy/VGFfxvr+5qrcpU5aqfdMwIQ="
         }
       },
       "is_incremental": false,
@@ -1541,7 +1541,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Ordinate.html",
-          "hash": "bXZVpGUNYly/25UVLxH7F8KLK02GgzBDUwNNmQlSvlg="
+          "hash": "QeNOUFobe3ujd0xc/SkDUgY4zI5uP3lUy6aGED1oUS4="
         }
       },
       "is_incremental": false,
@@ -1553,7 +1553,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Ordinates.html",
-          "hash": "hyvR5TKfKBhS8nzKaZHkr8WCYWJyk3pEtJcC/9wY9So="
+          "hash": "LnOA1igLWRC7WQlhKT0fbiBPYCujSKqsnH+8gYm8aU0="
         }
       },
       "is_incremental": false,
@@ -1565,7 +1565,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.OrdinatesUtility.html",
-          "hash": "7xzgGlOpTZQcCXJbTAgpWTf10t7o4B7AZSI64Im8ud8="
+          "hash": "uVmSys+lszDAouBwSgbO7juMbdZ4Zx0PCJ3rdZSUJjc="
         }
       },
       "is_incremental": false,
@@ -1577,7 +1577,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.PerOrdinateEqualityComparer.html",
-          "hash": "kRLORB9BTUcX6oykkH14yDp+sebLboQZj93PrEdLKvE="
+          "hash": "qzzAMoB5+DZ7uF5N2nVJxpejtWCc0mP6rvlSjXLZx7g="
         }
       },
       "is_incremental": false,
@@ -1589,7 +1589,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Point.html",
-          "hash": "Lr3cDioc6bFAC/Fbq0hBSqg66NKgbvG1quj69jfGXtk="
+          "hash": "u/0Q2yPZWdMJ9Kr7kfvraEy9UWiwiJIr+PzrKvGCNM4="
         }
       },
       "is_incremental": false,
@@ -1601,7 +1601,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Polygon.html",
-          "hash": "gdUGKlRN6xcTFJ0+7kkWXemOsMITi2DfHjXZHpIzo9Q="
+          "hash": "Pb/xDzBOrYSmi1uP8WX23xmOdNR/XYa/tuLVwsZRyz4="
         }
       },
       "is_incremental": false,
@@ -1613,7 +1613,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Position.html",
-          "hash": "eqkDOsAQof7wLvtDxz9uKddgQahnET/TLrmSq1EYzdg="
+          "hash": "guZ9C0xmSW4mptZXgrRfdU+5y1M4r/UWVB+jk+BBtAk="
         }
       },
       "is_incremental": false,
@@ -1625,7 +1625,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.PrecisionModel.html",
-          "hash": "K20JuCbxY2dQRVSPx5i6UEzmTDp70njfvQRQqZQjD+g="
+          "hash": "O4he1kZ5m/A+mnIryc+XMntpA+qmsUtCuhb6ETZXrTw="
         }
       },
       "is_incremental": false,
@@ -1637,7 +1637,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.PrecisionModels.html",
-          "hash": "HB8FZIq4+WgXgZc+eY2u5XHphAJvGWKvYta7Sg6Sv3A="
+          "hash": "WuvDyMaPmRKTW/pe8pvNm3ZaHRIpbhgYq/AjtzKpHh0="
         }
       },
       "is_incremental": false,
@@ -1649,7 +1649,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Prepared.BasicPreparedGeometry.html",
-          "hash": "dvOdC7wS5JtmhGHvdCbO9KJei+P1Z0DFlKmfJd60Zmc="
+          "hash": "mZLEPRShv6cxPsWsmwCCkoWzXp9QWiXCGhGtEMgZRHc="
         }
       },
       "is_incremental": false,
@@ -1661,7 +1661,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html",
-          "hash": "wTrHH2FlsNpv6emnLys2hQOkGrtXFxjkX7u5j9f+lmk="
+          "hash": "JOt8WoosNhus3d/thQrk+KLqDuNs9fnqiXswNiUJD0k="
         }
       },
       "is_incremental": false,
@@ -1673,7 +1673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.html",
-          "hash": "uCdo43uZuvEKXGa1/74hxQ707/E8ullEiuk1781H0gc="
+          "hash": "RG8c3h8JiwJsacczkBM8mlaAXXOTm+ib456GDOK+ZVk="
         }
       },
       "is_incremental": false,
@@ -1685,7 +1685,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Prepared.PreparedLineString.html",
-          "hash": "hvHDxmghwB/N9gA40skYp7PtbZidbO3FGN66GSGVPEg="
+          "hash": "PnZr/DcB+DJ4xU9eTXHjL/JWgKRlaLXkY+hCVkoQF2k="
         }
       },
       "is_incremental": false,
@@ -1697,7 +1697,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Prepared.PreparedPoint.html",
-          "hash": "zpSQ9hVSn5ENI/acdR0ims0AGOaNjL+G7CpJOOIQAcQ="
+          "hash": "EMhR3BYLFyShiSrXFo0k2MORonPHcwbEezY+UqVncPk="
         }
       },
       "is_incremental": false,
@@ -1709,7 +1709,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Prepared.PreparedPolygon.html",
-          "hash": "IRFG25l4y5nUq/CMlAiQ2vsebea5GHi6hC9PY3LeV5g="
+          "hash": "CRpn70k02mq3K4+SWgELHUEo3/mL34L+ds6V8SJKsrM="
         }
       },
       "is_incremental": false,
@@ -1721,7 +1721,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Prepared.html",
-          "hash": "lraFa9Sj/moiwWYr/q5cF121Y39bKMzEtbFdSfyw1Fw="
+          "hash": "PXfNhINEibfcCOIMwsfe0WSP8IwumYxkw+YMncXsKHM="
         }
       },
       "is_incremental": false,
@@ -1733,7 +1733,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Quadrant.html",
-          "hash": "RBooVxjkyLSKcPf+lmbZCFHpV2pNgnfjOtQuCNDxmVM="
+          "hash": "9z5ORnUzTEbGFp3aur7zeJ/O35MY5jwAJ2J2THSm/MY="
         }
       },
       "is_incremental": false,
@@ -1745,7 +1745,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.TopologyException.html",
-          "hash": "UUjDzPsnCy2QqjvmhPU/nBbMIIAmVOmnRA2IVSuMEqY="
+          "hash": "PZUE7KN4p8BvokZBZOGPOCmGoNvFeCVOl6W4NoSE1yU="
         }
       },
       "is_incremental": false,
@@ -1757,7 +1757,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Triangle.html",
-          "hash": "L6uR8RlIPDOiTr0sBwZyhWxbjhFHZClupONP/Xwn6QE="
+          "hash": "SMqvyRARaqvpd3AQW5hqlQlhB8O48++15aM9UTKAduw="
         }
       },
       "is_incremental": false,
@@ -1769,7 +1769,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.AffineTransformation.html",
-          "hash": "NF4V+ZjDArbiUmoPpDJa5UuRkV3uznomFO1ar6JlDa0="
+          "hash": "eieB+6Rh8Fyx/FmA2DFb36cFHGkPQUQdqkXj+WwxNxU="
         }
       },
       "is_incremental": false,
@@ -1781,7 +1781,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.AffineTransformationBuilder.html",
-          "hash": "f5ro5t6jaEVPjngG+nUXqiYpr9lcq54NKu/YQo3Q6sY="
+          "hash": "QABZAdOAGY1ppofaULoZYV7bAAJGlz3GS4TbC+jaysU="
         }
       },
       "is_incremental": false,
@@ -1793,7 +1793,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.AffineTransformationFactory.html",
-          "hash": "l2pmuLuaOBM09/BVpyTgPK5hlzACxOgZHe7y+9bcsZE="
+          "hash": "UPDUP3g+I+2rtb4/DeGBCaiiHxzfdWOikNk+5FcqLC4="
         }
       },
       "is_incremental": false,
@@ -1805,7 +1805,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.html",
-          "hash": "EdA8ETdngjDL0cymZ/P0Se2+GfJ5REBYQXZrXZjhV+8="
+          "hash": "y2fA0ko/87TFGg5Tamnhu2xk+kF0sQA2gsMEKSU3pE0="
         }
       },
       "is_incremental": false,
@@ -1817,7 +1817,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.EnvelopeCombiner.html",
-          "hash": "tkyGFHOMcNVC8z/7jdC2O7TSKIxQFb1a7NZWT+b8yjs="
+          "hash": "8LjG4c3C5GcTlWXUzw3czUgoxs0u11g9iIKJ1IHx5WU="
         }
       },
       "is_incremental": false,
@@ -1829,7 +1829,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryCollectionMapper.html",
-          "hash": "bgm8z+oax4P54mRCWg51UhafgMeFojSIvPDnWT9Fjfs="
+          "hash": "kUAmYGMXDz0tWRIdUK4EVeiFiktz6/S1DYixgakasXk="
         }
       },
       "is_incremental": false,
@@ -1841,7 +1841,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryCombiner.html",
-          "hash": "OcI7vFGLS/poceIttK1QaAfrzZ19lcE/Ba2JugLrmRw="
+          "hash": "RL4fcFWiL3nrmEJdrcMdmSdrA4PzLuLNJ2i4pxWv6FE="
         }
       },
       "is_incremental": false,
@@ -1853,7 +1853,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryEditor.CoordinateOperation.html",
-          "hash": "UjY4GoXyi4YaiNdnJsM5zG1NDGf9y7wbPv4XHONmuAA="
+          "hash": "R1Q2o1eVgkN7iXDCJ0MSPRfIK7i0URk0IBAS5+Cf1ek="
         }
       },
       "is_incremental": false,
@@ -1865,7 +1865,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryEditor.CoordinateSequenceOperation.html",
-          "hash": "FPUuV2ZPY2UZr86KOv80JyDMI2Y2T6esv8x4d1OctZ8="
+          "hash": "G1JtoHFTIOpA02o7fhRvb2CWR3WEPAlI0hAwHo4VrOs="
         }
       },
       "is_incremental": false,
@@ -1877,7 +1877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryEditor.IGeometryEditorOperation.html",
-          "hash": "ERM2Yxg6Lm7WsPtDVkh4wpQ96TaTZhnHK+jtzqJ9vTo="
+          "hash": "NhYc+OfxSmlZPWuycRzV0b7FwNruHu2pU8ieaLuf0hE="
         }
       },
       "is_incremental": false,
@@ -1889,7 +1889,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryEditor.NoOpGeometryOperation.html",
-          "hash": "PIbtkB2T56c21IwPe9F+0juyNHMiXepWWKc0fEFDA94="
+          "hash": "y1fVxOG/KR4U0TV4p98/8VH6lomMCsOznTO/yxZwd5E="
         }
       },
       "is_incremental": false,
@@ -1901,7 +1901,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryEditor.html",
-          "hash": "y/5F5Tx0fjRd0taRnuvwPua3SkGnFmJZ8c1iSVPAh3Y="
+          "hash": "MOgjJUqHPhpuw8MIuh9gH7oTu2hGaviI47fNbGbB6SA="
         }
       },
       "is_incremental": false,
@@ -1913,7 +1913,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryExtracter-1.html",
-          "hash": "3DnsNbHxaWYHncJQtkVX7Wv8Oh2uvGOggaRD2M6RSJ4="
+          "hash": "vyj/xy+03UPP2vk9MHMcvqTDKMk3RJcWdfUBQrVHXQg="
         }
       },
       "is_incremental": false,
@@ -1925,7 +1925,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryExtracter.html",
-          "hash": "7gCo90ADLQ5T1pHTBshQD2JB1rLIIXC+WUJeUQ7/uyA="
+          "hash": "mJA6WYRQjQjI63LOkr8DyOzBz/enwJFIO9x1K7IDjaw="
         }
       },
       "is_incremental": false,
@@ -1937,7 +1937,19 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryExtracterByTypeName.html",
-          "hash": "QYPOQb3BFIU8Ca4stQTIYgI4gF2AHEiVdBmQdTzaQyo="
+          "hash": "lnOfdQkAhGf+gNckd/V7lvb4h8Xvc01I699GHbI9rMM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/NetTopologySuite.Geometries.Utilities.GeometryFixer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html",
+          "hash": "N4wze1cTX5U8fw/EPVQJNmdflsxcHnoQNLw+8Bfr6A8="
         }
       },
       "is_incremental": false,
@@ -1949,7 +1961,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryMapper.IMapOp.html",
-          "hash": "mhWjdop3hNLHqMWc8woUXRyZ5tQRBFFEwgEdHMVv3U0="
+          "hash": "tO/+HIZyyCKQb3os8aLw8NS4Q1SaT5qSt1F+PruikVs="
         }
       },
       "is_incremental": false,
@@ -1961,7 +1973,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryMapper.html",
-          "hash": "gwLAAGr5+gSCGY2HAfVYlxG93lc86fuA6dZN025rQQY="
+          "hash": "eTTUkMX/r+gEVZHxykYBcBkjfILQ5/BT/NXIZ7MIOYA="
         }
       },
       "is_incremental": false,
@@ -1973,7 +1985,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.GeometryTransformer.html",
-          "hash": "ZRrvBFD/xaK2gOce58OX9vLFLcLOnrpYbZcuRLa2Yf4="
+          "hash": "647FLFPhMNlCk6tY315lyH1g+tGG8heC5PL6ByqOhPU="
         }
       },
       "is_incremental": false,
@@ -1985,7 +1997,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.LineStringExtracter.html",
-          "hash": "kOToZ5z3BqoBhll7lwaFzuCbjwBRckUOOLO9kBRmz4g="
+          "hash": "q9bp1o5Z+DxxmuD26jc6STOf6XgWJ3EhP+0ZsVJQzWc="
         }
       },
       "is_incremental": false,
@@ -1997,7 +2009,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.LinearComponentExtracter.html",
-          "hash": "tOgcD5jA6UzKgSCnQbhSLbfaVapAU092ChpirYDP5Yw="
+          "hash": "7PXvrwMdSscM+JM+EM3hDwf9pvvUd1smkcZD2QRKn9I="
         }
       },
       "is_incremental": false,
@@ -2009,7 +2021,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.Matrix.html",
-          "hash": "nMi+nN2JNIRa/rgZf4plPWPRBv9YpKwHbXvsGo1eqEA="
+          "hash": "sU6HZlpLUYZGRhio1FExlE+9ZJXxbBVbnSljhSDqOUs="
         }
       },
       "is_incremental": false,
@@ -2021,7 +2033,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.NoninvertibleTransformationException.html",
-          "hash": "vjJ42qO4Arci8/CAQVyLeldcWUPD0uHBH+0cysMs0NI="
+          "hash": "JQ1LBTHOA2nqciDF70uS4/1WtT+4EGZDmiIqFGDQ9ZU="
         }
       },
       "is_incremental": false,
@@ -2033,7 +2045,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.PointExtracter.html",
-          "hash": "tC2RDKpdS5TnTpDlwE0lymvuVBW1sj2eTN6DC7UNbQI="
+          "hash": "uTe/ffO2EcsKHs0SXIHHD/bDttTIkeWOzqAJ2McpfsE="
         }
       },
       "is_incremental": false,
@@ -2045,7 +2057,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.PolygonExtracter.html",
-          "hash": "sWFK6nK8sZzgFas2ggGsPWomSLDBPrGPQpI+EjC3Cmc="
+          "hash": "Vbc2HaO3QPXYob/NYvnELYpo3lDvlecdOa/ma+0srmI="
         }
       },
       "is_incremental": false,
@@ -2057,7 +2069,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.ShortCircuitedGeometryVisitor.html",
-          "hash": "DYcm8LSQJwxiIatmNWEP4BmwAP2D9MsJETYkipPSI3g="
+          "hash": "1aVbXfJmTO0jW9/np/eN/Du4KdxRasBbWQ98td/dpIY="
         }
       },
       "is_incremental": false,
@@ -2069,7 +2081,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.SineStarFactory.html",
-          "hash": "GvSwgIY7IW4If0BcMMM55IFWVkE1vHlcoRlqTtj7IOk="
+          "hash": "C4QkXG8sedvUuBtSg8SSJ/N95XfmunrdmKINiWjIsn8="
         }
       },
       "is_incremental": false,
@@ -2081,7 +2093,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.Utilities.html",
-          "hash": "PUml99kzU7GdShpilQo55IIjCn8oaXRAw2Am2tFbL3I="
+          "hash": "CHpDpwTIWzNehRCd6c6guJTp2ViZUU/PCbTqC7fmF1I="
         }
       },
       "is_incremental": false,
@@ -2093,7 +2105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Geometries.html",
-          "hash": "IhSj478rACjIl3vlsfRzf+gMLl6+7eQ2CfUzVJXD7QA="
+          "hash": "j+hgBeZf8Fi1wov4eTJJyIc7Hxt3M2U3m+5/eBJQH6s="
         }
       },
       "is_incremental": false,
@@ -2105,7 +2117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Depth.html",
-          "hash": "MldFKrW2cwwvprBT/dGO6YkCCy8DLWR2Hn2FR4lyWAk="
+          "hash": "HKvjQg6zO7O/L4errrckggR51qURMganavgmLH+lgck="
         }
       },
       "is_incremental": false,
@@ -2117,7 +2129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.DirectedEdge.html",
-          "hash": "uB8ClkXqnyCOKd/LTkgag+Y1qbYjxHaMWrJbkxRPcxs="
+          "hash": "4Fsgkp6OQ5Tk8aogqZTbhzixfu8Eu3d9gT7tWt0Yxx0="
         }
       },
       "is_incremental": false,
@@ -2129,7 +2141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.DirectedEdgeStar.html",
-          "hash": "rVuc2XQ+ATdr3Yyvz/03R60gMJGDm8lLbugsPXYbH24="
+          "hash": "IKpAFDJlp0OHm4TCjpADtLrRnjhEt9c6PF5rFzJUMy0="
         }
       },
       "is_incremental": false,
@@ -2141,7 +2153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Edge.html",
-          "hash": "lAZG9PZps+pVOAoXOHewbjR0k4g9TZMUVv3lQ4NWZuI="
+          "hash": "odC+ZH3G3O+3YMPVoC1vzRajXrkVcNx1gOBxLkRFaQY="
         }
       },
       "is_incremental": false,
@@ -2153,7 +2165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.EdgeEnd.html",
-          "hash": "gmCK39kMHrGPhGam6khP33t7QOHOhE3bMKks5fNthlY="
+          "hash": "fy4tuDtp058znWJZWWxIbiSUbxqVYPBj+OW7ZVTmnok="
         }
       },
       "is_incremental": false,
@@ -2165,7 +2177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.EdgeEndStar.html",
-          "hash": "gjPns6UNWNCjQurTHGpxzwdrUpnEYPsOytUHnWQfMRk="
+          "hash": "4iFnIuxE+KYUPLl++Ra8oI+pMuhdQRvjiLBPqPrtllg="
         }
       },
       "is_incremental": false,
@@ -2177,7 +2189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.EdgeIntersection.html",
-          "hash": "cFvP60nDLsPX7mQBOj9shwC1y0UAovGSQwrCT2hbZdc="
+          "hash": "5FhsHFbJ/QqS2Hl+/8lX/+ppBopYNWd1WM/NY2/v9GA="
         }
       },
       "is_incremental": false,
@@ -2189,7 +2201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.EdgeIntersectionList.html",
-          "hash": "0DydNfH9o77HoSmqjRHxRwpM28yBlb9igNd3uDtfWPc="
+          "hash": "NUx5RI74voRyCL2qTvb4bnDhZQ8S6l4LCozYjvORrko="
         }
       },
       "is_incremental": false,
@@ -2201,7 +2213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.EdgeList.html",
-          "hash": "u97pX70kKdOCKPeeMW6nKsWKUBX+QdZlESXIN0GqX/A="
+          "hash": "Zl1X111lH1jXbUO/3+Y3AgY3ILdORSNXiUhD/Upjh60="
         }
       },
       "is_incremental": false,
@@ -2213,7 +2225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.EdgeNodingValidator.html",
-          "hash": "JZ3X9DxmfRmpQyyYeAJommOjTvGIZ3q+t0SpVhHkEl8="
+          "hash": "8LcvBzd3//3rMkM5F5evtZls1RQGExHKQaTvDHRP2w8="
         }
       },
       "is_incremental": false,
@@ -2225,7 +2237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.EdgeRing.html",
-          "hash": "iod0S5Z9psC8ehZ85uFEBm5n4NfMr+jJ8T4HD3PCE2o="
+          "hash": "4S9Z9isjPyTKzko5A7L9/BFoBt2B9q4pAtZGntjsF1E="
         }
       },
       "is_incremental": false,
@@ -2237,7 +2249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.GeometryGraph.html",
-          "hash": "Qog9wW5Kqh7FiRW6MOAd/101t7ULFaz7w/3Oc4uZX+0="
+          "hash": "gD0W8gic8SS+ek7zDDmh67vbaBEjIGTcSZTeyzdif/w="
         }
       },
       "is_incremental": false,
@@ -2249,7 +2261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.GraphComponent.html",
-          "hash": "g6+c2LrT2/zKhdgsYmccLX3yP/LztGRN7bqw68PGlTU="
+          "hash": "GR5Sre0jJzIj45hm9vRVSh0CYRa+oVWVVBfPBv1jzJ4="
         }
       },
       "is_incremental": false,
@@ -2261,7 +2273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.EdgeSetIntersector.html",
-          "hash": "amOW2Ny855yDrtn3P8Owfk/MlHrzagSg2niyjHdIx9A="
+          "hash": "3yLZo1/gIAwLx68ByY40gt2MTuLgg/RfB3mP7l6HClg="
         }
       },
       "is_incremental": false,
@@ -2273,7 +2285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.MonotoneChain.html",
-          "hash": "PB1SMVLe0SQ72Jw+gpX1wB9WlrL0DsjmffUc95KwSQs="
+          "hash": "EFf5/FqXTzS0onbbOFMWVJxGFqJ8IUtygqsdJvgG30k="
         }
       },
       "is_incremental": false,
@@ -2285,7 +2297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.MonotoneChainEdge.html",
-          "hash": "ZfCC1l0kzinE0jydkpcqGA7i36Xrrw3Xf5F1DgmzRs8="
+          "hash": "E5UyDJbaNfmmRJ8x+Ss2iD3D9BQtQO2SjytKDI8+rB4="
         }
       },
       "is_incremental": false,
@@ -2297,7 +2309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer.html",
-          "hash": "Ln4SGkWTTDP9lGEChhZj7PXsNILuFwlX53IYIt9WIcI="
+          "hash": "TCnsfa7QBx5Wz7a/rLWuEShFqLgyYRCoRxWPUZW3iAk="
         }
       },
       "is_incremental": false,
@@ -2309,7 +2321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.SegmentIntersector.html",
-          "hash": "VitIKrB7a1kQQH/EkU68rT0yZxS3/cEHurWPSVC4ZI4="
+          "hash": "gBqxbvdJ3vyKZ61MP0hh7c5gPKzmyZGm/RqSmqD6dgQ="
         }
       },
       "is_incremental": false,
@@ -2321,7 +2333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.SimpleEdgeSetIntersector.html",
-          "hash": "Bc22N/GyPKmROlqeycFFUdjZ5EWL6cvAp+xivZqXeL0="
+          "hash": "rZgKAxAImlQ20sXxFgbUsaT1PXC++Cc/bZd9Npu1NGA="
         }
       },
       "is_incremental": false,
@@ -2333,7 +2345,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.SimpleMCSweepLineIntersector.html",
-          "hash": "pCO4Fbv3I+kDR80imPcDYfcyfYBQTN5b37jZ59JgW3A="
+          "hash": "uOugdyaWq4P97w5gRUY+s/KjzkH68wCrFpbgwrKwOhQ="
         }
       },
       "is_incremental": false,
@@ -2345,7 +2357,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.SimpleSweepLineIntersector.html",
-          "hash": "NNERNQ1+t4VcM+3Jsjh529J0ld1OqYIrUWuSaH3v7H8="
+          "hash": "cWoOgEXyC5zsW6othX7aNcSV8ApN8Eq/V7O6ctZE/eY="
         }
       },
       "is_incremental": false,
@@ -2357,7 +2369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.SweepLineEvent.html",
-          "hash": "8fL5piU9vLojEtt4tRqo2t5kCZw9nnySO3mAzZUTBiU="
+          "hash": "usPwdzfFumE2/s3YGT0+CDhxIdB6ICwnRXrfCGNtiRY="
         }
       },
       "is_incremental": false,
@@ -2369,7 +2381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.SweepLineSegment.html",
-          "hash": "pdujwhKSBp/IJTQK0q57nO4Xgrt8TR311M9rx4+zY2w="
+          "hash": "nPKXypnccDtJwYc2AoCEHyj04Zr4SEZvcJsp6l5M77c="
         }
       },
       "is_incremental": false,
@@ -2381,7 +2393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Index.html",
-          "hash": "0pS6rcBVkYpL+1vQLRTB2tDmd+mUYooYeVUWsWkHJA4="
+          "hash": "grSSR+qxPKhDR6UxZQntZFfB9hBu+dHjP0RZe6ksueI="
         }
       },
       "is_incremental": false,
@@ -2393,7 +2405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Label.html",
-          "hash": "sztSHcVws2/s0+SzFExqGCDpSo7QaUEqORB7GOJd/FI="
+          "hash": "XaJJ7K7I7GMkcHxDK/Y5oWkE4+1JZEbIZoBwguR5+/U="
         }
       },
       "is_incremental": false,
@@ -2405,7 +2417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Node.html",
-          "hash": "C3p2QvXtGlcsBaWTgbXyNIMyrwvjFRytHwmEHWLvF9w="
+          "hash": "KgOxS7RTUq9fKykD+T8KN9YgH1kggFBpWdnxzvjZpwY="
         }
       },
       "is_incremental": false,
@@ -2417,7 +2429,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.NodeFactory.html",
-          "hash": "oZ3FZTgbsG4MUwRm4CKN8JrkwXwnKOqFHZ1N+sJByts="
+          "hash": "nza4yV9bwtJ2nl7/yPpGoVZ0fK5oEIpDb8aRIc/k5gs="
         }
       },
       "is_incremental": false,
@@ -2429,7 +2441,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.NodeMap.html",
-          "hash": "JiPSDaFNffl4ntkXPf51DvP1t5JDMZW0Bxm6TA7KlmQ="
+          "hash": "YFEiqIRxyJIDRU5kK0Fo884aCm7ezyc3oHUWHDbMsLo="
         }
       },
       "is_incremental": false,
@@ -2441,7 +2453,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.PlanarGraph.html",
-          "hash": "WhXYmNs0nNcujcGrxGWKNWND7FFoWV1MTDF+ozh1SOE="
+          "hash": "zN/TDV9vW6L8z3RRHpWU6oF5FRIFBWJfU8h6pQfSQ7A="
         }
       },
       "is_incremental": false,
@@ -2453,7 +2465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Position.html",
-          "hash": "8zndS4/qTHjzYqBx7jxpNMM2ruBDtYLW+tRIGLASfzk="
+          "hash": "6U8SKujIPESETMRANhAN1It/085sEruv33kIM1xzu7I="
         }
       },
       "is_incremental": false,
@@ -2465,7 +2477,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.Positions.html",
-          "hash": "meWL40wDv6zwo2Z341KUntSUefOxuBJZH2CG65bYyxw="
+          "hash": "FMccQCMtBJLf8sJpBNn4PEZBBLcQ1KLGJKUiyz5YnNA="
         }
       },
       "is_incremental": false,
@@ -2477,7 +2489,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.QuadrantOp.html",
-          "hash": "mY3k+L4ZXXB6I/H0tD3Xj5lVxWweKfrPGsRVX8Rbbnw="
+          "hash": "3cw3gi/xZaN/3th41nYNYlAc9FJJNdXtvxXFYRxFw0A="
         }
       },
       "is_incremental": false,
@@ -2489,7 +2501,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.TopologyLocation.html",
-          "hash": "W1iRH75+KNFDtyOP68qpnEoflnnAGRHVIKV5uOO4PYM="
+          "hash": "6QKUwRqH55f/40ExRXWKG19U2bNouX0hOpmNJR7j6q0="
         }
       },
       "is_incremental": false,
@@ -2501,7 +2513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.GeometriesGraph.html",
-          "hash": "tVsu9ulMeN7keMLePhh4EGJD0tOEHokHjrK5Lo7I20A="
+          "hash": "eotyRpSzf0a7GuvSPGSflvExxODFfOruoCA91XuJP6Y="
         }
       },
       "is_incremental": false,
@@ -2513,7 +2525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.BEBinaryWriter.html",
-          "hash": "DSDBSyVeVjJboO2QMpRhwBRRzq7O3sNOntWsdgrCmus="
+          "hash": "rLIDxUtFWwkKJU4GDq5ucq4eeMkpb2eUEynBLxj0Uwk="
         }
       },
       "is_incremental": false,
@@ -2525,7 +2537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.BiEndianBinaryReader.html",
-          "hash": "d2fybfK0NntrZK7zR6A57WddXnl4xZE1Bp/MTQtjV2w="
+          "hash": "B1Hfdi+1NS3yPH0B3W4PFga6K9VFalUCojSmvpOk4LU="
         }
       },
       "is_incremental": false,
@@ -2537,7 +2549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.ByteOrder.html",
-          "hash": "ozsUvzo5Q+qo71GBrBtD+L7U7a7wGGqlw44KU/Mjcj8="
+          "hash": "ZIFsO1hOnWnKME1mvA6Nvhr0Ms7eA2rXNOdwYZcLM7k="
         }
       },
       "is_incremental": false,
@@ -2549,7 +2561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.GML2.GMLReader.html",
-          "hash": "c+enM533odaN/tn9wuYYjPhF6Up3mbeIdiMf1hZ2iDQ="
+          "hash": "IqyPDPd/vpakpQ1+LHIR8kcTABX8y/7MSpof5SuqAdU="
         }
       },
       "is_incremental": false,
@@ -2564,7 +2576,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.GML2.GMLWriter.html",
-          "hash": "xR9rtV7LI1O6X73e/Ly839omcbrSy0BhV7/HShRzadw="
+          "hash": "7oLoWdFiaDuv38cAp88di8hDYjeBkrSfRVcgCadL+gg="
         }
       },
       "is_incremental": false,
@@ -2576,7 +2588,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.GML2.html",
-          "hash": "sQtOJFlZw6L4S/SnPJC4V/CIN1lZT0TOPzeY6KG5rXc="
+          "hash": "xL+ZjewaY1zGF9QVKYVZ+FzgG8FjOIZFwFmHeIMZFbU="
         }
       },
       "is_incremental": false,
@@ -2588,7 +2600,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.GML3.GML3Writer.html",
-          "hash": "T20jeXcmlupxQKFbnF5XvY/SRDK32jIubdd5dkaZcWQ="
+          "hash": "2Epgb1XkX2RmYY1zG7AbQwzWsngVxdOLQBDESAUiGFA="
         }
       },
       "is_incremental": false,
@@ -2600,7 +2612,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.GML3.html",
-          "hash": "RIW8WI+vgBMzY5S8XzeHvn4kh3KxL9VD4XXvQ4Fp1r4="
+          "hash": "+hQlpRm2SDvy//8Cx1cRmxfAihWYZ83PJSVB9Xo1Q8c="
         }
       },
       "is_incremental": false,
@@ -2612,7 +2624,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.GeometryType.html",
-          "hash": "l+cjnwVtQLD1fpQZ9R+4hYWeSt3LdJU5Qno0RAFNq80="
+          "hash": "aJ/sWf3Nh9yHNjUAJXQOY2iHFrl+YxRBtfi1cIgSIb4="
         }
       },
       "is_incremental": false,
@@ -2624,7 +2636,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.KML.KMLReader.html",
-          "hash": "UF9DTLCdQPXbM05pNmuBNXWNXffbv3NTNXU9ExX2Ku0="
+          "hash": "KDB3p1zI9AScZWQZnW0BQZn5QjuUCgcpNLl8cVWqsW8="
         }
       },
       "is_incremental": false,
@@ -2636,7 +2648,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.KML.KMLWriter.html",
-          "hash": "zdu7x6o4qa8r5L7m1b+y+chtGqeN+oM5iMbM0CNW6sk="
+          "hash": "htiEyHOrEbjMoYjvdr1X8YBGZfwGyLGprRa6Z7PkOSg="
         }
       },
       "is_incremental": false,
@@ -2648,7 +2660,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.KML.html",
-          "hash": "SKyyGbe//s6LqXlsr1Q/yzwOJBB4Dq7/kBe1SB85Hhg="
+          "hash": "XL/9nBuXOAWRBk4+gDNfTqnA+XukWyL2s2zuBHQMfgg="
         }
       },
       "is_incremental": false,
@@ -2660,7 +2672,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.OrdinateFormat.html",
-          "hash": "ph12rb0XPi2XD83TEeRmfLMGeUcVSlmY/ZocyVeeEtU="
+          "hash": "tzcbrzSvGCiQIU1MXozmaN6NaSO0XW2z2RuJ3l3/JZs="
         }
       },
       "is_incremental": false,
@@ -2672,7 +2684,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.ParseException.html",
-          "hash": "r6OFhENT0QcF/PjG+7IKNTIUtwNJnAlGRxXQnonFJV4="
+          "hash": "ws5x0ioORGq5w1i8Vi8OLFq1Ss57NzY2NZ8SX26GEGI="
         }
       },
       "is_incremental": false,
@@ -2684,7 +2696,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKBGeometryTypes.html",
-          "hash": "bL4GsuTwulcW7/LL8TN3ec2t3TPA6aCHQNqRacA/q/I="
+          "hash": "GRPDYimtgO7ahiHZPV+SkZL4a525MOpQ5d1c8eX9nAU="
         }
       },
       "is_incremental": false,
@@ -2696,7 +2708,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKBHexFileReader.html",
-          "hash": "gyCd/NHc3GnxFQdJJVmez31YMYq63GY8o4eEvo5v0dU="
+          "hash": "2QXld5EyjaRMAmmMQW3TpFWoX+jRcYgFdD+kSyF4vnM="
         }
       },
       "is_incremental": false,
@@ -2708,7 +2720,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKBReader.CoordinateSystem.html",
-          "hash": "lAQZHbKCwPmVIg829eDNjCyPUtjZsNgGt+QniNotr5k="
+          "hash": "+cYGLv1PROrJgl7FvrRpoVGdQzL26GQs5lAf9fDRLVU="
         }
       },
       "is_incremental": false,
@@ -2720,7 +2732,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKBReader.html",
-          "hash": "xm29bRgUeLJ04/0eZ9L4S5mwt4CtLNLRBugPtIHDpyg="
+          "hash": "qxWRqpp4mcnwBTKB0zXohRbdcFAmkR/AbkicpP2E/80="
         }
       },
       "is_incremental": false,
@@ -2732,7 +2744,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKBWriter.html",
-          "hash": "txroBgdTwEAONdUH5Jtqd6Yu3CJv/aiP+P/VXV+dyKE="
+          "hash": "+Bqx/tGZhABM9D20NGlXWPDXJK/yBR8cFjd56MmuJzs="
         }
       },
       "is_incremental": false,
@@ -2744,7 +2756,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKTConstants.html",
-          "hash": "I4i/LYel3dkIqWJNsDzrDLSP12lxLtwo+sgW9P2aZrw="
+          "hash": "CKXAGC8FBlJ7YnHeYSenBokW0u+RdwKXwbbUAk8hw8E="
         }
       },
       "is_incremental": false,
@@ -2756,7 +2768,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKTFileReader.html",
-          "hash": "dTOkYZfvM8f+Vmy54w36jaQoqyjf27MVdV/nj2219GA="
+          "hash": "mc7RYuYrw2e16tYP9f43s2hltA4GzCzvR5WPor90FWg="
         }
       },
       "is_incremental": false,
@@ -2768,7 +2780,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKTReader.html",
-          "hash": "cofCU7DVzSNlDHzYGLMtrnQ8n5Rt+TLA+suozwYGI4A="
+          "hash": "hxTxXNh0Ojcl6HAga4RaamwaTPeAXak56eONCFAFs3w="
         }
       },
       "is_incremental": false,
@@ -2780,7 +2792,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.WKTWriter.html",
-          "hash": "mrl3wyimhTBgZrEBkZAr80FO1freDwz9Nhs/xD1kjMw="
+          "hash": "Jg9gTserDCyu8ZzPbkn34N4argAgHCzt4vZBn4gcN0o="
         }
       },
       "is_incremental": false,
@@ -2792,7 +2804,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.IO.html",
-          "hash": "aNTuSOHCHH/zqHOHGzmWofi0MtmMwA7vRlYMbzu/YkA="
+          "hash": "s4AdHbPjKQpnk15+fvHWQdkdUsJlluMwUNsmXtEE/bY="
         }
       },
       "is_incremental": false,
@@ -2804,7 +2816,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.ArrayListVisitor-1.html",
-          "hash": "gSXyyd2XtKCuRV1EymEY2t8zi1Nzk0tn90+6R/VP2/c="
+          "hash": "Y29rr6RK5GGeHyuhLM2fx84RdFFJacpeIHw2c2+GFFg="
         }
       },
       "is_incremental": false,
@@ -2816,7 +2828,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.ArrayListVisitor.html",
-          "hash": "SzSfVDOe/EhZXty/0fpsHgU5vJrP17IFvHH1d4inmVc="
+          "hash": "CwIUzaKyRCg8s1X8yns4iod1MjZAbYW9PIxpxZOGf4g="
         }
       },
       "is_incremental": false,
@@ -2828,7 +2840,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.Bintree-1.html",
-          "hash": "6oDQW75JcTv8+awiJZMz9O7QrmVM/soCVkMwvkTI/B4="
+          "hash": "LMudQyAoAutI+lhQLmoOKDSlWOrhVHDkbnbEmX2GLrI="
         }
       },
       "is_incremental": false,
@@ -2840,7 +2852,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.Bintree.html",
-          "hash": "+nH5IlHXYsgPvfHNEDnxcdi8KJpbi3jpo4ZRIZFsXxc="
+          "hash": "CIuttMwAQPZ02itPYlNwk54EWnFZq84uz1FDiD/uRBY="
         }
       },
       "is_incremental": false,
@@ -2852,7 +2864,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.Interval.html",
-          "hash": "bYLqn3sv/cBtDcDLllZWszWEo4FutcyZNm30blNRh8o="
+          "hash": "YbZ3E59gW/byGEOo6fMKBvpnRzE+bS9fqLkOFurZx+k="
         }
       },
       "is_incremental": false,
@@ -2864,7 +2876,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.Key.html",
-          "hash": "mLvf3UYwDkq4RMxXniGmpnzzt7EKKvJL1USTr/osSIQ="
+          "hash": "Y+fQqEEmBvGV6/pOcibagJ4qiEZfWbwSDOzHiZy27jc="
         }
       },
       "is_incremental": false,
@@ -2876,7 +2888,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.Node-1.html",
-          "hash": "cYRzdopcQ/POZkrH9fbwifcv/MZ4lzQnURb+teFkxag="
+          "hash": "Zr3cTrlHe3wkZvnII5yaFIRRoKF77zVU2t95xJ5TQI4="
         }
       },
       "is_incremental": false,
@@ -2888,7 +2900,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.NodeBase-1.html",
-          "hash": "hgeIoljakwOSPd6ql8+Hh7tAdXv8le0yOMdLLInOeL0="
+          "hash": "j0KcfRDT7VVfAhw8Q9RAfBGkdm6w5UjKlm7RHLxCanY="
         }
       },
       "is_incremental": false,
@@ -2900,7 +2912,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.Root-1.html",
-          "hash": "BkEX07YIH2Qh3LUNQj2OdmivlgMg/bNB9IqPcIeTUic="
+          "hash": "sS1OoNHGC/POg2famxBV85Ju8cjXUTLjpdeUEz0uKDI="
         }
       },
       "is_incremental": false,
@@ -2912,7 +2924,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Bintree.html",
-          "hash": "1XcaMDyHJ3hUbIF4Yzi9Ch4AfZpXFnYZGgT7jvW2Ccs="
+          "hash": "17ZayPP3A+ZnPe7Xplf3TrpSJrvO1UqmZXkthIjOjtk="
         }
       },
       "is_incremental": false,
@@ -2924,7 +2936,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Chain.MonotoneChain.html",
-          "hash": "5qk6VpZzWJfDjT1vKHXDwIi8orGXILgCYh6IUC2Jpoo="
+          "hash": "KElunFrkntVfI9m7DJxt52qIhlfkSLBAIWb4PJLUuFA="
         }
       },
       "is_incremental": false,
@@ -2936,7 +2948,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Chain.MonotoneChainBuilder.html",
-          "hash": "Garx5IW6/QOR2qO3IlMh/56x3dVgcOCmc5CnaS7GkpI="
+          "hash": "acPqPVOYJK9Iz2iNxpSdO83mrMYbqRcRGqLIpEeobPM="
         }
       },
       "is_incremental": false,
@@ -2948,7 +2960,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Chain.MonotoneChainOverlapAction.html",
-          "hash": "jFoXGpslteIaCaOQ74TpmWhFoTZ9Mccd4MpQoq/Nx18="
+          "hash": "KDzs8d1MDbH++iIvMdBr6C8nfX4F4NQ9vfTLolRQqNo="
         }
       },
       "is_incremental": false,
@@ -2960,7 +2972,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Chain.MonotoneChainSelectAction.html",
-          "hash": "sTsu1D5Acd6SXcaag572cxm6Zjxm4enoko1Vjav/l+s="
+          "hash": "8djkIvyecrZT2I8UjpAsiUX/Z9GAFbmycEJsI4Qe2cE="
         }
       },
       "is_incremental": false,
@@ -2972,7 +2984,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Chain.html",
-          "hash": "Ps5cT9Rx0I3u3OxXAWcZTKD5ZDXqvIwTGP4Q3s2xT6w="
+          "hash": "eqHhjzr5FrSqaYscIpVp/Xujp5B7QkvRYn5oFSUXTus="
         }
       },
       "is_incremental": false,
@@ -2984,7 +2996,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.HPRtree.HPRtree-1.html",
-          "hash": "AvslC3rNac5zd0zhbYRw4MWkeOrx+k/Q6Stx+raQfIk="
+          "hash": "5IqnYXQ8Shg9fOckpY0rJ0uSKcdpMw3NeyyEb/NT1Xs="
         }
       },
       "is_incremental": false,
@@ -2996,7 +3008,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.HPRtree.HilbertEncoder.html",
-          "hash": "0gKFEL1Wr9bl+oZixwbdOgtqnhkrPpxhrRRPGx6flRQ="
+          "hash": "y8uQwG5j7Ph2dlBIlpBaWb+UFOBNVKMmXueBQL/8WnA="
         }
       },
       "is_incremental": false,
@@ -3008,7 +3020,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.HPRtree.Item-1.html",
-          "hash": "pOnnFJ1TFXyPVpMh/sO0R2rXY9N1BkM+V8U17Kvwi/Y="
+          "hash": "wWLbBx859bXfYz1xaaTPzlL5U4H3AeWsIsqny/gSJnQ="
         }
       },
       "is_incremental": false,
@@ -3020,7 +3032,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.HPRtree.html",
-          "hash": "ns43x63uK3p7PtCUIzlU/oZV3C8fbQFBsoBMzKdS1Qc="
+          "hash": "9AKg/dJ/o18EdhVhr917OEC5g/Co8+jtntpJKyTi5gM="
         }
       },
       "is_incremental": false,
@@ -3032,7 +3044,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IIndexVisitor.html",
-          "hash": "IxRdCGUaVh0FBsu8DY22QGhFcllyi4sXuguDXuLQPbo="
+          "hash": "V3x9d1r+04Q5rUWjKZku07gKRg/L6SEr0W14eTVGY64="
         }
       },
       "is_incremental": false,
@@ -3044,7 +3056,19 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IItemVisitor-1.html",
-          "hash": "+s89bL8iE3P8jjzYjf6wYZG03zLJzdZODjlEySwOwNk="
+          "hash": "fSQMV1ACuGbg4W3+y+fXPIQld/8B+7LwaSQpCf0Nwcw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/NetTopologySuite.Index.ILimitingItemVisitor-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NetTopologySuite.Index.ILimitingItemVisitor-1.html",
+          "hash": "EpyIvagIoUrZMaaNpDd8x4JKL86o8Bm53dzGrS6a/f8="
         }
       },
       "is_incremental": false,
@@ -3056,7 +3080,19 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.ISpatialIndex-1.html",
-          "hash": "eALooMtgmJ+aJRvYUsUBCVcavosMaG6ay/L8mT2Lmyg="
+          "hash": "nIL8jnB1s7v0yAnoy4dV/enF/9jHiKjMBGXFM3qPjts="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/NetTopologySuite.Index.ISpatialIndexEx-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NetTopologySuite.Index.ISpatialIndexEx-1.html",
+          "hash": "T3uihZprDWEPsd9BdPdYVMxOE8XvYfYFH7JC4PkQMgI="
         }
       },
       "is_incremental": false,
@@ -3068,7 +3104,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IntervalRTree.IntervalRTreeBranchNode-1.html",
-          "hash": "P55+jpnWAVJfHg0mzffndLPftZ+ZZ9dY+VCg5oUp5Cg="
+          "hash": "utOvrqtbTQCv5ClBGpUuezjSMFK8t4L8Vr57eh9h9ek="
         }
       },
       "is_incremental": false,
@@ -3080,7 +3116,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IntervalRTree.IntervalRTreeLeafNode-1.html",
-          "hash": "TsHMRtW9FEdGxrKpNAkN9y2Dwa5jgDxhBE/dNtbiHD4="
+          "hash": "UOTxSDPVaasuTfhYQ62uvD/Y8/A4U3rNBDEG8VvPxds="
         }
       },
       "is_incremental": false,
@@ -3092,7 +3128,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IntervalRTree.IntervalRTreeNode-1.NodeComparator.html",
-          "hash": "7sa7ZSOek/ZJ7gXCPJgaIXuvTLLfT7CJvIAoK2Z/AmQ="
+          "hash": "3SoYKHHi1c4Tk79UQ3XMd/v1BzUr8msTJ9bFtWo6VFs="
         }
       },
       "is_incremental": false,
@@ -3104,7 +3140,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IntervalRTree.IntervalRTreeNode-1.html",
-          "hash": "QAAT2L23dxDiKxtg7reNLhVg7JrPGu3n1a/8FQ4GRnA="
+          "hash": "LaNPOnZNrqQjzLCfYhTJTTIZiTdUnsPYi1QCffcvZTU="
         }
       },
       "is_incremental": false,
@@ -3116,7 +3152,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree-1.html",
-          "hash": "aHkHXt809CSVqK6s+lcRce4SyfcA1gpahxW7dEB9pk8="
+          "hash": "l0yT65yAjNB/F5OHJL5pZCIi9Dyo8OO1QBrHO4EbdD0="
         }
       },
       "is_incremental": false,
@@ -3128,7 +3164,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.IntervalRTree.html",
-          "hash": "GonGgYNxy6DyxWtIH8IcSsId7sx1wfHB/Dn85/PcHxM="
+          "hash": "Qc6QTLMZKjsnQBPbrNM1cO4n8MT587oeWs0ixUqjlq0="
         }
       },
       "is_incremental": false,
@@ -3140,7 +3176,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.KdTree.IKdNodeVisitor-1.html",
-          "hash": "QsRWigLpNU45FJX3oXVp6sX+8kHjJ3wGqrcBmUEChKA="
+          "hash": "0yTlPXBSvyC3iF/MClAu5IDAPnUm/yrqxSJnZpu1mKs="
         }
       },
       "is_incremental": false,
@@ -3152,7 +3188,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.KdTree.KdNode-1.html",
-          "hash": "gFurivYCXpaiu8BftfeREP3QjYizu+S6NegONGv+STQ="
+          "hash": "YArm8vMk9MMnNwOopkofoVqInY4nr+bnaQjqWLnm54U="
         }
       },
       "is_incremental": false,
@@ -3164,7 +3200,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.KdTree.KdTree-1.html",
-          "hash": "wZA1FOxe7xEm8r8byPwNGxKqcixN7/28ruqEEC+vJdo="
+          "hash": "mC0m4Wn1N9tUYzXknjJdk2PRqFYExp2zTmJt6H7d93k="
         }
       },
       "is_incremental": false,
@@ -3176,7 +3212,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.KdTree.KdTreeExtensions.html",
-          "hash": "wx7d0JZgEl4mHiXSM/y2/MX6HyDOkGgVfRHAfP681zY="
+          "hash": "Iifd9pL4kDvidtwvEya2mOzQjHNGGuIv2Qa6I1oDyAU="
         }
       },
       "is_incremental": false,
@@ -3188,7 +3224,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.KdTree.html",
-          "hash": "evQLCVO+SpR74qMXXeWXH0LoMG/WwC+xUPMXNP03x+s="
+          "hash": "scYoGtvBdCU+NdQby+GLpyAoQ1GmfTitUPI/7PRq3xw="
         }
       },
       "is_incremental": false,
@@ -3200,7 +3236,19 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.DoubleBits.html",
-          "hash": "Qm88atn3auQQVxIw9tyvM3vOMSlKf2PNJQTqI5ZuiN4="
+          "hash": "Kur6QRfC/ChVBDJIgpgzirWViBOYDVNvaMob/5xGtzI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html",
+          "hash": "B9pBBfSZfDdgor1Z3XqcBJBzEpuanRRDelLqqrdaC3o="
         }
       },
       "is_incremental": false,
@@ -3212,7 +3260,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.IntervalSize.html",
-          "hash": "BIlkvut+atDwUbrXsHfzDqR/K5qMtyCbLfUoHLfjGm4="
+          "hash": "6gnKJ/RN4iRZZwAhUymWw+58lNx2ZVbr03XDahdXSQg="
         }
       },
       "is_incremental": false,
@@ -3224,7 +3272,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.Key.html",
-          "hash": "DfmFHt4MfRuN70op9oh0JEKgIb2MPWktsfyIePLR4IU="
+          "hash": "H5KQBUspJji5bPq7cSYVs5ZC7Lh91V+NUjUy2DuPupo="
         }
       },
       "is_incremental": false,
@@ -3236,7 +3284,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.Node-1.html",
-          "hash": "7qFdg2rg3LAkd1ULp38FT1qiAmXlYW6P9siUVr50vTo="
+          "hash": "yf8eMkReux/vV0iCOvTAGWA8kigeiLY93txWZTwusMU="
         }
       },
       "is_incremental": false,
@@ -3248,7 +3296,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.NodeBase-1.html",
-          "hash": "b3h0ZvKAcOgwKGy24D6jUFWtSyf5tCMiJf8ly2EwgOQ="
+          "hash": "/CA30eQYmJdCOROwHprpGRipptJcOf9ieoFEUZnH3Vc="
         }
       },
       "is_incremental": false,
@@ -3260,7 +3308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.Quadtree-1.html",
-          "hash": "7UVAZ7/8QXXsAfTLA0xMeQNUWc3nH+wAT95/X/DOEZI="
+          "hash": "cmXfdgnLvw/Hy/DTteOjq8sdUWwKt7AWG/xCDBMqs8U="
         }
       },
       "is_incremental": false,
@@ -3272,7 +3320,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.Root-1.html",
-          "hash": "MBw2XRGVDKGvJda6nmqIUTfGYmrMClQGhWqquilonnQ="
+          "hash": "P+dNk4GXJ2cqI6m3UekIzKtX+ID0xApzg8L0HbIYpx8="
         }
       },
       "is_incremental": false,
@@ -3284,7 +3332,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Quadtree.html",
-          "hash": "ovpvY62nVDZ84jyJCfdc3ki4zK1+PCTTekx3+Sp06bU="
+          "hash": "xj+brSzdzmfMs6N1XZS5GQP4MfG7iCjejNKaQ4/oatE="
         }
       },
       "is_incremental": false,
@@ -3296,7 +3344,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.AbstractNode-2.html",
-          "hash": "GkzbAQJF8kYNaCcJI+2j4hz1osa40MCNa+lV3FlAvRk="
+          "hash": "rO11KX6BZebezyVoKGK8TZ/qLyQNRke3+HhWl2tS63M="
         }
       },
       "is_incremental": false,
@@ -3308,7 +3356,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.AbstractSTRtree-2.IIntersectsOp.html",
-          "hash": "izqmVcab5AYPRT6mEu1JzM1LbWiQFimV17XOdS0SZdQ="
+          "hash": "I4BUFCnNVsSaw/3yNT9IapUUL6Bv5xPxW+1MfowqL0Q="
         }
       },
       "is_incremental": false,
@@ -3320,7 +3368,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html",
-          "hash": "fbmi7Fp5k6sVdo0zUtFsRbDz3SeKi+r5AfI/fdVF/WE="
+          "hash": "h4JvY+Anmuv6273ylzAs8Nhy5gAMtQ2fdT5jGd9vYXs="
         }
       },
       "is_incremental": false,
@@ -3332,7 +3380,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.EnvelopeDistance.html",
-          "hash": "02Sv2VJGOTXpILJwoLQQDSUxGO8Imd/mgsbQIeIgSlA="
+          "hash": "Mliu/HGmGLpLvycqSGnnTTbZXR8qw7IeApD5Ydcardk="
         }
       },
       "is_incremental": false,
@@ -3344,7 +3392,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.GeometryItemDistance.html",
-          "hash": "fREJ9/sj5qsiPRtebu9r3GugrEWawPNnSo4gbO8i00g="
+          "hash": "OwUdj1H8qQPAdLQRYTZsSk2Q6bsNWx/sgIAsV2nPX0c="
         }
       },
       "is_incremental": false,
@@ -3356,7 +3404,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.IItemDistance-2.html",
-          "hash": "Zqxq2UV7SW7iOgpfeH+MOBkbqYg/8xyUngIEN0aPTNo="
+          "hash": "1VawWUXIHeLcdxMBz0BsMfSDb+LeiS9u18K1UIoPZ1A="
         }
       },
       "is_incremental": false,
@@ -3368,7 +3416,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.Interval.html",
-          "hash": "bHw7lip8sezNNCwj+m1fXt/BtaU3P3A0WH8rH8PfpJE="
+          "hash": "uPITI1EY09wsqxZUXtfbZ5ByanWAw2B0MpZX/jsGKGs="
         }
       },
       "is_incremental": false,
@@ -3380,7 +3428,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.ItemBoundable-2.html",
-          "hash": "swZ2dnZmBXh54YKVQRg5Bqz750ZUjIJgh79r0E4Ze40="
+          "hash": "1UeOPQSwB4KnjcbfGa12n/EV3P2ip0dNM+fy83l9QBY="
         }
       },
       "is_incremental": false,
@@ -3392,7 +3440,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.SIRtree-1.html",
-          "hash": "y5dYRZsKDkrDjrbpG1f0TTWaGjVNDtheVZtAqbdAuTg="
+          "hash": "U1grAOUZPjNbDkUi+rjqMSiETMwjY8PCckDf8l8XH7A="
         }
       },
       "is_incremental": false,
@@ -3404,7 +3452,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.STRtree-1.html",
-          "hash": "vuQpuFybq7zgFhmJo+LuERiDDwDIcwrFHF2ju+lQ3ng="
+          "hash": "4JWlCdWWCs0sJyzwq59zGnLY4DudSMQ7FmDcCIzWqTs="
         }
       },
       "is_incremental": false,
@@ -3416,7 +3464,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Strtree.html",
-          "hash": "pFsRScDN2t3pIOcd+PnQrXmmZvar3tOhhNME07Ln8EM="
+          "hash": "g+oi1dgnkU0PlduDAtX4N4alBKp1I7cg/uS+DRoR0pw="
         }
       },
       "is_incremental": false,
@@ -3428,7 +3476,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Sweepline.ISweepLineOverlapAction.html",
-          "hash": "OeU1Aa1OOXzYwY8ZCLmxWqF46r0z75wzn7l7/Z1N6Yc="
+          "hash": "EXgB/cSiqQwtC8BxdO/Fa5hkOuFvHpmMM38zK1WkLSE="
         }
       },
       "is_incremental": false,
@@ -3440,7 +3488,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Sweepline.SweepLineEvent.html",
-          "hash": "tsZsG/MHwAfmLxMj86Im72qY9bOAhj0G1xy8zI/H7YY="
+          "hash": "YHceVvWO49MbaFnVi5h4N8klB42D96svfH17hyq6F8s="
         }
       },
       "is_incremental": false,
@@ -3452,7 +3500,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Sweepline.SweepLineEvents.html",
-          "hash": "wvKlyVh5CYLkFb4qYJ2O1P/mQMl+ZDhyarfGKiHr0/E="
+          "hash": "MjMouuQXQF7Ep/lsrlJi1zcBX/RZhSgm+53sOEyjYOA="
         }
       },
       "is_incremental": false,
@@ -3464,7 +3512,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Sweepline.SweepLineIndex.html",
-          "hash": "0C2PhCRtALp19LQV0AXruhGSV/o6jJS36yJ+9dJBA6E="
+          "hash": "GG/5TjxjDBEFyicqgXvJ/s9oAyT3Kr9vHstK6H6lU1o="
         }
       },
       "is_incremental": false,
@@ -3476,7 +3524,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Sweepline.SweepLineInterval.html",
-          "hash": "GlsHLWtZRw3KiNVCOI9ncTnPEz2aAQcQvpycO3f7MDI="
+          "hash": "0G0aBbplNFVwUOHmkaa75/d4194Ywbvj557+iOum9mk="
         }
       },
       "is_incremental": false,
@@ -3488,7 +3536,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.Sweepline.html",
-          "hash": "DZd3HNLbiWq9KCx2aR6vu+oJmQzlqt23IpPMYxOC7hM="
+          "hash": "70eTBfk8JzNYSTZTIZKtrlVOZFqdnnXwzOEWHwrYEmQ="
         }
       },
       "is_incremental": false,
@@ -3500,7 +3548,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Index.html",
-          "hash": "3015Oqh1JjC3J8mICiFuH8cQB+D8UxwatfW/YktAyqo="
+          "hash": "4g5mUprRCGIAEFzr+S5B0U086wXEPuAEk3V13z2Kf2Y="
         }
       },
       "is_incremental": false,
@@ -3512,7 +3560,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.ExtractLineByLocation.html",
-          "hash": "ezsf2iXYcnUaenqn0iDd3APVruQmkxbq+qGQkLKCMMk="
+          "hash": "ejP44EPv1lYQPc3TSFGqtwt3f7AxuTOwhm8wvQODmYc="
         }
       },
       "is_incremental": false,
@@ -3524,7 +3572,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LengthIndexOfPoint.html",
-          "hash": "yzdGUL9m4ohhgibpY+oTuN3H/iE10hSt839Hle1xXhE="
+          "hash": "gEC19HsyAcrxx3jyNDjgDglBPXLnfNrRAE+TD3yQ7js="
         }
       },
       "is_incremental": false,
@@ -3536,7 +3584,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LengthIndexedLine.html",
-          "hash": "qHl5CPKdHw4V1U/lLN04q0qYc9WvdzSaAHaUexbMWgc="
+          "hash": "V9CF8+T94j+elpEEg9kyEvF/WpynHJ8BVz51dHubXyE="
         }
       },
       "is_incremental": false,
@@ -3548,7 +3596,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LengthLocationMap.html",
-          "hash": "oCTdFsGUMTTQDEHp3Of5+GXst+O5pj/t5d/6dLnRFJA="
+          "hash": "9r8UX714AqJYyp+UYx2sW0W9hCz1tt0T7BXMgZTiKI4="
         }
       },
       "is_incremental": false,
@@ -3560,7 +3608,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LinearGeometryBuilder.html",
-          "hash": "tV+FcBporP3vsOSgwHt2jlNiQxCptgT4Dyfv65aSkLE="
+          "hash": "1kEFAeGf43zwrYVCm8dT/3KLxEpO7LwsljnZRzVFJzg="
         }
       },
       "is_incremental": false,
@@ -3572,7 +3620,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LinearIterator.html",
-          "hash": "hbn+vIXau6aHHqCDLXLLTLxixb+E7AsGG0nqe3r+0OM="
+          "hash": "YNp/4N9DS5z9lq3nJFA1nirKma7LKyAjGdNSJOVX5zg="
         }
       },
       "is_incremental": false,
@@ -3584,7 +3632,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LinearLocation.html",
-          "hash": "lGmFwBIi740+qPpPKWTPXnjFhFdJPmfqn4BrO4gOydA="
+          "hash": "03wEfgLhVeF6SU06eLvEDezmV7vNaDPEXcLFkMGf/O8="
         }
       },
       "is_incremental": false,
@@ -3596,7 +3644,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LocationIndexOfLine.html",
-          "hash": "21m/s10k5Fqfzw4CeltVPEKJtmuX+FvrZUlIcbrT9Lc="
+          "hash": "EeDfS6B5jy1utsin2av77HontKyYW2HCDLJr+K2n108="
         }
       },
       "is_incremental": false,
@@ -3608,7 +3656,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LocationIndexOfPoint.html",
-          "hash": "8DZmIM6tz/vbwk8f0trotnOiXIKiI0/VVVD5H826NZU="
+          "hash": "bBsUWfpIsXP/4GPHb4VOiLR1EIRp1JpCZv7FfF9Detk="
         }
       },
       "is_incremental": false,
@@ -3620,7 +3668,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.LocationIndexedLine.html",
-          "hash": "ospo3zxe7epX6kztf0XhkV9oQ9BY3Efbduk6G67httI="
+          "hash": "paNb4xkcJCSoymn3cnhOLV7Jh5kJ6o9XdKdzyeQv4Ks="
         }
       },
       "is_incremental": false,
@@ -3632,7 +3680,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.LinearReferencing.html",
-          "hash": "fo1/s/BtqRHIsJIHsNPJ596GNGTx86ux7LayTveDm/U="
+          "hash": "BEZoTd06LQqVkhlXyfv0oXxolUoQCsTFUCvTEtfS/ZE="
         }
       },
       "is_incremental": false,
@@ -3644,7 +3692,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.DD.html",
-          "hash": "RZy/9FBsX6D0QjV4wXUc1BZsZu+Un5r/IqkMR3AIw6Q="
+          "hash": "vZ2wZYUswDEAhaLb7KE+Id2fb5LKeyXwau7xkzoV+GE="
         }
       },
       "is_incremental": false,
@@ -3656,7 +3704,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.MathUtil.html",
-          "hash": "Cd3Q6hm1T8vmaqU0u+80FDstBE2lBZf7WPVVAUvmGl8="
+          "hash": "nvWGzifecLhIAJFgbFfVlu/ZKoNSXtpNoPx211SzbTg="
         }
       },
       "is_incremental": false,
@@ -3668,7 +3716,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.Matrix.html",
-          "hash": "2+Y4VQgyyuTuJ3KfyAZZf1q7UvgVeeGbWqy8BktymFo="
+          "hash": "+j7/ARTBWXAlgcIERMFaeTf/33y9+/e1rlbJgJMOJ1g="
         }
       },
       "is_incremental": false,
@@ -3680,7 +3728,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.Plane.html",
-          "hash": "etJ3+637U56bLD8i9wsRvVr03FiErf5LnHdSCoDVOZQ="
+          "hash": "CJ3fKd8tVb9Q0UC4OgXNb6WlfGfPKO/xBMqlixj+/p8="
         }
       },
       "is_incremental": false,
@@ -3692,7 +3740,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.Plane3D.html",
-          "hash": "i5J/HUU56RS23NtJuMdqDbGGnllIXfNtJQnZ2///3mM="
+          "hash": "5LOMexefD3ylwsvkwTfLiU+T47G86P2ES3elJRJhpLE="
         }
       },
       "is_incremental": false,
@@ -3704,7 +3752,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.Vector2D.html",
-          "hash": "PkeoDaH3x6XudtjLnVHDZk4pMMMs1JM/2YGw3EOMJoE="
+          "hash": "uKcMBYxdKVeMEA50ZmvShXS0MJ1ZvKArwzxl4kXW6Ac="
         }
       },
       "is_incremental": false,
@@ -3716,7 +3764,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.Vector3D.html",
-          "hash": "i+4xCQv5Wb1x6LJTe89egDuESXfqi9xJdJrqUp6NPOc="
+          "hash": "LMK22ZuWxKYuhk0R5K2BS+LXKbcOhXgC7aAXnCttIWw="
         }
       },
       "is_incremental": false,
@@ -3728,7 +3776,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.VectorMath.html",
-          "hash": "u9M8UXuuqg41vcNU9yel6loenaUSsnvrCSMxW9iyMPI="
+          "hash": "GWpWslqg+iI0krRMDD4o0jE/V4w/SGmjImtNNouVHW4="
         }
       },
       "is_incremental": false,
@@ -3740,7 +3788,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Mathematics.html",
-          "hash": "RQnTigdLpOZijYY2WmzzgqzAez1sBgqF3dzmnAken+U="
+          "hash": "AceW7n68cC9t+vri4RxWHnahXnp5WLhqqA/suUb0QXk="
         }
       },
       "is_incremental": false,
@@ -3752,7 +3800,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.BasicSegmentString.html",
-          "hash": "3yHF4vRAiIymlmB18uy48Ev4DXHx09hptIH97sHo8N4="
+          "hash": "4I8/5bFlQJyB9yjswjivyJ8HNeq+rxCNAeCsgN7zFrM="
         }
       },
       "is_incremental": false,
@@ -3764,7 +3812,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.FastNodingValidator.html",
-          "hash": "qmgoysH6e++BqWx8X1Jwj3JQJAtjZ4AgQHABaz7AM2Q="
+          "hash": "iWKW4VHNDdmUoaD5T5yh2LWf4JElx4ieX0yfDtmT/3Y="
         }
       },
       "is_incremental": false,
@@ -3776,7 +3824,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.FastSegmentSetIntersectionFinder.html",
-          "hash": "B/IlmNGrTpzUudUzAjxYgztkwjhqwJRFAEItHMiagdY="
+          "hash": "sS2qzNNzWG74rcYi+soNaRT3EC26lap6XqYEizYOsNg="
         }
       },
       "is_incremental": false,
@@ -3788,7 +3836,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.INodableSegmentString.html",
-          "hash": "/cwJFzd+lKXRcNPYdOvwzMUufNp1vZ1FwsAXTnNDUzI="
+          "hash": "dPQuHnlAjX8zUbW1bBgoRjpwrSh9iB+FBg7hxcfR7Ww="
         }
       },
       "is_incremental": false,
@@ -3800,7 +3848,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.INoder.html",
-          "hash": "oK9TscETyKvN63y0bL5bpSu3zHKzSZ0N/7wGJ3FfKrY="
+          "hash": "tMdNHCNYhp6DBy8BAJMs6NvfgJb8XNjalzvGIZOt+Fs="
         }
       },
       "is_incremental": false,
@@ -3812,7 +3860,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.ISegmentIntersector.html",
-          "hash": "br0fBZlR5bF3REhCD4IuBuZW/nvAuEoPvcosLbBG+rg="
+          "hash": "0sVKyQbTcrkc3mBcDqcDN5bK1ekW7MESbNUg5BsqsXE="
         }
       },
       "is_incremental": false,
@@ -3824,7 +3872,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.ISegmentSetMutualIntersector.html",
-          "hash": "8OfxAv71n7tnPSm4CO8EUZc5iRJOTaze3FhPZ1ZQ1jI="
+          "hash": "zPWCYUTQwhHujzhZVGO6tONRePnoAQwIvuDd87JeV3k="
         }
       },
       "is_incremental": false,
@@ -3836,7 +3884,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.ISegmentString.html",
-          "hash": "xzxhQRCG6oybRBnLgzGYZn2zZ1hAc9rP2QAdzFQHjbo="
+          "hash": "KheTRLf1bAYT4SyVY10d7EPASinD1KcYHinGW2m25rk="
         }
       },
       "is_incremental": false,
@@ -3848,7 +3896,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.InteriorIntersectionFinderAdder.html",
-          "hash": "K0BSZpOfxqLgXJXSbyUR1XUewJuFnz4aPSYVzzMR+zg="
+          "hash": "ypP+RLCKGwuRxAyKjd9S1WJRKL/vaP1zfkV7D8WM8II="
         }
       },
       "is_incremental": false,
@@ -3860,7 +3908,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.IntersectionAdder.html",
-          "hash": "7Coq/5Zb6hB1ZUb2ojd7ymjev5BksYs3GtAr0Y4H7yA="
+          "hash": "S3b/Eallap8WGU+s4Z0isfSjs2xx6TBtqIL/msxtJdc="
         }
       },
       "is_incremental": false,
@@ -3872,7 +3920,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.IteratedNoder.html",
-          "hash": "I48vc8FVfsb66vTfQX+fCAdt3WlIzmiOKig4tCdlN6s="
+          "hash": "cIAV/gN0nQVjKWxExrLmJj7PCZgb5S715sr8IMqhlNY="
         }
       },
       "is_incremental": false,
@@ -3884,7 +3932,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.MCIndexNoder.SegmentOverlapAction.html",
-          "hash": "9v056Zdb1dPAWbur5qbnRabTzNJA523J13kW1P5N0gw="
+          "hash": "ub+iwekcN/FaOijvJNgepxN9Zxe2HDsNjLqRAJPR+rU="
         }
       },
       "is_incremental": false,
@@ -3896,7 +3944,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.MCIndexNoder.html",
-          "hash": "TOQSkGBsWppBKhsOuv0JDDpuV4xztX3udW8p5Y4Apm8="
+          "hash": "vWBdMTABNsQzwN/9cgWU0W4BX7rAAr8WXfUjTGN2prE="
         }
       },
       "is_incremental": false,
@@ -3908,7 +3956,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.MCIndexSegmentSetMutualIntersector.SegmentOverlapAction.html",
-          "hash": "6rhAk6saI/GAsZG8wAd2RtfxP+x2YSF3mkmuWJODxjo="
+          "hash": "OKt6arCROd0z2SBC9/LNkK5Kf1Fr2vJwk12CnFnhYvc="
         }
       },
       "is_incremental": false,
@@ -3920,7 +3968,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.MCIndexSegmentSetMutualIntersector.html",
-          "hash": "psN64SVUtfPiEGWGo5T1HvOArYi2wd6JSjU+U1tuO5c="
+          "hash": "RTcXip6YENw734mxx7dVqtjcD0x9k1/5frDsNv2HUf8="
         }
       },
       "is_incremental": false,
@@ -3932,7 +3980,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.NodedSegmentString.html",
-          "hash": "oiBOSAO7kWUq3+3v8px14zzhZHkzc8jbk60pHq68jeg="
+          "hash": "+o882s/v4HuF9WdlVK/l40j4gnNM6BbAAWn8K1grKJs="
         }
       },
       "is_incremental": false,
@@ -3944,7 +3992,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.NodingIntersectionFinder.html",
-          "hash": "lKcC5N8mO8jcAIO3KM/+u1DoGl1gmdlttABoC1kayu8="
+          "hash": "BmMnkH98rLzw3su+3I2wAPzbU7VZiEtHFcxgWsUPRuk="
         }
       },
       "is_incremental": false,
@@ -3956,7 +4004,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.NodingValidator.html",
-          "hash": "XSV1svj1lmBg0CQmrYOjXhQnhrgDlAB4+VnIQK1IX1Q="
+          "hash": "IwJgbp5y9ncFlfee9oN7VUGjc5AqaRcnC66l3ZDVvos="
         }
       },
       "is_incremental": false,
@@ -3968,7 +4016,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Octant.html",
-          "hash": "F1nQVYR5UV6XaOTpRCRBBYpUNs69oN1qRJH3ZbJYGt8="
+          "hash": "mxI7ZA9Xt6sZjSsnCRpoZxUBmRuDPOoIxdqxWMx/2T4="
         }
       },
       "is_incremental": false,
@@ -3980,7 +4028,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Octants.html",
-          "hash": "UZze8W5Tw1xLSUWhpQEC+U7WHpeHPXBE/Z119KYW9F8="
+          "hash": "wRV2zWb9CjEAvv9fYMeY4EzYscEAXq0lit+IbO5eyTM="
         }
       },
       "is_incremental": false,
@@ -3992,7 +4040,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.OrientedCoordinateArray.html",
-          "hash": "YnCwPBaXn6JFLzESiCn6PIx+3NH/W8FDTiReHkRw1/4="
+          "hash": "alQbDMROtwPAV7g7pHMlgcIxJ8trPSWPOD3pgz9IpQI="
         }
       },
       "is_incremental": false,
@@ -4004,7 +4052,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.ScaledNoder.html",
-          "hash": "k8maBfXxcfIldOoYA6lx9uL9e5y1OLQAlB+Fwql2cpY="
+          "hash": "1qNeReNSMZtbRIqfYevTuiO8HuAuu6s1l9h0tFwEyOw="
         }
       },
       "is_incremental": false,
@@ -4016,7 +4064,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentExtractingNoder.html",
-          "hash": "F73Fu2aAXBmStDb6I96KbmYSS/R2VYegoXhJuGaZ5O0="
+          "hash": "7aZ35ySSD8GM5p7+EGC5dUv7VBTznc7gJ98UnrVp+jM="
         }
       },
       "is_incremental": false,
@@ -4028,7 +4076,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentIntersectionDetector.html",
-          "hash": "A5/UX14YRH0oQfKO6MKOIoefqowrHqBQkF+P4oTO4gM="
+          "hash": "VxXIxxcDcn9Zqmd+mEbDRBpsGH46KMYH/Ev3M2LpJ+k="
         }
       },
       "is_incremental": false,
@@ -4040,7 +4088,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentNode.html",
-          "hash": "9ZFwXgMJ8NJf7uZMkxh3KyRPRrXaCErv1clDD2Frn40="
+          "hash": "dHhiIT1xMJzEJcjZ+y+atE0STYFX+mSa6Lv342cGpE0="
         }
       },
       "is_incremental": false,
@@ -4052,7 +4100,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentNodeList.html",
-          "hash": "4SwbTV1+e9Z5QsCH9iRXklekbanCpF2+nW7KY06Qi3A="
+          "hash": "zfkATNXgfFEj+t/Xc0ay2d+MUq41WmbBulytcBFE6Do="
         }
       },
       "is_incremental": false,
@@ -4064,7 +4112,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentPointComparator.html",
-          "hash": "NUkpTLO2q+/8MUIkc2UzS6yjQZziyXI+lLFpUYtj5PA="
+          "hash": "lMER5v4tzbMtpLcje2xQBYoMvAR4X0ogd4x8rvmDkAM="
         }
       },
       "is_incremental": false,
@@ -4076,7 +4124,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentStringDissolver.ISegmentStringMerger.html",
-          "hash": "xJjhDgQI1u+tGvn5Pzn1WtN4FAk9rZOqMFEX+yFxay0="
+          "hash": "Xqe6ZRVTTLXpmY+Wa+dkfq0CbVRS1e5Qse2I5vIKPZc="
         }
       },
       "is_incremental": false,
@@ -4088,7 +4136,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentStringDissolver.html",
-          "hash": "IDGOtX8F+NsJuzhBE9we00CrrT5jPuu6Q/pN77avB9k="
+          "hash": "UGnZGjIgwUEfBMS1HPwP43m3Sweiys2kQtnLdA9CaGM="
         }
       },
       "is_incremental": false,
@@ -4100,7 +4148,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SegmentStringUtil.html",
-          "hash": "I5HmNB5pKjWfTrhMXHLgMQGqV/LGeJmocjuPY1bz3Js="
+          "hash": "JLI5xi9ijbHZYg1PNy5KDGs0uBW5NKP5eMhTAy4P+qc="
         }
       },
       "is_incremental": false,
@@ -4112,7 +4160,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SimpleNoder.html",
-          "hash": "a2EvLpATiBrSSizHQ2ie0+1lDivvNsg1nVgWJbqtty0="
+          "hash": "zlnxk3IP2cn7OwBOuC6ZMBVqLE8oekp8KCfpETC4x9g="
         }
       },
       "is_incremental": false,
@@ -4124,7 +4172,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SimpleSegmentSetMutualIntersector.html",
-          "hash": "hLHa6akTS8I0N4LlRy/p39gRCXgDP3hevlk7LUp+j1g="
+          "hash": "FKh2YFhlCtHjsFp8lOCMEQFbYrEuvn3IDYoNc3htjbc="
         }
       },
       "is_incremental": false,
@@ -4136,7 +4184,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.SinglePassNoder.html",
-          "hash": "21lvFHV705gbwf12Kb2haqxNTCNDgVxDx7A9WAd3aiE="
+          "hash": "ADgSUI1l5Lrz/+gkIlFrMDj3wudtiVjbGBT5snaqeYY="
         }
       },
       "is_incremental": false,
@@ -4148,7 +4196,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snap.SnappingIntersectionAdder.html",
-          "hash": "Hd0lCffr6zxQZ/k5wJzTa6GXZlyujhH5pEHRcr2iwho="
+          "hash": "8HupnPD6bbsGFuiMVmWDgOIgvEQOO+o3AOwNbD7gYtw="
         }
       },
       "is_incremental": false,
@@ -4160,7 +4208,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snap.SnappingNoder.html",
-          "hash": "XKFXAaF3kW4KlZKzfB0NTFLlVIV6zQZDFCATQa2PPD8="
+          "hash": "YDXBrQnqSuXyddBccNMtG6H7w0Bk3cG7IkOTFi28VP0="
         }
       },
       "is_incremental": false,
@@ -4172,7 +4220,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snap.SnappingPointIndex.html",
-          "hash": "FvHwz7V3BWBxqZXRmPl4Q+Q27nljYSD/XOTE7MY7wRA="
+          "hash": "1Na70gVO8mXBIIgWQhQQ4fgSZp6aKHhZLghox6je8Ck="
         }
       },
       "is_incremental": false,
@@ -4184,7 +4232,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snap.html",
-          "hash": "PeHyrhdKi0VSG+lAXa8T6tuFH7wm4AFEV+yZpZhPjfk="
+          "hash": "XPdLW83FID+UIjJXZbeCgYpVUI7apNK6bejzYtcCYcI="
         }
       },
       "is_incremental": false,
@@ -4196,7 +4244,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.GeometryNoder.html",
-          "hash": "KWGYuhzmqVaNiTgJW/Y2dtVNhkkgQeOcWsRuOiAPStU="
+          "hash": "fgPNk+N41ZZYhAZiTJS4hivgAVBCcWoyfhm+QIFhOJk="
         }
       },
       "is_incremental": false,
@@ -4208,7 +4256,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.HotPixel.html",
-          "hash": "mfnrScni3byz0f1vNMX+QtCkYrBOMTiwjzIUOAzo1mA="
+          "hash": "1ZYkaarOW0RQdLGXN4RSp88TFMiyEt887vzInyRmR7c="
         }
       },
       "is_incremental": false,
@@ -4220,7 +4268,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.MCIndexPointSnapper.HotPixelSnapAction.html",
-          "hash": "dpQfEP/QwHaqya8HbBi83WE5+cDDXSTuTqvNc3xiXFY="
+          "hash": "V4Hw3ODVlg/O+DqcGTo+ee2KkYG1C2NYdxgYc8PDveg="
         }
       },
       "is_incremental": false,
@@ -4232,7 +4280,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.MCIndexPointSnapper.html",
-          "hash": "h2It/5N7M5UhvxTCxzoNJYJHCnqUj5lXq60grVhV/Yg="
+          "hash": "OHr4XiKFE1BXQX/DdktDqguyPZCdymv3ikdwkLqeVg8="
         }
       },
       "is_incremental": false,
@@ -4244,7 +4292,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.MCIndexSnapRounder.html",
-          "hash": "NKxFT6fo7oQ1KJZNAuLWZIEPHwOdHZDoG1zwUec1vS0="
+          "hash": "Gd3DDW0oP3oMRQyfeCm2F3U1ocA26bYcDWYRMSYjJ4o="
         }
       },
       "is_incremental": false,
@@ -4256,7 +4304,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.SimpleSnapRounder.html",
-          "hash": "LmFSc1jD0PW7LSSWO/GiX0MjaaEONPWW5QlWHoGuw08="
+          "hash": "i+s0wsVuCn2KaUn78u2sAEZ7sQ20LAU/EbGmqaxM0/s="
         }
       },
       "is_incremental": false,
@@ -4268,7 +4316,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.SnapRoundingIntersectionAdder.html",
-          "hash": "tV/wFUo4MQHeKzK6YMq+VBlzGXQ/Ks9qMZ5E7y+8orc="
+          "hash": "zb/yJzGQR872nfo2+QzMrJ240olO3njybU0p5LGDBb4="
         }
       },
       "is_incremental": false,
@@ -4280,7 +4328,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.SnapRoundingNoder.html",
-          "hash": "rmO5ghRW8sgp9i8x03ssdGiFqND8Gw3ahWTkjt0FAE8="
+          "hash": "iTw6Bo/PKs71HozyAytCoKE+QjPw4a6yYVqbI8sKbSU="
         }
       },
       "is_incremental": false,
@@ -4292,7 +4340,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.Snapround.html",
-          "hash": "9ODnVVRVyv5ckB8HPmGTUX1YcxH5mihqrXYK1qZmQF4="
+          "hash": "PfHC/khbIVr3kyRIF0tflKHvYcZAP+N+K/y0BXM6fV0="
         }
       },
       "is_incremental": false,
@@ -4304,7 +4352,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.ValidatingNoder.html",
-          "hash": "6kD2kcKQsMB8O0w9D1nZ3YbMOOPh3J1UlqW+C2J+C0I="
+          "hash": "qH2FBmXQE8uyyA83df3ZXxfbPvwBXYT1EVd78MXhOBY="
         }
       },
       "is_incremental": false,
@@ -4316,7 +4364,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Noding.html",
-          "hash": "i8oaK+C/pHSxYm5HDoJ7kNCM/sCvZ/flBa6HPnKvX4Q="
+          "hash": "IEn5116rQsIXLCi9rcpWOxVyY8dA2sVq8qwk+0XQ6hw="
         }
       },
       "is_incremental": false,
@@ -4328,7 +4376,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.NtsGeometryServices.html",
-          "hash": "6LJi4QU7aGSATZExQVVX0zzMVoQX5d3ygigXKPXuabY="
+          "hash": "eyVddTYnUfSnhzmSPJWU9Rv1R6XXnUYcAd2FRfI0Xms="
         }
       },
       "is_incremental": false,
@@ -4340,7 +4388,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.BoundaryOp.html",
-          "hash": "QqdpC3NHQ7cqvd87katWDztg131LKBeDLqdCWElqa9s="
+          "hash": "z2xFY8Rd2nOAkiA0XzM29ObrHVsRFoA0N1REfSJ//MI="
         }
       },
       "is_incremental": false,
@@ -4352,7 +4400,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.html",
-          "hash": "Cnai50Chf6rHW7tVZjAUzKDQbtw/2Yob5x22/WaJZHE="
+          "hash": "e1e6aQvt9b0QN33/gpq+1po1Yjao05S/s8ZNZH9BqG4="
         }
       },
       "is_incremental": false,
@@ -4364,7 +4412,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.BufferOp.html",
-          "hash": "15EX9yMzH1VSScKC4P2+4wsaFlFVCwSqRtHo/9G1ohA="
+          "hash": "O5Vuyz3bjaulbc/2ew/ctSYpsastg+f4vS0qXOEmsxw="
         }
       },
       "is_incremental": false,
@@ -4376,7 +4424,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.BufferParameters.html",
-          "hash": "cvafIqevF9Q7y9H9PQHjjaxVkCumsatyx0nZLn4B81M="
+          "hash": "hr60hoekJDTaZTnRuwlHvtbBxxLxxr8j6hYmqv4lGAg="
         }
       },
       "is_incremental": false,
@@ -4388,7 +4436,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.EndCapStyle.html",
-          "hash": "jZZiYiWug4kZHkGxAplxnY/ifurd9TobnGXZSwzAGm0="
+          "hash": "6T5bNHDP75AmfWVUdyqA+m4H6++o1BOmFr1IWP34t9M="
         }
       },
       "is_incremental": false,
@@ -4400,7 +4448,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.JoinStyle.html",
-          "hash": "TEp6TnAS1PjyADwLdr7UFcC/9mJDshbnGniP5wgQOFM="
+          "hash": "luJXdFO90q0rpZ86YNXv8l2A5ct31GtEHlEQTpGDsFg="
         }
       },
       "is_incremental": false,
@@ -4412,7 +4460,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.OffsetCurveBuilder.html",
-          "hash": "/n0mZKnBTOOaV93hnMM4y2lHlWm+ukAgusCJEFLykMI="
+          "hash": "YkjALJzMbyFFZdSybYj4vaHmNuV8xFssKm4W02y/wm4="
         }
       },
       "is_incremental": false,
@@ -4424,7 +4472,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.html",
-          "hash": "8zQDa+Wr7ZFHbtmnmO8XSrSeidTYXd4RtLHS9Fyl/Cs="
+          "hash": "FoRRyjkgCkJGqt3Qw/e9m3T0wGHHFJ6hnrn27VOB8lk="
         }
       },
       "is_incremental": false,
@@ -4436,7 +4484,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.OffsetCurveVertexList.html",
-          "hash": "itlHhWXAkl0Jn6C9/7/I0Q/+WZU964IXdNQtC2kLc0A="
+          "hash": "Lzs5Kaf9FMGjbXfEPsXiG4IP+W5l7oP1NNsuSQz8Nro="
         }
       },
       "is_incremental": false,
@@ -4448,7 +4496,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.OldOffsetCurveBuilder.html",
-          "hash": "9D4vZ6VunxlU7n1D201uVB9fXu3Nrqka1SOaeN58om0="
+          "hash": "yrJrC3fugqwCHXdxb+LO0nOb/jaeuuR/bF6LD8Iq1PU="
         }
       },
       "is_incremental": false,
@@ -4460,7 +4508,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.BufferCurveMaximumDistanceFinder.MaxMidpointDistanceFilter.html",
-          "hash": "srXBeYGDuY2WgzwiId2BNx83el5JG0dWhs+cBuTegmc="
+          "hash": "0IXEspykWf0b4J81aQe7R0R+TOTPQ22MxdgqnHVOY2g="
         }
       },
       "is_incremental": false,
@@ -4472,7 +4520,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.BufferCurveMaximumDistanceFinder.MaxPointDistanceFilter.html",
-          "hash": "3dhtZhw1PL9es/IC3itNZP4ALVlhw/90DmlW7y4uABQ="
+          "hash": "kCr0KnYeWDJiqRheewDk0O2k3TIhUHfQkGoFdXT9pfo="
         }
       },
       "is_incremental": false,
@@ -4484,7 +4532,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.BufferCurveMaximumDistanceFinder.html",
-          "hash": "IL2eUkLTBfbBzUNLSWaaS6thepngI0U2ESDEP/g3zFQ="
+          "hash": "k2zdGKt8DhUgoVV1HfUz2W/QQ+XR2JtT+xYRT9kGZWo="
         }
       },
       "is_incremental": false,
@@ -4496,7 +4544,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.BufferDistanceValidator.html",
-          "hash": "O7Nz+az5c+x1DsZJ3MHV9KKyusKFyhIWiQ9Qwj8n2wE="
+          "hash": "Z+hVHUfwGzxAnOZnl1wjO7vjhBR9J61pXGXnJcfcVbs="
         }
       },
       "is_incremental": false,
@@ -4508,7 +4556,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.BufferResultValidator.html",
-          "hash": "sM3uoCBY3IXHv63l7O6jqth2k31SblzIb18yhtq+NrQ="
+          "hash": "+/OvRePNDuxgYgFNRg5tCziz6x5b+TqYCoIDLYTs+WE="
         }
       },
       "is_incremental": false,
@@ -4520,7 +4568,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.DistanceToPointFinder.html",
-          "hash": "O9baKNh0avr7P2WGjSSwIvnudECOOjtCB6b56xkKMtY="
+          "hash": "iO1Mg8ZfvvvQLj5+wHGSAgzuqG/JGNRi9mB4wmUwZ0M="
         }
       },
       "is_incremental": false,
@@ -4532,7 +4580,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.PointPairDistance.html",
-          "hash": "kM/KJDeUs2MNknv64xRfSvzscs6514avxN+LNqERbOI="
+          "hash": "kG+6AAV9YCassCbmxaYVWDr8L5VUFJOn/yyNrMMckZo="
         }
       },
       "is_incremental": false,
@@ -4544,7 +4592,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.Validate.html",
-          "hash": "9F+73qJgDO6g5UKJ2y/ybU386i4Zhc0ON6XMD2Lgygc="
+          "hash": "deJ6UOJQmJYhROqXgZlCGboi7l8a6WXd3QBQ3reAoYM="
         }
       },
       "is_incremental": false,
@@ -4556,7 +4604,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.VariableBuffer.html",
-          "hash": "wUbw3IPzKM+ZIH9YqZuWxHGdbLEMPWBXdGPEVU/KZ50="
+          "hash": "THmNtXHX6fLU2Hpr6tpsvuYDMUUiHytxNdBiTyThcQ0="
         }
       },
       "is_incremental": false,
@@ -4568,7 +4616,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Buffer.html",
-          "hash": "8maacUOrbROhZzUJbfY9eCfFT+9T0ZXlBbVUbRPmYeQ="
+          "hash": "GD+U9Cp8blyYnOLxXI1usnWhznz87KbMHxsHXfuxx7A="
         }
       },
       "is_incremental": false,
@@ -4580,7 +4628,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.ConnectedElementLocationFilter.html",
-          "hash": "S7qW2jkMlRfIXtGNVlu5UihYX561rd2r/rqro05BY9Y="
+          "hash": "50ZBg586ydn41MSpV9GgdAhuw+/QufoP0uT/mOtWO1g="
         }
       },
       "is_incremental": false,
@@ -4592,7 +4640,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.ConnectedElementPointFilter.html",
-          "hash": "Vb6tOu2afgFYoFXG+sQYmIzRmMD9k9uwLI8CuYrkv+4="
+          "hash": "KixtnFq6EEAVqdKP8dh3AEvnSuZEECocA4MjQ+YG2rI="
         }
       },
       "is_incremental": false,
@@ -4604,7 +4652,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.DistanceOp.html",
-          "hash": "1el1NVoe9umDPPK3/MUGAqrkljRXsQ7wwb50Pq4oUlE="
+          "hash": "RUg0MW6hpHRr0I7eIQ7tx8dyJswLXgYb6akGCeWhOJE="
         }
       },
       "is_incremental": false,
@@ -4616,7 +4664,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.FacetSequence.html",
-          "hash": "sFJfoFLrNTVlx/opdNR4EJ1KysqZNf6vJSsBJkmLeqU="
+          "hash": "iOfWSNUR+T8Aj8SST1LDtyUfCzN1B44xxUEvPsk0KYM="
         }
       },
       "is_incremental": false,
@@ -4628,7 +4676,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.FacetSequenceTreeBuilder.html",
-          "hash": "zb57O6wtQ2aW12H3WXHp+XQdwZQbV/6gkwg0fbMpdhM="
+          "hash": "WZ/k+3JxqegeT9iGicbv90DzyYgyttX7pIU6hpEFeXk="
         }
       },
       "is_incremental": false,
@@ -4640,7 +4688,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.GeometryLocation.html",
-          "hash": "ZpaFLWagkfXmn+dmEFFFTU/pN+Br/OX2tW8uBbq29pE="
+          "hash": "1rNEcvSgsBH9U78Cb0eU7YaARVkJqTC/74vI+NsPOKY="
         }
       },
       "is_incremental": false,
@@ -4652,7 +4700,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.IndexedFacetDistance.html",
-          "hash": "dZPZaZNMGpbF064c5dS8DWS2H11Pr6gPjv4zGSMURp8="
+          "hash": "UZiTDRqaRG5EpOrIITAS9sss8Ars6jGinkIkYYa3WZw="
         }
       },
       "is_incremental": false,
@@ -4664,7 +4712,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance.html",
-          "hash": "NYNphAlv+aHH49ra9VlGUiS8tQdSk0ppOFm5W4UzbXM="
+          "hash": "y30Ua7yDRExms74tySBTEUAhcVPZSuh0Owq8t8rIJuo="
         }
       },
       "is_incremental": false,
@@ -4676,7 +4724,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance3D.AxisPlaneCoordinateSequence.html",
-          "hash": "oqPTjlCwM+/u7RYEspEoGbJ3okBQK8AxMK4dxyop7o0="
+          "hash": "ZVdcj+kxAiETdTN2yiF7Q75WwfwHkyMNEh0F8+tUbW4="
         }
       },
       "is_incremental": false,
@@ -4688,7 +4736,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance3D.Distance3DOp.html",
-          "hash": "hJIBg17K1bCGms6gpLic1pYGRnFJ8ZK5ffCJyu1uMR8="
+          "hash": "ustiDCUfif+SjIAJyaoXuzztWzgtPoNWTlr2r+i5hec="
         }
       },
       "is_incremental": false,
@@ -4700,7 +4748,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance3D.PlanarPolygon3D.html",
-          "hash": "EIAIq8c8SPpnZJqJgLFx9JDs4R/CcxrDqal/XHP8/7Q="
+          "hash": "beX3lO2rBf45laspm8Q+lKshBnesiDQuMC+OAmMeaDo="
         }
       },
       "is_incremental": false,
@@ -4712,7 +4760,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Distance3D.html",
-          "hash": "LWPfW45WfOm2N72xxuMjcW/HApnVayhHPY3+76KDYN0="
+          "hash": "BAhP2L/ix/jvs9wAPnSzkZ1tiBcASTZHk7jSOLk/EAY="
         }
       },
       "is_incremental": false,
@@ -4724,7 +4772,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.GeometryGraphOperation.html",
-          "hash": "yUUsR/QvFuKhS00c05zTuWoJOMUeZMwchrEBpmDyBEo="
+          "hash": "2CcbIM2M1gN0sTXzOIIY/OdTowVxR6uwYWq9InLVX8M="
         }
       },
       "is_incremental": false,
@@ -4736,7 +4784,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.IsSimpleOp.html",
-          "hash": "HF1feAhG/8+e/LZaNgZuj9UH6dfjV1eQT+t9zG2rh+Q="
+          "hash": "jrZ2NwyMfnR2KACujnYxCWsksjNQRyjgqfyNznjRB9M="
         }
       },
       "is_incremental": false,
@@ -4748,7 +4796,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Linemerge.EdgeString.html",
-          "hash": "v/KSu1PNqb225acnNLfyIUjjPQaHoXSMXeIXzOIlw4g="
+          "hash": "qE0Vn94DoEsUwcxO5rDLclsxClnIW8tItWfdxNF+kyU="
         }
       },
       "is_incremental": false,
@@ -4760,7 +4808,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Linemerge.LineMergeDirectedEdge.html",
-          "hash": "Z/T2mzZZU26YzaByQztyBGqil9OjUesK0JisDbFB7y8="
+          "hash": "HbYc/oQ9ZmSOz0/4IT85IilE9x+fj465AXQFkjbh/EU="
         }
       },
       "is_incremental": false,
@@ -4772,7 +4820,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Linemerge.LineMergeEdge.html",
-          "hash": "paTfxu1Pv3jk/brHEHQpDcxwonqRUe8l+vHwxZdTqM8="
+          "hash": "yoxsSv1iekMYS2BdOHjO6dUcD5mEihOB8kbZvUMX6eI="
         }
       },
       "is_incremental": false,
@@ -4784,7 +4832,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Linemerge.LineMergeGraph.html",
-          "hash": "phxlKoBZjGSjyKibx0hzkKMQ2m7E+1NbgwPa0POHodE="
+          "hash": "P8NplDPJ5zN7NPA7uUV4lBsOr2aOOtEbFp/n3CmsQHI="
         }
       },
       "is_incremental": false,
@@ -4796,7 +4844,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Linemerge.LineMerger.html",
-          "hash": "F7FiixVldi21rHN1IJ6DCits3pVFoSP/OFsveIHua2k="
+          "hash": "v7w9RWCRakOrrRuvHVILB0sJPXjZ4gQhUEAfKUrkIDw="
         }
       },
       "is_incremental": false,
@@ -4808,7 +4856,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Linemerge.LineSequencer.html",
-          "hash": "0mfFXtoJK2osrcLKBLHQpIRkZxVUlXo2X0LSeWloeh4="
+          "hash": "th5+swhqw9eJmYUqlJvm+dX6zv8qJO+Ue2U90FI6M9o="
         }
       },
       "is_incremental": false,
@@ -4820,7 +4868,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Linemerge.html",
-          "hash": "GcuHbvhJhLVq4UQfLQ+qXjKdoJG+zAg4P9WQ4Nlh98c="
+          "hash": "+nULUdfpC8rS/U1ZOZGpMSla/pgPtTKLL/iuY3SNSTc="
         }
       },
       "is_incremental": false,
@@ -4832,7 +4880,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.EdgeSetNoder.html",
-          "hash": "u6vMODq0RZmucbalXGfaOd/Cwam/kvCZU2pX+m4cEcA="
+          "hash": "4jXzzatVXzEKMhCHC3SZTCITZAJPtLUvxiKSm3C0yxk="
         }
       },
       "is_incremental": false,
@@ -4844,7 +4892,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.LineBuilder.html",
-          "hash": "Pj1s2kEugOh4ewtVcDtJYj91fnhd2aq5Pash/6c1wCU="
+          "hash": "jUef2fqDqi5ywbhBap61PSneTU9KH6ESwOVexjTkIqo="
         }
       },
       "is_incremental": false,
@@ -4856,7 +4904,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.MaximalEdgeRing.html",
-          "hash": "LbPDpWKfguK/lISCQCpSQWEwwRjo5qSzcva6B4khP2Y="
+          "hash": "kM/1Jcgr3cLomYufnIhSxbxrndj6x4f3IHNedaeeAM0="
         }
       },
       "is_incremental": false,
@@ -4868,7 +4916,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.MinimalEdgeRing.html",
-          "hash": "SQ/OwlSmucp1AGdUft37rB5wf6sV3EIay1ejjDngBbk="
+          "hash": "jsi1ThCXeB0vsVFDa47/er13LVQWjMAWQBkmdDuqfKc="
         }
       },
       "is_incremental": false,
@@ -4880,7 +4928,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.OverlayNodeFactory.html",
-          "hash": "hq8jMjXq/OpIkyMCkz0fIJmZlELNoVH8i4nSYMn/Anc="
+          "hash": "oTH6M8optRQJNfrBYCcaqCykpGYD7rz2pzZbKDVFE6w="
         }
       },
       "is_incremental": false,
@@ -4892,7 +4940,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.OverlayOp.html",
-          "hash": "Ta288BDMk/k1F0/5VIwKvcVz2bimyW+itUQ3DcstF8o="
+          "hash": "hNVBt3ZRW4QNUlTVablQuwVKviBV1U7atsEfYVigm9E="
         }
       },
       "is_incremental": false,
@@ -4904,7 +4952,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.PointBuilder.html",
-          "hash": "PP62VwFxJCjBUFiuTqu/GmYn1wMmd11JWovRtfasLN4="
+          "hash": "9bwnLz+Ig2lknUGiBlW+nOIqQ9sw/6vINqHSHYOPmos="
         }
       },
       "is_incremental": false,
@@ -4916,7 +4964,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.PolygonBuilder.html",
-          "hash": "sq9EmnOn0e3zHBPOHU4m0LIDmf50AyZd5o2YtQT7g7w="
+          "hash": "2LXr9xUuHJ/pwYZy6K03m9PJvTyfMWgywVa/MjCYDNw="
         }
       },
       "is_incremental": false,
@@ -4928,7 +4976,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Snap.GeometrySnapper.html",
-          "hash": "5YWG2hGPTsebvdz/YhF/zXgG567omdADTcguLmqZp2g="
+          "hash": "jp8OR1MKxuuH3gTLzXynLZVhFedItkAOfucyYSC4zN0="
         }
       },
       "is_incremental": false,
@@ -4940,7 +4988,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Snap.LineStringSnapper.html",
-          "hash": "iFfNnALF0IVm5fd6h4iJM5xQodnO4gyNU8Pon3tpb20="
+          "hash": "dvZJ2FBDUs5KUiJPGh0pmuWGoMWQPpeC6r2N3+T278I="
         }
       },
       "is_incremental": false,
@@ -4952,7 +5000,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Snap.SnapIfNeededOverlayOp.html",
-          "hash": "BuO+rlBSCn0Q5Ckz2tUa1BNmUrSBS5PwjEhudteaUoM="
+          "hash": "RYOidnZ8pZ/1teBgptk6CsT4wK8P7QpES/PL5q5acVM="
         }
       },
       "is_incremental": false,
@@ -4964,7 +5012,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Snap.SnapOverlayOp.html",
-          "hash": "4tm3q8wNXjuMZkyareQ3/YsnrG8hL+UJxfP9FOXh9No="
+          "hash": "DUUNeut+M54RgziGaudrVgSbwGF9rXXShEpQ+l1fH+w="
         }
       },
       "is_incremental": false,
@@ -4976,7 +5024,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Snap.html",
-          "hash": "kWhEYe2VYawV2iqZm67pZODfRRdttKp4vope0Ydn4xk="
+          "hash": "D+8PbxPqTsId+WVloTV5eYES3jLKEt0WOheVqDKxqJ0="
         }
       },
       "is_incremental": false,
@@ -4988,7 +5036,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.SpatialFunction.html",
-          "hash": "DFqwQgYK9rnlee64Oh1JzBhOIXAubaSkcIe64eu3aEA="
+          "hash": "AqXTkxCsRT7GAfMuKLmYpEtV0j3cyWra97mFhOufnm4="
         }
       },
       "is_incremental": false,
@@ -5000,7 +5048,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Validate.FuzzyPointLocator.html",
-          "hash": "fkGRZ0I//4omDJMcMwJRtvDM4ruFczXpb+fudncXGk4="
+          "hash": "22DHnmly/1JzVG/0CeNL6OTVij0Xovwut+8jYNb9s+E="
         }
       },
       "is_incremental": false,
@@ -5012,7 +5060,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Validate.OffsetPointGenerator.html",
-          "hash": "TZyyzfS4LNk41/d0xhGSZNym8BxXE86jpX/b/t6YdCk="
+          "hash": "K3CB2XqrzRFzMjoxSrQ7Hr+y/bKYsgEsqUkoT+3uET8="
         }
       },
       "is_incremental": false,
@@ -5024,7 +5072,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Validate.OverlayResultValidator.html",
-          "hash": "bfbionEg1bk4ISE6dUuM4OkIgOPov4BnBnch/xe2QTk="
+          "hash": "/HeQekeQyhnpa90z3b0ScvQMQMp8+IDdqYijIA4iLBI="
         }
       },
       "is_incremental": false,
@@ -5036,7 +5084,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.Validate.html",
-          "hash": "28ZSUJA4S0QpKRN8Z7YExeaEnxA8YL6/S61G2J6Vagg="
+          "hash": "gxNEMk6r104VE+EbpGAd2/Wj+EgYESgItx1B3FhxMK8="
         }
       },
       "is_incremental": false,
@@ -5048,7 +5096,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Overlay.html",
-          "hash": "lq6WAR6TeIvATYaG64ugsPmWHkd1wcCKUKIJU0L6bRI="
+          "hash": "1uv29TkI9nJlz0T4IPR3C+kr8oOwexwj8wOceG/VcYE="
         }
       },
       "is_incremental": false,
@@ -5060,7 +5108,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.CoverageUnion.html",
-          "hash": "XHSOx0dPKPCL6J4EZGXqTr+o6dvRtDTF1Bv9aLN6mHs="
+          "hash": "042QGhFSYn3asCrdc9C3WbHYU1ddPleMS4Xl2+aTVgc="
         }
       },
       "is_incremental": false,
@@ -5072,7 +5120,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.LineLimiter.html",
-          "hash": "sSlnshml1bDSJ7Djdk2eDoomfOHBxGPdSbVL0jSg73w="
+          "hash": "Kq7V0T1JNWlZzxN851sggSY3sYbcambDj3kYLmsgat4="
         }
       },
       "is_incremental": false,
@@ -5084,7 +5132,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.OverlayNG.html",
-          "hash": "RTTX88R301jNUPAht4PT2khIZyrJXKJKMEPouyBEOX4="
+          "hash": "8pc25VQmtzWcWBHQGU6VaGvbS7ydcIMPDgeoEDiUUrc="
         }
       },
       "is_incremental": false,
@@ -5096,7 +5144,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html",
-          "hash": "e08MVKfNSxdMXpPmIQJJwQdrMHzEreClploplIupBpQ="
+          "hash": "Nm1MSXYFs/AdkgSGibLFiU/JOy7mvLB3a5yZthRBLuA="
         }
       },
       "is_incremental": false,
@@ -5108,7 +5156,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.PrecisionReducer.html",
-          "hash": "kPBM5k3WM+rG5kYyiSmFPYI7Z6OeT6gaAbqt0NylVCs="
+          "hash": "FOowLD3eIR9QpqQfQQpsM7gGb3SMShzuW+JFdtvLevY="
         }
       },
       "is_incremental": false,
@@ -5120,7 +5168,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.PrecisionUtility.html",
-          "hash": "u3b4QJZC/2DH2xt6rjCxINteqGFWAKt4RONnutNCz6U="
+          "hash": "qq2pV+RnEVYad6iR00X+qDzMyisJUM3Sfp+/UqU0ScA="
         }
       },
       "is_incremental": false,
@@ -5132,7 +5180,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.RingClipper.html",
-          "hash": "havcnWNE3STSJzgZh9RlAZNoRq6Z/LHmVWU5V0nogYE="
+          "hash": "XBmRBZs7d5xXmxLat9EwvR1LvrhpaWBMNsVYIYUZ+40="
         }
       },
       "is_incremental": false,
@@ -5144,7 +5192,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.html",
-          "hash": "lTFG0wS8MeJOkb0KHQVTdtiSIVIQKb5qtDmvvhKXhcI="
+          "hash": "aYuYJRB3uf3g83ldiLMjQqsCbvaz0Oq37pM/W384/RA="
         }
       },
       "is_incremental": false,
@@ -5156,7 +5204,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.OverlayNG.html",
-          "hash": "J+HNutrof1RSQtdsq/onkcmzmf2ZaFkDbk6SFzeEPck="
+          "hash": "8UQvmhnAbLpyLbyjFUyxQiYMqw3HdTM2QM8nHoWEAHI="
         }
       },
       "is_incremental": false,
@@ -5168,7 +5216,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.EdgeRing.EnvelopeComparator.html",
-          "hash": "B/Auq00IkPy8fryIObGg1ssFqTYS93slaIgPYApNQgU="
+          "hash": "YMFVrBkWbjprqWIcAmUzXkUCcrXgFHkqPFleIL4hOOI="
         }
       },
       "is_incremental": false,
@@ -5180,7 +5228,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.EdgeRing.html",
-          "hash": "5ChwQQfeY8XlQBRzrpdfg3abs3i3lnJFLmSFMEmVABI="
+          "hash": "74Aaseits1ffKkE+iFe4cX15GbbssaFljLLJL+xTlOI="
         }
       },
       "is_incremental": false,
@@ -5192,7 +5240,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.HoleAssigner.html",
-          "hash": "Ro8YLMyM4JERHrIjnGC7m51ZDxCYOIlY2hU0Mrm8TVo="
+          "hash": "/eFjZFwOiICqnnfuez8E3ckRuArXLhgxPTpXmDrUEm4="
         }
       },
       "is_incremental": false,
@@ -5204,7 +5252,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge.html",
-          "hash": "QBoaIPaiz7TnkjeeIpyJEg1hySB52BnzD1BB2U9BMPk="
+          "hash": "r96kLS7D9A+y0QLriYMfjbCDzXoQGfbXsP4k5KdJfsA="
         }
       },
       "is_incremental": false,
@@ -5216,7 +5264,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.PolygonizeEdge.html",
-          "hash": "fOgPFX7OcQstVJjucCgt3ird1iEwFMKiDjdiMlh+4pk="
+          "hash": "XMw343GW9Tkp4epsyOQkPiP23Uw2CYLVWNiiaSC/17M="
         }
       },
       "is_incremental": false,
@@ -5228,7 +5276,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.PolygonizeGraph.html",
-          "hash": "mOEeXIdjYdJL7GdaPTOXaRmOEal+s8WfGzd8T+eFbnY="
+          "hash": "lnarSRWOTWBJPl7YfHNUYPkg2Sy7qOxn63LO5kHacHk="
         }
       },
       "is_incremental": false,
@@ -5240,7 +5288,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.Polygonizer.html",
-          "hash": "H4GsARiVM9J0+jbjnKH/YUvFHxQkH6jGz35x7bj7q50="
+          "hash": "GZBbttvMq+7nx8QpWDbC/4j4ryN/EoHXgjAt6Y+qba0="
         }
       },
       "is_incremental": false,
@@ -5252,7 +5300,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Polygonize.html",
-          "hash": "1NUhKg6iMuxCS/9H6FJiPvgD7UEzNlBKweaG6eRfzlM="
+          "hash": "qNzySIm1tL41WQewlc+pjZRQYRAhQEULigzQ2d93Co8="
         }
       },
       "is_incremental": false,
@@ -5264,7 +5312,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Predicate.RectangleContains.html",
-          "hash": "oDndyoENkYQuSRisbE50uQlaxzE8dFUkqODTVTEooeY="
+          "hash": "gCWJRYVZgz8g3m1M9TOR693e8YErt0AbWcAvjprvf5Q="
         }
       },
       "is_incremental": false,
@@ -5276,7 +5324,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Predicate.RectangleIntersects.html",
-          "hash": "Syxy8nvBlvFSkUaxr2t4X2ehY/W23iEw+r2T4OpWRKQ="
+          "hash": "/8R8k9zONcMVyNZnybO22hL+AQmrss5d1HZqZPQJPEk="
         }
       },
       "is_incremental": false,
@@ -5288,7 +5336,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Predicate.SegmentIntersectionTester.html",
-          "hash": "pZzg9Hu2WRWN+1/Jp2RQ+dW/hT6t9Y9qdMOv+J5IfGc="
+          "hash": "Dqv82++8dVuOR9y8/Hg8Bf6OPreyszxvI6y/KLLTBV4="
         }
       },
       "is_incremental": false,
@@ -5300,7 +5348,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Predicate.html",
-          "hash": "v/DKdg8fa57SaAQFyZOgvWAAfeHrkpLqyH0GSWEuaPA="
+          "hash": "QL6B7w1miDHRNT149S2OSiYrg6lWkJ8H3ufZpPuzqbw="
         }
       },
       "is_incremental": false,
@@ -5312,7 +5360,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.EdgeEndBuilder.html",
-          "hash": "b/rpZcnazXBhGQ/6nnD2naLh1+LPhH0XSN2dMCc/dCA="
+          "hash": "VFMR/M7y1UcNs43W7XM3sPJ6Crv8STPgJRiM4hNoP2w="
         }
       },
       "is_incremental": false,
@@ -5324,7 +5372,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.EdgeEndBundle.html",
-          "hash": "ThsgoGF1yAfW1n1DT3em/8HAYS7m6uLHmeHHTrphjNo="
+          "hash": "hMkEzs7ciaqueh17bVLeMCFdkPSOjzYg03TTjHHTA7M="
         }
       },
       "is_incremental": false,
@@ -5336,7 +5384,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.EdgeEndBundleStar.html",
-          "hash": "UiKN507f9fwiCkUAR1G7RMAduf4QHVruLIEkVixlJw4="
+          "hash": "HqrOG98iT0CzdAw/uEP4EJsUsBY6rauEFubhNOE8rGc="
         }
       },
       "is_incremental": false,
@@ -5348,7 +5396,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.RelateComputer.html",
-          "hash": "kNmQeAXtQNC+PnKx7a6E77Yt/9FnobheE/QRKinBIyc="
+          "hash": "e7ZfS6Trq4aGVxx7rs2Qakph0Eg2G3am/DzHn6oRuNI="
         }
       },
       "is_incremental": false,
@@ -5360,7 +5408,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.RelateNode.html",
-          "hash": "HpQz5vD5ADigDI4Z9jTQsdlVPOaTVOJvqQ0JMOM3Yr4="
+          "hash": "ZJPYcG7MLZhba03mv9L0cuzpxSw3I+Zz2aMNAYdIoi0="
         }
       },
       "is_incremental": false,
@@ -5372,7 +5420,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.RelateNodeFactory.html",
-          "hash": "sT5bkvMk/XgYEGBxK4UPVQ6X+WbY8GFwhRn3Fjavm04="
+          "hash": "ic3N+lDapU8jrrhGVDAaFdk3F5Zqup+fZt4d/NQ1XQQ="
         }
       },
       "is_incremental": false,
@@ -5384,7 +5432,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.RelateNodeGraph.html",
-          "hash": "CNzlqSx5SKt7Htp/cMNcXCJgZb8ptJqkv1S07va/6gQ="
+          "hash": "64CNyC921XihAJy4DFkhO2ZdGMTsrdHEce128QbqOwk="
         }
       },
       "is_incremental": false,
@@ -5396,7 +5444,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.RelateOp.html",
-          "hash": "nJnoa3i7Q9UX3C1NBC+T5NUMr+PafPmsbdjAYXN0Jzg="
+          "hash": "FB3Cll+dPVGIcWnAnDO74uUavApGoi2ha5sAvwKWAvo="
         }
       },
       "is_incremental": false,
@@ -5408,7 +5456,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Relate.html",
-          "hash": "jFC1jLw4MLhFG8u5kKSZYztMmaUnQlkVmtpq+UwC4Bs="
+          "hash": "GKeEEZ11z+X+GfVWV1Q6taZViph738TM+tj7ySs1IW4="
         }
       },
       "is_incremental": false,
@@ -5420,7 +5468,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Union.CascadedPolygonUnion.html",
-          "hash": "yg9RtTxn+UUqNZGtTFWr1PaYW+v2Ea5xt3JH+OVGUC8="
+          "hash": "IwqMvz4cCEZZq5L4kE/dAnwXLH1sdYvw+4UHKt277dQ="
         }
       },
       "is_incremental": false,
@@ -5432,7 +5480,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Union.OverlapUnion.html",
-          "hash": "daprdqZDs2ffIG21kOsZWpdtHad5Fnj6ZeW9oR5V8SE="
+          "hash": "jjrT5lDVd7AlmXo+6oLDpGFZm1MlxVXBPmhrUMF9R28="
         }
       },
       "is_incremental": false,
@@ -5444,7 +5492,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Union.PointGeometryUnion.html",
-          "hash": "Oa+Ddp6Hct9ojF2ZUliv0NwBu6N9YJnJU+GcOFukH3Q="
+          "hash": "t91FCiM6OuniwEAK/pxpPGq7UZiAdtoungPWYnH3GLY="
         }
       },
       "is_incremental": false,
@@ -5456,7 +5504,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Union.UnaryUnionOp.html",
-          "hash": "nqnLvlceUqhxJ8KsEQlq3+2MVETfN1Z6hqrVjEXRtgg="
+          "hash": "6TSLmux1UYcCNWXIlie3dOFswgOJ9OTG3g818doFmIo="
         }
       },
       "is_incremental": false,
@@ -5468,7 +5516,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Union.UnionInteracting.html",
-          "hash": "sfcnlUcr4IhVZraTImaumM91d7Q99swDpDVIY2rADx0="
+          "hash": "so1ZAPYZCmOvVAu+AWUglkGfJIr9EJvy6HWLZ1f6ka0="
         }
       },
       "is_incremental": false,
@@ -5480,7 +5528,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Union.UnionStrategy.html",
-          "hash": "mES7tuP5L2MlAJn2LOspqN/Iy9MiRFRY319Qpiv9E40="
+          "hash": "5vYsCV07I/0Cpzc7QzffBDj6OR6fvOfy9sSC7YZQrKk="
         }
       },
       "is_incremental": false,
@@ -5492,7 +5540,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Union.html",
-          "hash": "IwHhqHJkNTjZkYm594TGq7IjI+td+1ZtbTpc5onNqyE="
+          "hash": "m8asvhsCEvbqRt9uX3ApuOn+EzOfI5/hOaltOCUNgdM="
         }
       },
       "is_incremental": false,
@@ -5504,7 +5552,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.ConnectedInteriorTester.html",
-          "hash": "9Uf3ZkYneJTcrJ3SzRU0MPuehlyVcASLWzwUD35GPEc="
+          "hash": "CVToW1lnaJEBH2KlMNP6LMnBoxuBxsfVXDMdfOGQls4="
         }
       },
       "is_incremental": false,
@@ -5516,7 +5564,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.ConsistentAreaTester.html",
-          "hash": "0qgHJblhL9MOFuS4FQ0rZEj17pZAa4QFOsPw2I2oRv8="
+          "hash": "tC7QBeNis7g6FQI6wBfbiOtsYV3/GGvNn4i5CJMmgDo="
         }
       },
       "is_incremental": false,
@@ -5528,7 +5576,19 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.IndexedNestedRingTester.html",
-          "hash": "I8WcGSOllelzC7+OScX8n3zLDyTuaRRbLCbybfuLUo0="
+          "hash": "Ca94ugGysFcAlmaL3QmjOfCKlEBQqlkdhZEXvDES5vw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/NetTopologySuite.Operation.Valid.IsSimpleOp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NetTopologySuite.Operation.Valid.IsSimpleOp.html",
+          "hash": "fVPHpcZTgW5sw58whHSP36jlhvOSVL0UT7Q7PuE7OzA="
         }
       },
       "is_incremental": false,
@@ -5540,7 +5600,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.IsValidOp.html",
-          "hash": "z8wtY+uNZ7M6bfXFm+b8bmHh1lt57njw6yBTlFJj11M="
+          "hash": "fnoOULlugxpuN8ly3ly5iz0V0L3zAi8+uCKs8l0rQow="
         }
       },
       "is_incremental": false,
@@ -5552,7 +5612,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.RepeatedPointTester.html",
-          "hash": "Rd+gF72dqMthqXoGMjjBZRUinzJdaYv5ClzCQUtuGE0="
+          "hash": "DwVQTrxL8ozu4BpoYTBetBg+oqrUt4xxygVD1gja2r0="
         }
       },
       "is_incremental": false,
@@ -5564,7 +5624,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.TopologyValidationError.html",
-          "hash": "Qkmy18RnRPs6BJznk8bnQcV8/M9ej66d/atu9aurDyU="
+          "hash": "48mdQdH65TlSim3ZzFJm/YwmbjBrg5Vvr9YE2UtE6ZM="
         }
       },
       "is_incremental": false,
@@ -5576,7 +5636,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.TopologyValidationErrors.html",
-          "hash": "4tkuiFu2PwibVbrVSKLKgVMZHlZrjeS1jjTYCRg3lxQ="
+          "hash": "xm+E72rb1EooZVmTDMf7DtG5vltd19kZVQt9/IcrTUQ="
         }
       },
       "is_incremental": false,
@@ -5588,7 +5648,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.Valid.html",
-          "hash": "o2WFAJ/MLXCp/LFExj8nmpCCe6p4CrmQgmgNxjzGcxA="
+          "hash": "9kzoEypmq+7UHuyMLyi37dbuNHJmFnK9j4eG0c0NExc="
         }
       },
       "is_incremental": false,
@@ -5600,7 +5660,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Operation.html",
-          "hash": "WWSkNTILbyE0hPTZ7f/3RaDrDqn4p0rmGGHqhY8nsWE="
+          "hash": "rfqjVzjGxBCOsdYoD6vjAdeQjerGvKh+uDbz75k06Hw="
         }
       },
       "is_incremental": false,
@@ -5612,7 +5672,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.Algorithm.ConnectedSubgraphFinder.html",
-          "hash": "3jHRzK1CXBMYS8IK0HOEXCgr2oiWib/xQbzurjUK3T8="
+          "hash": "E9/wHZfCABZE3POmZukHdHRm+AgWg4/9Vx8ytdM/Wbk="
         }
       },
       "is_incremental": false,
@@ -5624,7 +5684,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.Algorithm.html",
-          "hash": "eAc1w+4j9nEy1IBxynKG0FOal2Dtr6ERRExoZYoOVjI="
+          "hash": "dbCpj9xunZW1iofyR2IaKaT50Z6WhrzW2KsaSJJFduU="
         }
       },
       "is_incremental": false,
@@ -5636,7 +5696,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.DirectedEdge.html",
-          "hash": "T3XySYEBmt9oSm2Dq4vm3WJxEUEQ1/1R/fhA84uup2o="
+          "hash": "mNAL/Q9YKT4ulOYqTRkDJw8Jql1UuX37rUloDpaGB0M="
         }
       },
       "is_incremental": false,
@@ -5648,7 +5708,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.DirectedEdgeStar.html",
-          "hash": "Gzid31tqs3PNXFLOI6b1XKDQR2cq82Jn+dXSX4tqXhY="
+          "hash": "PJo9seJvCkcc0P6GahrPnfkXUyWCK1zZoVadwHm2XG0="
         }
       },
       "is_incremental": false,
@@ -5660,7 +5720,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.Edge.html",
-          "hash": "3UNQu1RGFEykRBXw7tR4sayhkqnwovkMit/IgpvVEFU="
+          "hash": "UuboUPt/MEsic2c5vkVyzDPixqlMeBxbWhV8KExdlEE="
         }
       },
       "is_incremental": false,
@@ -5672,7 +5732,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.GraphComponent.html",
-          "hash": "Vda3s0FY7B03hzl/y81v2bB9yGrAWGXs9Cr1gcbgCig="
+          "hash": "EFPY6PEiQfdE/YukCHdR9J/ms8dUxbXk0bh+EYyj45M="
         }
       },
       "is_incremental": false,
@@ -5684,7 +5744,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.Node.html",
-          "hash": "Z2CZIft2oP7DOheQXnE7rYg+7SR1i+3lo3XEPo/sVu4="
+          "hash": "O5aAHQSUC2XXWFvNxtYi/eMp/habI7UhC2TFlxIQ9QM="
         }
       },
       "is_incremental": false,
@@ -5696,7 +5756,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.NodeMap.html",
-          "hash": "3D/xcqpL9ZNYXhpYFMrmwv6yNQHr2xsS0juwB6qUUF0="
+          "hash": "NCmgJ8Md++1Z9Ssw5iQBN0VjfWuaoe14nBOrxOyw/lA="
         }
       },
       "is_incremental": false,
@@ -5708,7 +5768,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.PlanarGraph.html",
-          "hash": "REFgUyESby+LIywWHGmUnAD5QGDSgIZcdZDLnERNNzs="
+          "hash": "0hjIsPpS0EtGHOPcCOcAIMivUra18ouPjblNf8rAnMU="
         }
       },
       "is_incremental": false,
@@ -5720,7 +5780,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.Subgraph.html",
-          "hash": "582pFhG5O66xJ4XcYmFrIllXBWc62w5HUA8/4mlnM3o="
+          "hash": "QjZEL0n5XB+USzjgXsmWndUQ0qYuGMnpszJNYax5dOs="
         }
       },
       "is_incremental": false,
@@ -5732,7 +5792,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Planargraph.html",
-          "hash": "XEcqbW878DK7CdGArrrPxpzU3p3Sw1s7fxloCCPmqfM="
+          "hash": "UyN2LkhmU3jIt3ODJeWCIpYyw2zf+TnEQYMgolObwXw="
         }
       },
       "is_incremental": false,
@@ -5744,7 +5804,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.CommonBits.html",
-          "hash": "0Gemj053Y+st3/N/13uURabNu8OmnW/QFsY0XAfCRG8="
+          "hash": "JTB6grzJu4xQjNEr7E1YPqgf2DVl+liAWCqxyaoLFms="
         }
       },
       "is_incremental": false,
@@ -5756,7 +5816,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.CommonBitsOp.html",
-          "hash": "/z9jnKs0RxJNBw2S+8DCqSnw1SNFiW3LQyh9cK4zBQI="
+          "hash": "8I+oGtAWxC1+NKEP1s0btfr+i6tac8tBhrbUbvAEHvo="
         }
       },
       "is_incremental": false,
@@ -5768,7 +5828,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.CommonBitsRemover.CommonCoordinateFilter.html",
-          "hash": "YHFSACWGYurYyZwJNYmGUuWx4FJ6x2j2QK868Sjg36Q="
+          "hash": "qUHSCVQc9TIfWa++EnSJSVfRC1XlPVf6ALZyddalE9o="
         }
       },
       "is_incremental": false,
@@ -5780,7 +5840,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.CommonBitsRemover.html",
-          "hash": "BjD96gHwONNj6vwj2elPLh59eSYgAPWRiUbt6HNnOC0="
+          "hash": "EmL4USE+n3mSWsaKu9j6Gix5hm9uXA82KKs5esZmdkg="
         }
       },
       "is_incremental": false,
@@ -5792,7 +5852,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.CoordinatePrecisionReducerFilter.html",
-          "hash": "Sbz0mdkj4EahRJ7ikIqR13eOSH/MZ61Wk5UTQYfBPQ4="
+          "hash": "n3Oy+n+2XRJ57WgMhU9t3660ixxt+VRCIHp/EO3DBzM="
         }
       },
       "is_incremental": false,
@@ -5804,7 +5864,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.EnhancedPrecisionOp.html",
-          "hash": "IgFZk0bCpVNsDD1NTXUaeiwlllfcpxtIvukZ/5vCRt8="
+          "hash": "EFAXr07MAaNkKEuQ0IiQFJyg4bXyAVLW4NFnkGM6a6U="
         }
       },
       "is_incremental": false,
@@ -5816,7 +5876,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.GeometryPrecisionReducer.html",
-          "hash": "7EvsPsDvdKz3KOZWq46VNr46zTaDNIXlq77c8y1tCY4="
+          "hash": "7MS3YkuwVy04YYHrovlGDPRyF7HiFg5mS6rXELvfidU="
         }
       },
       "is_incremental": false,
@@ -5828,7 +5888,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.MinimumClearance.html",
-          "hash": "XfgaWeMbcBpwzw7u4+IpQaylRsvkPt7Y2RduZwUitiw="
+          "hash": "iyeYsH0G7jtYnny+yH7eYBIzZ/E8mTncGih1sF8KLdc="
         }
       },
       "is_incremental": false,
@@ -5840,7 +5900,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.PrecisionReducerCoordinateOperation.html",
-          "hash": "gGsap2FQv+xDx0Y3ZvaOZlrTdqnbHKPnHBQtwPlcn6o="
+          "hash": "zzZUqgSfw2dWh+PvmTX1+HU3fBlc9EkWvsdx4Ulyzz8="
         }
       },
       "is_incremental": false,
@@ -5852,7 +5912,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.SimpleMinimumClearance.html",
-          "hash": "Zazg0byWOT6ugmY38z10KfppUgMNgCwMvdSsJ9zgr2E="
+          "hash": "rrdDQOJZrnaOfd13jTPv7uYM3FlhwYhMXN3zk+3WaRg="
         }
       },
       "is_incremental": false,
@@ -5864,7 +5924,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Precision.html",
-          "hash": "oLjD8A8euvfpDddtGt+sTmjoywlhj9ZTXgR4kR10u7Y="
+          "hash": "ADOWRcGCX5MgLTpTwYkurYXqARjtgLX5H3I7oBJ3ANg="
         }
       },
       "is_incremental": false,
@@ -5876,7 +5936,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Fractal.HilbertCode.html",
-          "hash": "M66Eh6r+qVFWDlXOCkV1zaAg0uFbb2DA9vaF+3MNqX0="
+          "hash": "xu0ipFJh9+916hPPtA2Sd5lyETL/2VEQ/vEV9515R+c="
         }
       },
       "is_incremental": false,
@@ -5888,7 +5948,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Fractal.HilbertCurveBuilder.html",
-          "hash": "IqByB8o2ZoGx9qUBvaBnnGn+eetFns2a0zLYDtCevC0="
+          "hash": "OfraSbCUO22+2gGEa3W2/Ge4prnv657iRu9Y2hbPqEE="
         }
       },
       "is_incremental": false,
@@ -5900,7 +5960,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Fractal.KochSnowflakeBuilder.html",
-          "hash": "+15NUcp4is7ZQfSMFSD1HYoBvjqCO5sLH/+4zmjLGos="
+          "hash": "xjYaq1w69lQK58ipZRV8sRRD9zcRVGk/YDJ1+G8irsA="
         }
       },
       "is_incremental": false,
@@ -5912,7 +5972,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Fractal.MortonCode.html",
-          "hash": "hwjpMqKc07ROk/EYN6w8gbBO1DhUc/CcBQRqZ++Kcjk="
+          "hash": "Gc600zt4kBcpAfOoa0SkXnojZjvAMl/tx9/0SV+LaJQ="
         }
       },
       "is_incremental": false,
@@ -5924,7 +5984,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Fractal.MortonCurveBuilder.html",
-          "hash": "iKRMkETpNwmoqCRpBQXpTUH7F7AY23XpI5Zp+u+kwzY="
+          "hash": "13+ASvdNobQaruBS6JeyJAT2S1OkaG9hRH+w3wLRX2Y="
         }
       },
       "is_incremental": false,
@@ -5936,7 +5996,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Fractal.SierpinskiCarpetBuilder.html",
-          "hash": "b9O0+u9IKYn+F2GcpLnEFao34FFhfGUsFKfUGO22w6o="
+          "hash": "uqF/JbfwHXSj+9YTTggJQd5KyvzoE0vZDJ5ozw6knRM="
         }
       },
       "is_incremental": false,
@@ -5948,7 +6008,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Fractal.html",
-          "hash": "80lsG4tyct1ITtPMaMLO4Nogt9+7M0U9YTBak/PjjqQ="
+          "hash": "EEcm8OFCgaKE9GXX2KLtqATBYNdWXGKobPA/2muVMD4="
         }
       },
       "is_incremental": false,
@@ -5960,7 +6020,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.GeometricShapeBuilder.html",
-          "hash": "0kftUG2MYYJllRLf8kbaO9iXDdRTED6/rF6I/QC3z9M="
+          "hash": "yHGGHUZADUM6TDsJm6N++NCZmNnNnV8qY4ldR4V7kAU="
         }
       },
       "is_incremental": false,
@@ -5972,7 +6032,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Random.RandomPointsBuilder.html",
-          "hash": "9f6CHPMq27brtdwCsZy07gAtrNn8sAaluqnq+xbWMiA="
+          "hash": "s9f15yazTWCt/GEC5lMxS7enj7FyRR0ceiZWM7rfoRE="
         }
       },
       "is_incremental": false,
@@ -5984,7 +6044,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Random.RandomPointsInGridBuilder.html",
-          "hash": "PUrhjeYQYccu819eRah2u/mxTiQMaxHB2CyJV4nvz10="
+          "hash": "nZ5xTz96AJ6MX5/GK8Jo6t1W+50KwW3lYiRbL2KUGV0="
         }
       },
       "is_incremental": false,
@@ -5996,7 +6056,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.Random.html",
-          "hash": "SSyzdkfYXA2PstJ/Oj8WBzebr7hxBY/oGaT/21WveFo="
+          "hash": "6YPxDzPvPLasXPk1/7AijqI2vI1vj5ghql1co8Q0n2M="
         }
       },
       "is_incremental": false,
@@ -6008,7 +6068,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Shape.html",
-          "hash": "fQx3Kp9bv55jFztCuaQRpTzu3Lfdw+l0jJdEoegmECM="
+          "hash": "VlqsyFN0FVzEPzDT3JEuHkzpv6BUlhpD2wql9582kTw="
         }
       },
       "is_incremental": false,
@@ -6020,7 +6080,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.DouglasPeuckerLineSimplifier.html",
-          "hash": "LjxhMLjtFmT2LUE2BoAW8L+h72It8H/ztSHvqpeeCt8="
+          "hash": "AEoRmkar9c2h3TaTjJrg6FM9MbbDQ8u7GBx/xaV0anM="
         }
       },
       "is_incremental": false,
@@ -6032,7 +6092,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.DouglasPeuckerSimplifier.html",
-          "hash": "aMKg/sr4FSgZYiRjYBsCxxMXP7AiTW1a1rywWn0x7Gc="
+          "hash": "RI+YQ97xgFPxiieceZnsIou3oIG6uIsEPllPwnyl1kk="
         }
       },
       "is_incremental": false,
@@ -6044,7 +6104,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.LineSegmentIndex.html",
-          "hash": "I76NxvQ9VOWFJcwTWtWRs/VdUBoBjNpoARvdWWGSAcI="
+          "hash": "9rUUr+eSbwRXfaUV67UMChLExBoNODi7oIYmW1wWH5g="
         }
       },
       "is_incremental": false,
@@ -6056,7 +6116,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.LineSegmentVisitor.html",
-          "hash": "Dyoc+4bOyNV8/8rgQIRvSVvrpSZmgyfMWuCRPYgixVQ="
+          "hash": "gsp3lV1ouz2hDxiBjG0MwZJgcV+xDtshHzs0CthfL0E="
         }
       },
       "is_incremental": false,
@@ -6068,7 +6128,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.OldVWLineSimplifier.html",
-          "hash": "Cy4cmO7ASIbTtP39TZt7kGZeA+6ZfuFIRS+NH+5p8Jg="
+          "hash": "+XIBgeaMpNHu9raZT9KcFxL2QcYRIhGpc8KoW6Iyu/Q="
         }
       },
       "is_incremental": false,
@@ -6080,7 +6140,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.TaggedLineSegment.html",
-          "hash": "Ajavi1SIc4wUeZlFwWWdZBOfj2tDo5s+2j3I2mn0ZO8="
+          "hash": "kMxA6rkoJ5+bXq9edmTAiiiFtSryIqE7Zs+sl3WX/1M="
         }
       },
       "is_incremental": false,
@@ -6092,7 +6152,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.TaggedLineString.html",
-          "hash": "IzCJ+U0P861bPOVeSMZuxKth471ToJo5n8XyJF4YPrM="
+          "hash": "FiKC1vU22iDfV74Jcbe2fx7kGH5gZkg+ZyJ6i8h3FPY="
         }
       },
       "is_incremental": false,
@@ -6104,7 +6164,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.TaggedLineStringSimplifier.html",
-          "hash": "0p/pCnb7RVIBspnCECwxXOl1vrY7zeyYVcZu9Po9zbc="
+          "hash": "lJRvnsCiH+S/q+GxQvK+pshsLr3YOcXHUKzF4XEpXLg="
         }
       },
       "is_incremental": false,
@@ -6116,7 +6176,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.TaggedLinesSimplifier.html",
-          "hash": "rIseLjDzf7Mn4TIN/SrXpqzPTXP/tq+WBqzR93UMHcA="
+          "hash": "SC69NYwa7pnJm1ImB6ALv82bI72WaV2lPm3Hs0KHw/8="
         }
       },
       "is_incremental": false,
@@ -6128,7 +6188,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.TopologyPreservingSimplifier.html",
-          "hash": "ZW109RxKOfo+sB3iLr3GeW0jifcRV5djQa6/QNiD6ws="
+          "hash": "AO+gnOaNDyplzkxRObQ7Kq2gusLmgBP0Asnr+uBMc4U="
         }
       },
       "is_incremental": false,
@@ -6140,7 +6200,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.VWLineSimplifier.html",
-          "hash": "UVLzFmh8YlhncC5JEc1RhJrWHNHDzq9FNIGw4MUz1Ds="
+          "hash": "gmiLbFiGgAIsZRlF/EaVO4g6I654YDpZuQnTtFaurkA="
         }
       },
       "is_incremental": false,
@@ -6152,7 +6212,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.VWSimplifier.html",
-          "hash": "bB30nw1d5RlR4SNuJNiwaZesl89In7ejYI0/FYgU9EE="
+          "hash": "eWNv0zemDICOyPgsYMa/0+1EClrsN1NN3KweHHO9y4A="
         }
       },
       "is_incremental": false,
@@ -6164,7 +6224,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Simplify.html",
-          "hash": "njGJfYCy6ZDgKeaKE9HKdLEPF8YAHJlXu9ZSYy1IXTo="
+          "hash": "x+yd/Ch+OIazmYwaKUtjUUqXHhxdETPPEh12xyi/0BU="
         }
       },
       "is_incremental": false,
@@ -6176,7 +6236,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.ConformingDelaunayTriangulationBuilder.html",
-          "hash": "2Ufas0+uNxLHqU942CEzNx/iQbjj9u4R1b81Qj8NfRA="
+          "hash": "78nD5tRff0KzQS5mxueXJMmNitK7aXRb0kebzzEzQ3A="
         }
       },
       "is_incremental": false,
@@ -6188,7 +6248,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.html",
-          "hash": "kaFqgKyGEMRrCYQ0Je6liVcznUmW31Ap1uhlvdf1Lf8="
+          "hash": "46eooDvkpifa/vkN5nQtM1DXEUpGp0/nRs4vyRJA4GA="
         }
       },
       "is_incremental": false,
@@ -6200,7 +6260,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.ConstraintEnforcementException.html",
-          "hash": "XuYRJOxTfK9RtT7wO0XGYKV1R7ImRHV7YiTZZV37cBU="
+          "hash": "FliK7sjT/kyZFTQOW0WmW94MlIGdIScPeT35d2dTzcE="
         }
       },
       "is_incremental": false,
@@ -6212,7 +6272,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.ConstraintVertex.html",
-          "hash": "ZSU7G46X8tNrWlrSQ0Dz+PUXiSiKtyYbxzwo5V6h8ck="
+          "hash": "FbekiLYcLKaOZNu+C8sRjXJlwRHeDtAauXG/sg5vG9U="
         }
       },
       "is_incremental": false,
@@ -6224,7 +6284,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.ConstraintVertexFactory.html",
-          "hash": "ayhwfPfFOHoo5fr4/g0f+MUawtHyEFUkkfSAlMTOr0Y="
+          "hash": "w2T9CEryAvJvYLh5ftw4qlFHzOtIjCmUlWb4huDE4J8="
         }
       },
       "is_incremental": false,
@@ -6236,7 +6296,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.DelaunayTriangulationBuilder.html",
-          "hash": "ZSniwEpBtww3IhLXhO2T24aH2/jqrFjResqWrbeh6E8="
+          "hash": "GLCCPp8MZjfnqQooTJsQFUbPlK79HQy3ZUs9s5Ed5Fg="
         }
       },
       "is_incremental": false,
@@ -6248,7 +6308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.IConstraintSplitPointFinder.html",
-          "hash": "bgKRnF9nPrRObE7phOhKNa7sm/scXDcxxPAMLgo//h4="
+          "hash": "r9zCf+pWBw6GSQAvQ/hxgXnCiJ1BhDNtIcuWGys87ck="
         }
       },
       "is_incremental": false,
@@ -6260,7 +6320,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.IncrementalDelaunayTriangulator.html",
-          "hash": "eS3nri7FKWhltidK+K4po8MwlLRFtIfeWNKufddtn/4="
+          "hash": "Iu++PIj2GDD9zYlSIWfGwReAEzCq5hitOzI3JJsysUo="
         }
       },
       "is_incremental": false,
@@ -6272,7 +6332,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.MidpointSplitPointFinder.html",
-          "hash": "UeqHI2nbPdMlcVJDbsOiBzBQP9FUaRUuO66himKGFmg="
+          "hash": "dNPgDftsznmE7umoJQbwtPvq6WzEQvKWVNmv9EPC4Hc="
         }
       },
       "is_incremental": false,
@@ -6284,7 +6344,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.NonEncroachingSplitPointFinder.html",
-          "hash": "JQtUFLiyKEVh/vTPhbWn3QuT+FSI8BQGya4Gcgsd6k8="
+          "hash": "aEiPIfvwRclgeh1By0JxMRRlKXUXk8NVcKOqnsWGsuQ="
         }
       },
       "is_incremental": false,
@@ -6296,7 +6356,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.EdgeConnectedTriangleTraversal.html",
-          "hash": "waEfMTdDKCaliNowlVF3OFXXCSmIlrAP7RbXdk5BsNw="
+          "hash": "aFjwnh7hggRmAkWTGM88LBIU0+ipeoBxUUAnmkk88rA="
         }
       },
       "is_incremental": false,
@@ -6308,7 +6368,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.IQuadEdgeLocator.html",
-          "hash": "nPVrkmkCLP2pP6gmw7zuxRfgC3rGPJb8lrhdg5HTmQw="
+          "hash": "QslbyUBSKJK2Cxu45G357Fnb3ryHj/SkZ4dCHftP83k="
         }
       },
       "is_incremental": false,
@@ -6320,7 +6380,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.ITraversalVisitor.html",
-          "hash": "eJuFE+uBEqep2Ly/GzFPoj2KXu7bM4QZ4fNcbmOW2ns="
+          "hash": "ljNvHjJ3F49PrfeH2y6lSAzAHNVwH05mj4PdIHddBVg="
         }
       },
       "is_incremental": false,
@@ -6332,7 +6392,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.ITriangleVisitor.html",
-          "hash": "wIzdE38OBv+WlTyeXTOp71sgTwDkWLJtO3xHyLxdgCk="
+          "hash": "/IWftNqRphoj9uCBh0Nr49qJRAVHFJBLVM2iL0hsWfs="
         }
       },
       "is_incremental": false,
@@ -6344,7 +6404,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.LastFoundQuadEdgeLocator.html",
-          "hash": "05h6mbTKkxEsVk3uqE7AWM5pbPODgKBSOqkpBYWf8TY="
+          "hash": "vTsk92gpEJhIaIZZdb6aE58HeINXKcjjVum1YBuCUFY="
         }
       },
       "is_incremental": false,
@@ -6356,7 +6416,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.LocateFailureException.html",
-          "hash": "XfNFHGEMh5vRrA9alsxWOzPWY80HdLfUPfLjsE53Mwc="
+          "hash": "3LzoVcejqv3wFkBPnGvFivNBxnOaDD3mKsoVqHpmB/8="
         }
       },
       "is_incremental": false,
@@ -6368,7 +6428,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html",
-          "hash": "gAF2KMdXvanvxMPVC0WiP16q4W7Noy4Ew7BK5KmFHig="
+          "hash": "5rtx9AQmj2lQFiIxvseXPpItijryLRcaqYsDRjiLgwU="
         }
       },
       "is_incremental": false,
@@ -6380,7 +6440,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html",
-          "hash": "W0LPrfUpydC4xyuA+ERK+P9ozvMNV0Y9RdeNpFpOq9o="
+          "hash": "fqJu2Detb3bK0ma8yIA+1lFMwNJE1WOg6lOWCnE/sEg="
         }
       },
       "is_incremental": false,
@@ -6392,7 +6452,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.QuadEdgeTriangle.html",
-          "hash": "w0XNMoIW92YdufMbc3milI30na6VVMOTqqw/pkR9gbY="
+          "hash": "1Pj3x/ALwu+w5ofq/YEsgadpNQ+nccB7emmQgEIo2ic="
         }
       },
       "is_incremental": false,
@@ -6404,7 +6464,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.QuadEdgeUtil.html",
-          "hash": "B1ijjiINP40j601jmEfXvt5qR3aAGx+O8WWUNmHafeM="
+          "hash": "xxqj+/nDwahKGrCOlMD14HjokhSkd9GUKqys6NFyFNo="
         }
       },
       "is_incremental": false,
@@ -6416,7 +6476,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.TrianglePredicate.html",
-          "hash": "WFMx0iO5mN+p10s/PoC1o20VVloZSBhw7yFIj61BPQg="
+          "hash": "sddyFgz514WOhC03KOhL0mdsZWztxwzxhmsqFaMDkOQ="
         }
       },
       "is_incremental": false,
@@ -6428,7 +6488,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.Vertex.html",
-          "hash": "Rl6dEo76a0l7TURDU9o+qLRadAgJsyEBJ4a4H33yAUE="
+          "hash": "oB/yM9l/Ad/dpwbrBklFCwTtndMttnnWoC+2Y76msAA="
         }
       },
       "is_incremental": false,
@@ -6440,7 +6500,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.QuadEdge.html",
-          "hash": "m3Y+l9z2JojAV9PhnHTpL5VjLYkamdcSH7AWx2oCaEo="
+          "hash": "SVZ4K5AthluwtLHgUv5bOw5709yYSpdEcCF1ddAFDKk="
         }
       },
       "is_incremental": false,
@@ -6452,7 +6512,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.Segment.html",
-          "hash": "NYQOPH0G/hR8cJOQ6TNUg9KrLkaQVeqDeSJMWRSM+Nk="
+          "hash": "XUdMpXCTTa2b282kFcc56PaG+xsO8KjrzefwM/kL3tU="
         }
       },
       "is_incremental": false,
@@ -6464,7 +6524,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.SplitSegment.html",
-          "hash": "RCBlq7CCsTnzdFuX/TvwT5A8JYK2QkmcMyz++gTufo8="
+          "hash": "q1r+1Fxcae6dANPQWOx9JXCNuRi6Kwf+ALFVSitptmI="
         }
       },
       "is_incremental": false,
@@ -6476,7 +6536,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.VertexTaggedGeometryDataMapper.html",
-          "hash": "iSkuPxubUI/kfHaiEKI2iCsbsFl8OzrV6Qw3Q5waRRI="
+          "hash": "Hv3HcPZ9xkfnFC7+bn26bDAhR/VqIFB7XuuGaQeNob4="
         }
       },
       "is_incremental": false,
@@ -6488,7 +6548,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.VoronoiDiagramBuilder.html",
-          "hash": "C/AtUDOMptC9Eol1+XwPON0XucMZ7MOvNTVBrx6YAW4="
+          "hash": "u+oKH/R5mn8iHCsvSLEDjhvz81qlYvO5NqRJcW2pnDk="
         }
       },
       "is_incremental": false,
@@ -6500,7 +6560,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Triangulate.html",
-          "hash": "GOvqXE5ZPacBBjFrAGZ+9ayxCBtFrBGpGwu2lyGWFhs="
+          "hash": "1S3vGc0MgPVLICeDJ73rgYjHbQriRD9JocSoCxEIohM="
         }
       },
       "is_incremental": false,
@@ -6512,7 +6572,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.AlternativePriorityQueue-2.html",
-          "hash": "hu69pOeZ3tDHVrMU3LDaEbybtgAauN2jU4893Uh1HIw="
+          "hash": "RRgNEF/ZzGDh6xwKD31ZqViSOGihv/Kw63AaiehC3p4="
         }
       },
       "is_incremental": false,
@@ -6524,7 +6584,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.Assert.html",
-          "hash": "LqdjpyCPkfrSt9KTEpd06rgER3S3D0+a7tcbsKcRrtE="
+          "hash": "h6uByFiyv4RuENI3kilAx6CvH8WRh6xv0xePF59sP+k="
         }
       },
       "is_incremental": false,
@@ -6536,7 +6596,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.AssertionFailedException.html",
-          "hash": "TV89Tb8dLZEBXMZ9cylqGX4EHelWn92d5S+X5fVyo5U="
+          "hash": "TMqti3EyZN5I3+Pjtv1OeQRGlB9I1zxrs1zLS1rxDlc="
         }
       },
       "is_incremental": false,
@@ -6548,7 +6608,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.CoordinateArrayFilter.html",
-          "hash": "pbt3A9pM2jCngdveCGXYe4Ya7OQO6SNT6O0/H4YvMqA="
+          "hash": "pS95VkCp61F/4CPrJvSSZw+8D24QGv6Sp8K8dQJE3I8="
         }
       },
       "is_incremental": false,
@@ -6560,7 +6620,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.CoordinateCompare.html",
-          "hash": "opzRkdrhezg4HB05OM6T07cnRYKDA+LX962YgiBOrlk="
+          "hash": "iKyxL8bs4G5cdEAi0GAsOhQItIRn8qpOMUEyFLRa6Q8="
         }
       },
       "is_incremental": false,
@@ -6572,7 +6632,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.CoordinateCountFilter.html",
-          "hash": "x0/0hnVsz1uLdFC37DOD/sZVhuxIy9eh3qgfnmporpw="
+          "hash": "ogpERWByz/VNf0iO0H79VS/WQD6Tq7XEk8FTdxPV4LY="
         }
       },
       "is_incremental": false,
@@ -6584,7 +6644,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.Degrees.html",
-          "hash": "w5YYV7TkROVZj8ZVtRbW1S8PfKP60fqyhMajLB2Dbt4="
+          "hash": "MpD0U5MEqHR2Mmo7r1e7kSlQqlEfPXe8Bz+9j0dGwHE="
         }
       },
       "is_incremental": false,
@@ -6596,7 +6656,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.EnumUtility.html",
-          "hash": "OlQwGj1nuvUPCfoTAUdgPXsJv0Bff3DCTOT8v4t0wvA="
+          "hash": "2y4++8xy6ehIdnMouM7pmh/3n42s65WFRBwWbRrsjnM="
         }
       },
       "is_incremental": false,
@@ -6608,7 +6668,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.FunctionsUtil.html",
-          "hash": "EqO34Lfr0gWkD2mBH6bUj5C2Z3LhbaubI80IgGam/6c="
+          "hash": "NIsrnA2wEey6CqFDB0ou20k9VrmeHucP25lgLCw0cp4="
         }
       },
       "is_incremental": false,
@@ -6620,7 +6680,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.GeometricShapeFactory.Dimensions.html",
-          "hash": "QC8VTwwLQtOmKYMGAgAzd8Dc3QrZNjmcBTfgM0YmsW0="
+          "hash": "DC32GHX4E/XwgYCXvpCYE9vm80TJT873tOL2zQ422Gs="
         }
       },
       "is_incremental": false,
@@ -6632,7 +6692,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.GeometricShapeFactory.html",
-          "hash": "w5zDpA95+lJjZKM+gc0I1txz9dBisG+c0oVtEH1V0K4="
+          "hash": "mD37nfVlX29/nJ5/Q+ZDtWNPX/+Pe1TYDJ4CdSLSKMM="
         }
       },
       "is_incremental": false,
@@ -6644,7 +6704,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.Global.html",
-          "hash": "MBZ26sVbxAkPneHodUcbGpJXqRNukBazlsmwJMP8ZK0="
+          "hash": "u6DvEm201aeivvwvitoF/g5DfPwjqYsYJIYT19+QEeE="
         }
       },
       "is_incremental": false,
@@ -6656,7 +6716,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.Guard.html",
-          "hash": "MomHxasOJIlTiYPN6BoPsDDFNSQygHUAzaWWFKJ62Zs="
+          "hash": "EP4171mshLdetAGfuYR8jSF1YJatyPlWC8tbC9APiIE="
         }
       },
       "is_incremental": false,
@@ -6668,7 +6728,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.HexConverter.html",
-          "hash": "N01/bOOFUaSMJlOZS3MwTFnQO1yR8dcft0pIQX/jrwM="
+          "hash": "D0+Afpi2JxnwY1JlAQ/AdXQByi3MBYtJDAmf57PjZis="
         }
       },
       "is_incremental": false,
@@ -6680,7 +6740,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.Memory.html",
-          "hash": "qzh8VZNlwN9IO46mKCtLqaueIROrHo6xxWZNHeL1Hgg="
+          "hash": "93mA250AeZ6kOR/W6I7ivrphvzh8klGLjJkl9W8sUJM="
         }
       },
       "is_incremental": false,
@@ -6692,7 +6752,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.PriorityQueue-1.html",
-          "hash": "jDok42l739XJX+aMp0lACIucLs+TE0XzV+ss76dwpLI="
+          "hash": "fZrcqf1GLMAWP57gUEMfZ4VzLMkUtI5mbDF0e5G+XTA="
         }
       },
       "is_incremental": false,
@@ -6704,7 +6764,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.PriorityQueueNode-2.html",
-          "hash": "7Irl1OETVPaY9GP4Y6Ng2hRcV9JeqHxDHV5U6yz2+14="
+          "hash": "sOk1TWgqq55hyVNfv9M/3/3D6qDOuU+n/S0HigHvuts="
         }
       },
       "is_incremental": false,
@@ -6716,7 +6776,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.Radians.html",
-          "hash": "J0MQ0EtnA5zLegP+w4qD1aPioeZhKYWRC1eWOu6wG9c="
+          "hash": "8Lz8GvZ8k3taKsQCCkxeJRAG1XQsDuviYzLMJEdnufo="
         }
       },
       "is_incremental": false,
@@ -6728,7 +6788,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.UniqueCoordinateArrayFilter.html",
-          "hash": "IZKOzQFnIiRdol06Yy+ynF+ihb4wikI74iBCELrgd8c="
+          "hash": "882CHQqIPuoym1VZbLNkhvKX7A+IhKD43zABawgzT2Y="
         }
       },
       "is_incremental": false,
@@ -6740,7 +6800,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.Utilities.html",
-          "hash": "Tzzzyb2gM9drZyi44qdBTImtP7t3Obdtryjyrom+wdE="
+          "hash": "8gR//zsPq66soB/C20HA5Q0IWhBDXywkUrowJPwRnU8="
         }
       },
       "is_incremental": false,
@@ -6752,7 +6812,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NetTopologySuite.html",
-          "hash": "L2mtEELWeeYapAm5wh1KPlvnqCoExMRx6DWsa1x/YBQ="
+          "hash": "MngBtDVAIZlC94gDCULVx4SXVH8EMVwq67sDhT1LL1g="
         }
       },
       "is_incremental": false,
@@ -6764,7 +6824,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.CharBuffer.html",
-          "hash": "59pEpN6HdrHzd/2UJFxa0DwUqpRpgcZbSjlQPD2fXqc="
+          "hash": "Iam8i20ytW921JO1d4np77MGZ5bkbnTCoQ8lZQ4pVS8="
         }
       },
       "is_incremental": false,
@@ -6776,7 +6836,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.CharToken.html",
-          "hash": "dryFhIkE8v7050sSEsofLXxFBn33W0dkEejA+6Fs1FQ="
+          "hash": "mj9duoxj8MmGzERxKjchHqpkokRcziwYz0TPfUhyU/s="
         }
       },
       "is_incremental": false,
@@ -6788,7 +6848,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.CharTypeBits.html",
-          "hash": "LBIpbtE9GeeQe0UhOWzMez+Pu6WIbdsc1miqEa2R57U="
+          "hash": "lGspMgheNndcmx62DYAq+fKeIC971xgsPEj3uCBdObs="
         }
       },
       "is_incremental": false,
@@ -6800,7 +6860,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.CommentToken.html",
-          "hash": "yNZBa+hmeXkIFZaihPO9QN1eM/0YRUHQIBMv8ttA46c="
+          "hash": "5RFjf2HQp5D6zIk7hB34UdbckLUwkZJxET6bOw9DvMI="
         }
       },
       "is_incremental": false,
@@ -6812,7 +6872,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.EofToken.html",
-          "hash": "VEoKnPLg0/MiObumk04l3YvHseuxDkRNuBl7LTnUrRA="
+          "hash": "QSqlWdq5duGLcyPfdXnRUUASSEAlaCgo7nB6zujFSd0="
         }
       },
       "is_incremental": false,
@@ -6824,7 +6884,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.EolToken.html",
-          "hash": "XI4xdZJ9t288lqnlMPEQ7cfGVlIMA9MUy2fOO2TNnZY="
+          "hash": "bDMqte39sknd9fJUzJBiLoWqKcsAU1qK0vnR55BvxaY="
         }
       },
       "is_incremental": false,
@@ -6836,7 +6896,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.FloatToken.html",
-          "hash": "oWbShY6WGhKwExkOCJmwOMrrV4e94MsJ4KGZzrCsfKk="
+          "hash": "oJAQHFuICayO4pn56aRM3XL46D6J9JxkfRSAJqcahuU="
         }
       },
       "is_incremental": false,
@@ -6848,7 +6908,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.IntToken.html",
-          "hash": "qP71queqIl6O0nqXxDxfAkbkvdiC+yEOTh5n6uirAB0="
+          "hash": "uOXR0vLgHOng+taspgTHXUZgbWR9aLT+JZ+eHdEB6Pg="
         }
       },
       "is_incremental": false,
@@ -6860,7 +6920,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.QuoteToken.html",
-          "hash": "DZRgXfi2aw0w/9SsmEIIPNbTdsrKBxDBZzcWxbcFP88="
+          "hash": "eiPsevPnmE+AHy4Lv7svgJ9b25hYm2iMTl88uH4QxBs="
         }
       },
       "is_incremental": false,
@@ -6872,7 +6932,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.StreamTokenizer.html",
-          "hash": "+HG/tMrsZ1GHCLAOvE6vlWVHGLsWJy48AFyRihG+e7Y="
+          "hash": "XBUQeMgwMDEdkIZhd1zAS9Ghq8bosBB2h1DR3FmZB0k="
         }
       },
       "is_incremental": false,
@@ -6884,7 +6944,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.StreamTokenizerSettings.html",
-          "hash": "GBdPOf1fi7l6A6RFcFNse9m3WOhCppJnIGWyHpGSs8I="
+          "hash": "0iJXU9vBFyHqA2aPftKc4lMZNOpULh2ccmxFtrcx7iQ="
         }
       },
       "is_incremental": false,
@@ -6896,7 +6956,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.StreamTokenizerUntermCommentException.html",
-          "hash": "FsOBE8mduyHr5e9MAXwEwhfRz91BmsHLJ3Y/o1nNQTY="
+          "hash": "x1icxo6hNXk6uQrKqlCHovJqqwOIrxcdZAMAxx13WAI="
         }
       },
       "is_incremental": false,
@@ -6908,7 +6968,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.StreamTokenizerUntermException.html",
-          "hash": "0s0Z13xH8qtzvn6UkLQxxV5tvzC5IK1Q7GplTSCnM/8="
+          "hash": "GmT1wbsZx8JPAvxBzX9cjKNpILwaN4F7P6TG9e9BxHw="
         }
       },
       "is_incremental": false,
@@ -6920,7 +6980,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.StreamTokenizerUntermQuoteException.html",
-          "hash": "6sfIXoN/XEtBgZZB3QgayJCloBV2wKrMav+XKL9B5j8="
+          "hash": "TFlVqg9zRfM/AQh83/1AnZhbEoHNIViYyKxxSFjp5Yk="
         }
       },
       "is_incremental": false,
@@ -6932,7 +6992,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.StringToken.html",
-          "hash": "LoObaa96zo87BCqLzOuXdO2ipYqyv60L1UNA6aC6N2c="
+          "hash": "UV7voaCTEK+YpOpfypl+8VCcNGR0hkOn6PTkjcOe8q8="
         }
       },
       "is_incremental": false,
@@ -6944,7 +7004,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.Token.html",
-          "hash": "xVOSPh1umMssAS08OYCFPw1yHmARPcKHlsMts009ySU="
+          "hash": "JKPiVNkqoCm8YFv8yUn1haAwBtofNyJx9ncHfwP1SuI="
         }
       },
       "is_incremental": false,
@@ -6956,7 +7016,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.VerbosityLevel.html",
-          "hash": "y/3pK3RNO90m7g1RsnZoDqVRAKiqojlmBL7SzEwKV/0="
+          "hash": "RnjPDpX8vgl5hT6uHPw5YrbNYCpJXndSlk4NIFIc/KA="
         }
       },
       "is_incremental": false,
@@ -6968,7 +7028,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.WhitespaceToken.html",
-          "hash": "Oo6NvWl2xSmg41yDc1QfPmDnhe55286KGpoUGEx2WoU="
+          "hash": "Vwm6z3Jr/i8gQJLpjrxjAmi16uQ8k8Wtq+YvV7aJctw="
         }
       },
       "is_incremental": false,
@@ -6980,7 +7040,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.WordToken.html",
-          "hash": "xkYB2hFm4Ha5/hS6RvFH70YkFfSSM3kH80MXi5awsLg="
+          "hash": "15XByf3/g5TS4vbzbvjjvkkGxAwzzM258EWUC59uv6E="
         }
       },
       "is_incremental": false,
@@ -6992,7 +7052,7 @@
       "output": {
         ".html": {
           "relative_path": "api/RTools_NTS.Util.html",
-          "hash": "2oLfyzX3dhwzsxIQN0RpHJvKw0zI3F2H0KBeMvP4Mjs="
+          "hash": "VkC62ATsn5n2WYMUcjiPquiaKzI3Ht23tS8OJb3xJTg="
         }
       },
       "is_incremental": false,
@@ -7004,7 +7064,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "sCBQAimfJ61SJthCz/9U+d0SyNToDMsPL2TDImuXg9s="
+          "hash": "LNtwW/P9DF8cTSXdYMH8SkIs127VSIiqIGLOmVD0p1Y="
         }
       },
       "is_incremental": false,
@@ -7041,8 +7101,8 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 615,
-          "skipped_file_count": 615
+          "total_file_count": 620,
+          "skipped_file_count": 620
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

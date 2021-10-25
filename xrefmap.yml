@@ -3906,6 +3906,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.Coordinate.GetHashCode
   nameWithType: Coordinate.GetHashCode
+- uid: NetTopologySuite.Geometries.Coordinate.IsValid
+  name: IsValid
+  href: api/NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_IsValid
+  commentId: P:NetTopologySuite.Geometries.Coordinate.IsValid
+  fullName: NetTopologySuite.Geometries.Coordinate.IsValid
+  nameWithType: Coordinate.IsValid
+- uid: NetTopologySuite.Geometries.Coordinate.IsValid*
+  name: IsValid
+  href: api/NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_IsValid_
+  commentId: Overload:NetTopologySuite.Geometries.Coordinate.IsValid
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.Coordinate.IsValid
+  nameWithType: Coordinate.IsValid
 - uid: NetTopologySuite.Geometries.Coordinate.Item(NetTopologySuite.Geometries.Ordinate)
   name: Item[Ordinate]
   href: api/NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Item_NetTopologySuite_Geometries_Ordinate_
@@ -4223,6 +4236,22 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.CoordinateArrays.ForwardComparator.Compare
   nameWithType: CoordinateArrays.ForwardComparator.Compare
+- uid: NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate[])
+  name: HasRepeatedOrInvalidPoints(Coordinate[])
+  href: api/NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_HasRepeatedOrInvalidPoints_NetTopologySuite_Geometries_Coordinate___
+  commentId: M:NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate[])
+  name.vb: HasRepeatedOrInvalidPoints(Coordinate())
+  fullName: NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate[])
+  fullName.vb: NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate())
+  nameWithType: CoordinateArrays.HasRepeatedOrInvalidPoints(Coordinate[])
+  nameWithType.vb: CoordinateArrays.HasRepeatedOrInvalidPoints(Coordinate())
+- uid: NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedOrInvalidPoints*
+  name: HasRepeatedOrInvalidPoints
+  href: api/NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_HasRepeatedOrInvalidPoints_
+  commentId: Overload:NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedOrInvalidPoints
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedOrInvalidPoints
+  nameWithType: CoordinateArrays.HasRepeatedOrInvalidPoints
 - uid: NetTopologySuite.Geometries.CoordinateArrays.HasRepeatedPoints(NetTopologySuite.Geometries.Coordinate[])
   name: HasRepeatedPoints(Coordinate[])
   href: api/NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_HasRepeatedPoints_NetTopologySuite_Geometries_Coordinate___
@@ -4367,6 +4396,22 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.CoordinateArrays.RemoveNull
   nameWithType: CoordinateArrays.RemoveNull
+- uid: NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate[])
+  name: RemoveRepeatedOrInvalidPoints(Coordinate[])
+  href: api/NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_RemoveRepeatedOrInvalidPoints_NetTopologySuite_Geometries_Coordinate___
+  commentId: M:NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate[])
+  name.vb: RemoveRepeatedOrInvalidPoints(Coordinate())
+  fullName: NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate[])
+  fullName.vb: NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedOrInvalidPoints(NetTopologySuite.Geometries.Coordinate())
+  nameWithType: CoordinateArrays.RemoveRepeatedOrInvalidPoints(Coordinate[])
+  nameWithType.vb: CoordinateArrays.RemoveRepeatedOrInvalidPoints(Coordinate())
+- uid: NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedOrInvalidPoints*
+  name: RemoveRepeatedOrInvalidPoints
+  href: api/NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_RemoveRepeatedOrInvalidPoints_
+  commentId: Overload:NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedOrInvalidPoints
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedOrInvalidPoints
+  nameWithType: CoordinateArrays.RemoveRepeatedOrInvalidPoints
 - uid: NetTopologySuite.Geometries.CoordinateArrays.RemoveRepeatedPoints(NetTopologySuite.Geometries.Coordinate[])
   name: RemoveRepeatedPoints(Coordinate[])
   href: api/NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_RemoveRepeatedPoints_NetTopologySuite_Geometries_Coordinate___
@@ -4548,6 +4593,12 @@ references:
   fullName.vb: NetTopologySuite.Geometries.CoordinateList.CoordinateList(System.Collections.Generic.IList(Of NetTopologySuite.Geometries.Coordinate), System.Boolean)
   nameWithType: CoordinateList.CoordinateList(IList<Coordinate>, Boolean)
   nameWithType.vb: CoordinateList.CoordinateList(IList(Of Coordinate), Boolean)
+- uid: NetTopologySuite.Geometries.CoordinateList.#ctor(System.Int32)
+  name: CoordinateList(Int32)
+  href: api/NetTopologySuite.Geometries.CoordinateList.html#NetTopologySuite_Geometries_CoordinateList__ctor_System_Int32_
+  commentId: M:NetTopologySuite.Geometries.CoordinateList.#ctor(System.Int32)
+  fullName: NetTopologySuite.Geometries.CoordinateList.CoordinateList(System.Int32)
+  nameWithType: CoordinateList.CoordinateList(Int32)
 - uid: NetTopologySuite.Geometries.CoordinateList.#ctor*
   name: CoordinateList
   href: api/NetTopologySuite.Geometries.CoordinateList.html#NetTopologySuite_Geometries_CoordinateList__ctor_
@@ -4921,6 +4972,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.CoordinateSequence.ExpandEnvelope
   nameWithType: CoordinateSequence.ExpandEnvelope
+- uid: NetTopologySuite.Geometries.CoordinateSequence.First
+  name: First
+  href: api/NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_First
+  commentId: P:NetTopologySuite.Geometries.CoordinateSequence.First
+  fullName: NetTopologySuite.Geometries.CoordinateSequence.First
+  nameWithType: CoordinateSequence.First
+- uid: NetTopologySuite.Geometries.CoordinateSequence.First*
+  name: First
+  href: api/NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_First_
+  commentId: Overload:NetTopologySuite.Geometries.CoordinateSequence.First
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.CoordinateSequence.First
+  nameWithType: CoordinateSequence.First
 - uid: NetTopologySuite.Geometries.CoordinateSequence.GetCoordinate(System.Int32)
   name: GetCoordinate(Int32)
   href: api/NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_System_Int32_
@@ -5050,6 +5114,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.CoordinateSequence.HasZ
   nameWithType: CoordinateSequence.HasZ
+- uid: NetTopologySuite.Geometries.CoordinateSequence.Last
+  name: Last
+  href: api/NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Last
+  commentId: P:NetTopologySuite.Geometries.CoordinateSequence.Last
+  fullName: NetTopologySuite.Geometries.CoordinateSequence.Last
+  nameWithType: CoordinateSequence.Last
+- uid: NetTopologySuite.Geometries.CoordinateSequence.Last*
+  name: Last
+  href: api/NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Last_
+  commentId: Overload:NetTopologySuite.Geometries.CoordinateSequence.Last
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.CoordinateSequence.Last
+  nameWithType: CoordinateSequence.Last
 - uid: NetTopologySuite.Geometries.CoordinateSequence.Measures
   name: Measures
   href: api/NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Measures
@@ -5497,6 +5574,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.CoordinateSequences.IsEqual
   nameWithType: CoordinateSequences.IsEqual
+- uid: NetTopologySuite.Geometries.CoordinateSequences.IsEqualAt(NetTopologySuite.Geometries.CoordinateSequence,System.Int32,NetTopologySuite.Geometries.CoordinateSequence,System.Int32)
+  name: IsEqualAt(CoordinateSequence, Int32, CoordinateSequence, Int32)
+  href: api/NetTopologySuite.Geometries.CoordinateSequences.html#NetTopologySuite_Geometries_CoordinateSequences_IsEqualAt_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_
+  commentId: M:NetTopologySuite.Geometries.CoordinateSequences.IsEqualAt(NetTopologySuite.Geometries.CoordinateSequence,System.Int32,NetTopologySuite.Geometries.CoordinateSequence,System.Int32)
+  fullName: NetTopologySuite.Geometries.CoordinateSequences.IsEqualAt(NetTopologySuite.Geometries.CoordinateSequence, System.Int32, NetTopologySuite.Geometries.CoordinateSequence, System.Int32)
+  nameWithType: CoordinateSequences.IsEqualAt(CoordinateSequence, Int32, CoordinateSequence, Int32)
+- uid: NetTopologySuite.Geometries.CoordinateSequences.IsEqualAt*
+  name: IsEqualAt
+  href: api/NetTopologySuite.Geometries.CoordinateSequences.html#NetTopologySuite_Geometries_CoordinateSequences_IsEqualAt_
+  commentId: Overload:NetTopologySuite.Geometries.CoordinateSequences.IsEqualAt
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.CoordinateSequences.IsEqualAt
+  nameWithType: CoordinateSequences.IsEqualAt
 - uid: NetTopologySuite.Geometries.CoordinateSequences.IsRing(NetTopologySuite.Geometries.CoordinateSequence)
   name: IsRing(CoordinateSequence)
   href: api/NetTopologySuite.Geometries.CoordinateSequences.html#NetTopologySuite_Geometries_CoordinateSequences_IsRing_NetTopologySuite_Geometries_CoordinateSequence_
@@ -5606,6 +5696,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.CoordinateSequences.ToString
   nameWithType: CoordinateSequences.ToString
+- uid: NetTopologySuite.Geometries.CoordinateSequences.TryRawCopy(NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence,System.Int32,NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence,System.Int32,System.Int32)
+  name: TryRawCopy(PackedFloatCoordinateSequence, Int32, PackedFloatCoordinateSequence, Int32, Int32)
+  href: api/NetTopologySuite.Geometries.CoordinateSequences.html#NetTopologySuite_Geometries_CoordinateSequences_TryRawCopy_NetTopologySuite_Geometries_Implementation_PackedFloatCoordinateSequence_System_Int32_NetTopologySuite_Geometries_Implementation_PackedFloatCoordinateSequence_System_Int32_System_Int32_
+  commentId: M:NetTopologySuite.Geometries.CoordinateSequences.TryRawCopy(NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence,System.Int32,NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence,System.Int32,System.Int32)
+  fullName: NetTopologySuite.Geometries.CoordinateSequences.TryRawCopy(NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence, System.Int32, NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence, System.Int32, System.Int32)
+  nameWithType: CoordinateSequences.TryRawCopy(PackedFloatCoordinateSequence, Int32, PackedFloatCoordinateSequence, Int32, Int32)
+- uid: NetTopologySuite.Geometries.CoordinateSequences.TryRawCopy*
+  name: TryRawCopy
+  href: api/NetTopologySuite.Geometries.CoordinateSequences.html#NetTopologySuite_Geometries_CoordinateSequences_TryRawCopy_
+  commentId: Overload:NetTopologySuite.Geometries.CoordinateSequences.TryRawCopy
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.CoordinateSequences.TryRawCopy
+  nameWithType: CoordinateSequences.TryRawCopy
 - uid: NetTopologySuite.Geometries.CoordinateZ
   name: CoordinateZ
   href: api/NetTopologySuite.Geometries.CoordinateZ.html
@@ -6019,12 +6122,27 @@ references:
   commentId: M:NetTopologySuite.Geometries.Envelope.#ctor(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)
   fullName: NetTopologySuite.Geometries.Envelope.Envelope(NetTopologySuite.Geometries.Coordinate, NetTopologySuite.Geometries.Coordinate)
   nameWithType: Envelope.Envelope(Coordinate, Coordinate)
+- uid: NetTopologySuite.Geometries.Envelope.#ctor(NetTopologySuite.Geometries.CoordinateSequence)
+  name: Envelope(CoordinateSequence)
+  href: api/NetTopologySuite.Geometries.Envelope.html#NetTopologySuite_Geometries_Envelope__ctor_NetTopologySuite_Geometries_CoordinateSequence_
+  commentId: M:NetTopologySuite.Geometries.Envelope.#ctor(NetTopologySuite.Geometries.CoordinateSequence)
+  fullName: NetTopologySuite.Geometries.Envelope.Envelope(NetTopologySuite.Geometries.CoordinateSequence)
+  nameWithType: Envelope.Envelope(CoordinateSequence)
 - uid: NetTopologySuite.Geometries.Envelope.#ctor(NetTopologySuite.Geometries.Envelope)
   name: Envelope(Envelope)
   href: api/NetTopologySuite.Geometries.Envelope.html#NetTopologySuite_Geometries_Envelope__ctor_NetTopologySuite_Geometries_Envelope_
   commentId: M:NetTopologySuite.Geometries.Envelope.#ctor(NetTopologySuite.Geometries.Envelope)
   fullName: NetTopologySuite.Geometries.Envelope.Envelope(NetTopologySuite.Geometries.Envelope)
   nameWithType: Envelope.Envelope(Envelope)
+- uid: NetTopologySuite.Geometries.Envelope.#ctor(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Coordinate})
+  name: Envelope(IEnumerable<Coordinate>)
+  href: api/NetTopologySuite.Geometries.Envelope.html#NetTopologySuite_Geometries_Envelope__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Coordinate__
+  commentId: M:NetTopologySuite.Geometries.Envelope.#ctor(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Coordinate})
+  name.vb: Envelope(IEnumerable(Of Coordinate))
+  fullName: NetTopologySuite.Geometries.Envelope.Envelope(System.Collections.Generic.IEnumerable<NetTopologySuite.Geometries.Coordinate>)
+  fullName.vb: NetTopologySuite.Geometries.Envelope.Envelope(System.Collections.Generic.IEnumerable(Of NetTopologySuite.Geometries.Coordinate))
+  nameWithType: Envelope.Envelope(IEnumerable<Coordinate>)
+  nameWithType.vb: Envelope.Envelope(IEnumerable(Of Coordinate))
 - uid: NetTopologySuite.Geometries.Envelope.#ctor(System.Double,System.Double,System.Double,System.Double)
   name: Envelope(Double, Double, Double, Double)
   href: api/NetTopologySuite.Geometries.Envelope.html#NetTopologySuite_Geometries_Envelope__ctor_System_Double_System_Double_System_Double_System_Double_
@@ -16722,6 +16840,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.Utilities.AffineTransformation.GeometryChanged
   nameWithType: AffineTransformation.GeometryChanged
+- uid: NetTopologySuite.Geometries.Utilities.AffineTransformation.GetHashCode
+  name: GetHashCode()
+  href: api/NetTopologySuite.Geometries.Utilities.AffineTransformation.html#NetTopologySuite_Geometries_Utilities_AffineTransformation_GetHashCode
+  commentId: M:NetTopologySuite.Geometries.Utilities.AffineTransformation.GetHashCode
+  fullName: NetTopologySuite.Geometries.Utilities.AffineTransformation.GetHashCode()
+  nameWithType: AffineTransformation.GetHashCode()
+- uid: NetTopologySuite.Geometries.Utilities.AffineTransformation.GetHashCode*
+  name: GetHashCode
+  href: api/NetTopologySuite.Geometries.Utilities.AffineTransformation.html#NetTopologySuite_Geometries_Utilities_AffineTransformation_GetHashCode_
+  commentId: Overload:NetTopologySuite.Geometries.Utilities.AffineTransformation.GetHashCode
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.Utilities.AffineTransformation.GetHashCode
+  nameWithType: AffineTransformation.GetHashCode
 - uid: NetTopologySuite.Geometries.Utilities.AffineTransformation.GetInverse
   name: GetInverse()
   href: api/NetTopologySuite.Geometries.Utilities.AffineTransformation.html#NetTopologySuite_Geometries_Utilities_AffineTransformation_GetInverse
@@ -17750,6 +17881,64 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Geometries.Utilities.GeometryExtracterByTypeName.IsOfType
   nameWithType: GeometryExtracterByTypeName.IsOfType
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer
+  name: GeometryFixer
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html
+  commentId: T:NetTopologySuite.Geometries.Utilities.GeometryFixer
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer
+  nameWithType: GeometryFixer
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.#ctor(NetTopologySuite.Geometries.Geometry)
+  name: GeometryFixer(Geometry)
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer__ctor_NetTopologySuite_Geometries_Geometry_
+  commentId: M:NetTopologySuite.Geometries.Utilities.GeometryFixer.#ctor(NetTopologySuite.Geometries.Geometry)
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.GeometryFixer(NetTopologySuite.Geometries.Geometry)
+  nameWithType: GeometryFixer.GeometryFixer(Geometry)
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.#ctor*
+  name: GeometryFixer
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer__ctor_
+  commentId: Overload:NetTopologySuite.Geometries.Utilities.GeometryFixer.#ctor
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.GeometryFixer
+  nameWithType: GeometryFixer.GeometryFixer
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry)
+  name: Fix(Geometry)
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_NetTopologySuite_Geometries_Geometry_
+  commentId: M:NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry)
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry)
+  nameWithType: GeometryFixer.Fix(Geometry)
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix*
+  name: Fix
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_
+  commentId: Overload:NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix
+  nameWithType: GeometryFixer.Fix
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult
+  name: GetResult()
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer_GetResult
+  commentId: M:NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult()
+  nameWithType: GeometryFixer.GetResult()
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult*
+  name: GetResult
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer_GetResult_
+  commentId: Overload:NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult
+  nameWithType: GeometryFixer.GetResult
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed
+  name: KeepCollapsed
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer_KeepCollapsed
+  commentId: P:NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed
+  nameWithType: GeometryFixer.KeepCollapsed
+- uid: NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed*
+  name: KeepCollapsed
+  href: api/NetTopologySuite.Geometries.Utilities.GeometryFixer.html#NetTopologySuite_Geometries_Utilities_GeometryFixer_KeepCollapsed_
+  commentId: Overload:NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed
+  isSpec: "True"
+  fullName: NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed
+  nameWithType: GeometryFixer.KeepCollapsed
 - uid: NetTopologySuite.Geometries.Utilities.GeometryMapper
   name: GeometryMapper
   href: api/NetTopologySuite.Geometries.Utilities.GeometryMapper.html
@@ -24589,6 +24778,32 @@ references:
   fullName.vb: NetTopologySuite.Index.IItemVisitor(Of T).VisitItem
   nameWithType: IItemVisitor<T>.VisitItem
   nameWithType.vb: IItemVisitor(Of T).VisitItem
+- uid: NetTopologySuite.Index.ILimitingItemVisitor`1
+  name: ILimitingItemVisitor<T>
+  href: api/NetTopologySuite.Index.ILimitingItemVisitor-1.html
+  commentId: T:NetTopologySuite.Index.ILimitingItemVisitor`1
+  name.vb: ILimitingItemVisitor(Of T)
+  fullName: NetTopologySuite.Index.ILimitingItemVisitor<T>
+  fullName.vb: NetTopologySuite.Index.ILimitingItemVisitor(Of T)
+  nameWithType: ILimitingItemVisitor<T>
+  nameWithType.vb: ILimitingItemVisitor(Of T)
+- uid: NetTopologySuite.Index.ILimitingItemVisitor`1.IsDone
+  name: IsDone
+  href: api/NetTopologySuite.Index.ILimitingItemVisitor-1.html#NetTopologySuite_Index_ILimitingItemVisitor_1_IsDone
+  commentId: P:NetTopologySuite.Index.ILimitingItemVisitor`1.IsDone
+  fullName: NetTopologySuite.Index.ILimitingItemVisitor<T>.IsDone
+  fullName.vb: NetTopologySuite.Index.ILimitingItemVisitor(Of T).IsDone
+  nameWithType: ILimitingItemVisitor<T>.IsDone
+  nameWithType.vb: ILimitingItemVisitor(Of T).IsDone
+- uid: NetTopologySuite.Index.ILimitingItemVisitor`1.IsDone*
+  name: IsDone
+  href: api/NetTopologySuite.Index.ILimitingItemVisitor-1.html#NetTopologySuite_Index_ILimitingItemVisitor_1_IsDone_
+  commentId: Overload:NetTopologySuite.Index.ILimitingItemVisitor`1.IsDone
+  isSpec: "True"
+  fullName: NetTopologySuite.Index.ILimitingItemVisitor<T>.IsDone
+  fullName.vb: NetTopologySuite.Index.ILimitingItemVisitor(Of T).IsDone
+  nameWithType: ILimitingItemVisitor<T>.IsDone
+  nameWithType.vb: ILimitingItemVisitor(Of T).IsDone
 - uid: NetTopologySuite.Index.IntervalRTree
   name: NetTopologySuite.Index.IntervalRTree
   href: api/NetTopologySuite.Index.IntervalRTree.html
@@ -24952,6 +25167,41 @@ references:
   fullName.vb: NetTopologySuite.Index.ISpatialIndex(Of T).Remove
   nameWithType: ISpatialIndex<T>.Remove
   nameWithType.vb: ISpatialIndex(Of T).Remove
+- uid: NetTopologySuite.Index.ISpatialIndexEx`1
+  name: ISpatialIndexEx<T>
+  href: api/NetTopologySuite.Index.ISpatialIndexEx-1.html
+  commentId: T:NetTopologySuite.Index.ISpatialIndexEx`1
+  name.vb: ISpatialIndexEx(Of T)
+  fullName: NetTopologySuite.Index.ISpatialIndexEx<T>
+  fullName.vb: NetTopologySuite.Index.ISpatialIndexEx(Of T)
+  nameWithType: ISpatialIndexEx<T>
+  nameWithType.vb: ISpatialIndexEx(Of T)
+- uid: NetTopologySuite.Index.ISpatialIndexEx`1.Query(NetTopologySuite.Geometries.Envelope)
+  name: Query(Envelope)
+  href: api/NetTopologySuite.Index.ISpatialIndexEx-1.html#NetTopologySuite_Index_ISpatialIndexEx_1_Query_NetTopologySuite_Geometries_Envelope_
+  commentId: M:NetTopologySuite.Index.ISpatialIndexEx`1.Query(NetTopologySuite.Geometries.Envelope)
+  fullName: NetTopologySuite.Index.ISpatialIndexEx<T>.Query(NetTopologySuite.Geometries.Envelope)
+  fullName.vb: NetTopologySuite.Index.ISpatialIndexEx(Of T).Query(NetTopologySuite.Geometries.Envelope)
+  nameWithType: ISpatialIndexEx<T>.Query(Envelope)
+  nameWithType.vb: ISpatialIndexEx(Of T).Query(Envelope)
+- uid: NetTopologySuite.Index.ISpatialIndexEx`1.Query(NetTopologySuite.Geometries.Envelope,System.Func{`0,System.Boolean})
+  name: Query(Envelope, Func<T, Boolean>)
+  href: api/NetTopologySuite.Index.ISpatialIndexEx-1.html#NetTopologySuite_Index_ISpatialIndexEx_1_Query_NetTopologySuite_Geometries_Envelope_System_Func__0_System_Boolean__
+  commentId: M:NetTopologySuite.Index.ISpatialIndexEx`1.Query(NetTopologySuite.Geometries.Envelope,System.Func{`0,System.Boolean})
+  name.vb: Query(Envelope, Func(Of T, Boolean))
+  fullName: NetTopologySuite.Index.ISpatialIndexEx<T>.Query(NetTopologySuite.Geometries.Envelope, System.Func<T, System.Boolean>)
+  fullName.vb: NetTopologySuite.Index.ISpatialIndexEx(Of T).Query(NetTopologySuite.Geometries.Envelope, System.Func(Of T, System.Boolean))
+  nameWithType: ISpatialIndexEx<T>.Query(Envelope, Func<T, Boolean>)
+  nameWithType.vb: ISpatialIndexEx(Of T).Query(Envelope, Func(Of T, Boolean))
+- uid: NetTopologySuite.Index.ISpatialIndexEx`1.Query*
+  name: Query
+  href: api/NetTopologySuite.Index.ISpatialIndexEx-1.html#NetTopologySuite_Index_ISpatialIndexEx_1_Query_
+  commentId: Overload:NetTopologySuite.Index.ISpatialIndexEx`1.Query
+  isSpec: "True"
+  fullName: NetTopologySuite.Index.ISpatialIndexEx<T>.Query
+  fullName.vb: NetTopologySuite.Index.ISpatialIndexEx(Of T).Query
+  nameWithType: ISpatialIndexEx<T>.Query
+  nameWithType.vb: ISpatialIndexEx(Of T).Query
 - uid: NetTopologySuite.Index.KdTree
   name: NetTopologySuite.Index.KdTree
   href: api/NetTopologySuite.Index.KdTree.html
@@ -25561,6 +25811,66 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Index.Quadtree.DoubleBits.ZeroLowerBits
   nameWithType: DoubleBits.ZeroLowerBits
+- uid: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1
+  name: ExcludingItemVisitor<T>
+  href: api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html
+  commentId: T:NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1
+  name.vb: ExcludingItemVisitor(Of T)
+  fullName: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor<T>
+  fullName.vb: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor(Of T)
+  nameWithType: ExcludingItemVisitor<T>
+  nameWithType.vb: ExcludingItemVisitor(Of T)
+- uid: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.#ctor(NetTopologySuite.Geometries.Envelope)
+  name: ExcludingItemVisitor(Envelope)
+  href: api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html#NetTopologySuite_Index_Quadtree_ExcludingItemVisitor_1__ctor_NetTopologySuite_Geometries_Envelope_
+  commentId: M:NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.#ctor(NetTopologySuite.Geometries.Envelope)
+  fullName: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor<T>.ExcludingItemVisitor(NetTopologySuite.Geometries.Envelope)
+  fullName.vb: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor(Of T).ExcludingItemVisitor(NetTopologySuite.Geometries.Envelope)
+  nameWithType: ExcludingItemVisitor<T>.ExcludingItemVisitor(Envelope)
+  nameWithType.vb: ExcludingItemVisitor(Of T).ExcludingItemVisitor(Envelope)
+- uid: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.#ctor*
+  name: ExcludingItemVisitor
+  href: api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html#NetTopologySuite_Index_Quadtree_ExcludingItemVisitor_1__ctor_
+  commentId: Overload:NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.#ctor
+  isSpec: "True"
+  fullName: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor<T>.ExcludingItemVisitor
+  fullName.vb: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor(Of T).ExcludingItemVisitor
+  nameWithType: ExcludingItemVisitor<T>.ExcludingItemVisitor
+  nameWithType.vb: ExcludingItemVisitor(Of T).ExcludingItemVisitor
+- uid: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.Items
+  name: Items
+  href: api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html#NetTopologySuite_Index_Quadtree_ExcludingItemVisitor_1_Items
+  commentId: P:NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.Items
+  fullName: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor<T>.Items
+  fullName.vb: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor(Of T).Items
+  nameWithType: ExcludingItemVisitor<T>.Items
+  nameWithType.vb: ExcludingItemVisitor(Of T).Items
+- uid: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.Items*
+  name: Items
+  href: api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html#NetTopologySuite_Index_Quadtree_ExcludingItemVisitor_1_Items_
+  commentId: Overload:NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.Items
+  isSpec: "True"
+  fullName: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor<T>.Items
+  fullName.vb: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor(Of T).Items
+  nameWithType: ExcludingItemVisitor<T>.Items
+  nameWithType.vb: ExcludingItemVisitor(Of T).Items
+- uid: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.VisitItem(`0)
+  name: VisitItem(T)
+  href: api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html#NetTopologySuite_Index_Quadtree_ExcludingItemVisitor_1_VisitItem__0_
+  commentId: M:NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.VisitItem(`0)
+  fullName: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor<T>.VisitItem(T)
+  fullName.vb: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor(Of T).VisitItem(T)
+  nameWithType: ExcludingItemVisitor<T>.VisitItem(T)
+  nameWithType.vb: ExcludingItemVisitor(Of T).VisitItem(T)
+- uid: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.VisitItem*
+  name: VisitItem
+  href: api/NetTopologySuite.Index.Quadtree.ExcludingItemVisitor-1.html#NetTopologySuite_Index_Quadtree_ExcludingItemVisitor_1_VisitItem_
+  commentId: Overload:NetTopologySuite.Index.Quadtree.ExcludingItemVisitor`1.VisitItem
+  isSpec: "True"
+  fullName: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor<T>.VisitItem
+  fullName.vb: NetTopologySuite.Index.Quadtree.ExcludingItemVisitor(Of T).VisitItem
+  nameWithType: ExcludingItemVisitor<T>.VisitItem
+  nameWithType.vb: ExcludingItemVisitor(Of T).VisitItem
 - uid: NetTopologySuite.Index.Quadtree.IntervalSize
   name: IntervalSize
   href: api/NetTopologySuite.Index.Quadtree.IntervalSize.html
@@ -26079,6 +26389,24 @@ references:
   fullName.vb: NetTopologySuite.Index.Quadtree.NodeBase(Of T).NodeCount
   nameWithType: NodeBase<T>.NodeCount
   nameWithType.vb: NodeBase(Of T).NodeCount
+- uid: NetTopologySuite.Index.Quadtree.NodeBase`1.Query(NetTopologySuite.Geometries.Envelope,System.Func{`0,System.Boolean})
+  name: Query(Envelope, Func<T, Boolean>)
+  href: api/NetTopologySuite.Index.Quadtree.NodeBase-1.html#NetTopologySuite_Index_Quadtree_NodeBase_1_Query_NetTopologySuite_Geometries_Envelope_System_Func__0_System_Boolean__
+  commentId: M:NetTopologySuite.Index.Quadtree.NodeBase`1.Query(NetTopologySuite.Geometries.Envelope,System.Func{`0,System.Boolean})
+  name.vb: Query(Envelope, Func(Of T, Boolean))
+  fullName: NetTopologySuite.Index.Quadtree.NodeBase<T>.Query(NetTopologySuite.Geometries.Envelope, System.Func<T, System.Boolean>)
+  fullName.vb: NetTopologySuite.Index.Quadtree.NodeBase(Of T).Query(NetTopologySuite.Geometries.Envelope, System.Func(Of T, System.Boolean))
+  nameWithType: NodeBase<T>.Query(Envelope, Func<T, Boolean>)
+  nameWithType.vb: NodeBase(Of T).Query(Envelope, Func(Of T, Boolean))
+- uid: NetTopologySuite.Index.Quadtree.NodeBase`1.Query*
+  name: Query
+  href: api/NetTopologySuite.Index.Quadtree.NodeBase-1.html#NetTopologySuite_Index_Quadtree_NodeBase_1_Query_
+  commentId: Overload:NetTopologySuite.Index.Quadtree.NodeBase`1.Query
+  isSpec: "True"
+  fullName: NetTopologySuite.Index.Quadtree.NodeBase<T>.Query
+  fullName.vb: NetTopologySuite.Index.Quadtree.NodeBase(Of T).Query
+  nameWithType: NodeBase<T>.Query
+  nameWithType.vb: NodeBase(Of T).Query
 - uid: NetTopologySuite.Index.Quadtree.NodeBase`1.Remove(NetTopologySuite.Geometries.Envelope,`0)
   name: Remove(Envelope, T)
   href: api/NetTopologySuite.Index.Quadtree.NodeBase-1.html#NetTopologySuite_Index_Quadtree_NodeBase_1_Remove_NetTopologySuite_Geometries_Envelope__0_
@@ -35693,6 +36021,19 @@ references:
   commentId: T:NetTopologySuite.Noding.SegmentStringUtil
   fullName: NetTopologySuite.Noding.SegmentStringUtil
   nameWithType: SegmentStringUtil
+- uid: NetTopologySuite.Noding.SegmentStringUtil.ExtractBasicSegmentStrings(NetTopologySuite.Geometries.Geometry)
+  name: ExtractBasicSegmentStrings(Geometry)
+  href: api/NetTopologySuite.Noding.SegmentStringUtil.html#NetTopologySuite_Noding_SegmentStringUtil_ExtractBasicSegmentStrings_NetTopologySuite_Geometries_Geometry_
+  commentId: M:NetTopologySuite.Noding.SegmentStringUtil.ExtractBasicSegmentStrings(NetTopologySuite.Geometries.Geometry)
+  fullName: NetTopologySuite.Noding.SegmentStringUtil.ExtractBasicSegmentStrings(NetTopologySuite.Geometries.Geometry)
+  nameWithType: SegmentStringUtil.ExtractBasicSegmentStrings(Geometry)
+- uid: NetTopologySuite.Noding.SegmentStringUtil.ExtractBasicSegmentStrings*
+  name: ExtractBasicSegmentStrings
+  href: api/NetTopologySuite.Noding.SegmentStringUtil.html#NetTopologySuite_Noding_SegmentStringUtil_ExtractBasicSegmentStrings_
+  commentId: Overload:NetTopologySuite.Noding.SegmentStringUtil.ExtractBasicSegmentStrings
+  isSpec: "True"
+  fullName: NetTopologySuite.Noding.SegmentStringUtil.ExtractBasicSegmentStrings
+  nameWithType: SegmentStringUtil.ExtractBasicSegmentStrings
 - uid: NetTopologySuite.Noding.SegmentStringUtil.ExtractNodedSegmentStrings(NetTopologySuite.Geometries.Geometry)
   name: ExtractNodedSegmentStrings(Geometry)
   href: api/NetTopologySuite.Noding.SegmentStringUtil.html#NetTopologySuite_Noding_SegmentStringUtil_ExtractNodedSegmentStrings_NetTopologySuite_Geometries_Geometry_
@@ -37361,6 +37702,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.GetCurves
   nameWithType: OffsetCurveSetBuilder.GetCurves
+- uid: NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.InvertOrientation
+  name: InvertOrientation
+  href: api/NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.html#NetTopologySuite_Operation_Buffer_OffsetCurveSetBuilder_InvertOrientation
+  commentId: P:NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.InvertOrientation
+  fullName: NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.InvertOrientation
+  nameWithType: OffsetCurveSetBuilder.InvertOrientation
+- uid: NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.InvertOrientation*
+  name: InvertOrientation
+  href: api/NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.html#NetTopologySuite_Operation_Buffer_OffsetCurveSetBuilder_InvertOrientation_
+  commentId: Overload:NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.InvertOrientation
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.InvertOrientation
+  nameWithType: OffsetCurveSetBuilder.InvertOrientation
 - uid: NetTopologySuite.Operation.Buffer.OffsetCurveVertexList
   name: OffsetCurveVertexList
   href: api/NetTopologySuite.Operation.Buffer.OffsetCurveVertexList.html
@@ -42520,6 +42874,102 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Operation.Valid.IndexedNestedRingTester.NestedPoint
   nameWithType: IndexedNestedRingTester.NestedPoint
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp
+  name: IsSimpleOp
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html
+  commentId: T:NetTopologySuite.Operation.Valid.IsSimpleOp
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp
+  nameWithType: IsSimpleOp
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor(NetTopologySuite.Geometries.Geometry)
+  name: IsSimpleOp(Geometry)
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_NetTopologySuite_Geometries_Geometry_
+  commentId: M:NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor(NetTopologySuite.Geometries.Geometry)
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimpleOp(NetTopologySuite.Geometries.Geometry)
+  nameWithType: IsSimpleOp.IsSimpleOp(Geometry)
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Algorithm.IBoundaryNodeRule)
+  name: IsSimpleOp(Geometry, IBoundaryNodeRule)
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Algorithm_IBoundaryNodeRule_
+  commentId: M:NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Algorithm.IBoundaryNodeRule)
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimpleOp(NetTopologySuite.Geometries.Geometry, NetTopologySuite.Algorithm.IBoundaryNodeRule)
+  nameWithType: IsSimpleOp.IsSimpleOp(Geometry, IBoundaryNodeRule)
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor*
+  name: IsSimpleOp
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimpleOp
+  nameWithType: IsSimpleOp.IsSimpleOp
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations
+  name: FindAllLocations
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_FindAllLocations
+  commentId: P:NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations
+  nameWithType: IsSimpleOp.FindAllLocations
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations*
+  name: FindAllLocations
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_FindAllLocations_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations
+  nameWithType: IsSimpleOp.FindAllLocations
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation(NetTopologySuite.Geometries.Geometry)
+  name: GetNonSimpleLocation(Geometry)
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_GetNonSimpleLocation_NetTopologySuite_Geometries_Geometry_
+  commentId: M:NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation(NetTopologySuite.Geometries.Geometry)
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation(NetTopologySuite.Geometries.Geometry)
+  nameWithType: IsSimpleOp.GetNonSimpleLocation(Geometry)
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation*
+  name: GetNonSimpleLocation
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_GetNonSimpleLocation_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation
+  nameWithType: IsSimpleOp.GetNonSimpleLocation
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple
+  name: IsSimple()
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple
+  commentId: M:NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple()
+  nameWithType: IsSimpleOp.IsSimple()
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple(NetTopologySuite.Geometries.Geometry)
+  name: IsSimple(Geometry)
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple_NetTopologySuite_Geometries_Geometry_
+  commentId: M:NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple(NetTopologySuite.Geometries.Geometry)
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple(NetTopologySuite.Geometries.Geometry)
+  nameWithType: IsSimpleOp.IsSimple(Geometry)
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple*
+  name: IsSimple
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple
+  nameWithType: IsSimpleOp.IsSimple
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation
+  name: NonSimpleLocation
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocation
+  commentId: P:NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation
+  nameWithType: IsSimpleOp.NonSimpleLocation
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation*
+  name: NonSimpleLocation
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocation_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation
+  nameWithType: IsSimpleOp.NonSimpleLocation
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations
+  name: NonSimpleLocations
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocations
+  commentId: P:NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations
+  nameWithType: IsSimpleOp.NonSimpleLocations
+- uid: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations*
+  name: NonSimpleLocations
+  href: api/NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocations_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations
+  nameWithType: IsSimpleOp.NonSimpleLocations
 - uid: NetTopologySuite.Operation.Valid.IsValidOp
   name: IsValidOp
   href: api/NetTopologySuite.Operation.Valid.IsValidOp.html
@@ -42539,6 +42989,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Operation.Valid.IsValidOp.IsValidOp
   nameWithType: IsValidOp.IsValidOp
+- uid: NetTopologySuite.Operation.Valid.IsValidOp.CheckValid(NetTopologySuite.Geometries.Geometry)
+  name: CheckValid(Geometry)
+  href: api/NetTopologySuite.Operation.Valid.IsValidOp.html#NetTopologySuite_Operation_Valid_IsValidOp_CheckValid_NetTopologySuite_Geometries_Geometry_
+  commentId: M:NetTopologySuite.Operation.Valid.IsValidOp.CheckValid(NetTopologySuite.Geometries.Geometry)
+  fullName: NetTopologySuite.Operation.Valid.IsValidOp.CheckValid(NetTopologySuite.Geometries.Geometry)
+  nameWithType: IsValidOp.CheckValid(Geometry)
+- uid: NetTopologySuite.Operation.Valid.IsValidOp.CheckValid*
+  name: CheckValid
+  href: api/NetTopologySuite.Operation.Valid.IsValidOp.html#NetTopologySuite_Operation_Valid_IsValidOp_CheckValid_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsValidOp.CheckValid
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsValidOp.CheckValid
+  nameWithType: IsValidOp.CheckValid
 - uid: NetTopologySuite.Operation.Valid.IsValidOp.FindPointNotNode(NetTopologySuite.Geometries.Coordinate[],NetTopologySuite.Geometries.LinearRing,NetTopologySuite.GeometriesGraph.GeometryGraph)
   name: FindPointNotNode(Coordinate[], LinearRing, GeometryGraph)
   href: api/NetTopologySuite.Operation.Valid.IsValidOp.html#NetTopologySuite_Operation_Valid_IsValidOp_FindPointNotNode_NetTopologySuite_Geometries_Coordinate___NetTopologySuite_Geometries_LinearRing_NetTopologySuite_GeometriesGraph_GeometryGraph_
@@ -42594,6 +43057,19 @@ references:
   isSpec: "True"
   fullName: NetTopologySuite.Operation.Valid.IsValidOp.IsValidCoordinate
   nameWithType: IsValidOp.IsValidCoordinate
+- uid: NetTopologySuite.Operation.Valid.IsValidOp.SelfTouchingRingFormingHoleValid
+  name: SelfTouchingRingFormingHoleValid
+  href: api/NetTopologySuite.Operation.Valid.IsValidOp.html#NetTopologySuite_Operation_Valid_IsValidOp_SelfTouchingRingFormingHoleValid
+  commentId: P:NetTopologySuite.Operation.Valid.IsValidOp.SelfTouchingRingFormingHoleValid
+  fullName: NetTopologySuite.Operation.Valid.IsValidOp.SelfTouchingRingFormingHoleValid
+  nameWithType: IsValidOp.SelfTouchingRingFormingHoleValid
+- uid: NetTopologySuite.Operation.Valid.IsValidOp.SelfTouchingRingFormingHoleValid*
+  name: SelfTouchingRingFormingHoleValid
+  href: api/NetTopologySuite.Operation.Valid.IsValidOp.html#NetTopologySuite_Operation_Valid_IsValidOp_SelfTouchingRingFormingHoleValid_
+  commentId: Overload:NetTopologySuite.Operation.Valid.IsValidOp.SelfTouchingRingFormingHoleValid
+  isSpec: "True"
+  fullName: NetTopologySuite.Operation.Valid.IsValidOp.SelfTouchingRingFormingHoleValid
+  nameWithType: IsValidOp.SelfTouchingRingFormingHoleValid
 - uid: NetTopologySuite.Operation.Valid.IsValidOp.ValidationError
   name: ValidationError
   href: api/NetTopologySuite.Operation.Valid.IsValidOp.html#NetTopologySuite_Operation_Valid_IsValidOp_ValidationError
@@ -42635,6 +43111,12 @@ references:
   fullName.vb: NetTopologySuite.Operation.Valid.RepeatedPointTester.HasRepeatedPoint(NetTopologySuite.Geometries.Coordinate())
   nameWithType: RepeatedPointTester.HasRepeatedPoint(Coordinate[])
   nameWithType.vb: RepeatedPointTester.HasRepeatedPoint(Coordinate())
+- uid: NetTopologySuite.Operation.Valid.RepeatedPointTester.HasRepeatedPoint(NetTopologySuite.Geometries.CoordinateSequence)
+  name: HasRepeatedPoint(CoordinateSequence)
+  href: api/NetTopologySuite.Operation.Valid.RepeatedPointTester.html#NetTopologySuite_Operation_Valid_RepeatedPointTester_HasRepeatedPoint_NetTopologySuite_Geometries_CoordinateSequence_
+  commentId: M:NetTopologySuite.Operation.Valid.RepeatedPointTester.HasRepeatedPoint(NetTopologySuite.Geometries.CoordinateSequence)
+  fullName: NetTopologySuite.Operation.Valid.RepeatedPointTester.HasRepeatedPoint(NetTopologySuite.Geometries.CoordinateSequence)
+  nameWithType: RepeatedPointTester.HasRepeatedPoint(CoordinateSequence)
 - uid: NetTopologySuite.Operation.Valid.RepeatedPointTester.HasRepeatedPoint(NetTopologySuite.Geometries.Geometry)
   name: HasRepeatedPoint(Geometry)
   href: api/NetTopologySuite.Operation.Valid.RepeatedPointTester.html#NetTopologySuite_Operation_Valid_RepeatedPointTester_HasRepeatedPoint_NetTopologySuite_Geometries_Geometry_
@@ -42767,6 +43249,12 @@ references:
   commentId: F:NetTopologySuite.Operation.Valid.TopologyValidationErrors.NestedShells
   fullName: NetTopologySuite.Operation.Valid.TopologyValidationErrors.NestedShells
   nameWithType: TopologyValidationErrors.NestedShells
+- uid: NetTopologySuite.Operation.Valid.TopologyValidationErrors.NoInvalidIntersection
+  name: NoInvalidIntersection
+  href: api/NetTopologySuite.Operation.Valid.TopologyValidationErrors.html#NetTopologySuite_Operation_Valid_TopologyValidationErrors_NoInvalidIntersection
+  commentId: F:NetTopologySuite.Operation.Valid.TopologyValidationErrors.NoInvalidIntersection
+  fullName: NetTopologySuite.Operation.Valid.TopologyValidationErrors.NoInvalidIntersection
+  nameWithType: TopologyValidationErrors.NoInvalidIntersection
 - uid: NetTopologySuite.Operation.Valid.TopologyValidationErrors.RingNotClosed
   name: RingNotClosed
   href: api/NetTopologySuite.Operation.Valid.TopologyValidationErrors.html#NetTopologySuite_Operation_Valid_TopologyValidationErrors_RingNotClosed
@@ -50787,6 +51275,12 @@ references:
   commentId: M:RTools_NTS.Util.StreamTokenizer.#ctor(System.IO.TextReader)
   fullName: RTools_NTS.Util.StreamTokenizer.StreamTokenizer(System.IO.TextReader)
   nameWithType: StreamTokenizer.StreamTokenizer(TextReader)
+- uid: RTools_NTS.Util.StreamTokenizer.#ctor(System.IO.TextReader,RTools_NTS.Util.StreamTokenizerSettings)
+  name: StreamTokenizer(TextReader, StreamTokenizerSettings)
+  href: api/RTools_NTS.Util.StreamTokenizer.html#RTools_NTS_Util_StreamTokenizer__ctor_System_IO_TextReader_RTools_NTS_Util_StreamTokenizerSettings_
+  commentId: M:RTools_NTS.Util.StreamTokenizer.#ctor(System.IO.TextReader,RTools_NTS.Util.StreamTokenizerSettings)
+  fullName: RTools_NTS.Util.StreamTokenizer.StreamTokenizer(System.IO.TextReader, RTools_NTS.Util.StreamTokenizerSettings)
+  nameWithType: StreamTokenizer.StreamTokenizer(TextReader, StreamTokenizerSettings)
 - uid: RTools_NTS.Util.StreamTokenizer.#ctor(System.String)
   name: StreamTokenizer(String)
   href: api/RTools_NTS.Util.StreamTokenizer.html#RTools_NTS_Util_StreamTokenizer__ctor_System_String_

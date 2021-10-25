@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace NetTopologySuite.Geometries.Utilities
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -143,6 +143,20 @@ This can be used for simple changes of
       <h4><a class="xref" href="NetTopologySuite.Geometries.Utilities.GeometryExtracterByTypeName.html">GeometryExtracterByTypeName</a></h4>
       <section><p>Extracts the components of type <code>T</code> from a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
 </section>
+      <h4><a class="xref" href="NetTopologySuite.Geometries.Utilities.GeometryFixer.html">GeometryFixer</a></h4>
+      <section><p>Fixes a geometry to be a valid geometry, while preserving as much as
+possible of the shape and location of the input.
+Validity is determined according to <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a>.</p>
+<p>
+Input geometries are always processed, so even valid inputs may
+have some minor alterations.The output is always a new geometry object.
+<h2>Semantic Rules</h2>
+<ol><li>Vertices with non-finite X or Y ordinates are removed (as per <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_IsValid">IsValid</a>)</li><li>Repeated points are reduced to a single point</li><li>Empty atomic geometries are valid and are returned unchanged</li><li>Empty elements are removed from collections</li><li><code>Point</code>: keep valid coordinate, or EMPTY</li><li><code>LineString</code>: fix coordinate list </li><li><code>LinearRing</code>: fix coordinate list, return as valid ring or else <code>LineString</code></li><li><code>Polygon</code>: transform into a valid polygon, 
+preserving as much of the extent and vertices as possible</li><li><code>MultiPolygon</code>: fix each polygon, 
+then ensure result is non - overlapping(via union)</li><li><code>GeometryCollection</code>: fix each element </li><li>Collapsed lines and polygons are handled as follows,
+depending on the <code>keepCollapsed</code> setting:
+<ul><li><code>false</code>: (default) collapses are converted to empty geometries</li><li><code>true</code>: collapses are converted to a valid geometry of lower dimension</li></ul></li></ol>
+</section>
       <h4><a class="xref" href="NetTopologySuite.Geometries.Utilities.GeometryMapper.html">GeometryMapper</a></h4>
       <section><p>Methods to map various collections
 of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s
@@ -196,7 +210,7 @@ These kinds of geometries are useful as a more complex geometry for testing algo
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Geometries.Utilities.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Geometries.Utilities.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PrecisionModel
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -134,14 +134,9 @@ assume that coordinates are rounded to the precision model.
 Constructive methods (such as bool operations) always round computed
 coordinates to the appropriate precision model.
 Currently three types of precision model are supported:</p>
-<p>
-Floating: represents full double precision floating point.
-This is the default precision model used in NTS
-FloatingSingle: represents single precision floating point.
-Fixed: represents a model with a fixed number of decimal places.
-</p>
-A Fixed Precision Model is specified by a scale factor.
-The scale factor specifies the size of the grid which numbers are rounded to.
+<table><tbody><tr><td>Floating</td><td>Represents full double precision floating point.
+This is the default precision model used in NTS</td></tr><tr><td>FloatingSingle</td><td>Represents single precision floating point</td></tr><tr><td>Fixed</td><td>Represents a model with a fixed number of decimal places.A Fixed Precision Model is specified by a scale factor.
+The scale factor specifies the size of the grid which numbers are rounded to.</td></tr></tbody></table>
 Input coordinates are mapped to fixed coordinates according to the following
 equations:
 <ul><li><code>jtsPt.X = Math.Round( inputPt.X * scale, MidPointRounding.AwayFromZero ) / scale )</code></li><li><code>jtsPt.Y = Math.Round( inputPt.Y * scale, MidPointRounding.AwayFromZero ) / scale )</code></li></ul>
@@ -162,10 +157,10 @@ The precision model of any constructed geometric value is undefined.
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L114">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L113">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor">PrecisionModel()</h4>
@@ -179,10 +174,10 @@ of Floating.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L155">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L154">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor(NetTopologySuite.Geometries.PrecisionModel)">PrecisionModel(PrecisionModel)</h4>
@@ -213,10 +208,10 @@ from an existing one.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModels_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(NetTopologySuite.Geometries.PrecisionModels)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModels_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(NetTopologySuite.Geometries.PrecisionModels)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L128">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L127">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModels_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor(NetTopologySuite.Geometries.PrecisionModels)">PrecisionModel(PrecisionModels)</h4>
@@ -249,10 +244,10 @@ If the model type is Fixed the scale factor will default to 1.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L144">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L143">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor_System_Double_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor(System.Double)">PrecisionModel(Double)</h4>
@@ -287,10 +282,10 @@ which are rounded to the grid defined by the scale factor.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MaximumPreciseValue.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MaximumPreciseValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MaximumPreciseValue.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MaximumPreciseValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L76">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L75">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_MaximumPreciseValue" data-uid="NetTopologySuite.Geometries.PrecisionModel.MaximumPreciseValue">MaximumPreciseValue</h4>
   <div class="markdown level1 summary"><p>The maximum precise value representable in a double. Since IEE754
@@ -321,10 +316,10 @@ double-precision numbers allow 53 bits of mantissa, the value is equal to
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Fixed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Fixed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Fixed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Fixed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L106">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L105">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_Fixed_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Fixed*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_Fixed" data-uid="NetTopologySuite.Geometries.PrecisionModel.Fixed">Fixed</h4>
@@ -353,10 +348,10 @@ double-precision numbers allow 53 bits of mantissa, the value is equal to
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Floating.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Floating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Floating.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Floating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L92">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L91">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_Floating_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Floating*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_Floating" data-uid="NetTopologySuite.Geometries.PrecisionModel.Floating">Floating</h4>
@@ -385,10 +380,10 @@ double-precision numbers allow 53 bits of mantissa, the value is equal to
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_FloatingSingle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.FloatingSingle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_FloatingSingle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.FloatingSingle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L99">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L98">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_FloatingSingle_" data-uid="NetTopologySuite.Geometries.PrecisionModel.FloatingSingle*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_FloatingSingle" data-uid="NetTopologySuite.Geometries.PrecisionModel.FloatingSingle">FloatingSingle</h4>
@@ -417,10 +412,10 @@ double-precision numbers allow 53 bits of mantissa, the value is equal to
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_IsFloating.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.IsFloating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_IsFloating.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.IsFloating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L173">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L165">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_IsFloating_" data-uid="NetTopologySuite.Geometries.PrecisionModel.IsFloating*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_IsFloating" data-uid="NetTopologySuite.Geometries.PrecisionModel.IsFloating">IsFloating</h4>
@@ -449,10 +444,10 @@ double-precision numbers allow 53 bits of mantissa, the value is equal to
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MaximumSignificantDigits.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MaximumSignificantDigits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MaximumSignificantDigits.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MaximumSignificantDigits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L183">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L175">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_MaximumSignificantDigits_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MaximumSignificantDigits*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_MaximumSignificantDigits" data-uid="NetTopologySuite.Geometries.PrecisionModel.MaximumSignificantDigits">MaximumSignificantDigits</h4>
@@ -483,10 +478,10 @@ Intended for use by routines which need to print out precise values.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_PrecisionModelType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.PrecisionModelType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_PrecisionModelType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.PrecisionModelType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L233">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L225">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_PrecisionModelType_" data-uid="NetTopologySuite.Geometries.PrecisionModel.PrecisionModelType*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_PrecisionModelType" data-uid="NetTopologySuite.Geometries.PrecisionModel.PrecisionModelType">PrecisionModelType</h4>
@@ -514,10 +509,10 @@ Intended for use by routines which need to print out precise values.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Scale.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Scale.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L214">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L206">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_Scale_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Scale*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_Scale" data-uid="NetTopologySuite.Geometries.PrecisionModel.Scale">Scale</h4>
@@ -555,10 +550,10 @@ of precision is to the left of the decimal point.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_CompareTo_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.CompareTo(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_CompareTo_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.CompareTo(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L375">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L377">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo(NetTopologySuite.Geometries.PrecisionModel)">CompareTo(PrecisionModel)</h4>
@@ -602,10 +597,10 @@ of precision is to the left of the decimal point.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.CompareTo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.CompareTo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L365">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L367">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_System_Object_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo(System.Object)">CompareTo(Object)</h4>
@@ -659,10 +654,10 @@ is less than, equal to, or greater than the specified <code>PrecisionModel</code
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Equals_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Equals(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Equals_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Equals(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L321">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L323">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_Equals_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_Equals_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals(NetTopologySuite.Geometries.PrecisionModel)">Equals(PrecisionModel)</h4>
@@ -706,10 +701,10 @@ is less than, equal to, or greater than the specified <code>PrecisionModel</code
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Equals_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Equals_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L305">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L297">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_Equals_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_Equals_System_Object_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals(System.Object)">Equals(Object)</h4>
@@ -755,15 +750,14 @@ is less than, equal to, or greater than the specified <code>PrecisionModel</code
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_GetHashCode.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_GetHashCode.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L164">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L310">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_GetHashCode_" data-uid="NetTopologySuite.Geometries.PrecisionModel.GetHashCode*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_GetHashCode" data-uid="NetTopologySuite.Geometries.PrecisionModel.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>Return HashCode.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -788,10 +782,10 @@ is less than, equal to, or greater than the specified <code>PrecisionModel</code
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MakePrecise_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MakePrecise(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MakePrecise_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MakePrecise(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L273">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L265">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise(NetTopologySuite.Geometries.Coordinate)">MakePrecise(Coordinate)</h4>
@@ -821,10 +815,10 @@ is less than, equal to, or greater than the specified <code>PrecisionModel</code
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MakePrecise_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MakePrecise(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MakePrecise_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MakePrecise(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L245">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L237">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_System_Double_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise(System.Double)">MakePrecise(Double)</h4>
@@ -875,10 +869,10 @@ on the number line.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MostPrecise_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MostPrecise(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MostPrecise_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MostPrecise(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L60">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L59">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_MostPrecise_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MostPrecise*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_MostPrecise_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MostPrecise(NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Geometries.PrecisionModel)">MostPrecise(PrecisionModel, PrecisionModel)</h4>
@@ -931,10 +925,10 @@ on the number line.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L288">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L280">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_ToString_" data-uid="NetTopologySuite.Geometries.PrecisionModel.ToString*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_ToString" data-uid="NetTopologySuite.Geometries.PrecisionModel.ToString">ToString()</h4>
@@ -965,10 +959,10 @@ on the number line.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_op_Equality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.op_Equality(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_op_Equality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.op_Equality(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L333">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L335">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_op_Equality_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Equality*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_op_Equality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Equality(NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Geometries.PrecisionModel)">Equality(PrecisionModel, PrecisionModel)</h4>
@@ -1017,10 +1011,10 @@ on the number line.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_op_Inequality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.op_Inequality(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_op_Inequality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.op_Inequality(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L344">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L346">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_PrecisionModel_op_Inequality_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Inequality*"></a>
   <h4 id="NetTopologySuite_Geometries_PrecisionModel_op_Inequality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Inequality(NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Geometries.PrecisionModel)">Inequality(PrecisionModel, PrecisionModel)</h4>
@@ -1082,10 +1076,10 @@ on the number line.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L51" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L50" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

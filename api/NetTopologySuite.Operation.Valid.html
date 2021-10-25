@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace NetTopologySuite.Operation.Valid
    | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.58.0.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,8 @@
   <h1 id="NetTopologySuite_Operation_Valid" data-uid="NetTopologySuite.Operation.Valid" class="text-break">Namespace NetTopologySuite.Operation.Valid
   </h1>
   <div class="markdown level0 summary">
-<p>Provides classes for testing the validity of geometries.</p>
+<p>Classes for testing the validity and simplicity of geometries,
+as defined in the OGC Simple Features specification.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
@@ -111,7 +112,44 @@ Testing for duplicate rings.
 If an inconsistency if found the location of the problem is recorded.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Valid.IndexedNestedRingTester.html">IndexedNestedRingTester</a></h4>
-      <section></section>
+      <section><p>Tests whether any of a set of <a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a>s are
+nested inside another ring in the set, using a spatial
+index to speed up the comparisons.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html">IsSimpleOp</a></h4>
+      <section><p>Tests whether a <code>Geometry</code> is simple as defined by the OGC SFS specification.</p>
+<p>
+Simplicity is defined for each <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>
+type as follows:
+<ul><li>Pointgeometries are simple.</li><li>MultiPointgeometries are simple if every point is unique</li><li>LineStringgeometries are simple if they do not self-intersect at interior points
+(i.e.points other than the endpoints).</li><li>MultiLineStringgeometries are simple if 
+their elements are simple and they intersect only at points 
+which are boundary points of both elements. 
+(The notion of boundary points can be user-specified - see below).</li><li>Polygonalgeometries have no definition of simplicity.
+The <code>IsSimple</code> code checks if all polygon rings are simple.
+(Note: this means that<tt>IsSimple</tt> cannot be used to test 
+for <em>all</em> self-intersections in <tt>Polygon</tt> s.  
+In order to check if a <tt>IPolygonal</tt> geometry has self-intersections,
+use <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a>.</li><li>GeometryCollectiongeometries are simple if all their elements are simple.</li><li>Empty geometries are simple</li></ul>
+For <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a> geometries the evaluation of simplicity
+can be customized by supplying a <a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a>
+to define how boundary points are determined.
+The default is the SFS-standard <a class="xref" href="NetTopologySuite.Algorithm.BoundaryNodeRules.html#NetTopologySuite_Algorithm_BoundaryNodeRules_Mod2BoundaryRule">Mod2BoundaryRule</a>.
+<p>
+Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s (rings)
+have no boundary.
+This means that an intersection at their endpoints makes the geometry non-simple.
+If it is required to test whether a set of <code>LineString</code>s touch
+only at their endpoints, use <a class="xref" href="NetTopologySuite.Algorithm.BoundaryNodeRules.html#NetTopologySuite_Algorithm_BoundaryNodeRules_EndpointBoundaryRule">EndpointBoundaryRule</a>.
+For example, this can be used to validate that a collection of lines
+form a topologically valid linear network.
+<p>
+By default this class finds a single non-simple location.
+To find all non-simple locations, set <a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_FindAllLocations">FindAllLocations</a>
+before calling <a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple">IsSimple()</a>, and retrieve the locations
+via <a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocations">NonSimpleLocations</a>.
+This can be used to find all intersection points in a linear network.
+</section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Valid.IsValidOp.html">IsValidOp</a></h4>
       <section><p>Implements the algorithms required to compute the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a>
 method for <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s.
@@ -140,7 +178,7 @@ a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> 
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Operation.Valid.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Operation.Valid.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
