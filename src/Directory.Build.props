@@ -34,7 +34,7 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.github.$(GITHUB_RUN_ID)</NtsBuildMetadata>
 
-    <NtsOfficialRelease Condition=" '$(GITHUB_REF)' == 'refs/heads/master' And '$(GITHUB_EVENT_NAME)' == 'push' ">true</NtsOfficialRelease>
+    <NtsOfficialRelease Condition=" '$(GITHUB_REF)' == 'refs/heads/main' And '$(GITHUB_EVENT_NAME)' == 'push' ">true</NtsOfficialRelease>
   </PropertyGroup>
 
   <!-- Fallback for local builds and CI environments we don't recognize -->
