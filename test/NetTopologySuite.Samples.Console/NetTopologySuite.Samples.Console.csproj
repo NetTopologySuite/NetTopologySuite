@@ -18,6 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Tests\Github\Issue566and567.wkt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Tests\Github\Issue566and567.wkt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
   </ItemGroup>
