@@ -242,7 +242,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// </summary>
         /// <param name="value">A numeric value</param>
         /// <returns>The number of decimal places in the value</returns>
-        private static unsafe int NumberOfDecimals(double value)
+        private static int NumberOfDecimals(double value)
         {
             // NaN, infinities, and many values closer to 0 than to 1 can fail this test.
             const double DecimalMaxValueAsDouble = 79228162514264337593543950335d;
@@ -274,7 +274,8 @@ namespace NetTopologySuite.Operation.OverlayNG
                     // https://github.com/dotnet/runtime/blob/cd4cc97e4c099f637061afe2b6c546483ffd3073/src/libraries/System.Private.CoreLib/src/System/Decimal.cs#L104-L108
                     // so we can rely on the scale living at the same spot:
                     // https://github.com/dotnet/runtime/blob/cd4cc97e4c099f637061afe2b6c546483ffd3073/src/libraries/System.Private.CoreLib/src/System/Decimal.cs#L70-L76
-                    return ((byte*)&valueAsDecimal)[BitConverter.IsLittleEndian ? 2 : 1];
+
+                    return (decimal.GetBits(valueAsDecimal)[3] & 0x00ff0000) >> 16;
                 }
             }
 
