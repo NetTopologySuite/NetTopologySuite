@@ -31,10 +31,13 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML3
             IsOldNtsMultiPointSyntaxAllowed = false,
         };
 
+        private static int _geometrySRID = 4326;
+
         [Test]
         public void TestGML3Point()
         {
-            var document = ToGML3(CreatePoint());
+            var geometry = CreatePoint();
+            var document = ToGML3(geometry);
             AssertPoint(document);
         }
 
@@ -103,7 +106,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML3
             using var ms = new MemoryStream();
             using (var writer = XmlWriter.Create(ms, XmlWriterSettings))
             {
-                new GML3Writer().Write(geom, writer);
+                new GML3Writer(true).Write(geom, writer);
             }
 
             ms.Position = 0;
@@ -112,7 +115,9 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML3
 
         private static Geometry CreatePoint()
         {
-            return WKTReader.Read("POINT (0 0)");
+            var geometry = WKTReader.Read("POINT (0 0)");
+            geometry.SRID = _geometrySRID;
+            return geometry;
         }
 
         private static void AssertPoint(XContainer container)
@@ -120,6 +125,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML3
             var pointElement = NotNull(container.Element(GML3Name("Point")));
             var posElement = NotNull(pointElement.Element(GML3Name("pos")));
             Assert.That(posElement.Value, Is.EqualTo("0 0"));
+            Assert.That(pointElement.Attribute(XName.Get("srsName")).Value, Is.EqualTo($"https://www.opengis.net/def/crs/EPSG/0/{_geometrySRID}"));
             AssertRoundTrip(pointElement, CreatePoint());
         }
 
