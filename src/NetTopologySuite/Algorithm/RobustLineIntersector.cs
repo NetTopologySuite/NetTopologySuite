@@ -152,18 +152,10 @@ namespace NetTopologySuite.Algorithm
                 p = Intersection(p1, p2, q1, q2);
                 z = zInterpolate(p, p1, p2, q1, q2);
             }
-            IntersectionPoint[0] = copyWithZ(p, z);
+            IntersectionPoint[0] = CopyWithZ(p, z);
             return PointIntersection;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="q1"></param>
-        /// <param name="q2"></param>
-        /// <returns></returns>
         private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             bool q1inP = Envelope.Intersects(p1, p2, q1);
@@ -173,65 +165,61 @@ namespace NetTopologySuite.Algorithm
 
             if (q1inP && q2inP)
             {
-                IntersectionPoint[0] = copyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = copyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[0] = CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = CopyWithZInterpolate(q2, p1, p2);
                 return CollinearIntersection;
             }
             if (p1inQ && p2inQ)
             {
-                IntersectionPoint[0] = copyWithZInterpolate(p1, q1, q2);
-                IntersectionPoint[1] = copyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = CopyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[1] = CopyWithZInterpolate(p2, q1, q2);
                 return CollinearIntersection;
             }
             if (q1inP && p1inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = copyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = copyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[0] = CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = CopyWithZInterpolate(p1, q1, q2);
                 return q1.Equals(p1) && !q2inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
             if (q1inP && p2inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = copyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = copyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = CopyWithZInterpolate(p2, q1, q2);
                 return q1.Equals(p2) && !q2inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
             if (q2inP && p1inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = copyWithZInterpolate(q2, p1, p2);
-                IntersectionPoint[1] = copyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[0] = CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = CopyWithZInterpolate(p1, q1, q2);
                 return q2.Equals(p1) && !q1inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
             if (q2inP && p2inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = copyWithZInterpolate(q2, p1, p2);
-                IntersectionPoint[1] = copyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = CopyWithZInterpolate(p2, q1, q2);
                 return q2.Equals(p2) && !q1inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
             return NoIntersection;
         }
 
-        private static Coordinate copyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        private static Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
-            return copyWithZ(p, zGetOrInterpolate(p, p1, p2));
+            return CopyWithZ(p, zGetOrInterpolate(p, p1, p2));
         }
 
-        private static Coordinate copyWithZ(Coordinate p, double z)
+        private static Coordinate CopyWithZ(Coordinate p, double z)
         {
-            var pCopy = Copy(p);
-            if (!double.IsNaN(z))
-            {
-                pCopy.Z = z;
-            }
-            return pCopy;
-        }
+            Coordinate res;
+            if (double.IsNaN(z))
+                res = p.Copy();
+            else
+                res = new CoordinateZ(p) { Z = z };
 
-        private static Coordinate Copy(Coordinate p)
-        {
-            return new CoordinateZ(p);
+            return res;
         }
 
         /// <summary>

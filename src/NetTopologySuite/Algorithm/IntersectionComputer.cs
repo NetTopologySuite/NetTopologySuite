@@ -86,8 +86,10 @@ namespace NetTopologySuite.Algorithm
             {
                 return null;
             }
+
             // de-condition intersection point
-            return new Coordinate(xInt + midx, yInt + midy);
+            return p1.Create(xInt + midx, yInt + midy);
+            //return new Coordinate(xInt + midx, yInt + midy);
         }
 
     }

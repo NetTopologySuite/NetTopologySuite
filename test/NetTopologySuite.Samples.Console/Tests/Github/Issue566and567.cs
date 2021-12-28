@@ -20,7 +20,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             if (strm == null)
                 Assert.Inconclusive("Resource stream not found");
 
-            var rdr = new WKTFileReader(strm, new WKTReader());
+            var rdr = new WKTFileReader(strm, new WKTReader { IsOldNtsCoordinateSyntaxAllowed = false });
             _geometries.AddRange(rdr.Read());
         }
 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             }
         }
 
-        [Test, Ignore("More information needed")]
+        [Test]
         public void TestIssue567()
         {
             for (int i = 0; i < _geometries.Count; i += 2)
@@ -45,6 +45,21 @@ namespace NetTopologySuite.Samples.Tests.Github
                 var geom = GeometryFixer.Fix(_geometries[i]);
                 Assert.That(CoordinateArrays.Dimension(geom.Coordinates), Is.EqualTo(CoordinateArrays.Dimension(_geometries[i].Coordinates)));
             }
+        }
+
+        [Test]
+        public void TestValid()
+        {
+            string wkt = @"polygon((0 0, 1 0.1, 1 1, 0.5 1, 0.5 1.5, 1 1, 1.5 1.5, 1.5 1, 1 1, 1.5 0.5, 1 0.1, 2 0, 2 2,0 2, 0 0))";
+            var wktReader2 = new WKTReader();
+            var initialGeometry = wktReader2.Read(wkt);
+            var ivo = new NetTopologySuite.Operation.Valid.IsValidOp(initialGeometry);
+            ivo.SelfTouchingRingFormingHoleValid = true;
+            System.Console.WriteLine(ivo.IsValid);
+            System.Console.WriteLine(ivo.ValidationError?.Message ?? "No Error");
+            var b = new GeometryFixer(initialGeometry).GetResult();
+            System.Console.WriteLine(b);
+
         }
     }
 }
