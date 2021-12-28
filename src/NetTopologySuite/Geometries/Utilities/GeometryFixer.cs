@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.OverlayNG;
 
@@ -19,13 +20,18 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <item><description>Empty atomic geometries are valid and are returned unchanged</description></item>
     /// <item><description>Empty elements are removed from collections</description></item>
     /// <item><description><c>Point</c>: keep valid coordinate, or EMPTY</description></item>
-    /// <item><description><c>LineString</c>: fix coordinate list </description></item>
-    /// <item><description><c>LinearRing</c>: fix coordinate list, return as valid ring or else <c>LineString</c></description></item>
+    /// <item><description><c>LineString</c>: coordinates are fixed</description></item>
+    /// <item><description><c>LinearRing</c>: coordinates are feixed, keep valid ring or else convert into <c>LineString</c></description></item>
     /// <item><description><c>Polygon</c>: transform into a valid polygon, 
-    /// preserving as much of the extent and vertices as possible</description></item>
-    /// <item><description><c>MultiPolygon</c>: fix each polygon, 
-    /// then ensure result is non - overlapping(via union)</description></item>
-    /// <item><description><c>GeometryCollection</c>: fix each element </description></item>
+    /// preserving as much of the extent and vertices as possible.
+    /// <list type="bullet">
+    /// <item><description>Rings are fixed to ensure they are valid</description></item>
+    /// <item><description>Holes intersection the shell are subtracted from the shell</description></item>
+    /// <item><description>Holes outside the shell are converted into polygons</description></item>
+    /// </list></description></item>
+    /// <item><description><c>MultiPolygon</c>: each polygon is fixed, 
+    /// then result made non - overlapping (via union)</description></item>
+    /// <item><description><c>GeometryCollection</c>: each element is fixed</description></item>
     /// <item><description>Collapsed lines and polygons are handled as follows,
     /// depending on the <c>keepCollapsed</c> setting:
     /// <list type="bullet">
@@ -280,29 +286,94 @@ namespace NetTopologySuite.Geometries.Utilities
                     return FixLineString(shell);
                 }
 
-                //-- if not allowing collapses then return empty polygon
+                //--- if not allowing collapses then return empty polygon
                 return null;
             }
 
-            // if no holes then done
+            //--- if no holes then done
             if (geom.NumInteriorRings == 0)
             {
                 return fixShell;
             }
 
-            var fixHoles = FixHoles(geom);
-            var result = RemoveHoles(fixShell, fixHoles);
+            //--- fix holes, classify, and construct shell-true holes
+            var holesFixed = FixHoles(geom);
+            var holes = new List<Geometry>();
+            var shells = new List<Geometry>();
+            ClassifyHoles(fixShell, holesFixed, holes, shells);
+            var polyWithHoles = Difference(fixShell, holes);
+            if (shells.Count == 0)
+            {
+                return polyWithHoles;
+            }
+
+            //--- if some holes converted to shells, union all shells
+            shells.Add(polyWithHoles);
+            var result = Union(shells);
             return result;
         }
 
-        private Geometry RemoveHoles(Geometry shell, Geometry holes)
+        private List<Geometry> FixHoles(Polygon geom)
         {
-            if (holes == null)
-                return shell;
-            return OverlayNGRobust.Overlay(shell, holes, OverlayNG.DIFFERENCE);
+            var holes = new List<Geometry>();
+            for (int i = 0; i < geom.NumInteriorRings; i++)
+            {
+                var holeRep = FixRing((LinearRing)geom.GetInteriorRingN(i));
+                if (holeRep != null)
+                {
+                    holes.Add(holeRep);
+                }
+            }
+            return holes;
         }
 
-        private Geometry FixHoles(Polygon geom)
+        private void ClassifyHoles(Geometry shell, List<Geometry> holesFixed, List<Geometry> holes, List<Geometry> shells)
+        {
+            var shellPrep = PreparedGeometryFactory.Prepare(shell);
+            foreach (var hole in holesFixed)
+            {
+                if (shellPrep.Intersects(hole))
+                {
+                    holes.Add(hole);
+                }
+                else
+                {
+                    shells.Add(hole);
+                }
+            }
+        }
+
+        /// <summary>Subtracts a list of polygonal geometries from a polygonal geometry.</summary>
+        /// <param name="shell">polygonal geometry for shell</param>
+        /// <param name="holes">polygonal geometries for holes</param>
+        /// <returns>The result geometry</returns>
+        private Geometry Difference(Geometry shell, List<Geometry> holes)
+        {
+            if (holes == null || holes.Count == 0)
+                return shell;
+            var holesUnion = Union(holes);
+            return OverlayNGRobust.Overlay(shell, holesUnion, OverlayNG.DIFFERENCE);
+        }
+
+        /// <summary>
+        /// Unions a list of polygonal geometries.
+        /// Optimizes case of zero or one input geometries.
+        /// Requires that the inputs are net new objects.
+        /// </summary>
+        /// <param name="polys">The polygonal geometries to union</param>
+        /// <returns>The union of the inputs</returns>
+        private Geometry Union(List<Geometry> polys)
+        {
+            if (polys.Count == 0) return _factory.CreatePolygon();
+            if (polys.Count == 1)
+            {
+                return polys[0];
+            }
+            // TODO: replace with holes.union() once OverlayNG is the default
+            return OverlayNGRobust.Union(polys);
+        }
+
+        private Geometry OldFixHoles(Polygon geom)
         {
             var holes = new List<Geometry>(geom.NumInteriorRings);
             for (int i = 0; i < geom.NumInteriorRings; i++)
@@ -328,7 +399,7 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             //-- always execute fix, since it may remove repeated coords etc
             Geometry poly = _factory.CreatePolygon(ring);
-            // TOD: check if buffer removes invalid coordinates
+            // TODO: check if buffer removes invalid coordinates
             return BufferOp.BufferByZero(poly, true);
         }
 
@@ -351,7 +422,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             // TODO: replace with polys.union() once OverlayNG is the default
-            var result = OverlayNGRobust.Union(polys);
+            var result = Union(polys);
             return result;
         }
 
