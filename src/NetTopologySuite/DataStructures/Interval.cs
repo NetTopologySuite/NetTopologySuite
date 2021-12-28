@@ -68,7 +68,7 @@ namespace NetTopologySuite.DataStructures
         /// </summary>
         bool IsEmpty { get { return Min.Equals(Coordinate.NullOrdinate); } }
 
-        ///<inheritdoc/>
+        /// <inheritdoc cref="object.GetHashCode()" />
         public override int GetHashCode()
         {
             const int prime = 31;
@@ -81,7 +81,7 @@ namespace NetTopologySuite.DataStructures
             return result;
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc cref="object.Equals(object)"/>
         public override bool Equals(object obj)
         {
             if (!(obj is Interval))
@@ -89,7 +89,7 @@ namespace NetTopologySuite.DataStructures
             return Equals((Interval)obj);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)" />
         public bool Equals(Interval other)
         {
             if (IsEmpty ^ other.IsEmpty)
