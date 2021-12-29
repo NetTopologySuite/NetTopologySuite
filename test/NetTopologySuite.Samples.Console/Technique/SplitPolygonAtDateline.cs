@@ -29,28 +29,48 @@ namespace NetTopologySuite.Samples.Technique
         [STAThread]
         public static void main()
         {
-            string prj = "GEOGCS['WGS 84',DATUM['WGS_1984',SPHEROID['WGS 84',6378137,298.257223563,AUTHORITY['EPSG','7030']],AUTHORITY['EPSG','6326']]," +
-                         "PRIMEM['Greenwich',0,AUTHORITY['EPSG','8901']],UNIT['degree',0.0174532925199433,AUTHORITY['EPSG','9122']],AUTHORITY['EPSG','4326']]";
+            // ========================================================================================
+            // inputs
+            // ========================================================================================
+            string wktPrj = "GEOGCS['WGS 84',DATUM['WGS_1984',SPHEROID['WGS 84',6378137,298.257223563,AUTHORITY['EPSG','7030']],AUTHORITY['EPSG','6326']]," +
+                            "PRIMEM['Greenwich',0,AUTHORITY['EPSG','8901']],UNIT['degree',0.0174532925199433,AUTHORITY['EPSG','9122']],AUTHORITY['EPSG','4326']]";
 
-            string wkt = "MULTIPOINT ((170 3.5), (180 3.5), (180 -5), (188.927777777778 -5), (187.061666666667 -9.46444444444444), " +
-                         "(185.718888888889 -12.4869444444444), (185.281944444444 -13.4555555555556), (184.472777777778 -15.225), (184.3275 -15.5397222222222), " +
-                         "(184.171944444444 -15.9), (183.188888888889 -18.1488888888889), (183.019444444444 -18.5302777777778), (181.530555555556 -21.8), " +
-                         "(180 -25), (177.333333333333 -25), (171.416666666667 -25), (168 -28), (163 -30), (163 -24), (163 -17.6666666666667), (161.25 -14), " +
-                         "(163 -14), (166.875 -11.8), (170 -10), (170 3.5))";
+            string wktGeom = "MULTIPOINT ((170 3.5), (180 3.5), (180 -5), (188.927777777778 -5), (187.061666666667 -9.46444444444444), " +
+                             "(185.718888888889 -12.4869444444444), (185.281944444444 -13.4555555555556), (184.472777777778 -15.225), (184.3275 -15.5397222222222), " +
+                             "(184.171944444444 -15.9), (183.188888888889 -18.1488888888889), (183.019444444444 -18.5302777777778), (181.530555555556 -21.8), " +
+                             "(180 -25), (177.333333333333 -25), (171.416666666667 -25), (168 -28), (163 -30), (163 -24), (163 -17.6666666666667), (161.25 -14), " +
+                             "(163 -14), (166.875 -11.8), (170 -10), (170 3.5))";
             var rdr = new WKTReader();
-            var geom = rdr.Read(wkt);
+            var geom = rdr.Read(wktGeom);
             var mps = (MultiPoint)geom;
             var coords = mps.Coordinates.ToList();
 
             var wtr = new WKTWriter();
 
-            var resGeoms = ToPolyExOp(coords, prj);
+            // ========================================================================================
+            // function with defaults
+            // ========================================================================================
+            var resGeoms = ToPolyExOp(coords, wktPrj);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
                 string resWkt = wtr.Write(resGeom);
                 Debug.Print("geometry {0} = {1}", i, resWkt);
+                DebugPrintCoords(resGeom.Coordinates.ToList(), "resGeom geom [" + i.ToString() + "] count");
             }
+
+            // ========================================================================================
+            // function with specific parameter inputs
+            // ========================================================================================
+            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 1.0, double.NaN, true);
+            for (int i = 0; i < resGeoms.NumGeometries; i++)
+            {
+                var resGeom = resGeoms.GetGeometryN(i);
+                string resWkt = wtr.Write(resGeom);
+                Debug.Print("geometry {0} = {1}", i, resWkt);
+                DebugPrintCoords(resGeom.Coordinates.ToList(), "resGeom geom [" + i.ToString() + "] count");
+            }
+
         }
 
         /// <summary>
@@ -62,6 +82,11 @@ namespace NetTopologySuite.Samples.Technique
         /// <param name="coordsInp">A list of coordinates that define a polyline or polygon.</param>
         /// <param name="proj4WktInp">The projection of the input coordinates as a PROJ4 WKT string.</param>
         /// <param name="outputType">The output geometry type.</param>
+        /// <param name="trimGap">
+        /// The value used to trim the resulting geometry parts so they do not exactly touch the dateline. A positive value will trim only the
+        /// parts that are in the Eastern hemisphere and a negative value will trim only the parts that are in the Western hemisphere. This is
+        /// useful if the resultant geometries are to be used as multiple parts of a single feature. Double.NaN for no trim gap.
+        /// </param>
         /// <param name="densifyResolution">The value used to densify the resulting geometry. Double.NaN for no densification.</param>
         /// <param name="isAttFixInvPolygons">True if the process should attempt to fix invalid geometry, False otherwsie.</param>
         /// <returns>
@@ -78,8 +103,10 @@ namespace NetTopologySuite.Samples.Technique
         /// https://github.com/DotSpatial/DotSpatial/issues/1029
         /// https://github.com/NetTopologySuite/ProjNet4GeoAPI/wiki/Well-Known-Text
         /// </remarks>
-        public static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp, OgcGeometryType outputType, double densifyResolution, bool isAttFixInvPolygons)
+        public static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp, OgcGeometryType outputType, double trimGap, double densifyResolution, bool isAttFixInvPolygons)
         {
+            Debug.Print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
             // ###################################################################################################################
             // check the output geometry type. currently only polygon output is supported. Polylines should use a similar process
             // with some slight modifications.
@@ -250,22 +277,77 @@ namespace NetTopologySuite.Samples.Technique
                 }
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                // define the cutter line that is based on the dateline with a shift to put it in
-                // the same hemisphere as the shifted polygon.
-                // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                var cutterLine = DateLineCutter(delNeg, delPos, shift);
-
-                // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 // create a single polygon from the shifted coordinates
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 var pRingShifted = new LinearRing(coordsShifted.ToArray());
                 var pPolygonShifted = new Polygon(pRingShifted);
+                DebugPrintCoords(pPolygonShifted.Coordinates.ToList(), "pPolygonShifted count");
+                var valOp = new IsValidOp(pPolygonShifted);
+                Debug.Print("pPolygonShifted isValid = {0}", valOp.IsValid);
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                // split the polygon with a dateline polyline cutter to get mutliple polygons
+                // now we determine if we will cut the polygon with a cutter line or a cutter polugon
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                var nodedLinework = pPolygonShifted.Boundary.Union(cutterLine);
-                var polygons = Polygonize(nodedLinework);
+                Geometry nodedLinework = null;
+                if (double.IsInfinity(trimGap) || double.IsNaN(trimGap))
+                {
+                    // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+                    // use a cutter line to split the main polygon
+                    // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+                    // define the cutter line that is based on the dateline with a shift to put it in the same hemisphere as the shifted
+                    // polygon.
+                    var cutterLine = DatelineCutterPolyline(delNeg, delPos, shift);
+                    DebugPrintCoords(cutterLine.Coordinates.ToList(), "cutterLine count");
+
+                    // perform a Union to split the polygon with a polyline
+                    nodedLinework = pPolygonShifted.Boundary.Union(cutterLine);
+                }
+                else
+                {
+                    // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+                    // use a cutter polygon to split the main polygon
+                    // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+                    // define the cutter polygon that is based on the dateline with a shift to put it in the same hemisphere as the shifted
+                    // polygon. Plus we also add the trim gap as the cutter polygon width.
+                    var cutterPgon = DatelineCutterPolygon(delNeg, delPos, shift, trimGap);
+                    DebugPrintCoords(cutterPgon.Coordinates.ToList(), "cutterPgon count");
+                    var valOp2 = new IsValidOp(cutterPgon);
+                    Debug.Print("cutterPgon isValid = {0}", valOp2.IsValid);
+
+                    // perform an Erase to split the polygon with a polygon. this consists of an Intersection and then a Difference.
+                    //var intx = pPolygonShifted.Boundary.Intersection(cutterPgon);
+                    //Debug.Print("intx={0}", intx.AsText());
+                    //nodedLinework = pPolygonShifted.Boundary.SymmetricDifference(intx);
+                    nodedLinework = pPolygonShifted.Difference(cutterPgon);
+                    //nodedLinework = nodedLinework.Boundary.Intersection(cutterPgon.Boundary);
+                }
+
+                Debug.Print("nodedLinework is {0}", nodedLinework.GeometryType);
+                if (nodedLinework.GeometryType == "MultiLineString")
+                {
+                    var mls = (MultiLineString)nodedLinework;
+                    for (int i = 0; i < mls.Geometries.Count(); i++)
+                    {
+                        var geom = mls.GetGeometryN(i);
+                        DebugPrintCoords(geom.Coordinates.ToList(), "nodedLinework geom [" + i.ToString() + "] count");
+                    }
+                }
+
+                var wtr = new WKTWriter();
+                string resWkt = wtr.Write(nodedLinework);
+                Debug.Print("nodedLinework = {0}", resWkt);
+                DebugPrintCoords(nodedLinework.Coordinates.ToList(), "nodedLinework count");
+                var errs = PolygonizeAllErrors(nodedLinework);
+
+                // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                // convert the resultant MULTILINESTRING to get mutliple polygons
+                // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                var polygons = Polygonize(nodedLinework, false);
+                Debug.Print("Polygonize count={0}", polygons.NumGeometries);
+                resWkt = wtr.Write(polygons);
+                Debug.Print("polygons = {0}", resWkt);
                 var output = new List<Geometry>();
                 for (int i = 0; i < polygons.NumGeometries; i++)
                 {
@@ -273,6 +355,7 @@ namespace NetTopologySuite.Samples.Technique
                     if (pPolygonShifted.Contains(candpoly.InteriorPoint))
                         output.Add(candpoly);
                 }
+                Debug.Print("output count={0}", output.Count);
 
                 resGeoms = pPolygonShifted.Factory.BuildGeometry(output.ToArray());
                 Debug.Print("geometry parts from splitting at dateline={0}", resGeoms.NumGeometries);
@@ -370,7 +453,7 @@ namespace NetTopologySuite.Samples.Technique
         /// </returns>
         private static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp)
         {
-            return ToPolyExOp(coordsInp, proj4WktInp, OgcGeometryType.Polygon, double.NaN, false);
+            return ToPolyExOp(coordsInp, proj4WktInp, OgcGeometryType.Polygon, double.NaN, double.NaN, false);
         }
 
         /// <summary>
@@ -513,35 +596,122 @@ namespace NetTopologySuite.Samples.Technique
         private static Geometry Polygonize(Geometry geom)
         {
             ICollection<Geometry> lines = LineStringExtracter.GetLines(geom);
+            Debug.Print("lines count={0}", lines.Count);
             var pgnizer = new Polygonizer(false);
             pgnizer.Add(lines);
             var polys = pgnizer.GetPolygons().ToList();
+            Debug.Print("polys count={0}", polys.Count);
             ICollection<Geometry> polyArray = GeometryFactory.ToGeometryArray(polys);
+            Debug.Print("polyArray count={0}", polyArray.Count);
             return (Geometry)geom.Factory.BuildGeometry(polyArray);
         }
 
+
+
+        // https://github.com/NetTopologySuite/NetTopologySuite/blob/c838c5061aa0f13d1fa65f828a868d790302ec06/test/NetTopologySuite.TestRunner/Functions/PolygonizeFunctions.cs
+        private static Geometry Polygonize(Geometry g, bool extractOnlyPolygonal)
+        {
+            var lines = LinearComponentExtracter.GetLines(g);
+            var polygonizer = new Polygonizer(extractOnlyPolygonal);
+            polygonizer.Add(lines);
+            return polygonizer.GetGeometry();
+        }
+
+
+        public static Geometry PolygonizeAllErrors(Geometry g)
+        {
+            var lines = LineStringExtracter.GetLines(g);
+            var polygonizer = new Polygonizer();
+            polygonizer.Add(lines);
+
+            var errs = new List<Geometry>();
+            var dangles = polygonizer.GetDangles();
+            errs.AddRange(dangles);
+            Debug.Print("GetDangles errs count={0}", dangles.Count);
+
+            var cutedges = polygonizer.GetCutEdges();
+            errs.AddRange(cutedges);
+            Debug.Print("GetCutEdges errs count={0}", cutedges.Count);
+
+            var invringlines = polygonizer.GetInvalidRingLines();
+            errs.AddRange(invringlines);
+            Debug.Print("GetInvalidRingLines errs count={0}", invringlines.Count);
+
+            return g.Factory.BuildGeometry(errs);
+        }
+
+
         /// <summary>
-        /// Define the cutter line that is based on the dateline with a shift to put it in the same hemisphere as the polygon.
+        /// Define the cutter polyline that is based on the dateline with a shift to put it in the same hemisphere as the polygon.
         /// </summary>
         /// <param name="delNeg"></param>
         /// <param name="delPos"></param>
         /// <param name="shift"></param>
         /// <returns></returns>
-        private static LineString DateLineCutter(double delNeg, double delPos, double shift)
+        private static LineString DatelineCutterPolyline(double delNeg, double delPos, double shift)
         {
+            Debug.Print("DatelineCutterPolyline: delNeg={0} delPos={1} shift={2}", delNeg, delPos, shift);
+
             double lonSplit = shift - 180d;
             if (delNeg < delPos)
                 lonSplit = 180d + shift;
+            Debug.Print("  lonSplit={0}", lonSplit);
+
+            // build a series of coordinates
             var cutterPtList = new List<Coordinate>();
             cutterPtList.Add(new Coordinate(lonSplit, +100));
             cutterPtList.Add(new Coordinate(lonSplit, -100));
+
+            // create a polyline from the coordinates
             var cutterLine = new LineString(cutterPtList.ToArray());
 
-            // we can desnify the line but this seems to confuse the splitting routine
+            // we can densify the line but this seems to confuse the splitting routine
             // cutterLine = (LineString)Densifier.Densify(cutterLine, 0.1); // densify to a specific resolution 0.1 degrees
 
-            // return the "new" dateline that has been shifted
+            // return the "new" dateline polyline that has been shifted
             return cutterLine;
+        }
+
+        /// <summary>
+        /// Define the cutter polygon that is based on the dateline with a shift to put it in the same hemisphere as the polygon.
+        /// We also use the trim gap as the polygon width.
+        /// </summary>
+        /// <param name="delNeg"></param>
+        /// <param name="delPos"></param>
+        /// <param name="shift"></param>
+        /// <param name="trimGap"></param>
+        /// <returns></returns>
+        private static Polygon DatelineCutterPolygon(double delNeg, double delPos, double shift, double trimGap)
+        {
+            Debug.Print("DatelineCutterPolygon: delNeg={0} delPos={1} shift={2} trimGap={3}", delNeg, delPos, shift, trimGap);
+
+            if (double.IsInfinity(trimGap) || double.IsNaN(trimGap))
+            {
+                throw new Exception("Invalid value for trim gap");
+            }
+
+            double lonSplit = shift - 180d;
+            if (delNeg < delPos)
+                lonSplit = 180d + shift;
+            Debug.Print("  lonSplit={0} lonSplit+trimGap={1}", lonSplit, lonSplit + trimGap);
+
+            // build a clockwise series of coordinates
+            var cutterPtList = new List<Coordinate>();
+            cutterPtList.Add(new Coordinate(lonSplit, -100));
+            cutterPtList.Add(new Coordinate(lonSplit, +100));
+            cutterPtList.Add(new Coordinate(lonSplit + trimGap, +100));
+            cutterPtList.Add(new Coordinate(lonSplit + trimGap, -100));
+            cutterPtList.Add(new Coordinate(lonSplit, -100));
+
+            // create a polygon from the coordinates
+            var pRing = new LinearRing(cutterPtList.ToArray());
+            var cutterPolygon = new Polygon(pRing);
+
+            // we can densify the polygon but this seems to confuse the difference routine
+            // cutterPolygon = (Polygon)Densifier.Densify(cutterPolygon, 0.1); // densify to a specific resolution 0.1 degrees
+
+            // return the "new" dateline polygon that has been shifted and also has a gap from the dateline
+            return cutterPolygon;
         }
 
         private static void DebugPrintCoords(List<Coordinate> coords, string hdr)
@@ -558,6 +728,14 @@ namespace NetTopologySuite.Samples.Technique
             }
 
             Debug.Print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        }
+
+        private static void DebugPrintGeom(Geometry geom, string hdr)
+        {
+            var wtr = new WKTWriter();
+            string resWkt = wtr.Write(geom);
+            Debug.Print("geom = {0}", resWkt);
+            DebugPrintCoords(geom.Coordinates.ToList(), "geom count");
         }
 
         private static void DebugPrintHemi(List<Coordinate> coords, string prefix)
