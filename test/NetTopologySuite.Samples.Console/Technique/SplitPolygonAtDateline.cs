@@ -22,7 +22,8 @@ namespace NetTopologySuite.Samples.Technique
     /// and two, the GIS will be able to perform geoprocessing functions on the geometry. Note that feature classes do
     /// not support features with multiple parts that share the same edge. Thus, it is left up to the user on how to
     /// commit the geometries to a feature class. Suggestions are to save the multiple geometries as individual features
-    /// or to slightly alter the edges of each geometry so as to save all parts as a single multi-part feature.
+    /// or to slightly alter the edges of each geometry so as to save all parts as a single multi-part feature. For the
+    /// latter option, the algorithm provides an input to trim edges of parts so that they can be used in a single feature.
     /// </summary>
     public class SplitPolygonAtDateline
     {
@@ -62,7 +63,7 @@ namespace NetTopologySuite.Samples.Technique
             // ========================================================================================
             // function with specific parameter inputs
             // ========================================================================================
-            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 1.0, double.NaN, true);
+            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 0.001, 0.5, true);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
@@ -79,22 +80,33 @@ namespace NetTopologySuite.Samples.Technique
         /// into multiple parts so that GIS can display and geoprocess without any issues. (Currently only polygon output is supported. Polyline
         /// support will come in a future update.)
         /// </summary>
-        /// <param name="coordsInp">A list of coordinates that define a polyline or polygon.</param>
-        /// <param name="proj4WktInp">The projection of the input coordinates as a PROJ4 WKT string.</param>
-        /// <param name="outputType">The output geometry type.</param>
-        /// <param name="trimGap">
+        /// <param name="inpCoords">A list of coordinates that define a polyline or polygon.</param>
+        /// <param name="inpProj4Wkt">The projection of the input coordinates as a PROJ4 WKT string.</param>
+        /// <param name="outType">The output geometry type.</param>
+        /// <param name="outTrimGap">
         /// The value used to trim the resulting geometry parts so they do not exactly touch the dateline. A positive value will trim only the
         /// parts that are in the Eastern hemisphere and a negative value will trim only the parts that are in the Western hemisphere. This is
-        /// useful if the resultant geometries are to be used as multiple parts of a single feature. Double.NaN for no trim gap.
+        /// useful if the resultant geometries are to be used as multiple parts of a single feature. Double.NaN for no trim gap. If the resulting
+        /// geometry will be inserted into a feature class then consider the tolerance for that feature class. "The default value for the x,y tolerance
+        /// is 10 times the default x,y resolution, and this is recommended for most cases" and "If coordinates are in latitude-longitude, the default
+        /// x,y resolution is 0.000000001 degrees". Thus a default tolerance = 10 * res = 10 * 0.000000001 degrees = 0.00000001 degrees.
+        /// https://desktop.arcgis.com/en/arcmap/latest/manage-data/geodatabases/feature-class-basics.htm
         /// </param>
-        /// <param name="densifyResolution">The value used to densify the resulting geometry. Double.NaN for no densification.</param>
-        /// <param name="isAttFixInvPolygons">True if the process should attempt to fix invalid geometry, False otherwsie.</param>
+        /// <param name="outDensifyResolution">The value used to densify the resulting geometry. Double.NaN for no densification.</param>
+        /// <param name="isAttFixOutInvPolygons">True if the process should attempt to fix invalid geometry, False otherwsie.</param>
         /// <returns>
-        /// A Geometry class that contains the result of converting the coordinates into a Polyline or Polygon. The result could be multiple
-        /// geometries.
+        /// A Geometry class that contains the result of converting the coordinates into a Polyline or Polygon. If the geometry crosses the Dateline
+        /// then the result is multiple geometries wrt to the Eastern and Western hemisphere.
         /// </returns>
         /// <remarks>
         /// Code by Abel G. Perez (Dec 19, 2021)
+        /// Todo: This algorithm assumes the polygon is small to medium in width. Typically if the width of the polygon is <180° then the algorithm
+        /// should work well. This is because the core of the process shifts all coordinates to either the Eastern or Western hemisphere. A better
+        /// approach may be to shift all coordinates to the 0° to +360° range. This will allow polygons with larger widths.  This will get implemented
+        /// in a future update if required. However, it really depends on how the user inputs the coordinates. If the input already has coordinates in
+        /// the 0° to +360° range then that is straightforward to detect when a geometry crosses the dateline. But if the inputs are all in the standard
+        /// -180° to 0° to +180° range then the assumption has to be made if the geometry closes towards the prime meridian or towards the dateline.
+        /// The current algorithm determines this by simply calculting which critical meridian is the closest.
         /// https://github.com/NetTopologySuite/NetTopologySuite/discussions/496
         /// https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/test/NetTopologySuite.Samples.Console/Operation/Polygonize/SplitPolygonExample.cs
         /// https://github.com/NetTopologySuite/NetTopologySuite/blob/84aef3c6a6cd3c2bfa5e3034ba161555cef5a117/test/NetTopologySuite.Samples.Console/Operation/Polygonize/SplitPolygonExample.cs#L24
@@ -102,8 +114,10 @@ namespace NetTopologySuite.Samples.Technique
         /// https://github.com/DotSpatial/DotSpatial/blob/e30421d6ee5b0cdf2b1fa01f95f8aabc50c1997a/Source/DotSpatial.Data/Shape.cs#L611
         /// https://github.com/DotSpatial/DotSpatial/issues/1029
         /// https://github.com/NetTopologySuite/ProjNet4GeoAPI/wiki/Well-Known-Text
+        /// https://desktop.arcgis.com/en/arcmap/10.3/manage-data/editing-fundamentals/creating-and-editing-multipart-polygons.htm
+        /// https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/what-happens-to-features-at-180-dateline-.htm
         /// </remarks>
-        public static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp, OgcGeometryType outputType, double trimGap, double densifyResolution, bool isAttFixInvPolygons)
+        public static Geometry ToPolyExOp(List<Coordinate> inpCoords, string inpProj4Wkt, OgcGeometryType outType, double outTrimGap, double outDensifyResolution, bool isAttFixOutInvPolygons)
         {
             Debug.Print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
@@ -111,7 +125,7 @@ namespace NetTopologySuite.Samples.Technique
             // check the output geometry type. currently only polygon output is supported. Polylines should use a similar process
             // with some slight modifications.
             // ###################################################################################################################
-            switch (outputType)
+            switch (outType)
             {
                 case OgcGeometryType.LineString:
                     //this will be supported in the future
@@ -129,13 +143,13 @@ namespace NetTopologySuite.Samples.Technique
             // based on a geographic coordinate system. if the user wishes to use a projected coordinate system then they will have
             // to reproject the points first and then use this process.
             // ###################################################################################################################
-            if (proj4WktInp == null || !proj4WktInp.StartsWith("GEOGCS"))
+            if (inpProj4Wkt == null || !inpProj4Wkt.StartsWith("GEOGCS"))
             {
                 throw new Exception("Unsupported projection for input. Must be a geographic coordinate system.");
             }
 
             // print original vertices
-            DebugPrintCoords(coordsInp, "Initial number of coordinates");
+            DebugPrintCoords(inpCoords, "Initial number of coordinates");
 
             // ###################################################################################################################
             // determine if any longitudes < +180° and also > +180°. this will be an indication that the input coordinates are based
@@ -145,8 +159,8 @@ namespace NetTopologySuite.Samples.Technique
             // that these coordinates do in fact cross the dateline. otherwise, if the coordinates are in the standard range of
             // -180° to 0° to +180° then we have to make certain assumptions later in the process.
             // ###################################################################################################################
-            bool hasLonsLt180 = coordsInp.Exists(c => c.X < 180);
-            bool hasLonsGt180 = coordsInp.Exists(c => c.X > 180);
+            bool hasLonsLt180 = inpCoords.Exists(c => c.X < 180);
+            bool hasLonsGt180 = inpCoords.Exists(c => c.X > 180);
             bool isLonsTravP180 = false;
             if (hasLonsLt180 && hasLonsGt180)
             {
@@ -160,7 +174,7 @@ namespace NetTopologySuite.Samples.Technique
             var coordsNrm = new List<Coordinate>();
             Coordinate coordNrm;
             double lonNrm;
-            foreach (var coordInp in coordsInp)
+            foreach (var coordInp in inpCoords)
             {
                 lonNrm = Normalize(coordInp.X);
                 coordNrm = coordInp.Create(lonNrm, coordInp.Y, coordInp.Z, coordInp.M);
@@ -179,7 +193,7 @@ namespace NetTopologySuite.Samples.Technique
             DebugPrintCoords(coordsNrm, "Normalized number of coordinates");
 
             // check the minimum number of coordinates for an output geometry
-            switch (outputType)
+            switch (outType)
             {
                 case OgcGeometryType.LineString:
                     if (coordsNrm.Count < 2)
@@ -289,7 +303,7 @@ namespace NetTopologySuite.Samples.Technique
                 // now we determine if we will cut the polygon with a cutter line or a cutter polugon
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 Geometry nodedLinework = null;
-                if (double.IsInfinity(trimGap) || double.IsNaN(trimGap))
+                if (double.IsInfinity(outTrimGap) || double.IsNaN(outTrimGap))
                 {
                     // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                     // use a cutter line to split the main polygon
@@ -311,7 +325,7 @@ namespace NetTopologySuite.Samples.Technique
 
                     // define the cutter polygon that is based on the dateline with a shift to put it in the same hemisphere as the shifted
                     // polygon. Plus we also add the trim gap as the cutter polygon width.
-                    var cutterPgon = DatelineCutterPolygon(delNeg, delPos, shift, trimGap);
+                    var cutterPgon = DatelineCutterPolygon(delNeg, delPos, shift, outTrimGap);
                     DebugPrintCoords(cutterPgon.Coordinates.ToList(), "cutterPgon count");
                     var valOp2 = new IsValidOp(cutterPgon);
                     Debug.Print("cutterPgon isValid = {0}", valOp2.IsValid);
@@ -320,7 +334,7 @@ namespace NetTopologySuite.Samples.Technique
                     //var intx = pPolygonShifted.Boundary.Intersection(cutterPgon);
                     //Debug.Print("intx={0}", intx.AsText());
                     //nodedLinework = pPolygonShifted.Boundary.SymmetricDifference(intx);
-                    nodedLinework = pPolygonShifted.Difference(cutterPgon);
+                    nodedLinework = pPolygonShifted.Difference(cutterPgon); // why use the geometry rather than the geometry's boundary???
                     //nodedLinework = nodedLinework.Boundary.Intersection(cutterPgon.Boundary);
                 }
 
@@ -407,9 +421,9 @@ namespace NetTopologySuite.Samples.Technique
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // here we will densify the polygon if the resolution value is passed in.
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            if (!double.IsNaN(densifyResolution) && !double.IsInfinity(densifyResolution) && densifyResolution > 0d)
+            if (!double.IsNaN(outDensifyResolution) && !double.IsInfinity(outDensifyResolution) && outDensifyResolution > 0d)
             {
-                resGeoms = Densifier.Densify(resGeoms, densifyResolution);
+                resGeoms = Densifier.Densify(resGeoms, outDensifyResolution);
             }
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -418,13 +432,15 @@ namespace NetTopologySuite.Samples.Technique
             // Attempting to fix an invalid geometry by calling geometry.Buffer(0) is a common approach, and
             // suggested in multiple places. However it does not work in all cases.
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            if (isAttFixInvPolygons)
+            if (isAttFixOutInvPolygons)
             {
                 var valOp = new IsValidOp(resGeoms);
+                Debug.Print("resGeoms isValid = {0}", valOp.IsValid);
                 if (!valOp.IsValid)
                 {
                     // method 1
                     resGeoms = resGeoms.Buffer(0);
+                    Debug.Print("resGeoms were fixed");
 
                     // method 2
                     //var pm = new PrecisionModel(10000000000.0);
