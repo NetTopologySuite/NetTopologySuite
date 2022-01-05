@@ -61,9 +61,10 @@ namespace NetTopologySuite.Samples.Technique
             }
 
             // ========================================================================================
-            // function with specific parameter inputs
+            // function with specific parameter inputs. trim 0.75 on parts in the Eastern hemisphere and
+            // densify every 0.5 and attempt to fix invalid polygons.
             // ========================================================================================
-            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 0.001, 0.5, true);
+            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 0.75, 0.5, true);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
@@ -72,6 +73,18 @@ namespace NetTopologySuite.Samples.Technique
                 DebugPrintCoords(resGeom.Coordinates.ToList(), "resGeom geom [" + i.ToString() + "] count");
             }
 
+            // ========================================================================================
+            // function with specific parameter inputs. trim 0.75 on parts in the Western hemisphere and
+            // densify every 0.25 and do not attempt to fix invalid polygons.
+            // ========================================================================================
+            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, -0.75, 0.25, false);
+            for (int i = 0; i < resGeoms.NumGeometries; i++)
+            {
+                var resGeom = resGeoms.GetGeometryN(i);
+                string resWkt = wtr.Write(resGeom);
+                Debug.Print("geometry {0} = {1}", i, resWkt);
+                DebugPrintCoords(resGeom.Coordinates.ToList(), "resGeom geom [" + i.ToString() + "] count");
+            }
         }
 
         /// <summary>
