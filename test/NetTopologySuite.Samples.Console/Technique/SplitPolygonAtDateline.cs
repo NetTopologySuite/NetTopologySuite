@@ -14,11 +14,11 @@ using System.Text;
 namespace NetTopologySuite.Samples.Technique
 {
     /// <summary>
-    /// Presents a technique for converting coordnates to a polygon. With the coordinates all in one hemisphere it is a
-    /// fairly simple process. However, when the geometry crosses the dateline it becomes a more challenging problenm.
+    /// Presents a technique for converting coordinates to a polygon. With the coordinates all in one hemisphere it is a
+    /// fairly simple process. However, when the geometry crosses the dateline it becomes a more challenging problem.
     /// This routine attempts to do both. That is to say, it converts coordinates to a poly geometry regardless if the
     /// geometry traverses the dateline or not. If the geometry does cross the dateline then it is split up into multiple
-    /// parts. This benefits the user in two ways: first, any GIS will be able to display the geometry in a proper way
+    /// parts. This benefits the user in two ways: first, any GIS will be able to display the geometry in a proper way regardless of map projection
     /// and two, the GIS will be able to perform geoprocessing functions on the geometry. Note that feature classes do
     /// not support features with multiple parts that share the same edge. Thus, it is left up to the user on how to
     /// commit the geometries to a feature class. Suggestions are to save the multiple geometries as individual features
