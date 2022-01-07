@@ -126,9 +126,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             var geom = _wktReader.Read(NTS);
             TestContext.WriteLine(geom.AsText());
 
-            Geometry constraint = ((Polygon)geom).GetInteriorRingN(0);
+            Geometry constraint = ((NetTopologySuite.Geometries.Polygon)geom).GetInteriorRingN(0);
             constraint = geom.Factory.CreatePolygon((LinearRing)constraint, null);
-            constraint = ((Polygon)constraint.Buffer(-1)).Shell;
+            constraint = ((NetTopologySuite.Geometries.Polygon)constraint.Buffer(-1)).Shell;
             var coordinates = constraint.Coordinates;
             coordinates[coordinates.Length - 1].X -= 1e-7;
             coordinates[coordinates.Length - 1].Y -= 1e-7;
@@ -157,9 +157,9 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             geom = atb.GetTransformation().Transform(geom);
             TestContext.WriteLine(geom.AsText());
 
-            Geometry constraint = ((Polygon)geom).GetInteriorRingN(0);
+            Geometry constraint = ((NetTopologySuite.Geometries.Polygon)geom).GetInteriorRingN(0);
             constraint = geom.Factory.CreatePolygon((LinearRing)constraint, null);
-            constraint = ((Polygon)constraint.Buffer(-1)).Shell;
+            constraint = ((NetTopologySuite.Geometries.Polygon)constraint.Buffer(-1)).Shell;
             var coordinates = constraint.Coordinates;
             coordinates[coordinates.Length - 1].X -= 1e-7;
             coordinates[coordinates.Length - 1].Y -= 1e-7;

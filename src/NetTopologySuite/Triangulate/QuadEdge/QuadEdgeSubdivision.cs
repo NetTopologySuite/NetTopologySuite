@@ -842,7 +842,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public GeometryCollection GetTriangles(GeometryFactory geomFact)
         {
             var triPtsList = GetTriangleCoordinates(false);
-            var tris = new Polygon[triPtsList.Count];
+            var tris = new Geometries.Polygon[triPtsList.Count];
             int i = 0;
             foreach (var triPt in triPtsList)
             {
@@ -911,7 +911,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="qe">a quadedge originating at the cell site</param>
         /// <param name="geomFact">a factory for building the polygon</param>
         /// <returns>a polygon indicating the cell extent</returns>
-        public Polygon GetVoronoiCellPolygon(QuadEdge qe, GeometryFactory geomFact)
+        public Geometries.Polygon GetVoronoiCellPolygon(QuadEdge qe, GeometryFactory geomFact)
         {
             var cellPts = new List<Coordinate>();
             var startQE = qe;

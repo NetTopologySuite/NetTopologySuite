@@ -33,7 +33,30 @@
             return x;
         }
 
-// ReSharper disable InconsistentNaming
+        /// <summary>
+        /// Clamps an integer to a given maximum limit.
+        /// </summary>
+        /// <param name="x">The value to clamp</param>
+        /// <param name="max">The maximum value of the range</param>
+        /// <returns>The clamped value</returns>
+        public static int ClampMax(int x, int max)
+        {
+            if (x > max) return max;
+            return x;
+        }
+
+        /// <summary>
+        /// Computes the ceiling function of the dividend of two integers.
+        /// </summary>
+        /// <param name="num">The numerator</param>
+        /// <param name="denom">The denominator</param>
+        /// <returns>The ceiling of <c>num / denom</c></returns>
+        public static int Ceiling(int num, int denom)
+        {
+            int div = num / denom;
+            return div * denom >= num ? div : div + 1;
+        }
+        // ReSharper disable InconsistentNaming
         private static readonly double LOG10 = System.Math.Log(10);
         // ReSharper restore InconsistentNaming
 

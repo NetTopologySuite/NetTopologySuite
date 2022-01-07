@@ -62,6 +62,36 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Tests whether a triangle is oriented counter-clockwise.
+        /// </summary>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns><c>true</c> if the triangle orientation is counter-clockwise</returns>
+        public static bool IsCCW(Coordinate a, Coordinate b, Coordinate c)
+        {
+            return OrientationIndex.CounterClockwise == Orientation.Index(a, b, c);
+        }
+
+        /// <summary>
+        /// Tests whether a triangle intersects a point.
+        /// </summary>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <param name="p">The point to test</param>
+        /// <returns><c>true</c> if the triangle intersects the point</returns>
+        public static bool Intersects(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
+        {
+            var exteriorIndex = IsCCW(a, b, c) ?
+                OrientationIndex.Clockwise : OrientationIndex.CounterClockwise;
+            if (exteriorIndex == Orientation.Index(a, b, p)) return false;
+            if (exteriorIndex == Orientation.Index(b, c, p)) return false;
+            if (exteriorIndex == Orientation.Index(c, a, p)) return false;
+            return true;
+        }
+
+        /// <summary>
         /// Computes the line which is the perpendicular bisector of the
         /// </summary>
         /// <param name="a">A point</param>
@@ -422,6 +452,15 @@ namespace NetTopologySuite.Geometries
         public bool IsAcute()
         {
             return IsAcute(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Tests whether this triangle is oriented counter-clockwise.
+        /// </summary>
+        /// <returns><c>true</c> if the triangle orientation is counter-clockwise</returns>
+        public bool IsCCW()
+        {
+            return IsCCW(_p0, _p1, _p2);
         }
 
         /// <summary>
