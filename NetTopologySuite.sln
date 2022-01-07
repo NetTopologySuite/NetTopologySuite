@@ -68,7 +68,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		doc\overwrite\namespaces\NetTopologySuite.Precision.md = doc\overwrite\namespaces\NetTopologySuite.Precision.md
 		doc\overwrite\namespaces\NetTopologySuite.Simplify.md = doc\overwrite\namespaces\NetTopologySuite.Simplify.md
 		doc\overwrite\namespaces\NetTopologySuite.Triangulate.md = doc\overwrite\namespaces\NetTopologySuite.Triangulate.md
+		doc\overwrite\namespaces\NetTopologySuite.Triangulate.Polygon.md = doc\overwrite\namespaces\NetTopologySuite.Triangulate.Polygon.md
 		doc\overwrite\namespaces\NetTopologySuite.Triangulate.QuadEdge.md = doc\overwrite\namespaces\NetTopologySuite.Triangulate.QuadEdge.md
+		doc\overwrite\namespaces\NetTopologySuite.Triangulate.Tri.md = doc\overwrite\namespaces\NetTopologySuite.Triangulate.Tri.md
 		doc\overwrite\namespaces\NetTopologySuite.Utilities.md = doc\overwrite\namespaces\NetTopologySuite.Utilities.md
 	EndProjectSection
 EndProject

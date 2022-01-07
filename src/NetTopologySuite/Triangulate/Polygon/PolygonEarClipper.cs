@@ -187,7 +187,7 @@ namespace NetTopologySuite.Triangulate.Polygon
             if (_vertex[intApexIndex].Equals2D(corner[1]))
             {
                 //--- a duplicate corner vertex requires a full scan
-                return isValidEarScan(cornerIndex, corner);
+                return IsValidEarScan(cornerIndex, corner);
             }
             return false;
         }
@@ -248,16 +248,15 @@ namespace NetTopologySuite.Triangulate.Polygon
             return NoVertexIndex;
         }
 
-        /**
-         * Scan all vertices in current ring to check if any are duplicates
-         * of the corner apex vertex, and if so whether the corner ear
-         * intersects the adjacent segments and thus is invalid.
-         * 
-         * @param cornerIndex the index of the corner apex
-         * @param corner the corner vertices
-         * @return true if the corner ia a valid ear
-         */
-        private bool isValidEarScan(int cornerIndex, Coordinate[] corner)
+        /// <summary>
+        /// Scan all vertices in current ring to check if any are duplicates
+        /// of the corner apex vertex, and if so whether the corner ear
+        /// intersects the adjacent segments and thus is invalid.
+        /// </summary>
+        /// <param name="cornerIndex">The index of the corner apex</param>
+        /// <param name="corner">The corner vertices</param>
+        /// <returns><c>true</c> if the corner ia a valid ear</returns>
+        private bool IsValidEarScan(int cornerIndex, Coordinate[] corner)
         {
             double cornerAngle = AngleUtility.AngleBetweenOriented(corner[0], corner[1], corner[2]);
 
@@ -310,9 +309,9 @@ namespace NetTopologySuite.Triangulate.Polygon
             return cornerEnv;
         }
 
-        /**
-         * Remove the corner apex vertex and update the candidate corner location.
-         */
+        /// <summary>
+        /// Remove the corner apex vertex and update the candidate corner location.
+        /// </summary>
         private void RemoveCorner()
         {
             int cornerApexIndex = _cornerIndex[1];
@@ -342,11 +341,10 @@ namespace NetTopologySuite.Triangulate.Polygon
             _cornerIndex[2] = 2;
         }
 
-        /**
-         * Fetch the corner vertices from the indices.
-         * 
-         * @param corner an array for the corner vertices
-         */
+        /// <summary>
+        /// Fetch the corner vertices from the indices.
+        /// </summary>
+        /// <param name="cornerVertex">An array for the corner vertices</param>
         private void FetchCorner(Coordinate[] cornerVertex)
         {
             cornerVertex[0] = _vertex[_cornerIndex[0]];
@@ -354,9 +352,9 @@ namespace NetTopologySuite.Triangulate.Polygon
             cornerVertex[2] = _vertex[_cornerIndex[2]];
         }
 
-        /**
-         * Move to next corner.
-         */
+        /// <summary>
+        /// Move to next corner.
+        /// </summary>
         private void NextCorner(Coordinate[] cornerVertex)
         {
             if (_vertexSize < 3)
@@ -369,13 +367,11 @@ namespace NetTopologySuite.Triangulate.Polygon
             FetchCorner(cornerVertex);
         }
 
-        /**
-         * Get the index of the next available shell coordinate starting from the given
-         * index.
-         * 
-         * @param index candidate position
-         * @return index of the next available shell coordinate
-         */
+        /// <summary>
+        /// Get the index of the next available shell coordinate starting from the given index.
+        /// </summary>
+        /// <param name="index">Coordinate position</param>
+        /// <returns>Index of the next available shell coordinate</returns>
         private int NextIndex(int index)
         {
             return _vertexNext[index];

@@ -22,11 +22,10 @@ namespace NetTopologySuite.Triangulate.Polygon
      */
     class VertexSequencePackedRtree
     {
-
-        /**
-         * Number of items/nodes in a parent node.
-         * Determined empirically.  Performance is not too sensitive to this.
-         */
+        /// <summary>
+        /// Number of items/nodes in a parent node.
+        /// Determined empirically.  Performance is not too sensitive to this.
+        /// </summary>
         private const int NodeCapacity = 16;
 
         private Coordinate[] _items;

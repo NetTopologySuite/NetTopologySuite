@@ -77,7 +77,7 @@ namespace NetTopologySuite.Triangulate.Polygon
                 orderedCoords.Add(coord);
 
             cutMap = new Dictionary<Coordinate, List<Coordinate>>();
-            var orderedHoles = sortHoles(inputPolygon);
+            var orderedHoles = SortHoles(inputPolygon);
             for (int i = 0; i < orderedHoles.Count; i++)
             {
                 JoinHole(orderedHoles[i]);
@@ -213,15 +213,13 @@ namespace NetTopologySuite.Triangulate.Polygon
             return list;
         }
 
-        /**
-         * Determine if a line segment between a hole vertex
-         * and a shell vertex lies inside the input polygon.
-         * 
-         * @param holeCoord a hole coordinate
-         * @param shellCoord a shell coordinate
-         * @return true if the line lies inside the polygon
-         */
-
+        /// <summary>
+        /// Determine if a line segment between a hole vertex
+        /// and a shell vertex lies inside the input polygon.
+        /// </summary>
+        /// <param name="holeCoord">A hole coordinate</param>
+        /// <param name="shellCoord">A shell coordinate</param>
+        /// <returns><c>true</c> if the line lies inside the polygon</returns>
         private bool IsJoinable(Coordinate holeCoord, Coordinate shellCoord)
         {
             /*
@@ -241,13 +239,12 @@ namespace NetTopologySuite.Triangulate.Polygon
             return isJoinable;
         }
 
-        /**
-         * Tests whether a line segment crosses the polygon boundary.
-         * 
-         * @param p0 a vertex
-         * @param p1 a vertex
-         * @return true if the line segment crosses the polygon boundary
-         */
+        /// <summary>
+        /// Tests whether a line segment crosses the polygon boundary.
+        /// </summary>
+        /// <param name="p0">A vertex</param>
+        /// <param name="p1">A vertex</param>
+        /// <returns><c>true</c> if the line segment crosses the polygon boundary</returns>
         private bool CrossesPolygon(Coordinate p0, Coordinate p1)
         {
             var segString = new BasicSegmentString(
@@ -262,14 +259,13 @@ namespace NetTopologySuite.Triangulate.Polygon
             return segInt.HasProperIntersection;
         }
 
-        /**
-         * Add hole at proper position in shell coordinate list.
-         * Also adds hole points to ordered coordinates.
-         * 
-         * @param shellVertexIndex
-         * @param holeCoords
-         * @param holeVertexIndex
-         */
+        /// <summary>
+        /// Add hole at proper position in shell coordinate list.
+        /// Also adds hole points to ordered coordinates.
+        /// </summary>
+        /// <param name="shellVertexIndex"></param>
+        /// <param name="holeCoords"></param>
+        /// <param name="holeVertexIndex"></param>
         private void AddHoleToShell(int shellVertexIndex, Coordinate[] holeCoords, int holeVertexIndex)
         {
             var newCoords = new List<Coordinate>();
@@ -287,13 +283,12 @@ namespace NetTopologySuite.Triangulate.Polygon
                 orderedCoords.Add(coord);
         }
 
-        /**
-         * Sort the holes by minimum X, minimum Y.
-         * 
-         * @param poly polygon that contains the holes
-         * @return a list of ordered hole geometry
-         */
-        private List<LinearRing> sortHoles(Geometries.Polygon poly)
+        /// <summary>
+        /// Sort the holes by minimum X, minimum Y.
+        /// </summary>
+        /// <param name="poly">Polygon that contains the holes</param>
+        /// <returns>A list of ordered hole geometry</returns>
+        private List<LinearRing> SortHoles(Geometries.Polygon poly)
         {
             var holes = new List<LinearRing>();
             for (int i = 0; i < poly.NumInteriorRings; i++)
@@ -304,12 +299,11 @@ namespace NetTopologySuite.Triangulate.Polygon
             return holes;
         }
 
-        /**
-         * Gets a list of indices of the leftmost vertices in a ring.
-         * 
-         * @param geom the hole ring
-         * @return index of the left most vertex
-         */
+        /// <summary>
+        /// Gets a list of indices of the leftmost vertices in a ring.
+        /// </summary>
+        /// <param name="ring">The hole ring</param>
+        /// <returns>Index of the left most vertex</returns>
         private List<int> GetLeftMostVertex(LinearRing ring)
         {
             var coords = ring.Coordinates;
@@ -331,11 +325,6 @@ namespace NetTopologySuite.Triangulate.Polygon
             return new MCIndexSegmentSetMutualIntersector(polySegStrings);
         }
 
-        /**
-         * 
-         * @author mdavis
-         *
-         */
         private class EnvelopeComparer : IComparer<Geometry>
         {
             public static EnvelopeComparer Instance = new EnvelopeComparer();

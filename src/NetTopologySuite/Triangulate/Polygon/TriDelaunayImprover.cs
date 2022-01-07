@@ -7,25 +7,22 @@ using System.Text;
 
 namespace NetTopologySuite.Triangulate.Polygon
 {
-    /**
-     * Improves the quality of a triangulation of {@link Tri}s via
-     * iterated Delaunay flipping.
-     * This produces a Constrained Delaunay Triangulation
-     * with the constraints being the boundary of the input triangulation.
-     * 
-     * @author mdavis
-     */
+    /// <summary>
+    /// Improves the quality of a triangulation of <see cref="Tri.Tri"/>s via
+    /// iterated Delaunay flipping.
+    /// This produces a Constrained Delaunay Triangulation
+    /// with the constraints being the boundary of the input triangulation.
+    /// </summary>
+    /// <author>Martin Davis</author>
     class TriDelaunayImprover
     {
-
-        /**
-         * Improves the quality of a triangulation of {@link Tri}s via
-         * iterated Delaunay flipping.
-         * The Tris are assumed to be linked into a Triangulation
-         * (e.g. via {@link TriangulationBuilder}).
-         * 
-         * @param triList the list of Tris to flip.
-         */
+        /// <summary>
+        /// Improves the quality of a triangulation of {@link Tri}s via
+        /// iterated Delaunay flipping.
+        /// The Tris are assumed to be linked into a Triangulation
+        /// (e.g. via <see cref="TriangulationBuilder"/>).
+        /// </summary>
+        /// <param name="triList">The list of <c>Tri</c>s to improve</param>
         public static void Improve(IList<Tri.Tri> triList)
         {
             var improver = new TriDelaunayImprover(triList);
@@ -53,14 +50,12 @@ namespace NetTopologySuite.Triangulate.Polygon
             }
         }
 
-        /**
-         * Improves a triangulation by examining pairs of adjacent triangles
-         * (forming a quadrilateral) and testing if flipping the diagonal of
-         * the quadrilateral would produce two new triangles with larger minimum
-         * interior angles.
-         * 
-         * @return the number of flips that were made
-         */
+        /// <summary>Improves a triangulation by examining pairs of adjacent triangles
+        /// (forming a quadrilateral) and testing if flipping the diagonal of
+        /// the quadrilateral would produce two new triangles with larger minimum
+        /// interior angles.
+        /// </summary>
+        /// <returns>The number of flips that were made</returns>
         private int ImproveScan(IList<Tri.Tri> triList)
         {
             int improveCount = 0;
@@ -81,13 +76,12 @@ namespace NetTopologySuite.Triangulate.Polygon
             return improveCount;
         }
 
-        /**
-         * Does a flip of the common edge of two Tris if the Delaunay condition is not met.
-         * 
-         * @param tri0 a Tri
-         * @param tri1 a Tri
-         * @return true if the triangles were flipped
-         */
+        /// <summary>
+        /// Does a flip of the common edge of two Tris if the Delaunay condition is not met.
+        /// </summary>
+        /// <param name="tri">A <c>Tri</c></param>
+        /// <param name="index">The index of the <paramref name="tri"/></param>
+        /// <returns><c>true</c> if the triangles were flipped</returns>
         private bool ImproveNonDelaunay(Tri.Tri tri, int index)
         {
             if (tri == null)
@@ -134,19 +128,18 @@ namespace NetTopologySuite.Triangulate.Polygon
             return false;
         }
 
-        /**
-         * Tests if the quadrilateral formed by two adjacent triangles is convex.
-         * opp0-adj0-adj1 and opp1-adj1-adj0 are the triangle corners 
-         * and hence are known to be convex.
-         * The quadrilateral is convex if the other corners opp0-adj0-opp1
-         * and opp1-adj1-opp0 have the same orientation (since at least one must be convex).
-         * 
-         * @param adj0 adjacent edge vertex 0
-         * @param adj1 adjacent edge vertex 1
-         * @param opp0 corner vertex of triangle 0
-         * @param opp1 corner vertex of triangle 1
-         * @return true if the quadrilateral is convex
-         */
+        /// <summary>
+        /// Tests if the quadrilateral formed by two adjacent triangles is convex.
+        /// opp0-adj0-adj1 and opp1-adj1-adj0 are the triangle corners
+        /// and hence are known to be convex.
+        /// The quadrilateral is convex if the other corners opp0-adj0-opp1
+        /// and opp1-adj1-opp0 have the same orientation (since at least one must be convex).
+        /// </summary>
+        /// <param name="adj0">The adjacent edge vertex 0</param>
+        /// <param name="adj1">The adjacent edge vertex 1</param>
+        /// <param name="opp0">The corner vertex of triangle 0</param>
+        /// <param name="opp1">The corner vertex of triangle 1</param>
+        /// <returns><c>true</c> if the quadrilateral is convex</returns>
         private static bool IsConvex(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1)
         {
             var dir0 = Orientation.Index(opp0, adj0, opp1);
@@ -155,18 +148,17 @@ namespace NetTopologySuite.Triangulate.Polygon
             return isConvex;
         }
 
-        /**
-         * Tests if either of a pair of adjacent triangles satisfy the Delaunay condition.
-         * The triangles are opp0-adj0-adj1 and opp1-adj1-adj0.
-         * The Delaunay condition is not met if one opposite vertex 
-         * lies is in the circumcircle of the other triangle.
-         * 
-         * @param adj0 adjacent edge vertex 0
-         * @param adj1 adjacent edge vertex 1
-         * @param opp0 corner vertex of triangle 0
-         * @param opp1 corner vertex of triangle 1
-         * @return true if the triangles are Delaunay
-         */
+        /// <summary>
+        /// Tests if either of a pair of adjacent triangles satisfy the Delaunay condition.
+        /// The triangles are opp0-adj0-adj1 and opp1-adj1-adj0.
+        /// The Delaunay condition is not met if one opposite vertex
+        /// lies is in the circumcircle of the other triangle.
+        /// </summary>
+        /// <param name="adj0">The adjacent edge vertex 0</param>
+        /// <param name="adj1">The adjacent edge vertex 1</param>
+        /// <param name="opp0">The corner vertex of triangle 0</param>
+        /// <param name="opp1">The corner vertex of triangle 1</param>
+        /// <returns><c>true</c> if the triangles are Delaunay</returns>
         private static bool IsDelaunay(Coordinate adj0, Coordinate adj1, Coordinate opp0, Coordinate opp1)
         {
             if (IsInCircle(adj0, adj1, opp0, opp1)) return false;
@@ -174,16 +166,15 @@ namespace NetTopologySuite.Triangulate.Polygon
             return true;
         }
 
-        /**
-         * Tests whether a point p is in the circumcircle of a triangle abc
-         * (oriented clockwise).
-         * @param a a vertex of the triangle
-         * @param b a vertex of the triangle
-         * @param c a vertex of the triangle
-         * @param p the point
-         * 
-         * @return true if the point is in the circumcircle
-         */
+        /// <summary>
+        /// Tests whether a point p is in the circumcircle of a triangle abc
+        /// (oriented clockwise).
+        /// </summary>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <param name="p">The point</param>
+        /// <returns><c>true</c> if the point is in the circumcircle</returns>
         private static bool IsInCircle(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
         {
             return TrianglePredicate.IsInCircleRobust(a, c, b, p);
