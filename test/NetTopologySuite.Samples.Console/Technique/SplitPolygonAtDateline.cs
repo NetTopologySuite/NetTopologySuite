@@ -134,6 +134,29 @@ namespace NetTopologySuite.Samples.Technique
             Debug.Print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
             // ###################################################################################################################
+            // input coordinate checks
+            // ###################################################################################################################
+            if (inpCoords == null)
+            {
+                throw new Exception("Null input coordinates.");
+            }
+
+            // check the minimum number of input coordinates for an output geometry
+            switch (outType)
+            {
+                case OgcGeometryType.LineString:
+                    if (inpCoords.Count < 2)
+                        throw new Exception("Input list has fewer than 2 coordinates. To create a polyline, the minimum is 2 coordinates.");
+                    break;
+                case OgcGeometryType.Polygon:
+                    if (inpCoords.Count < 3)
+                        throw new Exception("Input list has fewer than 3 coordinates. To create a polygon, the minimum is 3 coordinates.");
+                    break;
+                default:
+                    throw new Exception("Unsupported output geometry type.");
+            }
+
+            // ###################################################################################################################
             // check the output geometry type. currently only polygon output is supported. Polylines should use a similar process
             // with some slight modifications.
             // ###################################################################################################################
@@ -200,20 +223,23 @@ namespace NetTopologySuite.Samples.Technique
             int idxLast = coordsNrm.Count - 1;
             if (!coordsNrm[0].Equals2D(coordsNrm[idxLast]))
             {
-                coordsNrm.Add(coordsNrm[0]);
+                // coordsNrm.Add(coordsNrm[0]);
+                var coord0 = coordsNrm[0];
+                var coord0Clone = coord0.Create(coord0.X, coord0.Y, coord0.Z, coord0.M);
+                coordsNrm.Add(coord0Clone);
             }
             DebugPrintCoords(coordsNrm, "Normalized number of coordinates");
 
-            // check the minimum number of coordinates for an output geometry
+            // check the minimum number of normalized coordinates for an output geometry
             switch (outType)
             {
                 case OgcGeometryType.LineString:
                     if (coordsNrm.Count < 2)
-                        throw new Exception("Input list has fewer than 2 coordinates. To create a polyline, the minimum is 2 coordinates.");
+                        throw new Exception("Normalized list has fewer than 2 coordinates. To create a polyline, the minimum is 2 coordinates.");
                     break;
                 case OgcGeometryType.Polygon:
                     if (coordsNrm.Count < 3)
-                        throw new Exception("Input list has fewer than 3 coordinates. To create a polygon, the minimum is 3 coordinates.");
+                        throw new Exception("Normalized list has fewer than 3 coordinates. To create a polygon, the minimum is 3 coordinates.");
                     break;
                 default:
                     throw new Exception("Unsupported output geometry type.");
