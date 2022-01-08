@@ -87,8 +87,8 @@ namespace NetTopologySuite.Samples.Technique
         }
 
         /// <summary>
-        /// This routine takes a list of Coordinates and attempts to convert them to a poly geometry (polyline or polygon). Special care
-        /// is taken to determine if the coordinates cross the dateline and if they do then there is special processing to split the geometry
+        /// This routine takes a list of Coordinates and attempts to convert them to a poly geometry (polyline or polygon). Special care is
+        /// taken to determine if the coordinates cross the dateline and if they do then there is special processing to split the geometry
         /// into multiple parts so that GIS can display and geoprocess without any issues. (Currently only polygon output is supported. Polyline
         /// support will come in a future update.)
         /// </summary>
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Samples.Technique
             {
                 case OgcGeometryType.LineString:
                     if (coordsNrm.Count < 2)
-                        throw new Exception("Input list has fewer than 3 coordinates. To create a polyline, the minimum is 2 coordinates.");
+                        throw new Exception("Input list has fewer than 2 coordinates. To create a polyline, the minimum is 2 coordinates.");
                     break;
                 case OgcGeometryType.Polygon:
                     if (coordsNrm.Count < 3)
@@ -316,7 +316,7 @@ namespace NetTopologySuite.Samples.Technique
                 // a zero width trim gap is interpreted as a cutter line.
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 Geometry nodedLinework = null;
-                if (double.IsInfinity(outTrimGap) || double.IsNaN(outTrimGap) || outTrimGap == 0)
+                if (double.IsInfinity(outTrimGap) || double.IsNaN(outTrimGap) || outTrimGap == 0d)
                 {
                     // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                     // use a cutter line to split the main polygon
@@ -351,6 +351,7 @@ namespace NetTopologySuite.Samples.Technique
                     //nodedLinework = nodedLinework.Boundary.Intersection(cutterPgon.Boundary);
                 }
 
+                // debug the nodedLinework
                 Debug.Print("nodedLinework is {0}", nodedLinework.GeometryType);
                 if (nodedLinework.GeometryType == "MultiLineString")
                 {
@@ -362,6 +363,7 @@ namespace NetTopologySuite.Samples.Technique
                     }
                 }
 
+                // debug the polygonize errors
                 var wtr = new WKTWriter();
                 string resWkt = wtr.Write(nodedLinework);
                 Debug.Print("nodedLinework = {0}", resWkt);
@@ -468,12 +470,6 @@ namespace NetTopologySuite.Samples.Technique
             return resGeoms;
         }
 
-        /// <summary>
-        /// This routine takes a list of Coordinates and attempts to convert them to a poly geometry (polyline or polygon). Special care
-        /// is taken to determine if the coordinates cross the dateline and if they do then there is special processing to split the geometry
-        /// into multiple parts so that GIS can display and geoprocess without any issues. (Currently only polygon output is supported. Polyline
-        /// support will come in a future update.)
-        /// </summary>
         /// <param name="coordsInp">A list of coordinates that define a polyline or polygon.</param>
         /// <param name="proj4WktInp">The projection of the input coordinates as a PROJ4 WKT string.</param>
         /// <returns>
@@ -635,8 +631,6 @@ namespace NetTopologySuite.Samples.Technique
             return (Geometry)geom.Factory.BuildGeometry(polyArray);
         }
 
-
-
         // https://github.com/NetTopologySuite/NetTopologySuite/blob/c838c5061aa0f13d1fa65f828a868d790302ec06/test/NetTopologySuite.TestRunner/Functions/PolygonizeFunctions.cs
         private static Geometry Polygonize(Geometry g, bool extractOnlyPolygonal)
         {
@@ -645,7 +639,6 @@ namespace NetTopologySuite.Samples.Technique
             polygonizer.Add(lines);
             return polygonizer.GetGeometry();
         }
-
 
         public static Geometry PolygonizeAllErrors(Geometry g)
         {
@@ -668,7 +661,6 @@ namespace NetTopologySuite.Samples.Technique
 
             return g.Factory.BuildGeometry(errs);
         }
-
 
         /// <summary>
         /// Define the cutter polyline that is based on the dateline with a shift to put it in the same hemisphere as the polygon.
