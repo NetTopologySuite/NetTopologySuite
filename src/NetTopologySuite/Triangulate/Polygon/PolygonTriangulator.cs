@@ -72,6 +72,7 @@ namespace NetTopologySuite.Triangulate.Polygon
             _triList = new List<Tri.Tri>();
             foreach (var poly in polys)
             {
+                if (poly.IsEmpty) continue;
                 var polyTriList = TriangulatePolygon((Geometries.Polygon)poly);
                 _triList.AddRange(polyTriList);
             }

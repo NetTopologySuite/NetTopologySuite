@@ -41,6 +41,13 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate.Polygon
         }
 
         [Test]
+        public void TestEmpty()
+        {
+            checkTri("POLYGON EMPTY"
+                , "GEOMETRYCOLLECTION EMPTY");
+        }
+
+        [Test]
         public void TestMultiPolygon()
         {
             checkTri("MULTIPOLYGON (((10 10, 20 50, 50 50, 40 20, 10 10)), ((20 60, 60 60, 90 20, 90 90, 20 60)), ((10 90, 10 70, 40 70, 50 90, 10 90)))"
