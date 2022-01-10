@@ -38,8 +38,8 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// <param name="inputGeom">The input geometry</param>
         public ConstrainedDelaunayTriangulator(Geometry inputGeom)
         {
-            _geomFact = new GeometryFactory();
             _inputGeom = inputGeom;
+            _geomFact = inputGeom.Factory;
         }
 
         /// <summary>

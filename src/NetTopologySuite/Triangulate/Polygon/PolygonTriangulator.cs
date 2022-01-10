@@ -42,8 +42,8 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// <param name="inputGeom">The input geometry</param>
         public PolygonTriangulator(Geometry inputGeom)
         {
-            _geomFact = new GeometryFactory();
             _inputGeom = inputGeom;
+            _geomFact = _inputGeom.Factory;
         }
 
         /// <summary>
