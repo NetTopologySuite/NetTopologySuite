@@ -4,31 +4,35 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
-    /// An implementation of a 2-D KD-Tree. KD-trees provide fast range searching
-    /// and fast lookup for point data.
+    /// An implementation of a
+    /// <a href='https://en.wikipedia.org/wiki/K-d_tree'> KD - Tree </a>
+    /// over two dimensions(X and Y).
+    /// KD-trees provide fast range searching and fast lookup for point data.
+    /// The tree is built dynamically by inserting points.
+    /// The tree supports queries by range and for point equality.
+    /// For querying an internal stack is used instead of recursion to avoid overflow.
     /// </summary>
     /// <remarks>
     /// This implementation supports detecting and snapping points which are closer
     /// than a given distance tolerance.
     /// If the same point (up to tolerance) is inserted
     /// more than once , it is snapped to the existing node.
-    /// In other words, if a point is inserted which lies within the tolerance of a node already in the index,
+    /// In other words, if a point is inserted which lies
+    /// within the tolerance of a node already in the index,
     /// it is snapped to that node.
-    /// When a point is snapped to a node then a new node is not created but the count of the existing node
-    /// is incremented.
+    /// When an inserted point is snapped to a node then a new node is not created
+    /// but the count of the existing node is incremented.
     /// If more than one node in the tree is within tolerance of an inserted point,
     /// the closest and then lowest node is snapped to.
     /// <para/>
-    /// Note that the structure of a KD-Tree depends on the order of insertion of the points.
-    /// A tree may become imbalanced if the inserted points are coherent
+    /// The structure of a KD-Tree depends on the order of insertion of the points.
+    /// A tree may become umbalanced if the inserted points are coherent
     /// (e.g.monotonic in one or both dimensions).
     /// A perfectly balanced tree has depth of only log2(N),
-    /// but an imbalanced tree may be much deeper.
+    /// but an umbalanced tree may be much deeper.
     /// This has a serious impact on query efficiency.
-    /// Even worse, since recursion is used for querying the tree
-    /// an extremely deep tree may cause a <see cref="System.StackOverflowException"/>.
     /// One solution to this is to randomize the order of points before insertion
-    /// (e.g.by using <a href = "https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle" > Fisher - Yates shuffling</a>).
+    /// (e.g. by using <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle"> Fisher - Yates shuffling</a>).
     /// </remarks>
     /// <typeparam name="T">The type of the user data object</typeparam>
     /// <author>David Skea</author>
@@ -200,7 +204,7 @@ namespace NetTopologySuite.Index.KdTree
         {
             var currentNode = _root;
             var leafNode = _root;
-            bool isOddLevel = true;
+            bool isXLevel = true;
             bool isLessThan = true;
 
             /*
@@ -219,20 +223,21 @@ namespace NetTopologySuite.Index.KdTree
                     return currentNode;
                 }
 
-                if (isOddLevel)
+                double splitValue = currentNode.SplitValue(isXLevel);
+                if (isXLevel)
                 {
-                    isLessThan = p.X < currentNode.X;
+                    isLessThan = p.X < splitValue;
                 }
                 else
                 {
-                    isLessThan = p.Y < currentNode.Y;
+                    isLessThan = p.Y < splitValue;
                 }
                 leafNode = currentNode;
                 currentNode = isLessThan
                     ? currentNode.Left
                     : currentNode.Right;
 
-                isOddLevel = !isOddLevel;
+                isXLevel = !isXLevel;
             }
 
             // no node found, add new leaf node to tree
@@ -252,86 +257,73 @@ namespace NetTopologySuite.Index.KdTree
             return node;
         }
 
-        private static void QueryNode(KdNode<T> currentNode,
-            Envelope queryEnv, bool odd, IKdNodeVisitor<T> visitor)
-        {
-            if (currentNode == null)
-                return;
-
-            double min;
-            double max;
-            double discriminant;
-            if (odd)
-            {
-                min = queryEnv.MinX;
-                max = queryEnv.MaxX;
-                discriminant = currentNode.X;
-            }
-            else
-            {
-                min = queryEnv.MinY;
-                max = queryEnv.MaxY;
-                discriminant = currentNode.Y;
-            }
-            bool searchLeft = min < discriminant;
-            bool searchRight = discriminant <= max;
-
-            // search is computed via in-order traversal
-            if (searchLeft)
-            {
-                QueryNode(currentNode.Left, queryEnv, !odd, visitor);
-            }
-            if (queryEnv.Contains(currentNode.Coordinate))
-            {
-                visitor.Visit(currentNode);
-            }
-            if (searchRight)
-            {
-                QueryNode(currentNode.Right, queryEnv, !odd, visitor);
-            }
-
-        }
-
-        private KdNode<T> QueryNodePoint(KdNode<T> currentNode,
-            Coordinate queryPt, bool odd)
-        {
-            if (currentNode == null)
-                return null;
-            if (currentNode.Coordinate.Equals2D(queryPt))
-                return currentNode;
-
-            double ord;
-            double discriminant;
-            if (odd)
-            {
-                ord = queryPt.X;
-                discriminant = currentNode.X;
-            }
-            else
-            {
-                ord = queryPt.Y;
-                discriminant = currentNode.Y;
-            }
-            bool searchLeft = ord < discriminant;
-
-            if (searchLeft)
-            {
-                return QueryNodePoint(currentNode.Left, queryPt, !odd);
-            }
-            else
-            {
-                return QueryNodePoint(currentNode.Right, queryPt, !odd);
-            }
-        }
-
-        /// <summary>
-        /// Performs a range search of the points in the index.
-        /// </summary>
-        /// <param name="queryEnv">The range rectangle to query</param>
-        /// <param name="visitor"></param>
+        /**
+         * Performs a range search of the points in the index and visits all nodes found.
+         * 
+         * @param queryEnv the range rectangle to query
+         * @param visitor a visitor to visit all nodes found by the search
+         */
         public void Query(Envelope queryEnv, IKdNodeVisitor<T> visitor)
         {
-            QueryNode(_root, queryEnv, true, visitor);
+
+            var queryStack = new Stack<QueryStackFrame>();
+            var currentNode = Root;
+            bool isXLevel = true;
+
+            // search is computed via in-order traversal
+            while (true)
+            {
+                if (currentNode != null)
+                {
+                    queryStack.Push(new QueryStackFrame(currentNode, isXLevel));
+
+                    bool searchLeft = currentNode.IsRangeOverLeft(isXLevel, queryEnv);
+                    if (searchLeft)
+                    {
+                        currentNode = currentNode.Left;
+                        if (currentNode != null)
+                        {
+                            isXLevel = !isXLevel;
+                        }
+                    }
+                    else
+                    {
+                        currentNode = null;
+                    }
+                }
+                else if (queryStack.Count > 0)
+                {
+                    // currentNode is empty, so pop stack
+                    var frame = queryStack.Pop();
+                    currentNode = frame.Node;
+                    isXLevel = frame.IsXLevel;
+
+                    //-- check if search matches current node
+                    if (queryEnv.Contains(currentNode.Coordinate))
+                    {
+                        visitor.Visit(currentNode);
+                    }
+
+                    bool searchRight = currentNode.IsRangeOverRight(isXLevel, queryEnv);
+                    if (searchRight)
+                    {
+                        currentNode = currentNode.Right;
+                        if (currentNode != null)
+                        {
+                            isXLevel = !isXLevel;
+                        }
+                    }
+                    else
+                    {
+                        currentNode = null;
+                    }
+                }
+                else
+                {
+                    //-- stack is empty and no current node
+                    return;
+                }
+            }
         }
 
         /// <summary>
@@ -342,7 +334,7 @@ namespace NetTopologySuite.Index.KdTree
         public IList<KdNode<T>> Query(Envelope queryEnv)
         {
             var result = new List<KdNode<T>>();
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor(result));
+            Query(queryEnv, result);
             return result;
         }
 
@@ -353,7 +345,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="result">A collection to accumulate the result nodes into</param>
         public void Query(Envelope queryEnv, IList<KdNode<T>> result)
         {
-            QueryNode(_root, queryEnv, true, new KdNodeVisitor(result));
+            Query(queryEnv, new KdNodeVisitor(result));
         }
 
         /// <summary>
@@ -363,7 +355,27 @@ namespace NetTopologySuite.Index.KdTree
         /// <returns>the point node, if it is found in the index, or <see langword="null"/> if not</returns>
         public KdNode<T> Query(Coordinate queryPt)
         {
-            return QueryNodePoint(Root, queryPt, true);
+            var currentNode = Root;
+            bool isXLevel = true;
+
+            while (currentNode != null)
+            {
+                if (currentNode.Coordinate.Equals2D(queryPt))
+                    return currentNode;
+
+                bool searchLeft = currentNode.IsPointOnLeft(isXLevel, queryPt);
+                if (searchLeft)
+                {
+                    currentNode = currentNode.Left;
+                }
+                else
+                {
+                    currentNode = currentNode.Right;
+                }
+                isXLevel = !isXLevel;
+            }
+            //-- point not found
+            return null;
         }
 
         /// <summary>
@@ -466,6 +478,19 @@ namespace NetTopologySuite.Index.KdTree
                     _matchDist = dist;
                 }
             }
+        }
+
+        class QueryStackFrame
+        {
+            public QueryStackFrame(KdNode<T> node, bool isXLevel)
+            {
+                Node = node;
+                IsXLevel = isXLevel;
+            }
+
+            public KdNode<T> Node { get; }
+
+            public bool IsXLevel { get; } = false;
         }
     }
 }

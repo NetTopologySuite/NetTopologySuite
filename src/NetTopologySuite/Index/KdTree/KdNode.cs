@@ -57,6 +57,24 @@ namespace NetTopologySuite.Index.KdTree
         public double Y => _p.Y;
 
         /// <summary>
+        /// Gets the split value at a node, depending on
+        /// whether the node splits on X or Y.
+        /// The X (or Y) ordinates of all points in the left subtree
+        /// are less than the split value, and those
+        /// in the right subtree are greater than or equal to the split value.
+        /// </summary>
+        /// <param name="isSplitOnX">A flag whether the node splits a X or Y</param>
+        /// <returns>The splitting value</returns>
+        public double SplitValue(bool isSplitOnX)
+        {
+            if (isSplitOnX)
+            {
+                return _p.X;
+            }
+            return _p.Y;
+        }
+
+        /// <summary>
         /// Gets the location of this node
         /// </summary>
         /// <returns>The <c>Coordinate</c></returns>
@@ -96,5 +114,81 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <returns></returns>
         public bool IsRepeated => _count > 1;
+
+        /// <summary>
+        /// Tests whether the node's left subtree may contain values
+        /// in a given range envelope.
+        /// </summary>
+        /// <param name="isSplitOnX">A flag whether the node splits on  X or Y</param>
+        /// <param name="env">The range envelope</param>
+        /// <returns><c>true</c> if the left subtree is in range</returns>
+        internal bool IsRangeOverLeft(bool isSplitOnX, Envelope env)
+        {
+            double envMin;
+            if (isSplitOnX)
+            {
+                envMin = env.MinX;
+            }
+            else
+            {
+                envMin = env.MinY;
+            }
+            double splitValue = SplitValue(isSplitOnX);
+            bool isInRange = envMin < splitValue;
+            return isInRange;
+        }
+
+        /// <summary>
+        /// Tests whether the node's right subtree may contain values
+        /// in a given range envelope.
+        /// </summary>
+        /// <param name="isSplitOnX">A flag whether the node splits on  X or Y</param>
+        /// <param name="env">The range envelope</param>
+        /// <returns><c>true</c>if the right subtree is in range</returns>
+        internal bool IsRangeOverRight(bool isSplitOnX, Envelope env)
+        {
+            double envMax;
+            if (isSplitOnX)
+            {
+                envMax = env.MaxX;
+            }
+            else
+            {
+                envMax = env.MaxY;
+            }
+            double splitValue = SplitValue(isSplitOnX);
+            bool isInRange = splitValue <= envMax;
+            return isInRange;
+        }
+
+        /// <summary>
+        /// Tests whether a point is strictly to the left
+        /// of the splitting plane for this node.
+        /// If so it may be in the left subtree of this node,
+        /// Otherwise, the point may be in the right subtree.
+        /// The point is to the left if its X (or Y) ordinate
+        /// is less than the split value.
+        /// </summary>
+        /// <param name="isSplitOnX">A flag whether the node splits on  X or Y</param>
+        /// <param name="pt">The query point</param>
+        /// <returns><c>true</c> if the point is strictly to the left.</returns>
+        /// <seealso cref="SplitValue(bool)"/>
+        internal bool IsPointOnLeft(bool isSplitOnX, Coordinate pt)
+        {
+            double ptOrdinate;
+            if (isSplitOnX)
+            {
+                ptOrdinate = pt.X;
+            }
+            else
+            {
+                ptOrdinate = pt.Y;
+            }
+            double splitValue = SplitValue(isSplitOnX);
+            bool isInRange = (ptOrdinate < splitValue);
+            return isInRange;
+        }
+
+
     }
 }
