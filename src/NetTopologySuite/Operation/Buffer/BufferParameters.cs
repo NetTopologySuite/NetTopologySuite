@@ -19,9 +19,9 @@ namespace NetTopologySuite.Operation.Buffer
     public class BufferParameters
     {
         /// <summary>
-        /// The default number of facets into which to divide a fillet of 90 degrees.
-        /// A value of 8 gives less than 2% max error in the buffer distance.
-        /// For a max error of &lt; 1%, use QS = 12.
+        /// The default number of facets into which to divide a fillet of 90 degrees.<br/>
+        /// A value of 8 gives less than 2% max error in the buffer distance.<para/>
+        /// For a max error of &lt; 1%, use QS = 12.<para/>
         /// For a max error of &lt; 0.1%, use QS = 18.
         /// </summary>
         public const int DefaultQuadrantSegments = 8;
@@ -93,62 +93,23 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Gets/sets the number of quadrant segments which will be used
-        /// </summary>
-        /// <remarks>
-        /// QuadrantSegments is the number of line segments used to approximate an angle fillet.
-        /// <list type="table">
-        /// <item><term><c>QuadrantSegments</c> &gt;>= 1</term><description>joins are round, and <c>QuadrantSegments</c> indicates the number of segments to use to approximate a quarter-circle.</description></item>
-        /// <item><term><c>QuadrantSegments</c> = 0</term><description>joins are beveled</description></item>
-        /// <item><term><c>QuadrantSegments</c> &lt; 0</term><description>joins are mitred, and the value of qs indicates the mitre ration limit as <c>mitreLimit = |<tt>QuadrantSegments</tt>|</c></description></item>
-        /// </list>
-        /// For round joins, <c>QuadrantSegments</c> determines the maximum
-        /// error in the approximation to the true buffer curve.
-        /// The default value of 8 gives less than 2% max error in the buffer distance.
-        /// For a max error of &lt; 1%, use QS = 12.
-        /// For a max error of &lt; 0.1%, use QS = 18.
+        /// Gets or sets the number of line segments in a quarter-circle
+        /// used to approximate angle fillets in round endcaps and joins.
+        /// The value should be at least 1.
+        /// <para/>
+        /// This determines the
+        /// error in the approximation to the true buffer curve.<br/>
+        /// The default value of 8 gives less than 2% error in the buffer distance.<para/>
+        /// For an error of &lt; 1%, use QS = 12.<para/>
+        /// For an error of &lt; 0.1%, use QS = 18.<para/>
         /// The error is always less than the buffer distance
         /// (in other words, the computed buffer curve is always inside the true
         /// curve).
-        /// </remarks>
+        /// </summary>
         public int QuadrantSegments
         {
             get => _quadrantSegments;
-            set
-            {
-                _quadrantSegments = value;
-                /*
-                 * Indicates how to construct fillets.
-                 * If qs &gt;= 1, fillet is round, and qs indicates number of
-                 * segments to use to approximate a quarter-circle.
-                 * If qs = 0, fillet is bevelled flat (i.e. no filleting is performed)
-                 * If qs &lt; 0, fillet is mitred, and absolute value of qs
-                 * indicates maximum length of mitre according to
-                 *
-                 * mitreLimit = |qs|
-                 */
-                if (_quadrantSegments == 0)
-                    _joinStyle = JoinStyle.Bevel;
-                if (_quadrantSegments < 0)
-                {
-                    _joinStyle = JoinStyle.Mitre;
-                    _mitreLimit = Math.Abs(_quadrantSegments);
-                }
-
-                if (value <= 0)
-                {
-                    _quadrantSegments = 1;
-                }
-
-                /*
-                 * If join style was set by the value,
-                 * use the default for the actual quadrantSegments value.
-                 */
-                if (_joinStyle != JoinStyle.Round)
-                {
-                    _quadrantSegments = DefaultQuadrantSegments;
-                }
-            }
+            set => _quadrantSegments = value;
         }
 
         /// <summary>
@@ -163,11 +124,11 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Gets/Sets the end cap style of the generated buffer.
+        /// Gets or sets the end cap style of the generated buffer.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The styles supported are <see cref="Buffer.EndCapStyle.Round"/>,
+        /// The styles supported are <see cref="EndCapStyle.Round"/>,
         /// <see cref="Buffer.EndCapStyle.Flat"/>, and
         /// <see cref="Buffer.EndCapStyle.Square"/>.
         /// </para>
@@ -183,8 +144,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
         /// </summary>
         /// <remarks>
-        /// <para>Allowable values are <see cref="Buffer.JoinStyle.Round"/> (which is the default),
+        /// <para>The styles supported are <see cref="Buffer.JoinStyle.Round"/>,
         /// <see cref="Buffer.JoinStyle.Mitre"/> and <see cref="Buffer.JoinStyle.Bevel"/></para>
+        /// The default is <see cref="Buffer.JoinStyle.Round"/>
         /// </remarks>
         public JoinStyle JoinStyle
         {

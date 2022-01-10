@@ -271,7 +271,8 @@ namespace NetTopologySuite.Operation.Buffer
         private bool InvertOrientation { get; set; }
 
         /// <summary>
-        /// Sets the number of segments used to approximate a angle fillet
+        /// Gets or sets the number of line segments in a quarter-circle
+        /// used to approximate angle fillets for round end caps and joins.
         /// </summary>
         public int QuadrantSegments
         {
