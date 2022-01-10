@@ -172,5 +172,49 @@
             return min;
         }
 
+        /// <summary>The inverse of the Golden Ratio phi.</summary>
+        public static readonly double PhiInv = (System.Math.Sqrt(5) - 1.0) / 2.0;
+
+        /// <summary>
+        /// Generates a quasi-random sequence of numbers in the range [0,1].
+        /// They are produced by an additive recurrence with 1/&phi; as the constant.
+        /// This produces a low-discrepancy sequence which is more evenly
+        /// distribute than random numbers.
+        /// <para/>
+        /// See <a href='https://en.wikipedia.org/wiki/Low-discrepancy_sequence#Additive_recurrence'>Wikipedia: Low-discrepancy Sequences - Additive Recurrence</a>.
+        /// <para/>
+        /// The sequence is initialized by calling it
+        /// with any positive fractional number; 0 works well for most uses.
+        /// </summary>
+        /// <param name="curr">The current number in the sequence</param>
+        /// <returns>The next value in the sequence</returns>
+        public static double QuasiRandom(double curr)
+        {
+            return QuasiRandom(curr, PhiInv);
+        }
+
+        /// <summary>
+        /// Generates a quasi-random sequence of numbers in the range [0,1].
+        /// They are produced by an additive recurrence with constant &alpha;.
+        /// <code>
+        /// R(&alpha;) :  t<sub>n</sub> = { t<sub>0</sub> + n&alpha; },  n = 1,2,3,...
+        /// </code>
+        /// When &alpha; is irrational this produces a
+        /// <a href='https://en.wikipedia.org/wiki/Low-discrepancy_sequence#Additive_recurrence'>Low discrepancy sequence</a>
+        /// which is more evenly distributed than random numbers.
+        /// <para/>
+        /// The sequence is initialized by calling it
+        /// with any positive fractional number. 0 works well for most uses.
+        /// </summary>
+        /// <param name="curr">The current number in the sequence</param>
+        /// <param name="alpha">the sequence's additive constant</param>
+        /// <returns>The next value in the sequence</returns>
+        public static double QuasiRandom(double curr, double alpha)
+        {
+            double next = curr + alpha;
+            if (next < 1) return next;
+            return next - System.Math.Floor(next);
+        }
+
     }
 }

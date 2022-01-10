@@ -115,7 +115,8 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets a value indicating the root node of the tree
         /// </summary>
-        internal KdNode<T> Root => _root;
+        /// <returns>The root node of the tree</returns>
+        public KdNode<T> Root => _root;
 
         /// <summary>
         /// Inserts a new point in the kd-tree, with no data.

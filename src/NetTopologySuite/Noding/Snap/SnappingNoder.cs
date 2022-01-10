@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Noding.Snap
 {
@@ -49,6 +50,7 @@ namespace NetTopologySuite.Noding.Snap
             return _nodedResult;
         }
 
+        /// <summary>Computes the noding of a set of <see cref="ISegmentString"/>s</summary>
         /// <param name="inputSegmentStrings">A Collection of <see cref="ISegmentString"/>s</param>
         public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
         {
@@ -58,11 +60,41 @@ namespace NetTopologySuite.Noding.Snap
 
         private IList<ISegmentString> SnapVertices(IEnumerable<ISegmentString> segStrings)
         {
+            //Stopwatch sw = new Stopwatch(); sw.start();
+            SeedSnapIndex(segStrings);
+
             var nodedStrings = new List<ISegmentString>();
             foreach (var ss in segStrings)
                 nodedStrings.Add(SnapVertices(ss));
+            //System.Diagnostics.Debug.WriteLine("Index depth = {0}   Time: {1}", snapIndex.Depth, sw.ElapsedMilliseconds);
 
             return nodedStrings;
+        }
+
+        /// <summary>
+        /// Seeds the snap index with a small set of vertices
+        /// chosen quasi-randomly using a low-discrepancy sequence.
+        /// Seeding the snap index KdTree induces a more balanced tree.
+        /// This prevents monotonic runs of vertices
+        /// unbalancing the tree and causing poor query performance.
+        /// </summary>
+        /// <param name="segStrings">The segStrings to be noded</param>
+        private void SeedSnapIndex(IEnumerable<ISegmentString> segStrings)
+        {
+            const int SEED_SIZE_FACTOR = 100;
+
+            foreach (var ss in segStrings)
+            {
+                var pts = ss.Coordinates;
+                int numPtsToLoad = pts.Length / SEED_SIZE_FACTOR;
+                double rand = 0.0;
+                for (int i = 0; i < numPtsToLoad; i++)
+                {
+                    rand = MathUtil.QuasiRandom(rand);
+                    int index = (int)(pts.Length * rand);
+                    snapIndex.Snap(pts[index]);
+                }
+            }
         }
 
         private NodedSegmentString SnapVertices(ISegmentString ss)

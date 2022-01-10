@@ -42,7 +42,14 @@ namespace NetTopologySuite.Noding.Snap
             return node.Coordinate;
         }
 
+        /// <summary>
+        /// Gets a value indicating the snapping tolerance value for the index
+        /// </summary>
         public double Tolerance { get; }
 
+        /// <summary>
+        /// Gets a value indicating the depth of the tree
+        /// </summary>
+        public int Depth => _snapPointIndex.Depth; 
     }
 }
