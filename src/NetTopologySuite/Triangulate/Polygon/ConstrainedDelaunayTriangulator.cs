@@ -25,11 +25,12 @@ namespace NetTopologySuite.Triangulate.Polygon
         public static Geometry Triangulate(Geometry geom)
         {
             var cdt = new ConstrainedDelaunayTriangulator(geom);
-            return cdt.Compute();
+            return cdt.GetResult();
         }
 
         private readonly GeometryFactory _geomFact;
         private readonly Geometry _inputGeom;
+        private List<Tri.Tri> _triList;
 
         /// <summary>
         /// Constructs a new Constrained Delaunay triangulator.
@@ -41,16 +42,37 @@ namespace NetTopologySuite.Triangulate.Polygon
             _inputGeom = inputGeom;
         }
 
-        private Geometry Compute()
+        /// <summary>
+        /// Gets the triangulation as a <see cref="GeometryCollection"/> of triangular <see cref="Polygon"/>s.
+        /// </summary>
+        /// <returns>A collection of the result triangle polygons</returns>
+        public Geometry GetResult()
         {
+            Compute();
+            return Tri.Tri.ToGeometry(_triList, _geomFact);
+        }
+
+        /// <summary>
+        /// Gets the triangulation as a list of <see cref="Tri.Tri"/>s.
+        /// </summary>
+        /// <returns>The list of <c>Tri</c>s in the triangulation</returns>
+        public IList<Tri.Tri> GetTriangles()
+        {
+            Compute();
+            return _triList;
+        }
+
+        private void Compute()
+        {
+            if (_triList != null) return;
+
             var polys = PolygonExtracter.GetPolygons(_inputGeom);
-            var triList = new List<Tri.Tri>();
+            _triList = new List<Tri.Tri>();
             foreach (var poly in polys)
             {
                 var polyTriList = TriangulatePolygon((Geometries.Polygon)poly);
-                triList.AddRange(polyTriList);
+                _triList.AddRange(polyTriList);
             }
-            return Tri.Tri.ToGeometry(triList, _geomFact);
         }
 
         /// <summary>

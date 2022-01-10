@@ -28,12 +28,13 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// <returns>A <c>GeometryCollection</c> containing the polygons</returns>
         public static Geometry Triangulate(Geometry geom)
         {
-            var clipper = new PolygonTriangulator(geom);
-            return clipper.Compute();
+            var triangulator = new PolygonTriangulator(geom);
+            return triangulator.GetResult();
         }
 
         private readonly GeometryFactory _geomFact;
         private readonly Geometry _inputGeom;
+        private List<Tri.Tri> _triList;
 
         /// <summary>
         /// Constructs a new triangulator.
@@ -45,16 +46,35 @@ namespace NetTopologySuite.Triangulate.Polygon
             _inputGeom = inputGeom;
         }
 
-        private Geometry Compute()
+        /// <summary>
+        /// Gets the triangulation as a <see cref="GeometryCollection"/> of triangular <see cref="Geometries.Polygon"/>s.
+        /// </summary>
+        /// <returns>A collection of the result triangle polygons</returns>
+        public Geometry GetResult()
+        {
+            Compute();
+            return Tri.Tri.ToGeometry(_triList, _geomFact);
+        }
+
+        /// <summary>
+        /// Gets the triangulation as a list of <see cref="Tri.Tri"/>s.
+        /// </summary>
+        /// <returns>The list of Tris in the triangulation</returns>
+        public List<Tri.Tri> GetTriangles()
+        {
+            Compute();
+            return _triList;
+        }
+
+        private void Compute()
         {
             var polys = PolygonExtracter.GetPolygons(_inputGeom);
-            var triList = new List<Tri.Tri>();
+            _triList = new List<Tri.Tri>();
             foreach (var poly in polys)
             {
                 var polyTriList = TriangulatePolygon((Geometries.Polygon)poly);
-                triList.AddRange(polyTriList);
+                _triList.AddRange(polyTriList);
             }
-            return Tri.Tri.ToGeometry(triList, _geomFact);
         }
 
         /// <summary>
