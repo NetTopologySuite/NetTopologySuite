@@ -326,6 +326,19 @@ namespace NetTopologySuite.Index.KdTree
             }
         }
 
+        class QueryStackFrame
+        {
+            public QueryStackFrame(KdNode<T> node, bool isXLevel)
+            {
+                Node = node;
+                IsXLevel = isXLevel;
+            }
+
+            public KdNode<T> Node { get; }
+
+            public bool IsXLevel { get; } = false;
+        }
+
         /// <summary>
         /// Performs a range search of the points in the index.
         /// </summary>
@@ -478,19 +491,6 @@ namespace NetTopologySuite.Index.KdTree
                     _matchDist = dist;
                 }
             }
-        }
-
-        class QueryStackFrame
-        {
-            public QueryStackFrame(KdNode<T> node, bool isXLevel)
-            {
-                Node = node;
-                IsXLevel = isXLevel;
-            }
-
-            public KdNode<T> Node { get; }
-
-            public bool IsXLevel { get; } = false;
         }
     }
 }
