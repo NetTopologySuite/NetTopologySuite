@@ -35,6 +35,7 @@ namespace NetTopologySuite.Algorithm.Match
         public double Measure(Geometry g1, Geometry g2)
         {
             double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
+            if (distance == 0d) return 1d;
 
             var env = new Envelope(g1.EnvelopeInternal);
             env.ExpandToInclude(g2.EnvelopeInternal);

@@ -16,21 +16,18 @@ namespace NetTopologySuite.Algorithm.Distance
         private bool _isNull = true;
 
         /// <summary>
-        /// Initializes to null.
+        /// Initializes this instance to null.
         /// </summary>
         public void Initialize() { _isNull = true; }
 
         /// <summary>
-        /// Initializes the points.
+        /// Initializes the points, computing the distance between them.
         /// </summary>
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
         public void Initialize(Coordinate p0, Coordinate p1)
         {
-            _pt[0].CoordinateValue = p0;
-            _pt[1].CoordinateValue = p1;
-            _distance = p0.Distance(p1);
-            _isNull = false;
+            Initialize(p0, p1, p0.Distance(p1));
         }
 
         /// <summary>
@@ -39,7 +36,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
         /// <param name="distance">the distance between <see paramref="p0"/> and <see paramref="p1"/></param>
-        private void Initialize(Coordinate p0, Coordinate p1, double distance)
+        internal void Initialize(Coordinate p0, Coordinate p1, double distance)
         {
             _pt[0].CoordinateValue = p0;
             _pt[1].CoordinateValue = p1;
