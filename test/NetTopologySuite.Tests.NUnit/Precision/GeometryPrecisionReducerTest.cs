@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         public void TestSquareKeepCollapse()
 
         {
-            CheckReduce("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))",
+            CheckReduceKeepCollapse(1, "POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))",
                 "POLYGON EMPTY");
         }
 
@@ -105,6 +105,14 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             CheckReduceKeepCollapse(1,
                 "LINESTRING ( 0 0, 0 .4 )",
                 "LINESTRING ( 0 0, 0 0 )");
+        }
+
+        [Test]
+        public void TestLinearRingKeepCollapse()
+        {
+            CheckReduceKeepCollapse(1,
+                "LINEARRING ( 0 0, 0 .4, .4 0, 0 0 )",
+                "LINEARRING ( 0 0, 0 0, 0 0 )");
         }
 
         [Test]

@@ -12,11 +12,15 @@ namespace NetTopologySuite.Precision
     /// <para/>
     /// By default the reduced result is topologically valid
     /// (i.e. <see cref="Geometry.IsValid"/> is true).
-    /// To ensure this a polygonal geometry is reduced in a topologically valid fashion
+    /// To ensure this polygonal geometry is reduced in a topologically valid fashion
     /// (technically, by using snap-rounding).
     /// Note that this may change polygonal geometry structure
     /// (e.g.two polygons separated by a distance below the specified precision
     /// will be merged into a single polygon).
+    /// <para/>
+    /// Normally, collapsed components (e.g.lines collapsing to a point)
+    /// are not included in the result.
+    /// This behavior can be changed by using <see cref="RemoveCollapsedComponents"/> = <c>true</c>.
     /// <para/>
     /// In general input must be valid geometry, or an <see cref="ArgumentException"/>
     /// will be thrown.However if the invalidity is "mild" or very small then it
@@ -29,23 +33,21 @@ namespace NetTopologySuite.Precision
     /// <para/>
     /// By default the geometry precision model is not changed.
     /// This can be overridden by using <see cref="ChangePrecisionModel"/><c> = true</c>.
-    /// <para/>
-    /// Normally, collapsed components (e.g.lines collapsing to a point)
-    /// are not included in the result.
-    /// This behavior can be changed by using <see cref="RemoveCollapsedComponents"/> = <c>true</c>.
     /// </summary>
     public class GeometryPrecisionReducer
     {
         /// <summary>
-        /// Convenience method for doing precision reduction
-        /// on a single geometry,
-        /// with collapses removed
-        /// and keeping the geometry precision model the same,
-        /// and preserving polygonal topology.
+        /// Reduces precision of a geometry,
+        /// ensuring output geometry is valid.
+        /// Collapsed linear and polygonal components are removed.
+        /// The geometry precision model is not changed.
+        /// Invalid input geometry may cause an error,
+        /// unless the invalidity is below the scale of the precision reduction.
         /// </summary>
         /// <param name="g">The geometry to reduce</param>
         /// <param name="precModel">The precision model to use</param>
         /// <returns>The reduced geometry</returns>
+        /// <exception cref="ArgumentException">Thrwon if the reduction fails due to invalid input geometry</exception>
         public static Geometry Reduce(Geometry g, PrecisionModel precModel)
         {
             var reducer = new GeometryPrecisionReducer(precModel);
@@ -53,11 +55,32 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Convenience method for doing pointwise precision reduction
-        /// on a single geometry,
-        /// with collapses removed
-        /// and keeping the geometry precision model the same,
-        /// but NOT preserving valid polygonal topology.
+        /// Reduces precision of a geometry,
+        /// ensuring output polygonal geometry is valid,
+        /// but preserving collapsed linear elements.
+        /// The geometry precision model is not changed.
+        /// Invalid input geometry may cause an error,
+        /// unless the invalidity is below the scale of the precision reduction.
+        /// </summary>
+        /// <param name="g">The geometry to reduce</param>
+        /// <param name="precModel">The precision model to use</param>
+        /// <returns>The reduced geometry</returns>
+        /// <exception cref="ArgumentException">Thrwon if the reduction fails due to invalid input geometry</exception>
+        public static Geometry ReduceKeepCollapsed(Geometry geom, PrecisionModel pm)
+        {
+            var reducer = new GeometryPrecisionReducer(pm) {
+                RemoveCollapsedComponents = false
+            };
+            return reducer.Reduce(geom);
+        }
+
+        /// <summary>
+        /// Reduce precision of a geometry in a pointwise way.
+        /// All input geometry elements are preserved in the output,
+        /// including invalid polygons and collapsed polygons and linestrings.
+        /// The output may not be valid, due to collapse or self-intersection.
+        /// The geometry precision model is not changed.
+        /// Invalid input geometry is allowed.
         /// </summary>
         /// <param name="g">The geometry to reduce</param>
         /// <param name="precModel">The precision model to use</param>
