@@ -537,7 +537,7 @@ namespace NetTopologySuite.IO
         /// This can be Z, M or ZM.
         /// </summary>
         /// <param name="tokens">tokenizer over a stream of text in Well-known Text</param>
-        /// <returns>the next EMPTY or L_PAREN in the stream as uppercase text.</returns>
+        /// <returns>the next ordinate flags.</returns>
         /// <exception cref="IOException">if an I/O error occurs</exception>
         /// <exception cref="ParseException">if the next token is not EMPTY or L_PAREN</exception>
         private static Ordinates GetNextOrdinateFlags(TokenStream tokens)
@@ -730,21 +730,21 @@ namespace NetTopologySuite.IO
             // different SRIDs than the collection itself if that's how it's specified).
             var factory = _ntsGeometryServices.CreateGeometryFactory(_ntsGeometryServices.DefaultPrecisionModel, srid, csFactory);
 
-            if (type.StartsWith(WKTConstants.POINT, StringComparison.OrdinalIgnoreCase))
+            if (IsTypeName(tokens, type, WKTConstants.POINT))
                 returned = ReadPointText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith(WKTConstants.LINESTRING, StringComparison.OrdinalIgnoreCase))
+            else if (IsTypeName(tokens, type, WKTConstants.LINESTRING))
                 returned = ReadLineStringText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith(WKTConstants.LINEARRING, StringComparison.OrdinalIgnoreCase))
+            else if (IsTypeName(tokens, type, WKTConstants.LINEARRING))
                 returned = ReadLinearRingText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith(WKTConstants.POLYGON, StringComparison.OrdinalIgnoreCase))
+            else if (IsTypeName(tokens, type, WKTConstants.POLYGON))
                 returned = ReadPolygonText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith(WKTConstants.MULTIPOINT, StringComparison.OrdinalIgnoreCase))
+            else if (IsTypeName(tokens, type, WKTConstants.MULTIPOINT))
                 returned = ReadMultiPointText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith(WKTConstants.MULTILINESTRING, StringComparison.OrdinalIgnoreCase))
+            else if (IsTypeName(tokens, type, WKTConstants.MULTILINESTRING))
                 returned = ReadMultiLineStringText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith(WKTConstants.MULTIPOLYGON, StringComparison.OrdinalIgnoreCase))
+            else if (IsTypeName(tokens, type, WKTConstants.MULTIPOLYGON))
                 returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith(WKTConstants.GEOMETRYCOLLECTION, StringComparison.OrdinalIgnoreCase))
+            else if (IsTypeName(tokens, type, WKTConstants.GEOMETRYCOLLECTION))
                 returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
             else throw new ParseException("Unknown type: " + type);
 
@@ -754,18 +754,37 @@ namespace NetTopologySuite.IO
             return returned;
         }
 
-        /// <summary>
-        /// Creates a <c>Point</c> using the next token in the stream.
-        /// </summary>
-        /// <param name="tokens">
-        ///   Tokenizer over a stream of text in Well-known Text
-        ///   format. The next tokens must form a &lt;Point Text.
-        /// </param>
-        /// <param name="factory">The factory to create the geometry</param>
-        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
-        /// <returns>A <c>Point</c> specified by the next token in
-        /// the stream.</returns>
-        private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        private static bool IsTypeName(TokenStream tokens, string type, string typeName)
+        {
+            if (!type.StartsWith(typeName, StringComparison.OrdinalIgnoreCase))
+                return false;
+    
+            string modifiers = type.Substring(typeName.Length);
+            bool isValidMod = modifiers.Length <= 2 &&
+                 (modifiers.Length == 0
+                 || modifiers.Equals(WKTConstants.Z)
+                 || modifiers.Equals(WKTConstants.M)
+                 || modifiers.Equals(WKTConstants.ZM));
+
+            if (! isValidMod) {
+                throw new ParseException($"Invalid dimension modifiers: '{type}'");
+            }
+    
+            return true;
+        }
+
+/// <summary>
+/// Creates a <c>Point</c> using the next token in the stream.
+/// </summary>
+/// <param name="tokens">
+///   Tokenizer over a stream of text in Well-known Text
+///   format. The next tokens must form a &lt;Point Text.
+/// </param>
+/// <param name="factory">The factory to create the geometry</param>
+/// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
+/// <returns>A <c>Point</c> specified by the next token in
+/// the stream.</returns>
+private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             var point = factory.CreatePoint(GetCoordinateSequence(factory, tokens, ordinateFlags));
             return point;
