@@ -45,6 +45,8 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <seealso cref="Geometry.IsValid"/>
     public class GeometryFixer
     {
+        private const bool DefaultKeepMulti = true;
+
         /// <summary>
         /// Fixes a geometry to be valid.
         /// </summary>
@@ -52,13 +54,29 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The valid fixed geometry</returns>
         public static Geometry Fix(Geometry geom)
         {
-            var fix = new GeometryFixer(geom);
+            return Fix(geom, DefaultKeepMulti);
+        }
+
+        /// <summary>
+        /// Fixes a geometry to be valid, allowing to set a flag controlling how
+        /// single item results from fixed {@code MULTI} geometries should be
+        /// returned.
+        /// </summary>
+        /// <param name="geom">The geometry to be fixed</param>
+        /// <param name="isKeepMulti">A flag indicating if <c>MULTI</c> geometries should not
+        /// be converted to single instance types if they consist of only one item.</param>
+        /// <returns>The valid fixed geometry</returns>
+        public static Geometry Fix(Geometry geom, bool isKeepMulti)
+        {
+            var fix = new GeometryFixer(geom) {
+                KeepMulti = isKeepMulti
+            };
             return fix.GetResult();
         }
 
         private readonly Geometry _geom;
         private readonly GeometryFactory _factory;
-
+        
         /// <summary>Creates a new instance to fix a given geometry</summary>
         /// <param name="geom">The geometry to be fixed</param>
         public GeometryFixer(Geometry geom)
@@ -75,6 +93,15 @@ namespace NetTopologySuite.Geometries.Utilities
         /// The default is to convert collapses to empty geometries (<c>false</c>).
         /// </summary>
         public bool KeepCollapsed { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether collapsed
+        /// geometries are converted to empty,
+        /// (which will be removed from collections),
+        /// or to a valid geometry of lower dimension.
+        /// The default is to convert collapses to empty geometries (<c>false</c>).
+        /// </summary>
+        public bool KeepMulti { get; set; }
 
         /// <summary>
         /// Gets the fixed geometry.
@@ -152,6 +179,9 @@ namespace NetTopologySuite.Geometries.Utilities
                     pts.Add(fixPt);
                 }
             }
+
+            if (!KeepMulti && pts.Count == 1)
+                return pts[0];
 
             return _factory.CreateMultiPoint(GeometryFactory.ToPointArray(pts));
         }
@@ -257,7 +287,8 @@ namespace NetTopologySuite.Geometries.Utilities
 
             if (@fixed.Count == 1)
             {
-                return @fixed[0];
+                if (!KeepMulti || !(@fixed[0] is LineString))
+                    return @fixed[0];
             }
 
             if (isMixed)
@@ -402,6 +433,10 @@ namespace NetTopologySuite.Geometries.Utilities
 
             // TODO: replace with polys.union() once OverlayNG is the default
             var result = Union(polys);
+
+            if (KeepMulti && result is Polygon pg)
+                result = _factory.CreateMultiPolygon(new Polygon[] { pg });
+
             return result;
         }
 
@@ -409,16 +444,17 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             var geomRep = new Geometry[geom.NumGeometries];
             for (int i = 0; i < geom.NumGeometries; i++) {
-                geomRep[i] = Fix(geom.GetGeometryN(i), KeepCollapsed);
+                geomRep[i] = Fix(geom.GetGeometryN(i), KeepCollapsed, KeepMulti);
             }
 
             return _factory.CreateGeometryCollection(geomRep);
         }
 
-        private static Geometry Fix(Geometry geom, bool isKeepCollapsed)
+        private static Geometry Fix(Geometry geom, bool isKeepCollapsed, bool isKeepMulti)
         {
             var fix = new GeometryFixer(geom) {
-                KeepCollapsed = isKeepCollapsed
+                KeepCollapsed = isKeepCollapsed,
+                KeepMulti = isKeepMulti
             };
             return fix.GetResult();
         }

@@ -61,10 +61,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         }
 
         [Test]
+        public void TestMultiPointWithEmptyKeepMulti()
+        {
+            CheckFix("MULTIPOINT ((0 0), EMPTY)",
+                "MULTIPOINT ((0 0))", true);
+        }
+
+        [Test]
         public void TestMultiPointWithEmpty()
         {
             CheckFix("MULTIPOINT ((0 0), EMPTY)",
-                "MULTIPOINT ((0 0))");
+                "POINT (0 0)", false);
         }
 
         [Test]
@@ -198,7 +205,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         public void TestMultiLineStringWithCollapse()
         {
             CheckFix("MULTILINESTRING ((10 10, 90 90), (10 10, 10 10, 10 10))",
-                "LINESTRING (10 10, 90 90))");
+                "LINESTRING (10 10, 90 90))", false);
+        }
+
+        [Test]
+        public void TestMultiLineStringWithCollapseKeepMulti()
+        {
+            CheckFix("MULTILINESTRING ((10 10, 90 90), (10 10, 10 10, 10 10))",
+              "MULTILINESTRING ((10 10, 90 90)))", true);
         }
 
         [Test]
@@ -209,10 +223,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         }
 
         [Test]
+        public void TestMultiLineStringWithEmptyKeepMulti()
+        {
+            CheckFix("MULTILINESTRING ((10 10, 90 90), EMPTY)",
+                "MULTILINESTRING ((10 10, 90 90))", true);
+        }
+
+        [Test]
         public void TestMultiLineStringWithEmpty()
         {
             CheckFix("MULTILINESTRING ((10 10, 90 90), EMPTY)",
-                "LINESTRING (10 10, 90 90))");
+                "LINESTRING (10 10, 90 90))", false);
         }
 
         [Test]
@@ -342,6 +363,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         }
 
         [Test]
+        public void TestMultiPolygonWithEmptyKeepMulti()
+        {
+            CheckFix(
+                "MULTIPOLYGON (((10 40, 40 40, 40 10, 10 10, 10 40)), EMPTY)",
+                "MULTIPOLYGON (((10 40, 40 40, 40 10, 10 10, 10 40)))", true);
+        }
+
+        [Test]
         public void TestMultiPolygonWithEmpty()
         {
             CheckFix(
@@ -353,7 +382,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         public void TestMultiPolygonWithCollapse()
         {
             CheckFix("MULTIPOLYGON (((10 40, 40 40, 40 10, 10 10, 10 40)), ((50 40, 50 40, 50 40, 50 40, 50 40)))",
-                "POLYGON ((10 10, 10 40, 40 40, 40 10, 10 10))");
+                "POLYGON ((10 10, 10 40, 40 40, 40 10, 10 10))", false);
+        }
+
+        [Test]
+        public void TestMultiPolygonWithCollapseKeepMulti()
+        {
+            CheckFix("MULTIPOLYGON (((10 40, 40 40, 40 10, 10 10, 10 40)), ((50 40, 50 40, 50 40, 50 40, 50 40)))",
+                "MULTIPOLYGON (((10 10, 10 40, 40 40, 40 10, 10 10)))", true);
         }
 
         [Test]
@@ -417,37 +453,44 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         private void CheckFix(string wkt, string wktExpected)
         {
             var geom = Read(wkt);
-            CheckFix(geom, false, wktExpected);
+            CheckFix(geom, false, true, wktExpected);
+        }
+
+        private void CheckFix(string wkt, string wktExpected, bool keepMulti)
+        {
+            var geom = Read(wkt);
+            CheckFix(geom, false, keepMulti, wktExpected);
         }
 
         private void CheckFixKeepCollapse(string wkt, string wktExpected)
         {
             var geom = Read(wkt);
-            CheckFix(geom, true, wktExpected);
+            CheckFix(geom, true, true, wktExpected);
         }
 
         private void CheckFix(Geometry input, string wktExpected)
         {
-            CheckFix(input, false, wktExpected);
+            CheckFix(input, false, true, wktExpected);
         }
 
         private void CheckFixKeepCollapse(Geometry input, string wktExpected)
         {
-            CheckFix(input, true, wktExpected);
+            CheckFix(input, true, true, wktExpected);
         }
 
-        private void CheckFix(Geometry input, bool keepCollapse, string wktExpected)
+        private void CheckFix(Geometry input, bool keepCollapse, bool keepMulti, string wktExpected)
         {
             Geometry actual;
             if (keepCollapse)
             {
                 var fixer = new GeometryFixer(input);
                 fixer.KeepCollapsed = true;
+                fixer.KeepMulti = keepMulti; 
                 actual = fixer.GetResult();
             }
             else
             {
-                actual = GeometryFixer.Fix(input);
+                actual = GeometryFixer.Fix(input, keepMulti);
             }
 
             Assert.That(actual.IsValid, Is.True, "Result is invalid");
