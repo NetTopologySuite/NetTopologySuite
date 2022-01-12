@@ -4,9 +4,10 @@ using System;
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 {
     /**
-     * Linear Discrete Fréchet Distance computation
+     * Discrete Fréchet Distance computation
+     * using a simple O(n^2) algorithm.
      */
-    public class DiscreteFrechetDistanceLinear
+    public class DiscreteFrechetDistanceSimple
     {
 
         /**
@@ -19,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
          */
         public static double Distance(Geometry g0, Geometry g1)
         {
-            var dist = new DiscreteFrechetDistanceLinear(g0, g1, false);
+            var dist = new DiscreteFrechetDistanceSimple(g0, g1, false);
             return dist.Distance();
         }
 
@@ -33,14 +34,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
          */
         public static double distance(Geometry g0, Geometry g1, bool getCoordinates)
         {
-            var dist = new DiscreteFrechetDistanceLinear(g0, g1, getCoordinates);
+            var dist = new DiscreteFrechetDistanceSimple(g0, g1, getCoordinates);
             return dist.Distance();
         }
         private readonly Geometry g0;
         private readonly Geometry g1;
         private readonly bool getCoordinates;
 
-        private DiscreteFrechetDistanceLinear(Geometry g0, Geometry g1, bool getCoordinates)
+        private DiscreteFrechetDistanceSimple(Geometry g0, Geometry g1, bool getCoordinates)
         {
             this.g0 = g0;
             this.g1 = g1;

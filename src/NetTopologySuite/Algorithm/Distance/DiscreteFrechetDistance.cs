@@ -21,8 +21,9 @@ namespace NetTopologySuite.Algorithm.Distance
     /// speed, but backtracking is not allowed.
     /// </pre>
     /// <remarks>
-    /// Its metric is better than Hausdorff's because it takes the flow of the curves
-    /// into account. It is possible that two curves have a small Hausdorff but a large
+    /// Its metric is better than the e Hausdorff distance
+    /// because it takes the directions of the curves into account.
+    /// It is possible that two curves have a small Hausdorff but a large
     /// Fréchet distance.
     /// <para/>
     /// This implementation is based on the following optimized Fréchet distance algorithm:
@@ -70,7 +71,7 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <summary>
-        /// Compute the <c>Discrete Fréchet Distance</c> between two geometries
+        /// Computes the <c>Discrete Fréchet Distance</c> between the input geometries
         /// </summary>
         /// <returns>The Discrete Fréchet Distance</returns>
         private double Distance()
@@ -82,7 +83,7 @@ namespace NetTopologySuite.Algorithm.Distance
             var coords1 = _g1.Coordinates;
 
             var distances = CreateMatrixStorage(coords0.Length, coords1.Length);
-            int[] diagonal = BresenhamLine(coords0.Length, coords1.Length);
+            int[] diagonal = BresenhamDiagonal(coords0.Length, coords1.Length);
 
             var distanceToPair = new Dictionary<double, int[]>();
             ComputeCoordinateDistances(coords0, coords1, diagonal, distances, distanceToPair);
@@ -92,12 +93,12 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <summary>
-        /// Creates a matrix storage
+        /// Creates a matrix to store the computed distances
         /// </summary>
         /// <param name="rows">The number of rows</param>
         /// <param name="cols">The number of cols</param>
         /// <returns>A matrix storage</returns>
-        private MatrixStorage CreateMatrixStorage(int rows, int cols)
+        private static MatrixStorage CreateMatrixStorage(int rows, int cols)
         {
 
             int max = Math.Max(rows, cols);
@@ -109,9 +110,9 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <summary>
-        /// Gets the pair of <c>Coordinate</c>s that are <see cref="Distance()"/> apart.
+        /// Gets the pair of <see cref="Coordinate"/>s at which the distance is obtained.
         /// </summary>
-        /// <returns>The pair of <c>Coordinate</c>s that are <see cref="Distance()"/> apart</returns>
+        /// <returns>The pair of <c>Coordinate</c>s at which the distance is obtained</returns>
         public Coordinate[] Coordinates
         {
             get
@@ -124,13 +125,13 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <summary>
-        /// Compute the Fréchet Distance for the given distance matrix.
+        /// Computes the Fréchet Distance for the given distance matrix.
         /// </summary>
         /// <param name="coords0">An array of <c>Coordinate</c>s</param>
         /// <param name="coords1">An array of <c>Coordinate</c>s</param>
-        /// <param name="diagonal">An array of alternating row/col index values for the diagonal of the distance matrix</param>
-        /// <param name="distanceToPair">A lookup for distance and a coordinate pair</param>
-        /// <param name="distances">A (sparse) distance matrix</param>
+        /// <param name="diagonal">An array of alternating col/row index values for the diagonal of the distance matrix</param>
+        /// <param name="distances">The distance matrix</param>
+        /// <param name="distanceToPair">A lookup for coordinate pairs based on a distance</param>
         /// <returns></returns>
         private static PointPairDistance ComputeFrechet(Coordinate[] coords0, Coordinate[] coords1, int[] diagonal,
                                                         MatrixStorage distances, Dictionary<double, int[]> distanceToPair)
@@ -171,10 +172,10 @@ namespace NetTopologySuite.Algorithm.Distance
             var result = new PointPairDistance();
             double distance = distances[coords0.Length - 1, coords1.Length - 1];
             int[] index = distanceToPair[distance];
-            if (index != null)
-                result.Initialize(coords0[index[0]], coords1[index[1]], distance);
-            else
-                Assert.ShouldNeverReachHere("Pair of points not recorded for computed distance");
+            if (index == null)
+                throw new InvalidOperationException("Pair of points not recorded for computed distance");
+
+            result.Initialize(coords0[index[0]], coords1[index[1]], distance);
 
             return result;
         }
@@ -205,16 +206,15 @@ namespace NetTopologySuite.Algorithm.Distance
             return matrix[i - 1, 0];
         }
 
-        /**
-         * Computes relevant distances between pairs of {@link Coordinate}s for the
-         * computation of the {@code Discrete Fréchet Distance}.
-         *
-         * @param coords0 an array of {@code Coordinate}s.
-         * @param coords1 an array of {@code Coordinate}s.
-         * @param diagonal an array of encoded row/col index values for the diagonal of the distance matrix
-         * @param distances the sparse distance matrix
-         * @param distanceToPair a lookup for coordinate pairs based on a distance.
-         */
+        /// <summary>
+        /// Computes relevant distances between pairs of <see cref="Coordinate"/>s for the
+        /// computation of the <c>Discrete Fréchet Distance</c>.
+        /// </summary>
+        /// <param name="coords0">An array of <c>Coordinate</c>s</param>
+        /// <param name="coords1">An array of <c>Coordinate</c>s</param>
+        /// <param name="diagonal">An array of alternating col/row index values for the diagonal of the distance matrix</param>
+        /// <param name="distances">The distance matrix</param>
+        /// <param name="distanceToPair">A lookup for coordinate pairs based on a distance</param>
         private void ComputeCoordinateDistances(Coordinate[] coords0, Coordinate[] coords1, int[] diagonal,
                                                 MatrixStorage distances, Dictionary<double, int[]> distanceToPair)
         {
@@ -291,56 +291,55 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <summary>
-        /// Implementation of the <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">
-        /// Bresenham's line algorithm</a> for the diagonal of a <c>numCols x numRows</c> grid.
+        /// Computes the indices for the diagonal of a {@code numCols x numRows} grid
+        /// using the <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">
+        /// Bresenham's line algorithm</a>.
         /// </summary>
         /// <param name="numCols">The number of columns</param>
         /// <param name="numRows">The number of rows</param>
-        /// <returns>an array of alternating column and row indices.</returns>
-        private static int[] BresenhamLine(int numCols, int numRows)
+        /// <returns>A packed array of column and row indices.</returns>
+        internal static int[] BresenhamDiagonal(int numCols, int numRows)
         {
             int dim = Math.Max(numCols, numRows);
-            int[] pairs = new int[2 * dim];
+            int[] diagXY = new int[2 * dim];
 
-            int sx = 0 > numCols ? -1 : 1;
-            int sy = 0 > numRows ? -1 : 1;
-            int x = 0;
-            int y = 0;
-
+            int dx = numCols - 1;
+            int dy = numRows - 1;
             int err;
+            int i = 0;
             if (numCols > numRows)
             {
-                err = numCols / 2;
-                for (int i = 0, j = 0; i < numCols; i++)
+                int y = 0;
+                err = 2 * dy - dx;
+                for (int x = 0; x < numCols; x++)
                 {
-                    pairs[j++] = x;
-                    pairs[j++] = y;
-                    err -= numRows;
-                    if (err < 0)
+                    diagXY[i++] = x;
+                    diagXY[i++] = y;
+                    if (err > 0)
                     {
-                        y += sy;
-                        err += numCols;
+                        y += 1;
+                        err -= 2 * dx;
                     }
-                    x += sx;
+                    err += 2 * dy;
                 }
             }
             else
             {
-                err = numRows / 2;
-                for (int i = 0, j = 0; i < numRows; i++)
+                int x = 0;
+                err = 2 * dx - dy;
+                for (int y = 0; y < numRows; y++)
                 {
-                    pairs[j++] = x;
-                    pairs[j++] = y;
-                    err -= numCols;
-                    if (err < 0)
+                    diagXY[i++] = x;
+                    diagXY[i++] = y;
+                    if (err > 0)
                     {
-                        x += sx;
-                        err += numRows;
+                        x += 1;
+                        err -= 2 * dy;
                     }
-                    y += sy;
+                    err += 2 * dx;
                 }
             }
-            return pairs;
+            return diagXY;
         }
 
         /// <summary>

@@ -1,7 +1,5 @@
 ﻿using NetTopologySuite.Algorithm.Distance;
 using NUnit.Framework;
-using System;
-using System.Diagnostics;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 {
@@ -54,6 +52,23 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
             RunTest("LINESTRING (1 1, 2 2)",
               "LINESTRING (1 4, 2 3)", 3d);
         }
+
+
+        [Test]
+        public void TestAHasMoreThanTwiceVerticesOfB()
+        {
+            RunTest("LINESTRING (80 260, 170 180, 190 290, 310 350, 330 270, 360 280)",
+              "LINESTRING (120 90, 380 130)", 230.8679276123039);
+        }
+
+        [Test]
+        public void TestA_11_B_3()
+        {
+            RunTest("LINESTRING (0 0, 100 10, 0 20, 100 30, 0 40, 100 50, 0 60, 100 70, 0 80, 100 90, 0 100)",
+              "LINESTRING (0 0, 50 100, 100 0)", 141.4213562373095);
+        }
+
+
         private const double TOLERANCE = 0.00001;
 
         private void RunTest(string wkt1, string wkt2, double expectedDistance)
@@ -61,20 +76,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
             var g1 = Read(wkt1);
             var g2 = Read(wkt2);
 
-            DiscreteFrechetDistanceLinear.Distance(g1, g2);
-            var sw = new Stopwatch();
-            sw.Start();
-            double distance0 = DiscreteFrechetDistanceLinear.Distance(g1, g2);
-            sw.Stop();
-            //System.out.println(String.format("DiscreteFrechetDistanceLinear %dms.%n", sw.getTime()));
-            Assert.AreEqual(expectedDistance, distance0, TOLERANCE);
-
             DiscreteFrechetDistance.Distance(g1, g2);
-            sw.Reset();
-            sw.Start();
             double distance1 = DiscreteFrechetDistance.Distance(g1, g2);
-            sw.Stop();
-            //System.out.println(String.format("DiscreteFrechetDistance %dms.%n", sw.getTime()));
             Assert.AreEqual(expectedDistance, distance1, TOLERANCE);
         }
     }

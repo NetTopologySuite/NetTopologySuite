@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 {
-    public class MatrixStorageImplTests
+    public class MatrixStorageTest
     {
 
         [Test]
