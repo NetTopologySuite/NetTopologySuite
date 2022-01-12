@@ -7,38 +7,45 @@ namespace NetTopologySuite.Precision
     /// <summary>
     /// Reduces the precision of a <see cref="Geometry"/>
     /// according to the supplied <see cref="PrecisionModel"/>,
-    /// ensuring that the result is topologically valid,
-    /// ensuring that the result is valid, unless specified otherwise.
+    /// ensuring that the result is valid (unless specified otherwise).
     /// <para/>
-    /// By default the reduced result is topologically valid
+    /// By default the geometry precision model is not changed.
+    /// This can be overridden by using <see cref="ChangePrecisionModel"/>.
+    /// <h4>Topological Precision Reduction</h4>
+    /// The default mode of operation ensures the reduced result is topologically valid
     /// (i.e. <see cref="Geometry.IsValid"/> is true).
     /// To ensure this polygonal geometry is reduced in a topologically valid fashion
     /// (technically, by using snap-rounding).
     /// Note that this may change polygonal geometry structure
     /// (e.g.two polygons separated by a distance below the specified precision
     /// will be merged into a single polygon).
+    /// Duplicate vertices are removed.
+    /// This mode is invoked by the static method <see cref="Reduce(Geometry, PrecisionModel)"/>.
     /// <para/>
-    /// Normally, collapsed components (e.g.lines collapsing to a point)
+    /// Normally, collapsed linear components(e.g.lines collapsing to a point)
     /// are not included in the result.
-    /// This behavior can be changed by using <see cref="RemoveCollapsedComponents"/> = <c>true</c>.
+    /// This behavior can be changed
+    /// by setting <see cref="RemoveCollapsedComponents"/> to <c>false</c>,
+    /// or by using the static method <see cref="ReduceKeepCollapsed(Geometry, PrecisionModel)"/>.
     /// <para/>
     /// In general input must be valid geometry, or an <see cref="ArgumentException"/>
-    /// will be thrown.However if the invalidity is "mild" or very small then it
+    /// will be thrown. However if the invalidity is "mild" or very small then it
     /// may be eliminated by precision reduction.
-    /// <para/>
-    /// Alternatively, geometry can be reduced pointwise by using <see cref="Pointwise"/><c>= true</c>.
-    /// In this case the result geometry topology may be invalid.
-    /// Linear and point geometry are always reduced pointwise (i.e.without further change to
+    /// <h4> Pointwise Precision Reduction</h4>
+    /// Alternatively, geometry can be reduced pointwise by using {@link #setPointwise(boolean)}.
+    /// Linear and point geometry are always reduced pointwise(i.e.without further change to
     /// topology or structure), since this does not change validity.
+    /// Invalid inputs are allowed.
+    /// Duplicate vertices are preserved.
+    /// Collapsed components are always included in the result.
+    /// The result geometry may be invalid.
     /// <para/>
-    /// By default the geometry precision model is not changed.
-    /// This can be overridden by using <see cref="ChangePrecisionModel"/><c> = true</c>.
+    /// This mode is invoked by the static method <see cref="ReducePointwise(Geometry, PrecisionModel)"/>.
     /// </summary>
     public class GeometryPrecisionReducer
     {
         /// <summary>
-        /// Reduces precision of a geometry,
-        /// ensuring output geometry is valid.
+        /// Reduces precision of a geometry, ensuring output geometry is valid.
         /// Collapsed linear and polygonal components are removed.
         /// The geometry precision model is not changed.
         /// Invalid input geometry may cause an error,
@@ -55,9 +62,8 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Reduces precision of a geometry,
-        /// ensuring output polygonal geometry is valid,
-        /// but preserving collapsed linear elements.
+        /// Reduces precision of a geometry, ensuring output polygonal geometry is valid,
+        /// and preserving collapsed linear elements.
         /// The geometry precision model is not changed.
         /// Invalid input geometry may cause an error,
         /// unless the invalidity is below the scale of the precision reduction.
