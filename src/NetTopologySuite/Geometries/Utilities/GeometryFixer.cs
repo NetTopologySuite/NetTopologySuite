@@ -35,7 +35,8 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <item><description>Collapsed lines and polygons are handled as follows,
     /// depending on the <c>keepCollapsed</c> setting:
     /// <list type="bullet">
-    /// <item><description><c>false</c>: (default) collapses are converted to empty geometries</description></item>
+    /// <item><description><c>false</c>: (default) collapses are converted to empty geometries
+    /// (and removed if they are elements of collections)</description></item>
     /// <item><description><c>true</c>: collapses are converted to a valid geometry of lower dimension</description></item>
     /// </list></description></item>
     /// </list>
@@ -407,12 +408,20 @@ namespace NetTopologySuite.Geometries.Utilities
         private Geometry FixCollection(GeometryCollection geom)
         {
             var geomRep = new Geometry[geom.NumGeometries];
-            for (int i = 0; i < geom.NumGeometries; i++)
-            {
-                geomRep[i] = Fix(geom.GetGeometryN(i));
+            for (int i = 0; i < geom.NumGeometries; i++) {
+                geomRep[i] = Fix(geom.GetGeometryN(i), KeepCollapsed);
             }
 
             return _factory.CreateGeometryCollection(geomRep);
         }
+
+        private static Geometry Fix(Geometry geom, bool isKeepCollapsed)
+        {
+            var fix = new GeometryFixer(geom) {
+                KeepCollapsed = isKeepCollapsed
+            };
+            return fix.GetResult();
+        }
+
     }
 }

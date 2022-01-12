@@ -380,20 +380,27 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
                 "GEOMETRYCOLLECTION (POINT EMPTY, LINESTRING EMPTY, POLYGON EMPTY)");
         }
 
+        [Test]
+        public void TestGCKeepCollapse()
+        {
+            CheckFixKeepCollapse("GEOMETRYCOLLECTION (LINESTRING ( 0 0, 0 0), POINT (1 1))",
+                "GEOMETRYCOLLECTION (POINT (0 0), POINT (1 1))");
+        }
+
         //----------------------------------------
 
         [Test]
         public void TestPolygonZBowtie()
         {
             CheckFixZ("POLYGON Z ((10 90 1, 90 10 9, 90 90 9, 10 10 1, 10 90 1))",
-                "MULTIPOLYGON Z(((10 10 1, 10 90 1, 50 50 5, 10 10 1)), ((50 50 5, 90 90 9, 90 10 9, 50 50 5)))");
+                "MULTIPOLYGON Z (((10 10 1, 10 90 1, 50 50 5, 10 10 1)), ((50 50 5, 90 90 9, 90 10 9, 50 50 5)))");
         }
 
         [Test]
         public void TestPolygonZHoleOverlap()
         {
             CheckFixZ("POLYGON Z ((10 90 1, 60 90 6, 60 10 6, 10 10 1, 10 90 1), (20 80 2, 90 80 9, 90 20 9, 20 20 2, 20 80 2))",
-                "POLYGON Z((10 10 1, 10 90 1, 60 90 6, 60 80 6, 20 80 2, 20 20 2, 60 20 6, 60 10 6, 10 10 1))");
+                "POLYGON Z ((10 10 1, 10 90 1, 60 90 6, 60 80 6, 20 80 2, 20 20 2, 60 20 6, 60 10 6, 10 10 1))");
         }
 
         [Test]
