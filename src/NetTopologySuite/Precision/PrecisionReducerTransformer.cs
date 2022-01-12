@@ -42,31 +42,31 @@ namespace NetTopologySuite.Precision
 
             /*
              * Check if the removal of repeated points collapsed the coordinate
-             * list to an invalid length for the type of the parent geometry. It is not
+             * list to an invalid size for the type of the parent geometry. It is not
              * necessary to check for Point collapses, since the coordinate list can
-             * never collapse to less than one point. If the length is invalid, return
-             * the full-length coordinate array first computed, or null if collapses are
+             * never collapse to less than one point. If the size is invalid, return
+             * the full-size coordinate array first computed, or null if collapses are
              * being removed. (This may create an invalid geometry - the client must
              * handle this.)
              */
-            int minLength = 0;
+            int minSize = 0;
             if (parent is LineString)
-                minLength = 2;
+                minSize = 2;
             if (parent is LinearRing)
-                minLength = LinearRing.MinimumValidSize;
+                minSize = LinearRing.MinimumValidSize;
 
             /*
              * Handle collapse. If specified return null so parent geometry is removed or empty,
              * otherwise extend to required length.
              */
-            if (coordsReduce.Length < minLength)
+            if (coordsReduce.Length < minSize)
             {
                 if (_isRemoveCollapsed)
                 {
                     return null;
                 }
 
-                coordsReduce = Extend(coordsReduce, minLength);
+                coordsReduce = Extend(coordsReduce, minSize);
             }
             return Factory.CoordinateSequenceFactory.Create(coordsReduce);
 
