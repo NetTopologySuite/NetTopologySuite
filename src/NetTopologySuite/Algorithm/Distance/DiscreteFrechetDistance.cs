@@ -63,7 +63,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// </summary>
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
-        private DiscreteFrechetDistance(Geometry g0, Geometry g1)
+        public DiscreteFrechetDistance(Geometry g0, Geometry g1)
         {
             _g0 = g0;
             _g1 = g1;
