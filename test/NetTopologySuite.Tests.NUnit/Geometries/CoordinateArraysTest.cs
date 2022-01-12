@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixture]
-    public class CoordinateArraysTest
+    public class CoordinateArraysTest : GeometryTestCase
     {
         [Test]
         public void TestPtNotInList1()
@@ -74,6 +74,46 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 CoordinateArrays.Intersection(Coords1, new Envelope()), Empty)
                 );
         }
+
+        [Test]
+        public void TestReverseEmpty()
+        {
+            var pts = new Coordinate[0];
+            CheckReversed(pts);
+        }
+
+        [Test]
+        public void TestReverseSingleElement()
+        {
+            var pts = new Coordinate[] { new Coordinate(1, 1) };
+            CheckReversed(pts);
+        }
+
+        [Test]
+        public void TestReverse2()
+        {
+            var pts = new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2) };
+            CheckReversed(pts);
+        }
+
+        [Test]
+        public void TestReverse3()
+        {
+            var pts = new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3 ,3) };
+            CheckReversed(pts);
+        }
+
+        private void CheckReversed(Coordinate[] pts)
+        {
+            var ptsRev = CoordinateArrays.CopyDeep(pts);
+            CoordinateArrays.Reverse(ptsRev);
+            Assert.That(ptsRev.Length, Is.EqualTo(pts.Length));
+            int len = pts.Length;
+            for (int i = 0; i < pts.Length; i++) {
+                CheckEqualXY(pts[i], ptsRev[len - 1 - i]);
+            }
+        }
+
 
         [Test]
         public void TestScrollRing()
