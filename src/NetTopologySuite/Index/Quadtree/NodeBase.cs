@@ -39,7 +39,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         ///
         /// </summary>
-        private List<T> _items = new List<T>();
+        private IList<T> _items = new System.Collections.Generic.SynchronizedCollection<T>();
 
         /// <summary>
         /// subquads are numbered as follows:
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Index.Quadtree
         public IList<T> Items
         {
             get => _items;
-            protected set => _items = (List<T>)value;
+            protected set => _items = (SynchronizedCollection<T>)value;
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace NetTopologySuite.Index.Quadtree
         private void VisitItems(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
-            for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )
+            for (var i = _items.GetEnumerator(); i.MoveNext(); )
                 visitor.VisitItem(i.Current);
         }
 

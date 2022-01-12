@@ -27,7 +27,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(EnableApiCompat)' == 'true' ">
@@ -35,6 +36,10 @@
     <PackageDownload Include="NetTopologySuite" Version="[2.4.0]" PrivateAssets="All" />
 
     <ResolvedMatchingContract Include="$(NugetPackageRoot)nettopologysuite\2.4.0\lib\netstandard2.0\NetTopologySuite.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
