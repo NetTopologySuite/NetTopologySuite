@@ -373,28 +373,6 @@ namespace NetTopologySuite.Geometries.Utilities
             return OverlayNGRobust.Union(polys);
         }
 
-        private Geometry OldFixHoles(Polygon geom)
-        {
-            var holes = new List<Geometry>(geom.NumInteriorRings);
-            for (int i = 0; i < geom.NumInteriorRings; i++)
-            {
-                var holeRep = FixRing((LinearRing) geom.GetInteriorRingN(i));
-                if (holeRep != null)
-                {
-                    holes.Add(holeRep);
-                }
-            }
-
-            if (holes.Count == 0) return null;
-            if (holes.Count == 1)
-            {
-                return holes[0];
-            }
-            // TODO: replace with holes.union() once OverlayNG is the default
-            var holesUnion = OverlayNGRobust.Union(holes);
-            return holesUnion;
-        }
-
         private Geometry FixRing(LinearRing ring)
         {
             //-- always execute fix, since it may remove repeated coords etc
