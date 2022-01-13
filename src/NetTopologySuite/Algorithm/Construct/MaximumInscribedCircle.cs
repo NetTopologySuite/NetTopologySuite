@@ -238,6 +238,10 @@ namespace NetTopologySuite.Algorithm.Construct
             double cellSize = Math.Min(width, height);
             double hSide = cellSize / 2.0;
 
+            // Check for flat collapsed input and if so short-circuit
+            // Result will just be centroid
+            if (cellSize == 0) return;
+
             // compute initial grid of cells to cover area
             for (double x = minX; x < maxX; x += cellSize)
             {

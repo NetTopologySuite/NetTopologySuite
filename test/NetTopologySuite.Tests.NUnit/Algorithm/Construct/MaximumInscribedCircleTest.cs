@@ -52,20 +52,21 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
                 0.01, 411.38, 149.99, 78.75);
         }
 
-        /**
-         * Invalid polygon collapsed to a line
-         */
-        [Test]
+        [Test, Description("Invalid polygon collapsed to a line")]
         public void TestCollapsedLine()
         {
             CheckCircle("POLYGON ((100 100, 200 200, 100 100, 100 100))",
                 0.01, 150, 150, 0);
         }
 
-        /**
-         * Invalid polygon collapsed to a point
-         */
-        [Test]
+        [Test, Description("Invalid polygon collapsed to a flat line (originally caused infinite loop)")]
+        public void TestCollapsedLineFlat()
+        {
+            CheckCircle("POLYGON((1 2, 1 2, 1 2, 1 2, 3 2, 1 2))",
+                0.01, 2, 2, 0);
+        }
+
+        [Test, Description("Invalid polygon collapsed to a point")]
         public void TestCollapsedPoint()
         {
             CheckCircle("POLYGON ((100 100, 100 100, 100 100, 100 100))",
