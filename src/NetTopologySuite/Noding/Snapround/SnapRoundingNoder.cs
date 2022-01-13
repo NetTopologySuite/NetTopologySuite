@@ -37,6 +37,13 @@ namespace NetTopologySuite.Noding.Snapround
     /// <version>1.17</version>
     public sealed class SnapRoundingNoder : INoder
     {
+        /// <summary>
+        /// The division factor used to determine
+        /// nearness distance tolerance for intersection detection.
+        /// </summary>
+        private const int NEARNESS_FACTOR = 100;
+
+
         private readonly PrecisionModel _pm;
         private readonly HotPixelIndex _pixelIndex;
 
@@ -90,9 +97,14 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="segStrings">The input NodedSegmentStrings</param>
         private void AddIntersectionPixels(IList<ISegmentString> segStrings)
         {
-            var intAdder = new SnapRoundingIntersectionAdder(_pm);
-            var noder = new MCIndexNoder(intAdder);
-            //noder.SegmentIntersector = intAdder;
+            /*
+             * nearness tolerance is a small fraction of the grid size.
+             */
+            double snapGridSize = 1.0 / _pm.Scale;
+            double nearnessTol = snapGridSize / NEARNESS_FACTOR;
+
+            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol);
+            var noder = new MCIndexNoder(intAdder, nearnessTol);
             noder.ComputeNodes(segStrings);
             var intPts = intAdder.Intersections;
             _pixelIndex.AddNodes(intPts);

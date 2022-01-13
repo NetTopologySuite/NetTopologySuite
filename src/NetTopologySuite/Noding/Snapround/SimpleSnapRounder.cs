@@ -169,9 +169,14 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
         private IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings)
         {
-            var intAdder = new SnapRoundingIntersectionAdder(_pm);
-            var noder = new MCIndexNoder();
-            noder.SegmentIntersector = intAdder;
+            const double NEARNESS_FACTOR = 100d;
+            /*
+             * nearness tolerance is a small fraction of the grid size.
+             */
+            double snapGridSize = 1.0 / _pm.Scale;
+            double nearnessTol = snapGridSize / NEARNESS_FACTOR;
+            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol);
+            var noder = new MCIndexNoder(intAdder, nearnessTol);
             noder.ComputeNodes(segStrings);
             return intAdder.Intersections;
         }

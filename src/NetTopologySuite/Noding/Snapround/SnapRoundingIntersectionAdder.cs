@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -23,29 +24,30 @@ namespace NetTopologySuite.Noding.Snapround
     /// </summary>
     public sealed class SnapRoundingIntersectionAdder : ISegmentIntersector
     {
-        /// <summary>
-        /// The division factor used to determine
-        /// nearness distance tolerance for interior intersection detection.
-        /// </summary>
-        private const int NearnessFactor = 100;
 
         private readonly LineIntersector _li;
-        private readonly PrecisionModel _precModel;
         private readonly double _nearnessTol;
+
+        /**
+         * Creates an intersector which finds all snapped interior intersections,
+         * and adds them as nodes.
+         *
+         * @param pm the precision mode to use
+         */
+        [Obsolete]
+        public SnapRoundingIntersectionAdder(PrecisionModel pm)
+            :this(CalculateNearnessTol(pm))
+        {
+        }
 
         /// <summary>
         /// Creates an intersector which finds all snapped interior intersections,
         /// and adds them as nodes.
         /// </summary>
-        /// <param name="pm">the precision mode to use</param>
-        public SnapRoundingIntersectionAdder(PrecisionModel pm)
+        /// <param name="nearnessTol">the intersection distance tolerance</param>
+        public SnapRoundingIntersectionAdder(double nearnessTol)
         {
-            _precModel = pm;
-            /*
-             * Nearness distance tolerance is a small fraction of the snap grid size
-             */
-            double snapGridSize = 1.0 / _precModel.Scale;
-            _nearnessTol = snapGridSize / NearnessFactor;
+            _nearnessTol = nearnessTol;
 
             /*
              * Intersections are detected and computed using full precision.
@@ -152,5 +154,16 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>Always <c>false</c></returns>
         public bool IsDone { get => false; }
 
+
+        [Obsolete]
+        private static double CalculateNearnessTol(PrecisionModel precModel)
+        {
+            const double NEARNESS_FACTOR = 100d;
+            /*
+             * Nearness distance tolerance is a small fraction of the snap grid size
+             */
+            double snapGridSize = 1.0 / precModel.Scale;
+            return snapGridSize / NEARNESS_FACTOR;
+        }
     }
 }
