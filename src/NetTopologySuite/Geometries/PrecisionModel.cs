@@ -4,28 +4,31 @@ namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Specifies the precision model of the <c>Coordinate</c>s in a <c>Geometry</c>.
-    /// In other words, specifies the grid of allowable
-    /// points for all <c>Geometry</c>s.
+    /// In other words, specifies the grid of allowable points for a <c>Geometry</c>.
+    /// A precision model may be<b>floating</b> (<see cref="PrecisionModels.Floating"/> or <see cref="PrecisionModels.FloatingSingle"/>),
+    /// in which case normal floating-point value semantics apply.
     /// </summary>
     /// <remarks>
-    /// The <c>MakePrecise</c> method allows rounding a coordinate to
-    /// a "precise" value; that is, one whose
-    /// precision is known exactly.
+    /// For a <see cref="PrecisionModels.Fixed"/> precision model the
+    /// <see cref="MakePrecise(Coordinate)"/> method allows rounding a
+    /// coordinate to a "precise" value; that is, one whose precision
+    /// is known exactly.
+    /// <para/>
     /// Coordinates are assumed to be precise in geometries.
     /// That is, the coordinates are assumed to be rounded to the
-    /// precision model given for the point.
-    /// NTS input routines automatically round coordinates to the precision model
-    /// before creating Geometries.
+    /// precision model given for the geometry.
+    /// <para/>
     /// All internal operations
     /// assume that coordinates are rounded to the precision model.
     /// Constructive methods (such as bool operations) always round computed
-    /// coordinates to the appropriate precision model.
-    /// Currently three types of precision model are supported:
+    /// coordinates to the appropriate precision model.<br/>
+    /// Three types of precision model are supported:
     /// <list type="table">
     /// <item><term>Floating</term><description>Represents full double precision floating point.
     /// This is the default precision model used in NTS</description></item>
     /// <item><term>FloatingSingle</term><description>Represents single precision floating point</description></item>
-    /// <item><term>Fixed</term><description>Represents a model with a fixed number of decimal places.A Fixed Precision Model is specified by a scale factor.
+    /// <item><term>Fixed</term><description>Represents a model with a fixed number of decimal places.
+    /// A Fixed Precision Model is specified by a <b>scale factor</b>.
     /// The scale factor specifies the size of the grid which numbers are rounded to.</description></item>
     /// </list>
     /// Input coordinates are mapped to fixed coordinates according to the following
@@ -39,15 +42,18 @@ namespace NetTopologySuite.Geometries
     /// of 1000. To specify -3 decimal places of precision (i.e. rounding to
     /// the nearest 1000), use a scale factor of 0.001.
     /// </para>
+    /// It is also supported to specify a precise <b>grid size</b>
+    /// by providing it as a negative scale factor.
+    /// This allows setting a precise grid size rather than using a fractional scale,
+    /// which provides more accurate and robust rounding.
+    /// For example, to specify rounding to the nearest 1000 use a scale factor of -1000.
+    /// <para/>
     /// Coordinates are represented internally as Java double-precision values.
-    /// Since .NET uses the IEEE-394 floating point standard, this
+    /// .NET uses the IEEE-394 floating point standard, which
     /// provides 53 bits of precision. (Thus the maximum precisely representable
     /// <i>integer</i> is 9,007,199,254,740,992 - or almost 16 decimal digits of precision).
-    /// <para/>
-    /// NTS binary methods currently do not handle inputs which have different precision models.
-    /// The precision model of any constructed geometric value is undefined.
     /// </remarks>
-    [Serializable]
+        [Serializable]
     public class PrecisionModel: IComparable, IComparable<PrecisionModel>
     {
         /// <summary>
@@ -83,6 +89,13 @@ namespace NetTopologySuite.Geometries
         /// The scale factor which determines the number of decimal places in fixed precision.
         /// </summary>
         private readonly double _scale;
+
+        /// <summary>
+        /// If non-zero, the precise grid size specified.
+        /// In this case, the scale is also valid and is computed from the grid size.
+        /// If zero, the scale is used to compute the grid size where needed.
+        /// </summary>
+        private readonly double _gridSize;
 
         /// <summary>
         /// Gets a value indicating a precision model with double precision.
@@ -136,14 +149,34 @@ namespace NetTopologySuite.Geometries
         /// Creates a <c>PrecisionModel</c> that specifies Fixed precision.
         /// Fixed-precision coordinates are represented as precise internal coordinates,
         /// which are rounded to the grid defined by the scale factor.
+        /// <para/>
+        /// The provided scale may be negative, to specify an exact grid size.
+        /// The scale is then computed as the reciprocal.
         /// </summary>
         /// <param name="scale">
         /// Amount by which to multiply a coordinate, to obtain a precise coordinate.
+        /// Must be non-zero
         /// </param>
         public PrecisionModel(double scale)
         {
             _modelType = PrecisionModels.Fixed;
-            _scale = scale;
+            /*
+             * A negative scale indicates the grid size is being set.
+             * The scale is set as well, as the reciprocal.
+             */
+            if (scale < 0)
+            {
+                _gridSize = Math.Abs(scale);
+                _scale = 1.0 / _gridSize;
+            }
+            else
+            {
+                _scale = scale;
+                /*
+                 * Leave gridSize as 0, to ensure it is computed using scale
+                 */
+                _gridSize = 0.0;
+            }
         }
 
         /// <summary>
@@ -155,6 +188,7 @@ namespace NetTopologySuite.Geometries
         {
             _modelType = pm._modelType;
             _scale = pm._scale;
+            _gridSize = pm._gridSize;
         }
 
 
@@ -207,6 +241,26 @@ namespace NetTopologySuite.Geometries
         {
             get => _scale;
             set => throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Computes the grid size for a fixed precision model.
+        /// This is equal to the reciprocal of the scale factor.
+        /// If the grid size has been set explicity (via a negative scale factor)
+        /// it will be returned.
+        /// </summary>
+        /// <returns>The grid size at a fixed precision scale.</returns>
+        public double GridSize
+        {
+            get
+            {
+                if (IsFloating)
+                    return double.NaN;
+
+                if (_gridSize != 0)
+                    return _gridSize;
+                return 1.0 / _scale;
+            }
         }
 
         ///// <summary>
