@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Threading;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Quadtree
@@ -39,7 +42,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         ///
         /// </summary>
-        private IList<T> _items = new System.Collections.Generic.SynchronizedCollection<T>();
+        private SynchonizedList _items = new SynchonizedList();
 
         /// <summary>
         /// subquads are numbered as follows:
@@ -55,7 +58,13 @@ namespace NetTopologySuite.Index.Quadtree
         public IList<T> Items
         {
             get => _items;
-            protected set => _items = (SynchronizedCollection<T>)value;
+            protected set
+            {
+                var slValue = value as SynchonizedList;
+                if (slValue == null && value != null)
+                    slValue = new SynchonizedList(value);
+                _items = slValue;
+            }
         }
 
         /// <summary>
@@ -202,9 +211,8 @@ namespace NetTopologySuite.Index.Quadtree
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            foreach (var o in _items)
-                resultItems.Add(o);
-
+                foreach (var o in _items)
+                    resultItems.Add(o);
             for (int i = 0; i < 4; i++)
                 if (Subnode[i] != null)
                     Subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);
@@ -237,8 +245,8 @@ namespace NetTopologySuite.Index.Quadtree
         private void VisitItems(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
-            for (var i = _items.GetEnumerator(); i.MoveNext(); )
-                visitor.VisitItem(i.Current);
+            foreach (var item in _items)
+                visitor.VisitItem(item);
         }
 
         public IEnumerable<T> Query(Envelope searchEnv, Func<T, bool> predicate)
@@ -307,6 +315,171 @@ namespace NetTopologySuite.Index.Quadtree
                     if (Subnode[i] != null)
                         subSize += Subnode[i].Count;
                 return subSize + 1;
+            }
+        }
+
+        [Serializable]
+        private class SynchonizedList : IList<T>, ISerializable
+        {
+            private readonly IList<T> _items;
+
+            [NonSerialized]
+            private readonly object _syncRoot;
+
+            public SynchonizedList()
+                : this(new List<T>())
+            { }
+
+            public SynchonizedList(int capacity)
+                : this(new List<T>(capacity))
+            { }
+
+            public SynchonizedList(IList<T> items)
+            {
+                _items = items;
+                _syncRoot = new object();
+            }
+
+            internal SynchonizedList(SerializationInfo info, StreamingContext context)
+            {
+                string itemsTypeName = (string)info.GetValue("_itemsType", typeof(string));
+                var itemsType = Type.GetType(itemsTypeName);
+                _items = (IList<T>)info.GetValue("_items", itemsType);
+                _syncRoot = new object();
+            }
+
+            void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+                info.AddValue("_itemsType", _items.GetType().FullName);
+                info.AddValue("_items", _items);
+            }
+
+            public T this[int index]
+            {
+                get
+                {
+                    lock (_syncRoot)
+                        return _items[index];
+                }
+                set
+                {
+                    lock (_syncRoot)
+                        _items[index] = value; }
+            }
+
+            public int Count { get { lock (_syncRoot) return _items.Count; } }
+
+            public bool IsReadOnly
+            {
+                get
+                {
+                    lock(_syncRoot)
+                        return _items.IsReadOnly;
+                }
+            }
+
+            public void Add(T item)
+            {
+                lock (_syncRoot)
+                    _items.Add(item);
+            }
+
+            public void Clear()
+            {
+                lock (_syncRoot)
+                    _items.Clear();
+            }
+
+            public bool Contains(T item)
+            {
+                lock (_syncRoot)
+                    return _items.Contains(item);
+            }
+
+            public void CopyTo(T[] array, int arrayIndex)
+            {
+                lock (_syncRoot)
+                    _items.CopyTo(array, arrayIndex);
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return new SynchonizedEnumerator(_items, _syncRoot); ;
+            }
+
+            public int IndexOf(T item)
+            {
+                lock (_syncRoot)
+                    return _items.IndexOf(item);
+            }
+
+            public void Insert(int index, T item)
+            {
+                lock (_syncRoot)
+                    _items.Insert(index, item);
+            }
+
+            public bool Remove(T item)
+            {
+                lock (_syncRoot)
+                    return _items.Remove(item);
+            }
+
+            public void RemoveAt(int index)
+            {
+                lock (_syncRoot)
+                    _items.RemoveAt(index);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            public object SyncRoot { get { return _syncRoot; } }
+
+            private class SynchonizedEnumerator : IEnumerator<T>
+            {
+                private int _index;
+                private IList<T> _items;
+                private object _syncRoot;
+
+                public SynchonizedEnumerator(IList<T> items, object syncRoot)
+                {
+                    Monitor.Enter(syncRoot);
+                    _syncRoot = syncRoot;
+                    _items = items;
+                    _index = -1;
+                }
+
+                public T Current
+                {
+                    get
+                    {
+                        if (_index < 0 || _index >= _items.Count)
+                            return default;
+
+                        return _items[_index];
+                    }
+                }
+
+                object IEnumerator.Current => Current;
+
+                public void Dispose()
+                {
+                    Monitor.Exit(_syncRoot);
+                }
+
+                public bool MoveNext()
+                {
+                    _index++;
+                    return _index < _items.Count;
+                }
+
+                public void Reset()
+                {
+                    _index = -1;
+                }
             }
         }
     }
