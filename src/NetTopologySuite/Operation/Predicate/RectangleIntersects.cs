@@ -240,9 +240,6 @@ namespace NetTopologySuite.Operation.Predicate
         private readonly Envelope _rectEnv;
         private readonly RectangleLineIntersector _rectIntersector;
 
-        private readonly Coordinate _p0 = new Coordinate();
-        private readonly Coordinate _p1 = new Coordinate();
-
         /// <summary>
         /// Creates a visitor for checking rectangle intersection with segments
         /// </summary>
@@ -289,15 +286,14 @@ namespace NetTopologySuite.Operation.Predicate
         private void CheckIntersectionWithSegments(LineString testLine)
         {
             var seq1 = testLine.CoordinateSequence;
+            var p0 = seq1.CreateCoordinate();
+            var p1 = seq1.CreateCoordinate();
             for (int j = 1; j < seq1.Count; j++)
             {
-                _p0.X = seq1.GetX(j - 1);
-                _p0.Y = seq1.GetY(j - 1);
+                seq1.GetCoordinate(j - 1, p0);
+                seq1.GetCoordinate(j, p1);
 
-                _p1.X = seq1.GetX(j);
-                _p1.Y = seq1.GetY(j);
-
-                if (!_rectIntersector.Intersects(_p0, _p1)) continue;
+                if (!_rectIntersector.Intersects(p0, p1)) continue;
                 Intersects = true;
                 return;
             }
