@@ -349,25 +349,64 @@ namespace NetTopologySuite.Operation.OverlayNG
             return p;
         }
 
-        /*
-        private void checkSanity(Geometry result) {
-          // for Union, area should be greater than largest of inputs
-          double areaA = inputGeom.getGeometry(0).getArea();
-          double areaB = inputGeom.getGeometry(1).getArea();
-          double area = result.getArea();
+        private const double AreaHeuristicTolerance = 0.1;
 
-          // if result is empty probably had a complete collapse, so can't use this check
-          if (area == 0) return;
+        /// <summary>
+        /// A heuristic check for overlay result correctness
+        /// comparing the areas of the input and result.
+        /// The heuristic is necessarily coarse, but it detects some obvious issues.<br/>
+        /// (e.g. <a href="https://github.com/locationtech/jts/issues/798"/>)
+        /// <para/>
+        /// <b>Note:</b> - this check is only safe if the precision model is floating.
+        /// It should also be safe for snapping noding if the distance tolerance is reasonably small.
+        /// (Fixed precision models can lead to collapse causing result area to expand.)
+        /// </summary>
+        /// <param name="geom0">Input geometry 0</param>
+        /// <param name="geom1">Input geometry 1</param>
+        /// <param name="opCode">The overlay opcode</param>
+        /// <param name="result">The overlay result</param>
+        /// <returns><c>true</c> if the result area is consistent</returns>
+        public static bool IsResultAreaConsistent(Geometry geom0, Geometry geom1, SpatialFunction opCode, Geometry result)
+        {
+            if (geom0 == null || geom1 == null)
+                return true;
 
-          if (opCode == UNION) {
-            double minAreaLimit = 0.5 * Math.max(areaA, areaB);
-            if (area < minAreaLimit ) {
-              throw new TopologyException("Result area sanity issue");
+            double areaResult = result.Area;
+            double areaA = geom0.Area;
+            double areaB = geom1.Area;
+
+            bool isConsistent = true;
+            switch (opCode)
+            {
+                case OverlayNG.INTERSECTION:
+                    isConsistent = IsLess(areaResult, areaA, AreaHeuristicTolerance)
+                                && IsLess(areaResult, areaB, AreaHeuristicTolerance);
+                    break;
+                case OverlayNG.DIFFERENCE:
+                    isConsistent = IsLess(areaResult, areaA, AreaHeuristicTolerance)
+                                && IsGreater(areaResult, areaA - areaB, AreaHeuristicTolerance);
+                    break;
+                case OverlayNG.SYMDIFFERENCE:
+                    isConsistent = IsLess(areaResult, areaA + areaB, AreaHeuristicTolerance);
+                    break;
+                case OverlayNG.UNION:
+                    isConsistent = IsLess(areaA, areaResult, AreaHeuristicTolerance)
+                                && IsLess(areaB, areaResult, AreaHeuristicTolerance)
+                                && IsGreater(areaResult, areaA - areaB, AreaHeuristicTolerance);
+                    break;
             }
-          }
+            return isConsistent;
         }
-      */
 
+        private static bool IsLess(double v1, double v2, double tol)
+        {
+            return v1 <= v2 * (1 + tol);
+        }
+
+        private static bool IsGreater(double v1, double v2, double tol)
+        {
+            return v1 >= v2 * (1 - tol);
+        }
     }
 
 }

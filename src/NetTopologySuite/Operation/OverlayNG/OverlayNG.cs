@@ -475,7 +475,20 @@ namespace NetTopologySuite.Operation.OverlayNG
                 return OverlayUtility.ToLines(graph, OutputEdges, _geomFact);
             }
 
-            return ExtractResult(_opCode, graph);
+            var result = ExtractResult(_opCode, graph);
+
+            /*
+             * Heuristic check on result area. 
+             * Catches cases where noding causes vertex to move
+             * and make topology graph area "invert".
+             */
+            if (OverlayUtility.IsFloating(_pm))
+            {
+                bool isAreaConsistent = OverlayUtility.IsResultAreaConsistent(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _opCode, result);
+                if (!isAreaConsistent)
+                    throw new TopologyException("Result area inconsistent with overlay operation");
+            }
+            return result;
         }
 
         private IList<Edge> NodeEdges()
