@@ -258,12 +258,11 @@ namespace NetTopologySuite.Index.KdTree
             return node;
         }
 
-        /**
-         * Performs a range search of the points in the index and visits all nodes found.
-         * 
-         * @param queryEnv the range rectangle to query
-         * @param visitor a visitor to visit all nodes found by the search
-         */
+        /// <summary>
+        /// Performs a range search of the points in the index and visits all nodes found.
+        /// </summary>
+        /// <param name="queryEnv">The range rectangle to query</param>
+        /// <param name="visitor">A visitor to visit all nodes found by the search</param>
         public void Query(Envelope queryEnv, IKdNodeVisitor<T> visitor)
         {
 

@@ -4,22 +4,20 @@ using System.Collections.Generic;
 
 namespace NetTopologySuite.Triangulate.Polygon
 {
-    /**
-     * A semi-static spatial index for points which occur 
-     * in a spatially-coherent sequence.
-     * In particular, this is suitable for indexing the vertices
-     * of a {@link LineString} or {@link Polygon} ring.
-     * <p>
-     * The index is constructed in a batch fashion on a given sequence of coordinates.
-     * Coordinates can be removed via the {@link #remove(int)} method.
-     * <p>
-     * Note that this index queries only the individual points
-     * of the input coordinate sequence, 
-     * <b>not</b> any line segments which might be lie between them.
-     * 
-     * @author Martin Davis
-     *
-     */
+    /// <summary>
+    /// A semi-static spatial index for points which occur
+    /// in a spatially-coherent sequence.
+    /// In particular, this is suitable for indexing the vertices
+    /// of a {@link LineString} or {@link Polygon} ring.
+    /// <para/>
+    /// The index is constructed in a batch fashion on a given sequence of coordinates.
+    /// Coordinates can be removed via the {@link #remove(int)} method.
+    /// <para/>
+    /// Note that this index queries only the individual points
+    /// of the input coordinate sequence,
+    /// <b>not</b> any line segments which might be lie between them.
+    /// </summary>
+    /// <author>Martin Davis</author>
     class VertexSequencePackedRtree
     {
         /// <summary>
@@ -28,17 +26,16 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// </summary>
         private const int NodeCapacity = 16;
 
-        private Coordinate[] _items;
+        private readonly Coordinate[] _items;
         private int[] _levelOffset;
-        private int _nodeCapacity = NodeCapacity;
+        private readonly int _nodeCapacity = NodeCapacity;
         private Envelope[] _bounds;
 
-        /**
-         * Creates a new tree over the given sequence of coordinates.
-         * The sequence should be spatially coherent to provide query performance.
-         * 
-         * @param pts a sequence of points
-         */
+        /// <summary>
+        /// Creates a new tree over the given sequence of coordinates.
+        /// The sequence should be spatially coherent to provide query performance.
+        /// </summary>
+        /// <param name="pts">A sequence of points</param>
         public VertexSequencePackedRtree(Coordinate[] pts)
         {
             _items = pts;
@@ -56,16 +53,14 @@ namespace NetTopologySuite.Triangulate.Polygon
             _bounds = CreateBounds();
         }
 
-        /**
-         * Computes the level offsets.
-         * This is the position in the <tt>bounds</tt> array of each level.
-         * 
-         * The levelOffsets array includes a sentinel value of offset[0] = 0.
-         * The top level is always of size 1,
-         * and so also indicates the total number of bounds.
-         * 
-         * @return the level offsets
-         */
+        /// <summary>
+        /// Computes the level offsets.
+        /// This is the position in the <tt>bounds</tt> array of each level.
+        /// The levelOffsets array includes a sentinel value of <c>offset[0] = 0</c>.
+        /// The top level is always of size 1,
+        /// and so also indicates the total number of bounds.
+        /// </summary>
+        /// <returns>The level offsets</returns>
         private int[] ComputeLevelOffsets()
         {
             var offsets = new List<int>();
@@ -149,14 +144,13 @@ namespace NetTopologySuite.Triangulate.Polygon
 
         //------------------------
 
-        /**
-         * Queries the index to find all items which intersect an extent.
-         * The query result is a list of the indices of input coordinates
-         * which intersect the extent.
-         * 
-         * @param queryEnv the query extent
-         * @return an array of the indices of the input coordinates
-         */
+        /// <summary>
+        /// Queries the index to find all items which intersect an extent.
+        /// The query result is a list of the indices of input coordinates
+        /// which intersect the extent.
+        /// </summary>
+        /// <param name="queryEnv">The query extent</param>
+        /// <returns>An array of the indices of the input coordinates</returns>
         public int[] Query(Envelope queryEnv)
         {
             var resultList = new List<int>();
@@ -220,12 +214,11 @@ namespace NetTopologySuite.Triangulate.Polygon
 
         //------------------------
 
-        /**
-         * Removes the input item at the given index from the spatial index.
-         * 
-         * @param index the index of the item in the input
-         */
-        public void Remove(int index)
+        /// <summary>
+        /// Removes the input item at the given index from the spatial index.
+        /// </summary>
+        /// <param name="index">Index the index of the item in the input</param>
+        public void RemoveAt(int index)
         {
             _items[index] = null;
 

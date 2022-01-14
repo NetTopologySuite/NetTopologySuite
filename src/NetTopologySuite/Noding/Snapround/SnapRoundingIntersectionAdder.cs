@@ -28,12 +28,11 @@ namespace NetTopologySuite.Noding.Snapround
         private readonly LineIntersector _li;
         private readonly double _nearnessTol;
 
-        /**
-         * Creates an intersector which finds all snapped interior intersections,
-         * and adds them as nodes.
-         *
-         * @param pm the precision mode to use
-         */
+        /// <summary>
+        /// Creates an intersector which finds all snapped interior intersections,
+        /// and adds them as nodes.
+        /// </summary>
+        /// <param name="pm">The precision model to use</param>
         [Obsolete]
         public SnapRoundingIntersectionAdder(PrecisionModel pm)
             :this(CalculateNearnessTol(pm))

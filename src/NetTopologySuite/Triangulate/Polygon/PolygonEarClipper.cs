@@ -323,7 +323,7 @@ namespace NetTopologySuite.Triangulate.Polygon
                 _vertexFirst = _vertexNext[cornerApexIndex];
             }
             _vertexNext[_cornerIndex[0]] = _vertexNext[cornerApexIndex];
-            _vertexCoordIndex.Remove(cornerApexIndex);
+            _vertexCoordIndex.RemoveAt(cornerApexIndex);
             _vertexNext[cornerApexIndex] = NoVertexIndex;
             _vertexSize--;
             //-- adjust following corner indexes
