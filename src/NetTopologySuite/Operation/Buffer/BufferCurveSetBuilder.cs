@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.Noding;
-using Position = NetTopologySuite.Geometries.Position;
+﻿    using System;
+    using System.Collections.Generic;
+    using NetTopologySuite.Algorithm;
+    using NetTopologySuite.Geometries;
+    using NetTopologySuite.GeometriesGraph;
+    using NetTopologySuite.Noding;
+    using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -12,8 +12,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// Creates all the raw offset curves for a buffer of a <c>Geometry</c>.
     /// Raw curves need to be noded together and polygonized to form the final buffer area.
     /// </summary>
-    [Obsolete("Use BufferCurveSetBuilder")]
-    public class OffsetCurveSetBuilder
+    public class BufferCurveSetBuilder
     {
         private readonly Geometry _inputGeom;
         private readonly double _distance;
@@ -24,14 +23,16 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         ///
         /// </summary>
-        /// <param name="inputGeom"></param>
-        /// <param name="distance"></param>
-        /// <param name="curveBuilder"></param>
-        public OffsetCurveSetBuilder(Geometry inputGeom, double distance, OffsetCurveBuilder curveBuilder)
+        /// <param name="inputGeom">The input geometry</param>
+        /// <param name="distance">The offset distance</param>
+        /// <param name="precisionModel">A precision model</param>
+        /// <param name="parameters">The buffer parameters</param>
+        public BufferCurveSetBuilder(Geometry inputGeom, double distance,
+            PrecisionModel precisionModel, BufferParameters parameters)
         {
             _inputGeom = inputGeom;
             _distance = distance;
-            _curveBuilder = curveBuilder;
+            _curveBuilder = new OffsetCurveBuilder(precisionModel, parameters);
         }
 
         /// <summary>

@@ -426,6 +426,23 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Computes the <see cref="LineSegment"/> that is offset from
+        /// the segment by a given distance.
+        /// The computed segment is offset to the left of the line if the offset distance is
+        /// positive, to the right if negative.
+        /// </summary>
+        /// <param name="offsetDistance">The distance the point is offset from the segment
+        /// (positive is to the left, negative is to the right)</param>
+        /// <returns>A line segment offset by the specified distance</returns>
+        /// <exception cref="ApplicationException">Thrown if the segment has zero length</exception>
+        public LineSegment Offset(double offsetDistance)
+        {
+            var offset0 = PointAlongOffset(0, offsetDistance);
+            var offset1 = PointAlongOffset(1, offsetDistance);
+            return new LineSegment(offset0, offset1);
+        }
+
+        /// <summary>
         /// Computes the closest point on this line segment to another point.
         /// </summary>
         /// <param name="p">The point to find the closest point to.</param>

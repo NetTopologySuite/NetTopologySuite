@@ -280,7 +280,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void ComputeOffsetCurve(Coordinate[] inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
         {
-            double distTol = SimplifyTolerance(_distance);
+            double distTol = SimplifyTolerance(Math.Abs(_distance));
 
             if (isRightSide)
             {

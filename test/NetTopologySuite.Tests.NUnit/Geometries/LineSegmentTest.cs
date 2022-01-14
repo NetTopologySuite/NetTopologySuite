@@ -60,32 +60,51 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
-        public void TestOffset()
+        public void TestOffsetPoint()
         {
-            CheckOffset(0, 0, 10, 10, 0.0, ROOT2, -1, 1);
-            CheckOffset(0, 0, 10, 10, 0.0, -ROOT2, 1, -1);
+            CheckOffsetPoint(0, 0, 10, 10, 0.0, ROOT2, -1, 1);
+            CheckOffsetPoint(0, 0, 10, 10, 0.0, -ROOT2, 1, -1);
 
-            CheckOffset(0, 0, 10, 10, 1.0, ROOT2, 9, 11);
-            CheckOffset(0, 0, 10, 10, 0.5, ROOT2, 4, 6);
+            CheckOffsetPoint(0, 0, 10, 10, 1.0, ROOT2, 9, 11);
+            CheckOffsetPoint(0, 0, 10, 10, 0.5, ROOT2, 4, 6);
 
-            CheckOffset(0, 0, 10, 10, 0.5, -ROOT2, 6, 4);
-            CheckOffset(0, 0, 10, 10, 0.5, -ROOT2, 6, 4);
+            CheckOffsetPoint(0, 0, 10, 10, 0.5, -ROOT2, 6, 4);
+            CheckOffsetPoint(0, 0, 10, 10, 0.5, -ROOT2, 6, 4);
 
-            CheckOffset(0, 0, 10, 10, 2.0, ROOT2, 19, 21);
-            CheckOffset(0, 0, 10, 10, 2.0, -ROOT2, 21, 19);
+            CheckOffsetPoint(0, 0, 10, 10, 2.0, ROOT2, 19, 21);
+            CheckOffsetPoint(0, 0, 10, 10, 2.0, -ROOT2, 21, 19);
 
-            CheckOffset(0, 0, 10, 10, 2.0, 5 * ROOT2, 15, 25);
-            CheckOffset(0, 0, 10, 10, -2.0, 5 * ROOT2, -25, -15);
+            CheckOffsetPoint(0, 0, 10, 10, 2.0, 5 * ROOT2, 15, 25);
+            CheckOffsetPoint(0, 0, 10, 10, -2.0, 5 * ROOT2, -25, -15);
 
         }
 
-        void CheckOffset(double x0, double y0, double x1, double y1, double segFrac, double offset,
-            double expectedX, double expectedY)
+        [Test]
+        public void TestOffsetLine()
+        {
+            CheckOffsetLine(0, 0, 10, 10, 0, 0, 0, 10, 10);
+
+            CheckOffsetLine(0, 0, 10, 10, ROOT2, -1, 1, 9, 11);
+            CheckOffsetLine(0, 0, 10, 10, -ROOT2, 1, -1, 11, 9);
+        }
+
+        static void CheckOffsetPoint(double x0, double y0, double x1, double y1, double segFrac, double offset,
+                double expectedX, double expectedY)
         {
             var seg = new LineSegment(x0, y0, x1, y1);
             var p = seg.PointAlongOffset(segFrac, offset);
 
             Assert.IsTrue(EqualsTolerance(new Coordinate(expectedX, expectedY), p, 0.000001));
+        }
+
+        static void CheckOffsetLine(double x0, double y0, double x1, double y1, double offset,
+            double expectedX0, double expectedY0, double expectedX1, double expectedY1)
+        {
+            var seg = new LineSegment(x0, y0, x1, y1);
+            var actual = seg.Offset(offset);
+
+            Assert.IsTrue(EqualsTolerance(new Coordinate(expectedX0, expectedY0), actual.P0, 0.000001));
+            Assert.IsTrue(EqualsTolerance(new Coordinate(expectedX1, expectedY1), actual.P1, 0.000001));
         }
 
         public static bool EqualsTolerance(Coordinate p0, Coordinate p1, double tolerance)

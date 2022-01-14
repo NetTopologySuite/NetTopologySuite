@@ -93,9 +93,7 @@ namespace NetTopologySuite.Operation.Buffer
             // factory must be the same as the one used by the input
             _geomFact = g.Factory;
 
-            var curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
-
-            var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+            var curveSetBuilder = new BufferCurveSetBuilder(g, distance, precisionModel, _bufParams);
             curveSetBuilder.InvertOrientation = InvertOrientation;
 
             var bufferSegStrList = curveSetBuilder.GetCurves();
