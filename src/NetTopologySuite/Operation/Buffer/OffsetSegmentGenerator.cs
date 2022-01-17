@@ -528,15 +528,9 @@ namespace NetTopologySuite.Operation.Buffer
             // compute the candidate bevel segment by projecting both sides of the midpoint
             var bevel0 = Project(bevelMidPt, distance, dirBevel);
             var bevel1 = Project(bevelMidPt, distance, dirBevel + Math.PI);
-            var bevel = new LineSegment(bevel0, bevel1);
 
-            //-- compute intersections with extended offset segments
-            double extendLen = mitreLimitDistance < distance ? distance : mitreLimitDistance;
-
-            var extend0 = Extend(offset0, 2 * extendLen);
-            var extend1 = Extend(offset1, -2 * extendLen);
-            var bevelInt0 = bevel.Intersection(extend0);
-            var bevelInt1 = bevel.Intersection(extend1);
+            var bevelInt0 = IntersectionComputer.IntersectionLineSegment(offset0.P0, offset0.P1, bevel0, bevel1);
+            var bevelInt1 = IntersectionComputer.IntersectionLineSegment(offset1.P0, offset1.P1, bevel0, bevel1);
 
             //-- add the limited bevel, if it intersects the offsets
             if (bevelInt0 != null && bevelInt1 != null)
@@ -551,23 +545,6 @@ namespace NetTopologySuite.Operation.Buffer
              * In this case just bevel the join.
              */
             AddBevelJoin(offset0, offset1);
-        }
-
-        /// <summary>
-        /// Extends a line segment forwards or backwards a given distance.
-        /// </summary>
-        /// <param name="dist">The distance to extend by</param>
-        /// <param name="seg">The base line segment</param>
-        /// <returns>the extended segment</returns>
-        private static LineSegment Extend(LineSegment seg, double dist)
-        {
-            double distFrac = Math.Abs(dist) / seg.Length;
-            double segFrac = dist >= 0 ? 1 + distFrac : 0 - distFrac;
-            var extendPt = seg.PointAlong(segFrac);
-            if (dist > 0)
-                return new LineSegment(seg.P0, extendPt);
-            else
-                return new LineSegment(extendPt, seg.P1);
         }
 
         /// <summary>

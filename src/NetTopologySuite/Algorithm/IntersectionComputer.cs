@@ -4,22 +4,23 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Contains functions to compute intersections between lines.
+    /// Functions to compute intersection points between lines and line segments.
+    /// <para/>
+    /// In general it is not possible to compute
+    /// the intersection point of two lines exactly, due to numerical roundoff.
+    /// This is particularly true when the lines are nearly parallel.
+    /// These routines uses numerical conditioning on the input values
+    /// to ensure that the computed value is very close to the correct value.
+    /// <para/>
+    /// The Z-ordinate is ignored, and not populated.
     /// </summary>
     /// <author>mdavis</author>
-    public  class IntersectionComputer
+    public class IntersectionComputer
     {
         /// <summary>
         /// Computes the intersection point of two lines.
         /// If the lines are parallel or collinear this case is detected
         /// and <c>null</c> is returned.
-        /// <para/>
-        /// In general it is not possible to accurately compute
-        /// the intersection point of two lines, due to
-        /// numerical round off.
-        /// This is particularly true when the input lines are nearly parallel.
-        /// This routine uses numerical conditioning on the input values
-        /// to ensure that the computed value should be very close to the correct value.
         /// </summary>
         /// <param name="p1">An endpoint of line 1</param>
         /// <param name="p2">An endpoint of line 1</param>
@@ -90,6 +91,50 @@ namespace NetTopologySuite.Algorithm
             // de-condition intersection point
             return p1.Create(xInt + midx, yInt + midy);
             //return new Coordinate(xInt + midx, yInt + midy);
+        }
+
+        /// <summary>
+        /// Computes the intersection point of a line and a line segment (if any).
+        /// There will be no intersection point if:
+        /// <list type=">bullet">
+        /// <item><description>the segment does not intersect the line</description></item>
+        /// <item><description>the line or the segment are degenerate (have zero length)</description></item>
+        /// </list>
+        /// If the segment is collinear with the line the first segment endpoint is returned.
+        /// </summary>
+        /// <returns>The intersection point, or <c>null</c> if it is not possible to find an intersection</returns>
+        public static Coordinate IntersectionLineSegment(Coordinate line1, Coordinate line2, Coordinate seg1, Coordinate seg2)
+        {
+            var orientS1 = Orientation.Index(line1, line2, seg1);
+            if (orientS1 == OrientationIndex.None) return seg1.Copy();
+
+            var orientS2 = Orientation.Index(line1, line2, seg2);
+            if (orientS2 == OrientationIndex.None) return seg2.Copy();
+
+            /*
+             * If segment lies completely on one side of the line, it does not intersect
+             */
+            if ((orientS1 > 0 && orientS2 > 0) || (orientS1 < 0 && orientS2 < 0))
+            {
+                return null;
+            }
+
+            /*
+             * The segment intersects the line.
+             * The full line-line intersection is used to compute the intersection point.
+             */
+            var intPt = Intersection(line1, line2, seg1, seg2);
+            if (intPt != null) return intPt;
+
+            /*
+             * Due to robustness failure it is possible the intersection computation will return null.
+             * In this case choose the closest point
+             */
+            double dist1 = DistanceComputer.PointToLinePerpendicular(seg1, line1, line2);
+            double dist2 = DistanceComputer.PointToLinePerpendicular(seg2, line1, line2);
+            if (dist1 < dist2)
+                return seg1.Copy();
+            return seg2;
         }
 
     }
