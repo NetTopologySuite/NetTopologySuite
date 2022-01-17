@@ -440,96 +440,148 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Adds a mitre join connecting the two reflex offset segments.
-        /// The mitre will be beveled if it exceeds the mitre ratio limit.
+        /// Adds a mitre join connecting two convex offset segments.
+        /// The mitre is beveled if it exceeds the mitre limit factor.
+        /// The mitre limit is intended to prevent extremely long corners occurring.
+        /// If the mitre limit is very small it can cause unwanted artifacts around fairly flat corners.
+        /// This is prevented by using a simple bevel join in this case.
+        /// In other words, the limit prevents the corner from getting too long,
+        /// but it won't force it to be very short/flat.
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="cornerPt">A corner point</param>
         /// <param name="offset0">The first offset segment</param>
         /// <param name="offset1">The second offset segment</param>
         /// <param name="distance">The offset distance</param>
-        private void AddMitreJoin(Coordinate p,
+        private void AddMitreJoin(Coordinate cornerPt,
             LineSegment offset0,
             LineSegment offset1,
             double distance)
         {
+            double mitreLimitDistance = _bufParams.MitreLimit * distance;
             /*
-             * This computation is unstable if the offset segments are nearly collinear.
+             * First try a non-beveled join.
+             * Compute the intersection point of the lines determined by the offsets.
+             * Parallel or collinear lines will return a null point ==> need to be beveled
+             * 
+             * Note: This computation is unstable if the offset segments are nearly collinear.
              * However, this situation should have been eliminated earlier by the check
              * for whether the offset segment endpoints are almost coincident
              */
             var intPt = IntersectionComputer.Intersection(offset0.P0, offset0.P1, offset1.P0, offset1.P1);
-            if (intPt != null)
+            if (intPt != null && intPt.Distance(cornerPt) <= mitreLimitDistance)
             {
-                double mitreRatio = distance <= 0.0 ? 1.0 : intPt.Distance(p) / Math.Abs(distance);
-                if (mitreRatio <= _bufParams.MitreLimit)
-                {
-                    _segList.AddPt(intPt);
-                    return;
-                }
+                _segList.AddPt(intPt);
+                return;
             }
-            // at this point either intersection failed or mitre limit was exceeded
-            AddLimitedMitreJoin(offset0, offset1, distance, _bufParams.MitreLimit);
+            /*
+             * In case the mitre limit is very small, try a plain bevel.
+             * Use it if it's further than the limit.
+             */
+            double bevelDist = DistanceComputer.PointToSegment(cornerPt, offset0.P1, offset1.P0);
+            if (bevelDist >= mitreLimitDistance)
+            {
+                AddBevelJoin(offset0, offset1);
+                return;
+            }
+            /*
+             * Have to construct a limited mitre bevel.
+             */
+            AddLimitedMitreJoin(offset0, offset1, distance, mitreLimitDistance);
         }
 
         /// <summary>
-        /// Adds a limited mitre join connecting the two reflex offset segments.
-        /// A limited mitre is a mitre which is beveled at the distance
-        /// determined by the mitre ratio limit.
+        /// Adds a limited mitre join connecting two convex offset segments.
+        /// A limited mitre join is beveled at the distance
+        /// determined by the mitre limit factor,
+        /// or as a standard bevel join, whichever is further.
         /// </summary>
         /// <param name="offset0">The first offset segment</param>
         /// <param name="offset1">The second offset segment</param>
         /// <param name="distance">The offset distance</param>
-        /// <param name="mitreLimit">The mitre limit ratio</param>
+        /// <param name="mitreLimitDistance">The mitre limit distance</param>
         private void AddLimitedMitreJoin(
             LineSegment offset0,
             LineSegment offset1,
             double distance,
-            double mitreLimit)
+            double mitreLimitDistance)
         {
-            var basePt = _seg0.P1;
+            var cornerPt = _seg0.P1;
 
-            double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
-
-            // oriented angle between segments
-            double angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);
+            // oriented angle of the corner formed by segments
+            double angInterior = AngleUtility.AngleBetweenOriented(_seg0.P0, cornerPt, _seg1.P1);
             // half of the interior angle
-            double angDiffHalf = angDiff / 2;
+            double angInterior2 = angInterior / 2;
 
-            // angle for bisector of the interior angle between the segments
-            double midAng = AngleUtility.Normalize(ang0 + angDiffHalf);
-            // rotating this by PI gives the bisector of the reflex angle
-            double mitreMidAng = AngleUtility.Normalize(midAng + Math.PI);
-
-            // the miterLimit determines the distance to the mitre bevel
-            double mitreDist = mitreLimit * distance;
-            // the bevel delta is the difference between the buffer distance
-            // and half of the length of the bevel segment
-            double bevelDelta = mitreDist * Math.Abs(Math.Sin(angDiffHalf));
-            double bevelHalfLen = distance - bevelDelta;
+            // direction of bisector of the interior angle between the segments
+            double dir0 = AngleUtility.Angle(cornerPt, _seg0.P0);
+            double dirBisector = AngleUtility.Normalize(dir0 + angInterior2);
+            // rotating by PI gives the bisector of the outside angle,
+            // which is the direction of the bevel midpoint from the corner apex
+            double dirBisectorOut = AngleUtility.Normalize(dirBisector + Math.PI);
 
             // compute the midpoint of the bevel segment
-            double bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
-            double bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
-            var bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
+            var bevelMidPt = Project(cornerPt, mitreLimitDistance, dirBisectorOut);
 
-            // compute the mitre mid-line segment from the corner point to the bevel segment midpoint
-            var mitreMidLine = new LineSegment(basePt, bevelMidPt);
+            // slope angle of bevel segment
+            double dirBevel = AngleUtility.Normalize(dirBisectorOut + Math.PI / 2.0);
 
-            // finally the bevel segment endpoints are computed as offsets from
-            // the mitre mid-line
-            var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
-            var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
+            // compute the candidate bevel segment by projecting both sides of the midpoint
+            var bevel0 = Project(bevelMidPt, distance, dirBevel);
+            var bevel1 = Project(bevelMidPt, distance, dirBevel + Math.PI);
+            var bevel = new LineSegment(bevel0, bevel1);
 
-            if (_side == Position.Left)
+            //-- compute intersections with extended offset segments
+            double extendLen = mitreLimitDistance < distance ? distance : mitreLimitDistance;
+
+            var extend0 = Extend(offset0, 2 * extendLen);
+            var extend1 = Extend(offset1, -2 * extendLen);
+            var bevelInt0 = bevel.Intersection(extend0);
+            var bevelInt1 = bevel.Intersection(extend1);
+
+            //-- add the limited bevel, if it intersects the offsets
+            if (bevelInt0 != null && bevelInt1 != null)
             {
-                _segList.AddPt(bevelEndLeft);
-                _segList.AddPt(bevelEndRight);
+                _segList.AddPt(bevelInt0);
+                _segList.AddPt(bevelInt1);
+                return;
             }
+            /*
+             * If the corner is very flat or the mitre limit is very small
+             * the limited bevel segment may not intersect the offsets.
+             * In this case just bevel the join.
+             */
+            AddBevelJoin(offset0, offset1);
+        }
+
+        /// <summary>
+        /// Extends a line segment forwards or backwards a given distance.
+        /// </summary>
+        /// <param name="dist">The distance to extend by</param>
+        /// <param name="seg">The base line segment</param>
+        /// <returns>the extended segment</returns>
+        private static LineSegment Extend(LineSegment seg, double dist)
+        {
+            double distFrac = Math.Abs(dist) / seg.Length;
+            double segFrac = dist >= 0 ? 1 + distFrac : 0 - distFrac;
+            var extendPt = seg.PointAlong(segFrac);
+            if (dist > 0)
+                return new LineSegment(seg.P0, extendPt);
             else
-            {
-                _segList.AddPt(bevelEndRight);
-                _segList.AddPt(bevelEndLeft);
-            }
+                return new LineSegment(extendPt, seg.P1);
+        }
+
+        /// <summary>
+        /// Projects a point to a given distance in a given direction angle.
+        /// </summary>
+        /// <param name="pt">The point to project</param>
+        /// <param name="d">The projection distance</param>
+        /// <param name="dir">The direction angle (in radians)</param>
+        /// <returns>The projected point</returns>
+        private static Coordinate Project(Coordinate pt, double d, double dir)
+        {
+            double x = pt.X + d * Math.Cos(dir);
+            double y = pt.Y + d * Math.Sin(dir);
+            return new Coordinate(x, y);
         }
 
         /// <summary>
@@ -547,7 +599,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Add points for a circular fillet around a reflex corner.
+        /// Add points for a circular fillet around a convex corner.
         /// Adds the start and end points
         /// </summary>
         /// <param name="p">Base point of curve</param>
