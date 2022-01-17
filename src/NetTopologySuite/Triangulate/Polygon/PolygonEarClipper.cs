@@ -3,6 +3,7 @@
 using NetTopologySuite.Algorithm;
 using System;
 using System.Collections.Generic;
+using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Triangulate.Polygon
 {
@@ -136,16 +137,19 @@ namespace NetTopologySuite.Triangulate.Polygon
                  */
                 if (!IsConvex(corner))
                 {
-                    // remove the corner if it is flat or a repeated point        
-                    bool isCornerRemoved = HasRepeatedPoint(corner)
+                    // remove the corner if it is invalid flat (if required)
+                    bool isCornerRemoved = IsCornerInvalid(corner)
                         || (SkipFlatCorners && IsFlat(corner));
                     if (isCornerRemoved)
                     {
+                        //System.Diagnostics.Debug.WriteLine(WKTWriter.ToLineString(corner));
                         RemoveCorner();
                     }
                     cornerScanCount++;
                     if (cornerScanCount > 2 * _vertexSize)
                     {
+                        //System.Diagnostics.Debug.WriteLine(ToGeometry());
+                        //System.Diagnostics.Debug.WriteLine(WKTWriter.ToLineString(corner));
                         throw new InvalidOperationException("Unable to find a convex corner");
                     }
                 }
@@ -389,10 +393,14 @@ namespace NetTopologySuite.Triangulate.Polygon
         {
             return OrientationIndex.Collinear == Orientation.Index(pts[0], pts[1], pts[2]);
         }
-
-        private static bool HasRepeatedPoint(Coordinate[] pts)
+        /// <summary>
+        /// Detects if a corner has repeated points (AAB or ABB), or is collapsed (ABA).
+        /// </summary>
+        /// <param name="pts">The corner points</param>
+        /// <returns><c>true</c> if the corner is flat or collapsed</returns>
+        private static bool IsCornerInvalid(Coordinate[] pts)
         {
-            return pts[1].Equals2D(pts[0]) || pts[1].Equals2D(pts[2]);
+            return pts[1].Equals2D(pts[0]) || pts[1].Equals2D(pts[2]) || pts[0].Equals2D(pts[2]); ;
         }
 
         public Geometries.Polygon ToGeometry()

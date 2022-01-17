@@ -7,13 +7,17 @@ using System.Linq;
 namespace NetTopologySuite.Triangulate.Polygon
 {
     /// <summary>
-    /// Transforms a polygon with holes into a single self-touching ring
+    /// Transforms a polygon with holes into a single self-touching (invalid) ring
     /// by connecting holes to the exterior shell or to another hole.
     /// The holes are added from the lowest upwards.
     /// As the resulting shell develops, a hole might be added to what was
     /// originally another hole.
+    /// <para/>
+    /// There is no attempt to optimize the quality of the join lines.
+    /// In particular, a hole which already touches at a vertex may be
+    /// joined at a different vertex.
     /// </summary>
-    class PolygonHoleJoiner
+    public class PolygonHoleJoiner
     {
 
         public static Geometries.Polygon JoinAsPolygon(Geometries.Polygon inputPolygon)
