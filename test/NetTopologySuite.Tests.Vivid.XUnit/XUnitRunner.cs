@@ -32,6 +32,12 @@
         [OneTimeSetUp]
         public void FixtureSetUp()
         {
+            if (!string.IsNullOrWhiteSpace(TestFile))
+            {
+                string testPath = Path.Combine(TestRunnerDirectory, this.TestLocation, this.TestFile);
+                if (!System.IO.File.Exists(testPath))
+                    throw new IgnoreException($"'{testPath}' not found");
+            }
         }
 
         protected XmlTestCollection Tests

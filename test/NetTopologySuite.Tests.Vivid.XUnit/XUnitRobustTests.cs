@@ -33,5 +33,16 @@ namespace NetTopologySuite.Tests.XUnit
     public class TestRobustRelateFloat : RobustXUnitRunner
     {
         public TestRobustRelateFloat() : base("TestRobustRelateFloat.xml") { }
+
+        [Test, Category("FailureCase")]
+        public override void Test00()
+        {
+            base.Test00();
+        }
+        [Test, Category("FailureCase")]
+        public override void Test01()
+        {
+            base.Test01();
+        }
     }
 }
