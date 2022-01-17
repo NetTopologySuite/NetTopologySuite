@@ -183,10 +183,53 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         }
 
+        //---------------------------------------
+
+        [Test]
+        public void TestQuadSegs()
+        {
+            CheckOffsetCurve(
+                "LINESTRING (20 20, 50 50, 80 20)",
+                10, 2, JoinStyle.Round, -1,
+                "LINESTRING (12.93 27.07, 42.93 57.07, 50 60, 57.07 57.07, 87.07 27.07)"
+            );
+        }
+
+        [Test]
+        public void TestJoinBevel()
+        {
+            CheckOffsetCurve(
+                "LINESTRING (20 20, 50 50, 80 20)",
+                10, -1, JoinStyle.Bevel, -1,
+                "LINESTRING (12.93 27.07, 42.93 57.07, 57.07 57.07, 87.07 27.07)"
+            );
+        }
+
+        [Test]
+        public void TestJoinMitre()
+        {
+            CheckOffsetCurve(
+                "LINESTRING (20 20, 50 50, 80 20)",
+                10, -1, JoinStyle.Mitre, -1,
+                "LINESTRING (12.93 27.07, 50 64.14, 87.07 27.07)"
+            );
+        }
+
+        //=======================================
+
+
         private void CheckOffsetCurve(string wkt, double distance, string wktExpected)
         {
             CheckOffsetCurve(wkt, distance, wktExpected, 0.05);
         }
+
+        private void CheckOffsetCurve(string wkt, double distance,
+            int quadSegs, JoinStyle joinStyle, double mitreLimit,
+            string wktExpected)
+        {
+            CheckOffsetCurve(wkt, distance, quadSegs, joinStyle, mitreLimit, wktExpected, 0.05);
+        }
+
 
         private void CheckOffsetCurve(string wkt, double distance, string wktExpected, double tolerance)
         {
@@ -200,5 +243,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             var expected = Read(wktExpected);
             CheckEqual(expected, result, tolerance);
         }
+
+        private void CheckOffsetCurve(string wkt, double distance,
+            int quadSegs, JoinStyle joinStyle, double mitreLimit,
+            string wktExpected, double tolerance)
+        {
+            var geom = Read(wkt);
+            var result = OffsetCurve.GetCurve(geom, distance, quadSegs, joinStyle, mitreLimit);
+            //System.out.println(result);
+
+            if (wktExpected == null)
+                return;
+
+            var expected = Read(wktExpected);
+            CheckEqual(expected, result, tolerance);
+        }
+
     }
 }

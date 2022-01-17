@@ -27,6 +27,14 @@ namespace NetTopologySuite.Operation.Buffer
         public const int DefaultQuadrantSegments = 8;
 
         /// <summary>
+        /// The default number of facets into which to divide a fillet of 90 degrees.<br/>
+        /// A value of 8 gives less than 2% max error in the buffer distance.<para/>
+        /// For a max error of &lt; 1%, use QS = 12.<para/>
+        /// For a max error of &lt; 0.1%, use QS = 18.
+        /// </summary>
+        public const JoinStyle DefaultJoinStyle = JoinStyle.Round;
+
+        /// <summary>
         /// The default mitre limit
         /// Allows fairly pointy mitres.
         /// </summary>
@@ -204,6 +212,24 @@ namespace NetTopologySuite.Operation.Buffer
         {
             get => _simplifyFactor;
             set => _simplifyFactor = value < 0 ? 0 : value;
+        }
+
+        /// <summary>
+        /// Creates a copy 
+        /// </summary>
+        /// <returns></returns>
+        public BufferParameters Copy()
+        {
+            var bp = new BufferParameters
+            {
+                _quadrantSegments = _quadrantSegments,
+                _endCapStyle = _endCapStyle,
+                _joinStyle = _joinStyle,
+                _mitreLimit = _mitreLimit,
+                IsSingleSided = IsSingleSided,
+                _simplifyFactor = _simplifyFactor
+            };
+            return bp;
         }
     }
 }
