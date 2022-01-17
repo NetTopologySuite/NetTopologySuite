@@ -34,6 +34,22 @@ namespace NetTopologySuite.Triangulate.Tri
         }
 
         /// <summary>
+        /// Computes the area of a set of Tris.
+        /// </summary>
+        /// <param name="triList">A set of tris</param>
+        /// <returns>The total area of the triangles</returns>
+        public static double AreaOf(IEnumerable<Tri> triList)
+        {
+            double area = 0;
+            foreach (var tri in triList)
+            {
+                area += tri.Area;
+            }
+            return area;
+        }
+
+
+        /// <summary>
         /// Validates a list of <c>Tri</c>s.
         /// </summary>
         /// <param name="triList">The list of <c>Tri</c>s to validate</param>
@@ -70,16 +86,22 @@ namespace NetTopologySuite.Triangulate.Tri
         }
 
         private Coordinate _p0;
+        protected Coordinate P0 => _p0;
         private Coordinate _p1;
+        protected Coordinate P1 => _p1;
         private Coordinate _p2;
+        protected Coordinate P2 => _p2;
 
         /*
          * triN is the adjacent triangle across the edge pN - pNN.
          * pNN is the next vertex CW from pN.
          */
         private Tri _tri0;
+        protected Tri Tri0 => _tri0;
         private Tri _tri1;
+        protected Tri Tri1 => _tri1;
         private Tri _tri2;
+        protected Tri Tri2 => _tri2;
 
         /// <summary>
         /// Creates a triangle with the given vertices.
@@ -239,6 +261,26 @@ namespace NetTopologySuite.Triangulate.Tri
             {
                 _tri2 = triNew;
             }
+        }
+
+        /// <summary>
+        /// Removes this triangle from a triangulation.
+        /// All adjacent references and the references to this
+        /// Tri in the adjacent Tris are set to <c>null</c>.
+        /// </summary>
+        public void Remove()
+        {
+            Remove(0);
+            Remove(1);
+            Remove(2);
+        }
+
+        private void Remove(int index)
+        {
+            var adj = GetAdjacent(index);
+            if (adj == null) return;
+            adj.SetTri(adj.GetIndex(this), null);
+            SetTri(index, null);
         }
 
         /// <summary>
@@ -539,6 +581,20 @@ namespace NetTopologySuite.Triangulate.Tri
             return new Coordinate(midX, midY);
         }
 
+        /// <summary>Gets the area of the triangle.</summary>
+        /// <returns>The area of the triangle</returns>
+        public double Area
+        { 
+            get => Triangle.Area(_p0, _p1, _p2);
+        }
+
+        /// <summary>
+        /// Gets the length of the perimeter of the triangle.
+        /// </summary>
+        public double Length
+        {
+            get => Triangle.Length(_p0, _p1, _p2);
+        }
         /// <summary>
         /// Creates a <see cref="Polygon"/> representing this triangle.
         /// </summary>

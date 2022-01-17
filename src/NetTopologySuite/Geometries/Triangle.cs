@@ -244,6 +244,19 @@ namespace NetTopologySuite.Geometries
             return new Coordinate(x, y);
         }
 
+        /// <summary>
+        /// Compute the length of the perimeter of a triangle
+        /// </summary>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns>The length of the perimeter of the triangle</returns>
+        public static double Length(Coordinate a, Coordinate b, Coordinate c)
+        {
+            return a.Distance(b) + b.Distance(c) + c.Distance(a);
+        }
+
+
         /// <summary>Computes the length of the longest side of a triangle</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -496,6 +509,14 @@ namespace NetTopologySuite.Geometries
             return Centroid(_p0, _p1, _p2);
         }
 
+        /// <summary>
+        /// Computes the length of the perimeter of this triangle.
+        /// </summary>
+        /// <returns>The length of the perimeter</returns>
+        public double Length()
+        {
+            return Length(_p0, _p1, _p2);
+        }
         /// <summary>
         /// Computes the length of the longest side of this triangle
         /// </summary>
