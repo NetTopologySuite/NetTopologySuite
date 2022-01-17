@@ -517,7 +517,7 @@ namespace NetTopologySuite.Operation.Buffer
             double dirBisector = AngleUtility.Normalize(dir0 + angInterior2);
 
             // midpoint of the bevel segment
-            var bevelMidPt = Project(cornerPt, mitreLimitDistance, dirBisector);
+            var bevelMidPt = Project(cornerPt, -mitreLimitDistance, dirBisector);
 
             // direction of bevel segment (at right angle to corner bisector)
             double dirBevel = AngleUtility.Normalize(dirBisector + Math.PI / 2.0);
