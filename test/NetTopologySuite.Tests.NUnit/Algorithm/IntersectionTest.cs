@@ -126,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var q1 = new Coordinate(q1x, q1y);
             var q2 = new Coordinate(q2x, q2y);
             //Coordinate actual = CGAlgorithmsDD.intersection(p1, p2, q1, q2);
-            var actual = IntersectionComputer.IntersectionLineSegment(p1, p2, q1, q2);
+            var actual = IntersectionComputer.LineSegment(p1, p2, q1, q2);
             var expected = new Coordinate(expectedx, expectedy);
             double dist = actual.Distance(expected);
             //System.out.println("Expected: " + expected + "  Actual: " + actual + "  Dist = " + dist);
@@ -140,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var p2 = new Coordinate(p2x, p2y);
             var q1 = new Coordinate(q1x, q1y);
             var q2 = new Coordinate(q2x, q2y);
-            var actual = IntersectionComputer.IntersectionLineSegment(p1, p2, q1, q2);
+            var actual = IntersectionComputer.LineSegment(p1, p2, q1, q2);
             Assert.That(actual, Is.Null);
         }
     }

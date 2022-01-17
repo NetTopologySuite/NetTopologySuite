@@ -103,7 +103,7 @@ namespace NetTopologySuite.Algorithm
         /// If the segment is collinear with the line the first segment endpoint is returned.
         /// </summary>
         /// <returns>The intersection point, or <c>null</c> if it is not possible to find an intersection</returns>
-        public static Coordinate IntersectionLineSegment(Coordinate line1, Coordinate line2, Coordinate seg1, Coordinate seg2)
+        public static Coordinate LineSegment(Coordinate line1, Coordinate line2, Coordinate seg1, Coordinate seg2)
         {
             var orientS1 = Orientation.Index(line1, line2, seg1);
             if (orientS1 == OrientationIndex.None) return seg1.Copy();

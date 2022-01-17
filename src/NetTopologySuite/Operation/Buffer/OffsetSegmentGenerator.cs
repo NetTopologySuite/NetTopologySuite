@@ -527,8 +527,8 @@ namespace NetTopologySuite.Operation.Buffer
             var bevel1 = Project(bevelMidPt, distance, dirBevel + Math.PI);
 
             // compute actual bevel segment between the offset lines
-            var bevelInt0 = IntersectionComputer.IntersectionLineSegment(offset0.P0, offset0.P1, bevel0, bevel1);
-            var bevelInt1 = IntersectionComputer.IntersectionLineSegment(offset1.P0, offset1.P1, bevel0, bevel1);
+            var bevelInt0 = IntersectionComputer.LineSegment(offset0.P0, offset0.P1, bevel0, bevel1);
+            var bevelInt1 = IntersectionComputer.LineSegment(offset1.P0, offset1.P1, bevel0, bevel1);
 
             //-- add the limited bevel, if it intersects the offsets
             if (bevelInt0 != null && bevelInt1 != null)
