@@ -14,6 +14,15 @@ namespace NetTopologySuite.Tests.XUnit
         public TestGeosBuffer() : base("GEOSBuffer.xml") { }
     }
 
+    public class TestGeosBug356Buffer : ExternalXUnitRunner
+    {
+        public TestGeosBug356Buffer() : base("geos-bug356-buffer.xml") { }
+    }
+    public class TestGeosBug838Union : ExternalXUnitRunner
+    {
+        public TestGeosBug838Union() : base("geos-bug838-union.xml") { }
+    }
+
     public class TestBufferExternal : ExternalXUnitRunner
     {
         public TestBufferExternal() : base("TestBufferExternal.xml") { }
@@ -34,6 +43,16 @@ namespace NetTopologySuite.Tests.XUnit
     public class TestBufferExternal2 : ExternalXUnitRunner
     {
         public TestBufferExternal2() : base("TestBufferExternal2.xml") { }
+    }
+
+    public class TestBufferJagged : ExternalXUnitRunner
+    {
+        public TestBufferJagged() : base("TestBufferJagged.xml") { }
+    }
+
+    public class TestInvalidA : ExternalXUnitRunner
+    {
+        public TestInvalidA() : base("TestInvalidA.xml") { }
     }
 
     public class TestOverlay : ExternalXUnitRunner
@@ -63,5 +82,11 @@ namespace NetTopologySuite.Tests.XUnit
         {
             base.Test04();
         }
+
+        public class TestValid : ExternalXUnitRunner
+        {
+            public TestValid() : base("TestValid.xml") { }
+        }
+
     }
 }

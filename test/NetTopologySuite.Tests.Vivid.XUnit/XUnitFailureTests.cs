@@ -20,6 +20,16 @@ namespace NetTopologySuite.Tests.XUnit
         }
     }
 
+    public class TestBufferFailure : FailureXUnitRunner
+    {
+        public TestBufferFailure() : base("TestBufferFailure.xml") { }
+    }
+
+    public class TestBufferInsideNonEmpty : FailureXUnitRunner
+    {
+        public TestBufferInsideNonEmpty() : base("TestBufferInsideNonEmpty.xml") { }
+    }
+
     // 1 expected exception thrown
     public class TestOverlayFailure : FailureXUnitRunner
     {
@@ -48,5 +58,10 @@ namespace NetTopologySuite.Tests.XUnit
         {
             base.Test04();
         }
+    }
+
+    public class TestReducePrecisionFailure : FailureXUnitRunner
+    {
+        public TestReducePrecisionFailure() : base("TestReducePrecisionFailure.xml") { }
     }
 }
