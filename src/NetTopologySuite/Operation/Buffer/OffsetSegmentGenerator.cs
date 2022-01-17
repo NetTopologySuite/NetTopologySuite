@@ -515,20 +515,18 @@ namespace NetTopologySuite.Operation.Buffer
             // direction of bisector of the interior angle between the segments
             double dir0 = AngleUtility.Angle(cornerPt, _seg0.P0);
             double dirBisector = AngleUtility.Normalize(dir0 + angInterior2);
-            // rotating by PI gives the bisector of the outside angle,
-            // which is the direction of the bevel midpoint from the corner apex
-            double dirBisectorOut = AngleUtility.Normalize(dirBisector + Math.PI);
 
-            // compute the midpoint of the bevel segment
-            var bevelMidPt = Project(cornerPt, mitreLimitDistance, dirBisectorOut);
+            // midpoint of the bevel segment
+            var bevelMidPt = Project(cornerPt, mitreLimitDistance, dirBisector);
 
-            // slope angle of bevel segment
-            double dirBevel = AngleUtility.Normalize(dirBisectorOut + Math.PI / 2.0);
+            // direction of bevel segment (at right angle to corner bisector)
+            double dirBevel = AngleUtility.Normalize(dirBisector + Math.PI / 2.0);
 
             // compute the candidate bevel segment by projecting both sides of the midpoint
             var bevel0 = Project(bevelMidPt, distance, dirBevel);
             var bevel1 = Project(bevelMidPt, distance, dirBevel + Math.PI);
 
+            // compute actual bevel segment between the offset lines
             var bevelInt0 = IntersectionComputer.IntersectionLineSegment(offset0.P0, offset0.P1, bevel0, bevel1);
             var bevelInt1 = IntersectionComputer.IntersectionLineSegment(offset1.P0, offset1.P1, bevel0, bevel1);
 
