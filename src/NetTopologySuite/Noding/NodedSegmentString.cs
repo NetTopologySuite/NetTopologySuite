@@ -13,11 +13,15 @@ namespace NetTopologySuite.Noding
     /// The line segments are represented by an array of <see cref="Coordinate" />s.
     /// Intended to optimize the noding of contiguous segments by
     /// reducing the number of allocated objects.
-    /// <see cref="NodedSegmentString" />s can carry a context object, which is useful
+    /// <see cref="ISegmentString"/>s can carry a context object, which is useful
     /// for preserving topological or parentage information.
     /// All noded substrings are initialized with the same context object.
+    /// <para/>
+    /// For read-only applications use <see cref="BasicSegmentString"/>,
+    /// which is (slightly)more lightweight.
     /// </summary>
-    public class NodedSegmentString : INodableSegmentString
+    /// <seealso cref="BasicSegmentString"/>
+public class NodedSegmentString : INodableSegmentString
     {
         /// <summary>
         /// Gets the <see cref="ISegmentString"/>s which result from splitting this string at node points.

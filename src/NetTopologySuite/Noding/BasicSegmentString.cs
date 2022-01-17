@@ -6,15 +6,14 @@ using NetTopologySuite.IO;
 namespace NetTopologySuite.Noding
 {
     /// <summary>
-    /// Represents a list of contiguous line segments,
-    /// and supports noding the segments.
-    /// The line segments are represented by an array of <see cref="Coordinate" />s.
-    /// Intended to optimize the noding of contiguous segments by
-    /// reducing the number of allocated objects.
-    /// SegmentStrings can carry a context object, which is useful
+    /// Represents a read-only list of contiguous line segments.
+    /// This can be used for detection of intersections or nodes.
+    /// <see cref="ISegmentString"/>s can carry a context object, which is useful
     /// for preserving topological or parentage information.
-    /// All noded substrings are initialized with the same context object.
+    /// <para/>
+    /// If adding nodes is required use <see cref="NodedSegmentString"/>.
     /// </summary>
+    /// <seealso cref="NodedSegmentString"/>
     public class BasicSegmentString : ISegmentString
     {
 
