@@ -75,28 +75,28 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Hull
         [Test]
         public void TestLengthFactorZero()
         {
-            checkHullByLengthFactor("MULTIPOINT ((10 90), (10 10), (90 10), (90 90), (40 40), (60 30), (30 70), (40 60), (60 50), (60 72), (47 66), (90 60))",
+            CheckHullByLengthRatio("MULTIPOINT ((10 90), (10 10), (90 10), (90 90), (40 40), (60 30), (30 70), (40 60), (60 50), (60 72), (47 66), (90 60))",
                0, "POLYGON ((30 70, 10 90, 60 72, 90 90, 90 60, 90 10, 60 30, 10 10, 40 40, 60 50, 47 66, 40 60, 30 70))");
         }
 
         [Test]
         public void TestLengthFactorP5()
         {
-            checkHullByLengthFactor("MULTIPOINT ((10 90), (10 10), (90 10), (90 90), (40 40), (60 30), (30 70), (40 60), (60 50), (60 72), (47 66), (90 60))",
+            CheckHullByLengthRatio("MULTIPOINT ((10 90), (10 10), (90 10), (90 90), (40 40), (60 30), (30 70), (40 60), (60 50), (60 72), (47 66), (90 60))",
                0.5, "POLYGON ((30 70, 10 90, 60 72, 90 90, 90 60, 90 10, 60 30, 10 10, 40 40, 30 70))");
         }
 
         [Test]
         public void TestLengthFactorOne()
         {
-            checkHullByLengthFactor("MULTIPOINT ((10 90), (10 10), (90 10), (90 90), (40 40), (60 30), (30 70), (40 60), (60 50), (60 72), (47 66), (90 60))",
+            CheckHullByLengthRatio("MULTIPOINT ((10 90), (10 10), (90 10), (90 90), (40 40), (60 30), (30 70), (40 60), (60 50), (60 72), (47 66), (90 60))",
                1, "POLYGON ((10 10, 10 90, 90 90, 90 60, 90 10, 10 10))");
         }
 
         [Test]
         public void TestLengthFactorXYZChevronP5()
         {
-            CheckHullByLengthFactorXYZ("MULTIPOINT Z ((10 10 1), (90 10 2), (30 70 3), (70 70 4), (50 60 5))",
+            CheckHullByLengthRatioXYZ("MULTIPOINT Z ((10 10 1), (90 10 2), (30 70 3), (70 70 4), (50 60 5))",
                0.5, "POLYGON Z ((30 70 3, 70 70 4, 90 10 2, 50 60 5, 10 10 1, 30 70 3))");
         }
 
@@ -141,18 +141,18 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Hull
 
         //==========================================================================
 
-        private void checkHullByLengthFactor(string wkt, double threshold, string wktExpected)
+        private void CheckHullByLengthRatio(string wkt, double threshold, string wktExpected)
         {
             var geom = Read(wkt);
-            var actual = ConcaveHull.ConcaveHullByLengthFactor(geom, threshold);
+            var actual = ConcaveHull.ConcaveHullByLengthRatio(geom, threshold);
             var expected = Read(wktExpected);
             CheckEqual(expected, actual);
         }
 
-        private void CheckHullByLengthFactorXYZ(string wkt, double threshold, string wktExpected)
+        private void CheckHullByLengthRatioXYZ(string wkt, double threshold, string wktExpected)
         {
             var geom = Read(wkt);
-            var actual = ConcaveHull.ConcaveHullByLengthFactor(geom, threshold);
+            var actual = ConcaveHull.ConcaveHullByLengthRatio(geom, threshold);
             var expected = Read(wktExpected);
             CheckEqualXYZ(expected, actual);
         }

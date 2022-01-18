@@ -13,10 +13,11 @@ namespace NetTopologySuite.Algorithm.Hull
     /// Constructs a concave hull of a set of points.
     /// The hull is constructed by removing the longest outer edges
     /// of the Delaunay Triangulation of the points
-    /// until certain target criteria are reached.
+    /// until a target criterium is reached.
+    /// <para/>
     /// The target criteria are:
     /// <list type="table">
-    /// <item><term>Maximum Edge Length</term><description>the length of the longest edge of the hull is no larger
+    /// <item><term>Maximum Edge Length Ratio</term><description>the length of the longest edge of the hull is no larger
     /// than this value.</description></item>
     /// <item><term>Maximum Edge Length Factor</term><description>determine the Maximum Edge Length
     /// as a fraction of the difference between the longest and shortest edge lengths
@@ -25,9 +26,8 @@ namespace NetTopologySuite.Algorithm.Hull
     /// <item><term>Maximum Area Ratio</term><description>the ratio of the concave hull area to the convex hull area
     /// will be no larger than this value.</description></item>
     /// </list>
-    /// Usually only a single criteria is specified, but both may be provided.
-    /// The preferred criteria is the <b>Maximum Edge Length Factor</b>, since it is
-    /// scale-independent, and local (so that no assumption needs to be made about the
+    /// The preferred criterium is the <b>Maximum Edge Length Ratio</b>, since it is
+    /// scale-free and local(so that no assumption needs to be made about the
     /// total amount of concavity present).
     /// Other length criteria can be used by setting the Maximum Edge Length.
     /// For example, use a length relative to the longest edge length
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Algorithm.Hull
     /// <para/>
     /// Optionally the concave hull can be allowed to contain holes.
     /// Note that this may result in substantially slower computation,
-    /// and it can produce results of low quality.
+    /// and it can produce results of lower quality.
     /// </summary>
     /// <author>Martin Davis</author>
     public class ConcaveHull
@@ -96,36 +96,36 @@ namespace NetTopologySuite.Algorithm.Hull
 
         /// <summary>
         /// Computes the concave hull of the vertices in a geometry
-        /// using the target criteria of maximum edge length factor.
-        /// The edge length factor is a fraction of the length difference
+        /// using the target criteria of maximum edge length ratio.
+        /// The edge length ratio is a fraction of the length difference
         /// between the longest and shortest edges
         /// in the Delaunay Triangulation of the input points. 
         /// </summary>
         /// <param name="geom">The input geometry</param>
-        /// <param name="lengthFactor">The target edge length factor</param>
+        /// <param name="lengthRatio">The target edge length ratio</param>
         /// <returns>The concave hull</returns>
-        public static Geometry ConcaveHullByLengthFactor(Geometry geom, double lengthFactor)
+        public static Geometry ConcaveHullByLengthRatio(Geometry geom, double lengthRatio)
         {
-            return ConcaveHullByLengthFactor(geom, lengthFactor, false);
+            return ConcaveHullByLengthRatio(geom, lengthRatio, false);
         }
 
         /// <summary>
         /// Computes the concave hull of the vertices in a geometry
-        /// using the target criteria of maximum edge length factor,
+        /// using the target criteria of maximum edge length ratio,
         /// and optionally allowing holes.
         /// The edge length factor is a fraction of the length difference
         /// between the longest and shortest edges
         /// in the Delaunay Triangulation of the input points. 
         /// </summary>
         /// <param name="geom">The input geometry</param>
-        /// <param name="lengthFactor">The target maximum edge length</param>
+        /// <param name="lengthRatio">The target edge length ratio</param>
         /// <param name="isHolesAllowed">A flag whether holes are allowed in the result</param>
         /// <returns>The concave hull</returns>
-        public static Geometry ConcaveHullByLengthFactor(Geometry geom, double lengthFactor, bool isHolesAllowed)
+        public static Geometry ConcaveHullByLengthRatio(Geometry geom, double lengthRatio, bool isHolesAllowed)
         {
             var hull = new ConcaveHull(geom)
             {
-                MaximumEdgeLengthFactor = lengthFactor,
+                MaximumEdgeLengthRatio = lengthRatio,
                 HolesAllowed = isHolesAllowed
             };
             return hull.GetHull();
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Algorithm.Hull
 
         private readonly Geometry _inputGeometry;
         private double _maxEdgeLength = 0.0;
-        private double _maxEdgeLengthFactor = -1;
+        private double _maxEdgeLengthRatio = -1;
         private double _maxAreaRatio = 0.0;
         private bool _isHolesAllowed = false;
         private readonly GeometryFactory _geomFactory;
@@ -187,13 +187,13 @@ namespace NetTopologySuite.Algorithm.Hull
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Edge length must be non-negative");
                 _maxEdgeLength = value;
-                _maxEdgeLengthFactor = -1;
+                _maxEdgeLengthRatio = -1;
             }
         }
 
         /// <summary>
-        /// Gets or sets the target maximum edge length factor for the concave hull.
-        /// The edge length factor is a fraction of the difference
+        /// Gets or sets the target maximum edge length ratio for the concave hull.
+        /// The edge length ratio is a fraction of the difference
         /// between the longest and shortest edge lengths
         /// in the Delaunay Triangulation of the input points.
         /// It is a value in the range 0 to 1.
@@ -204,15 +204,15 @@ namespace NetTopologySuite.Algorithm.Hull
         /// </list> 
         /// </summary>
         /// <returns>The target maximum edge length factor for the concave hull</returns>
-        public double MaximumEdgeLengthFactor
+        public double MaximumEdgeLengthRatio
         {
-            get => _maxEdgeLengthFactor;
+            get => _maxEdgeLengthRatio;
 
             set
             {
                 if (value < 0 || value > 1)
                     throw new ArgumentOutOfRangeException(nameof(value), "Edge length ratio must be in range [0,1]e");
-                _maxEdgeLengthFactor = value;
+                _maxEdgeLengthRatio = value;
             }
         }
 
@@ -257,9 +257,9 @@ namespace NetTopologySuite.Algorithm.Hull
                 return _geomFactory.CreatePolygon();
             }
             var triList = CreateDelaunayTriangulation(_inputGeometry);
-            if (_maxEdgeLengthFactor >= 0)
+            if (_maxEdgeLengthRatio >= 0)
             {
-                _maxEdgeLength = ComputeTargetEdgeLength(triList, _maxEdgeLengthFactor);
+                _maxEdgeLength = ComputeTargetEdgeLength(triList, _maxEdgeLengthRatio);
             }
             if (triList.Count == 0)
                 return _inputGeometry.ConvexHull();
@@ -269,9 +269,9 @@ namespace NetTopologySuite.Algorithm.Hull
         }
 
         private static double ComputeTargetEdgeLength(IList<HullTri> triList,
-            double edgeLengthFactor)
+            double edgeLengthRatio)
         {
-            if (edgeLengthFactor == 0) return 0;
+            if (edgeLengthRatio == 0) return 0;
             double maxEdgeLen = -1;
             double minEdgeLen = -1;
             foreach (var tri in triList)
@@ -285,9 +285,11 @@ namespace NetTopologySuite.Algorithm.Hull
                         minEdgeLen = len;
                 }
             }
-            //-- ensure all edges are included
-            if (edgeLengthFactor == 1) return 2 * maxEdgeLen;
-            return edgeLengthFactor * (maxEdgeLen - minEdgeLen) + minEdgeLen;
+            //-- if ratio = 1 ensure all edges are included
+            if (edgeLengthRatio == 1)
+                return 2 * maxEdgeLen;
+
+            return edgeLengthRatio * (maxEdgeLen - minEdgeLen) + minEdgeLen;
         }
 
         private void ComputeHull(IList<HullTri> triList)
