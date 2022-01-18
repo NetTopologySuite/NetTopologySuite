@@ -22,9 +22,11 @@ namespace NetTopologySuite.Algorithm.Hull
     /// <item><term>Maximum Edge Length Factor</term><description>determine the Maximum Edge Length
     /// as a fraction of the difference between the longest and shortest edge lengths
     /// in the Delaunay Triangulation.
-    /// This normalizes the <b>Maximum Edge Length</b> to be scale-independent.</description></item>
+    /// This normalizes the <b>Maximum Edge Length</b> to be scale-free.
+    /// A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.</description></item>
     /// <item><term>Maximum Area Ratio</term><description>the ratio of the concave hull area to the convex hull area
-    /// will be no larger than this value.</description></item>
+    /// will be no larger than this value.
+    /// A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.</description></item>
     /// </list>
     /// The preferred criterium is the <b>Maximum Edge Length Ratio</b>, since it is
     /// scale-free and local(so that no assumption needs to be made about the
