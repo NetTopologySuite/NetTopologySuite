@@ -213,7 +213,7 @@ namespace NetTopologySuite.Algorithm.Hull
             set
             {
                 if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException(nameof(value), "Edge length ratio must be in range [0,1]e");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Edge length ratio must be in range [0,1]");
                 _maxEdgeLengthRatio = value;
             }
         }
