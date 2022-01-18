@@ -22,7 +22,16 @@ namespace NetTopologySuite.IO
     /// The Well-known
     /// Text format is defined in the <A HREF="http://www.opengis.org/techno/specs.htm">
     /// OpenGIS Simple Features Specification for SQL</A> .
-    ///
+    /// <para/>
+    /// As of version 2.0, NTS can read WKT syntax
+    /// which specifies coordinate dimension Z, M or ZM as modifiers(e.g.POINT Z)
+    /// or in the name of the geometry type(e.g.LINESTRINGZM).
+    /// If the coordinate dimension is specified it will be set in the created geometry.
+    /// If the coordinate dimension is not specified, the default behaviour is to
+    /// create XYZ geometry(this is backwards compatible with older JTS versions).
+    /// This can be altered to create XY geometry by
+    /// setting <see cref="IsOldNtsCoordinateSyntaxAllowed"/> to <c>false</c>.
+    /// <para/>
     /// NOTE:  There is an inconsistency in the SFS.
     /// The WKT grammar states that <c>MultiPoints</c> are represented by
     /// <c>MULTIPOINT ( ( x y), (x y) )</c>,
@@ -309,7 +318,7 @@ namespace NetTopologySuite.IO
         private CoordinateSequence GetCoordinateSequence(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
         {
             if (GetNextEmptyOrOpener(tokens).Equals(WKTConstants.EMPTY))
-                return factory.CoordinateSequenceFactory.Create(0, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
+                return CreateCoordinateSequenceEmpty(factory.CoordinateSequenceFactory, ordinateFlags);
 
             var coordinates = new List<CoordinateSequence>();
             do
@@ -320,22 +329,27 @@ namespace NetTopologySuite.IO
             return MergeSequences(factory, coordinates, ordinateFlags);
         }
 
-        /// <summary>
-        /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>
-        /// for an old-style JTS MultiPoint (Point coordinates not enclosed in parentheses).
-        /// <para>
-        /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
-        /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
-        /// Those are silently dropped.
-        /// </para>
-        /// </summary>
-        /// <param name="factory">A geometry factory</param>
-        /// <param name="tokens">the tokenizer to use.</param>
-        /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
-        /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
-        /// <exception cref="IOException">if an I/O error occurs.</exception>
-        /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinateSequenceOldMultiPoint(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
+        private CoordinateSequence CreateCoordinateSequenceEmpty(CoordinateSequenceFactory csFactory, Ordinates ordinateFlags)
+        { 
+            return csFactory.Create(0, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M)? 1 : 0);
+        }
+
+    /// <summary>
+    /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>
+    /// for an old-style JTS MultiPoint (Point coordinates not enclosed in parentheses).
+    /// <para>
+    /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
+    /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
+    /// Those are silently dropped.
+    /// </para>
+    /// </summary>
+    /// <param name="factory">A geometry factory</param>
+    /// <param name="tokens">the tokenizer to use.</param>
+    /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
+    /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+    /// <exception cref="IOException">if an I/O error occurs.</exception>
+    /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
+    private CoordinateSequence GetCoordinateSequenceOldMultiPoint(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
         {
             var coordinates = new List<CoordinateSequence>();
             do
@@ -891,7 +905,7 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals(WKTConstants.EMPTY))
-                return factory.CreatePolygon();
+                return factory.CreatePolygon(CreateCoordinateSequenceEmpty(factory.CoordinateSequenceFactory, ordinateFlags));
 
             var holes = new List<LinearRing>();
             var shell = ReadLinearRingText(tokens, factory, ordinateFlags);
