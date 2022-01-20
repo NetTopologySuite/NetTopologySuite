@@ -1,5 +1,6 @@
 ﻿using NetTopologySuite.Algorithm.Match;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Valid;
 using NUnit.Framework;
@@ -8,7 +9,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 {
     public class Issue467
     {
-        [Test, Description("Exception thrown when doing Overlap on weird MultiPolygon"), Category("GitHub Issue #467"), Category("FailureCase"), Explicit]
+        [Test, Description("Exception thrown when doing Overlap on weird MultiPolygon"), Category("GitHub Issue #467")]
         public void TestWeirdPolygonOverlaps()
         {
             var reader = new WKTReader();
@@ -221,11 +222,11 @@ namespace NetTopologySuite.Samples.Tests.Github
             if (!isValidOp.IsValid)
                 TestContext.WriteLine(isValidOp.ValidationError);
 
-            var fixedMultipolygon = weirdMultipolygon.Buffer(0);
+            var fixedMultipolygon = GeometryFixer.Fix(weirdMultipolygon);
             Assert.That(fixedMultipolygon.IsValid, Is.True);
 
             double similarity = new HausdorffSimilarityMeasure().Measure(weirdMultipolygon, fixedMultipolygon);
-            Assert.That(similarity, Is.EqualTo(1).Within(0.001));
+            Assert.That(similarity, Is.EqualTo(1).Within(0.03));
 
             bool res = true;
             Assert.That(() => res = fixedMultipolygon.Intersects(point), Throws.Nothing);
