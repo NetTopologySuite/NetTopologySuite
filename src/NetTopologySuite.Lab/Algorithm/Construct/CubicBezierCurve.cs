@@ -7,7 +7,7 @@ namespace NetTopologySuite.Algorithm.Construct
     /// Creates a curved line or polygon using Bezier Curves
     /// defined by the segments of the input.
     /// </summary>
-    public class BezierCurve
+    public class CubicBezierCurve
     {
         /// <summary>
         /// Creates a curved line or polygon using Bezier Curves
@@ -18,7 +18,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// <returns>A curved line or polygon using Bezier Curves</returns>
         public static Geometry Create(Geometry geom, double alpha)
         {
-            var curve = new BezierCurve(geom, alpha);
+            var curve = new CubicBezierCurve(geom, alpha);
             return curve.GetResult();
         }
 
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// </summary>
         /// <param name="geom">The geometry defining curve</param>
         /// <param name="alpha">A roundness parameter (0 = linear, 1 = round, 2 = distorted)</param>
-        BezierCurve(Geometry geom, double alpha)
+        CubicBezierCurve(Geometry geom, double alpha)
         {
             _inputGeom = geom;
             if (alpha < 0.0) alpha = 0;
