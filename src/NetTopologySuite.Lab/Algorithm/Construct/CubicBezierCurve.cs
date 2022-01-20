@@ -1,20 +1,32 @@
 ﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Mathematics;
+using System;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Algorithm.Construct
 {
     /// <summary>
-    /// Creates a curved line or polygon using Bezier Curves
-    /// defined by the segments of the input.
+    /// Creates a curved geometry by replacing the segments
+    /// of the input with Cubic Bezier Curves.
     /// </summary>
+    /// <remarks>
+    /// The Bezier control points are determined from the segments of the geometry
+    /// and the alpha control parameter.
+    /// The Bezier Curves are created to be C2-continuous (smooth)
+    /// at each input vertex.
+    /// <para/>
+    /// The result is not guaranteed to be valid, since large alpha values
+    /// </remarks>
+    /// may cause self-intersections.
     public class CubicBezierCurve
     {
         /// <summary>
-        /// Creates a curved line or polygon using Bezier Curves
+        /// Creates a curved geometry using Cubic Bezier Curves
         /// defined by the segments of the input.
         /// </summary>
         /// <param name="geom">The geometry defining the curve</param>
-        /// <param name="alpha">A roundness parameter (0 = linear, 1 = round, 2 = distorted)</param>
+        /// <param name="alpha">A roundness parameter (0 is linear, 1 is round, >1 is increasingly distorted)</param>
         /// <returns>A curved line or polygon using Bezier Curves</returns>
         public static Geometry Create(Geometry geom, double alpha)
         {
@@ -23,7 +35,7 @@ namespace NetTopologySuite.Algorithm.Construct
         }
 
         private readonly double _minSegmentLength = 0.0;
-        private readonly int _numVerticesPerSegment = 10;
+        private readonly int _numVerticesPerSegment = 16;
 
         private readonly Geometry _inputGeom;
         private readonly double _alpha;
@@ -33,161 +45,207 @@ namespace NetTopologySuite.Algorithm.Construct
         private CubicBezierInterpolationParam[] interpolationParam;
 
         /// <summary>
-        /// Creates a new Bezier Curve instance.
+        /// Creates a newinstance.
         /// </summary>
         /// <param name="geom">The geometry defining curve</param>
         /// <param name="alpha">A roundness parameter (0 = linear, 1 = round, 2 = distorted)</param>
         CubicBezierCurve(Geometry geom, double alpha)
         {
             _inputGeom = geom;
-            if (alpha < 0.0) alpha = 0;
+            //if (alpha < 0.0) alpha = 0;
             _alpha = alpha;
             _geomFactory = geom.Factory;
         }
 
+        /// <summary>
+        /// Gets the computed Bezier curve geometry
+        /// </summary>
+        /// <returns>The curved geometry</returns>
         public Geometry GetResult()
         {
             bezierCurvePts = new Coordinate[_numVerticesPerSegment];
             interpolationParam = CubicBezierInterpolationParam.Compute(_numVerticesPerSegment);
 
-            if (_inputGeom is LineString ls)
-                return BezierLine(ls);
-            if (_inputGeom is Polygon pg)
-                return BezierPolygon(pg);
-            return null;
+            return GeometryMapper.FlatMap(_inputGeom, Dimension.Curve,
+                new GeometryMapper.MapOp( (geom) => {
+                    if (geom is LineString)
+                        return BezierLine((LineString)geom);
+                    if (geom is Polygon ) 
+                        return BezierPolygon((Polygon)geom);
+            
+                    //-- Points
+                    return geom.Copy();
+                }));
         }
 
         private LineString BezierLine(LineString ls)
         {
             var coords = ls.Coordinates;
-
-           var control = ControlPoints(coords, false, _alpha);
-
+            var control = ControlPoints(coords, false, _alpha);
             int N = coords.Length;
-            var curvePts = new List<Coordinate>();
+            var curvePts = new CoordinateList();
             for (int i = 0; i < N - 1; i++)
             {
-                double len = coords[i].Distance(coords[i + 1]);
-                if (len < _minSegmentLength)
-                {
-                    // segment too short - copy input coordinate
-                    curvePts.Add(new Coordinate(coords[i]));
-
-                }
-                else
-                {
-                    CubicBezier(coords[i], coords[i + 1], control[i][1], control[i + 1][0],
-                        interpolationParam, bezierCurvePts);
-
-                    int copyN = i < N - 1 ? bezierCurvePts.Length - 1 : bezierCurvePts.Length;
-                    for (int k = 0; k < copyN; k++)
-                    {
-                        curvePts.Add(bezierCurvePts[k]);
-                    }
-                }
+                AddCurve(coords[i], coords[i + 1], control[i][1], control[i + 1][0], curvePts);
             }
-            curvePts.Add(coords[N - 1]);
-            return _geomFactory.CreateLineString(curvePts.ToArray());
+            curvePts.Add(coords[N - 1], false);
+            return _geomFactory.CreateLineString(curvePts.ToCoordinateArray());
+        }
+
+        private LinearRing BezierRing(LinearRing ring)
+        {
+            var coords = ring.Coordinates;
+            var control = ControlPoints(coords, true, _alpha);
+            var curvePts = new CoordinateList();
+            int N = coords.Length - 1;
+            for (int i = 0; i < N; i++)
+            {
+                int next = (i + 1) % N;
+                AddCurve(coords[i], coords[next], control[i][1], control[next][0], curvePts);
+            }
+            curvePts.CloseRing();
+
+            return _geomFactory.CreateLinearRing(curvePts.ToCoordinateArray());
         }
 
         private Polygon BezierPolygon(Polygon poly)
         {
-            var coords = poly.ExteriorRing.Coordinates;
-            int N = coords.Length - 1;
-
-            var controlPoints = ControlPoints(coords, true, _alpha);
-            var curvePts = new List<Coordinate>();
-            for (int i = 0; i < N; i++)
+            var shell = BezierRing((LinearRing)poly.ExteriorRing);
+            LinearRing[] holes = null;
+            if (poly.NumInteriorRings > 0)
             {
-                int next = (i + 1) % N;
-
-                double len = coords[i].Distance(coords[next]);
-                if (len < _minSegmentLength)
+                holes = new LinearRing[poly.NumInteriorRings];
+                for (int i = 0; i < poly.NumInteriorRings; i++)
                 {
-                    // segment too short - copy input coordinate
-                    curvePts.Add(new Coordinate(coords[i]));
-
-                }
-                else
-                {
-                    CubicBezier(coords[i], coords[next], controlPoints[i][1], controlPoints[next][0],
-                        interpolationParam, bezierCurvePts);
-
-                    int copyN = i < N - 1 ? bezierCurvePts.Length - 1 : bezierCurvePts.Length;
-                    for (int k = 0; k < copyN; k++)
-                    {
-                        curvePts.Add(bezierCurvePts[k]);
-                    }
+                    holes[i] = BezierRing((LinearRing)poly.GetInteriorRingN(i));
                 }
             }
-
-            var shell = _geomFactory.CreateLinearRing(curvePts.ToArray());
-            return _geomFactory.CreatePolygon(shell, null);
+            return _geomFactory.CreatePolygon(shell, holes);
         }
 
+        private void AddCurve(Coordinate p0, Coordinate p1,
+            Coordinate ctrl0, Coordinate crtl1,
+            CoordinateList curvePts)
+        {
+            double len = p0.Distance(p1);
+            if (len < _minSegmentLength)
+            {
+                // segment too short - copy input coordinate
+                curvePts.Add(new Coordinate(p0));
 
+            }
+            else
+            {
+                CubicBezier(p0, p1, ctrl0, crtl1,
+                    interpolationParam, bezierCurvePts);
+                for (int i = 0; i < bezierCurvePts.Length - 1; i++)
+                {
+                    curvePts.Add(bezierCurvePts[i], false);
+                }
+            }
+        }
+
+        //-- makes curve at right-angle corners roughly circular
+        private const double CIRCLE_LEN_FACTOR = 3.0 / 8.0;
+
+        /**
+         * Creates control points for each vertex of curve.
+         * The control points are collinear with each vertex, 
+         * thus providing C1-continuity.
+         * By default the control vectors are the same length, 
+         * which provides C2-continuity (same curvature on each
+         * side of vertex.
+         * The alpha parameter controls the length of the control vectors.
+         * Alpha = 0 makes the vectors zero-length, and hence flattens the curves.
+         * Alpha = 1 makes the curve at right angles roughly circular.
+         * Alpha > 1 starts to distort the curve and may introduce self-intersections
+         * 
+         * @param coords
+         * @param isRing
+         * @param alpha determines the curviness
+         * @return
+         */
         private Coordinate[][] ControlPoints(Coordinate[] coords, bool isRing, double alpha)
         {
             int N = isRing ? coords.Length - 1 : coords.Length;
-            double a1 = 1 - alpha;
             var ctrl = new Coordinate[N][];
-
-            var v1 = coords[0];
-            var v2 = coords[1];
-            if (isRing)
-            {
-                v1 = coords[N - 1];
-                v2 = coords[0];
-            }
-
-            double mid1x = (v1.X + v2.X) / 2.0;
-            double mid1y = (v1.Y + v2.Y) / 2.0;
-            double len1 = v1.Distance(v2);
+            ctrl[0] = new Coordinate[2];
+            ctrl[N-1] = new Coordinate[2];
 
             int start = isRing ? 0 : 1;
             int end = isRing ? N : N - 1;
             for (int i = start; i < end; i++)
             {
-                v1 = coords[i];
-                v2 = coords[i + 1];
+                int iprev = i == 0 ? N - 1 : i - 1;
+                var v0 = coords[iprev];
+                var v1 = coords[i];
+                var v2 = coords[i + 1];
 
-                double mid0x = mid1x;
-                double mid0y = mid1y;
-                mid1x = (v1.X + v2.X) / 2.0;
-                mid1y = (v1.Y + v2.Y) / 2.0;
+                double interiorAng = AngleUtility.AngleBetweenOriented(v0, v1, v2);
+                double orient = Math.Sign(interiorAng);
+                double angBisect = AngleUtility.Bisector(v0, v1, v2);
+                double ang0 = angBisect - orient * AngleUtility.PiOver2;
+                double ang1 = angBisect + orient * AngleUtility.PiOver2;
 
-                double len0 = len1;
-                len1 = v1.Distance(v2);
+                double len0 = v1.Distance(v0);
+                double len1 = v1.Distance(v2);
+                double lenBase = Math.Min(len0, len1);
+                double intAngAbs = Math.Abs(interiorAng);
 
-                double p = len0 / (len0 + len1);
-                double anchorx = mid0x + p * (mid1x - mid0x);
-                double anchory = mid0y + p * (mid1y - mid0y);
-                double xdelta = anchorx - v1.X;
-                double ydelta = anchory - v1.Y;
+                //-- make acute corners sharper by shortening tangent
+                double sharpnessFactor = intAngAbs >= AngleUtility.PiOver2 ? 1 : intAngAbs / AngleUtility.PiOver2;
 
-                ctrl[i] = new Coordinate[2];
-                ctrl[i][0] = new Coordinate(
-                    a1 * (v1.X - mid0x + xdelta) + mid0x - xdelta,
-                    a1 * (v1.Y - mid0y + ydelta) + mid0y - ydelta);
+                double len = alpha * CIRCLE_LEN_FACTOR * sharpnessFactor * lenBase;
 
-                ctrl[i][1] = new Coordinate(
-                    a1 * (v1.X - mid1x + xdelta) + mid1x - xdelta,
-                    a1 * (v1.Y - mid1y + ydelta) + mid1y - ydelta);
-                //System.out.println(WKTWriter.toLineString(v[1], ctrl[i][0]));
-                //System.out.println(WKTWriter.toLineString(v[1], ctrl[i][1]));
+                var cv0 = AngleUtility.Project(v1, ang0, len);
+                var cv1 = AngleUtility.Project(v1, ang1, len);
+                if (ctrl[i] == null) ctrl[i] = new Coordinate[2];
+                ctrl[i][0] = cv0;
+                ctrl[i][1] = cv1;
+
+                //System.out.println(WKTWriter.toLineString(v1, cv0));
+                //System.out.println(WKTWriter.toLineString(v1, cv1));
             }
-            /*
-             * For a line, 
-             * use mirrored control points for start and end vertex,
-             * to produce a symmetric curve for the first and last segments.
-             */
             if (!isRing)
             {
-                ctrl[0][1] = MirrorControlPoint(ctrl[1][0], coords[1], coords[0]);
-                ctrl[N - 1][0] = MirrorControlPoint(ctrl[N - 2][1], coords[N - 1], coords[N - 2]);
+                SetLineEndControlPoints(coords, ctrl);
             }
             return ctrl;
         }
+
+        /**
+         * Sets the end control points for a line.
+         * Produce a symmetric curve for the first and last segments
+         * by using mirrored control points for start and end vertex.
+         * 
+         * @param coords
+         * @param ctrl
+         */
+        private void SetLineEndControlPoints(Coordinate[] coords, Coordinate[][] ctrl)
+        {
+            int N = coords.Length;
+
+            ctrl[0][1] = MirrorControlPoint(ctrl[1][0], coords[1], coords[0]);
+            ctrl[N - 1][0] = MirrorControlPoint(ctrl[N - 2][1], coords[N - 1], coords[N - 2]);
+        }
+
+        /**
+         * Creates a control point aimed at the control point at the opposite end of the segment.
+         * 
+         * Produces overly flat results, so not used currently.
+         * 
+         * @param c
+         * @param p1
+         * @param p0
+         * @return
+         */
+        private static Coordinate AimedControlPoint(Coordinate c, Coordinate p1, Coordinate p0)
+        {
+            double len = p1.Distance(c);
+            double ang = AngleUtility.Angle(p0, p1);
+            return AngleUtility.Project(p0, ang, len);
+        }
+
 
         private static Coordinate MirrorControlPoint(Coordinate c, Coordinate p0, Coordinate p1)
         {

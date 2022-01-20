@@ -1,4 +1,5 @@
 using NetTopologySuite.Geometries;
+using System;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -155,6 +156,23 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
+        /// Computes the angle of the unoriented bisector
+        /// of the smallest angle between two vectors.
+        /// </summary>
+        /// <remarks>The computed angle will be in the range (-Pi, Pi].</remarks>
+        /// <param name="tip1">The tip of v1</param>
+        /// <param name="tail">The tail of each vector</param>
+        /// <param name="tip2">The tip of v2</param>
+        /// <returns>The angle of the bisector between v1 and v2</returns>
+        public static double Bisector(Coordinate tip1, Coordinate tail,
+            Coordinate tip2)
+        {
+            double angDel = AngleBetweenOriented(tip1, tail, tip2);
+            double angBi = Angle(tail, tip1) + angDel / 2;
+            return Normalize(angBi);
+        }
+
+        /// <summary>
         /// Computes the interior angle between two segments of a ring.
         /// The ring is assumed to be oriented in a clockwise direction.
         /// </summary>
@@ -279,6 +297,20 @@ namespace NetTopologySuite.Algorithm
             }
 
             return delAngle;
+        }
+
+        /// <summary>
+        /// Projects a point by a given angle and distance.
+        /// </summary>
+        /// <param name="p">The point to project</param>
+        /// <param name="angle">The angle at which to project</param>
+        /// <param name="dist">The distance to project</param>
+        /// <returns>The projected point</returns>
+        public static Coordinate Project(Coordinate p, double angle, double dist)
+        {
+            double x = p.X + dist * Math.Cos(angle);
+            double y = p.Y + dist * Math.Sin(angle);
+            return new Coordinate(x, y);
         }
     }
 }
