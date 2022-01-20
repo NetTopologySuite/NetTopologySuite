@@ -116,29 +116,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Hull
                 0, "POLYGON ((20 90, 40 96, 56 95, 70 80, 80 90, 90 70, 80 60, 95 45, 80 40, 70 20, 90 20, 80 10, 60 15, 45 5, 40 20, 40 80, 15 45, 21 30, 20 10, 10 20, 5 40, 11 60, 20 70, 20 90))");
         }
 
-        //------------------------------------------------
-
-        [Test]
-        public void TestAreaSimple()
-        {
-            CheckHullByArea("MULTIPOINT ((10 10), (90 10), (30 70), (70 70), (50 60))",
-               .5, "POLYGON ((30 70, 70 70, 90 10, 50 60, 10 10, 30 70))");
-        }
-
-        [Test]
-        public void TestAreaZero()
-        {
-            CheckHullByArea("MULTIPOINT ((10 10), (90 10), (70 70), (50 60), (50 90), (40 70), (30 30))",
-               0, "POLYGON ((10 10, 40 70, 50 90, 70 70, 90 10, 50 60, 30 30, 10 10))");
-        }
-
-        [Test]
-        public void TestAreaConvex()
-        {
-            CheckHullByArea("MULTIPOINT ((10 10), (90 10), (70 70), (50 60), (50 90), (40 70), (30 30))",
-               1, "POLYGON ((10 10, 40 70, 50 90, 70 70, 90 10, 10 10))");
-        }
-
         //==========================================================================
 
         private void CheckHullByLengthRatio(string wkt, double threshold, string wktExpected)
@@ -169,14 +146,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Hull
         {
             var geom = Read(wkt);
             var actual = ConcaveHull.ConcaveHullByLength(geom, threshold, true);
-            var expected = Read(wktExpected);
-            CheckEqual(expected, actual);
-        }
-
-        private void CheckHullByArea(string wkt, double threshold, string wktExpected)
-        {
-            var geom = Read(wkt);
-            var actual = ConcaveHull.ConcaveHullByArea(geom, threshold);
             var expected = Read(wktExpected);
             CheckEqual(expected, actual);
         }

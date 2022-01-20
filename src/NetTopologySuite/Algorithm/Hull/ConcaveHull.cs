@@ -21,9 +21,6 @@ namespace NetTopologySuite.Algorithm.Hull
     /// in the Delaunay Triangulation.
     /// This normalizes the <b>Maximum Edge Length</b> to be scale-free.
     /// A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.</description></item>
-    /// <item><term>Maximum Area Ratio</term><description>the ratio of the concave hull area to the convex hull area
-    /// will be no larger than this value.
-    /// A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.</description></item>
     /// </list>
     /// The preferred criterion is the <b>Maximum Edge Length Ratio</b>, since it is
     /// scale-free and local(so that no assumption needs to be made about the
@@ -130,26 +127,9 @@ namespace NetTopologySuite.Algorithm.Hull
             return hull.GetHull();
         }
 
-        /// <summary>
-        /// Computes the concave hull of the vertices in a geometry
-        /// using the target criterion of maximum area ratio.
-        /// </summary>
-        /// <param name="geom">The input geometry</param>
-        /// <param name="areaRatio">The target maximum area ratio</param>
-        /// <returns>The concave hull</returns>
-        public static Geometry ConcaveHullByArea(Geometry geom, double areaRatio)
-        {
-            var hull = new ConcaveHull(geom)
-            {
-                MaximumAreaRatio = areaRatio
-            };
-            return hull.GetHull();
-        }
-
         private readonly Geometry _inputGeometry;
         private double _maxEdgeLength = 0.0;
         private double _maxEdgeLengthRatio = -1;
-        private double _maxAreaRatio = -1;
         private bool _isHolesAllowed = false;
         private readonly GeometryFactory _geomFactory;
 
@@ -216,27 +196,6 @@ namespace NetTopologySuite.Algorithm.Hull
         }
 
         /// <summary>
-        /// Gets or sets the target maximum concave hull area as a ratio of the convex hull area.
-        /// It is a value in the range 0 to 1.
-        /// <list>
-        /// <item><description>The value 0.0 produces a concave hull with the smallest area
-        /// that is still connected.</description></item>
-        /// <item><description>The value 1.0 produces the convex hull
-        /// (unless a maximum edge length is also specified).</description></item>
-        /// </list>
-        /// </summary>
-        public double MaximumAreaRatio
-        {
-            get => _maxAreaRatio;
-            set
-            {
-                if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException(nameof(value), "Area ratio must be in range [0,1]");
-                _maxAreaRatio = value;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets whether holes are allowed in the concave hull polygon.
         /// </summary>
         public bool HolesAllowed
@@ -263,14 +222,7 @@ namespace NetTopologySuite.Algorithm.Hull
             if (triList.Count == 0)
                 return _inputGeometry.ConvexHull();
 
-            if (_maxAreaRatio >= 0)
-            {
-                ComputeHullByArea(triList);
-            }
-            else
-            {
-                ComputeHullByLength(triList);
-            }
+            ComputeHull(triList);
 
             var hull = ToGeometry(triList, _geomFactory);
             return hull;
@@ -299,90 +251,6 @@ namespace NetTopologySuite.Algorithm.Hull
             return edgeLengthRatio * (maxEdgeLen - minEdgeLen) + minEdgeLen;
         }
 
-        //------------------------------------------------
-
-        /// <summary>
-        /// Forms the concave hull using area ratio as the target criteria.
-        /// </summary>
-        /// <remarks>
-        /// When area is used as the criteria, the boundary and holes
-        /// must be eroded together, since the area is affected by both.<br/>
-        /// This means that result connectivity has to be checked after
-        /// every triangle removal, which is very slow.
-        /// </remarks>
-        /// <param name="triList">The triangulation</param>
-        private void ComputeHullByArea(IList<Tri> triList)
-        {
-            //-- used if area is the threshold criteria
-            double areaConvex = HullTri.AreaOf(triList);
-            double areaConcave = areaConvex;
-
-            var queue = CreateBorderQueue(triList);
-            // remove tris in order of decreasing size (edge length)
-            while (!queue.IsEmpty())
-            {
-                if (IsBelowAreaThreshold(areaConcave, areaConvex))
-                    break;
-
-                var tri = queue.Poll();
-
-                if (IsRemovableByArea(tri, triList))
-                {
-                    //-- the non-null adjacents are now on the border
-                    var adj0 = (HullTri)tri.GetAdjacent(0);
-                    var adj1 = (HullTri)tri.GetAdjacent(1);
-                    var adj2 = (HullTri)tri.GetAdjacent(2);
-
-                    tri.Remove(triList);
-                    areaConcave -= tri.Area;
-
-                    //-- if holes not allowed, add new border adjacents to queue
-                    if (!HolesAllowed)
-                    {
-                        AddBorderTri(adj0, queue);
-                        AddBorderTri(adj1, queue);
-                        AddBorderTri(adj2, queue);
-                    }
-                }
-            }
-        }
-
-        private bool IsRemovableByArea(HullTri tri, IList<Tri> triList)
-        {
-            if (HolesAllowed)
-            {
-                return IsRemovableByAreaWithHoles(tri, triList);
-            }
-            return IsRemovableBorder(tri);
-        }
-
-        private bool IsRemovableByAreaWithHoles(HullTri tri, IList<Tri> triList)
-        {
-            /*
-             * Can't remove if that would separate a vertex from the hull
-             */
-            if (tri.IsolatedVertexIndex(triList) != -1)
-                return false;
-            /*
-             * This test is slow for large input.
-             * It could be omitted if a disconnected result was allowed.
-             */
-            if (!HullTri.IsConnected(triList, tri))
-                return false;
-            /*
-             * If tri touches boundary at a single vertex, it can't be removed
-             * because that might disconnect the triangulation interior.
-             */
-            return !tri.HasBoundaryTouch;
-        }
-
-        private bool IsBelowAreaThreshold(double areaConcave, double areaConvex)
-        {
-            return areaConcave / areaConvex <= _maxAreaRatio;
-        }
-
-        //------------------------------------------------
-
         /// <summary>Computes the concave hull using edge length as the target criteria.
         /// </summary>
         /// <remarks>
@@ -393,7 +261,7 @@ namespace NetTopologySuite.Algorithm.Hull
         /// which makes this much more efficient than the area-based algorithm.
         /// </remarks>
         /// <param name="triList">The triangulation</param>
-        private void ComputeHullByLength(IList<Tri> triList)
+        private void ComputeHull(IList<Tri> triList)
         {
             ComputeHullBorder(triList);
             if (HolesAllowed)
