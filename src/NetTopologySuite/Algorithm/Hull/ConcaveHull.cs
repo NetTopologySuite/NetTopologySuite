@@ -10,7 +10,7 @@ namespace NetTopologySuite.Algorithm.Hull
     /// Constructs a concave hull of a set of points.
     /// The hull is constructed by removing the longest outer edges
     /// of the Delaunay Triangulation of the points
-    /// until a target criterium is reached.
+    /// until a target criterion is reached.
     /// <para/>
     /// The target criteria are:
     /// <list type="table">
@@ -25,9 +25,9 @@ namespace NetTopologySuite.Algorithm.Hull
     /// will be no larger than this value.
     /// A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.</description></item>
     /// </list>
-    /// The preferred criterium is the <b>Maximum Edge Length Ratio</b>, since it is
+    /// The preferred criterion is the <b>Maximum Edge Length Ratio</b>, since it is
     /// scale-free and local(so that no assumption needs to be made about the
-    /// total amount of concavity present).
+    /// total amount of concaveness present).
     /// Other length criteria can be used by setting the Maximum Edge Length directly.
     /// For example, use a length relative to the longest edge length
     /// in the Minimum Spanning Tree of the point set.
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Algorithm.Hull
     /// This constraint may cause the concave hull to fail to meet the target criteria.
     /// <para/>
     /// Optionally the concave hull can be allowed to contain holes.
-    /// Note that when using the area-based criterium
+    /// Note that when using the area-based criterion
     /// this may result in substantially slower computation.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Algorithm.Hull
 
         /// <summary>
         /// Computes the concave hull of the vertices in a geometry
-        /// using the target criteria of maximum edge length.
+        /// using the target criterion of maximum edge length.
         /// </summary>
         /// <param name="geom">The input geometry</param>
         /// <param name="maxLength">The target maximum edge length</param>
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Algorithm.Hull
 
         /// <summary>
         /// Computes the concave hull of the vertices in a geometry
-        /// using the target criteria of maximum edge length,
+        /// using the target criterion of maximum edge length,
         /// and optionally allowing holes.
         /// </summary>
         /// <param name="geom">The input geometry</param>
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Algorithm.Hull
 
         /// <summary>
         /// Computes the concave hull of the vertices in a geometry
-        /// using the target criteria of maximum edge length ratio.
+        /// using the target criterion of maximum edge length ratio.
         /// The edge length ratio is a fraction of the length difference
         /// between the longest and shortest edges
         /// in the Delaunay Triangulation of the input points. 
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Algorithm.Hull
 
         /// <summary>
         /// Computes the concave hull of the vertices in a geometry
-        /// using the target criteria of maximum edge length ratio,
+        /// using the target criterion of maximum edge length ratio,
         /// and optionally allowing holes.
         /// The edge length factor is a fraction of the length difference
         /// between the longest and shortest edges
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Algorithm.Hull
 
         /// <summary>
         /// Computes the concave hull of the vertices in a geometry
-        /// using the target criteria of maximum area ratio.
+        /// using the target criterion of maximum area ratio.
         /// </summary>
         /// <param name="geom">The input geometry</param>
         /// <param name="areaRatio">The target maximum area ratio</param>
