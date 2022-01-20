@@ -1,7 +1,4 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation.OverlayNG;
-using NetTopologySuite.Triangulate;
-using NetTopologySuite.Triangulate.QuadEdge;
 using NetTopologySuite.Triangulate.Tri;
 using NetTopologySuite.Utilities;
 using System;
@@ -31,7 +28,7 @@ namespace NetTopologySuite.Algorithm.Hull
     /// The preferred criterium is the <b>Maximum Edge Length Ratio</b>, since it is
     /// scale-free and local(so that no assumption needs to be made about the
     /// total amount of concavity present).
-    /// Other length criteria can be used by setting the Maximum Edge Length.
+    /// Other length criteria can be used by setting the Maximum Edge Length directly.
     /// For example, use a length relative to the longest edge length
     /// in the Minimum Spanning Tree of the point set.
     /// Or, use a length derived from the <see cref="UniformGridEdgeLength(Geometry)"/> value.
@@ -41,8 +38,8 @@ namespace NetTopologySuite.Algorithm.Hull
     /// This constraint may cause the concave hull to fail to meet the target criteria.
     /// <para/>
     /// Optionally the concave hull can be allowed to contain holes.
-    /// Note that this may result in substantially slower computation,
-    /// and it can produce results of lower quality.
+    /// Note that when using the area-based criterium
+    /// this may result in substantially slower computation.
     /// </summary>
     /// <author>Martin Davis</author>
     public class ConcaveHull
@@ -152,7 +149,7 @@ namespace NetTopologySuite.Algorithm.Hull
         private readonly Geometry _inputGeometry;
         private double _maxEdgeLength = 0.0;
         private double _maxEdgeLengthRatio = -1;
-        private double _maxAreaRatio = 0.0;
+        private double _maxAreaRatio = -1;
         private bool _isHolesAllowed = false;
         private readonly GeometryFactory _geomFactory;
 
@@ -258,20 +255,28 @@ namespace NetTopologySuite.Algorithm.Hull
             {
                 return _geomFactory.CreatePolygon();
             }
-            var triList = CreateDelaunayTriangulation(_inputGeometry);
+            var triList = HullTriangulation.CreateDelaunayTriangulation(_inputGeometry);
             if (_maxEdgeLengthRatio >= 0)
             {
                 _maxEdgeLength = ComputeTargetEdgeLength(triList, _maxEdgeLengthRatio);
             }
             if (triList.Count == 0)
                 return _inputGeometry.ConvexHull();
-            ComputeHull(triList);
-            var hull = ToPolygon(triList, _geomFactory);
+
+            if (_maxAreaRatio >= 0)
+            {
+                ComputeHullByArea(triList);
+            }
+            else
+            {
+                ComputeHullByLength(triList);
+            }
+
+            var hull = ToGeometry(triList, _geomFactory);
             return hull;
         }
 
-        private static double ComputeTargetEdgeLength(IList<HullTri> triList,
-            double edgeLengthRatio)
+        private static double ComputeTargetEdgeLength(IList<Tri> triList, double edgeLengthRatio)
         {
             if (edgeLengthRatio == 0) return 0;
             double maxEdgeLen = -1;
@@ -280,7 +285,7 @@ namespace NetTopologySuite.Algorithm.Hull
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    double len = tri.GetCoordinate(i).Distance(tri.GetCoordinate(Tri.Next(i)));
+                    double len = tri.GetCoordinate(i).Distance(tri.GetCoordinate(HullTri.Next(i)));
                     if (len > maxEdgeLen)
                         maxEdgeLen = len;
                     if (minEdgeLen < 0 || len < minEdgeLen)
@@ -294,13 +299,25 @@ namespace NetTopologySuite.Algorithm.Hull
             return edgeLengthRatio * (maxEdgeLen - minEdgeLen) + minEdgeLen;
         }
 
-        private void ComputeHull(IList<HullTri> triList)
+        //------------------------------------------------
+
+        /// <summary>
+        /// Forms the concave hull using area ratio as the target criteria.
+        /// </summary>
+        /// <remarks>
+        /// When area is used as the criteria, the boundary and holes
+        /// must be eroded together, since the area is affected by both.<br/>
+        /// This means that result connectivity has to be checked after
+        /// every triangle removal, which is very slow.
+        /// </remarks>
+        /// <param name="triList">The triangulation</param>
+        private void ComputeHullByArea(IList<Tri> triList)
         {
             //-- used if area is the threshold criteria
-            double areaConvex = Tri.AreaOf(triList);
+            double areaConvex = HullTri.AreaOf(triList);
             double areaConcave = areaConvex;
 
-            var queue = InitQueue(triList);
+            var queue = CreateBorderQueue(triList);
             // remove tris in order of decreasing size (edge length)
             while (!queue.IsEmpty())
             {
@@ -309,23 +326,18 @@ namespace NetTopologySuite.Algorithm.Hull
 
                 var tri = queue.Poll();
 
-                if (IsBelowLengthThreshold(tri))
-                    break;
-
-                if (IsRemovable(tri, triList))
+                if (IsRemovableByArea(tri, triList))
                 {
                     //-- the non-null adjacents are now on the border
                     var adj0 = (HullTri)tri.GetAdjacent(0);
                     var adj1 = (HullTri)tri.GetAdjacent(1);
                     var adj2 = (HullTri)tri.GetAdjacent(2);
 
-                    //-- remove tri
-                    tri.Remove();
-                    triList.Remove(tri);
+                    tri.Remove(triList);
                     areaConcave -= tri.Area;
 
                     //-- if holes not allowed, add new border adjacents to queue
-                    if (!_isHolesAllowed)
+                    if (!HolesAllowed)
                     {
                         AddBorderTri(adj0, queue);
                         AddBorderTri(adj1, queue);
@@ -335,37 +347,33 @@ namespace NetTopologySuite.Algorithm.Hull
             }
         }
 
-        private PriorityQueue<HullTri> InitQueue(IList<HullTri> triList)
+        private bool IsRemovableByArea(HullTri tri, IList<Tri> triList)
         {
-            var queue = new PriorityQueue<HullTri>();
-            foreach (var tri in triList)
+            if (HolesAllowed)
             {
-                if (!_isHolesAllowed)
-                {
-                    //-- add only border triangles which could be eroded
-                    // (if tri has only 1 adjacent it can't be removed because that would isolate a vertex)
-                    if (tri.NumAdjacent != 2)
-                        continue;
-                    tri.SetSizeToBorder();
-                }
-                queue.Add(tri);
+                return IsRemovableByAreaWithHoles(tri, triList);
             }
-            return queue;
+            return IsRemovableBorder(tri);
         }
 
-        /// <summary>
-        /// Adds a Tri to the queue.
-        /// Only add tris with a single border edge.
-        /// The ordering size is the length of the border edge.
-        /// </summary>
-        /// <param name="tri">The Tri to add</param>
-        /// <param name="queue">The priority queue</param>
-        private void AddBorderTri(HullTri tri, PriorityQueue<HullTri> queue)
+        private bool IsRemovableByAreaWithHoles(HullTri tri, IList<Tri> triList)
         {
-            if (tri == null) return;
-            if (tri.NumAdjacent != 2) return;
-            tri.SetSizeToBorder();
-            queue.Add(tri);
+            /*
+             * Can't remove if that would separate a vertex from the hull
+             */
+            if (tri.IsolatedVertexIndex(triList) != -1)
+                return false;
+            /*
+             * This test is slow for large input.
+             * It could be omitted if a disconnected result was allowed.
+             */
+            if (!HullTri.IsConnected(triList, tri))
+                return false;
+            /*
+             * If tri touches boundary at a single vertex, it can't be removed
+             * because that might disconnect the triangulation interior.
+             */
+            return !tri.HasBoundaryTouch;
         }
 
         private bool IsBelowAreaThreshold(double areaConcave, double areaConvex)
@@ -373,443 +381,212 @@ namespace NetTopologySuite.Algorithm.Hull
             return areaConcave / areaConvex <= _maxAreaRatio;
         }
 
-        private bool IsBelowLengthThreshold(HullTri tri)
+        //------------------------------------------------
+
+        /// <summary>Computes the concave hull using edge length as the target criteria.
+        /// </summary>
+        /// <remarks>
+        /// The erosion is done in two phases: first the border, then any
+        /// internal holes (if required).
+        /// This allows an fast connection check to be used
+        /// when eroding holes,
+        /// which makes this much more efficient than the area-based algorithm.
+        /// </remarks>
+        /// <param name="triList">The triangulation</param>
+        private void ComputeHullByLength(IList<Tri> triList)
         {
-            double len;
-            if (_isHolesAllowed)
+            ComputeHullBorder(triList);
+            if (HolesAllowed)
             {
-                len = tri.LengthOfLongestEdge();
+                ComputeHullHoles(triList);
             }
-            else
+        }
+
+        private void ComputeHullBorder(IList<Tri> triList)
+        {
+            var queue = CreateBorderQueue(triList);
+            // remove tris in order of decreasing size (edge length)
+            while (!queue.IsEmpty())
             {
-                len = tri.LengthOfBorder();
+                var tri = queue.Poll();
+
+                if (IsBelowLengthThreshold(tri))
+                    break;
+
+                if (IsRemovableBorder(tri))
+                {
+                    //-- the non-null adjacents are now on the border
+                    var adj0 = (HullTri)tri.GetAdjacent(0);
+                    var adj1 = (HullTri)tri.GetAdjacent(1);
+                    var adj2 = (HullTri)tri.GetAdjacent(2);
+
+                    tri.Remove(triList);
+
+                    //-- add border adjacents to queue
+                    AddBorderTri(adj0, queue);
+                    AddBorderTri(adj1, queue);
+                    AddBorderTri(adj2, queue);
+                }
             }
-            return len < _maxEdgeLength;
+        }
+
+        private PriorityQueue<HullTri> CreateBorderQueue(IList<Tri> triList)
+        {
+            var queue = new PriorityQueue<HullTri>();
+            foreach (HullTri tri in triList)
+            {
+                //-- add only border triangles which could be eroded
+                // (if tri has only 1 adjacent it can't be removed because that would isolate a vertex)
+                if (tri.NumAdjacent != 2)
+                    continue;
+                tri.SetSizeToBoundary();
+                queue.Add(tri);
+            }
+            return queue;
         }
 
         /// <summary>
-        /// Tests whether a Tri can be removed while preserving
-        /// the connectivity of the hull.
+        /// Adds a Tri to the queue.
+        /// Only add tris with a single border edge,
+        /// sice otherwise that would risk isolating a vertex.
+        /// Sets the ordering size to the length of the border edge.
         /// </summary>
-        /// <param name="tri">The Tri to test</param>
-        /// <param name="triList">A triangulation</param>
-        /// <returns><c>true</c> if the Tri can be removed</returns>
-        private bool IsRemovable(HullTri tri, IList<HullTri> triList)
+        /// <param name="tri">The Tri to add</param>
+        /// <param name="queue">The priority queue to add to</param>
+        private void AddBorderTri(HullTri tri, PriorityQueue<HullTri> queue)
         {
-            if (_isHolesAllowed)
-            {
-                /*
-                 * Don't remove if that would separate a single vertex
-                 */
-                if (HasVertexSingleAdjacent(tri, triList))
-                    return false;
-                return HullTri.IsConnected(triList, tri);
-            }
+            if (tri == null) return;
+            if (tri.NumAdjacent != 2) return;
+            tri.SetSizeToBoundary();
+            queue.Add(tri);
+        }
 
-            //-- compute removable for no holes allowed
-            int numAdj = tri.NumAdjacent;
+        private bool IsBelowLengthThreshold(HullTri tri)
+        {
+            return tri.LengthOfBoundary < _maxEdgeLength;
+        }
+
+        private void ComputeHullHoles(IList<Tri> triList)
+        {
+            var candidateHoles = FindCandidateHoles(triList, _maxEdgeLength);
+            // remove tris in order of decreasing size (edge length)
+            foreach (HullTri tri in candidateHoles)
+            {
+                if (tri.IsRemoved
+                    || tri.IsBorder()
+                    || tri.HasBoundaryTouch)
+                    continue;
+                RemoveHole(triList, tri);
+            }
+        }
+
+        /// <summary>
+        /// Finds tris which may be the start of holes.
+        /// </summary>
+        /// <remarks>
+        /// Only tris which have a long enough edge and which do not touch the current hull
+        /// boundary are included.<br/>
+        /// This avoids the risk of disconnecting the result polygon.
+        /// The list is sorted in decreasing order of edge length.
+        /// </remarks>
+        /// <param name="triList">The triangulation</param>
+        /// <param name="minEdgeLen">The minimum length of edges to consider</param>
+        /// <returns>A list of candidate tris that may start a hole</returns>
+        private static IList<Tri> FindCandidateHoles(IList<Tri> triList, double minEdgeLen)
+        {
+            var candidates = new List<Tri>();
+            foreach (HullTri tri in triList)
+            {
+                if (tri.Size < minEdgeLen) continue;
+                bool isTouchingBoundary = tri.IsBorder() || tri.HasBoundaryTouch;
+                if (!isTouchingBoundary)
+                {
+                    candidates.Add(tri);
+                }
+            }
+            // sort by HullTri comparator - longest edge length first
+            candidates.Sort();
+            return candidates;
+        }
+
+        /// <summary>
+        /// Erodes a hole starting at a given triangle,
+        /// and eroding all adjacent triangles with boundary edge length above target.
+        /// </summary>
+        /// <param name="triList">The triangulation</param>
+        /// <param name="triHole">A tri which is a hole</param>
+        private void RemoveHole(IList<Tri> triList, HullTri triHole)
+        {
+            var queue = new PriorityQueue<HullTri>();
+            queue.Add(triHole);
+
+            while (!queue.IsEmpty())
+            {
+                var tri = queue.Poll();
+
+                if (tri != triHole && IsBelowLengthThreshold(tri))
+                    break;
+
+                if (tri == triHole || IsRemovableHole(tri))
+                {
+                    //-- the non-null adjacents are now on the border
+                    var adj0 = (HullTri)tri.GetAdjacent(0);
+                    var adj1 = (HullTri)tri.GetAdjacent(1);
+                    var adj2 = (HullTri)tri.GetAdjacent(2);
+
+                    tri.Remove(triList);
+
+                    //-- add border adjacents to queue
+                    AddBorderTri(adj0, queue);
+                    AddBorderTri(adj1, queue);
+                    AddBorderTri(adj2, queue);
+                }
+            }
+        }
+
+
+        private bool IsRemovableBorder(HullTri tri)
+        {
             /*
-             * Tri must have exactly 2 adjacent tris.
+             * Tri must have exactly 2 adjacent tris (i.e. a single boundary edge).
              * If it it has only 0 or 1 adjacent then removal would remove a vertex.
              * If it has 3 adjacent then it is not on border.
              */
-            if (numAdj != 2) return false;
+            if (tri.NumAdjacent != 2) return false;
             /*
              * The tri cannot be removed if it is connecting, because
              * this would create more than one result polygon.
              */
-            return !IsConnecting(tri);
+            return !tri.IsConnecting;
         }
 
-        private static bool HasVertexSingleAdjacent(HullTri tri, IList<HullTri> triList)
+        private bool IsRemovableHole(HullTri tri)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                if (Degree(tri.GetCoordinate(i), triList) <= 1)
-                    return true;
-            }
-            return false;
+            /*
+             * Tri must have exactly 2 adjacent tris (i.e. a single boundary edge).
+             * If it it has only 0 or 1 adjacent then removal would remove a vertex.
+             * If it has 3 adjacent then it is not connected to hole.
+             */
+            if (tri.NumAdjacent != 2) return false;
+            /*
+             * Ensure removal does not disconnect hull area.
+             * This is a fast check which ensure holes and boundary
+             * do not touch at single points.
+             * (But it is slightly over-strict, since it prevents
+             * any touching holes.)
+             */
+            return !tri.HasBoundaryTouch;
         }
 
-        /// <summary>
-        /// The degree of a Tri vertex is the number of tris containing it.
-        /// This must be done by searching the entire triangulation,
-        /// since the containing tris may not be adjacent or edge-connected. 
-        /// </summary>
-        /// <param name="v">A vertex coordinate</param>
-        /// <param name="triList">A triangulation</param>
-        /// <returns>The degree of the vertex</returns>
-        private static int Degree(Coordinate v, IList<HullTri> triList)
-        {
-            int degree = 0;
-            foreach (var tri in triList)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    if (v.Equals2D(tri.GetCoordinate(i)))
-                        degree++;
-                }
-            }
-            return degree;
-        }
-
-        /// <summary>
-        /// Tests if a tri is the only one connecting its 2 adjacents.
-        /// Assumes that the tri is on the border of the triangulation
-        /// and that the triangulation does not contain holes
-        /// </summary>
-        /// <param name="tri">The tri to test</param>
-        /// <returns><c>true</c> if the tri is the only connection</returns>
-        private static bool IsConnecting(Tri tri)
-        {
-            int adj2Index = Adjacent2VertexIndex(tri);
-            bool isInterior = IsInteriorVertex(tri, adj2Index);
-            return !isInterior;
-        }
-
-        /// <summary>
-        /// A vertex of a triangle is interior if it
-        /// is fully surrounded by triangles.
-        /// </summary>
-        /// <param name="triStart">A tri containing the vertex</param>
-        /// <param name="index">The vertex index</param>
-        /// <returns><c>true</c> if the vertex is interior</returns>
-        private static bool IsInteriorVertex(Tri triStart, int index)
-        {
-            var curr = triStart;
-            int currIndex = index;
-            do
-            {
-                var adj = curr.GetAdjacent(currIndex);
-                if (adj == null) return false;
-                int adjIndex = adj.GetIndex(curr);
-                curr = adj;
-                currIndex = Tri.Next(adjIndex);
-            }
-            while (curr != triStart);
-            return true;
-        }
-
-        private static int Adjacent2VertexIndex(Tri tri)
-        {
-            if (tri.HasAdjacent(0) && tri.HasAdjacent(1)) return 1;
-            if (tri.HasAdjacent(1) && tri.HasAdjacent(2)) return 2;
-            if (tri.HasAdjacent(2) && tri.HasAdjacent(0)) return 0;
-            return -1;
-        }
-
-        private class HullTri : Tri, IComparable<HullTri>
-        {
-            public HullTri(Coordinate p0, Coordinate p1, Coordinate p2)
-                    : base(p0, p1, p2)
-            {
-                Size = LengthOfLongestEdge();
-            }
-
-            public double Size { get; set; }
-
-            /// <summary>
-            /// Sets the size to be the length of the border edges.
-            /// This is used when constructing hull without holes,
-            /// by erosion from the triangulation border.
-            /// </summary>
-            public void SetSizeToBorder()
-            {
-                Size = LengthOfBorder();
-            }
-
-            public bool IsMarked { get; set; }
-
-            public bool IsBorder() => IsBorder(0) || IsBorder(1) || IsBorder(2);
-
-
-            public bool IsBorder(int index)
-            {
-                return !HasAdjacent(index);
-            }
-
-            public int BorderIndex
-            {
-                get
-                {
-                    if (IsBorder(0)) return 0;
-                    if (IsBorder(1)) return 1;
-                    if (IsBorder(2)) return 2;
-                    return -1;
-                }
-            }
-
-            /// <summary>
-            /// Gets the most CCW border edge index.
-            /// This assumes there is at least one non-border edge.
-            /// </summary>
-            /// <returns>The CCW border edge index</returns>
-            public int BorderIndexCCW
-            {
-                get
-                {
-                    int index = BorderIndex;
-                    int prevIndex = Prev(index);
-                    if (IsBorder(prevIndex))
-                    {
-                        return prevIndex;
-                    }
-                    return index;
-                }
-            }
-
-            /// <summary>
-            /// Gets the most CW border edge index.
-            /// This assumes there is at least one non-border edge.
-            /// </summary>
-            /// <returns>The CW border edge index</returns>
-            public int BorderIndexCW
-            {
-                get
-                {
-                    int index = BorderIndex;
-                    int nextIndex = Next(index);
-                    if (IsBorder(nextIndex))
-                    {
-                        return nextIndex;
-                    }
-                    return index;
-                }
-            }
-
-            public double LengthOfLongestEdge()
-            {
-                return Triangle.LongestSideLength(P0, P1, P2);
-            }
-
-            public double LengthOfBorder()
-            {
-                double len = 0.0;
-                for (int i = 0; i < 3; i++)
-                {
-                    if (!HasAdjacent(i))
-                    {
-                        len += GetCoordinate(i).Distance(GetCoordinate(Tri.Next(i)));
-                    }
-                }
-                return len;
-            }
-
-            public HullTri NextBorderTri()
-            {
-                var tri = this;
-                //-- start at first non-border edge CW
-                int index = Next(BorderIndexCW);
-                //-- scan CCW around vertex for next border tri
-                do
-                {
-                    var adjTri = (HullTri)tri.GetAdjacent(index);
-                    if (adjTri == this)
-                        throw new InvalidOperationException("No outgoing border edge found");
-                    index = Next(adjTri.GetIndex(tri));
-                    tri = adjTri;
-                }
-                while (!tri.IsBorder(index));
-                return (tri);
-            }
-
-            /// <summary>
-            /// PriorityQueues sort in ascending order.
-            /// To sort with the largest at the head,
-            /// smaller sizes must compare as greater than larger sizes.
-            /// (i.e. the normal numeric comparison is reversed).
-            /// If the sizes are identical (which should be an infrequent case),
-            /// the areas are compared, with larger areas sorting before smaller.
-            /// (The rationale is that larger areas indicate an area of lower point density,
-            /// which is more likely to be in the exterior of the computed shape.)
-            /// This improves the determinism of the queue ordering. 
-            /// </summary>
-            public int CompareTo(HullTri o)
-            {
-                /*
-                 * If size is identical compare areas to ensure a (more) deterministic ordering.
-                 * Larger areas sort before smaller ones.
-                 */
-                if (Size == o.Size)
-                {
-                    return -Area.CompareTo(o.Area);
-                }
-                return -Size.CompareTo(o.Size);
-            }
-
-            public static bool IsConnected(IList<HullTri> triList, HullTri exceptTri)
-            {
-                if (triList.Count == 0) return false;
-                ClearMarks(triList);
-                var triStart = FindTri(triList, exceptTri);
-                if (triStart == null) return false;
-                MarkConnected(triStart, exceptTri);
-                exceptTri.IsMarked = true;
-                return AreAllMarked(triList);
-            }
-
-            public static void ClearMarks(IList<HullTri> triList)
-            {
-                foreach (var tri in triList)
-                    tri.IsMarked = false;
-            }
-
-            public static HullTri FindTri(IList<HullTri> triList, Tri exceptTri)
-            {
-                foreach (var tri in triList)
-                    if (tri != exceptTri) return tri;
-
-                return null;
-            }
-
-            public static bool AreAllMarked(IList<HullTri> triList)
-            {
-                foreach (var tri in triList)
-                    if (!tri.IsMarked)
-                        return false;
-                return true;
-            }
-
-            public static void MarkConnected(HullTri triStart, Tri exceptTri)
-            {
-                var queue = new Stack<HullTri>();
-                queue.Push(triStart);
-                while (queue.Count > 0)
-                {
-                    var tri = queue.Pop();
-                    tri.IsMarked = true;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        var adj = (HullTri)tri.GetAdjacent(i);
-                        //-- don't connect thru this tri
-                        if (adj == exceptTri)
-                            continue;
-                        if (adj != null && !adj.IsMarked)
-                        {
-                            queue.Push(adj);
-                        }
-                    }
-                }
-            }
-        }
-
-        private static IList<HullTri> CreateDelaunayTriangulation(Geometry geom)
-        {
-            //TODO: implement a DT on Tris directly?
-            var dt = new DelaunayTriangulationBuilder();
-            dt.SetSites(geom);
-            var subdiv = dt.GetSubdivision();
-            var triList = ToTris(subdiv);
-            return triList;
-        }
-
-        private static IList<HullTri> ToTris(QuadEdgeSubdivision subdiv)
-        {
-            var visitor = new HullTriVisitor();
-            subdiv.VisitTriangles(visitor, false);
-            var triList = visitor.GetTriangles();
-            TriangulationBuilder.Build(triList);
-            return triList;
-        }
-
-        private class HullTriVisitor : ITriangleVisitor
-        {
-            private readonly List<HullTri> _triList = new List<HullTri>();
-
-            public void Visit(QuadEdge[] triEdges)
-            {
-                var p0 = triEdges[0].Orig.Coordinate;
-                var p1 = triEdges[1].Orig.Coordinate;
-                var p2 = triEdges[2].Orig.Coordinate;
-                HullTri tri;
-                if (Triangle.IsCCW(p0, p1, p2))
-                {
-                    tri = new HullTri(p0, p2, p1);
-                }
-                else
-                {
-                    tri = new HullTri(p0, p1, p2);
-                }
-                _triList.Add(tri);
-            }
-
-            public IList<HullTri> GetTriangles()
-            {
-                return _triList;
-            }
-        }
-
-        private Geometry ToPolygon(IList<HullTri> triList, GeometryFactory geomFactory)
+        private Geometry ToGeometry(IList<Tri> triList, GeometryFactory geomFactory)
         {
             if (!_isHolesAllowed)
             {
-                return ExtractPolygon(triList, geomFactory);
+                return HullTriangulation.TraceBoundaryPolygon(triList, geomFactory);
             }
             //-- in case holes are present use union (slower but handles holes)
-            return Union(triList, geomFactory);
+            return HullTriangulation.Union(triList, geomFactory);
         }
 
-        private Geometry ExtractPolygon(IList<HullTri> triList, GeometryFactory geomFactory)
-        {
-            if (triList.Count == 1)
-            {
-                Tri tri = triList[0];
-                return tri.ToPolygon(geomFactory);
-            }
-            var pts = TraceBorder(triList);
-            return geomFactory.CreatePolygon(pts);
-        }
-
-        private static Geometry Union(IList<HullTri> triList, GeometryFactory geomFactory)
-        {
-            var polys = new List<Polygon>();
-            foreach (var tri in triList) {
-                var poly = tri.ToPolygon(geomFactory);
-                polys.Add(poly);
-            }
-            return CoverageUnion.Union(geomFactory.BuildGeometry(polys));
-        }
-
-        /// <summary>
-        /// Extracts the coordinates along the border of a triangulation,
-        /// by tracing CW around the border triangles.
-        /// Assumption: there are at least 2 tris, they are connected,
-        /// and there are no holes.
-        /// So each tri has at least one non-border edge, and there is only one border.
-        /// </summary>
-        /// <param name="triList">The triangulation</param>
-        /// <returns>The border of the triangulation</returns>
-        private static Coordinate[] TraceBorder(IList<HullTri> triList)
-        {
-            var triStart = FindBorderTri(triList);
-            var coordList = new CoordinateList();
-            var tri = triStart;
-            do
-            {
-                int borderIndex = tri.BorderIndexCCW;
-                //-- add border vertex
-                coordList.Add(tri.GetCoordinate(borderIndex).Copy(), false);
-                int nextIndex = Tri.Next(borderIndex);
-                //-- if next edge is also border, add it and move to next
-                if (tri.IsBorder(nextIndex))
-                {
-                    coordList.Add(tri.GetCoordinate(nextIndex).Copy(), false);
-                    //borderIndex = nextIndex;
-                }
-                //-- find next border tri CCW around non-border edge
-                tri = tri.NextBorderTri();
-            } while (tri != triStart);
-            coordList.CloseRing();
-            return coordList.ToCoordinateArray();
-        }
-
-        private static HullTri FindBorderTri(IList<HullTri> triList)
-        {
-            foreach (var tri in triList) {
-                if (tri.IsBorder()) return tri;
-            }
-            Assert.ShouldNeverReachHere("No border triangles found");
-            return null;
-        }
     }
 }

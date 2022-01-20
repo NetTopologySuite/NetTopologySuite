@@ -12,6 +12,10 @@ namespace NetTopologySuite.Triangulate.Tri
     /// Contains three vertices, and links to adjacent <c>Tri</c>s for each edge.
     /// <c>Tri</c>s are constructed independently, and if needed linked
     /// into a triangulation using <see cref="TriangulationBuilder"/>.
+    /// <para/>
+    /// An edge of a Tri in a triangulation is called a boundary edge
+    /// if it has no adjacent triangle.<br/>
+    /// The set of Tris containing boundary edges are called the triangulation border.
     /// </summary>
     /// <author>Martin Davis</author>
     public class Tri
@@ -264,6 +268,40 @@ namespace NetTopologySuite.Triangulate.Tri
         }
 
         /// <summary>
+        /// Computes the degree of a Tri vertex, which is the number of tris containing it.
+        /// This must be done by searching the entire triangulation,
+        /// since the containing tris may not be adjacent or edge-connected. 
+        /// </summary>
+        /// <param name="index">The vertex index</param>
+        /// <param name="triList">The triangulation</param>
+        /// <returns>The degree of the vertex</returns>
+        public int Degree(int index, IList<Tri> triList)
+        {
+            var v = GetCoordinate(index);
+            int degree = 0;
+            foreach (var tri in triList)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (v.Equals2D(tri.GetCoordinate(i)))
+                        degree++;
+                }
+            }
+            return degree;
+        }
+
+        /// <summary>
+        /// Removes this tri from the triangulation containing it.
+        /// All links between the tri and adjacent ones are nulled.
+        /// </summary>
+        /// <param name="triList">The triangulation</param>
+        public void Remove(IList<Tri> triList)
+        {
+            Remove();
+            triList.Remove(this);
+        }
+
+        /// <summary>
         /// Removes this triangle from a triangulation.
         /// All adjacent references and the references to this
         /// Tri in the adjacent Tris are set to <c>null</c>.
@@ -474,6 +512,16 @@ namespace NetTopologySuite.Triangulate.Tri
         }
 
         /// <summary>
+        /// Tests if this tri has any adjacent tris.
+        /// </summary>
+        /// <returns><c>true</c> if there is at least one adjacent tri</returns>
+        public bool HasAdjacent()
+        {
+            return HasAdjacent(0)
+                || HasAdjacent(1) || HasAdjacent(2);
+        }
+
+        /// <summary>
         /// Tests if there is an adjacent triangle to an edge.
         /// </summary>
         /// <param name="index">The edge index</param>
@@ -511,6 +559,49 @@ namespace NetTopologySuite.Triangulate.Tri
                     num++;
                 return num;
             }
+        }
+
+        /// <summary>
+        /// Tests if a tri vertex is interior.
+        /// A vertex of a triangle is interior if it
+        /// is fully surrounded by other triangles.
+        /// </summary>
+        /// <param name="index">The vertex index</param>
+        /// <returns><c>true</c> if the vertex is interior</returns>
+        public bool IsInteriorVertex(int index)
+        {
+            var curr = this;
+            int currIndex = index;
+            do
+            {
+                var adj = curr.GetAdjacent(currIndex);
+                if (adj == null) return false;
+                int adjIndex = adj.GetIndex(curr);
+                curr = adj;
+                currIndex = Tri.Next(adjIndex);
+            }
+            while (curr != this);
+            return true;
+        }
+
+        /// <summary>
+        /// Tests if a tri contains a boundary edge,
+        /// and thus on the border of the triangulation containing it.
+        /// </summary>
+        /// <returns><c>true</c> if the tri is on the border of the triangulation</returns>
+        public bool IsBorder()
+        {
+            return IsBoundary(0) || IsBoundary(1) || IsBoundary(2);
+        }
+
+        /// <summary>
+        /// Tests if an edge is on the boundary of a triangulation.
+        /// </summary>
+        /// <param name="index">The index of an edge</param>
+        /// <returns><c>true</c> if the edge is on the boundary</returns>
+        public bool IsBoundary(int index)
+        {
+            return !HasAdjacent(index);
         }
 
         /// <summary>
