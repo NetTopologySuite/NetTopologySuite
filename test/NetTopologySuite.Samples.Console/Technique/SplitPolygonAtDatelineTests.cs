@@ -69,12 +69,12 @@ namespace NetTopologySuite.Samples.Technique
         {
             // ========================================================================================
             // function with specific parameter inputs. trim 0.75 on parts in the Eastern hemisphere and
-            // densify every 0.5 and attempt to fix invalid polygons.
+            // densify every 0.5 and attempt to fix invalid polygons via the buffer method.
             // ========================================================================================
             var coords = GetCoords();
             var wtr = new WKTWriter();
             var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj,
-                OgcGeometryType.Polygon, 0.75, 0.5, true);
+                OgcGeometryType.Polygon, 0.75, 0.5, InvalidGeomFixMethod.FixViaBuffer);
             Assert.That(resGeoms, Is.Not.Null);
             Assert.That(resGeoms, Is.InstanceOf<MultiPolygon>());
             Assert.That(resGeoms.NumGeometries, Is.EqualTo(2));
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Samples.Technique
             var coords = GetCoords();
             var wtr = new WKTWriter();
             var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj,
-                OgcGeometryType.Polygon, -0.75, 0.25, false);
+                OgcGeometryType.Polygon, -0.75, 0.25, InvalidGeomFixMethod.FixNone);
             Assert.That(resGeoms, Is.Not.Null);
             Assert.That(resGeoms, Is.InstanceOf<MultiPolygon>());
             Assert.That(resGeoms.NumGeometries, Is.EqualTo(2));
