@@ -19,12 +19,17 @@ namespace NetTopologySuite.Samples.Technique
             "(180 -25), (177.333333333333 -25), (171.416666666667 -25), (168 -28), (163 -30), (163 -24), (163 -17.6666666666667), (161.25 -14), " +
             "(163 -14), (166.875 -11.8), (170 -10), (170 3.5))";
 
-        private static IList<Coordinate> GetCoords()
+        private static CoordinateSequence GetCoords()
         {
             var rdr = new WKTReader();
             var geom = rdr.Read(wktGeom);
             var mps = (MultiPoint)geom;
-            return mps.Coordinates;
+
+            var geomFactory = new GeometryFactory();
+            var coordSeqFactory = geomFactory.CoordinateSequenceFactory;
+            var coordSeq = coordSeqFactory.Create(mps.Coordinates);
+
+            return coordSeq;
         }
 
         private static void DebugPrintCoords(IList<Coordinate> coords, string hdr)
@@ -47,9 +52,9 @@ namespace NetTopologySuite.Samples.Technique
             // ========================================================================================
             // function with defaults
             // ========================================================================================
-            var coords = GetCoords();
+            var coordSeq = GetCoords();
             var wtr = new WKTWriter();
-            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj);
+            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coordSeq, wktPrj);
             Assert.That(resGeoms, Is.Not.Null);
             Assert.That(resGeoms, Is.InstanceOf<MultiPolygon>());
             Assert.That(resGeoms.NumGeometries, Is.EqualTo(2));
@@ -71,7 +76,7 @@ namespace NetTopologySuite.Samples.Technique
             // function with specific parameter inputs. trim 0.75 on parts in the Eastern hemisphere and
             // densify every 0.5 and attempt to fix invalid polygons via the buffer method.
             // ========================================================================================
-            var coords = GetCoords();
+            var coordSeq = GetCoords();
             var wtr = new WKTWriter();
 
             var outParams = new SplitDatelineOuput();
@@ -80,7 +85,7 @@ namespace NetTopologySuite.Samples.Technique
             outParams.OutDensifyResolution = 0.5;
             outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixViaBuffer;
 
-            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj, outParams);
+            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coordSeq, wktPrj, outParams);
             Assert.That(resGeoms, Is.Not.Null);
             Assert.That(resGeoms, Is.InstanceOf<MultiPolygon>());
             Assert.That(resGeoms.NumGeometries, Is.EqualTo(2));
@@ -102,7 +107,7 @@ namespace NetTopologySuite.Samples.Technique
             // function with specific parameter inputs. trim 0.75 on parts in the Western hemisphere and
             // densify every 0.25 and do not attempt to fix invalid polygons.
             // ========================================================================================
-            var coords = GetCoords();
+            var coordSeq = GetCoords();
             var wtr = new WKTWriter();
 
             var outParams = new SplitDatelineOuput();
@@ -111,7 +116,7 @@ namespace NetTopologySuite.Samples.Technique
             outParams.OutDensifyResolution = 0.25;
             outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixNone;
 
-            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj, outParams);
+            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coordSeq, wktPrj, outParams);
             Assert.That(resGeoms, Is.Not.Null);
             Assert.That(resGeoms, Is.InstanceOf<MultiPolygon>());
             Assert.That(resGeoms.NumGeometries, Is.EqualTo(2));

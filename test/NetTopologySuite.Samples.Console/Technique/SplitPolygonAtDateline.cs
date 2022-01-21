@@ -42,18 +42,23 @@ namespace NetTopologySuite.Samples.Technique
             var rdr = new WKTReader();
             var geom = rdr.Read(wktGeom);
             var mps = (MultiPoint)geom;
-            var coords = mps.Coordinates.ToList();
+
+            var geomFactory = new GeometryFactory();
+            var coordSeqFactory = geomFactory.CoordinateSequenceFactory;
+            var coordSeq = coordSeqFactory.Create(mps.Coordinates);
 
             var wtr = new WKTWriter();
 
             // ========================================================================================
             // function with defaults
             // ========================================================================================
-            var resGeoms = ToPolyExOp(coords, wktPrj);
+            System.Diagnostics.Debug.Print("input={0}", wktGeom);
+            var resGeoms = ToPolyExOp(coordSeq, wktPrj);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
                 string resWkt = wtr.Write(resGeom);
+                System.Diagnostics.Debug.Print("i={0}\r\nresWkt={1}", i, resWkt);
             }
 
             // ========================================================================================
@@ -69,11 +74,12 @@ namespace NetTopologySuite.Samples.Technique
             // function with specific parameter inputs. trim 0.75 on parts in the Eastern hemisphere and
             // densify every 0.5 and attempt to fix invalid polygons via the buffer method.
             // ========================================================================================
-            resGeoms = ToPolyExOp(coords, wktPrj, outParams);
+            resGeoms = ToPolyExOp(coordSeq, wktPrj, outParams);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
                 string resWkt = wtr.Write(resGeom);
+                System.Diagnostics.Debug.Print("i={0}\r\nresWkt={1}", i, resWkt);
             }
 
             // ========================================================================================
@@ -85,11 +91,12 @@ namespace NetTopologySuite.Samples.Technique
             outParams.OutDensifyResolution = 0.25;
             outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixNone;
 
-            resGeoms = ToPolyExOp(coords, wktPrj, outParams);
+            resGeoms = ToPolyExOp(coordSeq, wktPrj, outParams);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
                 string resWkt = wtr.Write(resGeom);
+                System.Diagnostics.Debug.Print("i={0}\r\nresWkt={1}", i, resWkt);
             }
         }
 
@@ -99,20 +106,8 @@ namespace NetTopologySuite.Samples.Technique
         /// into multiple parts so that GIS can display and geoprocess without any issues. (Currently only polygon output is supported. Polyline
         /// support will come in a future update.)
         /// </summary>
-        /// <param name="inpCoords">A list of coordinates that define a polyline or polygon.</param>
+        /// <param name="inpCoordSeq">A coordinate sequence that defines a polyline or polygon.</param>
         /// <param name="inpProj4Wkt">The projection of the input coordinates as a PROJ4 WKT string.</param>
-        /// <param name="outType">The output geometry type.</param>
-        /// <param name="outTrimGap">
-        /// The value used to trim the resulting geometry parts so they do not exactly touch the dateline. A positive value will trim only the
-        /// parts that are in the Eastern hemisphere and a negative value will trim only the parts that are in the Western hemisphere. This is
-        /// useful if the resultant geometries are to be used as multiple parts of a single feature. Double.NaN for no trim gap. If the resulting
-        /// geometry will be inserted into a feature class then consider the tolerance for that feature class. "The default value for the x,y tolerance
-        /// is 10 times the default x,y resolution, and this is recommended for most cases" and "If coordinates are in latitude-longitude, the default
-        /// x,y resolution is 0.000000001 degrees". Thus a default tolerance = 10 * res = 10 * 0.000000001 degrees = 0.00000001 degrees.
-        /// https://desktop.arcgis.com/en/arcmap/latest/manage-data/geodatabases/feature-class-basics.htm
-        /// </param>
-        /// <param name="outDensifyResolution">The value used to densify the resulting geometry. Double.NaN for no densification.</param>
-        ///<param name="invGeomFixMethod">The method to use to fix invalid geometry. The defaukt is to not attempt to fix invalid geometry.</param>
         /// <param name="outParams">Output parameter class.</param>
         /// <returns>
         /// A Geometry class that contains the result of converting the coordinates into a Polyline or Polygon. If the geometry crosses the Dateline
@@ -137,12 +132,12 @@ namespace NetTopologySuite.Samples.Technique
         /// https://desktop.arcgis.com/en/arcmap/10.3/manage-data/editing-fundamentals/creating-and-editing-multipart-polygons.htm
         /// https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/what-happens-to-features-at-180-dateline-.htm
         /// </remarks>
-        public static Geometry ToPolyExOp(List<Coordinate> inpCoords, string inpProj4Wkt, SplitDatelineOuput outParams)
+        public static Geometry ToPolyExOp(CoordinateSequence inpCoordSeq, string inpProj4Wkt, SplitDatelineOuput outParams)
         {
             // ###################################################################################################################
             // input coordinate checks
             // ###################################################################################################################
-            if (inpCoords == null)
+            if (inpCoordSeq == null)
             {
                 throw new ArgumentNullException();
             }
@@ -151,11 +146,12 @@ namespace NetTopologySuite.Samples.Technique
             switch (outParams.OutType)
             {
                 case OgcGeometryType.LineString:
-                    if (inpCoords.Count < 2)
+                    if (inpCoordSeq.Count < 2)
+                        // throw new ArgumentOutOfRangeException(nameof(count), count, "Must be non-negative.");
                         throw new ArgumentOutOfRangeException();
                     break;
                 case OgcGeometryType.Polygon:
-                    if (inpCoords.Count < 3)
+                    if (inpCoordSeq.Count < 3)
                         throw new ArgumentOutOfRangeException();
                     break;
                 default:
@@ -190,6 +186,12 @@ namespace NetTopologySuite.Samples.Technique
             }
 
             // ###################################################################################################################
+            // convert CoordinateSequence to List<Coordinate> for List functions
+            // Note: the documentation says there could be a performance hit as we could potentially be creating coordinates from scratch.
+            // ###################################################################################################################
+            var coordsInp = inpCoordSeq.ToCoordinateArray().ToList<Coordinate>();
+
+            // ###################################################################################################################
             // determine if any longitudes < +180° and also > +180°. this will be an indication that the input coordinates are based
             // on longitude values in the range 0° to +360°. thus any longitudes that traverse the dateline will do so if they are
             // on BOTH sides of the +180° meridian. if the longitudes are only on one side of the the +180° meridian then that means
@@ -197,8 +199,8 @@ namespace NetTopologySuite.Samples.Technique
             // that these coordinates do in fact cross the dateline. otherwise, if the coordinates are in the standard range of
             // -180° to 0° to +180° then we have to make certain assumptions later in the process.
             // ###################################################################################################################
-            bool hasLonsLt180 = inpCoords.Exists(c => c.X < 180);
-            bool hasLonsGt180 = inpCoords.Exists(c => c.X > 180);
+            bool hasLonsLt180 = coordsInp.Exists(c => c.X < 180);
+            bool hasLonsGt180 = coordsInp.Exists(c => c.X > 180);
             bool isLonsTravP180 = false;
             if (hasLonsLt180 && hasLonsGt180)
             {
@@ -211,7 +213,7 @@ namespace NetTopologySuite.Samples.Technique
             var coordsNrm = new List<Coordinate>();
             Coordinate coordNrm;
             double lonNrm;
-            foreach (var coordInp in inpCoords)
+            foreach (var coordInp in coordsInp)
             {
                 lonNrm = Normalize(coordInp.X);
                 coordNrm = coordInp.Create(lonNrm, coordInp.Y, coordInp.Z, coordInp.M);
@@ -468,22 +470,22 @@ namespace NetTopologySuite.Samples.Technique
             return resGeoms;
         }
 
-        /// <param name="coordsInp">A list of coordinates that define a polyline or polygon.</param>
+        /// <param name="inpCoordSeq">A coordinate sequence that defines a polyline or polygon.</param>
         /// <param name="proj4WktInp">The projection of the input coordinates as a PROJ4 WKT string.</param>
         /// <returns>
         /// A Geometry class that contains the result of converting the coordinates into a Polyline or Polygon. The result could be multiple
         /// geometries.
         /// </returns>
-        public static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp)
+        public static Geometry ToPolyExOp(CoordinateSequence inpCoordSeq, string proj4WktInp)
         {
             // default output parameters
             var outParams = new SplitDatelineOuput();
             outParams.OutType = OgcGeometryType.Polygon;
-            outParams.OutTrimGap=  double.NaN;
+            outParams.OutTrimGap = double.NaN;
             outParams.OutDensifyResolution = double.NaN;
             outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixNone;
 
-            return ToPolyExOp(coordsInp, proj4WktInp, outParams);
+            return ToPolyExOp(inpCoordSeq, proj4WktInp, outParams);
         }
 
         /// <summary>
@@ -511,15 +513,15 @@ namespace NetTopologySuite.Samples.Technique
         /// Determines if a polygon crosses the dateline. This is slightly different than checking a LineString as the Polygon is
         /// closed. So a segment exists between the last vertex and the first vertex.
         /// </summary>
-        /// <param name="coordsInp">The input list of coordinates.</param>
+        /// <param name="inpCoords">The input list of coordinates.</param>
         /// <returns>True if the coordinates as a polygon cross the dateline, False otherwise.</returns>
-        private static bool IsPolygonCrossesDatelineEx(List<Coordinate> coordsInp)
+        private static bool IsPolygonCrossesDatelineEx(List<Coordinate> inpCoords)
         {
             // determine if the coordinates contain negative x-coords, positive x-coords, 0 x-coords, and +/-180 x-coords
-            bool hasNegLons = coordsInp.Exists(c => c.X < 0);
-            bool hasPosLons = coordsInp.Exists(c => c.X > 0);
-            bool has000Lons = coordsInp.Exists(c => c.X == 0);
-            bool has180Lons = coordsInp.Exists(c => Math.Abs(c.X) == 180);
+            bool hasNegLons = inpCoords.Exists(c => c.X < 0);
+            bool hasPosLons = inpCoords.Exists(c => c.X > 0);
+            bool has000Lons = inpCoords.Exists(c => c.X == 0);
+            bool has180Lons = inpCoords.Exists(c => Math.Abs(c.X) == 180);
 
             // if the longitudes are all the same sign then that means it didnt cross either the prime meridian or the date line. in this
             // case all we want is the date line crossing. if there is a mix of positive and negative longitudes then we have to determine
@@ -532,21 +534,21 @@ namespace NetTopologySuite.Samples.Technique
             else
             {
                 // cycle through through all the vertices and determine if any segment crosses the dateline
-                int idxLast = coordsInp.Count - 1;
+                int idxLast = inpCoords.Count - 1;
                 int idxPrior;
                 Coordinate vtxCurr;
                 Coordinate vtxPrior;
                 for (int i = 0, loopTo = idxLast; i <= loopTo; i++)
                 {
                     // get the current vertex
-                    vtxCurr = coordsInp[i];
+                    vtxCurr = inpCoords[i];
 
                     // get the prior vertex
                     if (i == 0)
                         idxPrior = idxLast;
                     else
                         idxPrior = i - 1;
-                    vtxPrior = coordsInp[idxPrior];
+                    vtxPrior = inpCoords[idxPrior];
 
                     // check for same or different longitude signs. this will let us know that the segment crossed the dateline -OR- the prime meridian.
                     bool isCrossesCriticalMeridain = false;
