@@ -7,7 +7,6 @@ using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Precision;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -125,7 +124,7 @@ namespace NetTopologySuite.Samples.Technique
         /// </remarks>
         public static Geometry ToPolyExOp(List<Coordinate> inpCoords, string inpProj4Wkt, OgcGeometryType outType, double outTrimGap, double outDensifyResolution, bool isAttFixOutInvPolygons)
         {
-            Debug.Print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+            System.Diagnostics.Debug.Print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
             // ###################################################################################################################
             // input coordinate checks
@@ -505,7 +504,6 @@ namespace NetTopologySuite.Samples.Technique
             bool hasPosLons = coordsInp.Exists(c => c.X > 0);
             bool has000Lons = coordsInp.Exists(c => c.X == 0);
             bool has180Lons = coordsInp.Exists(c => Math.Abs(c.X) == 180);
-            Debug.Print("hasNegLons={0} hasPosLons={1} has000Lons={2} has180Lons={3}", hasNegLons, hasPosLons, has000Lons, has180Lons);
 
             // if the longitudes are all the same sign then that means it didnt cross either the prime meridian or the date line. in this
             // case all we want is the date line crossing. if there is a mix of positive and negative longitudes then we have to determine
@@ -513,13 +511,10 @@ namespace NetTopologySuite.Samples.Technique
             // from a critical meridian is what determines which way around the globe the geometry will wrap.
             if (!(hasNegLons & hasPosLons))
             {
-                Debug.Print("Feature does NOT cross dateline.");
                 return false;
             }
             else
             {
-                Debug.Print("Feature MAY cross dateline. Analyzing all coordinates now...");
-
                 // cycle through through all the vertices and determine if any segment crosses the dateline
                 int idxLast = coordsInp.Count - 1;
                 int idxPrior;
@@ -549,10 +544,6 @@ namespace NetTopologySuite.Samples.Technique
                         // check if the segment crosses the dateline
                         isCrossesDateline = IsCoordPairCrossesDateline(vtxPrior, vtxCurr);
                     }
-
-                    Debug.Print(" ==>i={0} vtxPrior.X={1} vtxPrior.y={2}", i, vtxPrior.X, vtxPrior.Y);
-                    Debug.Print(" ==>i={0} vtxCurr.X={1} vtxCurr.y={2}", i, vtxCurr.X, vtxCurr.Y);
-                    Debug.Print(" ==>i={0} IsCrossesCriticalMeridain={1} IsCrossesDateline={2}", i, isCrossesCriticalMeridain, isCrossesDateline);
 
                     // if it crosses the dateline then return
                     if (isCrossesDateline)
@@ -611,13 +602,10 @@ namespace NetTopologySuite.Samples.Technique
         private static Geometry Polygonize(Geometry geom)
         {
             ICollection<Geometry> lines = LineStringExtracter.GetLines(geom);
-            Debug.Print("lines count={0}", lines.Count);
             var pgnizer = new Polygonizer(false);
             pgnizer.Add(lines);
             var polys = pgnizer.GetPolygons().ToList();
-            Debug.Print("polys count={0}", polys.Count);
             ICollection<Geometry> polyArray = GeometryFactory.ToGeometryArray(polys);
-            Debug.Print("polyArray count={0}", polyArray.Count);
             return (Geometry)geom.Factory.BuildGeometry(polyArray);
         }
 
@@ -639,15 +627,15 @@ namespace NetTopologySuite.Samples.Technique
             var errs = new List<Geometry>();
             var dangles = polygonizer.GetDangles();
             errs.AddRange(dangles);
-            Debug.Print("GetDangles errs count={0}", dangles.Count);
+            //Debug.Print("GetDangles errs count={0}", dangles.Count);
 
             var cutedges = polygonizer.GetCutEdges();
             errs.AddRange(cutedges);
-            Debug.Print("GetCutEdges errs count={0}", cutedges.Count);
+            //Debug.Print("GetCutEdges errs count={0}", cutedges.Count);
 
             var invringlines = polygonizer.GetInvalidRingLines();
             errs.AddRange(invringlines);
-            Debug.Print("GetInvalidRingLines errs count={0}", invringlines.Count);
+            //Debug.Print("GetInvalidRingLines errs count={0}", invringlines.Count);
 
             return g.Factory.BuildGeometry(errs);
         }
@@ -661,12 +649,9 @@ namespace NetTopologySuite.Samples.Technique
         /// <returns></returns>
         private static LineString DatelineCutterPolyline(double delNeg, double delPos, double shift)
         {
-            Debug.Print("DatelineCutterPolyline: delNeg={0} delPos={1} shift={2}", delNeg, delPos, shift);
-
             double lonSplit = shift - 180d;
             if (delNeg < delPos)
                 lonSplit = 180d + shift;
-            Debug.Print("  lonSplit={0}", lonSplit);
 
             // build a series of coordinates
             var cutterPtList = new List<Coordinate>();
@@ -694,8 +679,6 @@ namespace NetTopologySuite.Samples.Technique
         /// <returns></returns>
         private static Polygon DatelineCutterPolygon(double delNeg, double delPos, double shift, double trimGap)
         {
-            Debug.Print("DatelineCutterPolygon: delNeg={0} delPos={1} shift={2} trimGap={3}", delNeg, delPos, shift, trimGap);
-
             if (double.IsInfinity(trimGap) || double.IsNaN(trimGap))
             {
                 throw new Exception("Invalid value for trim gap");
@@ -704,7 +687,6 @@ namespace NetTopologySuite.Samples.Technique
             double lonSplit = shift - 180d;
             if (delNeg < delPos)
                 lonSplit = 180d + shift;
-            Debug.Print("  lonSplit={0} lonSplit+trimGap={1}", lonSplit, lonSplit + trimGap);
 
             // build a clockwise series of coordinates
             var cutterPtList = new List<Coordinate>();
