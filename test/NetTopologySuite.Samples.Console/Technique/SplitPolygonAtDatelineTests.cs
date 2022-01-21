@@ -73,8 +73,14 @@ namespace NetTopologySuite.Samples.Technique
             // ========================================================================================
             var coords = GetCoords();
             var wtr = new WKTWriter();
-            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj,
-                OgcGeometryType.Polygon, 0.75, 0.5, InvalidGeomFixMethod.FixViaBuffer);
+
+            var outParams = new SplitDatelineOuput();
+            outParams.OutType = OgcGeometryType.Polygon;
+            outParams.OutTrimGap = 0.75;
+            outParams.OutDensifyResolution = 0.5;
+            outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixViaBuffer;
+
+            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj, outParams);
             Assert.That(resGeoms, Is.Not.Null);
             Assert.That(resGeoms, Is.InstanceOf<MultiPolygon>());
             Assert.That(resGeoms.NumGeometries, Is.EqualTo(2));
@@ -98,8 +104,14 @@ namespace NetTopologySuite.Samples.Technique
             // ========================================================================================
             var coords = GetCoords();
             var wtr = new WKTWriter();
-            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj,
-                OgcGeometryType.Polygon, -0.75, 0.25, InvalidGeomFixMethod.FixNone);
+
+            var outParams = new SplitDatelineOuput();
+            outParams.OutType = OgcGeometryType.Polygon;
+            outParams.OutTrimGap = -0.75;
+            outParams.OutDensifyResolution = 0.25;
+            outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixNone;
+
+            var resGeoms = SplitPolygonAtDateline.ToPolyExOp(coords.ToList(), wktPrj, outParams);
             Assert.That(resGeoms, Is.Not.Null);
             Assert.That(resGeoms, Is.InstanceOf<MultiPolygon>());
             Assert.That(resGeoms.NumGeometries, Is.EqualTo(2));

@@ -57,10 +57,19 @@ namespace NetTopologySuite.Samples.Technique
             }
 
             // ========================================================================================
+            // setup output parameters
+            // ========================================================================================
+            var outParams = new SplitDatelineOuput();
+            outParams.OutType = OgcGeometryType.Polygon;
+            outParams.OutTrimGap = 0.75;
+            outParams.OutDensifyResolution = 0.5;
+            outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixViaBuffer;
+
+            // ========================================================================================
             // function with specific parameter inputs. trim 0.75 on parts in the Eastern hemisphere and
             // densify every 0.5 and attempt to fix invalid polygons via the buffer method.
             // ========================================================================================
-            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 0.75, 0.5, InvalidGeomFixMethod.FixViaBuffer);
+            resGeoms = ToPolyExOp(coords, wktPrj, outParams);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
@@ -71,7 +80,12 @@ namespace NetTopologySuite.Samples.Technique
             // function with specific parameter inputs. trim 0.75 on parts in the Western hemisphere and
             // densify every 0.25 and do not attempt to fix invalid polygons.
             // ========================================================================================
-            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, -0.75, 0.25, InvalidGeomFixMethod.FixNone);
+            outParams.OutType = OgcGeometryType.Polygon;
+            outParams.OutTrimGap = -0.75;
+            outParams.OutDensifyResolution = 0.25;
+            outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixNone;
+
+            resGeoms = ToPolyExOp(coords, wktPrj, outParams);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
@@ -98,7 +112,8 @@ namespace NetTopologySuite.Samples.Technique
         /// https://desktop.arcgis.com/en/arcmap/latest/manage-data/geodatabases/feature-class-basics.htm
         /// </param>
         /// <param name="outDensifyResolution">The value used to densify the resulting geometry. Double.NaN for no densification.</param>
-        ///<param name="invGeomFixMethod">The method to use to fix invalid gemoetry. The defaukt is to not attempt to fix invalid geometry.</param>
+        ///<param name="invGeomFixMethod">The method to use to fix invalid geometry. The defaukt is to not attempt to fix invalid geometry.</param>
+        /// <param name="outParams">Output parameter class.</param>
         /// <returns>
         /// A Geometry class that contains the result of converting the coordinates into a Polyline or Polygon. If the geometry crosses the Dateline
         /// then the result is multiple geometries wrt to the Eastern and Western hemisphere.
@@ -122,7 +137,7 @@ namespace NetTopologySuite.Samples.Technique
         /// https://desktop.arcgis.com/en/arcmap/10.3/manage-data/editing-fundamentals/creating-and-editing-multipart-polygons.htm
         /// https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/what-happens-to-features-at-180-dateline-.htm
         /// </remarks>
-        public static Geometry ToPolyExOp(List<Coordinate> inpCoords, string inpProj4Wkt, OgcGeometryType outType, double outTrimGap, double outDensifyResolution, InvalidGeomFixMethod invGeomFixMethod)
+        public static Geometry ToPolyExOp(List<Coordinate> inpCoords, string inpProj4Wkt, SplitDatelineOuput outParams)
         {
             // ###################################################################################################################
             // input coordinate checks
@@ -133,7 +148,7 @@ namespace NetTopologySuite.Samples.Technique
             }
 
             // check the minimum number of input coordinates for an output geometry
-            switch (outType)
+            switch (outParams.OutType)
             {
                 case OgcGeometryType.LineString:
                     if (inpCoords.Count < 2)
@@ -151,7 +166,7 @@ namespace NetTopologySuite.Samples.Technique
             // check the output geometry type. currently only polygon output is supported. Polylines should use a similar process
             // with some slight modifications.
             // ###################################################################################################################
-            switch (outType)
+            switch (outParams.OutType)
             {
                 case OgcGeometryType.LineString:
                     //this will be supported in the future
@@ -217,7 +232,7 @@ namespace NetTopologySuite.Samples.Technique
             }
 
             // check the minimum number of normalized coordinates for an output geometry
-            switch (outType)
+            switch (outParams.OutType)
             {
                 case OgcGeometryType.LineString:
                     if (coordsNrm.Count < 2)
@@ -320,7 +335,7 @@ namespace NetTopologySuite.Samples.Technique
                 // a zero width trim gap is interpreted as a cutter line.
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 Geometry nodedLinework = null;
-                if (double.IsInfinity(outTrimGap) || double.IsNaN(outTrimGap) || outTrimGap == 0d)
+                if (double.IsInfinity(outParams.OutTrimGap) || double.IsNaN(outParams.OutTrimGap) || outParams.OutTrimGap == 0d)
                 {
                     // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                     // use a cutter line to split the main polygon
@@ -341,15 +356,11 @@ namespace NetTopologySuite.Samples.Technique
 
                     // define the cutter polygon that is based on the dateline with a shift to put it in the same hemisphere as the shifted
                     // polygon. Plus we also add the trim gap as the cutter polygon width.
-                    var cutterPgon = DatelineCutterPolygon(delNeg, delPos, shift, outTrimGap);
+                    var cutterPgon = DatelineCutterPolygon(delNeg, delPos, shift, outParams.OutTrimGap);
                     var valOp2 = new IsValidOp(cutterPgon);
 
                     // perform an Erase to split the polygon with a polygon. this consists of an Intersection and then a Difference.
-                    //var intx = pPolygonShifted.Boundary.Intersection(cutterPgon);
-                    //Debug.Print("intx={0}", intx.AsText());
-                    //nodedLinework = pPolygonShifted.Boundary.SymmetricDifference(intx);
                     nodedLinework = pPolygonShifted.Difference(cutterPgon); // why use the geometry rather than the geometry's boundary???
-                    //nodedLinework = nodedLinework.Boundary.Intersection(cutterPgon.Boundary);
                 }
 
                 // debug the nodedLinework
@@ -362,16 +373,15 @@ namespace NetTopologySuite.Samples.Technique
                     }
                 }
 
-                // debug the polygonize errors. comment this out once we are done. this was just for debugging.
-                var wtr = new WKTWriter();
-                string resWkt = wtr.Write(nodedLinework);
-                var errs = PolygonizeAllErrors(nodedLinework);
+                // debug the polygonize errors. this was just for debugging invalid geometries.
+                //var wtr = new WKTWriter();
+                //string resWkt = wtr.Write(nodedLinework);
+                //var errs = PolygonizeAllErrors(nodedLinework);
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 // convert the resultant MULTILINESTRING to get mutliple polygons
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 var polygons = Polygonize(nodedLinework, false);
-                resWkt = wtr.Write(polygons);
                 var output = new List<Geometry>();
                 for (int i = 0; i < polygons.NumGeometries; i++)
                 {
@@ -418,19 +428,15 @@ namespace NetTopologySuite.Samples.Technique
                     {
                         coordsAtDtl.ForEach((c) => c.X = -180);
                     }
-
-
-                    // print to debug which hemisphere this geometry is in since it doesnt cross the dateline
-                    string pfx = string.Format("unshifted geometry part {0} is in ", w);
                 }
             }
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // here we will densify the polygon if the resolution value is passed in.
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            if (!double.IsNaN(outDensifyResolution) && !double.IsInfinity(outDensifyResolution) && outDensifyResolution > 0d)
+            if (!double.IsNaN(outParams.OutDensifyResolution) && !double.IsInfinity(outParams.OutDensifyResolution) && outParams.OutDensifyResolution > 0d)
             {
-                resGeoms = Densifier.Densify(resGeoms, outDensifyResolution);
+                resGeoms = Densifier.Densify(resGeoms, outParams.OutDensifyResolution);
             }
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -439,17 +445,17 @@ namespace NetTopologySuite.Samples.Technique
             // Attempting to fix an invalid geometry by calling geometry.Buffer(0) is a common approach, and suggested in multiple places.
             // However it does not work in all cases. Thus we have presented to the user two methods.
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            if (invGeomFixMethod != InvalidGeomFixMethod.FixNone)
+            if (outParams.InvGeomFixMethod != InvalidGeomFixMethod.FixNone)
             {
                 var valOp = new IsValidOp(resGeoms);
                 if (!valOp.IsValid)
                 {
-                    if (invGeomFixMethod == InvalidGeomFixMethod.FixViaBuffer)
+                    if (outParams.InvGeomFixMethod == InvalidGeomFixMethod.FixViaBuffer)
                     {
                         // attempt the buffer method to fix invalid geometry
                         resGeoms = resGeoms.Buffer(0);
                     }
-                    else if (invGeomFixMethod == InvalidGeomFixMethod.FixViaPrecision)
+                    else if (outParams.InvGeomFixMethod == InvalidGeomFixMethod.FixViaPrecision)
                     {
                         // attempt the precision method to fix invalid geometry
                         var pm = new PrecisionModel(10000000000.0);
@@ -470,7 +476,14 @@ namespace NetTopologySuite.Samples.Technique
         /// </returns>
         public static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp)
         {
-            return ToPolyExOp(coordsInp, proj4WktInp, OgcGeometryType.Polygon, double.NaN, double.NaN, InvalidGeomFixMethod.FixNone);
+            // default output parameters
+            var outParams = new SplitDatelineOuput();
+            outParams.OutType = OgcGeometryType.Polygon;
+            outParams.OutTrimGap=  double.NaN;
+            outParams.OutDensifyResolution = double.NaN;
+            outParams.InvGeomFixMethod = InvalidGeomFixMethod.FixNone;
+
+            return ToPolyExOp(coordsInp, proj4WktInp, outParams);
         }
 
         /// <summary>
