@@ -24,7 +24,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             _geometries.AddRange(rdr.Read());
         }
 
-        [Test, Explicit("Known to fail, need to check with JTS")]
+        [Test]
         public void TestIssue566()
         {
             for (int i = 0; i < _geometries.Count; i += 2)

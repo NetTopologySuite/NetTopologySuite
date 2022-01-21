@@ -255,6 +255,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 8 -4.889,  4 -5.049,  1.4749999999994841 -5.15))");
 
             //act
+            poly = GeometryFixer.Fix(poly);
             var gpr = new GeometryPrecisionReducer(new PrecisionModel(1e10));
             var poly1 = gpr.Reduce(poly);
             var poly2 = poly.Buffer(0);
