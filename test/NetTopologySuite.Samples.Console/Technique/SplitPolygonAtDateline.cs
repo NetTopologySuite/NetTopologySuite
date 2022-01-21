@@ -55,8 +55,6 @@ namespace NetTopologySuite.Samples.Technique
             {
                 var resGeom = resGeoms.GetGeometryN(i);
                 string resWkt = wtr.Write(resGeom);
-                Debug.Print("geometry {0} = {1}", i, resWkt);
-                DebugPrintCoords(resGeom.Coordinates.ToList(), "resGeom geom [" + i.ToString() + "] count");
             }
 
             // ========================================================================================
@@ -68,8 +66,6 @@ namespace NetTopologySuite.Samples.Technique
             {
                 var resGeom = resGeoms.GetGeometryN(i);
                 string resWkt = wtr.Write(resGeom);
-                Debug.Print("geometry {0} = {1}", i, resWkt);
-                DebugPrintCoords(resGeom.Coordinates.ToList(), "resGeom geom [" + i.ToString() + "] count");
             }
 
             // ========================================================================================
@@ -81,8 +77,6 @@ namespace NetTopologySuite.Samples.Technique
             {
                 var resGeom = resGeoms.GetGeometryN(i);
                 string resWkt = wtr.Write(resGeom);
-                Debug.Print("geometry {0} = {1}", i, resWkt);
-                DebugPrintCoords(resGeom.Coordinates.ToList(), "resGeom geom [" + i.ToString() + "] count");
             }
         }
 
@@ -138,7 +132,7 @@ namespace NetTopologySuite.Samples.Technique
             // ###################################################################################################################
             if (inpCoords == null)
             {
-                throw new Exception("Null input coordinates.");
+                throw new ArgumentNullException();
             }
 
             // check the minimum number of input coordinates for an output geometry
@@ -146,14 +140,14 @@ namespace NetTopologySuite.Samples.Technique
             {
                 case OgcGeometryType.LineString:
                     if (inpCoords.Count < 2)
-                        throw new Exception("Input list has fewer than 2 coordinates. To create a polyline, the minimum is 2 coordinates.");
+                        throw new ArgumentOutOfRangeException();
                     break;
                 case OgcGeometryType.Polygon:
                     if (inpCoords.Count < 3)
-                        throw new Exception("Input list has fewer than 3 coordinates. To create a polygon, the minimum is 3 coordinates.");
+                        throw new ArgumentOutOfRangeException();
                     break;
                 default:
-                    throw new Exception("Unsupported output geometry type.");
+                    throw new NotSupportedException();
             }
 
             // ###################################################################################################################
@@ -164,13 +158,13 @@ namespace NetTopologySuite.Samples.Technique
             {
                 case OgcGeometryType.LineString:
                     //this will be supported in the future
-                    throw new Exception("Unsupported output geometry type.");
+                    throw new NotImplementedException();
                 case OgcGeometryType.Polygon:
                     //this is supported
                     break;
                 default:
                     // all other output types are not supported
-                    throw new Exception("Unsupported output geometry type.");
+                    throw new NotSupportedException();
             }
 
             // ###################################################################################################################
@@ -182,9 +176,6 @@ namespace NetTopologySuite.Samples.Technique
             {
                 throw new Exception("Unsupported projection for input. Must be a geographic coordinate system.");
             }
-
-            // print original vertices
-            DebugPrintCoords(inpCoords, "Initial number of coordinates");
 
             // ###################################################################################################################
             // determine if any longitudes < +180° and also > +180°. this will be an indication that the input coordinates are based
@@ -201,7 +192,6 @@ namespace NetTopologySuite.Samples.Technique
             {
                 isLonsTravP180 = true;
             }
-            Debug.Print("hasLonsLt180={0} hasLonsGt180={1} isLonsTravP180={2}", hasLonsLt180, hasLonsGt180, isLonsTravP180);
 
             // ###################################################################################################################
             // normalize x values between -180° to 0° to +180°
@@ -228,21 +218,20 @@ namespace NetTopologySuite.Samples.Technique
                 var coord0Clone = coord0.Create(coord0.X, coord0.Y, coord0.Z, coord0.M);
                 coordsNrm.Add(coord0Clone);
             }
-            DebugPrintCoords(coordsNrm, "Normalized number of coordinates");
 
             // check the minimum number of normalized coordinates for an output geometry
             switch (outType)
             {
                 case OgcGeometryType.LineString:
                     if (coordsNrm.Count < 2)
-                        throw new Exception("Normalized list has fewer than 2 coordinates. To create a polyline, the minimum is 2 coordinates.");
+                        throw new ArgumentOutOfRangeException();
                     break;
                 case OgcGeometryType.Polygon:
                     if (coordsNrm.Count < 3)
-                        throw new Exception("Normalized list has fewer than 3 coordinates. To create a polygon, the minimum is 3 coordinates.");
+                        throw new ArgumentOutOfRangeException();
                     break;
                 default:
-                    throw new Exception("Unsupported output geometry type.");
+                    throw new NotSupportedException();
             }
 
             // ###################################################################################################################
@@ -261,7 +250,6 @@ namespace NetTopologySuite.Samples.Technique
             {
                 doCoordsCrossDateline = IsPolygonCrossesDatelineEx(coordsNrm);
             }
-            Debug.Print("doCoordsCrossDateline={0}", doCoordsCrossDateline);
 
             // ###################################################################################################################
             // create the polyline or polygon. if it does NOT cross the dateline then that is easy. if it does cross the dateline
@@ -276,9 +264,6 @@ namespace NetTopologySuite.Samples.Technique
                 var pRing = new LinearRing(coordsNrm.ToArray());
                 var pPolygon = new Polygon(pRing);
                 resGeoms = pPolygon;
-
-                // print to debug which hemisphere this geometry is in since it doesnt cross the dateline
-                DebugPrintHemi(coordsNrm, "original geometry is all in ");
             }
             else
             {
@@ -297,7 +282,6 @@ namespace NetTopologySuite.Samples.Technique
                 double xClosestToDlPos = coordsPos.Min(c => c.X);
                 var coordsNeg = coordsNrm.FindAll(c => c.X < 0);
                 double xClosestToDlNeg = coordsNeg.Max(c => c.X);
-                Debug.Print("xClosestToDlNeg={0} xClosestToDlPos={1}", xClosestToDlNeg, xClosestToDlPos);
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 // determine which absolute value is the shortest from the dateline
@@ -310,7 +294,6 @@ namespace NetTopologySuite.Samples.Technique
                 double shift = delPos;
                 if (delNeg < delPos)
                     shift = -1 * delNeg;
-                Debug.Print("delNeg={0} delPos={1} pad={2} shift={3}", delNeg, delPos, pad, shift);
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 // shift coordinates to put them ALL in the same hemisphere
@@ -333,9 +316,7 @@ namespace NetTopologySuite.Samples.Technique
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 var pRingShifted = new LinearRing(coordsShifted.ToArray());
                 var pPolygonShifted = new Polygon(pRingShifted);
-                DebugPrintCoords(pPolygonShifted.Coordinates.ToList(), "pPolygonShifted count");
                 var valOp = new IsValidOp(pPolygonShifted);
-                Debug.Print("pPolygonShifted isValid = {0}", valOp.IsValid);
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 // now we determine if we will cut the polygon with a cutter line or a cutter polygon.
@@ -351,7 +332,6 @@ namespace NetTopologySuite.Samples.Technique
                     // define the cutter line that is based on the dateline with a shift to put it in the same hemisphere as the shifted
                     // polygon.
                     var cutterLine = DatelineCutterPolyline(delNeg, delPos, shift);
-                    DebugPrintCoords(cutterLine.Coordinates.ToList(), "cutterLine count");
 
                     // perform a Union to split the polygon with a polyline
                     nodedLinework = pPolygonShifted.Boundary.Union(cutterLine);
@@ -365,9 +345,7 @@ namespace NetTopologySuite.Samples.Technique
                     // define the cutter polygon that is based on the dateline with a shift to put it in the same hemisphere as the shifted
                     // polygon. Plus we also add the trim gap as the cutter polygon width.
                     var cutterPgon = DatelineCutterPolygon(delNeg, delPos, shift, outTrimGap);
-                    DebugPrintCoords(cutterPgon.Coordinates.ToList(), "cutterPgon count");
                     var valOp2 = new IsValidOp(cutterPgon);
-                    Debug.Print("cutterPgon isValid = {0}", valOp2.IsValid);
 
                     // perform an Erase to split the polygon with a polygon. this consists of an Intersection and then a Difference.
                     //var intx = pPolygonShifted.Boundary.Intersection(cutterPgon);
@@ -378,31 +356,25 @@ namespace NetTopologySuite.Samples.Technique
                 }
 
                 // debug the nodedLinework
-                Debug.Print("nodedLinework is {0}", nodedLinework.GeometryType);
                 if (nodedLinework.GeometryType == "MultiLineString")
                 {
                     var mls = (MultiLineString)nodedLinework;
                     for (int i = 0; i < mls.Geometries.Count(); i++)
                     {
                         var geom = mls.GetGeometryN(i);
-                        DebugPrintCoords(geom.Coordinates.ToList(), "nodedLinework geom [" + i.ToString() + "] count");
                     }
                 }
 
-                // debug the polygonize errors
+                // debug the polygonize errors. comment this out once we are done. this was just for debugging.
                 var wtr = new WKTWriter();
                 string resWkt = wtr.Write(nodedLinework);
-                Debug.Print("nodedLinework = {0}", resWkt);
-                DebugPrintCoords(nodedLinework.Coordinates.ToList(), "nodedLinework count");
                 var errs = PolygonizeAllErrors(nodedLinework);
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 // convert the resultant MULTILINESTRING to get mutliple polygons
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 var polygons = Polygonize(nodedLinework, false);
-                Debug.Print("Polygonize count={0}", polygons.NumGeometries);
                 resWkt = wtr.Write(polygons);
-                Debug.Print("polygons = {0}", resWkt);
                 var output = new List<Geometry>();
                 for (int i = 0; i < polygons.NumGeometries; i++)
                 {
@@ -410,10 +382,8 @@ namespace NetTopologySuite.Samples.Technique
                     if (pPolygonShifted.Contains(candpoly.InteriorPoint))
                         output.Add(candpoly);
                 }
-                Debug.Print("output count={0}", output.Count);
 
                 resGeoms = pPolygonShifted.Factory.BuildGeometry(output.ToArray());
-                Debug.Print("geometry parts from splitting at dateline={0}", resGeoms.NumGeometries);
 
                 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 // now we must take the resultant geometry parts and unshift them to their original location
@@ -455,7 +425,6 @@ namespace NetTopologySuite.Samples.Technique
 
                     // print to debug which hemisphere this geometry is in since it doesnt cross the dateline
                     string pfx = string.Format("unshifted geometry part {0} is in ", w);
-                    DebugPrintHemi(geomCoords, pfx);
                 }
             }
 
@@ -476,21 +445,16 @@ namespace NetTopologySuite.Samples.Technique
             if (isAttFixOutInvPolygons)
             {
                 var valOp = new IsValidOp(resGeoms);
-                Debug.Print("resGeoms isValid = {0}", valOp.IsValid);
                 if (!valOp.IsValid)
                 {
                     // method 1
                     resGeoms = resGeoms.Buffer(0);
-                    Debug.Print("resGeoms were fixed");
 
                     // method 2
                     //var pm = new PrecisionModel(10000000000.0);
                     //resGeoms = new GeometryPrecisionReducer(pm).Reduce(resGeoms);
                 }
             }
-
-            // print final vertices of all geometries
-            DebugPrintCoords(resGeoms.Coordinates.ToList(), "Final number of coordinates");
 
             // success so return generated geometry (it could me multi-part)
             return resGeoms;
@@ -759,44 +723,6 @@ namespace NetTopologySuite.Samples.Technique
 
             // return the "new" dateline polygon that has been shifted and also has a gap from the dateline
             return cutterPolygon;
-        }
-
-        private static void DebugPrintCoords(List<Coordinate> coords, string hdr)
-        {
-            Debug.Print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            Debug.Print(hdr + "={0}", coords.Count);
-            Debug.Print("kIdx,x,y");
-
-            Coordinate coordK;
-            for (int k = 0; k <= coords.Count - 1; k++)
-            {
-                coordK = coords[k];
-                Debug.Print("{0},{1},{2}", k, coordK.X, coordK.Y);
-            }
-
-            Debug.Print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        }
-
-        private static void DebugPrintGeom(Geometry geom, string hdr)
-        {
-            var wtr = new WKTWriter();
-            string resWkt = wtr.Write(geom);
-            Debug.Print("geom = {0}", resWkt);
-            DebugPrintCoords(geom.Coordinates.ToList(), "geom count");
-        }
-
-        private static void DebugPrintHemi(List<Coordinate> coords, string prefix)
-        {
-            // determine which hemisphere this geometry is in and print to debug
-            bool hHasNegLons = coords.Exists(c => c.X < 0);
-            if (hHasNegLons)
-            {
-                Debug.Print(prefix + "Western Hemishpere");
-            }
-            else
-            {
-                Debug.Print(prefix + "Eastern Hemishpere");
-            }
         }
     }
 }
