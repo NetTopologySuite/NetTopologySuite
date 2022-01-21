@@ -58,9 +58,9 @@ namespace NetTopologySuite.Samples.Technique
 
             // ========================================================================================
             // function with specific parameter inputs. trim 0.75 on parts in the Eastern hemisphere and
-            // densify every 0.5 and attempt to fix invalid polygons.
+            // densify every 0.5 and attempt to fix invalid polygons via the buffer method.
             // ========================================================================================
-            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 0.75, 0.5, true);
+            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, 0.75, 0.5, InvalidGeomFixMethod.FixViaBuffer);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Samples.Technique
             // function with specific parameter inputs. trim 0.75 on parts in the Western hemisphere and
             // densify every 0.25 and do not attempt to fix invalid polygons.
             // ========================================================================================
-            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, -0.75, 0.25, false);
+            resGeoms = ToPolyExOp(coords, wktPrj, OgcGeometryType.Polygon, -0.75, 0.25, InvalidGeomFixMethod.FixNone);
             for (int i = 0; i < resGeoms.NumGeometries; i++)
             {
                 var resGeom = resGeoms.GetGeometryN(i);
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Samples.Technique
         /// https://desktop.arcgis.com/en/arcmap/latest/manage-data/geodatabases/feature-class-basics.htm
         /// </param>
         /// <param name="outDensifyResolution">The value used to densify the resulting geometry. Double.NaN for no densification.</param>
-        /// <param name="isAttFixOutInvPolygons">True if the process should attempt to fix invalid geometry, False otherwsie.</param>
+        ///<param name="invGeomFixMethod">The method to use to fix invalid gemoetry. The defaukt is to not attempt to fix invalid geometry.</param>
         /// <returns>
         /// A Geometry class that contains the result of converting the coordinates into a Polyline or Polygon. If the geometry crosses the Dateline
         /// then the result is multiple geometries wrt to the Eastern and Western hemisphere.
@@ -122,10 +122,8 @@ namespace NetTopologySuite.Samples.Technique
         /// https://desktop.arcgis.com/en/arcmap/10.3/manage-data/editing-fundamentals/creating-and-editing-multipart-polygons.htm
         /// https://desktop.arcgis.com/en/arcmap/10.3/guide-books/map-projections/what-happens-to-features-at-180-dateline-.htm
         /// </remarks>
-        public static Geometry ToPolyExOp(List<Coordinate> inpCoords, string inpProj4Wkt, OgcGeometryType outType, double outTrimGap, double outDensifyResolution, bool isAttFixOutInvPolygons)
+        public static Geometry ToPolyExOp(List<Coordinate> inpCoords, string inpProj4Wkt, OgcGeometryType outType, double outTrimGap, double outDensifyResolution, InvalidGeomFixMethod invGeomFixMethod)
         {
-            System.Diagnostics.Debug.Print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
             // ###################################################################################################################
             // input coordinate checks
             // ###################################################################################################################
@@ -438,20 +436,25 @@ namespace NetTopologySuite.Samples.Technique
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // finally if the option is passed in to attempt to fix invalid geometry then we will do that here
             // https://github.com/NetTopologySuite/NetTopologySuite/issues/124
-            // Attempting to fix an invalid geometry by calling geometry.Buffer(0) is a common approach, and
-            // suggested in multiple places. However it does not work in all cases.
+            // Attempting to fix an invalid geometry by calling geometry.Buffer(0) is a common approach, and suggested in multiple places.
+            // However it does not work in all cases. Thus we have presented to the user two methods.
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            if (isAttFixOutInvPolygons)
+            if (invGeomFixMethod != InvalidGeomFixMethod.FixNone)
             {
                 var valOp = new IsValidOp(resGeoms);
                 if (!valOp.IsValid)
                 {
-                    // method 1
-                    resGeoms = resGeoms.Buffer(0);
-
-                    // method 2
-                    //var pm = new PrecisionModel(10000000000.0);
-                    //resGeoms = new GeometryPrecisionReducer(pm).Reduce(resGeoms);
+                    if (invGeomFixMethod == InvalidGeomFixMethod.FixViaBuffer)
+                    {
+                        // attempt the buffer method to fix invalid geometry
+                        resGeoms = resGeoms.Buffer(0);
+                    }
+                    else if (invGeomFixMethod == InvalidGeomFixMethod.FixViaPrecision)
+                    {
+                        // attempt the precision method to fix invalid geometry
+                        var pm = new PrecisionModel(10000000000.0);
+                        resGeoms = new GeometryPrecisionReducer(pm).Reduce(resGeoms);
+                    }
                 }
             }
 
@@ -467,7 +470,7 @@ namespace NetTopologySuite.Samples.Technique
         /// </returns>
         public static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp)
         {
-            return ToPolyExOp(coordsInp, proj4WktInp, OgcGeometryType.Polygon, double.NaN, double.NaN, false);
+            return ToPolyExOp(coordsInp, proj4WktInp, OgcGeometryType.Polygon, double.NaN, double.NaN, InvalidGeomFixMethod.FixNone);
         }
 
         /// <summary>
