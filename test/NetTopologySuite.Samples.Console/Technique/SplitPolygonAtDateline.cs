@@ -466,7 +466,7 @@ namespace NetTopologySuite.Samples.Technique
         /// A Geometry class that contains the result of converting the coordinates into a Polyline or Polygon. The result could be multiple
         /// geometries.
         /// </returns>
-        private static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp)
+        public static Geometry ToPolyExOp(List<Coordinate> coordsInp, string proj4WktInp)
         {
             return ToPolyExOp(coordsInp, proj4WktInp, OgcGeometryType.Polygon, double.NaN, double.NaN, false);
         }
