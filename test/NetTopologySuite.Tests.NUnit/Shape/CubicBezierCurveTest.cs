@@ -1,11 +1,8 @@
-﻿using NetTopologySuite.Algorithm.Construct;
-using NetTopologySuite.Precision;
+﻿using NetTopologySuite.Precision;
+using NetTopologySuite.Shape;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
+namespace NetTopologySuite.Tests.NUnit.Shape
 {
     internal class CubicBezierCurveTest : GeometryTestCase
     {

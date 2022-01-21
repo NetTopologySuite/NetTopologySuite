@@ -12,4 +12,8 @@
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Algorithm\Construct\" />
+  </ItemGroup>
+
 </Project>

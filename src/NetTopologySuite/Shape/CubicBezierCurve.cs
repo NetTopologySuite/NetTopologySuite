@@ -1,10 +1,9 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.Mathematics;
 using System;
-using System.Collections.Generic;
 
-namespace NetTopologySuite.Algorithm.Construct
+namespace NetTopologySuite.Shape
 {
     /// <summary>
     /// Creates a curved geometry by replacing the segments
@@ -17,28 +16,45 @@ namespace NetTopologySuite.Algorithm.Construct
     /// at each input vertex.
     /// <para/>
     /// The result is not guaranteed to be valid, since large alpha values
-    /// </remarks>
     /// may cause self-intersections.
+    /// </remarks>
     public class CubicBezierCurve
     {
         /// <summary>
-        /// Creates a curved geometry using Cubic Bezier Curves
+        /// Creates a curved geometry using linearized Cubic Bezier Curves
         /// defined by the segments of the input.
         /// </summary>
         /// <param name="geom">The geometry defining the curve</param>
-        /// <param name="alpha">A roundness parameter (0 is linear, 1 is round, >1 is increasingly distorted)</param>
-        /// <returns>A curved line or polygon using Bezier Curves</returns>
+        /// <param name="alpha">A roundness parameter (0 is linear, 1 is round, >1 is increasingly curved)</param>
+        /// <returns>A curved geometry</returns>
         public static Geometry Create(Geometry geom, double alpha)
         {
             var curve = new CubicBezierCurve(geom, alpha);
             return curve.GetResult();
         }
 
+        /**
+         * Creates a geometry using linearized Cubic Bezier Curves
+         * defined by the segments of the input, with a skew factor
+         * affecting the shape at each vertex.
+         * 
+         * @param geom the geometry defining the curve
+         * @param alpha curviness parameter (0 is linear, 1 is round, >1 is increasingly curved)
+         * @param skew the skew parameter (0 is none, positive skews towards longer side, negative towards shorter
+         * @return  the curved geometry
+         */
+        public static Geometry Create(Geometry geom, double alpha, double skew)
+        {
+            var curve = new CubicBezierCurve(geom, alpha);
+            curve.Skew = skew;
+            return curve.GetResult();
+        }
         private readonly double _minSegmentLength = 0.0;
         private readonly int _numVerticesPerSegment = 16;
 
         private readonly Geometry _inputGeom;
         private readonly double _alpha;
+        private double _skew;
         private readonly GeometryFactory _geomFactory;
   
         private Coordinate[] bezierCurvePts;
@@ -56,6 +72,13 @@ namespace NetTopologySuite.Algorithm.Construct
             _alpha = alpha;
             _geomFactory = geom.Factory;
         }
+
+        /// <summary>
+        /// Gets or sets a skew factor influencing the shape of the curve corners.
+        /// 0 is no skew, positive skews towards longer edges, negative skews towards shorter.
+        /// </summary>
+        /// <returns>The skew value</returns>
+        public double Skew { get; set; }
 
         /// <summary>
         /// Gets the computed Bezier curve geometry
@@ -187,24 +210,40 @@ namespace NetTopologySuite.Algorithm.Construct
                 double ang0 = angBisect - orient * AngleUtility.PiOver2;
                 double ang1 = angBisect + orient * AngleUtility.PiOver2;
 
-                double len0 = v1.Distance(v0);
-                double len1 = v1.Distance(v2);
-                double lenBase = Math.Min(len0, len1);
+                double dist0 = v1.Distance(v0);
+                double dist1 = v1.Distance(v2);
+                double lenBase = Math.Min(dist0, dist1);
                 double intAngAbs = Math.Abs(interiorAng);
 
-                //-- make acute corners sharper by shortening tangent
+                //-- make acute corners sharper by shortening tangent vectors
                 double sharpnessFactor = intAngAbs >= AngleUtility.PiOver2 ? 1 : intAngAbs / AngleUtility.PiOver2;
 
                 double len = alpha * CIRCLE_LEN_FACTOR * sharpnessFactor * lenBase;
+                double stretch0 = 1;
+                double stretch1 = 1;
+                if (Skew != 0)
+                {
+                    double stretch = Math.Abs(dist0 - dist1) / Math.Max(dist0, dist1);
+                    int skewIndex = dist0 > dist1 ? 0 : 1;
+                    if (Skew < 0) skewIndex = 1 - skewIndex;
+                    if (skewIndex == 0)
+                    {
+                        stretch0 += Math.Abs(Skew) * stretch;
+                    }
+                    else
+                    {
+                        stretch1 += Math.Abs(Skew) * stretch;
+                    }
+                }
+                var ctl0 = AngleUtility.Project(v1, ang0, stretch0 * len);
+                var ctl1 = AngleUtility.Project(v1, ang1, stretch1 * len);
 
-                var cv0 = AngleUtility.Project(v1, ang0, len);
-                var cv1 = AngleUtility.Project(v1, ang1, len);
                 if (ctrl[i] == null) ctrl[i] = new Coordinate[2];
-                ctrl[i][0] = cv0;
-                ctrl[i][1] = cv1;
+                ctrl[i][0] = ctl0;
+                ctrl[i][1] = ctl1;
 
-                //System.out.println(WKTWriter.toLineString(v1, cv0));
-                //System.out.println(WKTWriter.toLineString(v1, cv1));
+                //System.out.println(WKTWriter.toLineString(v1, ctl0));
+                //System.out.println(WKTWriter.toLineString(v1, ctl1));
             }
             if (!isRing)
             {
