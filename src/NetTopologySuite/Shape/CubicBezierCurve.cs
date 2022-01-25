@@ -22,10 +22,11 @@ namespace NetTopologySuite.Shape
     {
         /// <summary>
         /// Creates a curved geometry using linearized Cubic Bezier Curves
-        /// defined by the segments of the input.
+        /// defined by the segments of the input and a parameter
+        /// controlling how curved the result should be.
         /// </summary>
         /// <param name="geom">The geometry defining the curve</param>
-        /// <param name="alpha">A roundness parameter (0 is linear, 1 is round, >1 is increasingly curved)</param>
+        /// <param name="alpha">A curvedness parameter (0 is linear, 1 is round, >1 is increasingly curved)</param>
         /// <returns>A curved geometry</returns>
         public static Geometry Create(Geometry geom, double alpha)
         {
@@ -33,20 +34,22 @@ namespace NetTopologySuite.Shape
             return curve.GetResult();
         }
 
-        /**
-         * Creates a geometry using linearized Cubic Bezier Curves
-         * defined by the segments of the input, with a skew factor
-         * affecting the shape at each vertex.
-         * 
-         * @param geom the geometry defining the curve
-         * @param alpha curviness parameter (0 is linear, 1 is round, >1 is increasingly curved)
-         * @param skew the skew parameter (0 is none, positive skews towards longer side, negative towards shorter
-         * @return  the curved geometry
-         */
+        /// <summary>
+        /// Creates a geometry using linearized Cubic Bezier Curves
+        /// defined by the segments of the inputand a parameter
+        /// controlling how curved the result should be, with a skew factor
+        /// affecting the curve shape at each vertex.
+        /// </summary>
+        /// <param name="geom">The geometry defining the curve</param>
+        /// <param name="alpha">The curvedness parameter (0 is linear, 1 is round, >1 is increasingly curved)</param>
+        /// <param name="skew">The skew parameter (0 is none, positive skews towards longer side, negative towards shorter</param>
+        /// <returns>The curved geometry</returns>
         public static Geometry Create(Geometry geom, double alpha, double skew)
         {
-            var curve = new CubicBezierCurve(geom, alpha);
-            curve.Skew = skew;
+            var curve = new CubicBezierCurve(geom, alpha)
+            {
+                Skew = skew
+            };
             return curve.GetResult();
         }
         private readonly double _minSegmentLength = 0.0;
@@ -58,7 +61,7 @@ namespace NetTopologySuite.Shape
         private readonly GeometryFactory _geomFactory;
   
         private Coordinate[] bezierCurvePts;
-        private CubicBezierInterpolationParam[] interpolationParam;
+        private double[][] interpolationParam;
 
         /// <summary>
         /// Creates a newinstance.
@@ -87,7 +90,7 @@ namespace NetTopologySuite.Shape
         public Geometry GetResult()
         {
             bezierCurvePts = new Coordinate[_numVerticesPerSegment];
-            interpolationParam = CubicBezierInterpolationParam.Compute(_numVerticesPerSegment);
+            interpolationParam = ComputeIterpolationParameters(_numVerticesPerSegment);
 
             return GeometryMapper.FlatMap(_inputGeom, Dimension.Curve,
                 new GeometryMapper.MapOp( (geom) => {
@@ -104,30 +107,16 @@ namespace NetTopologySuite.Shape
         private LineString BezierLine(LineString ls)
         {
             var coords = ls.Coordinates;
-            var control = ControlPoints(coords, false, _alpha);
-            int N = coords.Length;
-            var curvePts = new CoordinateList();
-            for (int i = 0; i < N - 1; i++)
-            {
-                AddCurve(coords[i], coords[i + 1], control[i][1], control[i + 1][0], curvePts);
-            }
-            curvePts.Add(coords[N - 1], false);
+            var curvePts = BezierCurve(coords, false);
+            curvePts.Add(coords[coords.Length - 1].Copy(), false);
             return _geomFactory.CreateLineString(curvePts.ToCoordinateArray());
         }
 
         private LinearRing BezierRing(LinearRing ring)
         {
             var coords = ring.Coordinates;
-            var control = ControlPoints(coords, true, _alpha);
-            var curvePts = new CoordinateList();
-            int N = coords.Length - 1;
-            for (int i = 0; i < N; i++)
-            {
-                int next = (i + 1) % N;
-                AddCurve(coords[i], coords[next], control[i][1], control[next][0], curvePts);
-            }
+            var curvePts = BezierCurve(coords, true);
             curvePts.CloseRing();
-
             return _geomFactory.CreateLinearRing(curvePts.ToCoordinateArray());
         }
 
@@ -146,6 +135,17 @@ namespace NetTopologySuite.Shape
             return _geomFactory.CreatePolygon(shell, holes);
         }
 
+        private CoordinateList BezierCurve(Coordinate[] coords, bool isRing)
+        {
+            var control = ControlPoints(coords, false, _alpha, Skew);
+            var curvePts = new CoordinateList();
+            for (int i = 0; i < coords.Length - 1; i++)
+            {
+                int ctrlIndex = 2 * i;
+                AddCurve(coords[i], coords[i + 1], control[ctrlIndex], control[ctrlIndex + 1], curvePts);
+            }
+            return curvePts;
+        }
         private void AddCurve(Coordinate p0, Coordinate p1,
             Coordinate ctrl0, Coordinate crtl1,
             CoordinateList curvePts)
@@ -168,35 +168,39 @@ namespace NetTopologySuite.Shape
             }
         }
 
-        //-- makes curve at right-angle corners roughly circular
+        //-- chosen to make curve at right-angle corners roughly circular
         private const double CIRCLE_LEN_FACTOR = 3.0 / 8.0;
 
-        /**
-         * Creates control points for each vertex of curve.
-         * The control points are collinear with each vertex, 
-         * thus providing C1-continuity.
-         * By default the control vectors are the same length, 
-         * which provides C2-continuity (same curvature on each
-         * side of vertex.
-         * The alpha parameter controls the length of the control vectors.
-         * Alpha = 0 makes the vectors zero-length, and hence flattens the curves.
-         * Alpha = 1 makes the curve at right angles roughly circular.
-         * Alpha > 1 starts to distort the curve and may introduce self-intersections
-         * 
-         * @param coords
-         * @param isRing
-         * @param alpha determines the curviness
-         * @return
-         */
-        private Coordinate[][] ControlPoints(Coordinate[] coords, bool isRing, double alpha)
+        /// <summary>
+        /// Creates control points for each vertex of curve.
+        /// The control points are collinear with each vertex,
+        /// thus providing C1-continuity.
+        /// By default the control vectors are the same length,
+        /// which provides C2-continuity(same curvature on each
+        /// side of vertex.
+        /// The alpha parameter controls the length of the control vectors.
+        /// Alpha = 0 makes the vectors zero-length, and hence flattens the curves.
+        /// Alpha = 1 makes the curve at right angles roughly circular.
+        /// Alpha > 1 starts to distort the curve and may introduce self-intersections.
+        /// <para/>
+        /// The control point array contains a pair of coordinates for each input segment.
+        /// </summary>
+        private static Coordinate[] ControlPoints(Coordinate[] coords, bool isRing, double alpha, double skew)
         {
-            int N = isRing ? coords.Length - 1 : coords.Length;
-            var ctrl = new Coordinate[N][];
-            ctrl[0] = new Coordinate[2];
-            ctrl[N-1] = new Coordinate[2];
+            int N = coords.Length;
+            int start = 1;
+            int end = N - 1;
 
-            int start = isRing ? 0 : 1;
-            int end = isRing ? N : N - 1;
+            if (isRing)
+            {
+                N = coords.Length - 1;
+                start = 0;
+                end = N;
+            }
+
+            int nControl = 2 * coords.Length - 2;
+            var ctrl = new Coordinate[nControl];
+
             for (int i = start; i < end; i++)
             {
                 int iprev = i == 0 ? N - 1 : i - 1;
@@ -221,26 +225,28 @@ namespace NetTopologySuite.Shape
                 double len = alpha * CIRCLE_LEN_FACTOR * sharpnessFactor * lenBase;
                 double stretch0 = 1;
                 double stretch1 = 1;
-                if (Skew != 0)
+                if (skew != 0)
                 {
                     double stretch = Math.Abs(dist0 - dist1) / Math.Max(dist0, dist1);
                     int skewIndex = dist0 > dist1 ? 0 : 1;
-                    if (Skew < 0) skewIndex = 1 - skewIndex;
+                    if (skew < 0) skewIndex = 1 - skewIndex;
                     if (skewIndex == 0)
                     {
-                        stretch0 += Math.Abs(Skew) * stretch;
+                        stretch0 += Math.Abs(skew) * stretch;
                     }
                     else
                     {
-                        stretch1 += Math.Abs(Skew) * stretch;
+                        stretch1 += Math.Abs(skew) * stretch;
                     }
                 }
                 var ctl0 = AngleUtility.Project(v1, ang0, stretch0 * len);
                 var ctl1 = AngleUtility.Project(v1, ang1, stretch1 * len);
 
-                if (ctrl[i] == null) ctrl[i] = new Coordinate[2];
-                ctrl[i][0] = ctl0;
-                ctrl[i][1] = ctl1;
+                int index = 2 * i - 1;
+                // for a ring case the first control point is for last segment
+                int i0 = index < 0 ? nControl - 1 : index;
+                ctrl[i0] = ctl0;
+                ctrl[index + 1] = ctl1;
 
                 //System.out.println(WKTWriter.toLineString(v1, ctl0));
                 //System.out.println(WKTWriter.toLineString(v1, ctl1));
@@ -252,32 +258,25 @@ namespace NetTopologySuite.Shape
             return ctrl;
         }
 
-        /**
-         * Sets the end control points for a line.
-         * Produce a symmetric curve for the first and last segments
-         * by using mirrored control points for start and end vertex.
-         * 
-         * @param coords
-         * @param ctrl
-         */
-        private void SetLineEndControlPoints(Coordinate[] coords, Coordinate[][] ctrl)
+        /// <summary>
+        /// Sets the end control points for a line.
+        /// Produce a symmetric curve for the first and last segments
+        /// by using mirrored control points for start and end vertex.
+        /// </summary>
+        /// <param name="coords">The coordinates</param>
+        /// <param name="ctrl">The control points</param>
+        private static void SetLineEndControlPoints(Coordinate[] coords, Coordinate[] ctrl)
         {
-            int N = coords.Length;
+            int N = ctrl.Length;
 
-            ctrl[0][1] = MirrorControlPoint(ctrl[1][0], coords[1], coords[0]);
-            ctrl[N - 1][0] = MirrorControlPoint(ctrl[N - 2][1], coords[N - 1], coords[N - 2]);
+            ctrl[0] = MirrorControlPoint(ctrl[1], coords[1], coords[0]);
+            ctrl[N - 1] = MirrorControlPoint(ctrl[N - 2],
+                coords[coords.Length - 1], coords[coords.Length - 2]);
         }
 
-        /**
-         * Creates a control point aimed at the control point at the opposite end of the segment.
-         * 
-         * Produces overly flat results, so not used currently.
-         * 
-         * @param c
-         * @param p1
-         * @param p0
-         * @return
-         */
+        /// <summary>
+        /// Creates a control point aimed at the control point at the opposite end of the segment.
+        /// </summary>
         private static Coordinate AimedControlPoint(Coordinate c, Coordinate p1, Coordinate p0)
         {
             double len = p1.Distance(c);
@@ -315,64 +314,58 @@ namespace NetTopologySuite.Shape
         /// <summary>
         /// Calculates vertices along a cubic Bezier curve.
         /// </summary>
-        /// <param name="start">The start point</param>
-        /// <param name="end">The end point</param>
+        /// <param name="p0">The start point</param>
+        /// <param name="p1">The end point</param>
         /// <param name="ctrl1">The first control point</param>
         /// <param name="ctrl2">The second control point</param>
-        /// <param name="ip">Interpolation parameters</param>
-        /// <param name="curve">An array to hold generated points</param>
-        private void CubicBezier(Coordinate start,
-            Coordinate end, Coordinate ctrl1,
-            Coordinate ctrl2, CubicBezierInterpolationParam[] ip, Coordinate[] curve)
+        /// <param name="param">A set of interpolation parameters</param>
+        /// <param name="curve">An array to hold generated points.</param>
+        private static void CubicBezier(Coordinate p0,
+            Coordinate p1, Coordinate ctrl1,
+            Coordinate ctrl2, double[][] param,
+            Coordinate[] curve)
         {
 
             int n = curve.Length;
-            curve[0] = new Coordinate(start);
-            curve[n - 1] = new Coordinate(end);
+            curve[0] = new Coordinate(p0);
+            curve[n - 1] = new Coordinate(p1);
 
             for (int i = 1; i < n - 1; i++)
             {
-                var c = new Coordinate
-                {
-                    X = (ip[i].t[0] * start.X + ip[i].t[1] * ctrl1.X + ip[i].t[2] * ctrl2.X + ip[i].t[3] * end.X) / ip[i].tsum,
-                    Y = (ip[i].t[0] * start.Y + ip[i].t[1] * ctrl1.Y + ip[i].t[2] * ctrl2.Y + ip[i].t[3] * end.Y) / ip[i].tsum
-                };
+                var c = new Coordinate();
+                double sum = param[i][0] + param[i][1] + param[i][2] + param[i][3];
+                c.X = param[i][0] * p0.X + param[i][1] * ctrl1.X + param[i][2] * ctrl2.X + param[i][3] * p1.X;
+                c.X /= sum;
+                c.Y = param[i][0] * p0.Y + param[i][1] * ctrl1.Y + param[i][2] * ctrl2.Y + param[i][3] * p1.Y;
+                c.Y /= sum;
 
                 curve[i] = c;
             }
         }
 
-        private sealed class CubicBezierInterpolationParam
+        /// <summary>
+        /// Gets the interpolation parameters for a Bezier curve approximated by a
+        /// given number of vertices.
+        /// </summary>
+        /// <param name="n">The number of vertices</param>
+        /// <returns>An array of double[4] holding the parameter values</returns>
+        private static double[][] ComputeIterpolationParameters(int n)
         {
-            public double[] t = new double[4];
-            public double tsum;
-
-            /**
-             * Gets the interpolation parameters for a Bezier curve approximated by the
-             * given number of vertices.
-             *
-             * @param n number of vertices
-             * @return array of {@code InterpPoint} objects holding the parameter values
-             */
-            public static CubicBezierInterpolationParam[] Compute(int n)
+            double[][] param = new double[n][];
+            for (int i = 0; i < n; i++)
             {
-                var param = new CubicBezierInterpolationParam[n];
+                param[i] = new double[4];
+                double t = (double)i / (n - 1);
+                double tc = 1.0 - t;
 
-                for (int i = 0; i < n; i++)
-                {
-                    double t = (double)i / (n - 1);
-                    double tc = 1.0 - t;
-
-                    param[i] = new CubicBezierInterpolationParam();
-                    param[i].t[0] = tc * tc * tc;
-                    param[i].t[1] = 3.0 * tc * tc * t;
-                    param[i].t[2] = 3.0 * tc * t * t;
-                    param[i].t[3] = t * t * t;
-                    param[i].tsum = param[i].t[0] + param[i].t[1] + param[i].t[2] + param[i].t[3];
-                }
-                return param;
+                param[i][0] = tc * tc * tc;
+                param[i][1] = 3.0 * tc * tc * t;
+                param[i][2] = 3.0 * tc * t * t;
+                param[i][3] = t * t * t;
             }
+            return param;
         }
+
 
     }
 }
