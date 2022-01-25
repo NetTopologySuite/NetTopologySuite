@@ -152,8 +152,8 @@ namespace NetTopologySuite.Operation.OverlayNG
         }
 
         /// <summary>
-        /// Nodes a set of segment strings and creates {@link Edge}s from the result.
-        /// The input segment strings each carry a {@link EdgeSourceInfo} object,
+        /// Nodes a set of segment strings and creates <see cref="Edge"/>s from the result.
+        /// The input segment strings each carry a <see cref="EdgeSourceInfo"/> object,
         /// which is used to provide source topology info to the constructed Edges
         /// (and is then discarded).
         /// </summary>

@@ -19,7 +19,7 @@ namespace NetTopologySuite.Densify
     /// <para/>
     /// By default polygonal results are processed to ensure they are valid.
     /// This processing is costly, and it is very rare for results to be invalid.
-    /// Validation processing can be disabled by calling the {@link #setValidate(boolean)} method.
+    /// Validation processing can be disabled by setting the <see cref="Validate"/> property to <c>false</c>.
     /// <para/>
     /// <b>Note:</b> At some future point this class will offer a variety of densification strategies.
     /// </remarks>

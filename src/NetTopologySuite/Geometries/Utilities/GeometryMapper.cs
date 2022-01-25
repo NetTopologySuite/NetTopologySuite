@@ -71,9 +71,9 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Maps the atomic elements of a {@link Geometry}
+        /// Maps the atomic elements of a <see cref="Geometry"/>
         /// (which may be atomic or composite)
-        /// using a {@link MapOp} mapping operation
+        /// using a <see cref="IMapOp"/> mapping operation
         /// into an atomic <tt>Geometry</tt> or a flat collection
         /// of the most specific type.
         /// <tt>null</tt> and empty values returned from the mapping operation

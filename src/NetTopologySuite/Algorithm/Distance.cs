@@ -193,7 +193,7 @@ namespace NetTopologySuite.Algorithm
              *
              * Then the distance from C to P = |s|*L.
              *
-             * This is the same calculation as {@link #distancePointLinePerpendicular}.
+             * This is the same calculation as DistancePointLinePerpendicular.
              * Unrolled here for performance.
              */
             double s = ((A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y)) / len2;

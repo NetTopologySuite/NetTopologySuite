@@ -59,7 +59,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Fixes a geometry to be valid, allowing to set a flag controlling how
-        /// single item results from fixed {@code MULTI} geometries should be
+        /// single item results from fixed <c>MULTI</c> geometries should be
         /// returned.
         /// </summary>
         /// <param name="geom">The geometry to be fixed</param>

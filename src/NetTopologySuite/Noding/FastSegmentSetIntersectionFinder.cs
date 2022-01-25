@@ -33,7 +33,7 @@ namespace NetTopologySuite.Noding
         public ISegmentSetMutualIntersector SegmentSetIntersector => _segSetMutInt;
 
         /// <summary>
-        /// Tests for intersections with a given set of target {@link SegmentString}s.
+        /// Tests for intersections with a given set of target <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="segStrings">The SegmentStrings to test</param>
         /// <returns><c>true</c> if an intersection was found</returns>

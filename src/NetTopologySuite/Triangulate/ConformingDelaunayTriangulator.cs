@@ -102,7 +102,7 @@ namespace NetTopologySuite.Triangulate
         /// appropriately (e.g. with external data), and avoids re-computing the unique set
         /// if it is already available.
         /// </summary>
-        /// <param name="segments">list of the constraint {@link Segment}s</param>
+        /// <param name="segments">list of the constraint <see cref="Segment"/>s</param>
         /// <param name="segVertices">the set of unique <see cref="ConstraintVertex"/>es referenced by the segments</param>
         public void SetConstraints(IList<Segment> segments, IList<Vertex> segVertices)
         {
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Gets and sets the <see cref="ConstraintVertexFactory"/> used to create new constraint vertices at split points.
         /// </summary>
-        /// <remarks>Allows the setting of a custom {@link ConstraintVertexFactory} to be used
+        /// <remarks>Allows the setting of a custom <see cref="ConstraintVertexFactory"/> to be used
         /// to allow vertices carrying extra information to be created.
         /// </remarks>
         public ConstraintVertexFactory VertexFactory

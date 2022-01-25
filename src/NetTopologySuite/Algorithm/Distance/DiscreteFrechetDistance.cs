@@ -291,7 +291,7 @@ namespace NetTopologySuite.Algorithm.Distance
         }
 
         /// <summary>
-        /// Computes the indices for the diagonal of a {@code numCols x numRows} grid
+        /// Computes the indices for the diagonal of a <c>numCols x numRows</c> grid
         /// using the <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">
         /// Bresenham's line algorithm</a>.
         /// </summary>

@@ -98,7 +98,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </list>
         /// In other words, if the test geometry has any interaction with the boundary of the target
         /// geometry the result of <c>ContainsProperly</c> is <c>false</c>.
-        /// This is different semantics to the {@link Geometry#contains} predicate,
+        /// This is different semantics to the <see cref="Geometry.Contains"/> predicate,
         /// in which test geometries can intersect the target's boundary and still be contained.
         /// <para/>
         /// The advantage of using this predicate is that it can be computed
