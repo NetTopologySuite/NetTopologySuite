@@ -11,9 +11,12 @@ namespace NetTopologySuite.Shape
     /// </summary>
     /// <remarks>
     /// The Bezier control points are determined from the segments of the geometry
-    /// and the alpha control parameter.
+    /// and the alpha control parameter controlling curvedness, and
+    /// the optional skew parameter controlling the shape of the curve at vertices.
     /// The Bezier Curves are created to be C2-continuous (smooth)
     /// at each input vertex.
+    /// <para/>
+    /// Alternatively, the Bezier control points can be supplied explicitly.
     /// <para/>
     /// The result is not guaranteed to be valid, since large alpha values
     /// may cause self-intersections.
@@ -21,13 +24,13 @@ namespace NetTopologySuite.Shape
     public class CubicBezierCurve
     {
         /// <summary>
-        /// Creates a curved geometry using linearized Cubic Bezier Curves
+        /// Creates a geometry of linearized Cubic Bezier Curves
         /// defined by the segments of the input and a parameter
         /// controlling how curved the result should be.
         /// </summary>
         /// <param name="geom">The geometry defining the curve</param>
         /// <param name="alpha">A curvedness parameter (0 is linear, 1 is round, >1 is increasingly curved)</param>
-        /// <returns>A curved geometry</returns>
+        /// <returns>The linearized curved geometry</returns>
         public static Geometry Create(Geometry geom, double alpha)
         {
             var curve = new CubicBezierCurve(geom, alpha);
@@ -35,7 +38,7 @@ namespace NetTopologySuite.Shape
         }
 
         /// <summary>
-        /// Creates a geometry using linearized Cubic Bezier Curves
+        /// Creates a geometry of linearized Cubic Bezier Curves
         /// defined by the segments of the inputand a parameter
         /// controlling how curved the result should be, with a skew factor
         /// affecting the curve shape at each vertex.
@@ -43,45 +46,101 @@ namespace NetTopologySuite.Shape
         /// <param name="geom">The geometry defining the curve</param>
         /// <param name="alpha">The curvedness parameter (0 is linear, 1 is round, >1 is increasingly curved)</param>
         /// <param name="skew">The skew parameter (0 is none, positive skews towards longer side, negative towards shorter</param>
-        /// <returns>The curved geometry</returns>
+        /// <returns>The linearized curved geometry</returns>
         public static Geometry Create(Geometry geom, double alpha, double skew)
         {
-            var curve = new CubicBezierCurve(geom, alpha)
-            {
-                Skew = skew
-            };
+            var curve = new CubicBezierCurve(geom, alpha, skew);
             return curve.GetResult();
         }
+
+        /// <summary>
+        /// Creates a geometry of linearized Cubic Bezier Curves
+        /// defined by the segments of the input
+        /// and a list (or lists) of control points.
+        /// </summary>
+        /// <remarks>
+        /// Typically the control point geometry
+        /// is a <see cref="LineString"/> or <see cref="MultiLineString"/>
+        /// containing an element for each line or ring in the input geometry.
+        /// The list of control points for each linear element must contain two
+        /// vertices for each segment (and thus <code>2 * npts - 2</code>).
+        /// </remarks>
+        /// <param name="geom">The geometry defining the curve</param>
+        /// <param name="controlPoints">A geometry containing the control point elements.</param>
+        /// <returns>The linearized curved geometry</returns>
+        public static Geometry Create(Geometry geom, Geometry controlPoints)
+        {
+            var curve = new CubicBezierCurve(geom, controlPoints);
+            try
+            {
+                return curve.GetResult();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new ArgumentException(nameof(controlPoints), e);
+            }
+        }
+
         private readonly double _minSegmentLength = 0.0;
         private readonly int _numVerticesPerSegment = 16;
 
         private readonly Geometry _inputGeom;
-        private readonly double _alpha;
+        private readonly double _alpha = -1;
         private double _skew;
+        private readonly Geometry _controlPoints;
         private readonly GeometryFactory _geomFactory;
+        private int _controlPointIndex;
   
         private Coordinate[] bezierCurvePts;
         private double[][] interpolationParam;
 
         /// <summary>
-        /// Creates a newinstance.
+        /// Creates a new instance producing a Bezier curve defined by a geometry
+        /// and an alpha curvedness value.
         /// </summary>
         /// <param name="geom">The geometry defining curve</param>
-        /// <param name="alpha">A roundness parameter (0 = linear, 1 = round, 2 = distorted)</param>
+        /// <param name="alpha">A curvedness parameter (0 = linear, 1 = round, 2 = distorted)</param>
         CubicBezierCurve(Geometry geom, double alpha)
         {
             _inputGeom = geom;
-            //if (alpha < 0.0) alpha = 0;
-            _alpha = alpha;
             _geomFactory = geom.Factory;
+            if (alpha < 0.0) alpha = 0;
+            _alpha = alpha;
         }
 
         /// <summary>
-        /// Gets or sets a skew factor influencing the shape of the curve corners.
-        /// 0 is no skew, positive skews towards longer edges, negative skews towards shorter.
+        /// Creates a new instance producing a Bezier curve defined by a geometry,
+        /// an alpha curvedness value, and a skew factor.
         /// </summary>
-        /// <returns>The skew value</returns>
-        public double Skew { get; set; }
+        /// <param name="geom">The geometry defining curve</param>
+        /// <param name="alpha">curvedness parameter (0 is linear, 1 is round, >1 is increasingly curved)</param>
+        /// <param name="skew">The skew parameter (0 is none, positive skews towards longer side, negative towards shorter</param>
+        CubicBezierCurve(Geometry geom, double alpha, double skew)
+        {
+            _inputGeom = geom;
+            _geomFactory = geom.Factory;
+            if (alpha < 0.0) alpha = 0;
+            _alpha = alpha;
+            _skew = skew;
+        }
+
+        /// <summary>
+        /// Creates a new instance producing a Bezier curve defined by a geometry,
+        /// and a list (or lists) of control points.
+        /// </summary><remarks>
+        /// <para/>
+        /// Typically the control point geometry
+        /// is a <see cref="LineString"/> or <see cref="MultiLineString"/>
+        /// containing an element for each line or ring in the input geometry.
+        /// The list of control points for each linear element must contain two
+        /// vertices for each segment (and thus <code>2 * npts - 2</code>).
+        /// </remarks>
+        CubicBezierCurve(Geometry geom, Geometry controlPoints)
+        {
+            _inputGeom = geom;
+            _geomFactory = geom.Factory;
+            _controlPoints = controlPoints;
+        }
 
         /// <summary>
         /// Gets the computed Bezier curve geometry
@@ -137,7 +196,7 @@ namespace NetTopologySuite.Shape
 
         private CoordinateList BezierCurve(Coordinate[] coords, bool isRing)
         {
-            var control = ControlPoints(coords, false, _alpha, Skew);
+            var control = ControlPoints(coords, isRing);
             var curvePts = new CoordinateList();
             for (int i = 0; i < coords.Length - 1; i++)
             {
@@ -146,6 +205,33 @@ namespace NetTopologySuite.Shape
             }
             return curvePts;
         }
+
+        private Coordinate[] ControlPoints(Coordinate[] coords, bool isRing)
+        {
+            if (_controlPoints != null)
+            {
+                if (_controlPointIndex >= _controlPoints.NumGeometries)
+                {
+                    throw new InvalidOperationException("Too few control point elements");
+                }
+                var ctrlPtsGeom = _controlPoints.GetGeometryN(_controlPointIndex);
+                var ctrlPts = ctrlPtsGeom.Coordinates;
+
+                int expectedNum1 = 2 * coords.Length - 2;
+                int expectedNum2 = isRing ? coords.Length - 1 : coords.Length;
+                if (expectedNum1 != ctrlPts.Length && expectedNum2 != ctrlPts.Length)
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Wrong number of control points for element {0} - expected {1} or {2}, found {3}",
+                            _controlPointIndex, expectedNum1, expectedNum2, ctrlPts.Length
+                              ));
+                }
+                _controlPointIndex++;
+                return ctrlPts;
+            }
+            return ControlPoints(coords, isRing, _alpha, _skew);
+        }
+
         private void AddCurve(Coordinate p0, Coordinate p1,
             Coordinate ctrl0, Coordinate crtl1,
             CoordinateList curvePts)
