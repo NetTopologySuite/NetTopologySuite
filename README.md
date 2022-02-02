@@ -14,6 +14,8 @@ Enjoy using them!
 ## Documentation
 A documentation of the NetTopologySuite API based on code xml comments is accessible on [github-pages](http://nettopologysuite.github.io/NetTopologySuite/api/NetTopologySuite.html).   
 To get you started, we have set up an introductory [Getting Started](https://github.com/NetTopologySuite/NetTopologySuite/wiki/GettingStarted) page.
+A list of [known issues](https://github.com/NetTopologySuite/NetTopologySuite/wiki#known-issues) is available, too.
+
 
 ## Upgrading to 2.x from 1.x
 A [wiki page](https://github.com/NetTopologySuite/NetTopologySuite/wiki/Upgrading-to-2.0-from-1.x) has been started to try to document the breaking changes in 2.0 when coming from 1.x.
