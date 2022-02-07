@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         [Test]
         public void TestPointXYPointDifference()
         {
-            CheckDifference("MULTIPOINT ((1 1), (5 5))", "POINT Z (5 5 99)",
+            CheckDifference("MULTIPOINT Z((1 1 NaN), (5 5 NaN))", "POINT Z (5 5 99)",
                 "POINT Z(1 1 99)");
         }
 
@@ -75,13 +75,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         [Test]
         public void TestPointXYPolygonIntersection()
         {
-            CheckIntersection("POINT (5 5)", "POLYGON Z ((1 9 50, 9 9 90, 9 1 50, 1 1 10, 1 9 50))",
+            CheckIntersection("POINT Z(5 5 NaN)", "POLYGON Z ((1 9 50, 9 9 90, 9 1 50, 1 1 10, 1 9 50))",
                 "POINT Z(5 5 50)");
         }
 
         // XY Polygon gets Z value from Point
         [Test]
-        public void TestPointPolygonXYUnionn()
+        public void TestPointPolygonXYUnion()
         {
             CheckUnion("POINT Z (5 5 77)", "POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))",
                 "POLYGON Z((1 1 77, 1 9 77, 9 9 77, 9 1 77, 1 1 77))");

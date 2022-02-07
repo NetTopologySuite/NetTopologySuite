@@ -491,18 +491,48 @@ namespace NetTopologySuite.Tests.NUnit.IO
             // arrange
             var seq = CreateSequence(Ordinates.XYZ, new double[] { 10, 10 });
             seq.SetOrdinate(0, Ordinate.Z, double.NaN);
+            var seq2 = CreateSequence(Ordinates.XY, new double[] { 10, 10 });
 
             // act
             var pt1 = (Point)this.readerXYOld.Read("POINT (10 10 NaN)");
             var pt2 = (Point)this.readerXYOld.Read("POINT (10 10 nan)");
             var pt3 = (Point)this.readerXYOld.Read("POINT (10 10 NAN)");
+            var pt4 = (Point)this.readerXYOld.Read("POINT (10 10)");
 
             // assert
             Assert.That(IsEqual(seq, pt1.CoordinateSequence));
             Assert.That(IsEqual(seq, pt2.CoordinateSequence));
             Assert.That(IsEqual(seq, pt3.CoordinateSequence));
+            Assert.That(pt4.CoordinateSequence.Dimension, Is.EqualTo(2));
+            Assert.That(IsEqual(seq2, pt4.CoordinateSequence));
         }
 
+        [Test]
+        public void TestIsOldNtsSyntaxAllowed()
+        {
+            // arrange
+            var seqPt1 = CreateSequence(Ordinates.XY, new double[] { 10, 10 });
+            var seqPt2 = CreateSequence(Ordinates.XYZ, new double[] { 10, 10 });
+            seqPt2.SetZ(0, double.NaN);
+            var seqLs = CreateSequence(Ordinates.XYZ, new double[] { 10, 10, 20, 10, 30, 15 });
+            seqLs.SetZ(0, double.NaN);
+            seqLs.SetZ(1, 5);
+            seqLs.SetZ(2, double.NaN);
+
+            // act
+            var pt1 = (Point)this.readerXYOld.Read("POINT (10 10)");
+            var pt2 = (Point)this.readerXYOld.Read("POINT (10 10 NaN)");
+            var ls = (LineString)this.readerXYOld.Read("LINESTRING (10 10 NaN, 20 10 5, 30 15 NaN)");
+
+            // assert
+            Assert.That(IsEqual(seqPt1, pt1.CoordinateSequence));
+            Assert.That(pt1.AsText(), Is.EqualTo("POINT (10 10)"));
+            Assert.That(IsEqual(seqPt2, pt2.CoordinateSequence));
+            // This is inconsistent!
+            //Assert.That(pt2.AsText(), Is.EqualTo("POINT (10 10 NaN)"));
+            Assert.That(IsEqual(seqLs, ls.CoordinateSequence));
+            Assert.That(ls.AsText(), Is.EqualTo("LINESTRING Z(10 10 NaN, 20 10 5, 30 15 NaN)"));
+        }
 
         [Test]
         public void TestReadLargeNumbers()

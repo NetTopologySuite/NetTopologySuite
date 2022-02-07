@@ -270,9 +270,42 @@ namespace NetTopologySuite.IO
                 opened = true;
             }
 
+            // Read x- and y- ordinates
+            double x = factory.PrecisionModel.MakePrecise(GetNextNumber(tokens));
+            double y = factory.PrecisionModel.MakePrecise(GetNextNumber(tokens));
+
+            // additionally read other vertices
+            double? z = null, m = null;
+            if (ordinateFlags.HasFlag(Ordinates.Z))
+                z = GetNextNumber(tokens);
+
+            if (ordinateFlags.HasFlag(Ordinates.M))
+                m = GetNextNumber(tokens);
+
+            if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax && IsNumberNext(tokens))
+                z = GetNextNumber(tokens);
+
+            // Get required dimension and measures
+            int dimension = 2 + (z.HasValue ? 1 : 0);
+            int measures = 0;
+            if (m.HasValue) {
+                measures++; dimension++;
+            }
+
+            // create a sequence for the coordinate and set ordinate values
+            var sequence = factory.CoordinateSequenceFactory.Create(1, dimension, measures);
+            int offset = 0;
+            sequence.SetOrdinate(0, offset++, x);
+            sequence.SetOrdinate(0, offset++, y);
+            if (z.HasValue)
+                sequence.SetOrdinate(0, offset++, z.Value);
+            if (m.HasValue)
+                sequence.SetOrdinate(0, offset, m.Value);
+
+            /*
             // create a sequence for one coordinate
             int offsetM = ordinateFlags.HasFlag(Ordinates.Z) ? 1 : 0;
-            var sequence = factory.CoordinateSequenceFactory.Create(1, this.ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
+            var sequence = factory.CoordinateSequenceFactory.Create(1, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
             sequence.SetOrdinate(0, 0, factory.PrecisionModel.MakePrecise(GetNextNumber(tokens)));
             sequence.SetOrdinate(0, 1, factory.PrecisionModel.MakePrecise(GetNextNumber(tokens)));
 
@@ -291,6 +324,7 @@ namespace NetTopologySuite.IO
             {
                 sequence.SetOrdinate(0, 2, GetNextNumber(tokens));
             }
+            */
 
             // read close token if it was opened here
             if (opened)
@@ -398,10 +432,13 @@ namespace NetTopologySuite.IO
         /// <returns>a coordinate sequence containing all coordinate.</returns>
         private CoordinateSequence MergeSequences(GeometryFactory factory, List<CoordinateSequence> sequences, Ordinates ordinateFlags)
         {
+            int dimension = ToDimension(ordinateFlags);
+            int measures = OrdinatesUtility.OrdinatesToMeasures(ordinateFlags);
+
             // if the sequences array is empty or null create an empty sequence
             if (sequences == null || sequences.Count == 0)
             {
-                return factory.CoordinateSequenceFactory.Create(0, ToDimension(ordinateFlags), OrdinatesUtility.OrdinatesToMeasures(ordinateFlags));
+                return factory.CoordinateSequenceFactory.Create(0, dimension, measures);
             }
 
             if (sequences.Count == 1)
@@ -410,41 +447,31 @@ namespace NetTopologySuite.IO
             }
 
             Ordinates mergeOrdinates;
-            if (_isAllowOldNtsCoordinateSyntax && ordinateFlags == Ordinates.XY)
+            if (_isAllowOldNtsCoordinateSyntax && dimension == 2)
             {
-                mergeOrdinates = ordinateFlags;
                 foreach (var seq in sequences)
                 {
                     if (seq.HasZ)
                     {
-                        mergeOrdinates |= Ordinates.Z;
+                        dimension++;
                         break;
                     }
                 }
             }
-            else
-            {
-                mergeOrdinates = ordinateFlags;
-            }
 
             // create and fill the result sequence
-            var sequence = factory.CoordinateSequenceFactory.Create(sequences.Count, ToDimension(mergeOrdinates), mergeOrdinates.HasFlag(Ordinates.M) ? 1 : 0);
+            var sequence = factory.CoordinateSequenceFactory.Create(sequences.Count, dimension, measures);
 
-            int offsetM = 2 + (mergeOrdinates.HasFlag(Ordinates.Z) ? 1 : 0);
+            int offsetM = 2 + (ordinateFlags.HasFlag(Ordinates.Z) ? 1 : 0);
             for (int i = 0; i < sequences.Count; i++)
             {
                 var item = sequences[i];
                 sequence.SetOrdinate(i, 0, item.GetOrdinate(0, 0));
                 sequence.SetOrdinate(i, 1, item.GetOrdinate(0, 1));
-                if (mergeOrdinates.HasFlag(Ordinates.Z))
-                {
+                if (item.HasZ)
                     sequence.SetOrdinate(i, 2, item.GetOrdinate(0, 2));
-                }
-
-                if (mergeOrdinates.HasFlag(Ordinates.M))
-                {
+                if (item.HasM)
                     sequence.SetOrdinate(i, offsetM, item.GetOrdinate(0, offsetM));
-                }
             }
 
             // return it
