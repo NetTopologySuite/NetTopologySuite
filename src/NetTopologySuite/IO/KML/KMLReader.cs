@@ -202,7 +202,7 @@ namespace NetTopologySuite.IO.KML
                     }
                     else
                     {
-                        xmlStreamReader.Read();
+                        xmlStreamReader.Skip();
                     }
                 }
                 else
@@ -279,12 +279,18 @@ namespace NetTopologySuite.IO.KML
                     }
                     else if (attributeNames.Contains(elementName))
                     {
+                        // Create dictionary to keep attributes
                         if (attributes == null)
                         {
                             attributes = new Dictionary<string, string>();
                         }
-
+                        // Add attribute
                         attributes.Add(elementName, xmlStreamReader.ReadElementContentAsString());
+                    }
+                    else
+                    {
+                        // Drop attribute element
+                        xmlStreamReader.Skip();
                     }
                 }
                 else

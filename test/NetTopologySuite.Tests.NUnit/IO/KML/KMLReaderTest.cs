@@ -10,29 +10,37 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
     public class KMLReaderTest
     {
         private readonly KMLReader _kmlReader = new KMLReader(new[] {"altitudeMode", "tesselate", "extrude"});
+        private readonly KMLReader _kmlReaderNoAtt = new KMLReader();
 
 
         [Test]
         public void TestPoint()
         {
-            CheckParsingResult("<Point><altitudeMode>absolute</altitudeMode><coordinates>1.0,1.0</coordinates></Point>",
+            CheckParsingResult(_kmlReader, "<Point><altitudeMode>absolute</altitudeMode><coordinates>1.0,1.0</coordinates></Point>",
                 "POINT (1 1)",
                 new IDictionary<string, string>[] {new Dictionary<string, string>(new[] {new KeyValuePair<string, string>("altitudeMode", "absolute")})});
+            CheckParsingResult(_kmlReaderNoAtt, "<Point><altitudeMode>absolute</altitudeMode><coordinates>1.0,1.0</coordinates></Point>",
+                "POINT (1 1)",
+                new IDictionary<string, string>[] { (Dictionary<string, string>)null });
         }
 
         [Test]
         public void TestLineString()
         {
-            CheckParsingResult(
+            CheckParsingResult(_kmlReader,
                 "<LineString><tesselate>1</tesselate><coordinates>1.0,1.0 2.0,2.0</coordinates></LineString>",
                 "LINESTRING (1 1, 2 2)",
                 new IDictionary<string, string>[] {new Dictionary<string, string>(new[] {new KeyValuePair<string, string>("tesselate", "1")})});
+            CheckParsingResult(_kmlReaderNoAtt,
+                "<LineString><tesselate>1</tesselate><coordinates>1.0,1.0 2.0,2.0</coordinates></LineString>",
+                "LINESTRING (1 1, 2 2)",
+                new IDictionary<string, string>[] { null });
         }
 
         [Test]
         public void TestPolygon()
         {
-            CheckParsingResult(
+            CheckParsingResult(_kmlReader,
                 "<Polygon>" +
                 "   <altitudeMode>relativeToGround</altitudeMode>" +
                 "   <outerBoundaryIs>" +
@@ -54,12 +62,33 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
                 "POLYGON ((1 1, 1 10, 10 10, 10 1, 1 1), (2 2, 2 3, 3 3, 3 2, 2 2), (6 6, 6 7, 7 7, 7 6, 6 6))",
                 new IDictionary<string, string>[] {new Dictionary<string, string>(new[]
                     {new KeyValuePair<string, string>("altitudeMode", "relativeToGround")})});
+            CheckParsingResult(_kmlReaderNoAtt,
+                "<Polygon>" +
+                "   <altitudeMode>relativeToGround</altitudeMode>" +
+                "   <outerBoundaryIs>" +
+                "       <LinearRing>" +
+                "           <coordinates>1.0,1.0 1.0,10.0 10.0,10.0 10.0,1.0 1.0,1.0</coordinates>" +
+                "       </LinearRing>" +
+                "   </outerBoundaryIs>" +
+                "   <innerBoundaryIs>" +
+                "       <LinearRing>" +
+                "           <coordinates>2.0,2.0 2.0,3.0 3.0,3.0 3.0,2.0 2.0,2.0</coordinates>" +
+                "       </LinearRing>" +
+                "   </innerBoundaryIs>" +
+                "   <innerBoundaryIs>" +
+                "       <LinearRing>" +
+                "           <coordinates>6.0,6.0 6.0,7.0 7.0,7.0 7.0,6.0 6.0,6.0</coordinates>" +
+                "       </LinearRing>" +
+                "   </innerBoundaryIs>" +
+                "</Polygon>",
+                "POLYGON ((1 1, 1 10, 10 10, 10 1, 1 1), (2 2, 2 3, 3 3, 3 2, 2 2), (6 6, 6 7, 7 7, 7 6, 6 6))",
+                new IDictionary<string, string>[] { null });
         }
 
         [Test]
         public void TestMultiGeometry()
         {
-            CheckParsingResult(
+            CheckParsingResult(_kmlReader,
                 "<MultiGeometry>" +
                 "   <Point>" +
                 "       <altitudeMode>absolute</altitudeMode>" +
@@ -84,12 +113,33 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
                     new Dictionary<string, string>(new[] { new KeyValuePair<string, string>("tesselate", "1") }),
                     new Dictionary<string, string>(new[] { new KeyValuePair<string, string>("altitudeMode", "relativeToGround") })
                 });
+            CheckParsingResult(_kmlReaderNoAtt,
+                "<MultiGeometry>" +
+                "   <Point>" +
+                "       <altitudeMode>absolute</altitudeMode>" +
+                "       <coordinates>1.0,1.0</coordinates>" +
+                "   </Point>" +
+                "   <LineString>" +
+                "       <tesselate>1</tesselate>" +
+                "       <coordinates>1.0,1.0 2.0,2.0</coordinates>" +
+                "   </LineString>" +
+                "   <Polygon>" +
+                "       <altitudeMode>relativeToGround</altitudeMode>" +
+                "       <outerBoundaryIs>" +
+                "           <LinearRing>" +
+                "               <coordinates>1.0,1.0 1.0,10.0 10.0,10.0 10.0,1.0 1.0,1.0</coordinates>" +
+                "           </LinearRing>" +
+                "       </outerBoundaryIs>" +
+                "   </Polygon>" +
+                "</MultiGeometry>",
+                "GEOMETRYCOLLECTION (POINT (1 1), LINESTRING (1 1, 2 2), POLYGON ((1 1, 1 10, 10 10, 10 1, 1 1)))",
+                new IDictionary<string, string>[] { null, null, null });
         }
 
         [Test]
         public void TestMultiGeometryWithAllPoints()
         {
-            CheckParsingResult(
+            CheckParsingResult(_kmlReader,
                 "<MultiGeometry>" +
                 "   <Point><coordinates>1.0,1.0</coordinates></Point>" +
                 "   <Point><coordinates>2.0,2.0</coordinates></Point>" +
@@ -102,7 +152,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [Test]
         public void TestMultiGeometryWithAllLines()
         {
-            CheckParsingResult(
+            CheckParsingResult(_kmlReader,
                 "<MultiGeometry>" +
                 "   <LineString><coordinates>1.0,1.0 2.0,2.0</coordinates></LineString>" +
                 "   <LineString><coordinates>5.0,5.0 6.0,6.0</coordinates></LineString>" +
@@ -115,7 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [Test]
         public void TestMultiGeometryWithAllPolygons()
         {
-            CheckParsingResult(
+            CheckParsingResult(_kmlReader,
                 "<MultiGeometry>" +
                 "   <Polygon><outerBoundaryIs><LinearRing><coordinates>2.0,2.0 2.0,3.0 3.0,3.0 3.0,2.0 2.0,2.0</coordinates></LinearRing></outerBoundaryIs></Polygon>" +
                 "   <Polygon><outerBoundaryIs><LinearRing><coordinates>6.0,6.0 6.0,7.0 7.0,7.0 7.0,6.0 6.0,6.0</coordinates></LinearRing></outerBoundaryIs></Polygon>" +
@@ -181,6 +231,24 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
             CheckExceptionThrown("<StrangePoint></StrangePoint>", "Unknown KML geometry type StrangePoint");
         }
 
+        [Test]
+        public void TestPolygonIssue594()
+        {
+            CheckParsingResult(_kmlReaderNoAtt,
+                @"<Polygon>
+      <extrude>1</extrude>
+      <altitudeMode>relativeToGround</altitudeMode>
+      <outerBoundaryIs>
+        <LinearRing>
+          <coordinates>-122.366278,37.818844,30 -122.365248,37.819267,30 -122.365640,37.819861,30 -122.366669,37.819429,30 -122.366278,37.818844,30</coordinates>
+        </LinearRing>
+      </outerBoundaryIs>
+    </Polygon>",
+           "POLYGON Z((-122.366278 37.818844 30, -122.365248 37.819267 30, -122.36564 37.819861 30, -122.366669 37.819429 30, -122.366278 37.818844 30))",
+           new IDictionary<string, string>[] { null }
+           );
+        }
+
         private void CheckExceptionThrown(string kmlString, string expectedError)
         {
             try
@@ -194,12 +262,12 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
             }
         }
 
-        private void CheckParsingResult(string kmlString, string expectedWKT,
+        private void CheckParsingResult(KMLReader kmlReader, string kmlString, string expectedWKT,
             IDictionary<string, string>[] expectedAttributes)
         {
             try
             {
-                var parsedGeometry = _kmlReader.Read(kmlString);
+                var parsedGeometry = kmlReader.Read(kmlString);
                 string wkt = parsedGeometry.AsText();
 
                 Assert.AreEqual(expectedWKT, wkt, "WKTs are not equal");
