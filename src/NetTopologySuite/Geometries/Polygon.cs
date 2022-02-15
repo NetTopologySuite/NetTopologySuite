@@ -291,10 +291,14 @@ namespace NetTopologySuite.Geometries
             get
             {
                 double area = 0.0;
-                area += Algorithm.Area.OfRing(_shell.CoordinateSequence);
-                for (int i = 0; i < _holes.Length; i++)
-                    area -= Algorithm.Area.OfRing(_holes[i].CoordinateSequence);
-                return area;
+                if (!IsAreaSet)
+                {
+                    area += Algorithm.Area.OfRing(_shell.CoordinateSequence);
+                    for (int i = 0; i < _holes.Length; i++)
+                        area -= Algorithm.Area.OfRing(_holes[i].CoordinateSequence);
+                    base.Area = area;
+                }
+                return base.Area;
             }
         }
 
@@ -306,11 +310,15 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                double len = 0.0;
-                len += _shell.Length;
-                for (int i = 0; i < _holes.Length; i++)
-                    len += _holes[i].Length;
-                return len;
+                if (!IsLengthSet)
+                {
+                    double len = 0.0;
+                    len += _shell.Length;
+                    for (int i = 0; i < _holes.Length; i++)
+                        len += _holes[i].Length;
+                    base.Length = len;
+                }
+                return base.Length;
             }
         }
 

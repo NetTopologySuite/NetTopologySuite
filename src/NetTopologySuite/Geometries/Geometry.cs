@@ -214,6 +214,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private Envelope _envelope;
 
+        private double? _area;
+        private double? _length;
+
         /// <summary>
         /// Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
         /// </summary>
@@ -476,7 +479,16 @@ namespace NetTopologySuite.Geometries
         /// Others return 0.0
         /// </summary>
         /// <returns>The area of the Geometry.</returns>
-        public virtual double Area => 0.0;
+        public virtual double Area
+        {
+            get => _area ?? 0d;
+            protected set => _area = value;
+        }
+
+        /// <summary>
+        /// Gets a value indicating if the value for <see cref="Area"/> has been set.
+        /// </summary>
+        protected bool IsAreaSet => _area.HasValue;
 
         /// <summary>
         /// Returns the length of this <c>Geometry</c>.
@@ -486,7 +498,16 @@ namespace NetTopologySuite.Geometries
         /// Others return 0.0
         /// </summary>
         /// <returns>The length of the Geometry.</returns>
-        public virtual double Length => 0.0;
+        public virtual double Length
+        {
+            get => _length ?? 0d;
+            protected set => _length = value;
+        }
+
+        /// <summary>
+        /// Gets a value indicating if the value for <see cref="Length"/> has been set.
+        /// </summary>
+        protected bool IsLengthSet => _length.HasValue;
 
         /// <summary>
         /// Computes the centroid of this <c>Geometry</c>.
@@ -650,6 +671,8 @@ namespace NetTopologySuite.Geometries
         public void GeometryChangedAction()
         {
             _envelope = null;
+            _area = null;
+            _length = null;
         }
 
         /// <summary>

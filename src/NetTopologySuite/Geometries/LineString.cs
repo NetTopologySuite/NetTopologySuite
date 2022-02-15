@@ -244,7 +244,15 @@ namespace NetTopologySuite.Geometries
         /// Returns the length of this <c>LineString</c>
         /// </summary>
         /// <returns>The length of the polygon.</returns>
-        public override double Length => Algorithm.Length.OfLine(_points);
+        public override double Length
+        {
+            get
+            {
+                if (!IsLengthSet)
+                    base.Length = Algorithm.Length.OfLine(_points);
+                return base.Length;
+            }
+        }
 
         /// <summary>
         /// Returns the boundary, or an empty geometry of appropriate dimension

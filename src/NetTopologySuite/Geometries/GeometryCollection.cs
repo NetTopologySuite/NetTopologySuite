@@ -241,10 +241,14 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                double area = 0.0;
-                for (int i = 0; i < _geometries.Length; i++)
-                    area += _geometries[i].Area;
-                return area;
+                if (!IsAreaSet)
+                {
+                    double area = 0.0;
+                    for (int i = 0; i < _geometries.Length; i++)
+                        area += _geometries[i].Area;
+                    base.Area = area;
+                }
+                return base.Area;
             }
         }
 
@@ -255,10 +259,14 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                double sum = 0.0;
-                for (int i = 0; i < _geometries.Length; i++)
-                    sum += (_geometries[i]).Length;
-                return sum;
+                if (!IsLengthSet)
+                {
+                    double sum = 0.0;
+                    for (int i = 0; i < _geometries.Length; i++)
+                        sum += (_geometries[i]).Length;
+                    base.Length = sum;
+                }
+                return base.Length;
             }
         }
 
