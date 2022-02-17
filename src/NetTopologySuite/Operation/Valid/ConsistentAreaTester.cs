@@ -8,7 +8,7 @@ using NetTopologySuite.Operation.Relate;
 namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
-    /// Checks that a {GeometryGraph} representing an area
+    /// Checks that a <see cref="GeometryGraph"/> representing an area
     /// (a <c>Polygon</c> or <c>MultiPolygon</c> )
     /// is consistent with the SFS semantics for area geometries.
     /// Checks include:
@@ -48,9 +48,9 @@ namespace NetTopologySuite.Operation.Valid
             get
             {
                 /*
-                * To fully check validity, it is necessary to
-                * compute ALL intersections, including self-intersections within a single edge.
-                */
+                 * To fully check validity, it is necessary to
+                 * compute ALL intersections, including self-intersections within a single edge.
+                 */
                 var intersector = geomGraph.ComputeSelfNodes(li, true, true);
                 if (intersector.HasProperIntersection)
                 {

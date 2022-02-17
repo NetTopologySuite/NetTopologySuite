@@ -348,21 +348,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>The computed SegmentIntersector, containing information about the intersections found.</returns>
         public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes)
         {
-            return ComputeSelfNodes(li, computeRingSelfNodes, false);
-        }
-
-        /// <summary>
-        /// Compute self-nodes, taking advantage of the Geometry type to
-        /// minimize the number of intersection tests.  (E.g.rings are
-        /// not tested for self-intersection, since they are assumed to be valid).
-        /// </summary >
-        /// <param name="li">The <c>LineIntersector</c> to use</param>
-        /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection</param>
-        /// <param name="isDoneIfProperInt">Short-circuit the intersection computation if a proper intersection is found</param>
-        public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes, bool isDoneIfProperInt)
-        {
             var si = new SegmentIntersector(li, true, false);
-            si.IsDoneIfProperInt = isDoneIfProperInt;
             var esi = CreateEdgeSetIntersector();
             // optimize intersection search for valid Polygons and LinearRings
             bool isRings = _parentGeom is LinearRing
@@ -375,6 +361,18 @@ namespace NetTopologySuite.GeometriesGraph
             AddSelfIntersectionNodes(_argIndex);
             return si;
         }
+
+        /// <summary>
+        /// Compute self-nodes, taking advantage of the Geometry type to
+        /// minimize the number of intersection tests.  (E.g.rings are
+        /// not tested for self-intersection, since they are assumed to be valid).
+        /// </summary >
+        /// <param name="li">The <c>LineIntersector</c> to use</param>
+        /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection</param>
+        /// <param name="isDoneIfProperInt">Short-circuit the intersection computation if a proper intersection is found</param>
+        [Obsolete("Shrot circuiting no longer allowed")]
+        public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes, bool isDoneIfProperInt)
+            => ComputeSelfNodes(li, computeRingSelfNodes);
 
         /// <summary>
         ///

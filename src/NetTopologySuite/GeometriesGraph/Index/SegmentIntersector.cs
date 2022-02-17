@@ -36,16 +36,15 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private readonly LineIntersector _li;
         private readonly bool _includeProper;
         private readonly bool _recordIsolated;
+#if DEBUG
         private int _numIntersections;
-
+#endif
         /// <summary>
         /// Testing only.
         /// </summary>
         public int NumTests;
 
         private IList<Node>[] _bdyNodes;
-        private bool _isDone;
-        private bool _isDoneWhenProperInt;
 
         /// <summary>
         ///
@@ -72,12 +71,21 @@ namespace NetTopologySuite.GeometriesGraph.Index
             _bdyNodes[1] = bdyNodes1;
         }
 
+        /// <summary>
+        /// Sets a flag if the segment intersector is done when a proper intersection has been found.
+        /// </summary>
+        /// <remarks>Has no effect anymore.</remarks>
+        [Obsolete("Not used anymore, will be removed in a later version")]
         public bool IsDoneIfProperInt
         {
-            set => _isDoneWhenProperInt = value;
+            set { }
         }
 
-        public bool IsDone => _isDone;
+        /// <summary>
+        /// Gets a value indicating that the segment intersector is finished.
+        /// </summary>
+        /// <remarks>Always returns <c>false</c></remarks>
+        public bool IsDone => false;
 
         /// <returns>
         /// The proper intersection point, or <c>null</c> if none was found.
@@ -171,14 +179,27 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     e0.Isolated = false;
                     e1.Isolated = false;
                 }
+#if DEBUG
                 _numIntersections++;
+#endif
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the
                 // only intersection.
                 if (!IsTrivialIntersection(e0, segIndex0, e1, segIndex1))
                 {
                     _hasIntersection = true;
-                    if (_includeProper || !_li.IsProper)
+                    /*
+                     * In certain cases two line segments test as having a proper intersection
+                     * via the robust orientation check, but due to roundoff 
+                     * the computed intersection point is equal to an endpoint.
+                     * If the endpoint is a boundary point
+                     * the computed point must be included as a node.
+                     * If it is not a boundary point the intersection 
+                     * is recorded as properInterior by logic below. 
+                     */
+                    bool isBoundaryPt = IsBoundaryPoint(_li, _bdyNodes);
+                    bool isNotProper = !_li.IsProper || isBoundaryPt;
+                    if (_includeProper || isNotProper)
                     {
                         e0.AddIntersections(_li, segIndex0, 0);
                         e1.AddIntersections(_li, segIndex1, 1);
@@ -187,8 +208,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     {
                         _properIntersectionPoint = (Coordinate) _li.GetIntersection(0).Copy();
                         _hasProper = true;
-                        if (_isDoneWhenProperInt) _isDone = true;
-                        if (!IsBoundaryPoint(_li, _bdyNodes))
+                        if (!isBoundaryPt)
                             _hasProperInterior = true;
                     }
                 }
