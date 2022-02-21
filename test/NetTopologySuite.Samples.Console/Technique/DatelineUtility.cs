@@ -87,11 +87,12 @@ namespace NetTopologySuite.Samples.Technique
             if (geometry is IPuntal)
                 return false;
 
-            // Build filter that tests if we need to perform special dateline handling
-            var cdf = new IsCrossesDatelineFilter();
+            // Build the geometry filter that tests if we need to perform special dateline handling
+            var cdf = new IsCrossesDatelineFilter1();
             geometry.Apply(cdf);
 
             // return the result
+            System.Diagnostics.Debug.Print("cdf.IsCrossesDateline={0}", cdf.IsCrossesDateline);
             return cdf.IsCrossesDateline;
         }
 
@@ -113,13 +114,13 @@ namespace NetTopologySuite.Samples.Technique
         /// This is a filter that attempts to determine if the geometry crosses the dateline. Essentially, this is the key to the
         /// entire dateline splitting utility.
         /// </summary>
-        private class IsCrossesDatelineFilter : IGeometryFilter
+        private class IsCrossesDatelineFilter1 : IGeometryFilter
         {
             public bool Done => IsCrossesDateline;
 
             public bool GeometryChanged => false;
 
-            public bool IsCrossesDateline { get; private set; }
+            public bool IsCrossesDateline { get; private set; } = false;
 
             public void Filter(Geometry geometry)
             {
@@ -133,39 +134,58 @@ namespace NetTopologySuite.Samples.Technique
                     part = geometry.GetGeometryN(i);
                     System.Diagnostics.Debug.Print("  part {0} of type {1}", i, part.GeometryType);
 
-                    // for each part we cycle through segments in the coordinate sequence and determine if any cross the dateline. there will
-                    // be several scenarios that we will look for that determine if a segment traverses the dateline. the first is to check if
-                    // any longitudes < +180° and also > +180°. this will be an indication that the input coordinates are based on longitude
-                    // values in the range 0° to +360°. thus any longitudes that traverse the dateline will do so if they are on BOTH sides
-                    // of the +180° meridian.
-                    //double currX = seq.GetX(0);
-                    //bool wasLT = currX < -180d;
-                    //bool wasGT = currX > -180d;
-                    //for (int i = 1; i < seq.Count; i++)
-                    //{
-                    //    currX = seq.GetX(i);
-                    //    if (currX < -180d && wasGT ||
-                    //        currX > -180d && wasLT)
-                    //    {
-                    //        IsCrossingDateline = true;
-                    //        break;
-                    //    }
-                    //    if (currX < -180d) wasLT = true;
-                    //    else if (currX > -180d) wasGT = true;
-                    //}
+                    // Build the part filter that tests if we need to perform special dateline handling
+                    var cdf = new IsCrossesDatelineFilter2();
+                    part.Apply(cdf);
 
-                    bool hasLonsLt180 = part.Coordinates.Any(c => c.X < 180);
-                    bool hasLonsGt180 = part.Coordinates.Any(c => c.X > 180);
-                    bool isLonsTravP180 = false;
-                    if (hasLonsLt180 && hasLonsGt180)
-                        isLonsTravP180 = true;
-                    System.Diagnostics.Debug.Print("  isLonsTravP180={0}", isLonsTravP180);
-
-
-
+                    // if the result is true then we are done because at least one part in the geometry crosses the dateline.
+                    // if the result is false then we continue since other parts may cross the dateline.
+                    IsCrossesDateline = cdf.IsCrossesDateline;
+                    System.Diagnostics.Debug.Print("  IsCrossesDateline={0}", IsCrossesDateline);
+                    if (cdf.IsCrossesDateline)
+                        break;
                 }
+            }
+        }
 
-                IsCrossesDateline = false; //temp
+        private class IsCrossesDatelineFilter2 : IEntireCoordinateSequenceFilter
+        {
+            public bool Done => IsCrossesDateline;
+
+            public bool GeometryChanged => false;
+
+            public bool IsCrossesDateline { get; private set; } = false;
+
+            public void Filter(CoordinateSequence seq)
+            {
+                // At this point we assume we are working on individual geometry parts. For each part we cycle through segments in the
+                // coordinate sequence and determine if any cross the dateline. there will be several scenarios that we will look for that
+                // determine if a segment traverses the dateline. the first is to check if any longitudes < +180° and also > +180°. this
+                // will be an indication that the input coordinates are based on longitude values in the range 0° to +360°. thus any
+                // longitudes that traverse the dateline will do so if they are on BOTH sides of the +180° meridian. Note that a segment
+                // can end exactly at the 180 longitude so we choose to keep a running count how many coordinates are on each side of the
+                // hemisphere. if we have coordinates on both sides then we must have crossed the dateline.
+                double xCurr;
+                int countLT = 0;
+                int countGT = 0;
+                for (int i = 0; i < seq.Count; i++)
+                {
+                    //get the longitude of the current coord
+                    xCurr = seq.GetX(i);
+                    System.Diagnostics.Debug.Print("  i={0} x={1}", i, xCurr);
+
+                    // keep a count of longitudes < 180 and > 180
+                    if (xCurr < 180d) countLT++;
+                    else if (xCurr > 180d) countGT++;
+                    System.Diagnostics.Debug.Print("  countLT={0} countGT={1}", countLT, countGT);
+
+                    // if we have a non-zero count for both sides then we have crossed the dateline
+                    if (countLT > 0 && countGT > 0)
+                    {
+                        IsCrossesDateline = true;
+                        break;
+                    }
+                }
             }
         }
 
