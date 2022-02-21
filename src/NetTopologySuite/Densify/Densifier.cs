@@ -68,6 +68,8 @@ namespace NetTopologySuite.Densify
                 {
                     double segFract = (j*densifiedSegLen)/len;
                     var p = seg.PointAlong(segFract);
+                    if (p is CoordinateZ pz)
+                        pz.Z = seg.P0.Z + segFract * (seg.P1.Z - seg.P0.Z);
                     precModel.MakePrecise(p);
                     coordList.Add(p, false);
                 }

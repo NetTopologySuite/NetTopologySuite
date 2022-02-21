@@ -68,6 +68,13 @@ namespace NetTopologySuite.Tests.NUnit.Densify
         }
 
         [Test]
+        public void TestLineDensify3D()
+        {
+            CheckDensifyXYZ("POLYGON Z((10 30 10, 30 30 10, 30 10 15, 10 10 10, 10 30 20))",
+                    10, "POLYGON Z((10 30 10, 20 30 10, 30 30 10, 30 20 12.5, 30 10 15, 20 10 12.5, 10 10 10, 10 20 15, 10 30 20))");
+        }
+
+        [Test]
         public void TestDimension2d()
         {
             var gf = NtsGeometryServices.Instance.CreateGeometryFactory();
@@ -95,6 +102,14 @@ namespace NetTopologySuite.Tests.NUnit.Densify
             var expected = Read(wktExpected);
             var actual = Densifier.Densify(geom, distanceTolerance);
             CheckEqual(expected, actual, TOLERANCE);
+        }
+
+        private void CheckDensifyXYZ(string wkt, double distanceTolerance, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var expected = Read(wktExpected);
+            var actual = Densifier.Densify(geom, distanceTolerance);
+            CheckEqualXYZ(expected, actual);
         }
 
         /*
