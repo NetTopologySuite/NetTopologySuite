@@ -120,7 +120,6 @@ namespace NetTopologySuite.Samples.Technique
         /// This is a filter that attempts to determine if the geometry crosses the dateline. Essentially, this is the key to the
         /// entire dateline splitting utility.
         /// </summary>
-        private class IsCrossesDatelineFilter1 : IGeometryFilter
         /// <remarks>
         /// The IEntireCoordinateSequenceFilter will cycle through all parts of a geometry as long as Done is false. Thus, if any of
         /// the parts of the geometry cross the dateline then Done becomes true and it will jump out of the geometry part loop. this
@@ -139,11 +138,12 @@ namespace NetTopologySuite.Samples.Technique
             {
                 // At this point we assume we are working on individual geometry parts. For each part we cycle through segments in the
                 // coordinate sequence and determine if any cross the dateline. there will be several scenarios that we will look for that
-                // determine if a segment traverses the dateline. the first is to check if any longitudes < +180° and also > +180°. this
-                // will be an indication that the input coordinates are based on longitude values in the range 0° to +360°. thus any
-                // longitudes that traverse the dateline will do so if they are on BOTH sides of the +180° meridian. Note that a segment
-                // can end exactly at the 180 longitude so we choose to keep a running count how many coordinates are on each side of the
-                // hemisphere. if we have coordinates on both sides then we must have crossed the dateline.
+                // determine if a segment traverses the dateline.
+                // 1. The first is to check if any longitudes < +180° and also > +180°. this will be an indication that the input coordinates
+                // are based on longitude values in the range 0° to +360°. thus any longitudes that traverse the dateline will do so if they
+                // are on BOTH sides of the +180° meridian. Note that a segment can end exactly at the 180 longitude so we choose to keep a
+                // running count how many coordinates are on each side of the hemisphere. if we have coordinates on both sides then we must
+                // have crossed the dateline.
                 double xCurr;
                 int countLT = 0;
                 int countGT = 0;
