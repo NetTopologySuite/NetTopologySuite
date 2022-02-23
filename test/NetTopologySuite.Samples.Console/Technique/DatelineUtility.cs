@@ -13,11 +13,17 @@ namespace NetTopologySuite.Samples.Technique
         [STAThread]
         public static void main()
         {
-            string wkt = "SRID=4326;POLYGON ((170 3.5, 180 3.5, 180 -5, 188.927777777778 -5, 187.061666666667 -9.46444444444444, " +
+            //test with a multi-part polygon consisting of three parts. the second part crosses the dateline so the routine will
+            //cycle through the parts and stop at the second part for the dateline crossing flag.
+            string wkt = "SRID=4326;MULTIPOLYGON (" +
+                         "((30 20, 45 40, 10 40, 30 20))," +
+                         "((170 3.5, 180 3.5, 180 -5, 188.927777777778 -5, 187.061666666667 -9.46444444444444, " +
                          "185.718888888889 -12.4869444444444, 185.281944444444 -13.4555555555556, 184.472777777778 -15.225, 184.3275 -15.5397222222222, " +
                          "184.171944444444 -15.9, 183.188888888889 -18.1488888888889, 183.019444444444 -18.5302777777778, 181.530555555556 -21.8, " +
                          "180 -25, 177.333333333333 -25, 171.416666666667 -25, 168 -28, 163 -30, 163 -24, 163 -17.6666666666667, 161.25 -14, " +
-                         "163 -14, 166.875 -11.8, 170 -10, 170 3.5))";
+                         "163 -14, 166.875 -11.8, 170 -10, 170 3.5))," +
+                         "((15 5, 40 10, 10 20, 5 10, 15 5))" +
+                         ")";
             var rdr = new WKTReader();
             var input = rdr.Read(wkt);
             var result = DatelineUtility.UnwrapAtDateline(input);
@@ -88,7 +94,7 @@ namespace NetTopologySuite.Samples.Technique
                 return false;
 
             // Build the geometry filter that tests if we need to perform special dateline handling
-            var cdf = new IsCrossesDatelineFilter1();
+            var cdf = new IsCrossesDatelineFilter();
             geometry.Apply(cdf);
 
             // return the result
@@ -115,40 +121,13 @@ namespace NetTopologySuite.Samples.Technique
         /// entire dateline splitting utility.
         /// </summary>
         private class IsCrossesDatelineFilter1 : IGeometryFilter
-        {
-            public bool Done => IsCrossesDateline;
-
-            public bool GeometryChanged => false;
-
-            public bool IsCrossesDateline { get; private set; } = false;
-
-            public void Filter(Geometry geometry)
-            {
-                // since we are filtering per geometry we could have multiple parts. so we must test each part individually for traversing
-                // dateline. if we were to test the CoordinateSequence with a IEntireCoordinateSequenceFilter filter then we could get false
-                // positives (ex: two islands on each side of the dateline).
-                System.Diagnostics.Debug.Print("num geoms={0}", geometry.NumGeometries);
-                Geometry part = null;
-                for (int i = 0; i < geometry.NumGeometries; i++)
-                {
-                    part = geometry.GetGeometryN(i);
-                    System.Diagnostics.Debug.Print("  part {0} of type {1}", i, part.GeometryType);
-
-                    // Build the part filter that tests if we need to perform special dateline handling
-                    var cdf = new IsCrossesDatelineFilter2();
-                    part.Apply(cdf);
-
-                    // if the result is true then we are done because at least one part in the geometry crosses the dateline.
-                    // if the result is false then we continue since other parts may cross the dateline.
-                    IsCrossesDateline = cdf.IsCrossesDateline;
-                    System.Diagnostics.Debug.Print("  IsCrossesDateline={0}", IsCrossesDateline);
-                    if (cdf.IsCrossesDateline)
-                        break;
-                }
-            }
-        }
-
-        private class IsCrossesDatelineFilter2 : IEntireCoordinateSequenceFilter
+        /// <remarks>
+        /// The IEntireCoordinateSequenceFilter will cycle through all parts of a geometry as long as Done is false. Thus, if any of
+        /// the parts of the geometry cross the dateline then Done becomes true and it will jump out of the geometry part loop. this
+        /// will ensure we do not get false positives from separate geometries on each side of the dateline.
+        /// 
+        /// </remarks>
+        private class IsCrossesDatelineFilter : IEntireCoordinateSequenceFilter
         {
             public bool Done => IsCrossesDateline;
 
