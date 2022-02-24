@@ -40,25 +40,36 @@ namespace NetTopologySuite.Samples.Technique
             if (!IsCrossesDateline(geometry))
                 return geometry;
 
-            //// Move whole geometry by 360°
-            //geometry.Apply(new TranslateXFilter(360d));
+            // Shift the entire geometry by 360° along the x-axis. this will ensure that all x values are
+            // positive.
+            double shift = +360d;
+            geometry.Apply(new TranslateXFilter(shift));
 
-            //// Build a list of geometries
-            //var parts = new List<Geometry>();
+            // setup a list of geometries to hold our results
+            var parts = new List<Geometry>();
 
-            //// While input geometry is not empty compute intersection with world bounds and add to list
-            //// Remove covered part from input geometry, move remains by -360°.
-            //while (!geometry.IsEmpty)
-            //{
-            //    // Intersect geometry with default world bounds
-            //    var box = geometry.Factory.ToGeometry(new Envelope(-180, 180, -90, 90));
-            //    var geom0 = geometry.Intersection(box);
-            //    // Add part
-            //    parts.Add(geom0);
-            //    // Get remaining geometry and translate into world bounds
-            //    geometry = geometry.Difference(box);
-            //    geometry.Apply(new TranslateXFilter(-360));
-            //}
+            // setup a line that represents the dateline. We assume it is at -180°. Since we have shifted the
+            // geometry we must also shift the dateline by the same amount.
+            //var coordsDL = new Coordinate[] { new Coordinate(-180, +100), new Coordinate(-180, -100) };
+            //var box = new LineString(coordsDL);
+            //box.Apply(new TranslateXFilter(shift));
+            var box = geometry.Factory.ToGeometry(new Envelope(-180, +180, -100, +100));
+            box.Apply(new TranslateXFilter(shift));
+
+            // While input geometry is not empty compute intersection with the dateline and add the results to
+            // the list. Remove covered part from input geometry and unshift the results by -360°.
+            while (!geometry.IsEmpty)
+            {
+                // Intersect geometry with dateline
+                var geom0 = geometry.Intersection(box);
+
+                // Add part
+                parts.Add(geom0);
+
+                // Get difference in geometry and unshift
+                geometry = geometry.Difference(box);
+                geometry.Apply(new TranslateXFilter(-360));
+            }
 
             //// Union the geometries and return result
             //return NetTopologySuite.Operation.OverlayNG.UnaryUnionNG.Union(parts, geometry.Factory.PrecisionModel);
@@ -168,33 +179,33 @@ namespace NetTopologySuite.Samples.Technique
             }
         }
 
-        ///// <summary>
-        ///// A filter class to translate every x-ordinate by a predefined value
-        ///// </summary>
-        ///// <remarks>Sets <see cref="GeometryChanged"/> to <c>true</c> if the translation value is <c>!= 0d</c></remarks>
-        //private class TranslateXFilter : IEntireCoordinateSequenceFilter
-        //{
-        //    private readonly double _translate;
+        /// <summary>
+        /// A filter class to translate every x-ordinate by a predefined value
+        /// </summary>
+        /// <remarks>Sets <see cref="GeometryChanged"/> to <c>true</c> if the translation value is <c>!= 0d</c></remarks>
+        private class TranslateXFilter : IEntireCoordinateSequenceFilter
+        {
+            private readonly double _translate;
 
-        //    public TranslateXFilter(double translate)
-        //    {
-        //        _translate = translate;
-        //    }
+            public TranslateXFilter(double translate)
+            {
+                _translate = translate;
+            }
 
-        //    public bool Done => false;
+            public bool Done => false;
 
-        //    public bool GeometryChanged => _translate != 0d;
+            public bool GeometryChanged => _translate != 0d;
 
-        //    public void Filter(CoordinateSequence seq)
-        //    {
-        //        // if there is nothing to translate exit now.
-        //        if (_translate == 0d) return;
+            public void Filter(CoordinateSequence seq)
+            {
+                // if there is nothing to translate exit now.
+                if (_translate == 0d) return;
 
-        //        // translate whole by _translate value
-        //        for (int i = 0; i < seq.Count; i++)
-        //            seq.SetX(i, seq.GetX(i) + _translate);
-        //    }
-        //}
+                // translate whole by _translate value
+                for (int i = 0; i < seq.Count; i++)
+                    seq.SetX(i, seq.GetX(i) + _translate);
+            }
+        }
     }
 
     //public class DatelineUtilityTest
