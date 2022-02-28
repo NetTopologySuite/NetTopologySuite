@@ -121,13 +121,6 @@ namespace NetTopologySuite.Operation.Valid
             return prev;
         }
 
-        private static int RingIndexPrev(Coordinate[] ringPts, int index)
-        {
-            int iPrev = index - 1;
-            if (iPrev < 0) iPrev = ringPts.Length - 2;
-            return iPrev;
-        }
-
         /// <summary>
         /// Finds the ring vertex next from a node point on a ring
         /// (which is contained in the index'th segment,
@@ -150,11 +143,18 @@ namespace NetTopologySuite.Operation.Valid
             return next;
         }
 
+        private static int RingIndexPrev(Coordinate[] ringPts, int index)
+        {
+            if (index == 0)
+                return ringPts.Length - 2;
+            return index - 1;
+        }
+
         private static int RingIndexNext(Coordinate[] ringPts, int index)
         {
-            int iNext = index + 1;
-            if (iNext > ringPts.Length - 2) iNext = 0;
-            return iNext;
+            if (index >= ringPts.Length - 2)
+                return 0;
+            return index + 1;
         }
 
         /// <summary>
