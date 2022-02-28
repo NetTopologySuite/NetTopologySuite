@@ -222,7 +222,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <remarks>In JTS this function is called <c>IsValid</c></remarks>
         private bool IsValidGeometry(Point g)
         {
-            CheckCoordinateInvalid(g.CoordinateSequence);
+            CheckCoordinatesValid(g.CoordinateSequence);
             if (HasInvalidError) return false;
             return true;
         }
@@ -235,7 +235,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <remarks>In JTS this function is called <c>IsValid</c></remarks>
         private bool IsValidGeometry(MultiPoint g)
         {
-            CheckCoordinateInvalid(g.Coordinates);
+            CheckCoordinatesValid(g.Coordinates);
             if (HasInvalidError) return false;
             return true;
         }
@@ -248,9 +248,9 @@ namespace NetTopologySuite.Operation.Valid
         /// <remarks>In JTS this function is called <c>IsValid</c></remarks>
         private bool IsValidGeometry(LineString g)
         {
-            CheckCoordinateInvalid(g.CoordinateSequence);
+            CheckCoordinatesValid(g.CoordinateSequence);
             if (HasInvalidError) return false;
-            CheckTooFewPoints(g, MinSizeLineString);
+            CheckPointSize(g, MinSizeLineString);
             if (HasInvalidError) return false;
             return true;
         }
@@ -262,16 +262,16 @@ namespace NetTopologySuite.Operation.Valid
         /// <remarks>In JTS this function is called <c>IsValid</c></remarks>
         private bool IsValidGeometry(LinearRing g)
         {
-            CheckCoordinateInvalid(g.CoordinateSequence);
+            CheckCoordinatesValid(g.CoordinateSequence);
             if (HasInvalidError) return false;
 
-            CheckRingNotClosed(g);
+            CheckRingClosed(g);
             if (HasInvalidError) return false;
 
-            CheckRingTooFewPoints(g);
+            CheckRingPointSize(g);
             if (HasInvalidError) return false;
 
-            CheckSelfIntersectingRing(g);
+            CheckRingSimple(g);
             return _validErr == null;
         }
 
@@ -282,13 +282,13 @@ namespace NetTopologySuite.Operation.Valid
         /// <remarks>In JTS this function is called <c>IsValid</c></remarks>
         private bool IsValidGeometry(Polygon g)
         {
-            CheckCoordinateInvalid(g);
+            CheckCoordinatesValid(g);
             if (HasInvalidError) return false;
 
-            CheckRingsNotClosed(g);
+            CheckRingsClosed(g);
             if (HasInvalidError) return false;
 
-            CheckRingsTooFewPoints(g);
+            CheckRingsPointSize(g);
             if (HasInvalidError) return false;
 
             var areaAnalyzer = new PolygonTopologyAnalyzer(g, _isInvertedRingValid);
@@ -296,13 +296,13 @@ namespace NetTopologySuite.Operation.Valid
             CheckAreaIntersections(areaAnalyzer);
             if (HasInvalidError) return false;
 
-            CheckHolesOutsideShell(g);
+            CheckHolesInShell(g);
             if (HasInvalidError) return false;
 
-            CheckHolesNested(g);
+            CheckHolesNotNested(g);
             if (HasInvalidError) return false;
 
-            CheckInteriorDisconnected(areaAnalyzer);
+            CheckInteriorConnected(areaAnalyzer);
             if (HasInvalidError) return false;
 
             return true;
@@ -318,12 +318,12 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < g.NumGeometries; i++)
             {
                 var p = (Polygon) g.GetGeometryN(i);
-                CheckCoordinateInvalid(p);
+                CheckCoordinatesValid(p);
                 if (HasInvalidError) return false;
 
-                CheckRingsNotClosed(p);
+                CheckRingsClosed(p);
                 if (HasInvalidError) return false;
-                CheckRingsTooFewPoints(p);
+                CheckRingsPointSize(p);
                 if (HasInvalidError) return false;
             }
 
@@ -335,21 +335,21 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < g.NumGeometries; i++)
             {
                 var p = (Polygon) g.GetGeometryN(i);
-                CheckHolesOutsideShell(p);
+                CheckHolesInShell(p);
                 if (HasInvalidError) return false;
             }
 
             for (int i = 0; i < g.NumGeometries; i++)
             {
                 var p = (Polygon) g.GetGeometryN(i);
-                CheckHolesNested(p);
+                CheckHolesNotNested(p);
                 if (HasInvalidError) return false;
             }
 
-            CheckShellsNested(g);
+            CheckShellsNotNested(g);
             if (HasInvalidError) return false;
 
-            CheckInteriorDisconnected(areaAnalyzer);
+            CheckInteriorConnected(areaAnalyzer);
             if (HasInvalidError) return false;
 
             return true;
@@ -371,7 +371,7 @@ namespace NetTopologySuite.Operation.Valid
             return true;
         }
 
-        private void CheckCoordinateInvalid(Coordinate[] coords)
+        private void CheckCoordinatesValid(Coordinate[] coords)
         {
             for (int i = 0; i < coords.Length; i++)
             {
@@ -383,7 +383,7 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckCoordinateInvalid(CoordinateSequence sequence)
+        private void CheckCoordinatesValid(CoordinateSequence sequence)
         {
             for (int i = 0; i < sequence.Count; i++)
             {
@@ -396,18 +396,18 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckCoordinateInvalid(Polygon poly)
+        private void CheckCoordinatesValid(Polygon poly)
         {
-            CheckCoordinateInvalid(poly.ExteriorRing.CoordinateSequence);
+            CheckCoordinatesValid(poly.ExteriorRing.CoordinateSequence);
             if (HasInvalidError) return;
             for (int i = 0; i < poly.NumInteriorRings; i++)
             {
-                CheckCoordinateInvalid(poly.GetInteriorRingN(i).CoordinateSequence);
+                CheckCoordinatesValid(poly.GetInteriorRingN(i).CoordinateSequence);
                 if (HasInvalidError) return;
             }
         }
 
-        private void CheckRingNotClosed(LineString ring)
+        private void CheckRingClosed(LineString ring)
         {
             if (ring.IsEmpty) return;
             if (!ring.IsClosed)
@@ -417,32 +417,32 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckRingsNotClosed(Polygon poly)
+        private void CheckRingsClosed(Polygon poly)
         {
-            CheckRingNotClosed(poly.ExteriorRing);
+            CheckRingClosed(poly.ExteriorRing);
             if (HasInvalidError) return;
             for (int i = 0; i < poly.NumInteriorRings; i++)
             {
-                CheckRingNotClosed(poly.GetInteriorRingN(i));
+                CheckRingClosed(poly.GetInteriorRingN(i));
                 if (HasInvalidError) return;
             }
         }
 
-        private void CheckRingsTooFewPoints(Polygon poly)
+        private void CheckRingsPointSize(Polygon poly)
         {
-            CheckRingTooFewPoints(poly.ExteriorRing);
+            CheckRingPointSize(poly.ExteriorRing);
             if (HasInvalidError) return;
             for (int i = 0; i < poly.NumInteriorRings; i++)
             {
-                CheckRingTooFewPoints(poly.GetInteriorRingN(i));
+                CheckRingPointSize(poly.GetInteriorRingN(i));
                 if (HasInvalidError) return;
             }
         }
 
-        private void CheckRingTooFewPoints(LineString ring)
+        private void CheckRingPointSize(LineString ring)
         {
             if (ring.IsEmpty) return;
-            CheckTooFewPoints(ring, MinSizeLinearRing);
+            CheckPointSize(ring, MinSizeLinearRing);
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="line">The line to test</param>
         /// <param name="minSize">The minimum number of points in <paramref name="line"/></param>
         /// <returns><c>true</c> if the line has the required number of points</returns>
-        private void CheckTooFewPoints(LineString line, int minSize)
+        private void CheckPointSize(LineString line, int minSize)
         {
             if (!IsNonRepeatedSizeAtLeast(line, minSize))
             {
@@ -497,7 +497,7 @@ namespace NetTopologySuite.Operation.Valid
         /// Check whether a ring self-intersects (except at its endpoints).
         /// </summary>
         /// <param name="ring">The linear ring to check</param>
-        private void CheckSelfIntersectingRing(LinearRing ring)
+        private void CheckRingSimple(LinearRing ring)
         {
             var intPt = PolygonTopologyAnalyzer.FindSelfIntersection(ring);
             if (intPt != null)
@@ -516,7 +516,7 @@ namespace NetTopologySuite.Operation.Valid
         /// provided the point is chosen such that it does not lie on the shell.
         /// </summary>
         /// <param name="poly">The polygon to be tested for hole inclusion</param>
-        private void CheckHolesOutsideShell(Polygon poly)
+        private void CheckHolesInShell(Polygon poly)
         {
             // skip test if no holes are present
             if (poly.NumInteriorRings <= 0) return;
@@ -581,7 +581,7 @@ namespace NetTopologySuite.Operation.Valid
         /// This is checked earlier.
         /// </summary>
         /// <param name="poly">The polygon with holes to test</param>
-        private void CheckHolesNested(Polygon poly)
+        private void CheckHolesNotNested(Polygon poly)
         {
             // skip test if no holes are present
             if (poly.NumInteriorRings <= 0) return;
@@ -603,7 +603,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <item><description>no duplicate rings exist</description></item></list>
         /// These have been confirmed by the <see cref="PolygonTopologyAnalyzer"/>.
         /// </summary>
-        private void CheckShellsNested(MultiPolygon mp)
+        private void CheckShellsNotNested(MultiPolygon mp)
         {
             // skip test if only one shell present
             if (mp.NumGeometries <= 1) return;
@@ -616,7 +616,7 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        private void CheckInteriorDisconnected(PolygonTopologyAnalyzer analyzer)
+        private void CheckInteriorConnected(PolygonTopologyAnalyzer analyzer)
         {
             if (analyzer.IsInteriorDisconnected())
                 LogInvalid(TopologyValidationErrors.DisconnectedInteriors,
