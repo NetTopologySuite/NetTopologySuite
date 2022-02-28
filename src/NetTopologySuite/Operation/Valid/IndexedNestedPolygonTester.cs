@@ -7,11 +7,12 @@ namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
     /// Tests whether a MultiPolygon has any element polygon
-    /// nested inside another polygon, using a spatial
+    /// improperly nested inside another polygon, using a spatial
     /// index to speed up the comparisons.
     /// <para/>
-    /// The logic assumes that the polygons do not overlap and have no collinear segments
-    /// (so they are properly nested, and there are no duplicate rings).
+    /// The logic assumes that the polygons do not overlap and have no collinear segments.
+    /// So the polygon rings may touch at discrete points,
+    /// but they are properly nested, and there are no duplicate rings.
     /// </summary>
     class IndexedNestedPolygonTester
     {
@@ -59,7 +60,7 @@ namespace NetTopologySuite.Operation.Valid
         public Coordinate NestedPoint => _nestedPt;
 
         /// <summary>
-        /// Tests if any polygon is nested (contained) within another polygon.
+        /// Tests if any polygon is improperly nested (contained) within another polygon.
         /// <b>This is invalid.</b>
         /// The nested point will be set to reflect this.
         /// </summary>
@@ -92,13 +93,20 @@ namespace NetTopologySuite.Operation.Valid
             return false;
         }
 
+        /// <summary>
+        /// Finds an improperly nested point, if one exists.
+        /// </summary>
+        /// <param name="shell">The test polygon shell</param>
+        /// <param name="possibleOuterPoly">A polygon which may contain it</param>
+        /// <param name="locator">The locator for the outer polygon</param>
+        /// <returns>A nested point, if one exists, or <c>null</c></returns>
         private Coordinate FindNestedPoint(LineString shell,
             Polygon possibleOuterPoly, IndexedPointInAreaLocator locator)
         {
             /*
              * Try checking two points, since checking point location is fast.
              */
-            var shellPt0 = shell.GetCoordinateN(0);
+            var shellPt0 = shell.GetCoordinateN(1);
             var loc0 = locator.Locate(shellPt0);
             if (loc0 == Location.Exterior) return null;
             if (loc0 == Location.Interior)
@@ -119,26 +127,23 @@ namespace NetTopologySuite.Operation.Valid
              * the polygon.
              * Nesting can be checked via the topology of the incident edges.
              */
-            return FindSegmentInPolygon(shell, possibleOuterPoly);
+            return FindIncidentSegmentNestedPoint(shell, possibleOuterPoly);
         }
 
         /// <summary>
         /// Finds a point of a shell segment which lies inside a polygon, if any.
-        /// The shell is assume to touch the polyon only at shell vertices,
+        /// The shell is assumed to touch the polygon only at shell vertices,
         /// and does not cross the polygon.
         /// </summary>
         /// <param name="shell">The shell to test</param>
         /// <param name="poly">The polygon to test against</param>
         /// <returns>An interior segment point, or <c>null</c> if the shell is nested correctly</returns>
-        private static Coordinate FindSegmentInPolygon(LineString shell, Polygon poly)
+        private static Coordinate FindIncidentSegmentNestedPoint(LineString shell, Polygon poly)
         {
             var polyShell = poly.ExteriorRing;
             if (polyShell.IsEmpty) return null;
 
-            var shell0 = shell.GetCoordinateN(0);
-            var shell1 = shell.GetCoordinateN(1);
-
-            if (!PolygonTopologyAnalyzer.IsSegmentInRing(shell0, shell1, polyShell))
+            if (!PolygonTopologyAnalyzer.IsRingNested(shell, polyShell))
                 return null;
 
             /*
@@ -149,7 +154,7 @@ namespace NetTopologySuite.Operation.Valid
             {
                 var hole = poly.GetInteriorRingN(i);
                 if (hole.EnvelopeInternal.Covers(shell.EnvelopeInternal)
-                    && PolygonTopologyAnalyzer.IsSegmentInRing(shell0, shell1, hole))
+                    && PolygonTopologyAnalyzer.IsRingNested(shell, hole))
                 {
                     return null;
                 }
@@ -159,7 +164,7 @@ namespace NetTopologySuite.Operation.Valid
              * The shell is contained in the polygon, but is not contained in a hole.
              * This is invalid.
              */
-            return shell0;
+            return shell.GetCoordinateN(0);
         }
     }
 

@@ -15,48 +15,50 @@ namespace NetTopologySuite.Operation.Valid
     {
 
         /// <summary>
-        /// Finds a self-intersection (if any) in a <see cref="LinearRing"/>.
-        /// </summary>
-        /// <param name="ring">The ring to analyze</param>
-        /// <returns>A self-intersection point if one exists, or <c>null</c></returns>
-        public static Coordinate FindSelfIntersection(LinearRing ring)
-        {
-            var ata = new PolygonTopologyAnalyzer(ring, false);
-            if (ata.HasInvalidIntersection)
-                return ata.InvalidLocation;
-            return null;
-        }
-
-        /// <summary>
-        /// Tests whether a segment p0-p1 is inside or outside a ring.
+        /// Tests whether a ring is nested inside another ring
         /// <para/>
         /// Preconditions:
         /// <list type="bullet">
-        /// <item><description>The segment intersects the ring only at the endpoints</description></item>
-        /// <item><description>One, none or both of the segment endpoints may lie on the ring</description></item>
-        /// <item><description>The ring does not self-cross, but it may self-touch</description></item>
+        /// <item><description>The rings do not cross (i.e. the test is wholly inside or outside the target)</description></item>
+        /// <item><description>The rings may touch at discrete points only</description></item>
+        /// <item><description>The <paramref name="target"/> ring does not self-cross, but it may self-touch</description></item>
         /// </list>
+        /// If the test ring start point is properly inside or outside, that provides the result.
+        /// Otherwise the start point is on the target ring,
+        /// and the incident start segment(accounting for repeated points) is
+        /// tested for its topology relative to the target ring.
         /// </summary>
-        /// <param name="p0">A segment vertex</param>
-        /// <param name="p1">A segment vertex</param>
-        /// <param name="ring">The ring to test</param>
-        /// <returns><c>true</c> if the segment lies inside the ring</returns>
-        public static bool IsSegmentInRing(Coordinate p0, Coordinate p1, LineString ring)
+        /// <param name="test">The ring to test</param>
+        /// <param name="target">The ring to test against</param>
+        /// <returns><c>true</c> if the <paramref name="test"/> ring lies inside the <paramref name="target"/> ring</returns>
+        public static bool IsRingNested(LineString test, LineString target)
         {
-            if (!ring.IsClosed)
-                throw new ArgumentException("Ring not closed", nameof(ring));
+            var p0 = test.GetCoordinateN(0);
+            var targetPts = target.Coordinates;
 
-            var ringPts = ring.Coordinates;
-            var loc = PointLocation.LocateInRing(p0, ringPts);
+            var loc = PointLocation.LocateInRing(p0, targetPts);
             if (loc == Location.Exterior) return false;
             if (loc == Location.Interior) return true;
 
             /*
-             * The segment point is on the boundary of the ring.
+             * The start segment point is on the boundary of the ring.
              * Use the topology at the node to check if the segment
              * is inside or outside the ring.
              */
-            return IsIncidentSegmentInRing(p0, p1, ringPts);
+            var p1 = FindNonEqualVertex(test, p0);
+            return IsIncidentSegmentInRing(p0, p1, targetPts);
+        }
+
+        private static Coordinate FindNonEqualVertex(LineString ring, Coordinate p)
+        {
+            int i = 1;
+            var next = ring.GetCoordinateN(i);
+            while (next.Equals2D(p) && i < ring.NumPoints - 1)
+            {
+                i += 1;
+                next = ring.GetCoordinateN(i);
+            }
+            return next;
         }
 
         /// <summary>
@@ -71,23 +73,19 @@ namespace NetTopologySuite.Operation.Valid
         /// This works for both shells and holes, but the caller must know
         /// the ring role.
         /// </summary>
-        /// <param name="p0">The first vertex of the segment</param>
+        /// <param name="p0">The touching vertex of the segment</param>
         /// <param name="p1">The second vertex of the segment</param>
         /// <param name="ringPts">The points of the ring</param>
         /// <returns><c>true</c> if the segment is inside the ring.</returns>
-        public static bool IsIncidentSegmentInRing(Coordinate p0, Coordinate p1, Coordinate[] ringPts)
+        private static bool IsIncidentSegmentInRing(Coordinate p0, Coordinate p1, Coordinate[] ringPts)
         {
             int index = IntersectingSegIndex(ringPts, p0);
             if (index < 0)
             {
                 throw new ArgumentException("Segment vertex does not intersect ring");
             }
-            var rPrev = ringPts[index];
-            var rNext = ringPts[index + 1];
-            if (p0.Equals2D(ringPts[index]))
-            {
-                rPrev = ringPts[RingIndexPrev(ringPts, index)];
-            }
+            var rPrev = FindRingVertexPrev(ringPts, index, p0);
+            var rNext = FindRingVertexNext(ringPts, index, p0);
             /*
              * If ring orientation is not normalized, flip the corner orientation
              */
@@ -99,6 +97,64 @@ namespace NetTopologySuite.Operation.Valid
                 rNext = temp;
             }
             return PolygonNode.IsInteriorSegment(p0, rPrev, rNext, p1);
+        }
+
+        /// <summary>
+        /// Finds the ring vertex previous to a node point on a ring
+        /// (which is contained in the index'th segment,
+        /// as either the start vertex or an interior point).
+        /// Repeated points are skipped over.
+        /// </summary>
+        /// <param name="ringPts">The ring</param>
+        /// <param name="index">The index of the segment containing the node</param>
+        /// <param name="node">The node point</param>
+        /// <returns>The previous ring vertex</returns>
+        private static Coordinate FindRingVertexPrev(Coordinate[] ringPts, int index, Coordinate node)
+        {
+            int iPrev = index;
+            var prev = ringPts[iPrev];
+            while (node.Equals2D(prev))
+            {
+                iPrev = RingIndexPrev(ringPts, iPrev);
+                prev = ringPts[iPrev];
+            }
+            return prev;
+        }
+
+        private static int RingIndexPrev(Coordinate[] ringPts, int index)
+        {
+            int iPrev = index - 1;
+            if (iPrev < 0) iPrev = ringPts.Length - 2;
+            return iPrev;
+        }
+
+        /// <summary>
+        /// Finds the ring vertex next from a node point on a ring
+        /// (which is contained in the index'th segment,
+        /// as either the start vertex or an interior point). 
+        /// </summary>
+        /// <param name="ringPts">The ring</param>
+        /// <param name="index">The index of the segment containing the node</param>
+        /// <param name="node">The node point</param>
+        /// <returns>The next ring vertex</returns>
+        private static Coordinate FindRingVertexNext(Coordinate[] ringPts, int index, Coordinate node)
+        {
+            //-- safe, since index is always the start of a ring segment
+            int iNext = index + 1;
+            var next = ringPts[iNext];
+            while (node.Equals2D(next))
+            {
+                iNext = RingIndexNext(ringPts, iNext);
+                next = ringPts[iNext];
+            }
+            return next;
+        }
+
+        private static int RingIndexNext(Coordinate[] ringPts, int index)
+        {
+            int iNext = index + 1;
+            if (iNext > ringPts.Length - 2) iNext = 0;
+            return iNext;
         }
 
         /// <summary>
@@ -126,11 +182,17 @@ namespace NetTopologySuite.Operation.Valid
             return -1;
         }
 
-        private static int RingIndexPrev(Coordinate[] ringPts, int index)
+        /// <summary>
+        /// Finds a self-intersection (if any) in a <see cref="LinearRing"/>.
+        /// </summary>
+        /// <param name="ring">The ring to analyze</param>
+        /// <returns>A self-intersection point if one exists, or <c>null</c></returns>
+        public static Coordinate FindSelfIntersection(LinearRing ring)
         {
-            int iPrev = index - 1;
-            if (index == 0) iPrev = ringPts.Length - 2;
-            return iPrev;
+            var ata = new PolygonTopologyAnalyzer(ring, false);
+            if (ata.HasInvalidIntersection)
+                return ata.InvalidLocation;
+            return null;
         }
 
         private readonly bool _isInvertedRingValid;

@@ -561,15 +561,17 @@ namespace NetTopologySuite.Operation.Valid
         private Coordinate FindHoleOutsideShellPoint(LineString hole, LineString shell)
         {
             var holePt0 = hole.GetCoordinateN(0);
-            var holePt1 = hole.GetCoordinateN(1);
             /*
              * If hole envelope is not covered by shell, it must be outside
              */
             if (!shell.EnvelopeInternal.Covers(hole.EnvelopeInternal))
+                //TODO: find hole pt outside shell env
                 return holePt0;
 
-            if (PolygonTopologyAnalyzer.IsSegmentInRing(holePt0, holePt1, shell))
+            if (PolygonTopologyAnalyzer.IsRingNested(hole, shell))
                 return null;
+
+            //TODO: find hole point outside shell
             return holePt0;
         }
 

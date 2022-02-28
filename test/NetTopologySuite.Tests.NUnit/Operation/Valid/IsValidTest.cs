@@ -175,6 +175,36 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
                 "LINEARRING (0 0, 100 100, 100 0, 0 100, 0 0)");
         }
 
+        /**
+         * Tests that repeated points at nodes are handled correctly.
+         * 
+         * See https://github.com/locationtech/jts/issues/843
+         */
+        [Test]
+        public void TestPolygonHoleWithRepeatedShellPointTouch()
+        {
+            CheckValid("POLYGON ((90 10, 10 10, 50 90, 50 90, 90 10), (50 90, 60 30, 40 30, 50 90))");
+        }
+
+        [Test]
+        public void TestPolygonHoleWithRepeatedShellPointTouchMultiple()
+        {
+            CheckValid("POLYGON ((90 10, 10 10, 50 90, 50 90, 50 90, 50 90, 90 10), (50 90, 60 30, 40 30, 50 90))");
+        }
+
+        [Test]
+        public void TestPolygonHoleWithRepeatedTouchEndPoint()
+        {
+            CheckValid("POLYGON ((90 10, 10 10, 50 90, 90 10, 90 10), (90 10, 40 30, 60 50, 90 10))");
+        }
+
+        [Test]
+        public void TestPolygonHoleWithRepeatedHolePointTouch()
+        {
+            CheckValid("POLYGON ((50 90, 10 10, 90 10, 50 90), (50 90, 50 90, 60 40, 60 40, 40 40, 50 90))");
+        }
+
+
         //=============================================
 
         private void CheckValid(string wkt)

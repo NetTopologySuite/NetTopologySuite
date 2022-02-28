@@ -73,17 +73,10 @@ namespace NetTopologySuite.Operation.Valid
                     if (!testHole.EnvelopeInternal.Covers(hole.EnvelopeInternal))
                         continue;
 
-                    /*
-                     * Checks nesting via a point-in-polygon test, 
-                     * or if the point lies on the boundary via 
-                     * the topology of the incident edges.
-                     */
-                    var holePt0 = hole.GetCoordinateN(0);
-                    var holePt1 = hole.GetCoordinateN(1);
-                    if (PolygonTopologyAnalyzer.IsSegmentInRing(holePt0, holePt1, testHole))
+                    if (PolygonTopologyAnalyzer.IsRingNested(hole, testHole))
                     {
-                        _nestedPt = holePt0;
-                        return true;
+                        //TODO: find a hole point known to be inside
+                        _nestedPt = hole.GetCoordinateN(0); return true;
                     }
                 }
             }
