@@ -28,7 +28,7 @@ As of version 1.15 __JTS Topology Suite__ is released using the following licens
 >
 >If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at http://www.eclipse.org.
 
-For more detailed information please visit https://github.com/locationtech/jts/LICENSES.md.
+For more detailed information please visit https://github.com/locationtech/jts/blob/master/LICENSES.md.
 
 ## Third party content
 
