@@ -9,11 +9,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// Tests the <see cref="WKTReader" /> with exponential notation.
     /// </summary>
     [TestFixture]
-    public class WKTReaderExpTest
+    public class WKTReaderExpNotationTest
     {
         private readonly WKTReader rdr;
 
-        public WKTReaderExpTest()
+        public WKTReaderExpNotationTest()
         {
             rdr = new WKTReader();
         }

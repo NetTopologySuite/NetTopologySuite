@@ -1,12 +1,10 @@
-using System;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO
 {
     /// <summary>
-    /// Tests the <see cref="WKTReader"/> with various errors
+    /// Tests the <see cref="WKTReader"/> with various syntax errors
     /// </summary>
     [TestFixture]
     public class WKTReaderParseErrorTest
@@ -98,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             bool threwParseEx = false;
             try
             {
-                var g = _rdr.Read(wkt);
+                _rdr.Read(wkt);
             }
             catch (ParseException /*ex*/)
             {
