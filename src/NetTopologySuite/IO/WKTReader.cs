@@ -32,6 +32,11 @@ namespace NetTopologySuite.IO
     /// This can be altered to create XY geometry by
     /// setting <see cref="IsOldNtsCoordinateSyntaxAllowed"/> to <c>false</c>.
     /// <para/>
+    /// A reader can be set to ensure the input is structurally valid
+    /// by setting <see cref="FixStructure"/> to <c>true</c>.
+    /// This ensures that geometry can be constructed without errors due to missing coordinates.
+    /// The created geometry may still be topologically invalid.
+    /// <para/>
     /// NOTE:  There is an inconsistency in the SFS.
     /// The WKT grammar states that <c>MultiPoints</c> are represented by
     /// <c>MULTIPOINT ( ( x y), (x y) )</c>,
@@ -129,6 +134,14 @@ namespace NetTopologySuite.IO
             get => _isAllowOldNtsMultipointSyntax;
             set => _isAllowOldNtsMultipointSyntax = value;
         }
+
+        /// <summary>
+        /// Gets or sets a flag indicating that the structure of input geometry should be fixed
+        /// so that the geometry can be constructed without error.<br/>
+        /// This involves adding coordinates if the input coordinate sequence is shorter than required.
+        /// </summary>
+        /// <seealso cref="LineString.MinimumValidSize"/>
+        public bool FixStructure { get; set; }
 
         /// <summary>
         /// Gets or sets the factory to create geometries
@@ -258,10 +271,10 @@ namespace NetTopologySuite.IO
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
         /// <param name="tryParen">a value indicating if a starting "<c>(</c>" should be probed.</param>
-        /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <returns>a <see cref="Coordinate"/> of appropriate dimension containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinate(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
+        private Coordinate GetCoordinate(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
         {
             bool opened = false;
             if (tryParen && IsOpenerNext(tokens))
@@ -274,57 +287,43 @@ namespace NetTopologySuite.IO
             double x = factory.PrecisionModel.MakePrecise(GetNextNumber(tokens));
             double y = factory.PrecisionModel.MakePrecise(GetNextNumber(tokens));
 
+            // Coordinate type
+            var readOrdinates = Ordinates.XY;
+
             // additionally read other vertices
-            double? z = null, m = null;
+            double z = Coordinate.NullOrdinate, m = 0d;
             if (ordinateFlags.HasFlag(Ordinates.Z))
+            {
                 z = GetNextNumber(tokens);
+                readOrdinates |= Ordinates.Z;
+            }
 
             if (ordinateFlags.HasFlag(Ordinates.M))
+            {
                 m = GetNextNumber(tokens);
+                readOrdinates |= Ordinates.M;
+            }
 
             if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax && IsNumberNext(tokens))
+            {
                 z = GetNextNumber(tokens);
-
-            // Get required dimension and measures
-            int dimension = 2 + (z.HasValue ? 1 : 0);
-            int measures = 0;
-            if (m.HasValue) {
-                measures++; dimension++;
+                readOrdinates |= Ordinates.Z;
             }
 
-            // create a sequence for the coordinate and set ordinate values
-            var sequence = factory.CoordinateSequenceFactory.Create(1, dimension, measures);
-            int offset = 0;
-            sequence.SetOrdinate(0, offset++, x);
-            sequence.SetOrdinate(0, offset++, y);
-            if (z.HasValue)
-                sequence.SetOrdinate(0, offset++, z.Value);
-            if (m.HasValue)
-                sequence.SetOrdinate(0, offset, m.Value);
-
-            /*
-            // create a sequence for one coordinate
-            int offsetM = ordinateFlags.HasFlag(Ordinates.Z) ? 1 : 0;
-            var sequence = factory.CoordinateSequenceFactory.Create(1, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
-            sequence.SetOrdinate(0, 0, factory.PrecisionModel.MakePrecise(GetNextNumber(tokens)));
-            sequence.SetOrdinate(0, 1, factory.PrecisionModel.MakePrecise(GetNextNumber(tokens)));
-
-            // additionally read other vertices
-            if (ordinateFlags.HasFlag(Ordinates.Z))
+            Coordinate res;
+            switch(readOrdinates)
             {
-                sequence.SetOrdinate(0, 2, GetNextNumber(tokens));
+                case Ordinates.XY:
+                    res = new Coordinate(x, y); break;
+                case Ordinates.XYZ:
+                    res = new CoordinateZ(x, y, z); ; break;
+                case Ordinates.XYM:
+                    res = new CoordinateM(x, y, m); break;
+                case Ordinates.XYZM:
+                    res = new CoordinateZM(x, y, z, m); break;
+                default:
+                    throw new InvalidOperationException($"Unknown ordinate read: {readOrdinates}");
             }
-
-            if (ordinateFlags.HasFlag(Ordinates.M))
-            {
-                sequence.SetOrdinate(0, 2 + offsetM, GetNextNumber(tokens));
-            }
-
-            if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax && IsNumberNext(tokens))
-            {
-                sequence.SetOrdinate(0, 2, GetNextNumber(tokens));
-            }
-            */
 
             // read close token if it was opened here
             if (opened)
@@ -332,7 +331,7 @@ namespace NetTopologySuite.IO
                 GetNextCloser(tokens);
             }
 
-            return sequence;
+            return res;
         }
 
         /// <summary>
@@ -346,21 +345,54 @@ namespace NetTopologySuite.IO
         /// <param name="factory">A geometry factory</param>
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
+        /// <param name="minSize">The minumum number of coordinates that have to be in the sequence</param>
+        /// <param name="isRing">A flag indicating if the sequence should form a ring</param>
         /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private CoordinateSequence GetCoordinateSequence(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
+        private CoordinateSequence GetCoordinateSequence(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags, int minSize, bool isRing)
         {
             if (GetNextEmptyOrOpener(tokens).Equals(WKTConstants.EMPTY))
                 return CreateCoordinateSequenceEmpty(factory.CoordinateSequenceFactory, ordinateFlags);
 
-            var coordinates = new List<CoordinateSequence>();
+            var coordinates = new List<Coordinate>();
             do
             {
                 coordinates.Add(GetCoordinate(factory, tokens, ordinateFlags, false));
             } while (GetNextCloserOrComma(tokens).Equals(","));
 
-            return MergeSequences(factory, coordinates, ordinateFlags);
+            if (FixStructure)
+            {
+                DoFixStructure(coordinates, minSize, isRing);
+            }
+            var coordArray = coordinates.ToArray();
+            return factory.CoordinateSequenceFactory.Create(coordArray);
+        }
+
+        // This function is called FixStructure in JTS
+        private static void DoFixStructure(List<Coordinate> coords, int minSize, bool isRing)
+        {
+            if (coords.Count == 0)
+                return;
+            if (isRing && !IsClosed(coords))
+            {
+                coords.Add(coords[0].Copy());
+            }
+            while (coords.Count < minSize)
+            {
+                coords.Add(coords[coords.Count - 1].Copy());
+            }
+        }
+
+        private static bool IsClosed(List<Coordinate> coords)
+        {
+            if (coords.Count == 0) return true;
+            if (coords.Count == 1
+                || !coords[0].Equals2D(coords[coords.Count - 1]))
+            {
+                return false;
+            }
+            return true;
         }
 
         private CoordinateSequence CreateCoordinateSequenceEmpty(CoordinateSequenceFactory csFactory, Ordinates ordinateFlags)
@@ -368,31 +400,32 @@ namespace NetTopologySuite.IO
             return csFactory.Create(0, ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M)? 1 : 0);
         }
 
-    /// <summary>
-    /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>
-    /// for an old-style JTS MultiPoint (Point coordinates not enclosed in parentheses).
-    /// <para>
-    /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
-    /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
-    /// Those are silently dropped.
-    /// </para>
-    /// </summary>
-    /// <param name="factory">A geometry factory</param>
-    /// <param name="tokens">the tokenizer to use.</param>
-    /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
-    /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
-    /// <exception cref="IOException">if an I/O error occurs.</exception>
-    /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-    private CoordinateSequence GetCoordinateSequenceOldMultiPoint(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
+        /// <summary>
+        /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>
+        /// for an old-style JTS MultiPoint (Point coordinates not enclosed in parentheses).
+        /// <para>
+        /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
+        /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
+        /// Those are silently dropped.
+        /// </para>
+        /// </summary>
+        /// <param name="factory">A geometry factory</param>
+        /// <param name="tokens">the tokenizer to use.</param>
+        /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
+        /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <exception cref="IOException">if an I/O error occurs.</exception>
+        /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
+        private CoordinateSequence GetCoordinateSequenceOldMultiPoint(GeometryFactory factory, TokenStream tokens, Ordinates ordinateFlags)
         {
-            var coordinates = new List<CoordinateSequence>();
+            var coordinates = new List<Coordinate>();
             do
             {
                 coordinates.Add(GetCoordinate(factory, tokens, ordinateFlags, true));
             }
             while (GetNextCloserOrComma(tokens) == ",");
 
-            return MergeSequences(factory, coordinates, ordinateFlags);
+            var coordArray = coordinates.ToArray();
+            return factory.CoordinateSequenceFactory.Create(coordArray);
         }
 
         /// <summary>
@@ -420,62 +453,6 @@ namespace NetTopologySuite.IO
             }
 
             return dimension;
-        }
-
-        /// <summary>
-        /// Merges an array of one-coordinate-<see cref="CoordinateSequence"/>s into one
-        /// <see cref="CoordinateSequence"/>.
-        /// </summary>
-        /// <param name="factory">A geometry factory</param>
-        /// <param name="sequences">an array of coordinate sequences. Each sequence contains <b>exactly one</b> coordinate.</param>
-        /// <param name="ordinateFlags">a bit-mask of required ordinates.</param>
-        /// <returns>a coordinate sequence containing all coordinate.</returns>
-        private CoordinateSequence MergeSequences(GeometryFactory factory, List<CoordinateSequence> sequences, Ordinates ordinateFlags)
-        {
-            int dimension = ToDimension(ordinateFlags);
-            int measures = OrdinatesUtility.OrdinatesToMeasures(ordinateFlags);
-
-            // if the sequences array is empty or null create an empty sequence
-            if (sequences == null || sequences.Count == 0)
-            {
-                return factory.CoordinateSequenceFactory.Create(0, dimension, measures);
-            }
-
-            if (sequences.Count == 1)
-            {
-                return sequences[0];
-            }
-
-            Ordinates mergeOrdinates;
-            if (_isAllowOldNtsCoordinateSyntax && dimension == 2)
-            {
-                foreach (var seq in sequences)
-                {
-                    if (seq.HasZ)
-                    {
-                        dimension++;
-                        break;
-                    }
-                }
-            }
-
-            // create and fill the result sequence
-            var sequence = factory.CoordinateSequenceFactory.Create(sequences.Count, dimension, measures);
-
-            int offsetM = 2 + (ordinateFlags.HasFlag(Ordinates.Z) ? 1 : 0);
-            for (int i = 0; i < sequences.Count; i++)
-            {
-                var item = sequences[i];
-                sequence.SetOrdinate(i, 0, item.GetOrdinate(0, 0));
-                sequence.SetOrdinate(i, 1, item.GetOrdinate(0, 1));
-                if (item.HasZ)
-                    sequence.SetOrdinate(i, 2, item.GetOrdinate(0, 2));
-                if (item.HasM)
-                    sequence.SetOrdinate(i, offsetM, item.GetOrdinate(0, offsetM));
-            }
-
-            // return it
-            return sequence;
         }
 
         /// <summary>
@@ -827,7 +804,7 @@ namespace NetTopologySuite.IO
 /// the stream.</returns>
 private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            var point = factory.CreatePoint(GetCoordinateSequence(factory, tokens, ordinateFlags));
+            var point = factory.CreatePoint(GetCoordinateSequence(factory, tokens, ordinateFlags, 1, false));
             return point;
         }
 
@@ -845,7 +822,7 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
         /// token in the stream.</returns>
         private LineString ReadLineStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags);
+            var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags, LineString.MinimumValidSize, false);
             if (!IsStrict && sequence.Count == 1)
                 sequence = CoordinateSequences.Extend(factory.CoordinateSequenceFactory, sequence, 2);
             return factory.CreateLineString(sequence);
@@ -864,7 +841,7 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
         /// token in the stream.</returns>
         private LinearRing ReadLinearRingText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
-            var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags);
+            var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags, LinearRing.MinimumValidSize, true);
             if (!IsStrict && !CoordinateSequences.IsRing(sequence))
                 sequence = CoordinateSequences.EnsureValidRing(factory.CoordinateSequenceFactory, sequence);
             return factory.CreateLinearRing(sequence);

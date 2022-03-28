@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.OverlayNG;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
@@ -168,7 +170,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             var geom = Read(wkt);
             var model = ElevationModel.Create(geom, null);
 
-            var geomNoZ = Read(wktNoZ);
+            var geomNoZ = AddZDimension.Do(Read(wktNoZ));
             model.PopulateZ(geomNoZ);
 
             var geomZExpected = Read(wktZExpected);

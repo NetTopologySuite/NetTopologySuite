@@ -17,20 +17,25 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private readonly WKTReader readerXYZ;
         private readonly WKTReader readerXYM;
         private readonly WKTReader readerXYZM;
+        private readonly WKTReader readerXYZMCloseRings;
 
         public WKTReaderTest()
         {
-            this.readerXY = GetWKTReader(Ordinates.XY, 1);
-            this.readerXY.IsOldNtsCoordinateSyntaxAllowed = false;
+            readerXY = GetWKTReader(Ordinates.XY, 1);
+            readerXY.IsOldNtsCoordinateSyntaxAllowed = false;
 
-            this.readerXYOld = GetWKTReader(Ordinates.XY, 1);
-            this.readerXYOld.IsOldNtsCoordinateSyntaxAllowed = true;
+            readerXYOld = GetWKTReader(Ordinates.XY, 1);
+            readerXYOld.IsOldNtsCoordinateSyntaxAllowed = true;
 
-            this.readerXYZ = GetWKTReader(Ordinates.XYZ, 1);
+            readerXYZ = GetWKTReader(Ordinates.XYZ, 1);
 
-            this.readerXYM = GetWKTReader(Ordinates.XYM, 1);
+            readerXYM = GetWKTReader(Ordinates.XYM, 1);
 
-            this.readerXYZM = GetWKTReader(Ordinates.XYZM, 1);
+            readerXYZM = GetWKTReader(Ordinates.XYZM, 1);
+
+            readerXYZMCloseRings = GetWKTReader(Ordinates.XYZM, 1d);
+            readerXYZMCloseRings.FixStructure = true;
+
         }
 
         [Test]

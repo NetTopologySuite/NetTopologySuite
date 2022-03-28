@@ -1,6 +1,7 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
@@ -54,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         [Test]
         public void TestLineXYLineIntersection()
         {
-            CheckIntersection("LINESTRING(0 0,0 10,10 10,10 0)", "LINESTRING(10 10 4,10 0 5,0 0 5)",
+            CheckIntersection("LINESTRING(0 0,0 10,10 10,10 0)", "LINESTRING Z(10 10 4,10 0 5,0 0 5)",
                 "GEOMETRYCOLLECTION Z(POINT Z(0 0 5), LINESTRING Z(10 0 5, 10 10 4))");
         }
 
@@ -145,6 +146,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             var a = Read(wktA);
             var b = Read(wktB);
+            if (a.Coordinate is CoordinateZ ^ b.Coordinate is CoordinateZ)
+            {
+                a = AddZDimension.Do(a);
+                b = AddZDimension.Do(b);
+            }
             var result = NetTopologySuite.Operation.OverlayNG.OverlayNG.Overlay(a, b, opCode);
             var expected = Read(wktExpected);
             CheckEqualXYZ(expected, result);

@@ -17,13 +17,18 @@ namespace NetTopologySuite.Geometries
     /// The line segments in the line may intersect each other (in other words,
     /// the <c>LineString</c> may "curl back" in itself and self-intersect.
     /// <c>LineString</c>s with exactly two identical points are invalid.
-    /// <para>A <c>LineString</c> must have either 0 or 2 or more points.
+    /// <para>A <c>LineString</c> must have either 0 or <see cref="MinimumValidSize"/> or more points.
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
     [Serializable]
     public class LineString : Geometry, ILineal
     {
+        /// <summary>
+        /// The minimum number of vertices allowed in a valid non-empty linestring.
+        /// Empty linestrings with 0 vertices are also valid.
+        /// </summary>
+        public const int MinimumValidSize = 2;
 
         /// <summary>
         /// Represents an empty <c>LineString</c>.
@@ -63,8 +68,7 @@ namespace NetTopologySuite.Geometries
             if (points == null)
                 points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             if (points.Count == 1)
-                throw new ArgumentException("Invalid number of points in LineString (found "
-                                            + points.Count + " - must be 0 or >= 2)");
+                throw new ArgumentException($"Invalid number of points in LineString (found {points.Count} - must be 0 or >= {MinimumValidSize})");
             _points = points;
         }
 
