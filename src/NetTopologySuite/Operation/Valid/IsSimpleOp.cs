@@ -16,7 +16,10 @@ namespace NetTopologySuite.Operation.Valid
     /// <item><term>Point</term><description>geometries are simple.</description></item>
     /// <item><term>MultiPoint</term><description>geometries are simple if every point is unique</description></item>
     /// <item><term>LineString</term><description>geometries are simple if they do not self-intersect at interior points
-    /// (i.e.points other than the endpoints).</description></item>
+    /// (i.e.points other than the endpoints).
+    /// Closed linestrings which intersect only at their endpoints are simple
+    /// (i.e. valid <b>LinearRings</b>s.
+    /// </description></item>
     /// <item><term>MultiLineString</term><description>geometries are simple if 
     /// their elements are simple and they intersect only at points 
     /// which are boundary points of both elements. 
@@ -37,6 +40,8 @@ namespace NetTopologySuite.Operation.Valid
     /// <para/>
     /// Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s (rings)
     /// have no boundary.
+    /// This means that an intersection at the endpoints of
+    /// two closed LineStrings makes the geometry non-simple.
     /// This means that an intersection at their endpoints makes the geometry non-simple.
     /// If it is required to test whether a set of <c>LineString</c>s touch
     /// only at their endpoints, use <see cref="BoundaryNodeRules.EndpointBoundaryRule"/>.
@@ -269,12 +274,48 @@ namespace NetTopologySuite.Operation.Valid
             var segStrings = new List<ISegmentString>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
-                var line = (LineString) geom.GetGeometryN(i);
-                var ss = new BasicSegmentString(line.Coordinates, null);
-                segStrings.Add(ss);
+                var line = (LineString)geom.GetGeometryN(i);
+                var trimPts = TrimRepeatedPoints(line.Coordinates);
+                if (trimPts != null)
+                {
+                    ISegmentString ss = new BasicSegmentString(trimPts, null);
+                    segStrings.Add(ss);
+                }
             }
-
             return segStrings;
+        }
+
+        private static Coordinate[] TrimRepeatedPoints(Coordinate[] pts)
+        {
+            if (pts.Length <= 2)
+                return pts;
+
+            int len = pts.Length;
+            bool hasRepeatedStart = pts[0].Equals2D(pts[1]);
+            bool hasRepeatedEnd = pts[len - 1].Equals2D(pts[len - 2]);
+            if (!hasRepeatedStart && !hasRepeatedEnd)
+                return pts;
+
+            //-- trim ends
+            int startIndex = 0;
+            var startPt = pts[0];
+            while (startIndex < len - 1 && startPt.Equals2D(pts[startIndex + 1]))
+            {
+                startIndex++;
+            }
+            int endIndex = len - 1;
+            var endPt = pts[endIndex];
+            while (endIndex > 0 && endPt.Equals2D(pts[endIndex - 1]))
+            {
+                endIndex--;
+            }
+            //-- are all points identical?
+            if (endIndex - startIndex < 1)
+            {
+                return null;
+            }
+            var trimPts = CoordinateArrays.Extract(pts, startIndex, endIndex);
+            return trimPts;
         }
 
         private class NonSimpleIntersectionFinder : ISegmentIntersector

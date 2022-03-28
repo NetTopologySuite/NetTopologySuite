@@ -69,6 +69,46 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         }
 
         [Test]
+        public void TestLineRepeatedStart()
+        {
+            string a = "LINESTRING (100 100, 100 100, 20 20, 200 20, 100 100)";
+
+            // rings are simple under all rules
+            CheckIsSimple(a, BoundaryNodeRules.Mod2BoundaryRule, true);
+            CheckIsSimple(a, BoundaryNodeRules.EndpointBoundaryRule, true);
+        }
+
+        [Test]
+        public void TestLineRepeatedEnd()
+        {
+            string a = "LINESTRING (100 100, 20 20, 200 20, 100 100, 100 100)";
+
+            // rings are simple under all rules
+            CheckIsSimple(a, BoundaryNodeRules.Mod2BoundaryRule, true);
+            CheckIsSimple(a, BoundaryNodeRules.EndpointBoundaryRule, true);
+        }
+
+        [Test]
+        public void TestLineRepeatedBothEnds()
+        {
+            string a = "LINESTRING (100 100, 100 100, 100 100, 20 20, 200 20, 100 100, 100 100)";
+
+            // rings are simple under all rules
+            CheckIsSimple(a, BoundaryNodeRules.Mod2BoundaryRule, true);
+            CheckIsSimple(a, BoundaryNodeRules.EndpointBoundaryRule, true);
+        }
+
+        [Test]
+        public void TestLineRepeatedAll()
+        {
+            string a = "LINESTRING (100 100, 100 100, 100 100)";
+
+            // rings are simple under all rules
+            CheckIsSimple(a, BoundaryNodeRules.Mod2BoundaryRule, true);
+            CheckIsSimple(a, BoundaryNodeRules.EndpointBoundaryRule, true);
+        }
+
+        [Test]
         public void TestLinesAll()
         {
             CheckIsSimpleAll("MULTILINESTRING ((10 20, 90 20), (10 30, 90 30), (50 40, 50 10))",
