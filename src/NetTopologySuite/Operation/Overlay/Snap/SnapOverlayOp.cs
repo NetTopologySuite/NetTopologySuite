@@ -163,6 +163,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             return remGeom;
         }
 
+#if DEBUG
         /// <summary>
         ///
         /// </summary>
@@ -172,5 +173,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             if (!g.IsValid)
                 Debug.WriteLine("Snapped geometry is invalid");
         }
+#endif
     }
 }

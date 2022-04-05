@@ -76,7 +76,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             if (Verbose)
             {
-// ReSharper disable once RedundantStringFormatCall
+                // ReSharper disable once RedundantStringFormatCall
                 // String.Format needed to build 2.0 release!
                 Debug.WriteLine(string.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
                     _minDistanceFound,

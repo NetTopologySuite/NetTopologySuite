@@ -339,6 +339,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {
+            outstream.WriteLine($"EdgeEndStar:   {Coordinate}");
             foreach (var e in Edges)
                 e.Write(outstream);
         }
@@ -347,7 +348,7 @@ namespace NetTopologySuite.GeometriesGraph
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.AppendLine("EdgeEndStar:   " + Coordinate);
+            buf.AppendLine($"EdgeEndStar:   {Coordinate}");
             foreach (var e in this)
                 buf.AppendLine(e.ToString());
             return buf.ToString();

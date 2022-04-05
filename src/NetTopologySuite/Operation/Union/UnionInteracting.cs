@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -42,9 +41,6 @@ namespace NetTopologySuite.Operation.Union
             // check for all interacting or none interacting!
             var int0 = ExtractElements(_g0, _interacts0, true);
             var int1 = ExtractElements(_g1, _interacts1, true);
-
-            if (int0.IsEmpty || int1.IsEmpty)
-                Debug.WriteLine("found empty!");
 
             var union = int0.Union(int1);
             var disjoint0 = ExtractElements(_g0, _interacts0, false);

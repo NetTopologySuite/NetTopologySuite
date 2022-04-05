@@ -274,7 +274,7 @@ namespace NetTopologySuite.Index.HPRtree
                 Console.WriteLine(fact.ToGeometry(env));
             }
         }
-      */
+         */
 
         private static double[] CreateBoundsArray(int size)
         {

@@ -933,7 +933,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             if (coordList.Count < 4)
             {
-                Debug.WriteLine(coordList);
+                //Debug.WriteLine(coordList);
                 coordList.Add(coordList[coordList.Count - 1], true);
             }
 

@@ -274,7 +274,7 @@ namespace NetTopologySuite.Algorithm
                 PrecisionModel.MakePrecise(intPt);
             return intPt;
         }
-
+#if !RELEASE
         private void CheckDD(Coordinate p1, Coordinate p2, Coordinate q1,
             Coordinate q2, Coordinate intPt)
         {
@@ -285,6 +285,7 @@ namespace NetTopologySuite.Algorithm
             if (distance > 0.0001)
                 Debug.WriteLine("Distance = " + distance);
         }
+#endif
 
         /// <summary>
         /// Computes a segment intersection using homogeneous coordinates.

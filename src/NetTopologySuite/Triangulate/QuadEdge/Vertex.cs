@@ -329,8 +329,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             catch (NotRepresentableException nre)
             {
-                Debug.WriteLine("a: " + a + "  b: " + b + "  c: " + c);
-                Debug.WriteLine(nre);
+                //Debug.WriteLine("a: " + a + "  b: " + b + "  c: " + c);
+                //Debug.WriteLine(nre);
                 //throw;
             }
             return cc;

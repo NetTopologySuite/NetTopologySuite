@@ -302,8 +302,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         /// <summary>
         /// Returns this ring as a LinearRing, or null if an Exception occurs while
-        /// creating it (such as a topology problem). Details of problems are written to
-        /// standard output.
+        /// creating it (such as a topology problem).
         /// </summary>
         public LinearRing Ring
         {
