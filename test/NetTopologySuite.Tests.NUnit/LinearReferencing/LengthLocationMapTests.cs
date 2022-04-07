@@ -1,259 +1,224 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.LinearReferencing;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.LinearReferencing
 {
     [TestFixture]
-    public class LengthLocationMapTests
+    public class LengthLocationMapTests : GeometryTestCase
     {
         [Test]
         public void TestLengthAtPosition30()
         {
-            var line = Read("LINESTRING (0 0, 0 100)");
-            var point = Read("POINT (0 30)");
+            string line = "LINESTRING (0 0, 0 100)";
+            string point = "POINT (0 30)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(30, length);
+            CheckLlm(line, point, 30);
         }
 
         [Test]
         public void TestLengthAtPosition50()
         {
-            var line = Read("LINESTRING (0 0, 0 100)");
-            var point = Read("POINT (0 50)");
+            string line = "LINESTRING (0 0, 0 100)";
+            string point = "POINT (0 50)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(50, length);
+            CheckLlm(line, point, 50);
         }
 
         [Test]
         public void TestLengthAtPosition60()
         {
-            var line = Read("LINESTRING (0 0, 0 100)");
-            var point = Read("POINT (0 60)");
+            string line = "LINESTRING (0 0, 0 100)";
+            string point = "POINT (0 60)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(60, length);
+            CheckLlm(line, point, 60);
         }
 
         [Test]
         public void TestLengthAtPosition100()
         {
-            var line = Read("LINESTRING (0 0, 0 100)");
-            var point = Read("POINT (0 100)");
+            string line = "LINESTRING (0 0, 0 100)";
+            string point = "POINT (0 100)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(100, length);
+            CheckLlm(line, point, 100);
         }
 
         [Test]
         public void TestLengthAtPosition101()
         {
-            var line = Read("LINESTRING (0 0, 0 100)");
-            var point = Read("POINT (0 100)");
+            string line = "LINESTRING (0 0, 0 100)";
+            string point = "POINT (0 100)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(100, length);
+            CheckLlm(line, point, 100);
         }
 
         [Test]
         public void TestLengthAtPosition0()
         {
-            var line = Read("LINESTRING (0 0, 0 100)");
-            var point = Read("POINT (0 0)");
+            string line = "LINESTRING (0 0, 0 100)";
+            string point = "POINT (0 0)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(0, length);
+            CheckLlm(line, point, 0);
         }
 
-        
+
         [Test]
         public void TestLengthAtPositionMinus1()
         {
-            var line = Read("LINESTRING (0 0, 0 100)");
-            var point = Read("POINT (0 -1)");
+            string line = "LINESTRING (0 0, 0 100)";
+            string point = "POINT (0 -1)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(0, length);
+            CheckLlm(line, point, 0);
         }
 
         [Test]
         public void TestMultiLineLengthPosition30()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
-            var point = Read("POINT (0 30)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 50, 0 100))";
+            string point = "POINT (0 30)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(30, length);
+            CheckLlm(line, point, 30);
         }
 
         [Test]
         public void TestMultiLineLengthPosition50()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
-            var point = Read("POINT (0 50)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 50, 0 100))";
+            string point = "POINT (0 50)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(50, length);
+            CheckLlm(line, point, 50);
         }
 
         [Test]
         public void TestMultiLineLengthPosition60()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
-            var point = Read("POINT (0 60)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 50, 0 100))";
+            string point = "POINT (0 60)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(60, length);
+            CheckLlm(line, point, 60);
         }
 
         [Test]
         public void TestMultiLineLengthAtPosition100()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
-            var point = Read("POINT (0 100)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 50, 0 100))";
+            string point = "POINT (0 100)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(100, length);
+            CheckLlm(line, point, 100);
         }
 
         [Test]
         public void TestMultiLineLengthAtPosition101()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
-            var point = Read("POINT (0 101)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 50, 0 100))";
+            string point = "POINT (0 101)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(100, length);
+            CheckLlm(line, point, 100);
         }
 
         [Test]
         public void TestMultiLineLengthAtPosition0()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
-            var point = Read("POINT (0 0)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 50, 0 100))";
+            string point = "POINT (0 0)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(0, length);
+            CheckLlm(line, point, 0);
         }
 
         [Test]
         public void TestMultiLineLengthAtPositionMinus1()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
-            var point = Read("POINT (0 -1)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 50, 0 100))";
+            string point = "POINT (0 -1)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(0, length);
+            CheckLlm(line, point, 0);
         }
 
         [Test]
         public void TestMultiLineHoleLengthPosition30()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
-            var point = Read("POINT (0 30)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 51, 0 100))";
+            string point = "POINT (0 30)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(30, length);
+            CheckLlm(line, point, 30);
         }
 
         [Test]
         public void TestMultiLineHoleLengthPosition50()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
-            var point = Read("POINT (0 50)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 51, 0 100))";
+            string point = "POINT (0 50)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(50, length);
+            CheckLlm(line, point, 50);
         }
 
         [Test]
         public void TestMultiLineHoleLengthPosition60()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
-            var point = Read("POINT (0 60)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 51, 0 100))";
+            string point = "POINT (0 60)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(59, length);
+            CheckLlm(line, point, 59);
         }
 
         [Test]
         public void TestMultiLineHoleLengthAtPosition100()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
-            var point = Read("POINT (0 100)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 51, 0 100))";
+            string point = "POINT (0 100)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(99, length);
+            CheckLlm(line, point, 99);
         }
 
         [Test]
         public void TestMultiLineHoleLengthAtPosition101()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
-            var point = Read("POINT (0 101)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 51, 0 100))";
+            string point = "POINT (0 101)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(99, length);
+            CheckLlm(line, point, 99);
         }
 
         [Test]
         public void TestMultiLineHoleLengthAtPosition0()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
-            var point = Read("POINT (0 0)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 51, 0 100))";
+            string point = "POINT (0 0)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(0, length);
+            CheckLlm(line, point, 0);
         }
 
-        
+
         [Test]
         public void TestMultiLineHoleLengthAtPositionMinus1()
         {
-            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
-            var point = Read("POINT (0 -1)");
+            string line = "MULTILINESTRING((0 0, 0 50), (0 51, 0 100))";
+            string point = "POINT (0 -1)";
 
-            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            double length = LengthLocationMap.GetLength(line, loc);
-            Assert.AreEqual(0, length);
+            CheckLlm(line, point, 0);
         }
 
-        private WKTReader _reader = new WKTReader();
-
-        protected Geometry Read(string wkt)
+        private void CheckLlm(string wkt0, string wkt1, double expectedDistance)
         {
-            try
-            {
-                return _reader.Read(wkt);
-            }
-            catch (ParseException ex)
-            {
-                throw new ApplicationException("An exception occurred while reading the wkt", ex);
-            }
+            var lineal = (ILineal)Read(wkt0);
+            var point = (Point)Read(wkt1);
+            if (lineal is LineString line)
+                CheckLlm(line, point, expectedDistance);
+            else
+                CheckLlm((MultiLineString)lineal, point, expectedDistance);
+        }
+
+        private void CheckLlm(LineString geom0, Point geom1, double expectedDistance)
+        {
+            var loc = LocationIndexOfPoint.IndexOf(geom0, geom1.Coordinate);
+            Assert.That(LengthLocationMap.GetLength(geom0, loc), Is.EqualTo(expectedDistance));
+        }
+
+        private void CheckLlm(MultiLineString geom0, Point geom1, double expectedDistance)
+        {
+            var loc = LocationIndexOfPoint.IndexOf(geom0, geom1.Coordinate);
+            Assert.That(LengthLocationMap.GetLength(geom0, loc), Is.EqualTo(expectedDistance));
         }
     }
 }
