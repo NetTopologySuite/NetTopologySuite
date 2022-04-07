@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 30)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(30, length);
         }
 
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 50)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(50, length);
         }
 
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 60)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(60, length);
         }
 
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 100)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(100, length);
         }
 
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 100)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(100, length);
         }
 
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 0)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(0, length);
         }
 
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 -1)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(0, length);
         }
 
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 30)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(30, length);
         }
 
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 50)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(50, length);
         }
 
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 60)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(60, length);
         }
 
@@ -127,7 +127,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 100)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(100, length);
         }
 
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 101)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(100, length);
         }
 
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 0)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(0, length);
         }
 
@@ -160,7 +160,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 -1)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(0, length);
         }
 
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 30)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(30, length);
         }
 
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 50)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(50, length);
         }
 
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 60)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(59, length);
         }
 
@@ -204,7 +204,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 100)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(99, length);
         }
 
@@ -215,7 +215,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 101)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(99, length);
         }
 
@@ -226,7 +226,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 0)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(0, length);
         }
 
@@ -238,7 +238,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var point = Read("POINT (0 -1)");
 
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
-            var length = LengthLocationMap.GetLength(line, loc);
+            double length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(0, length);
         }
 
