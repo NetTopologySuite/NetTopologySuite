@@ -201,7 +201,6 @@ namespace NetTopologySuite.LinearReferencing
                     {
                         return totalLength + segLen * loc.SegmentFraction;
                     }
-
                     totalLength += segLen;
                 }
                 else
