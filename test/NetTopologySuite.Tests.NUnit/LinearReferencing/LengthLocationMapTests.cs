@@ -10,6 +10,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     public class LengthLocationMapTests
     {
         [Test]
+        public void TestLengthAtPosition30()
+        {
+            var line = Read("LINESTRING (0 0, 0 100)");
+            var point = Read("POINT (0 30)");
+
+            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
+            var length = LengthLocationMap.GetLength(line, loc);
+            Assert.AreEqual(30, length);
+        }
+
+        [Test]
         public void TestLengthAtPosition50()
         {
             var line = Read("LINESTRING (0 0, 0 100)");
@@ -18,6 +29,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
             var length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(50, length);
+        }
+
+        [Test]
+        public void TestLengthAtPosition60()
+        {
+            var line = Read("LINESTRING (0 0, 0 100)");
+            var point = Read("POINT (0 60)");
+
+            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
+            var length = LengthLocationMap.GetLength(line, loc);
+            Assert.AreEqual(60, length);
         }
 
         [Test]
@@ -43,6 +65,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         [Test]
+        public void TestMultiLineLengthPosition30()
+        {
+            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
+            var point = Read("POINT (0 30)");
+
+            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
+            var length = LengthLocationMap.GetLength(line, loc);
+            Assert.AreEqual(30, length);
+        }
+
+        [Test]
         public void TestMultiLineLengthPosition50()
         {
             var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
@@ -51,6 +84,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
             var length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(50, length);
+        }
+
+        [Test]
+        public void TestMultiLineLengthPosition60()
+        {
+            var line = Read("MULTILINESTRING((0 0, 0 50), (0 50, 0 100))");
+            var point = Read("POINT (0 60)");
+
+            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
+            var length = LengthLocationMap.GetLength(line, loc);
+            Assert.AreEqual(60, length);
         }
 
         [Test]
@@ -76,6 +120,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         [Test]
+        public void TestMultiLineHoleLengthPosition30()
+        {
+            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
+            var point = Read("POINT (0 30)");
+
+            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
+            var length = LengthLocationMap.GetLength(line, loc);
+            Assert.AreEqual(30, length);
+        }
+
+        [Test]
         public void TestMultiLineHoleLengthPosition50()
         {
             var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
@@ -84,6 +139,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
             var length = LengthLocationMap.GetLength(line, loc);
             Assert.AreEqual(50, length);
+        }
+
+        [Test]
+        public void TestMultiLineHoleLengthPosition60()
+        {
+            var line = Read("MULTILINESTRING((0 0, 0 50), (0 51, 0 100))");
+            var point = Read("POINT (0 60)");
+
+            var loc = LocationIndexOfPoint.IndexOf(line, point.Coordinate);
+            var length = LengthLocationMap.GetLength(line, loc);
+            Assert.AreEqual(59, length);
         }
 
         [Test]
