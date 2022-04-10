@@ -203,6 +203,14 @@ namespace NetTopologySuite.LinearReferencing
                     }
                     totalLength += segLen;
                 }
+                else
+                {
+                    // I'm at the end of the segment
+                    if (loc.ComponentIndex == it.ComponentIndex)
+                    {
+                        return totalLength;
+                    }
+                }
                 it.Next();
             }
             return totalLength;
