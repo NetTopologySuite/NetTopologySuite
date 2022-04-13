@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Samples.SimpleTests;
+using NetTopologySuite.Tests.NUnit;
+using NetTopologySuite.Tests.NUnit.Operation.LineMerge;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
@@ -198,6 +201,27 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             const string wkt = "MULTILINESTRING ((0 0, 0 1), (0 2, 0 3), (0 1, 0 4) )";
             RunIsSequenced(wkt, false);
+        }
+
+        [Test]
+        public void TestSequenceOnReverseInputDoesNotChangeInput()
+        {
+            string[] wkt =
+            {
+                "LINESTRING (0 6, 0 5)",
+                "LINESTRING (0 3, 0 6)",
+                "LINESTRING (0 8, 0 3)",
+            };
+
+            var input = FromWKT(wkt).ToList();
+            var expected = FromWKT(wkt).ToList();
+            var sequencer = new LineSequencer();
+            sequencer.Add(input);
+
+            _ = sequencer.GetSequencedLineStrings();
+
+            // The input should not have been changed
+            LineMergerTest.Compare(expected, input, true);
         }
 
         private static void RunLineSequencer(string[] inputWKT, string expectedWKT)
