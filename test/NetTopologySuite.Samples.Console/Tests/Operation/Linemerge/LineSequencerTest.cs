@@ -203,27 +203,6 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             RunIsSequenced(wkt, false);
         }
 
-        [Test]
-        public void TestSequenceOnReverseInputDoesNotChangeInput()
-        {
-            string[] wkt =
-            {
-                "LINESTRING (0 6, 0 5)",
-                "LINESTRING (0 3, 0 6)",
-                "LINESTRING (0 8, 0 3)",
-            };
-
-            var input = FromWKT(wkt).ToList();
-            var expected = FromWKT(wkt).ToList();
-            var sequencer = new LineSequencer();
-            sequencer.Add(input);
-
-            _ = sequencer.GetSequencedLineStrings();
-
-            // The input should not have been changed
-            LineMergerTest.Compare(expected, input, true);
-        }
-
         private static void RunLineSequencer(string[] inputWKT, string expectedWKT)
         {
             try

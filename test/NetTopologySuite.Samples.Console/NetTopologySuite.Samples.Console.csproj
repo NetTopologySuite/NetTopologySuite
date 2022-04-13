@@ -28,7 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
-    <ProjectReference Include="..\NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj" />
   </ItemGroup>
 
 </Project>
