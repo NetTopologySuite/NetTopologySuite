@@ -6,8 +6,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Samples.SimpleTests;
-using NetTopologySuite.Tests.NUnit;
-using NetTopologySuite.Tests.NUnit.Operation.LineMerge;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
