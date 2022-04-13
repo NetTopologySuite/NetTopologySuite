@@ -57,6 +57,27 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
               new string[] { });
         }
 
+        [Test]
+        public void TestSequenceOnReverseInputDoesNotChangeInput()
+        {
+            string[] wkt =
+            {
+                "LINESTRING (0 6, 0 5)",
+                "LINESTRING (0 3, 0 6)",
+                "LINESTRING (0 8, 0 3)",
+            };
+
+            var input = ToGeometries(wkt);
+            var expected = ToGeometries(wkt);
+            var sequencer = new LineSequencer();
+            sequencer.Add(input);
+
+            _ = sequencer.GetSequencedLineStrings();
+
+            // The input should not have been changed
+            LineMergerTest.Compare(expected, input, true);
+        }
+
         [Ignore("This test is currently failing due to the generalization of the line (removal of repeated points) in the AddEdge method of NetTopologySuite.Operation.Linemerge.LineMergeGraph.  Need to see if this test is working in JTS")]
         public void TestSingleUniquePoint()
         {
