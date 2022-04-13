@@ -480,10 +480,8 @@ namespace NetTopologySuite.Operation.Linemerge
 
         private static LineString Reverse(LineString line)
         {
-            // Use a new Coordinate Array to avoiding reversing the Coordinates of the line
-            var pts = line.CoordinateSequence.Reversed().ToCoordinateArray();
-
-            var rev = line.Factory.CreateLineString(pts);
+            // Use a new CoordinateSequence to avoiding reversing the Coordinates of the line
+            var rev = line.Factory.CreateLineString(line.CoordinateSequence.Reversed());
             rev.UserData = line.UserData; // Maintain UserData in reverse process
             return rev;
         }
