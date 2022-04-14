@@ -432,6 +432,13 @@ namespace NetTopologySuite.Operation.Linemerge
         private static List<DirectedEdge> Reverse(IEnumerable<DirectedEdge> seq)
         {
             var tmp = new Stack<DirectedEdge>(seq);
+
+            foreach (var edge in seq)
+            {
+                // Add Edge that has the other direction instead of copying it.
+                tmp.Push(edge.Sym);
+            }
+
             return new List<DirectedEdge>(tmp);
             /*
             LinkedList<DirectedEdge> newSeq = new LinkedList<DirectedEdge>();
