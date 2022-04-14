@@ -107,6 +107,9 @@ namespace NetTopologySuite.GeometriesGraph
         [Obsolete("Use QuadrantEx")]
         public int Quadrant => _quadrant.Value;
 
+        /// <summary>
+        /// Gets a value indicating the <c>Quadrant</c> this <c>EdgeEnd</c> lies in.
+        /// </summary>
         public Quadrant QuadrantEx => _quadrant;
 
         /// <summary>

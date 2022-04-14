@@ -8,6 +8,7 @@ namespace NetTopologySuite.Dissolve
     /// </summary>
     public class DissolveEdgeGraph : EdgeGraph.EdgeGraph
     {
+        /// <inheritdoc/>
         protected override HalfEdge CreateEdge(Coordinate p0)
         {
             return new DissolveHalfEdge(p0);

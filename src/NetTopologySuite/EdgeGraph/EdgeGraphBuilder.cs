@@ -8,6 +8,11 @@ namespace NetTopologySuite.EdgeGraph
     /// </summary>
     public class EdgeGraphBuilder
     {
+        /// <summary>
+        /// Factory method to build an <c>EdgeGraph</c>.
+        /// </summary>
+        /// <param name="geoms">The geometries to make up the <c>EdgeGraph</c></param>
+        /// <returns>An <c>EdgeGraph</c> of the <paramref name="geoms"/></returns>
         public static EdgeGraph Build(IEnumerable<Geometry> geoms)
         {
             var builder = new EdgeGraphBuilder();
@@ -17,8 +22,15 @@ namespace NetTopologySuite.EdgeGraph
 
         private readonly EdgeGraph graph = new EdgeGraph();
 
+        /// <summary>
+        /// Creates a new <c>EdgeGraphBuilder</c>.
+        /// </summary>
         public EdgeGraphBuilder() { }
 
+        /// <summary>
+        /// Gets the created <c>EdgeGraph</c>
+        /// </summary>
+        /// <returns>The created <c>EdgeGraph</c></returns>
         public EdgeGraph GetGraph()
         {
             return graph;

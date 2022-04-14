@@ -24,18 +24,19 @@ namespace NetTopologySuite.GeometriesGraph
         private EdgeRing _shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
         private readonly List<EdgeRing> _holes = new List<EdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
 
-        /// <summary>
-        ///
-        /// </summary>
         private readonly GeometryFactory _geometryFactory;
 
+
+        /// <summary>
+        /// A <c>GeometryFactory</c> to use.
+        /// </summary>
         protected GeometryFactory GeometryFactory => _geometryFactory;
 
         /// <summary>
-        ///
+        /// Creates an instance of this class using the provided <paramref name="start"/> and <paramref name="geometryFactory"/>.
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="geometryFactory"></param>
+        /// <param name="start">The start <c>DirectedEdge</c> for the <c>EdgeRing</c> </param>
+        /// <param name="geometryFactory">A <c>GeometryFactory</c></param>
         protected EdgeRing(DirectedEdge start, GeometryFactory geometryFactory)
         {
             _geometryFactory = geometryFactory;
@@ -44,32 +45,32 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating if this <c>EdgeRing</c> is isolated
         /// </summary>
         public bool IsIsolated => _label.GeometryCount == 1;
 
         /// <summary>
-        ///
+        /// Gets a value indicating if this <c>EdgeRing</c> is a hole of a <c>Polygon</c>
         /// </summary>
         public bool IsHole => _isHole;
 
         /// <summary>
-        ///
+        /// Access a <c>Coordinate</c> of this <c>EdgeRing</c> by its index.
         /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
+        /// <param name="i">The index of the <c>Coordinate</c></param>
+        /// <returns>The <c>Coordinate</c> at index <paramref name="i"/></returns>
         public Coordinate GetCoordinate(int i)
         {
             return _pts[i];
         }
 
         /// <summary>
-        ///
+        /// Gets the geometry representation of this <c>EdgeRing</c>
         /// </summary>
         public LinearRing LinearRing => _ring;
 
         /// <summary>
-        ///
+        /// Gets a value indicating the topological relationship of this <c>EdgeRing</c>
         /// </summary>
         public Label Label => _label;
 
@@ -93,19 +94,19 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        ///
+        /// Add an <c>EdgeRing</c> representing a hole
         /// </summary>
-        /// <param name="ring"></param>
+        /// <param name="ring">The ring to add</param>
         public void AddHole(EdgeRing ring)
         {
             _holes.Add(ring);
         }
 
         /// <summary>
-        ///
+        /// Create the <c>Polygon</c> described by this <c>EdgeRing</c>
         /// </summary>
-        /// <param name="geometryFactory"></param>
-        /// <returns></returns>
+        /// <param name="geometryFactory">The <c>GeometryFactory</c> to use.</param>
+        /// <returns>A <c>Polygon</c></returns>
         public Polygon ToPolygon(GeometryFactory geometryFactory)
         {
             var holeLR = new LinearRing[_holes.Count];

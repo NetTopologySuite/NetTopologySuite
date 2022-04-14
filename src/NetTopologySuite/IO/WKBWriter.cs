@@ -80,7 +80,9 @@ namespace NetTopologySuite.IO
         private void WriteHeader(BinaryWriter writer, Geometry geom, bool includeSRID)
         {
             //Byte Order
+#pragma warning disable CS0618 // Type or member is obsolete
             WriteByteOrder(writer);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             //TODO: use "is" check, like in "WKTWriter.AppendGeometryTaggedText"?
             WKBGeometryTypes geometryType;

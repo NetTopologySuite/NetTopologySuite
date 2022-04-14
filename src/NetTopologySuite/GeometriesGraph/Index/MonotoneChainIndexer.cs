@@ -36,7 +36,11 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         public MonotoneChainIndexer() { }
         */
-
+        /// <summary>
+        /// Computes the startpoints (and endpoints) of all in monotone chains in this edge
+        /// </summary>
+        /// <param name="pts">An array of points</param>
+        /// <returns>An array of startpoints (and endpoints) of monotone chains</returns>
         public int[] GetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
@@ -78,9 +82,13 @@ namespace NetTopologySuite.GeometriesGraph.Index
             return startIndex;
         }
 
+        /// <summary>
+        /// Searches for the end of a <c>MonotoneChain</c>
+        /// </summary>
+        /// <param name="pts">An array of <c>Coordinate</c>s</param>
+        /// <param name="start">The start index of the chain to find the end for</param>
         /// <returns>
         /// The index of the last point in the monotone chain.
-        ///
         /// </returns>
         private static int FindChainEnd(Coordinate[] pts, int start)
         {

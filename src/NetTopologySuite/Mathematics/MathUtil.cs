@@ -177,7 +177,7 @@
 
         /// <summary>
         /// Generates a quasi-random sequence of numbers in the range [0,1].
-        /// They are produced by an additive recurrence with 1/&phi; as the constant.
+        /// They are produced by an additive recurrence with 1/&#966; as the constant.
         /// This produces a low-discrepancy sequence which is more evenly
         /// distribute than random numbers.
         /// <para/>
@@ -195,11 +195,11 @@
 
         /// <summary>
         /// Generates a quasi-random sequence of numbers in the range [0,1].
-        /// They are produced by an additive recurrence with constant &alpha;.
+        /// They are produced by an additive recurrence with constant &#945;.
         /// <code>
-        /// R(&alpha;) :  t<sub>n</sub> = { t<sub>0</sub> + n&alpha; },  n = 1,2,3,...
+        /// R(&#945;) :  t<sub>n</sub> = { t<sub>0</sub> + n&#945; },  n = 1,2,3,...
         /// </code>
-        /// When &alpha; is irrational this produces a
+        /// When &#945; is irrational this produces a
         /// <a href='https://en.wikipedia.org/wiki/Low-discrepancy_sequence#Additive_recurrence'>Low discrepancy sequence</a>
         /// which is more evenly distributed than random numbers.
         /// <para/>

@@ -11,6 +11,10 @@ namespace NetTopologySuite.Dissolve
     {
         private bool _isStart;
 
+        /// <summary>
+        /// Creates an instance of a <c>DissolveHalfEdge</c> using the provided origin.
+        /// </summary>
+        /// <param name="orig">The origin</param>
         public DissolveHalfEdge(Coordinate orig)
             : base(orig) { }
 

@@ -32,6 +32,7 @@ namespace NetTopologySuite.Algorithm.Match
          */
         private const double DensifyFraction = 0.25;
 
+        /// <inheritdoc/>
         public double Measure(Geometry g1, Geometry g2)
         {
             double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);

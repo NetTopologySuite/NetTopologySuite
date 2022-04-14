@@ -1,9 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
 
 namespace NetTopologySuite.Algorithm.Distance
 {
@@ -20,8 +17,9 @@ namespace NetTopologySuite.Algorithm.Distance
     /// on one curve, the dog on the other; both may vary their
     /// speed, but backtracking is not allowed.
     /// </pre>
+    /// </summary>
     /// <remarks>
-    /// Its metric is better than the e Hausdorff distance
+    /// Its metric is better than the Hausdorff distance
     /// because it takes the directions of the curves into account.
     /// It is possible that two curves have a small Hausdorff but a large
     /// Fréchet distance.
@@ -598,21 +596,21 @@ namespace NetTopologySuite.Algorithm.Distance
             public override double this[int i, int j]
             {
                 get {
-                    long key = (long)i << 32 | j;
+                    long key = (long)i << 32 | (long)j;
                     if (_matrix.TryGetValue(key, out double value))
                         return value;
                     return DefaultValue;
                 }
                 set
                 {
-                    long key = (long)i << 32 | j;
+                    long key = (long)i << 32 | (long)j;
                     _matrix[key] = value;
                 }
             }
 
             public override bool IsValueSet(int i, int j)
             {
-                long key = (long)i << 32 | j;
+                long key = (long)i << 32 | (long)j;
                 return _matrix.ContainsKey(key);
             }
         }

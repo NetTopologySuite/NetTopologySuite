@@ -30,20 +30,35 @@ namespace NetTopologySuite.Triangulate
         private Coordinate _splitPt;
         private double _minimumLen;
 
+        /// <summary>
+        /// Creates an instance of this class using the provided <c>LineSegment</c>
+        /// </summary>
+        /// <param name="seg">A <c>LineSegment</c></param>
         public SplitSegment(LineSegment seg)
         {
             _seg = seg;
             _segLen = seg.Length;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating the minimum length of a segment
+        /// </summary>
         public double MinimumLength
         {
             get => _minimumLen;
             set => _minimumLen = value;
         }
 
+        /// <summary>
+        /// Gets a value indicating the computed split point
+        /// </summary>
         public Coordinate SplitPoint => _splitPt;
 
+        /// <summary>
+        /// Computes the <see cref="SplitPoint"/> using the provided <paramref name="length"/> and <paramref name="endPt"/>.
+        /// </summary>
+        /// <param name="length">The length to split at</param>
+        /// <param name="endPt">The <c>Coordinate</c> to split at</param>
         public void SplitAt(double length, Coordinate endPt)
         {
             double actualLen = GetConstrainedLength(length);
@@ -54,6 +69,11 @@ namespace NetTopologySuite.Triangulate
                 _splitPt = PointAlongReverse(_seg, frac);
         }
 
+        /// <summary>
+        /// Computes the <see cref="SplitPoint"/> close to the given <c>Coordinate</c>,
+        /// ensuring that <see cref="MinimumLength"/> is not violated.
+        /// </summary>
+        /// <param name="pt">The <c>Coordinate</c> to split at</param>
         public void SplitAt(Coordinate pt)
         {
             // check that given pt doesn't violate min length

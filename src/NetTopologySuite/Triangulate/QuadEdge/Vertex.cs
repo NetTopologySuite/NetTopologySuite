@@ -93,6 +93,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return "POINT (" + _p.X + " " + _p.Y + ")";
         }
 
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(Vertex x)
         {
             if (_p.X == x.X && _p.Y == x.Y)
@@ -101,6 +102,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             return false;
         }
+
 
         public bool Equals(Vertex x, double tolerance)
         {
@@ -193,8 +195,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         /** ************************************************************* */
         /***********************************************************************************************
-        * Geometric primitives /
-        **********************************************************************************************/
+         * Geometric primitives /
+         **********************************************************************************************/
 
         /// <summary>
         /// Tests if this is inside the circle defined by the points a, b, c. This test uses simple

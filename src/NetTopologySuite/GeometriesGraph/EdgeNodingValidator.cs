@@ -25,6 +25,11 @@ namespace NetTopologySuite.GeometriesGraph
             validator.CheckValid();
         }
 
+        /// <summary>
+        /// Builds an enumeration of segment strings from the provided <paramref name="edges"/>.
+        /// </summary>
+        /// <param name="edges">An enumeration of <c>Edge</c>s</param>
+        /// <returns>An enumeration of <c>ISegmentString</c>s</returns>
         public static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable<Edge> edges)
         {
             // convert Edges to SegmentStrings

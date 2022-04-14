@@ -90,10 +90,19 @@ namespace NetTopologySuite.Triangulate.Tri
         }
 
         private Coordinate _p0;
+        /// <summary>
+        /// Gets a value indicating the 1st point of this <c>Tri</c>.
+        /// </summary>
         protected Coordinate P0 => _p0;
         private Coordinate _p1;
+        /// <summary>
+        /// Gets a value indicating the 2nd point of this <c>Tri</c>.
+        /// </summary>
         protected Coordinate P1 => _p1;
         private Coordinate _p2;
+        /// <summary>
+        /// Gets a value indicating the 3rd point of this <c>Tri</c>.
+        /// </summary>
         protected Coordinate P2 => _p2;
 
         /*
@@ -101,10 +110,19 @@ namespace NetTopologySuite.Triangulate.Tri
          * pNN is the next vertex CW from pN.
          */
         private Tri _tri0;
+        /// <summary>
+        /// Gets a value indicating the adjacent <c>Tri</c> across the edge <see cref="P0"/> clockwise towards the next point.
+        /// </summary>
         protected Tri Tri0 => _tri0;
         private Tri _tri1;
+        /// <summary>
+        /// Gets a value indicating the adjacent <c>Tri</c> across the edge <see cref="P1"/> clockwise towards the next point.
+        /// </summary>
         protected Tri Tri1 => _tri1;
         private Tri _tri2;
+        /// <summary>
+        /// Gets a value indicating the adjacent <c>Tri</c> across the edge <see cref="P2"/> clockwise towards the next point.
+        /// </summary>
         protected Tri Tri2 => _tri2;
 
         /// <summary>
