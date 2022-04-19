@@ -1,8 +1,8 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Triangulate.Polygon;
+using NetTopologySuite.Index;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Tests.NUnit.Triangulate.Polygon
+namespace NetTopologySuite.Tests.NUnit.Index
 {
     public class VertexSequencePackedRtreeTest
     {

@@ -2,7 +2,7 @@
 using NetTopologySuite.Mathematics;
 using System.Collections.Generic;
 
-namespace NetTopologySuite.Triangulate.Polygon
+namespace NetTopologySuite.Index
 {
     /// <summary>
     /// A semi-static spatial index for points which occur
@@ -16,9 +16,12 @@ namespace NetTopologySuite.Triangulate.Polygon
     /// Note that this index queries only the individual points
     /// of the input coordinate sequence,
     /// <b>not</b> any line segments which might be lie between them.
+    /// <para/>
+    /// The input coordinate array is read-only,
+    /// and is not changed when vertices are removed.
     /// </summary>
     /// <author>Martin Davis</author>
-    class VertexSequencePackedRtree
+    public class VertexSequencePackedRtree
     {
         /// <summary>
         /// Number of items/nodes in a parent node.
@@ -30,6 +33,7 @@ namespace NetTopologySuite.Triangulate.Polygon
         private int[] _levelOffset;
         private readonly int _nodeCapacity = NodeCapacity;
         private Envelope[] _bounds;
+        private bool[] _isRemoved;
 
         /// <summary>
         /// Creates a new tree over the given sequence of coordinates.
@@ -39,6 +43,7 @@ namespace NetTopologySuite.Triangulate.Polygon
         public VertexSequencePackedRtree(Coordinate[] pts)
         {
             _items = pts;
+            _isRemoved = new bool[pts.Length];
             Build();
         }
 
@@ -206,7 +211,7 @@ namespace NetTopologySuite.Triangulate.Polygon
                 if (index >= _items.Length)
                     return;
                 var p = _items[index];
-                if (p != null
+                if (!_isRemoved[index]
                     && queryEnv.Contains(p))
                     resultList.Add(index);
             }
@@ -217,10 +222,13 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// <summary>
         /// Removes the input item at the given index from the spatial index.
         /// </summary>
+        /// <remarks>
+        /// This does not change the underlying coordinate array.
+        /// </remarks>
         /// <param name="index">Index the index of the item in the input</param>
         public void RemoveAt(int index)
         {
-            _items[index] = null;
+            _isRemoved[index] = true;
 
             //--- prune the item parent node if all its items are removed
             int nodeIndex = index / _nodeCapacity;
@@ -259,7 +267,7 @@ namespace NetTopologySuite.Triangulate.Polygon
             int end = MathUtil.ClampMax(start + _nodeCapacity, _items.Length);
             for (int i = start; i < end; i++)
             {
-                if (_items[i] != null) return false;
+                if (!_isRemoved[i]) return false;
             }
             return true;
         }

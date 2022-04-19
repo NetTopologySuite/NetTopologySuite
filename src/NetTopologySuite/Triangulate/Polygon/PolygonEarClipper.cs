@@ -1,9 +1,9 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Index;
 
-using NetTopologySuite.Algorithm;
 using System;
 using System.Collections.Generic;
-using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Triangulate.Polygon
 {
