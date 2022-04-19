@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace NetTopologySuite.Algorithm.Hull
 {
+    /// <summary>
+    /// Computes the outer or inner hull of a ring
+    /// </summary>
+    /// <author>Martin Davis</author>
     internal class RingHull
     {
 
@@ -14,11 +18,10 @@ namespace NetTopologySuite.Algorithm.Hull
         private double _targetAreaDelta = -1;
 
         /*
-         * The polygon vertices are provided in CW orientation. 
-         * Thus for convex interior angles 
-         * the vertices forming the angle are in CW orientation.
+         * The ring vertices are oriented so that
+         * for corners which are to be kept 
+         * the vertices forming the corner are in CW orientation.
          */
-        private readonly Coordinate[] _vertex;
         private LinkedRing _vertexRing;
         private double _areaDelta = 0;
 
@@ -39,8 +42,7 @@ namespace NetTopologySuite.Algorithm.Hull
         public RingHull(LinearRing ring, bool isOuter)
         {
             _inputRing = ring;
-            _vertex = ring.Coordinates;
-            Init(_vertex, isOuter);
+            Init(ring.Coordinates, isOuter);
         }
 
         public int MinVertexNum { get => _targetVertexNum; set => _targetVertexNum = value; }
