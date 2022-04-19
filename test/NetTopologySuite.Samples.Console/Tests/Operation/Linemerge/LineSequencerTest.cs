@@ -201,6 +201,20 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             RunIsSequenced(wkt, false);
         }
 
+        [Test]
+        public void ReverseNodedLineSequenceHasRightDirection()
+        {
+            string[] wkt = new []
+            {
+                "LINESTRING (0 1, 0 0)",
+                "LINESTRING (0 1, 0 2)",
+                "LINESTRING (0 3, 0 2)"
+            };
+
+            string expected = "MULTILINESTRING ((0 3, 0 2), (0 2, 0 1), (0 1, 0 0))";
+            RunLineSequencer(wkt, expected);
+        }
+
         private static void RunLineSequencer(string[] inputWKT, string expectedWKT)
         {
             try
