@@ -1,0 +1,8 @@
+# Normalized line endings to LF
+790cae48fc8821b0dc0ec5739151439fe1860599
+
+# Untabify *.cs files
+2204937b03ae283146b53f5a32f920ef74aacb29
+
+# Regex find "[\t ]+\r\n", replace with "\r\n".
+c9e20955042e232dae1b51d311cb56496e1e1a63
