@@ -24,7 +24,7 @@ jobs:
       run: dotnet build -c Release -v minimal -p:WarningLevel=3
 
     - name: Test
-      run: dotnet test -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+      run: dotnet test -c Release -m:1 --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
       shell: bash # defaults disagree on how to quote the filter string
 
     - name: Pack
