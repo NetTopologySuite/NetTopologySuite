@@ -8,7 +8,7 @@ namespace NetTopologySuite.Triangulate.Polygon
 {
     /// <summary>
     /// Transforms a polygon with holes into a single self-touching (invalid) ring
-    /// by connecting holes to the exterior shell or to another hole.
+    /// by joining holes to the exterior shell or to another hole.
     /// The holes are added from the lowest upwards.
     /// As the resulting shell develops, a hole might be added to what was
     /// originally another hole.
@@ -19,6 +19,11 @@ namespace NetTopologySuite.Triangulate.Polygon
     /// </summary>
     public class PolygonHoleJoiner
     {
+        /// <summary>
+        /// The comparer to use when sorting <see cref="_shellCoordsSortedArray"/>
+        /// </summary>
+        private static readonly IComparer<Coordinate> _comparer =
+            Comparer<Coordinate>.Create((u, v) => u.CompareTo(v));
 
         public static Geometries.Polygon JoinAsPolygon(Geometries.Polygon inputPolygon)
         {
@@ -35,15 +40,15 @@ namespace NetTopologySuite.Triangulate.Polygon
 
         private List<Coordinate> _shellCoords;
 
-        // Note: _orderedCoords is a TreeSet in JTS which has functionality not
+        // Note: _shellCoordsSorted is a TreeSet in JTS which has functionality not
         //       provided by dotnet's SortedSet. Thus _orderedCoords is split into
         //       HashSet _orderedCoords and _orderedCoordsArray for which
         //       Above, Below and Min are added.
 
-        // orderedCoords is a copy of shellCoords for sort purposes
-        private HashSet<Coordinate> _orderedCoords;
-        // orderedCoordsArray is a sorted array of the coordinates stored in orderedCoords
-        private Coordinate[] _orderedCoordsArray;
+        // a copy of unique shellCoords
+        private HashSet<Coordinate> _shellCoordsSorted;
+        // _shellCoordsSortedArray is a sorted array of the coordinates stored in _shellCoordsSorted
+        private Coordinate[] _shellCoordsSortedArray;
 
         // Key: starting end of the cut; Value: list of the other end of the cut
         private Dictionary<Coordinate, List<Coordinate>> _cutMap;
@@ -85,7 +90,7 @@ namespace NetTopologySuite.Triangulate.Polygon
 
         private void JoinHoles()
         {
-            _orderedCoords = new HashSet<Coordinate>();
+            _shellCoordsSorted = new HashSet<Coordinate>();
             foreach (var coord in _shellCoords)
                 AddOrderedCoord(coord);
 
@@ -98,14 +103,14 @@ namespace NetTopologySuite.Triangulate.Polygon
         }
 
         /// <summary>
-        /// Adds a coordinate to the <see cref="_orderedCoords"/> set and
-        /// clears the <see cref="_orderedCoordsArray"/> array.
+        /// Adds a coordinate to the <see cref="_shellCoordsSorted"/> set and
+        /// clears the <see cref="_shellCoordsSortedArray"/> array.
         /// </summary>
         /// <param name="coord">A coordinate</param>
         private void AddOrderedCoord(Coordinate coord)
         {
-            _orderedCoords.Add(coord);
-            _orderedCoordsArray = null;
+            if (_shellCoordsSorted.Add(coord))
+                _shellCoordsSortedArray = null;
 
         }
 
@@ -124,9 +129,9 @@ namespace NetTopologySuite.Triangulate.Polygon
              * shellCoords[], so find the proper one and add the hole after it.
              */
             var holeCoords = hole.Coordinates;
-            var holeLeftVerticesIndex = GetLeftMostVertex(hole);
+            var holeLeftVerticesIndex = FindLeftVertices(hole);
             var holeCoord = holeCoords[holeLeftVerticesIndex[0]];
-            var shellCoordsList = GetLeftShellVertex(holeCoord);
+            var shellCoordsList = FindLeftShellVertices(holeCoord);
             var shellCoord = shellCoordsList[0];
             int shortestHoleVertexIndex = 0;
             //--- pick the shell-hole vertex pair that gives the shortest distance
@@ -213,10 +218,10 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// </summary>
         /// <param name="holeCoord">The hole coordinate</param>
         /// <returns>A list of candidate join vertices</returns>
-        private List<Coordinate> GetLeftShellVertex(Coordinate holeCoord)
+        private List<Coordinate> FindLeftShellVertices(Coordinate holeCoord)
         {
-            if (_orderedCoordsArray == null)
-                _orderedCoordsArray = _orderedCoords.OrderBy(x => x.X).ToArray();
+            if (_shellCoordsSortedArray == null)
+                _shellCoordsSortedArray = _shellCoordsSorted.OrderBy(x => x, _comparer) .ToArray();
 
             var list = new List<Coordinate>();
             var closest = Above(holeCoord);
@@ -288,36 +293,48 @@ namespace NetTopologySuite.Triangulate.Polygon
         }
 
         /// <summary>
-        /// Add hole at proper position in shell coordinate list.
+        /// Add hole vertices at proper position in shell vertex list.
+        /// For a touching/zero-length join line, avoids adding the join vertices twice.
         /// Also adds hole points to ordered coordinates.
         /// </summary>
-        /// <param name="shellVertexIndex"></param>
-        /// <param name="holeCoords"></param>
-        /// <param name="holeVertexIndex"></param>
-        private void AddHoleToShell(int shellVertexIndex, Coordinate[] holeCoords, int holeVertexIndex)
+        /// <param name="shellJoinIndex">The index of join vertex in shell</param>
+        /// <param name="holeCoords">The vertices of the hole to be inserted</param>
+        /// <param name="holeJoinIndex">The index of join vertex in hole</param>
+        private void AddHoleToShell(int shellJoinIndex, Coordinate[] holeCoords, int holeJoinIndex)
         {
-            var newCoords = new List<Coordinate>();
-            newCoords.Add(new Coordinate(_shellCoords[shellVertexIndex]));
+            var shellJoinPt = _shellCoords[shellJoinIndex];
+            var holeJoinPt = holeCoords[holeJoinIndex];
+            //-- check for touching (zero-length) join to avoid inserting duplicate vertices
+            bool isJoinTouching = shellJoinPt.Equals2D(holeJoinPt);
+
+            //-- create new section of vertices to insert in shell
+            var newSection = new List<Coordinate>();
+            if (!isJoinTouching)
+            {
+                newSection.Add(shellJoinPt.Copy());
+            }
+
             int nPts = holeCoords.Length - 1;
-            int i = holeVertexIndex;
+            int i = holeJoinIndex;
             do
             {
-                newCoords.Add(new Coordinate(holeCoords[i]));
+                newSection.Add(holeCoords[i].Copy());
                 i = (i + 1) % nPts;
-            } while (i != holeVertexIndex);
-            newCoords.Add(new Coordinate(holeCoords[holeVertexIndex]));
-            _shellCoords.InsertRange(shellVertexIndex, newCoords);
+            } while (i != holeJoinIndex);
+            if (!isJoinTouching)
+                newSection.Add(holeCoords[holeJoinIndex].Copy());
 
-            foreach (var coord in newCoords)
+            _shellCoords.InsertRange(shellJoinIndex, newSection);
+            foreach (var coord in newSection)
                 AddOrderedCoord(coord);
         }
 
         /// <summary>
-        /// Sort the holes by minimum X, minimum Y.
+        /// Sort the hole rings by minimum X, minimum Y.
         /// </summary>
         /// <param name="poly">Polygon that contains the holes</param>
-        /// <returns>A list of ordered hole geometry</returns>
-        private List<LinearRing> SortHoles(Geometries.Polygon poly)
+        /// <returns>A list of sorted hole rings</returns>
+        private static List<LinearRing> SortHoles(Geometries.Polygon poly)
         {
             var holes = new List<LinearRing>();
             for (int i = 0; i < poly.NumInteriorRings; i++)
@@ -333,22 +350,23 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// </summary>
         /// <param name="ring">The hole ring</param>
         /// <returns>Index of the left most vertex</returns>
-        private List<int> GetLeftMostVertex(LinearRing ring)
+        private static List<int> FindLeftVertices(LinearRing ring)
         {
             var coords = ring.Coordinates;
-            var list = new List<int>();
-            double minX = ring.EnvelopeInternal.MinX;
-            for (int i = 0; i < coords.Length; i++)
+            var leftmostIndex = new List<int>();
+            double leftX = ring.EnvelopeInternal.MinX;
+            for (int i = 0; i < coords.Length - 1; i++)
             {
-                if (Math.Abs(coords[i].X - minX) < EPS)
+                //TODO: can this be strict equality?
+                if (Math.Abs(coords[i].X - leftX) < EPS)
                 {
-                    list.Add(i);
+                    leftmostIndex.Add(i);
                 }
             }
-            return list;
+            return leftmostIndex;
         }
 
-        private ISegmentSetMutualIntersector CreatePolygonIntersector(Geometries.Polygon polygon)
+        private static ISegmentSetMutualIntersector CreatePolygonIntersector(Geometries.Polygon polygon)
         {
             var polySegStrings = SegmentStringUtil.ExtractSegmentStrings(polygon);
             return new MCIndexSegmentSetMutualIntersector(polySegStrings);
@@ -371,10 +389,10 @@ namespace NetTopologySuite.Triangulate.Polygon
 
         private Coordinate Above(Coordinate coordinate)
         {
-            if (_orderedCoordsArray == null)
+            if (_shellCoordsSortedArray == null)
                 throw new InvalidOperationException("_orderedCoordsArray not initialized");
 
-            int index = Array.BinarySearch(_orderedCoordsArray, coordinate);
+            int index = Array.BinarySearch(_shellCoordsSortedArray, coordinate);
             if (index < 0)
             {
                 // Convert to index of item just higher than coordinate
@@ -386,24 +404,24 @@ namespace NetTopologySuite.Triangulate.Polygon
                 index++;
             }
 
-            if (index < _orderedCoordsArray.Length)
-                return _orderedCoordsArray[index];
+            if (index < _shellCoordsSortedArray.Length)
+                return _shellCoordsSortedArray[index];
             return null;
         }
 
         private Coordinate Below(Coordinate coordinate)
         {
-            if (_orderedCoordsArray == null)
+            if (_shellCoordsSortedArray == null)
                 throw new InvalidOperationException("_orderedCoordsArray not initialized");
 
-            int index = Array.BinarySearch(_orderedCoordsArray, coordinate);
+            int index = Array.BinarySearch(_shellCoordsSortedArray, coordinate);
             if (index < 0)
                 index = ~index;
 
             // We want the index of the item below
             index--;
             if (index >= 0)
-                return _orderedCoordsArray[index];
+                return _shellCoordsSortedArray[index];
             return null;
         }
 
@@ -411,10 +429,10 @@ namespace NetTopologySuite.Triangulate.Polygon
         {
             get
             {
-                if (_orderedCoordsArray == null)
+                if (_shellCoordsSortedArray == null)
                     throw new InvalidOperationException("_orderedCoordsArray not initialized");
 
-                return _orderedCoordsArray[0];
+                return _shellCoordsSortedArray[0];
             }
         }
 
