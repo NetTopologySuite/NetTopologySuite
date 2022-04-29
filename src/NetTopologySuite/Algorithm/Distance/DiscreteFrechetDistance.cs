@@ -387,7 +387,7 @@ namespace NetTopologySuite.Algorithm.Distance
 
 #if DEBUG
             public override string ToString() {
-              var sb = new StringBuilder("[");
+              var sb = new System.Text.StringBuilder("[");
               for (int i = 0; i < NumRows; i++)
               {
                 sb.Append('[');
@@ -395,7 +395,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 {
                   if (j > 0)
                     sb.Append(", ");
-                  sb.Append(string.Format(NumberFormatInfo.InvariantInfo, "{0,8:F}", this[i, j]));
+                  sb.Append(string.Format(System.Globalization.NumberFormatInfo.InvariantInfo, "{0,8:F}", this[i, j]));
                 }
                 sb.Append(']');
                 if (i < NumRows - 1) sb.Append(",\n");
