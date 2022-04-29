@@ -1,17 +1,11 @@
 using System.ComponentModel;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Open.Topology.TestRunner
 {
     public class XmlTestTimer
     {
-        [DllImport("Kernel32.dll")]
-        private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
-
-        [DllImport("Kernel32.dll")]
-        private static extern bool QueryPerformanceFrequency(out long lpFrequency);
-
         private long startTime, stopTime;
         private long freq;
 
@@ -21,7 +15,7 @@ namespace Open.Topology.TestRunner
             startTime = 0;
             stopTime  = 0;
 
-            if (QueryPerformanceFrequency(out freq) == false)
+            if (!Stopwatch.IsHighResolution)
             {
                 // high-performance counter not supported
                 throw new Win32Exception();
@@ -34,13 +28,13 @@ namespace Open.Topology.TestRunner
             // lets do the waiting threads there work
             Thread.Sleep(0);
 
-            QueryPerformanceCounter(out startTime);
+            startTime = Stopwatch.GetTimestamp();
         }
 
         // Stop the timer
         public void Stop()
         {
-            QueryPerformanceCounter(out stopTime);
+            stopTime = Stopwatch.GetTimestamp();
         }
 
         // Returns the duration of the timer (in seconds)
