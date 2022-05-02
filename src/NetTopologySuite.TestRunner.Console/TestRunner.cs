@@ -164,9 +164,13 @@ namespace ConsoleTestRunner
                             new XmlTestErrorEventHandler(this.OnErrorEvent);
                     }
 
+                    var c = Console.ForegroundColor;
                     try
                     {
-                        Console.WriteLine("Running...{0}", listTests.Name);
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine("Running '{0}'", listTests.Name);
+                        Console.ForegroundColor = c;
 
                         var timer = new XmlTestTimer();
 
@@ -196,6 +200,10 @@ namespace ConsoleTestRunner
                     catch (Exception ex)
                     {
                         XmlTestExceptionManager.Publish(ex);
+                    }
+                    finally
+                    {
+                        Console.ForegroundColor = c;
                     }
                 }
 

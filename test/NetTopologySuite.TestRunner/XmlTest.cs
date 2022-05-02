@@ -221,25 +221,29 @@ namespace Open.Topology.TestRunner
         #endregion
 
         #region Public Methods
-
         public bool Run()
         {
+            var c = Console.ForegroundColor;
             try
             {
-                _bSuccess = this.RunTest();
+                _bSuccess = RunTest();
                 if (!_bSuccess)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     // DEBUG ERRORS: retry to launch the test and analyze...
-                    Console.WriteLine();
-                    Console.WriteLine("Retry failed test: {0}", Description);
-                    Console.WriteLine(Argument1);
-                    Console.WriteLine(Argument2);
-                    Console.WriteLine(A);
-                    Console.WriteLine(B);
-                    Console.WriteLine("Test type: " + TestType);
-                    _bSuccess = RunTest();
+                    Console.WriteLine("\n*********************************************");
+
+                    Console.WriteLine("Encountered failing test!");
+                    Console.WriteLine("Description: '{0}'", Description);
+                    Console.WriteLine("A: {}", A?.AsText() ?? "null");
+                    Console.WriteLine("B: {}", B?.AsText() ?? "null");
+                    Console.WriteLine("Test method: '{0}'" + TestType);
+                    Console.WriteLine($"arg1 {0}", Argument1);
+                    Console.WriteLine($"arg2 {0}", Argument1);
+
                     Console.WriteLine("Result expected is {0}, but was {1}", true, _bSuccess);
-                    Console.WriteLine();
+                    Console.WriteLine("*********************************************\n");
+
                 }
                 return _bSuccess;
             }
@@ -250,6 +254,10 @@ namespace Open.Topology.TestRunner
                 Debug.WriteLine(ex.StackTrace);
                 XmlTestExceptionManager.Publish(ex);
                 return false;
+            }
+            finally
+            {
+                Console.ForegroundColor = c;
             }
         }
 
@@ -524,7 +532,7 @@ namespace Open.Topology.TestRunner
                     }
                     else
                     {
-                        return boundary.Equals(geoResult);
+                        return AreEqual(boundary, geoResult);
                     }
                 }
             }
@@ -544,9 +552,9 @@ namespace Open.Topology.TestRunner
                     }
                     else
                     {
-                        return boundary.Equals(geoResult);
+                        return AreEqual(boundary, geoResult);
                     }
-               }
+                }
             }
 
             return false;
@@ -604,7 +612,7 @@ namespace Open.Topology.TestRunner
                         return CompareGeometries(geoResult, buffer);
                     }
 
-                    return buffer.Equals(geoResult);
+                    return AreEqual(buffer, geoResult);
                 }
             }
             else if (_objGeometryB != null)
@@ -631,7 +639,7 @@ namespace Open.Topology.TestRunner
                         return CompareGeometries(geoResult, buffer);
                     }
 
-                    return buffer.Equals(geoResult);
+                    return AreEqual(buffer, geoResult);
                 }
             }
 
@@ -658,7 +666,8 @@ namespace Open.Topology.TestRunner
                             _objGeometryA, "buffer", new[] {_objArgument1}, res, exp, _dTolerance);
 
                     }
-                    return buffer.Equals(geoResult);
+
+                    return AreEqual(buffer, geoResult);
                 }
             }
             return false;
@@ -685,7 +694,7 @@ namespace Open.Topology.TestRunner
                         return CompareGeometries(geoResult, centroid);
                     }
 
-                    return centroid.Equals(geoResult);
+                    return AreEqual(centroid, geoResult);
                 }
             }
             else if (_objGeometryB != null)
@@ -703,7 +712,7 @@ namespace Open.Topology.TestRunner
                         return CompareGeometries(geoResult, centroid);
                     }
 
-                    return centroid.Equals(geoResult);
+                    return AreEqual(centroid, geoResult);
                 }
             }
 
@@ -820,8 +829,9 @@ namespace Open.Topology.TestRunner
             if (geom != null)
             {
                 var res = NetTopologySuite.Densify.Densifier.Densify(geom, dArg);
-                return res.Equals(geoResult);
+                return AreEqual(res, geoResult);
             }
+
             return false;
         }
 
@@ -856,7 +866,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -876,7 +886,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -899,7 +909,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -919,7 +929,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -1115,7 +1125,8 @@ namespace Open.Topology.TestRunner
 
                         if (geoResult.GetType().Name == "GeometryCollection")
                              return CompareGeometries(geoResult, intersection);
-                        else return intersection.Equals(geoResult);
+                        else
+                            return AreEqual(intersection, geoResult);
                     }
                 }
                 else
@@ -1128,7 +1139,8 @@ namespace Open.Topology.TestRunner
 
                         if (geoResult.GetType().Name == "GeometryCollection")
                              return CompareGeometries(geoResult, intersection);
-                        else return intersection.Equals(geoResult);
+                        else
+                            return AreEqual(intersection, geoResult);
                     }
                 }
             }
@@ -1144,7 +1156,8 @@ namespace Open.Topology.TestRunner
 
                         if (geoResult.GetType().Name == "GeometryCollection")
                              return CompareGeometries(geoResult, intersection);
-                        else return intersection.Equals(geoResult);
+                        else
+                            return AreEqual(intersection, geoResult);
                     }
                 }
                 else
@@ -1157,7 +1170,8 @@ namespace Open.Topology.TestRunner
 
                         if (geoResult.GetType().Name == "GeometryCollection")
                              return CompareGeometries(geoResult, intersection);
-                        else return intersection.Equals(geoResult);
+                        else
+                            return AreEqual(intersection, geoResult);
                     }
                 }
             }
@@ -1417,7 +1431,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -1437,7 +1451,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -1460,7 +1474,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -1480,7 +1494,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return difference.Equals(geoResult);
+                            return AreEqual(difference, geoResult);
                         }
                     }
                 }
@@ -1542,7 +1556,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return union.Equals(geoResult);
+                            return AreEqual(union, geoResult);
                         }
                     }
                 }
@@ -1562,7 +1576,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return union.Equals(geoResult);
+                            return AreEqual(union, geoResult);
                         }
                     }
                 }
@@ -1585,7 +1599,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return union.Equals(geoResult);
+                            return AreEqual(union, geoResult);
                         }
                     }
                 }
@@ -1605,7 +1619,7 @@ namespace Open.Topology.TestRunner
                         }
                         else
                         {
-                            return union.Equals(geoResult);
+                            return AreEqual(union, geoResult);
                         }
                     }
                 }
@@ -1796,6 +1810,13 @@ namespace Open.Topology.TestRunner
             }
 
             return false;
+        }
+
+        private static bool AreEqual(Geometry g0, Geometry g1)
+        {
+            if (g0.EqualsExact(g1))
+                return true;
+            return g0.EqualsTopologically(g1);
         }
 
         #endregion

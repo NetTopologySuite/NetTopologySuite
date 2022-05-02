@@ -22,7 +22,7 @@ namespace Open.Topology.TestRunner.Functions
                 dest[i] = pts[1];
             }
             var trans = AffineTransformationFactory.CreateFromControlVectors(src, dest);
-            Console.WriteLine(trans);
+            //Console.WriteLine(trans);
             return trans.Transform(g);
         }
 
