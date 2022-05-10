@@ -104,7 +104,15 @@ namespace NetTopologySuite.Operation.Buffer
                 return CreateEmptyResultGeometry();
             }
 
-            ComputeNodedEdges(bufferSegStrList, precisionModel);
+            /**
+             * Currently only zero-distance buffers are validated, 
+             * to avoid reducing performance for other buffers.
+             * This fixes some noding failure cases found via GeometryFixer
+             * (see JTS-852).
+             */
+            bool isNodingValidated = distance == 0.0;
+            ComputeNodedEdges(bufferSegStrList, precisionModel, isNodingValidated);
+
             _graph = new PlanarGraph(new OverlayNodeFactory());
             _graph.AddEdges(_edgeList.Edges);
 
@@ -141,11 +149,18 @@ namespace NetTopologySuite.Operation.Buffer
             //                                  precisionModel.getScale());
         }
 
-        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, PrecisionModel precisionModel)
+        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
         {
             var noder = GetNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);
             var nodedSegStrings = noder.GetNodedSubstrings();
+
+            if (isNodingValidated)
+            {
+                var nv = new FastNodingValidator(nodedSegStrings);
+                nv.CheckValid();
+            }
+
             // DEBUGGING ONLY
             //BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
 

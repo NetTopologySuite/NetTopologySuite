@@ -30,17 +30,6 @@ namespace NetTopologySuite.Operation.Union
     /// This algorithm is faster and more robust than
     /// the simple iterated approach of
     /// repeatedly unioning each polygon to a result geometry.
-    /// <para/>
-    /// The <tt>buffer(0)</tt> trick is sometimes faster, but can be less robust and
-    /// can sometimes take a long time to complete.
-    /// This is particularly the case where there is a high degree of overlap
-    /// between the polygons.  In this case, <tt>buffer(0)</tt> is forced to compute
-    /// with <i>all</i> line segments from the outset,
-    /// whereas cascading can eliminate many segments
-    /// at each stage of processing.
-    /// The best situation for using <tt>buffer(0)</tt> is the trivial case
-    /// where there is <i>no</i> overlap between the input geometries.
-    /// However, this case is likely rare in practice.
     /// </summary>
     /// <author>Martin Davis</author>
     /// <seealso href="http://code.google.com/p/nettopologysuite/issues/detail?id=44"/>
@@ -48,7 +37,7 @@ namespace NetTopologySuite.Operation.Union
     {
         /// <summary>
         /// A union strategy that uses the classic NTS <see cref="SnapIfNeededOverlayOp"/>,
-        /// and for polygonal geometries a robustness fallback using <c>Buffer(0)</c>.
+        /// with a robustness fallback to OverlayNG.
         /// </summary>
         internal static readonly UnionStrategy ClassicUnion = new UnionStrategy(
             (g0, g1) =>
@@ -58,27 +47,10 @@ namespace NetTopologySuite.Operation.Union
                     return SnapIfNeededOverlayOp.Union(g0, g1);
                 }
                 catch (TopologyException ex)
-                    // union-by-buffer only works for polygons
-                    when (g0.Dimension == Dimension.Surface && g1.Dimension == Dimension.Surface)
                 {
-                    return UnionPolygonsByBuffer(g0, g1);
+                    return OverlayNG.OverlayNGRobust.Overlay(g0, g1, Overlay.SpatialFunction.Union);
                 }
             }, true);
-
-        /// <summary>
-        /// An alternative way of unioning polygonal geometries
-        /// by using <c>Buffer(0)</c>.
-        /// Only worth using if regular overlay union fails.
-        /// </summary>
-        /// <param name="g0">A polygonal geometry</param>
-        /// <param name="g1">A polygonal geometry</param>
-        /// <returns>The union of the geometries</returns>
-        private static Geometry UnionPolygonsByBuffer(Geometry g0, Geometry g1)
-        {
-            //System.out.println("Unioning by buffer");
-            var coll = g0.Factory.CreateGeometryCollection(new [] { g0, g1 });
-            return coll.Buffer(0);
-        }
 
         /// <summary>
         /// Computes the union of
