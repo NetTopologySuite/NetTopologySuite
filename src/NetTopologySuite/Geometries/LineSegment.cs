@@ -700,6 +700,16 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 29 + _p0.X.GetHashCode( );
+                hash = hash * 29 + _p0.Y.GetHashCode( );
+                hash = hash * 29 + _p1.X.GetHashCode( );
+                hash = hash * 29 + _p1.Y.GetHashCode( );
+                return hash;
+            }
+
             long bits0 = BitConverter.DoubleToInt64Bits(_p0.X);
             bits0 ^= BitConverter.DoubleToInt64Bits(_p0.Y) * 31;
             int hash0 = (((int)bits0) ^ ((int)(bits0 >> 32)));
