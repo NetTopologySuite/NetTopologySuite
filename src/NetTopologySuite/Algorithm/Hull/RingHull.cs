@@ -118,13 +118,14 @@ namespace NetTopologySuite.Algorithm.Hull
         public void Compute(RingHullIndex hullIndex)
         {
             while (!_cornerQueue.IsEmpty()
-                && !IsAtTarget
                 && _vertexRing.Count > 3)
             {
                 var corner = _cornerQueue.Poll();
                 //-- a corner may no longer be valid due to removal of adjacent corners
                 if (corner.IsRemoved(_vertexRing))
                     continue;
+                if (IsAtTarget(corner))
+                    return;
                 //System.out.println(corner.toLineString(vertexList));
                 /*
                  * Corner is concave or flat - remove it if possible.
@@ -136,21 +137,20 @@ namespace NetTopologySuite.Algorithm.Hull
             }
         }
 
-        private bool IsAtTarget
+        private bool IsAtTarget(Corner corner)
         {
-            get
+            if (_targetVertexNum >= 0)
             {
-                if (_targetVertexNum >= 0)
-                {
-                    return _vertexRing.Count < _targetVertexNum;
-                }
-                if (_targetAreaDelta >= 0)
-                {
-                    return _areaDelta > _targetAreaDelta;
-                }
-                //-- no target set
-                return true;
+                return _vertexRing.Count < _targetVertexNum;
             }
+            if (_targetAreaDelta >= 0)
+            {
+                //-- include candidate corder to avoid overshooting target
+                // (important for very small target area deltas)
+                return _areaDelta + corner.Area > _targetAreaDelta;
+            }
+            //-- no target set
+            return true;
         }
 
         /// <summary>

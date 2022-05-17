@@ -31,7 +31,12 @@ namespace NetTopologySuite.Algorithm.Hull
     /// For inner hulls, value 0 produces a triangle (if no holes are present).</description></item>
     /// <item><term>Area Delta ratio</term><description>
     /// the ratio of the change in area to the input area.Value 0 produces the original geometry.
-    /// Larger values produce less concave results.</description></item></list>
+    /// Larger values produce less concave results.</description></item>
+    /// </list>
+    /// The algorithm ensures that the result does not cause the target parameter
+    /// to be exceeded. This allows computing outer or inner hulls
+    /// with a small area delta ratio to be an effective way of removing
+    /// narrow gores and spikes.
     /// </summary>
     /// <author>Martin Davis</author>
     public class PolygonHull
