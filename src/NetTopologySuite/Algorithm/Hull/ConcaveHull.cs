@@ -8,9 +8,13 @@ namespace NetTopologySuite.Algorithm.Hull
 {
     /// <summary>
     /// Constructs a concave hull of a set of points.
-    /// The hull is constructed by removing the longest outer edges
-    /// of the Delaunay Triangulation of the points
-    /// until a target criterion is reached.
+    /// A concave hull is a possibly non-convex polygon containing all the input points.
+    /// A given set of points has a sequence of hulls of increasing concaveness,
+    /// determined by a numeric target parameter.
+    /// <para/>
+    /// The concave hull is constructed by removing the longest outer edges
+    /// of the Delaunay Triangulation of the points,
+    /// until the target criterion parameter is reached.
     /// <para/>
     /// The target criteria are:
     /// <list type="table">

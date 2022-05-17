@@ -24,15 +24,16 @@ namespace NetTopologySuite.Triangulate.Tri
         /// Creates a <see cref="GeometryCollection"/> of <see cref="Polygon"/>s
         /// representing the triangles in a list.
         /// </summary>
-        /// <param name="triList">A list of <c>Tri</c>s</param>
+        /// <param name="tris">A collection of <c>Tri</c>s</param>
         /// <param name="geomFact">The GeometryFactory to use</param>
         /// <returns>The <c>Polygon</c>s for the triangles</returns>
-        public static Geometry ToGeometry(IList<Tri> triList, GeometryFactory geomFact)
+        public static Geometry ToGeometry(ICollection<Tri> tris, GeometryFactory geomFact)
         {
-            var geoms = new Geometry[triList.Count];
-            for (int i = 0; i < triList.Count; i++)
+            var geoms = new Geometry[tris.Count];
+            int i = 0;
+            foreach (var tri in tris)
             {
-                geoms[i] = triList[i].ToPolygon(geomFact);
+                geoms[i++] = tri.ToPolygon(geomFact);
             }
             return geomFact.CreateGeometryCollection(geoms);
         }
@@ -698,12 +699,23 @@ namespace NetTopologySuite.Triangulate.Tri
         }
 
         /// <summary>
-        /// Gets the length of the perimeter of the triangle.
+        /// Gets the perimeter length of the perimeter of the triangle.
         /// </summary>
         public double Length
         {
             get => Triangle.Length(_p0, _p1, _p2);
         }
+
+        /// <summary>
+        /// Gets the length of an edge of the triangle.
+        /// </summary>
+        /// <param name="edgeIndex">The edge index</param>
+        /// <returns>The edge length</returns>
+        public double GetLength(int edgeIndex)
+        {
+            return GetCoordinate(edgeIndex).Distance(GetCoordinate(Next(edgeIndex)));
+        }
+
         /// <summary>
         /// Creates a <see cref="Polygon"/> representing this triangle.
         /// </summary>
