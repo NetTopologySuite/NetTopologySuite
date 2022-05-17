@@ -43,19 +43,13 @@ namespace NetTopologySuite.Operation.Union
             var int1 = ExtractElements(_g1, _interacts1, true);
 
             var union = int0.Union(int1);
+
             var disjoint0 = ExtractElements(_g0, _interacts0, false);
             var disjoint1 = ExtractElements(_g1, _interacts1, false);
+
             var overallUnion = GeometryCombiner.Combine(union, disjoint0, disjoint1);
             return overallUnion;
 
-        }
-
-        private Geometry BufferUnion(Geometry g0, Geometry g1)
-        {
-            var factory = g0.Factory;
-            var gColl = factory.CreateGeometryCollection(new Geometry[] { g0, g1 });
-            var unionAll = gColl.Buffer(0.0);
-            return unionAll;
         }
 
         private void ComputeInteracting()
