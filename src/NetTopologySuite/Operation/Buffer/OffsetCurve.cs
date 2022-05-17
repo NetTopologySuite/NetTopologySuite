@@ -12,12 +12,13 @@ namespace NetTopologySuite.Operation.Buffer
     /// from the input.
     /// If the offset distance is positive the curve lies on the left side of the input;
     /// if it is negative the curve is on the right side.
-    /// <para/>
-    /// The offset curve of a line is a <see cref="LineString"/>.
-    /// The offset curve of a Point is an empty <see cref="LineString"/>.
-    /// The offset curve of a Polygon is the boundary of the polygon buffer (which
-    /// may be a <see cref="MultiLineString"/>.
-    /// For a collection the output is a {@link MultiLineString} of the element offset curves.
+    /// <list type="bullet">
+    /// <item><description>For a <see cref="LineString"/> the offset curve is a line.</description></item>
+    /// <item><description>For a <see cref="Point"/> the offset curve is an empty <see cref="LineString"/>.</description></item>
+    /// <item><description>For a <see cref="Polygon"/> the offset curve is the boundary of the polygon buffer (which
+    /// may be a <see cref="MultiLineString"/>).</description></item>
+    /// <item><description>For a collection the output is a <see cref="MultiLineString"/> containing the element offset curves.</description></item>
+    /// </list>
     /// <para/>
     /// The offset curve is computed as a single contiguous section of the geometry buffer boundary.
     /// In some geometric situations this definition is ill-defined.
