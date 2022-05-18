@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NetTopologySuite.Noding;
-using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 
@@ -57,35 +54,5 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             foreach(var obj in polys)
                 Console.WriteLine(obj);
         }
-
-        [Test]
-        public void TestPoly2()
-        {
-            var rdr = new WKTReader();
-            var geo = rdr.Read("MULTILINESTRING((-1.328 -3.953, 2.457 4.615, 6.07 -4.022, 11.851 -1.957, 11.059 3.342, -1.362 -3.196), (-1.225 -3.333, 5.141 3.961, 12.332 -2.267))");
-
-            var noder = new SnapRoundingNoder(new PrecisionModel(1000));
-            var nss = new List<ISegmentString>(geo.NumGeometries);
-            for (int i = 0; i < geo.NumGeometries; i++)
-            {
-                var line = geo.GetGeometryN(i);
-                nss.Add(new NodedSegmentString(line.Coordinates, line));
-            }
-            noder.ComputeNodes(nss);
-
-            var polygonizer = new Polygonizer(true);
-            foreach (var n in noder.GetNodedSubstrings())
-            {
-                var line = geo.Factory.CreateLineString(n.Coordinates);
-                TestContext.WriteLine(line);
-                polygonizer.Add(line);
-            }
-
-            var polys = polygonizer.GetPolygons();
-            TestContext.WriteLine(geo.Factory.CreateMultiPolygon((Polygon[])polys.ToArray()));
-            int numPolygons = polys.Count;
-            Assert.AreEqual(5, numPolygons);
-        }
-            
     }
 }
