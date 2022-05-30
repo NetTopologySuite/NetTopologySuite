@@ -709,19 +709,6 @@ namespace NetTopologySuite.Geometries
                 hash = hash * 29 + _p1.Y.GetHashCode( );
                 return hash;
             }
-
-            long bits0 = BitConverter.DoubleToInt64Bits(_p0.X);
-            bits0 ^= BitConverter.DoubleToInt64Bits(_p0.Y) * 31;
-            int hash0 = (((int)bits0) ^ ((int)(bits0 >> 32)));
-
-            long bits1 = BitConverter.DoubleToInt64Bits(_p1.X);
-            bits1 ^= BitConverter.DoubleToInt64Bits(_p1.Y) * 31;
-            int hash1 = (((int)bits1) ^ ((int)(bits1 >> 32)));
-
-            // XOR is supposed to be a good way to combine hashcodes
-            return hash0 ^ hash1;
-
-            // return base.GetHashCode();
         }
     }
 }
