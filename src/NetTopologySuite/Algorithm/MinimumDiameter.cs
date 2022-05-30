@@ -9,9 +9,8 @@ namespace NetTopologySuite.Algorithm
     /// <remarks>
     /// <para>
     /// The minimum diameter is defined to be the
-    /// width of the smallest band that contains the point,
-    /// where a band is a strip of the plane defined
-    /// by two parallel lines.
+    /// width of the smallest band that contains the geometry,
+    /// where a band is a strip of the plane defined by two parallel lines.
     /// This can be thought of as the smallest hole that the point can be
     /// moved through, with a single rotation.
     /// </para>
@@ -21,19 +20,30 @@ namespace NetTopologySuite.Algorithm
     /// avoid this computation.
     /// </para>
     /// <para>
-    /// This class can also be used to compute a line segment representing
-    /// the minimum diameter, the supporting line segment of the minimum diameter,
-    /// and a minimum rectangle enclosing the input geometry.
-    /// This rectangle will
-    /// have width equal to the minimum diameter, and have one side
+    /// This class can also be used to compute
+    /// <list type="bullet">
+    /// <item><description>a line segment representing the minimum diameter</description></item>
+    /// <item><description>the <b>supporting line segment</b> of the minimum diameter</description></item>
+    /// <item><description>a <b>minimum enclosing rectangle</b> of the input geometry.
+    /// The rectangle has width equal to the minimum diameter, and has one side
     /// parallel to the supporting segment.
+    /// In degenerate cases the minimum enclosing geometry may be a LineString or a Point.
+    /// </description></item></list>
     /// </para>
     /// </remarks>
     /// <seealso cref="ConvexHull"/>
     public class MinimumDiameter
     {
         /// <summary>
-        /// Gets the minimum rectangle enclosing a geometry.
+        /// Gets the minimum rectangular <see cref="Polygon"/> which encloses the input geometry.
+        /// The rectangle has width equal to the minimum diameter,
+        /// and a longer length.
+        /// If the convex hull of the input is degenerate (a line or point)
+        /// a <see cref="LineString"/>
+        /// or <see cref="Point"/> is returned.
+        /// <para/>
+        /// The minimum rectangle can be used as an extremely generalized representation
+        /// for the given geometry.
         /// </summary>
         /// <param name="geom">The geometry</param>
         /// <returns>The minimum rectangle enclosing the geometry</returns>
@@ -237,6 +247,8 @@ namespace NetTopologySuite.Algorithm
                 maxIndex = nextIndex;
 
                 nextIndex = NextIndex(pts, maxIndex);
+                if (nextIndex == startIndex)
+                    break;
                 nextPerpDistance = seg.DistancePerpendicular(pts[nextIndex]);
             }
 
@@ -284,21 +296,18 @@ namespace NetTopologySuite.Algorithm
             // check if minimum rectangle is degenerate (a point or line segment)
             if (_minWidth == 0.0)
             {
+                // -- Min rectangle is a Point
                 if (_minBaseSeg.P0.Equals2D(_minBaseSeg.P1))
                 {
                     return _inputGeom.Factory.CreatePoint(_minBaseSeg.P0);
                 }
-                return _minBaseSeg.ToGeometry(_inputGeom.Factory);
+                // -- Min rectangle is a line
+                return ComputeMaximumLine(_convexHullPts, _inputGeom.Factory);
             }
 
             // deltas for the base segment of the minimum diameter
             double dx = _minBaseSeg.P1.X - _minBaseSeg.P0.X;
             double dy = _minBaseSeg.P1.Y - _minBaseSeg.P0.Y;
-
-            /*
-            double c0 = computeC(dx, dy, minBaseSeg.p0);
-            double c1 = computeC(dx, dy, minBaseSeg.p1);
-            */
 
             double minPara = double.MaxValue;
             double maxPara = -double.MaxValue;
@@ -334,6 +343,37 @@ namespace NetTopologySuite.Algorithm
                 new[] { p0, p1, p2, p3, p0 });
             return _inputGeom.Factory.CreatePolygon(shell);
 
+        }
+
+        /// <summary>
+        /// Creates a line of maximum extent from the provided vertices
+        /// </summary>
+        /// <param name="pts">The vertices</param>
+        /// <param name="factory">The geometry factory</param>
+        /// <returns>The line of maximum extent</returns>
+        private static LineString ComputeMaximumLine(Coordinate[] pts, GeometryFactory factory)
+        {
+            //-- find max and min pts for X and Y
+            Coordinate ptMinX = null;
+            Coordinate ptMaxX = null;
+            Coordinate ptMinY = null;
+            Coordinate ptMaxY = null;
+            foreach (var p in pts)
+            {
+                if (ptMinX == null || p.X < ptMinX.X) ptMinX = p;
+                if (ptMaxX == null || p.X > ptMaxX.X) ptMaxX = p;
+                if (ptMinY == null || p.Y < ptMinY.Y) ptMinY = p;
+                if (ptMaxY == null || p.Y > ptMaxY.Y) ptMaxY = p;
+            }
+            var p0 = ptMinX;
+            var p1 = ptMaxX;
+            //-- line is vertical - use Y pts
+            if (p0.X == p1.X)
+            {
+                p0 = ptMinY;
+                p1 = ptMaxY;
+            }
+            return factory.CreateLineString(new Coordinate[] { p0.Copy(), p1.Copy() });
         }
 
         private static double ComputeC(double a, double b, Coordinate p)
