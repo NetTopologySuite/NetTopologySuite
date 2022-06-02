@@ -73,16 +73,19 @@ namespace Open.Topology.TestRunner.Utility
         public static Geometry ReadGeometriesFromWkbHexString(string wkb, NtsGeometryServices services)
         {
             var reader = new WKBReader(services);
+            
             var fileReader = new WKBHexFileReader(reader);
             var geomList = new List<Geometry>();
-            using (var ms = new MemoryStream())
+            using (var sw = new StreamWriter(new MemoryStream()))
             {
-                new StreamWriter(ms).Write(wkb);
-                geomList.AddRange(fileReader.Read(ms));
+                sw.Write(wkb);
+                sw.Flush();
+                sw.BaseStream.Seek(0, SeekOrigin.Begin);
+                geomList.AddRange(fileReader.Read(sw.BaseStream));
             }
 
             if (geomList.Count == 1)
-                return geomList[1];
+                return geomList[0];
 
             return services.CreateGeometryFactory().CreateGeometryCollection(GeometryFactory.ToGeometryArray(geomList));
         }

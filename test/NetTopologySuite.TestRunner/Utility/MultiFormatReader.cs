@@ -53,7 +53,7 @@ namespace Open.Topology.TestRunner.Utility
         /// <exception cref="ParseException"></exception>
         public Geometry Read(string geomStr)
         {
-            string trimStr = geomStr.Trim();
+            string trimStr = geomStr.Replace("\n", "").Trim();
             if (IsHex(trimStr, MaxCharsToCheck))
                 return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _services);
             return _wktReader.Read(trimStr);
