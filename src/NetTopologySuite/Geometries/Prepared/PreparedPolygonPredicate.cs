@@ -94,10 +94,10 @@ namespace NetTopologySuite.Geometries.Prepared
                 var pt = (Point)testGeom.GetGeometryN(i);
                 var p = pt.Coordinate;
                 var loc = _targetPointLocator.Locate(p);
-                if (loc != Location.Exterior)
-                    return true;
+                if (loc == Location.Exterior)
+                    return false;
             }
-            return false;
+            return true;
         }
 
         /// <summary>

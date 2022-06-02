@@ -89,7 +89,7 @@ namespace NetTopologySuite.Operation.Valid
              * Check for an intersection in the interior of both segments.
              * Collinear intersections by definition contain an interior intersection.
              */
-            if (_li.IsProper)
+            if (_li.IsProper || _li.IntersectionNum >= 2)
                 return TopologyValidationErrors.SelfIntersection;
 
             /*
