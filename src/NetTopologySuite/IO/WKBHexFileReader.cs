@@ -134,15 +134,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         private static bool IsAtEndOfFile(StreamReader bufferedReader)
         {
-            long position = bufferedReader.BaseStream.Position;
-
-            var tokenizer = new StreamTokenizer(bufferedReader);
-            Token t;
-            if (!tokenizer.NextToken(out t) || t is EofToken)
-                return true;
-
-            bufferedReader.BaseStream.Seek(position, SeekOrigin.Begin);
-            return false;
+            return bufferedReader.EndOfStream;
         }
     }
 }
