@@ -20,11 +20,6 @@ namespace NetTopologySuite.Tests.XUnit
         public TestBufferJagged2() : base("TestBufferJagged.xml") { }
     }
 
-    public class TestRobustBuffer : RobustXUnitRunner
-    {
-        public TestRobustBuffer() : base("TestRobustBuffer.xml") { }
-    }
-
     public class TestRobustRelate : RobustXUnitRunner
     {
         public TestRobustRelate() : base("TestRobustRelate.xml") { }

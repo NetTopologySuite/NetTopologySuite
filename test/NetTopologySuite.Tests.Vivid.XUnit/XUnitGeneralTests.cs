@@ -63,6 +63,7 @@ namespace NetTopologySuite.Tests.XUnit
         {
             TestAll();
         }
+
         protected override void TestAll()
         {
             foreach (string file in Directory.GetFiles(Path.Combine(TestRunnerDirectory, TestLocation)))

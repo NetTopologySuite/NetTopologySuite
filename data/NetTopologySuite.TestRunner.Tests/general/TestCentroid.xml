@@ -58,7 +58,7 @@
 <case>
   <desc>L - elongated horseshoe</desc>
   <a>    LINESTRING (80 0, 80 120, 120 120, 120 0))
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (100 68.57142857142857)   </op></test>
 </case>
 
@@ -71,22 +71,22 @@
 
 <case>
   <desc>mL - two concentric rings, offset</desc>
-  <a>    MULTILINESTRING ((0 0, 0 200, 200 200, 200 0, 0 0),
-  (60 180, 20 180, 20 140, 60 140, 60 180))
+  <a>    MULTILINESTRING ((0 0, 0 200, 200 200, 200 0, 0 0), 
+  (60 180, 20 180, 20 140, 60 140, 60 180))  
 </a>
 <test><op name="getCentroid" arg1="A" >    POINT (90 110)   </op></test>
 </case>
 
 <case>
   <desc>mL - complicated symmetrical collection of lines</desc>
-  <a>    MULTILINESTRING ((20 20, 60 60),
-  (20 -20, 60 -60),
-  (-20 -20, -60 -60),
-  (-20 20, -60 60),
-  (-80 0, 0 80, 80 0, 0 -80, -80 0),
-  (-40 20, -40 -20),
-  (-20 40, 20 40),
-  (40 20, 40 -20),
+  <a>    MULTILINESTRING ((20 20, 60 60), 
+  (20 -20, 60 -60), 
+  (-20 -20, -60 -60), 
+  (-20 20, -60 60), 
+  (-80 0, 0 80, 80 0, 0 -80, -80 0), 
+  (-40 20, -40 -20), 
+  (-20 40, 20 40), 
+  (40 20, 40 -20), 
   (20 -40, -20 -40)) </a>
 <test><op name="getCentroid" arg1="A" >    POINT (0 0)   </op></test>
 </case>
@@ -112,18 +112,18 @@
 
 <case>
   <desc>A - box with offset hole (showing difference between area and line centroid)</desc>
-  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0),
+  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0), 
   (60 180, 20 180, 20 140, 60 140, 60 180))
-   </a>
+	 </a>
 <test><op name="getCentroid" arg1="A" >    POINT (102.5 97.5)  </op></test>
 </case>
 
 <case>
   <desc>A - box with 2 symmetric holes </desc>
-  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0),
-  (60 180, 20 180, 20 140, 60 140, 60 180),
+  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0), 
+  (60 180, 20 180, 20 140, 60 140, 60 180), 
   (180 60, 140 60, 140 20, 180 20, 180 60))
-   </a>
+	 </a>
 <test><op name="getCentroid" arg1="A" >   POINT (100 100)   </op></test>
 </case>
 
@@ -143,91 +143,91 @@
 
 <case>
   <desc>mA - symmetric angles</desc>
-  <a>    MULTIPOLYGON (((0 40, 0 140, 140 140, 140 120, 20 120, 20 40, 0 40)),
-  ((0 0, 0 20, 120 20, 120 100, 140 100, 140 0, 0 0)))
-  </a>
+  <a>    MULTIPOLYGON (((0 40, 0 140, 140 140, 140 120, 20 120, 20 40, 0 40)), 
+  ((0 0, 0 20, 120 20, 120 100, 140 100, 140 0, 0 0))) 
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (70 70)   </op></test>
 </case>
 
 <case>
   <desc>GC - two adjacent polygons (showing that centroids are additive) </desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((0 200, 20 180, 20 140, 60 140, 200 0, 0 0, 0 200)),
-  POLYGON ((200 200, 0 200, 20 180, 60 180, 60 140, 200 0, 200 200)))
-  </a>
+  <a>    GEOMETRYCOLLECTION (POLYGON ((0 200, 20 180, 20 140, 60 140, 200 0, 0 0, 0 200)), 
+  POLYGON ((200 200, 0 200, 20 180, 60 180, 60 140, 200 0, 200 200))) 
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (102.5 97.5)   </op></test>
 </case>
 
 <case>
   <desc>GC - heterogeneous collection of lines, points</desc>
-  <a>    GEOMETRYCOLLECTION (LINESTRING (80 0, 80 120, 120 120, 120 0),
+  <a>    GEOMETRYCOLLECTION (LINESTRING (80 0, 80 120, 120 120, 120 0), 
   MULTIPOINT ((20 60), (40 80), (60 60)))
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (100 68.57142857142857)   </op></test>
 </case>
 
 <case>
   <desc>GC - heterogeneous collection of polygons, line</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)),
-  LINESTRING (80 0, 80 80, 120 40))
-  </a>
+  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)), 
+  LINESTRING (80 0, 80 80, 120 40)) 
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (20 20)   </op></test>
 </case>
 
 <case>
   <desc>GC - collection of polygons, lines, points</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)),
-  LINESTRING (80 0, 80 80, 120 40),
+  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)), 
+  LINESTRING (80 0, 80 80, 120 40), 
   MULTIPOINT ((20 60), (40 80), (60 60)))
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (20 20)   </op></test>
 </case>
 
 <case>
   <desc>GC - collection of zero-area polygons and lines</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
   LINESTRING (20 20, 30 30))
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (25 25)   </op></test>
 </case>
 
 <case>
   <desc>GC - collection of zero-area polygons and zero-length lines</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
   LINESTRING (20 20, 20 20))
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (15 15)   </op></test>
 </case>
 
 <case>
   <desc>GC - collection of zero-area polygons, zero-length lines, and points</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
   LINESTRING (20 20, 20 20),
   MULTIPOINT ((20 10), (10 20)) )
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (15 15)   </op></test>
 </case>
 
 <case>
   <desc>GC - collection of zero-area polygons, zero-length lines, and points</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
   LINESTRING (20 20, 20 20),
   POINT EMPTY )
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (15 15)   </op></test>
 </case>
 
 <case>
   <desc>GC - collection of zero-area polygons, zero-length lines, and points</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
   LINESTRING EMPTY,
   POINT EMPTY )
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (10 10)   </op></test>
 </case>
 
 <case>
   <desc>GC - collection with empty polygon, line, and point</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON EMPTY,
+  <a>    GEOMETRYCOLLECTION (POLYGON EMPTY, 
   LINESTRING (20 20, 30 30, 40 40),
   MULTIPOINT ((20 10), (10 20)) )
   </a>
@@ -236,7 +236,7 @@
 
 <case>
   <desc>GC - collection with empty polygon, empty line, and point</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON EMPTY,
+  <a>    GEOMETRYCOLLECTION (POLYGON EMPTY, 
   LINESTRING EMPTY,
   POINT (10 10) )
   </a>
@@ -245,7 +245,7 @@
 
 <case>
   <desc>GC - collection with empty polygon, empty line, and empty point</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON EMPTY,
+  <a>    GEOMETRYCOLLECTION (POLYGON EMPTY, 
   LINESTRING EMPTY,
   POINT EMPTY )
   </a>
@@ -254,9 +254,9 @@
 
 <case>
   <desc>GC - overlapping polygons </desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((20 100, 20 -20, 60 -20, 60 100, 20 100)),
+  <a>    GEOMETRYCOLLECTION (POLYGON ((20 100, 20 -20, 60 -20, 60 100, 20 100)), 
   POLYGON ((-20 60, 100 60, 100 20, -20 20, -20 60)))
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (40 40)   </op></test>
 </case>
 
@@ -279,7 +279,7 @@
 56.529000000000 25.2105000000,
 56.528833333300 25.2103333333,
 56.528666666700 25.2101666667))
-  </a>
+	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (56.52883333335 25.21033333335)  </op></test>
 </case>
 

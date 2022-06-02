@@ -2,28 +2,28 @@
 
 namespace NetTopologySuite.Tests.XUnit
 {
-    public abstract class ExternalXUnitRunner : XUnitRunner
+    public abstract class MiscXUnitRunner : XUnitRunner
     {
-        protected ExternalXUnitRunner(string testFile) : base(testFile) { }
+        protected MiscXUnitRunner(string testFile) : base(testFile) { }
 
         protected override string TestLocation => "misc";
     }
 
-    public class TestGeosBuffer : ExternalXUnitRunner
+    public class TestGeosBuffer : MiscXUnitRunner
     {
         public TestGeosBuffer() : base("GEOSBuffer.xml") { }
     }
 
-    public class TestGeosBug356Buffer : ExternalXUnitRunner
+    public class TestGeosBug356Buffer : MiscXUnitRunner
     {
         public TestGeosBug356Buffer() : base("geos-bug356-buffer.xml") { }
     }
-    public class TestGeosBug838Union : ExternalXUnitRunner
+    public class TestGeosBug838Union : MiscXUnitRunner
     {
         public TestGeosBug838Union() : base("geos-bug838-union.xml") { }
     }
 
-    public class TestBufferExternal : ExternalXUnitRunner
+    public class TestBufferExternal : MiscXUnitRunner
     {
         public TestBufferExternal() : base("TestBufferExternal.xml") { }
 
@@ -40,22 +40,22 @@ namespace NetTopologySuite.Tests.XUnit
         }
     }
 
-    public class TestBufferExternal2 : ExternalXUnitRunner
+    public class TestBufferExternal2 : MiscXUnitRunner
     {
         public TestBufferExternal2() : base("TestBufferExternal2.xml") { }
     }
 
-    public class TestBufferJagged : ExternalXUnitRunner
+    public class TestBufferJagged : MiscXUnitRunner
     {
         public TestBufferJagged() : base("TestBufferJagged.xml") { }
     }
 
-    public class TestInvalidA : ExternalXUnitRunner
+    public class TestInvalidA : MiscXUnitRunner
     {
         public TestInvalidA() : base("TestInvalidA.xml") { }
     }
 
-    public class TestOverlay : ExternalXUnitRunner
+    public class TestOverlay : MiscXUnitRunner
     {
         public TestOverlay() : base("TestOverlay.xml") { }
 
@@ -82,11 +82,10 @@ namespace NetTopologySuite.Tests.XUnit
         {
             base.Test04();
         }
+    }
 
-        public class TestValid : ExternalXUnitRunner
-        {
-            public TestValid() : base("TestValid.xml") { }
-        }
-
+    public class TestValid : MiscXUnitRunner
+    {
+        public TestValid() : base("TestValid.xml") { }
     }
 }
