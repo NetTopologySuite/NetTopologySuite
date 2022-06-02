@@ -16,6 +16,16 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private static double ROOT2 = Math.Sqrt(2);
 
         [Test]
+        public void HashCollision()
+        {
+            var seg1 = new LineSegment(0, 0, 10, 0);
+            var seg2 = new LineSegment(0, 10, 10, 10);
+
+            Assert.AreNotEqual(seg1.GetHashCode(), seg2.GetHashCode());
+        }
+
+
+        [Test]
         public void TestProjectionFactor()
         {
             // zero-length line
