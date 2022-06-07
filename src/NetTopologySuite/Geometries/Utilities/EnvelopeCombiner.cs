@@ -39,6 +39,28 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </returns>
         public static Envelope Combine(IEnumerable<Geometry> geoms) => new EnvelopeCombiner(geoms).Combine();
 
+        /// <summary>
+        /// Gets the <see cref="Geometry"/> representation of the result of <see cref="Combine(Geometry[])"/>.
+        /// </summary>
+        /// <param name="geoms">
+        /// The list of input geometries.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Geometry"/> representation of the result of <see cref="Combine(Geometry[])"/>.
+        /// </returns>
+        public static Geometry CombineAsGeometry(params Geometry[] geoms) => new EnvelopeCombiner(geoms).CombineAsGeometry();
+
+        /// <summary>
+        /// Gets the <see cref="Geometry"/> representation of the result of <see cref="Combine(IEnumerable{Geometry})"/>.
+        /// </summary>
+        /// <param name="geoms">
+        /// The list of input geometries.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Geometry"/> representation of the result of <see cref="Combine(IEnumerable{Geometry})"/>.
+        /// </returns>
+        public static Geometry CombineAsGeometry(IEnumerable<Geometry> geoms) => new EnvelopeCombiner(geoms).CombineAsGeometry();
+
         private readonly Geometry[] _geoms;
 
         /// <summary>
@@ -100,6 +122,33 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Geometry"/> representation of the result of <see cref="Combine()"/>.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Geometry"/> representation of the result of <see cref="Combine()"/>.
+        /// </returns>
+        public Geometry CombineAsGeometry()
+        {
+            Envelope env = Combine();
+            GeometryFactory factory = null;
+            foreach (var geom in _geoms)
+            {
+                if (!(geom is null))
+                {
+                    factory = geom.Factory;
+                    break;
+                }
+            }
+
+            if (factory is null)
+            {
+                factory = NtsGeometryServices.Instance.CreateGeometryFactory();
+            }
+
+            return factory.ToGeometry(env);
         }
     }
 }
