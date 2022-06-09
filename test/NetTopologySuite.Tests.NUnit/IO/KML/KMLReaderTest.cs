@@ -248,6 +248,19 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
            new IDictionary<string, string>[] { null }
            );
         }
+       
+        [Test]
+        public void TestCoordinatesWithWhitespace()
+        {
+            CheckParsingResult(new KMLReader(),
+                "<LineString>" +
+                "   <coordinates> 1.0,2.0" +
+                "   -1.0,-2.0 </coordinates>" +
+                "</LineString>",
+                "LINESTRING (1 2, -1 -2)",
+                new IDictionary<string, string>[]{ null, null }
+            );
+        }
 
         private void CheckExceptionThrown(string kmlString, string expectedError)
         {

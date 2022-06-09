@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
@@ -17,6 +18,7 @@ namespace NetTopologySuite.IO.KML
         //private final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         private readonly GeometryFactory geometryFactory;
         private readonly ISet<string> attributeNames;
+        private readonly Regex whitespaceRegex = new Regex(@"\s+");
 
         private const string POINT = "Point";
         private const string LINESTRING = "LineString";
@@ -113,6 +115,8 @@ namespace NetTopologySuite.IO.KML
             string coordinates = xmlStreamReader.ReadElementString();
             if (string.IsNullOrWhiteSpace(coordinates))
                 RaiseParseError("Empty coordinates");
+            
+            coordinates = whitespaceRegex.Replace(coordinates.Trim(), " ");
 
             double[] parsedOrdinates = {double.NaN, double.NaN, double.NaN};
             var coordinateList = new List<Coordinate>();
