@@ -22,6 +22,25 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         }
 
         [Test]
+        public void TestNearestNeighboursTreesEmpty()
+        {
+            var tree = new STRtree<Geometry>();
+            var tree2 = new STRtree<Geometry>();
+
+            var nn = tree.NearestNeighbour(tree2, new GeometryItemDistance());
+            Assert.That(nn, Is.Null);
+        }
+
+        [Test]
+        public void TestNearestNeighbourEmpty()
+        {
+            var tree = new STRtree<Geometry>();
+            var geom = Read("POINT (1 1)");
+            var nn = tree.NearestNeighbour(geom.EnvelopeInternal, geom, new GeometryItemDistance());
+            Assert.That(nn, Is.Null);
+        }
+
+        [Test]
         public void TestNearestNeighbours()
         {
             CheckNN(POINTS_A,
@@ -51,6 +70,16 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         {
             CheckWithinDistance(POINTS_A, POINTS_B, 2, true);
             CheckWithinDistance(POINTS_A, POINTS_B, 1, false);
+        }
+
+        [Test]
+        public void TestKNearestNeighborsEmpty()
+        {
+            var tree = new STRtree<Geometry>();
+            var geom = Read("POINT (1 1)");
+            var nn = tree.NearestNeighbour(geom.EnvelopeInternal, geom, new GeometryItemDistance(), 5);
+            Assert.That(nn, Is.Not.Null);
+            Assert.That(nn.Length, Is.EqualTo(0));
         }
 
         private void CheckNN(string wktItems, string wktExpected)

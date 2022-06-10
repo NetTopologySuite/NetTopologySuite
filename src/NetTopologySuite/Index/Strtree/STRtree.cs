@@ -348,6 +348,8 @@ namespace NetTopologySuite.Index.Strtree
         /// <returns>The nearest item in this tree or <c>null</c> if the tree is empty</returns>
         public TItem NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist)
         {
+            if (IsEmpty) return default;
+
             var bnd = new ItemBoundable<Envelope, TItem>(env, item);
             var bp = new BoundablePair<TItem>(Root, bnd, itemDist);
             return NearestNeighbour(bp)[0];
@@ -526,7 +528,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Finds k items in this tree which are the top k nearest neighbors to the given <c>item</c>,
+        /// Finds up to <paramref name="k"/> items in this tree which are the top k nearest neighbors to the given <c>item</c>,
         /// using <c>itemDist</c> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
@@ -538,15 +540,19 @@ namespace NetTopologySuite.Index.Strtree
         /// The query <c>item</c> does <b>not</b> have to be
         /// contained in the tree, but it does
         /// have to be compatible with the <c>itemDist</c>
-        /// distance metric.
+        /// distance metric.<para/>
+        /// If the tree size is smaller than k fewer items will be returned.
+        /// If the tree is empty an array of size 0 is returned.
         /// </summary>
         /// <param name="env">The envelope of the query item</param>
-        /// <param name="item">The item to find the nearest neighbour of</param>
+        /// <param name="item">The item to find the nearest neighbours of</param>
         /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
-        /// <param name="k">The K nearest items in kNearestNeighbour</param>
-        /// <returns>K nearest items in this tree</returns>
+        /// <param name="k">The maximum number of nearest items to search for</param>
+        /// <returns>An array of the nearest items found (with length between 0 and <paramref name="k"/>)</returns>
         public TItem[] NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist, int k)
         {
+            if (IsEmpty) return Array.Empty<TItem>();
+
             var bnd = new ItemBoundable<Envelope, TItem> (env, item);
             var bp = new BoundablePair<TItem>(Root, bnd, itemDist);
             return NearestNeighbourK(bp, k);
