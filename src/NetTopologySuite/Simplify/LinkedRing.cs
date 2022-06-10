@@ -1,6 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Algorithm.Hull
+namespace NetTopologySuite.Simplify
 {
     internal class LinkedRing
     {

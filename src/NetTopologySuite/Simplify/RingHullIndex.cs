@@ -1,23 +1,23 @@
 ﻿using NetTopologySuite.Geometries;
 using System.Collections.Generic;
 
-namespace NetTopologySuite.Algorithm.Hull
+namespace NetTopologySuite.Simplify
 {
     internal class RingHullIndex
     {
 
         //TODO: use a proper spatial index
-        List<RingHull> hulls = new List<RingHull>();
+        private readonly List<RingHull> _hulls = new List<RingHull>();
 
         public void Add(RingHull ringHull)
         {
-            hulls.Add(ringHull);
+            _hulls.Add(ringHull);
         }
 
         public List<RingHull> Query(Envelope queryEnv)
         {
             var result = new List<RingHull>();
-            foreach (var hull in hulls)
+            foreach (var hull in _hulls)
             {
                 var envHull = hull.Envelope;
                 if (queryEnv.Intersects(envHull))

@@ -1,12 +1,13 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 using System;
 using System.Collections.Generic;
 
-namespace NetTopologySuite.Algorithm.Hull
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Computes hulls which respect the boundaries of polygonal geometry.
+    /// Computes topology-preserving simplified hulls of polygonal geometry.
     /// Both outer and inner hulls can be computed.
     /// Outer hulls contain the input geometry and are larger in area.
     /// Inner hulls are contained by the input geometry and are smaller in area.
@@ -15,14 +16,15 @@ namespace NetTopologySuite.Algorithm.Hull
     /// with the input geometry.
     /// <para/>
     /// Hulls are generally concave if the input is.
-    /// Computed hulls do not contain any self-intersections or overlaps,
+    /// Computed hulls are topology-preserving: 
+    /// they do not contain any self-intersections or overlaps, 
     /// so the result polygonal geometry is valid.
     /// <para/>
     /// Polygons with holes and MultiPolygons are supported.
     /// The result has the same geometric type and structure as the input.
     /// <para/>
     /// The number of vertices in the computed hull is determined by a target parameter.
-    /// Two different parameters are supported:
+    /// Two parameters are supported:
     /// <list type="bullet">
     /// <item><term>Vertex Number fraction</term><description>the fraction of the input vertices retained in the result.
     /// Value 1 produces the original geometry.
@@ -35,28 +37,27 @@ namespace NetTopologySuite.Algorithm.Hull
     /// </list>
     /// The algorithm ensures that the result does not cause the target parameter
     /// to be exceeded. This allows computing outer or inner hulls
-    /// with a small area delta ratio to be an effective way of removing
+    /// with a small area delta ratio as an effective way of removing
     /// narrow gores and spikes.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class PolygonHull
+    public class PolygonHullSimplifier
     {
         /// <summary>
-        /// Computes a boundary-respecting hull of a polygonal geometry,
+        /// Computes topology-preserving simplified hull of a polygonal geometry,
         /// with hull shape determined by a target parameter
         /// specifying the fraction of the input vertices retained in the result.
         /// Larger values compute less concave results.
         /// A value of 1 produces the convex hull; a value of 0 produces the original geometry.
-        /// An outer hull is computed if the parameter is positive,
-        /// an inner hull is computed if it is negative.
+        /// Either outer or inner hulls can be computed.
         /// </summary>
         /// <param name="geom">The polygonal geometry to process</param>
+        /// <param name="isOuter">A flag indicating whether to compute an outer or inner hull</param>
         /// <param name="vertexNumFraction">The target fraction of number of input vertices in result</param>
         /// <returns>The hull geometry</returns>
-        public static Geometry Hull(Geometry geom, double vertexNumFraction)
+        public static Geometry Hull(Geometry geom, bool isOuter, double vertexNumFraction)
         {
-            bool isOuter = vertexNumFraction >= 0;
-            var hull = new PolygonHull(geom, isOuter);
+            var hull = new PolygonHullSimplifier(geom, isOuter);
             hull.VertexNumFraction = Math.Abs(vertexNumFraction);
             return hull.GetResult();
         }
@@ -66,16 +67,15 @@ namespace NetTopologySuite.Algorithm.Hull
         /// specifying the ratio of maximum difference in area to original area.
         /// Larger values compute less concave results.
         /// A value of 0 produces the original geometry.
-        /// An outer hull is computed if the parameter is positive,
-        /// an inner hull is computed if it is negative.
+        /// Either outer or inner hulls can be computed.
         /// </summary>
         /// <param name="geom">The polygonal geometry to process</param>
+        /// <param name="isOuter">A flag indicating whether to compute an outer or inner hull</param>
         /// <param name="areaDeltaRatio">The target ratio of area difference to original area</param>
         /// <returns>The hull geometry</returns>
-        public static Geometry HullByAreaDelta(Geometry geom, double areaDeltaRatio)
+        public static Geometry HullByAreaDelta(Geometry geom, bool isOuter, double areaDeltaRatio)
         {
-            bool isOuter = areaDeltaRatio >= 0;
-            var hull = new PolygonHull(geom, isOuter);
+            var hull = new PolygonHullSimplifier(geom, isOuter);
             hull.AreaDeltaRatio = Math.Abs(areaDeltaRatio);
             return hull.GetResult();
         }
@@ -88,13 +88,13 @@ namespace NetTopologySuite.Algorithm.Hull
 
         /// <summary>
         /// Creates a new instance
-        /// to compute a hull of a polygonal geometry.
+        /// to compute a simplified hull of a polygonal geometry.
         /// An outer or inner hull is computed
         /// depending on the value of <paramref name="isOuter"/>. 
         /// </summary>
         /// <param name="inputGeom">The polygonal geometry to process</param>
         /// <param name="isOuter">Indicates whether to compute an outer or inner hull</param>
-        public PolygonHull(Geometry inputGeom, bool isOuter)
+        public PolygonHullSimplifier(Geometry inputGeom, bool isOuter)
         {
             _inputGeom = inputGeom;
             _geomFactory = inputGeom.Factory;

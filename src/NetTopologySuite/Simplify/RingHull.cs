@@ -1,10 +1,11 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Utilities;
 using System;
 using System.Collections.Generic;
 
-namespace NetTopologySuite.Algorithm.Hull
+namespace NetTopologySuite.Simplify
 {
     /// <summary>
     /// Computes the outer or inner hull of a ring
