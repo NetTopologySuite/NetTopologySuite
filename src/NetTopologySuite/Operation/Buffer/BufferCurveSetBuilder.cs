@@ -280,6 +280,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         private const int MAX_INVERTED_RING_SIZE = 9;
+        private const int INVERTED_CURVE_VERTEX_FACTOR = 4;
         private const double NEARNESS_FACTOR = 0.99;
 
         /// <summary>
@@ -317,10 +318,11 @@ namespace NetTopologySuite.Operation.Buffer
             if (inputPts.Length >= MAX_INVERTED_RING_SIZE) return false;
 
             /*
-             * An inverted curve has no more points than the input ring.
-             * This also eliminates concave inputs (which will produce fillet arcs)
+             * Don't check curves which are much larger than the input.
+             * This improves performance by avoiding checking some concave inputs 
+             * (which can produce fillet arcs with many more vertices)
              */
-            if (curvePts.Length > inputPts.Length) return false;
+            if (curvePts.Length > INVERTED_CURVE_VERTEX_FACTOR * inputPts.Length) return false;
 
             /*
              * Check if the curve vertices are all closer to the input ring
