@@ -18,16 +18,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Technique\GeographicCrs.txt" />
     <None Remove="Tests\Github\Issue566and567.wkt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Technique\GeographicCrs.txt" />
     <EmbeddedResource Include="Tests\Github\Issue566and567.wkt" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
