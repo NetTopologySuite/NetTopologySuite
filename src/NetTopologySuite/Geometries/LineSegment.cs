@@ -163,7 +163,7 @@ namespace NetTopologySuite.Geometries
         {
             int orient0 = (int)Orientation.Index(_p0, _p1, seg._p0);
             int orient1 = (int)Orientation.Index(_p0, _p1, seg._p1);
-            // this handles the case where the points are Curve or collinear
+            // this handles the case where the points are L or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
             // this handles the case where the points are R or collinear
