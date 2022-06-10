@@ -8,12 +8,6 @@ using System.Text;
 
 namespace NetTopologySuite.Algorithm.Hull
 {
-    /**
-     * 
-     * 
-     * @author
-     *
-     */
     /// <summary>
     /// Constructs a concave hull of a set of polygons, respecting
     /// the polygons as constraints.
@@ -359,12 +353,17 @@ namespace NetTopologySuite.Algorithm.Hull
                     /*
                      * Frame tris are adjacent to at most one border tri,
                      * which is opposite the frame corner vertex.
-                     * The opposite tri may be another frame tri. 
-                     * This is detected when it is processed,
-                     * since it is not in the hullTri set.
+                     * Or, the opposite tri may be another frame tri,
+                     * which is not added as a border tri.
                      */
                     int oppIndex = Tri.OppEdge(index);
-                    AddBorderTri(tri, oppIndex);
+                    var oppTri = tri.GetAdjacent(oppIndex);
+                    bool isBorderTri = oppTri != null && !IsFrameTri(oppTri, frameCorners);
+                    if (isBorderTri)
+                    {
+                        AddBorderTri(tri, oppIndex);
+                    }
+                    //-- remove the frame tri
                     tri.Remove();
                 }
                 else
@@ -415,7 +414,7 @@ namespace NetTopologySuite.Algorithm.Hull
         {
             while (true)
             {
-                var holeTri = FindHoleTri(_hullTris);
+                var holeTri = FindHoleSeedTri(_hullTris);
                 if (holeTri == null)
                     return;
                 AddBorderTris(holeTri);
@@ -424,22 +423,35 @@ namespace NetTopologySuite.Algorithm.Hull
             }
         }
 
-        private Tri FindHoleTri(ISet<Tri> tris)
+        private Tri FindHoleSeedTri(ISet<Tri> tris)
         {
             foreach (var tri in tris)
             {
-                if (IsHoleTri(tri))
+                if (IsHoleSeedTri(tri))
                     return tri;
             }
             return null;
         }
 
-        private bool IsHoleTri(Tri tri)
+        private bool IsHoleSeedTri(Tri tri)
         {
+            if (IsBorderTri(tri))
+                return false;
+
             for (int i = 0; i < 3; i++)
             {
                 if (tri.HasAdjacent(i)
                     && tri.GetLength(i) > _maxEdgeLength)
+                    return true;
+            }
+            return false;
+        }
+
+        private bool IsBorderTri(Tri tri)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (!tri.HasAdjacent(i))
                     return true;
             }
             return false;
