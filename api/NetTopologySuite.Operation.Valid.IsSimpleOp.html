@@ -1,0 +1,517 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class IsSimpleOp
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class IsSimpleOp
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp">
+  
+  
+  <h1 id="NetTopologySuite_Operation_Valid_IsSimpleOp" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp" class="text-break">Class IsSimpleOp
+  </h1>
+  <div class="markdown level0 summary"><p>Tests whether a <code>Geometry</code> is simple as defined by the OGC SFS specification.</p>
+<p>
+Simplicity is defined for each <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>
+type as follows:
+<ul><li>Pointgeometries are simple.</li><li>MultiPointgeometries are simple if every point is unique</li><li>LineStringgeometries are simple if they do not self-intersect at interior points
+(i.e.points other than the endpoints).
+Closed linestrings which intersect only at their endpoints are simple
+(i.e. valid <strong>LinearRings</strong>s.
+</li><li>MultiLineStringgeometries are simple if 
+their elements are simple and they intersect only at points 
+which are boundary points of both elements. 
+(The notion of boundary points can be user-specified - see below).</li><li>Polygonalgeometries have no definition of simplicity.
+The <code>IsSimple</code> code checks if all polygon rings are simple.
+(Note: this means that<tt>IsSimple</tt> cannot be used to test 
+for <em>all</em> self-intersections in <tt>Polygon</tt> s.  
+In order to check if a <tt>IPolygonal</tt> geometry has self-intersections,
+use <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a>.</li><li>GeometryCollectiongeometries are simple if all their elements are simple.</li><li>Empty geometries are simple</li></ul>
+For <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a> geometries the evaluation of simplicity
+can be customized by supplying a <a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a>
+to define how boundary points are determined.
+The default is the SFS-standard <a class="xref" href="NetTopologySuite.Algorithm.BoundaryNodeRules.html#NetTopologySuite_Algorithm_BoundaryNodeRules_Mod2BoundaryRule">Mod2BoundaryRule</a>.
+<p>
+Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s (rings)
+have no boundary.
+This means that an intersection at the endpoints of
+two closed LineStrings makes the geometry non-simple.
+This means that an intersection at their endpoints makes the geometry non-simple.
+If it is required to test whether a set of <code>LineString</code>s touch
+only at their endpoints, use <a class="xref" href="NetTopologySuite.Algorithm.BoundaryNodeRules.html#NetTopologySuite_Algorithm_BoundaryNodeRules_EndpointBoundaryRule">EndpointBoundaryRule</a>.
+For example, this can be used to validate that a collection of lines
+form a topologically valid linear network.
+<p>
+By default this class finds a single non-simple location.
+To find all non-simple locations, set <a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_FindAllLocations">FindAllLocations</a>
+before calling <a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple">IsSimple()</a>, and retrieve the locations
+via <a class="xref" href="NetTopologySuite.Operation.Valid.IsSimpleOp.html#NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocations">NonSimpleLocations</a>.
+This can be used to find all intersection points in a linear network.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">IsSimpleOp</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Valid.html">NetTopologySuite.Operation.Valid</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_Valid_IsSimpleOp_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class IsSimpleOp</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L93">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor(NetTopologySuite.Geometries.Geometry)">IsSimpleOp(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IsSimpleOp(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Algorithm_IBoundaryNodeRule_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Algorithm.IBoundaryNodeRule)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L104">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Algorithm_IBoundaryNodeRule_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Algorithm.IBoundaryNodeRule)">IsSimpleOp(Geometry, IBoundaryNodeRule)</h4>
+  <div class="markdown level1 summary"><p>Creates a simplicity checker using a given <a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IsSimpleOp(Geometry geom, IBoundaryNodeRule boundaryNodeRule)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a></td>
+        <td><span class="parametername">boundaryNodeRule</span></td>
+        <td><p>The boundary node rule to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp_FindAllLocations.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L111">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp_FindAllLocations_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp_FindAllLocations" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.FindAllLocations">FindAllLocations</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating if all non-simple points should be reported.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FindAllLocations { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocation.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L130">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocation_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocation" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocation">NonSimpleLocation</h4>
+  <div class="markdown level1 summary"><p>Gets the coordinate for an location where the geometry
+fails to be simple (i.e. where it has a non-boundary
+self-intersection).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate NonSimpleLocation { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><p>A <code>Coordinate</code> for the location of the non-boundary self-intersection
+or <code>null</code> if the geometry is simple</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocations.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L144">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocations_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp_NonSimpleLocations" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.NonSimpleLocations">NonSimpleLocations</h4>
+  <div class="markdown level1 summary"><p>Gets all non-simple intersection locations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;Coordinate&gt; NonSimpleLocations { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
+        <td><p>A list of the <code>Coordinate</code>s of non-simple locations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp_GetNonSimpleLocation_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L77">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp_GetNonSimpleLocation_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp_GetNonSimpleLocation_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.GetNonSimpleLocation(NetTopologySuite.Geometries.Geometry)">GetNonSimpleLocation(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Gets a non-simple location in a geometry, if any.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Coordinate GetNonSimpleLocation(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The input geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><p>A non-simple location, or <code>null</code> if the geometry is simple</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L117">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple">IsSimple()</h4>
+  <div class="markdown level1 summary"><p>Tests whether the geometry is simple.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSimple()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the geometry is simple.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L66">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple*"></a>
+  <h4 id="NetTopologySuite_Operation_Valid_IsSimpleOp_IsSimple_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Valid.IsSimpleOp.IsSimple(NetTopologySuite.Geometries.Geometry)">IsSimple(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether a geometry is simple.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsSimple(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The input geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the geometry is simple</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a></div>
+      <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsEmpty">IsEmpty</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Valid_IsSimpleOp.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Valid.IsSimpleOp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Valid/IsSimpleOp.cs/#L59" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

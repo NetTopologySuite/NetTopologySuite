@@ -1,0 +1,888 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class NodingIntersectionFinder
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class NodingIntersectionFinder
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder">
+  
+  
+  <h1 id="NetTopologySuite_Noding_NodingIntersectionFinder" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder" class="text-break">Class NodingIntersectionFinder
+  </h1>
+  <div class="markdown level0 summary"><p>Finds non-noded intersections in a set of {@link SegmentString}s,
+if any exist.</p>
+<p>
+Non-noded intersections include:
+<p>The finder can be limited to finding only interior intersections
+by setting <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersectionsOnly">InteriorIntersectionsOnly</a>.</p>
+<p>
+By default only the first intersection is found,
+but all can be found by setting <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_FindAllIntersections">FindAllIntersections</a>.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">NodingIntersectionFinder</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Noding.html">NetTopologySuite.Noding</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Noding_NodingIntersectionFinder_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class NodingIntersectionFinder : ISegmentIntersector</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder__ctor_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.%23ctor(NetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L109">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder__ctor_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.#ctor*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder__ctor_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.#ctor(NetTopologySuite.Algorithm.LineIntersector)">NodingIntersectionFinder(LineIntersector)</h4>
+  <div class="markdown level1 summary"><p>Creates an intersection finder which finds an interior intersection if one exists</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NodingIntersectionFinder(LineIntersector li)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
+        <td><span class="parametername">li</span></td>
+        <td><p>the LineIntersector to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_CheckEndSegmentsOnly.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.CheckEndSegmentsOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L150">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_CheckEndSegmentsOnly_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CheckEndSegmentsOnly*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_CheckEndSegmentsOnly" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CheckEndSegmentsOnly">CheckEndSegmentsOnly</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets whether only end segments should be tested for intersection.
+This is a performance optimization that may be used if
+the segments have been previously noded by an appropriate algorithm.
+It may be known that any potential noding failures will occur only in
+end segments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CheckEndSegmentsOnly { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L167">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_Count_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.Count*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_Count" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets the count of intersections found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The intersection count.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_FindAllIntersections.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.FindAllIntersections%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L123">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_FindAllIntersections_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.FindAllIntersections*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_FindAllIntersections" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.FindAllIntersections">FindAllIntersections</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets whether all intersections should be computed.
+<remarks>
+When this is <code>false</code> (the default value), the value of <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_IsDone">IsDone</a>
+is <code>true</code> after the first intersection is found.
+Default is <code>false</code>.
+</remarks></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FindAllIntersections { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_HasIntersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.HasIntersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L155">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_HasIntersection_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.HasIntersection*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_HasIntersection" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.HasIntersection">HasIntersection</h4>
+  <div class="markdown level1 summary"><p>Tests whether an intersection was found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasIntersection { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.InteriorIntersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L173">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersection_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.InteriorIntersection*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersection" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.InteriorIntersection">InteriorIntersection</h4>
+  <div class="markdown level1 summary"><p>Gets the computed location of the intersection.
+Due to round-off, the location may not be exact.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Renamed to just Intersection&quot;)]
+public Coordinate InteriorIntersection { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersectionsOnly.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.InteriorIntersectionsOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L128">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersectionsOnly_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.InteriorIntersectionsOnly*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersectionsOnly" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.InteriorIntersectionsOnly">InteriorIntersectionsOnly</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether only interior (proper) intersections will be found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InteriorIntersectionsOnly { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_Intersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.Intersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L180">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_Intersection_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.Intersection*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_Intersection" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.Intersection">Intersection</h4>
+  <div class="markdown level1 summary"><p>Gets the computed location of the intersection.
+Due to round-off, the location may not be exact.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate Intersection { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_Intersections.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.Intersections%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L161">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_Intersections_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.Intersections*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_Intersections" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.Intersections">Intersections</h4>
+  <div class="markdown level1 summary"><p>Gets the intersections found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyCollection&lt;Coordinate&gt; Intersections { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
+        <td><p>A list of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_IntersectionSegments.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.IntersectionSegments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L185">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_IntersectionSegments_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.IntersectionSegments*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_IntersectionSegments" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.IntersectionSegments">IntersectionSegments</h4>
+  <div class="markdown level1 summary"><p>Gets the endpoints of the intersecting segments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate[] IntersectionSegments { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_IsDone.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.IsDone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L333">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_IsDone_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.IsDone*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_IsDone" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.IsDone">IsDone</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDone { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_KeepIntersections.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.KeepIntersections%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L137">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_KeepIntersections_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.KeepIntersections*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_KeepIntersections" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.KeepIntersections">KeepIntersections</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets whether intersection points are recorded.
+<remarks>
+If the only need is to count intersection points, this can be set to <code>false</code>.
+Default is <code>true</code>.
+</remarks></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool KeepIntersections { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_CreateAllIntersectionsFinder_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.CreateAllIntersectionsFinder(NetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L47">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateAllIntersectionsFinder_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateAllIntersectionsFinder*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateAllIntersectionsFinder_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateAllIntersectionsFinder(NetTopologySuite.Algorithm.LineIntersector)">CreateAllIntersectionsFinder(LineIntersector)</h4>
+  <div class="markdown level1 summary"><p>Creates a finder which tests if there is at least one intersection.
+The intersections are recorded for later inspection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NodingIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
+        <td><span class="parametername">li</span></td>
+        <td><p>A line intersector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html">NodingIntersectionFinder</a></td>
+        <td><p>A finder which finds all intersections.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_CreateAnyIntersectionFinder_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.CreateAnyIntersectionFinder(NetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L36">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateAnyIntersectionFinder_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateAnyIntersectionFinder*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateAnyIntersectionFinder_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateAnyIntersectionFinder(NetTopologySuite.Algorithm.LineIntersector)">CreateAnyIntersectionFinder(LineIntersector)</h4>
+  <div class="markdown level1 summary"><p>Creates a finder which tests if there is at least one intersection.
+Uses short-circuiting for efficient performance.
+The intersection found is recorded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NodingIntersectionFinder CreateAnyIntersectionFinder(LineIntersector li)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
+        <td><span class="parametername">li</span></td>
+        <td><p>A line intersector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html">NodingIntersectionFinder</a></td>
+        <td><p>A finder which tests if there is at least one intersection.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_CreateInteriorIntersectionCounter_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.CreateInteriorIntersectionCounter(NetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L88">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateInteriorIntersectionCounter_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateInteriorIntersectionCounter*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateInteriorIntersectionCounter_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateInteriorIntersectionCounter(NetTopologySuite.Algorithm.LineIntersector)">CreateInteriorIntersectionCounter(LineIntersector)</h4>
+  <div class="markdown level1 summary"><p>Creates a finder which counts all interior intersections.
+The intersections are note recorded to reduce memory usage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NodingIntersectionFinder CreateInteriorIntersectionCounter(LineIntersector li)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
+        <td><span class="parametername">li</span></td>
+        <td><p>A line intersector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html">NodingIntersectionFinder</a></td>
+        <td><p>A finder which counts all interior intersections.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_CreateInteriorIntersectionsFinder_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.CreateInteriorIntersectionsFinder(NetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L60">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateInteriorIntersectionsFinder_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateInteriorIntersectionsFinder*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateInteriorIntersectionsFinder_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateInteriorIntersectionsFinder(NetTopologySuite.Algorithm.LineIntersector)">CreateInteriorIntersectionsFinder(LineIntersector)</h4>
+  <div class="markdown level1 summary"><p>Creates a finder which finds all interior intersections.
+The intersections are recorded for later inspection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NodingIntersectionFinder CreateInteriorIntersectionsFinder(LineIntersector li)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
+        <td><span class="parametername">li</span></td>
+        <td><p>A line intersector</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html">NodingIntersectionFinder</a></td>
+        <td><p>A finder which finds all interior intersections.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_CreateIntersectionCounter_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.CreateIntersectionCounter(NetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L74">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateIntersectionCounter_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateIntersectionCounter*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_CreateIntersectionCounter_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.CreateIntersectionCounter(NetTopologySuite.Algorithm.LineIntersector)">CreateIntersectionCounter(LineIntersector)</h4>
+  <div class="markdown level1 summary"><p>Creates a finder which counts all intersections.
+The intersections are note recorded to reduce memory usage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static NodingIntersectionFinder CreateIntersectionCounter(LineIntersector li)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
+        <td><span class="parametername">li</span></td>
+        <td><p>A line intersector.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html">NodingIntersectionFinder</a></td>
+        <td><p>A finder which counts all intersections.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder_ProcessIntersections_NetTopologySuite_Noding_ISegmentString_System_Int32_NetTopologySuite_Noding_ISegmentString_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder.ProcessIntersections(NetTopologySuite.Noding.ISegmentString%2CSystem.Int32%2CNetTopologySuite.Noding.ISegmentString%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L198">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_NodingIntersectionFinder_ProcessIntersections_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.ProcessIntersections*"></a>
+  <h4 id="NetTopologySuite_Noding_NodingIntersectionFinder_ProcessIntersections_NetTopologySuite_Noding_ISegmentString_System_Int32_NetTopologySuite_Noding_ISegmentString_System_Int32_" data-uid="NetTopologySuite.Noding.NodingIntersectionFinder.ProcessIntersections(NetTopologySuite.Noding.ISegmentString,System.Int32,NetTopologySuite.Noding.ISegmentString,System.Int32)">ProcessIntersections(ISegmentString, Int32, ISegmentString, Int32)</h4>
+  <div class="markdown level1 summary"><p>This method is called by clients of the <a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a> class to process
+intersections for two segments of the <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s being intersected.<br>
+Note that some clients (such as <code>MonotoneChain</code>s) may optimize away
+this call for segment pairs which they have determined do not intersect
+(e.g. by an disjoint envelope test).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ProcessIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a></td>
+        <td><span class="parametername">e0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">segIndex0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a></td>
+        <td><span class="parametername">e1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">segIndex1</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Noding_NodingIntersectionFinder.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodingIntersectionFinder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Noding/NodingIntersectionFinder.cs/#L27" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Noding.Snapround
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Noding.Snapround
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Noding.Snapround">
+  
+  <h1 id="NetTopologySuite_Noding_Snapround" data-uid="NetTopologySuite.Noding.Snapround" class="text-break">Namespace NetTopologySuite.Noding.Snapround
+  </h1>
+  <div class="markdown level0 summary">
+<p>Contains classes to implement the Snap Rounding algorithm for noding linestrings.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.GeometryNoder.html">GeometryNoder</a></h4>
+      <section><p>Nodes the linework in a list of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s using Snap-Rounding
+to a given <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.</p>
+<p>
+The input coordinates do not need to be rounded to the
+precision model.
+All output coordinates are rounded to the precision model.
+</p><p>
+This class does <strong>not</strong> dissolve the output linework,
+so there may be duplicate linestrings in the output.
+Subsequent processing (e.g. polygonization) may require
+the linework to be unique.  Using <code>UnaryUnion</code> is one way
+to do this (although this is an inefficient approach).
+</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.HotPixel.html">HotPixel</a></h4>
+      <section><p>Implements a &quot;hot pixel&quot; as used in the Snap Rounding algorithm.
+A hot pixel is a square region centred
+on the rounded valud of the coordinate given,
+and of width equal to the size of the scale factor.
+It is a partially open region, which contains
+the interior of the tolerance square and
+the boundary
+<strong>minus</strong> the top and right segments.
+This ensures that every point of the space lies in a unique hot pixel.
+It also matches the rounding semantics for numbers.</p>
+<p>
+The hot pixel operations are all computed in the integer domain
+to avoid rounding problems.
+<p>
+Hot Pixels support being marked as nodes.
+This is used to prevent introducing nodes at line vertices
+which do not have other lines snapped to them.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.MCIndexPointSnapper.html">MCIndexPointSnapper</a></h4>
+      <section><p>&quot;Snaps&quot; all <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s in a <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a> containing
+<a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s to a given <a class="xref" href="NetTopologySuite.Noding.Snapround.HotPixel.html">HotPixel</a>.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.MCIndexPointSnapper.HotPixelSnapAction.html">MCIndexPointSnapper.HotPixelSnapAction</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.MCIndexSnapRounder.html">MCIndexSnapRounder</a></h4>
+      <section><p>Uses Snap Rounding to compute a rounded,
+fully noded arrangement from a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s.
+Implements the Snap Rounding technique described in
+papers by Hobby, Guibas and Marimont, and Goodrich et al.
+Snap Rounding assumes that all vertices lie on a uniform grid;
+hence the precision model of the input must be fixed precision,
+and all the input vertices must be rounded to that precision.</p>
+<p>
+This implementation uses a monotone chains and a spatial index to
+speed up the intersection tests.
+<p>
+<h3>KNOWN BUGS</h3>
+This implementation is not fully robust.
+instead.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.SimpleSnapRounder.html">SimpleSnapRounder</a></h4>
+      <section><p>Uses Snap Rounding to compute a rounded,
+fully noded arrangement from a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s.</p>
+<p>
+Implements the Snap Rounding technique described in
+the papers by Hobby, Guibas &amp; Marimont, and Goodrich et al.
+Snap Rounding enforces that all vertices lie on a uniform grid,
+which is determined by the provided <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.
+Input vertices do not have to be rounded to this grid;
+this will be done during the snap-rounding process.
+<p>
+This implementation uses simple iteration over the line segments.
+This is not an efficient approach for large sets of segments.
+This implementation appears to be fully robust using an integer precision model.
+It will function with non-integer precision models, but the
+results are not 100% guaranteed to be correctly noded.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingIntersectionAdder.html">SnapRoundingIntersectionAdder</a></h4>
+      <section><p>Finds intersections between line segments which will be snap-rounded,
+and adds them as nodes to the segments.</p>
+<p>
+Intersections are detected and computed using full precision.
+Snapping takes place in a subsequent phase.
+<p>
+The intersection points are recorded, so that HotPixels can be created for them.
+<p>
+To avoid robustness issues with vertices which lie very close to line segments
+a heuristic is used:
+nodes are created if a vertex lies within a tolerance distance
+of the interior of a segment.
+The tolerance distance is chosen to be significantly below the snap-rounding grid size.
+This has empirically proven to eliminate noding failures.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder.html">SnapRoundingNoder</a></h4>
+      <section><p>Uses Snap Rounding to compute a rounded,
+fully noded arrangement from a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s,
+in a performant way, and avoiding unnecessary noding.</p>
+<p>
+Implements the Snap Rounding technique described in 
+the papers by Hobby, Guibas &amp; Marimont, and Goodrich et al.
+Snap Rounding enforces that all output vertices lie on a uniform grid,
+which is determined by the provided <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.
+<p>
+Input vertices do not have to be rounded to the grid beforehand; 
+this is done during the snap-rounding process.
+In fact, rounding cannot be done a priori,
+since rounding vertices by themselves can distort the rounded topology
+of the arrangement (i.e. by moving segments away from hot pixels
+that would otherwise intersect them, or by moving vertices
+across segments).
+<p>
+To minimize the number of introduced nodes,
+the Snap-Rounding Noder avoids creating nodes
+at edge vertices if there is no intersection or snap at that location.
+However, if two different input edges contain identical segments,
+each of the segment vertices will be noded.
+This still provides fully-noded output.
+This is the same behaviour provided by other noders,
+such as <a class="xref" href="NetTopologySuite.Noding.MCIndexNoder.html">MCIndexNoder</a>
+and <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a>.
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Noding.Snapround.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

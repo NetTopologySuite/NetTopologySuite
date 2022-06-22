@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Algorithm.Hull
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Algorithm.Hull
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Algorithm.Hull">
+  
+  <h1 id="NetTopologySuite_Algorithm_Hull" data-uid="NetTopologySuite.Algorithm.Hull" class="text-break">Namespace NetTopologySuite.Algorithm.Hull
+  </h1>
+  <div class="markdown level0 summary">
+<p>Contains classes implementing algorithms to compute hulls
+of geometry objects.</p>
+<p>See also <a class="xref" href="NetTopologySuite.Algorithm.ConvexHull.html">ConvexHull</a></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Hull.ConcaveHull.html">ConcaveHull</a></h4>
+      <section><p>Constructs a concave hull of a set of points.
+A concave hull is a possibly non-convex polygon containing all the input points.
+A given set of points has a sequence of hulls of increasing concaveness,
+determined by a numeric target parameter.</p>
+<p>
+The concave hull is constructed by removing the longest outer edges
+of the Delaunay Triangulation of the points,
+until the target criterion parameter is reached.
+<p>
+The target criteria are:
+<table><tbody><tr><td>Maximum Edge Length Ratio</td><td>the length of the longest edge of the hull is no larger
+than this value.</td></tr><tr><td>Maximum Edge Length Factor</td><td>determine the Maximum Edge Length
+as a fraction of the difference between the longest and shortest edge lengths
+in the Delaunay Triangulation.
+This normalizes the <strong>Maximum Edge Length</strong> to be scale-free.
+A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.</td></tr></tbody></table>
+The preferred criterion is the <strong>Maximum Edge Length Ratio</strong>, since it is
+scale-free and local(so that no assumption needs to be made about the
+total amount of concaveness present).
+Other length criteria can be used by setting the Maximum Edge Length directly.
+For example, use a length relative to the longest edge length
+in the Minimum Spanning Tree of the point set.
+Or, use a length derived from the <a class="xref" href="NetTopologySuite.Algorithm.Hull.ConcaveHull.html#NetTopologySuite_Algorithm_Hull_ConcaveHull_UniformGridEdgeLength_NetTopologySuite_Geometries_Geometry_">UniformGridEdgeLength(Geometry)</a> value.
+<p>
+The computed hull is always a single connected <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>
+(unless it is degenerate, in which case it will be a <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> or a <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>).
+This constraint may cause the concave hull to fail to meet the target criteria.
+<p>
+Optionally the concave hull can be allowed to contain holes.
+Note that when using the area-based criterion
+this may result in substantially slower computation.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Hull.ConcaveHullOfPolygons.html">ConcaveHullOfPolygons</a></h4>
+      <section><p>Constructs a concave hull of a set of polygons, respecting
+the polygons as constraints.
+A concave hull is a possibly non-convex polygon containing all the input polygons.
+A given set of polygons has a sequence of hulls of increasing concaveness,
+determined by a numeric target parameter.
+The computed hull &quot;fills the gap&quot; between the polygons,
+and does not intersect their interior.</p>
+<p>
+The concave hull is constructed by removing the longest outer edges
+of the Delaunay Triangulation of the space between the polygons,
+until the target criterion parameter is reached.
+<p>
+The target criteria are:
+<ul><li>Maximum Edge Lengththe length of the longest edge between the polygons is no larger
+than this value.</li><li>Maximum Edge Length Ratiodetermine the Maximum Edge Length
+as a fraction of the difference between the longest and shortest edge lengths
+between the polygons.
+This normalizes the <strong>Maximum Edge Length</strong> to be scale-free.
+A value of 1 produces the convex hull; a value of 0 produces the original polygons.</li></ul>
+The preferred criterion is the <strong>Maximum Edge Length Ratio</strong>, since it is
+scale-free and local (so that no assumption needs to be made about the
+total amount of concaveness present).
+<p>
+Optionally the concave hull can be allowed to contain holes, via
+<a class="xref" href="NetTopologySuite.Algorithm.Hull.ConcaveHullOfPolygons.html#NetTopologySuite_Algorithm_Hull_ConcaveHullOfPolygons_HolesAllowed">HolesAllowed</a>.
+<p>
+The hull can be specified as being &quot;tight&quot;, which means it follows the outer boundaries
+of the input polygons.
+<p>
+The input polygons must form a valid MultiPolygon
+(i.e.they must be non - overlapping).
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Algorithm.Hull.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BufferInputLineSimplifier
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BufferInputLineSimplifier
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier">
+  
+  
+  <h1 id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier" class="text-break">Class BufferInputLineSimplifier
+  </h1>
+  <div class="markdown level0 summary"><p>Simplifies a buffer input line to remove concavities with shallow depth.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BufferInputLineSimplifier</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Buffer.html">NetTopologySuite.Operation.Buffer</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class BufferInputLineSimplifier</code></pre>
+  </div>
+  <h5 id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>
+The most important benefit of doing this
+is to reduce the number of points and the complexity of
+shape which will be buffered.
+It also reduces the risk of gores created by
+the quantized fillet arcs (although this issue
+should be eliminated in any case by the
+offset curve generation logic).
+</p>
+<p>
+A key aspect of the simplification is that it
+affects inside (concave or inward) corners only.
+Convex (outward) corners are preserved, since they
+are required to ensure that the generated buffer curve
+lies at the correct distance from the input geometry.
+</p>
+<p>
+Another important heuristic used is that the end segments
+of the input are never simplified.  This ensures that
+the client buffer code is able to generate end caps faithfully.
+</p>
+<p>
+No attempt is made to avoid self-intersections in the output.
+This is acceptable for use for generating a buffer offset curve,
+since the buffer algorithm is insensitive to invalid polygonal
+geometry.  However,
+this means that this algorithm
+cannot be used as a general-purpose polygon simplification technique.
+</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier__ctor_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.%23ctor(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/BufferInputLineSimplifier.cs/#L70">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier__ctor_" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier__ctor_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.#ctor(NetTopologySuite.Geometries.Coordinate[])">BufferInputLineSimplifier(Coordinate[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BufferInputLineSimplifier(Coordinate[] inputLine)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">inputLine</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_Simplify_NetTopologySuite_Geometries_Coordinate___System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.Simplify(NetTopologySuite.Geometries.Coordinate%5B%5D%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/BufferInputLineSimplifier.cs/#L53">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_Simplify_" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.Simplify*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_Simplify_NetTopologySuite_Geometries_Coordinate___System_Double_" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.Simplify(NetTopologySuite.Geometries.Coordinate[],System.Double)">Simplify(Coordinate[], Double)</h4>
+  <div class="markdown level1 summary"><p>Simplify the input coordinate list.
+If the distance tolerance is positive,
+concavities on the LEFT side of the line are simplified.
+If the supplied distance tolerance is negative,
+concavities on the RIGHT side of the line are simplified.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Coordinate[] Simplify(Coordinate[] inputLine, double distanceTol)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">inputLine</span></td>
+        <td><p>The coordinate list to simplify</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distanceTol</span></td>
+        <td><p>simplification distance tolerance to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><p>The simplified coordinate list</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_Simplify_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.Simplify(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/BufferInputLineSimplifier.cs/#L86">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_Simplify_" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.Simplify*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_Simplify_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier.Simplify(System.Double)">Simplify(Double)</h4>
+  <div class="markdown level1 summary"><p>Simplify the input coordinate list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate[] Simplify(double distanceTol)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distanceTol</span></td>
+        <td><p>Simplification distance tolerance to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><p>The simplified coordinates list</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier_Simplify_System_Double__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the distance tolerance is positive, concavities on the LEFT side of the line are simplified.
+If the supplied distance tolerance is negative, concavities on the RIGHT side of the line are simplified.</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferInputLineSimplifier.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferInputLineSimplifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/BufferInputLineSimplifier.cs/#L41" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

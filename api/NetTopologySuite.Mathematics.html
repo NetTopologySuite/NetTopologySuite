@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Mathematics
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Mathematics
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Mathematics">
+  
+  <h1 id="NetTopologySuite_Mathematics" data-uid="NetTopologySuite.Mathematics" class="text-break">Namespace NetTopologySuite.Mathematics
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.MathUtil.html">MathUtil</a></h4>
+      <section><p>Various utility functions for mathematical and numerical operations.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.Matrix.html">Matrix</a></h4>
+      <section><p>Implements some 2D matrix operations
+(in particular, solving systems of linear equations).</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.Plane3D.html">Plane3D</a></h4>
+      <section><p>Models a plane in 3-dimensional Cartesian space.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.Vector2D.html">Vector2D</a></h4>
+      <section><p>A 2-dimensional mathematical vector represented by double-precision X and Y components.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.Vector3D.html">Vector3D</a></h4>
+      <section><p>Represents a vector in 3-dimensional Cartesian space.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.VectorMath.html">VectorMath</a></h4>
+      <section><p>Functions for performing vector mathematics.</p>
+</section>
+    <h3 id="structs">Structs
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></h4>
+      <section><p>Implements extended-precision floating-point numbers
+which maintain 106 bits (approximately 30 decimal digits) of precision.</p>
+<p>
+A DoubleDouble uses a representation containing two double-precision values.
+A number x is represented as a pair of doubles, x.hi and x.lo,
+such that the number represented by x is x.hi + x.lo, where
+<pre>
+    |x.lo| &lt;= 0.5*ulp(x.hi)
+</pre>
+and ulp(y) means &quot;unit in the last place of y&quot;.
+The basic arithmetic operations are implemented using
+convenient properties of IEEE-754 floating-point arithmetic.
+<p>
+The range of values which can be represented is the same as in IEEE-754.
+The precision of the representable numbers
+is twice as great as IEEE-754 double precision.
+<p>
+The correctness of the arithmetic algorithms relies on operations
+being performed with standard IEEE-754 double precision and rounding.
+This is the Java standard arithmetic model, but for performance reasons
+Java implementations are not
+constrained to using this standard by default.
+Some processors (notably the Intel Pentium architecture) perform
+floating point operations in (non-IEEE-754-standard) extended-precision.
+A JVM implementation may choose to use the non-standard extended-precision
+as its default arithmetic mode.
+To prevent this from happening, this code uses the
+Java <tt>strictfp</tt> modifier,
+which forces all operations to take place in the standard IEEE-754 rounding model.
+<p>
+The API provides both a set of value-oriented operations
+and a set of mutating operations.
+Value-oriented operations treat DoubleDouble values as
+immutable; operations on them return new objects carrying the result
+of the operation.  This provides a simple and safe semantics for
+writing DoubleDouble expressions.  However, there is a performance
+penalty for the object allocations required.
+The mutable interface updates object values in-place.
+It provides optimum memory performance, but requires
+care to ensure that aliasing errors are not created
+and constant values are not changed.
+<p>
+This implementation uses algorithms originally designed variously by
+Knuth, Kahan, Dekker, and Linnainmaa.
+Douglas Priest developed the first C implementation of these techniques.
+Other more recent C++ implementation are due to Keith M. Briggs and David Bailey et al.
+<h3>References</h3>
+<ul><li>Priest, D., <em>Algorithms for Arbitrary Precision Floating Point Arithmetic</em>,
+in P. Kornerup and D. Matula, Eds., Proc. 10th Symposium on Computer Arithmetic,
+IEEE Computer Society Press, Los Alamitos, Calif., 1991.</li><li>Yozo Hida, Xiaoye S. Li and David H. Bailey,
+<em>Quad-Double Arithmetic: Algorithms, Implementation, and Application</em>,
+manuscript, Oct 2000; Lawrence Berkeley National Laboratory Report BNL-46996.</li><li>David Bailey, <em>High Precision Software Directory</em>;
+<tt>http://crd.lbl.gov/~dhbailey/mpdist/index.html</tt></li></ul>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Mathematics.Plane.html">Plane</a></h4>
+      <section><p>Enumeration for the 3 coordinate planes</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

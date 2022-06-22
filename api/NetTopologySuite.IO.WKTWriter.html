@@ -1,0 +1,874 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WKTWriter
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WKTWriter
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.IO.WKTWriter">
+  
+  
+  <h1 id="NetTopologySuite_IO_WKTWriter" data-uid="NetTopologySuite.IO.WKTWriter" class="text-break">Class WKTWriter
+  </h1>
+  <div class="markdown level0 summary"><p>Outputs the textual representation of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
+The <a class="xref" href="NetTopologySuite.IO.WKTWriter.html">WKTWriter</a> outputs coordinates rounded to the precision
+model. No more than the maximum number of necessary decimal places will be
+output.
+The Well-known Text format is defined in the <a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+Specification for SQL</a>.
+A non-standard &quot;LINEARRING&quot; tag is used for LinearRings. The WKT spec does
+not define a special tag for LinearRings. The standard tag to use is
+&quot;LINESTRING&quot;.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">WKTWriter</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.IO.html">NetTopologySuite.IO</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_IO_WKTWriter_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class WKTWriter</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L231">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter__ctor_" data-uid="NetTopologySuite.IO.WKTWriter.#ctor*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter__ctor" data-uid="NetTopologySuite.IO.WKTWriter.#ctor">WKTWriter()</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class which is writing at most 2 dimensions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WKTWriter()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L237">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter__ctor_" data-uid="NetTopologySuite.IO.WKTWriter.#ctor*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter__ctor_System_Int32_" data-uid="NetTopologySuite.IO.WKTWriter.#ctor(System.Int32)">WKTWriter(Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class which is writing at most <code data-dev-comment-type="paramref" class="paramref">outputDimension</code> dimensions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WKTWriter(int outputDimension)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">outputDimension</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Formatted.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Formatted%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L273">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_Formatted_" data-uid="NetTopologySuite.IO.WKTWriter.Formatted*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_Formatted" data-uid="NetTopologySuite.IO.WKTWriter.Formatted">Formatted</h4>
+  <div class="markdown level1 summary"><p>Gets/sets whether the output will be formatted</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Formatted { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_MaxCoordinatesPerLine.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.MaxCoordinatesPerLine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L283">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_MaxCoordinatesPerLine_" data-uid="NetTopologySuite.IO.WKTWriter.MaxCoordinatesPerLine*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_MaxCoordinatesPerLine" data-uid="NetTopologySuite.IO.WKTWriter.MaxCoordinatesPerLine">MaxCoordinatesPerLine</h4>
+  <div class="markdown level1 summary"><p>Gets/sets the maximum number of coordinates per line written in formatted output.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MaxCoordinatesPerLine { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_IO_WKTWriter_MaxCoordinatesPerLine_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the provided coordinate number is &lt; 0, coordinates will be written all on one line.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_OutputOrdinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.OutputOrdinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L313">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_OutputOrdinates_" data-uid="NetTopologySuite.IO.WKTWriter.OutputOrdinates*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_OutputOrdinates" data-uid="NetTopologySuite.IO.WKTWriter.OutputOrdinates">OutputOrdinates</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a> to be written.  Possible members are:</p>
+<ul><li><a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_X">X</a></li><li><a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_Y">Y</a></li><li><a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_Z">Z</a></li><li><a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_M">M</a></li></ul>
+Values of <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_X">X</a> and <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_Y">Y</a> are always assumed and
+not particularly checked for.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Ordinates OutputOrdinates { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Ordinates.html">Ordinates</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_PrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.PrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L329">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_PrecisionModel_" data-uid="NetTopologySuite.IO.WKTWriter.PrecisionModel*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_PrecisionModel" data-uid="NetTopologySuite.IO.WKTWriter.PrecisionModel">PrecisionModel</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a <a class="xref" href="NetTopologySuite.IO.WKTWriter.html#NetTopologySuite_IO_WKTWriter_PrecisionModel">PrecisionModel</a> that should be used on the ordinates written.</p>
+<p>
+If none/<span class="xref">null</span> is assigned, the precision model of the
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Factory">Factory</a> is used.
+</p>
+<p>
+Note: The precision model is applied to all ordinate values, not just x and y.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrecisionModel PrecisionModel { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Tab.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Tab%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L291">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_Tab_" data-uid="NetTopologySuite.IO.WKTWriter.Tab*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_Tab" data-uid="NetTopologySuite.IO.WKTWriter.Tab">Tab</h4>
+  <div class="markdown level1 summary"><p>Gets/sets the tab size to use for indenting.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Tab { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the size is non-positive</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_ForMicrosoftSqlServer.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.ForMicrosoftSqlServer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L343">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_ForMicrosoftSqlServer_" data-uid="NetTopologySuite.IO.WKTWriter.ForMicrosoftSqlServer*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_ForMicrosoftSqlServer" data-uid="NetTopologySuite.IO.WKTWriter.ForMicrosoftSqlServer">ForMicrosoftSqlServer()</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="NetTopologySuite.IO.WKTWriter.html">WKTWriter</a> class suitable for MSSQL's non-
+standard WKT format.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static WKTWriter ForMicrosoftSqlServer()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.IO.WKTWriter.html">WKTWriter</a></td>
+        <td><p>A new instance of the <a class="xref" href="NetTopologySuite.IO.WKTWriter.html">WKTWriter</a> class suitable for MSSQL's non-standard
+WKT format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_ToLineString_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.ToLineString(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L96">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_ToLineString_" data-uid="NetTopologySuite.IO.WKTWriter.ToLineString*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_ToLineString_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.IO.WKTWriter.ToLineString(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">ToLineString(Coordinate, Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Generates the WKT for a <code>LineString</code> specified by two <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string ToLineString(Coordinate p0, Coordinate p1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p0</span></td>
+        <td><p>The first coordinate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p1</span></td>
+        <td><p>The second coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The WKT</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_ToLineString_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.ToLineString(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L68">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_ToLineString_" data-uid="NetTopologySuite.IO.WKTWriter.ToLineString*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_ToLineString_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.IO.WKTWriter.ToLineString(NetTopologySuite.Geometries.Coordinate[])">ToLineString(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Generates the WKT for a <tt>LINESTRING</tt> specified by an array of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string ToLineString(Coordinate[] coord)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coord</span></td>
+        <td><p>An array of coordinates</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The WKT</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_ToLineString_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.ToLineString(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L41">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_ToLineString_" data-uid="NetTopologySuite.IO.WKTWriter.ToLineString*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_ToLineString_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.IO.WKTWriter.ToLineString(NetTopologySuite.Geometries.CoordinateSequence)">ToLineString(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Generates the WKT for a N-point <code>LineString</code> specified by a <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string ToLineString(CoordinateSequence seq)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">seq</span></td>
+        <td><p>The sequence to write.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The WKT</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_ToPoint_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.ToPoint(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L29">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_ToPoint_" data-uid="NetTopologySuite.IO.WKTWriter.ToPoint*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_ToPoint_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.IO.WKTWriter.ToPoint(NetTopologySuite.Geometries.Coordinate)">ToPoint(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Generates the WKT for a <code>Point</code> specified by a <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string ToPoint(Coordinate p0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p0</span></td>
+        <td><p>The point coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The WKT</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L350">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_Write_" data-uid="NetTopologySuite.IO.WKTWriter.Write*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry)">Write(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Converts a <code>Geometry</code> to its Well-known Text representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string Write(Geometry geometry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geometry</span></td>
+        <td><p>A <code>Geometry</code> to process.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A Geometry Tagged Text string (see the OpenGIS Simple Features Specification).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry%2CSystem.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L374">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_Write_" data-uid="NetTopologySuite.IO.WKTWriter.Write*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_Stream_" data-uid="NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry,System.IO.Stream)">Write(Geometry, Stream)</h4>
+  <div class="markdown level1 summary"><p>Converts a <code>Geometry</code> to its Well-known Text representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Write(Geometry geometry, Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geometry</span></td>
+        <td><p>A <code>Geometry</code> to process.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>A <code>Stream</code> to write into</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry%2CSystem.IO.TextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L397">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_Write_" data-uid="NetTopologySuite.IO.WKTWriter.Write*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_Write_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_" data-uid="NetTopologySuite.IO.WKTWriter.Write(NetTopologySuite.Geometries.Geometry,System.IO.TextWriter)">Write(Geometry, TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Converts a <code>Geometry</code> to its Well-known Text representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Write(Geometry geometry, TextWriter writer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geometry</span></td>
+        <td><p>A <code>Geometry</code> to process.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></td>
+        <td><span class="parametername">writer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L414">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_WriteFormatted_" data-uid="NetTopologySuite.IO.WKTWriter.WriteFormatted*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry)">WriteFormatted(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Same as <code>write</code>, but with newlines and spaces to make the
+well-known text more readable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string WriteFormatted(Geometry geometry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geometry</span></td>
+        <td><p>A <code>Geometry</code> to process</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A &quot;Geometry Tagged Text&quot; string (see the OpenGIS Simple
+Features Specification), with newlines and spaces.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry%2CSystem.IO.TextWriter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L438">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_WKTWriter_WriteFormatted_" data-uid="NetTopologySuite.IO.WKTWriter.WriteFormatted*"></a>
+  <h4 id="NetTopologySuite_IO_WKTWriter_WriteFormatted_NetTopologySuite_Geometries_Geometry_System_IO_TextWriter_" data-uid="NetTopologySuite.IO.WKTWriter.WriteFormatted(NetTopologySuite.Geometries.Geometry,System.IO.TextWriter)">WriteFormatted(Geometry, TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Same as <code>write</code>, but with newlines and spaces to make the
+well-known text more readable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void WriteFormatted(Geometry geometry, TextWriter writer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geometry</span></td>
+        <td><p>A <code>Geometry</code> to process</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></td>
+        <td><span class="parametername">writer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTWriter.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTWriter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTWriter.cs/#L22" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

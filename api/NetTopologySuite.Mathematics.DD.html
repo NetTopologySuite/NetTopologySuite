@@ -1,0 +1,3056 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct DD
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct DD
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Mathematics.DD">
+  
+  
+  <h1 id="NetTopologySuite_Mathematics_DD" data-uid="NetTopologySuite.Mathematics.DD" class="text-break">Struct DD
+  </h1>
+  <div class="markdown level0 summary"><p>Implements extended-precision floating-point numbers
+which maintain 106 bits (approximately 30 decimal digits) of precision.</p>
+<p>
+A DoubleDouble uses a representation containing two double-precision values.
+A number x is represented as a pair of doubles, x.hi and x.lo,
+such that the number represented by x is x.hi + x.lo, where
+<pre>
+    |x.lo| &lt;= 0.5*ulp(x.hi)
+</pre>
+and ulp(y) means &quot;unit in the last place of y&quot;.
+The basic arithmetic operations are implemented using
+convenient properties of IEEE-754 floating-point arithmetic.
+<p>
+The range of values which can be represented is the same as in IEEE-754.
+The precision of the representable numbers
+is twice as great as IEEE-754 double precision.
+<p>
+The correctness of the arithmetic algorithms relies on operations
+being performed with standard IEEE-754 double precision and rounding.
+This is the Java standard arithmetic model, but for performance reasons
+Java implementations are not
+constrained to using this standard by default.
+Some processors (notably the Intel Pentium architecture) perform
+floating point operations in (non-IEEE-754-standard) extended-precision.
+A JVM implementation may choose to use the non-standard extended-precision
+as its default arithmetic mode.
+To prevent this from happening, this code uses the
+Java <tt>strictfp</tt> modifier,
+which forces all operations to take place in the standard IEEE-754 rounding model.
+<p>
+The API provides both a set of value-oriented operations
+and a set of mutating operations.
+Value-oriented operations treat DoubleDouble values as
+immutable; operations on them return new objects carrying the result
+of the operation.  This provides a simple and safe semantics for
+writing DoubleDouble expressions.  However, there is a performance
+penalty for the object allocations required.
+The mutable interface updates object values in-place.
+It provides optimum memory performance, but requires
+care to ensure that aliasing errors are not created
+and constant values are not changed.
+<p>
+This implementation uses algorithms originally designed variously by
+Knuth, Kahan, Dekker, and Linnainmaa.
+Douglas Priest developed the first C implementation of these techniques.
+Other more recent C++ implementation are due to Keith M. Briggs and David Bailey et al.
+<h3>References</h3>
+<ul><li>Priest, D., <em>Algorithms for Arbitrary Precision Floating Point Arithmetic</em>,
+in P. Kornerup and D. Matula, Eds., Proc. 10th Symposium on Computer Arithmetic,
+IEEE Computer Society Press, Los Alamitos, Calif., 1991.</li><li>Yozo Hida, Xiaoye S. Li and David H. Bailey,
+<em>Quad-Double Arithmetic: Algorithms, Implementation, and Application</em>,
+manuscript, Oct 2000; Lawrence Berkeley National Laboratory Report BNL-46996.</li><li>David Bailey, <em>High Precision Software Directory</em>;
+<tt>http://crd.lbl.gov/~dhbailey/mpdist/index.html</tt></li></ul>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Mathematics.html">NetTopologySuite.Mathematics</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Mathematics_DD_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public struct DD : IComparable, IComparable&lt;DD&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD__ctor_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.%23ctor(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L187">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD__ctor_" data-uid="NetTopologySuite.Mathematics.DD.#ctor*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD__ctor_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.#ctor(NetTopologySuite.Mathematics.DD)">DD(DD)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> with a value equal to the argument</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD(DD dd)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">dd</span></td>
+        <td><p>The initial value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD__ctor_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.%23ctor(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L167">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD__ctor_" data-uid="NetTopologySuite.Mathematics.DD.#ctor*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD__ctor_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.#ctor(System.Double)">DD(Double)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> with value x.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD(double x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>The initial value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD__ctor_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.%23ctor(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L177">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD__ctor_" data-uid="NetTopologySuite.Mathematics.DD.#ctor*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD__ctor_System_Double_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.#ctor(System.Double,System.Double)">DD(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> with value (hi, lo).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD(double hi, double lo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">hi</span></td>
+        <td><p>The high order component</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">lo</span></td>
+        <td><p>The low order component</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD__ctor_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L198">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD__ctor_" data-uid="NetTopologySuite.Mathematics.DD.#ctor*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD__ctor_System_String_" data-uid="NetTopologySuite.Mathematics.DD.#ctor(System.String)">DD(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> with value equal to the argument.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD(string str)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">str</span></td>
+        <td><p>The value to initialize by</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><p>if <code data-dev-comment-type="paramref" class="paramref">str</code> is not a valid representation of a number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_E.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.E%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L90">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Mathematics_DD_E" data-uid="NetTopologySuite.Mathematics.DD.E">E</h4>
+  <div class="markdown level1 summary"><p>The value nearest to the constant e (the natural logarithm base).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DD E</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Epsilon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Epsilon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L102">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Mathematics_DD_Epsilon" data-uid="NetTopologySuite.Mathematics.DD.Epsilon">Epsilon</h4>
+  <div class="markdown level1 summary"><p>The smallest representable relative difference between two <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly double Epsilon</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_NaN.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.NaN%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L97">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Mathematics_DD_NaN" data-uid="NetTopologySuite.Mathematics.DD.NaN">NaN</h4>
+  <div class="markdown level1 summary"><p>A value representing the result of an operation which does not return a valid number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DD NaN</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_PI.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.PI%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L73">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Mathematics_DD_PI" data-uid="NetTopologySuite.Mathematics.DD.PI">PI</h4>
+  <div class="markdown level1 summary"><p>The value nearest to the constant Pi.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DD PI</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_PiHalf.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.PiHalf%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L83">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Mathematics_DD_PiHalf" data-uid="NetTopologySuite.Mathematics.DD.PiHalf">PiHalf</h4>
+  <div class="markdown level1 summary"><p>The value nearest to the constant Pi / 2.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DD PiHalf</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_TwoPi.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.TwoPi%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L78">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Mathematics_DD_TwoPi" data-uid="NetTopologySuite.Mathematics.DD.TwoPi">TwoPi</h4>
+  <div class="markdown level1 summary"><p>The value nearest to the constant 2 * Pi.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly DD TwoPi</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_IsNegative.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.IsNegative%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L713">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_IsNegative_" data-uid="NetTopologySuite.Mathematics.DD.IsNegative*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_IsNegative" data-uid="NetTopologySuite.Mathematics.DD.IsNegative">IsNegative</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this object is negative or not</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool IsNegative { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_IsZero.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.IsZero%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L708">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_IsZero_" data-uid="NetTopologySuite.Mathematics.DD.IsZero*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_IsZero" data-uid="NetTopologySuite.Mathematics.DD.IsZero">IsZero</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this object is zero (0) or not</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool IsZero { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Abs.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Abs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L564">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Abs_" data-uid="NetTopologySuite.Mathematics.DD.Abs*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Abs" data-uid="NetTopologySuite.Mathematics.DD.Abs">Abs()</h4>
+  <div class="markdown level1 summary"><p>Returns the absolute value of this value.</p>
+<p>
+Special cases:
+<ul><li>if this value is NaN, it is returned.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Abs()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The absolute value of this value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Ceiling.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Ceiling%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L485">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Ceiling_" data-uid="NetTopologySuite.Mathematics.DD.Ceiling*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Ceiling" data-uid="NetTopologySuite.Mathematics.DD.Ceiling">Ceiling()</h4>
+  <div class="markdown level1 summary"><p>Returns the smallest (closest to negative infinity) value
+that is not less than the argument and is equal to a mathematical integer.
+Special cases:</p>
+<ul><li>If this value is NaN, returns NaN.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Ceiling()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The smallest (closest to negative infinity) value
+that is not less than the argument and is equal to a mathematical integer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Clone.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L217">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Clone_" data-uid="NetTopologySuite.Mathematics.DD.Clone*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Clone" data-uid="NetTopologySuite.Mathematics.DD.Clone">Clone()</h4>
+  <div class="markdown level1 summary"><p>Creates and returns a copy of this value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object Clone()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><p>A copy of this value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_CompareTo_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.CompareTo(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L820">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_CompareTo_" data-uid="NetTopologySuite.Mathematics.DD.CompareTo*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_CompareTo_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.CompareTo(NetTopologySuite.Mathematics.DD)">CompareTo(DD)</h4>
+  <div class="markdown level1 summary"><p>Compares two <tt>DoubleDouble</tt> objects numerically.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(DD other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>An other <tt>DoubleDouble</tt> value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p><code>-1,0</code> or <code>1</code> depending on whether this value is less than, equal to
+or greater than the value of <code data-dev-comment-type="paramref" class="paramref">other</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.CompareTo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L830">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_CompareTo_" data-uid="NetTopologySuite.Mathematics.DD.CompareTo*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_CompareTo_System_Object_" data-uid="NetTopologySuite.Mathematics.DD.CompareTo(System.Object)">CompareTo(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(object o)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">o</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Copy_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Copy(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L208">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Copy_" data-uid="NetTopologySuite.Mathematics.DD.Copy*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Copy_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.Copy(NetTopologySuite.Mathematics.DD)">Copy(DD)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> with the value of the argument.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD Copy(DD dd)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">dd</span></td>
+        <td><p>The value to copy</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>A copy of <code data-dev-comment-type="paramref" class="paramref">dd</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Determinant_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Determinant(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L416">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Determinant_" data-uid="NetTopologySuite.Mathematics.DD.Determinant*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Determinant_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.Determinant(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">Determinant(DD, DD, DD, DD)</h4>
+  <div class="markdown level1 summary"><p>Computes the determinant of the 2x2 matrix with the given entries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD Determinant(DD x1, DD y1, DD x2, DD y2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">x1</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">y1</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">x2</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">y2</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The determinant of the matrix of values</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Determinant_System_Double_System_Double_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Determinant(System.Double%2CSystem.Double%2CSystem.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L403">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Determinant_" data-uid="NetTopologySuite.Mathematics.DD.Determinant*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Determinant_System_Double_System_Double_System_Double_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.Determinant(System.Double,System.Double,System.Double,System.Double)">Determinant(Double, Double, Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Computes the determinant of the 2x2 matrix with the given entries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD Determinant(double x1, double y1, double x2, double y2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x1</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">y1</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x2</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">y2</span></td>
+        <td><p>A matrix entry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The determinant of the matrix of values</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Dump.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Dump%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L856">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Dump_" data-uid="NetTopologySuite.Mathematics.DD.Dump*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Dump" data-uid="NetTopologySuite.Mathematics.DD.Dump">Dump()</h4>
+  <div class="markdown level1 summary"><p>Dumps the components of this number to a string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Dump()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A string showing the components of the number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Equals_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Equals(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L746">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Equals_" data-uid="NetTopologySuite.Mathematics.DD.Equals*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Equals_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.Equals(NetTopologySuite.Mathematics.DD)">Equals(DD)</h4>
+  <div class="markdown level1 summary"><p>Tests whether this value is equal to another <tt>DoubleDouble</tt> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(DD y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this value == <code data-dev-comment-type="paramref" class="paramref">y</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Equals_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L1202">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Equals_" data-uid="NetTopologySuite.Mathematics.DD.Equals*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Equals_System_Object_" data-uid="NetTopologySuite.Mathematics.DD.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#system-valuetype-equals(system-object)">ValueType.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Floor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Floor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L459">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Floor_" data-uid="NetTopologySuite.Mathematics.DD.Floor*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Floor" data-uid="NetTopologySuite.Mathematics.DD.Floor">Floor()</h4>
+  <div class="markdown level1 summary"><p>Returns the largest (closest to positive infinity)
+value that is not greater than the argument
+and is equal to a mathematical integer.
+Special cases:</p>
+<ul><li>If this value is NaN, returns NaN.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Floor()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The largest (closest to positive infinity)
+value that is not greater than the argument
+and is equal to a mathematical integer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_GetHashCode.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L1210">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_GetHashCode_" data-uid="NetTopologySuite.Mathematics.DD.GetHashCode*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_GetHashCode" data-uid="NetTopologySuite.Mathematics.DD.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#system-valuetype-gethashcode">ValueType.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_GreaterOrEqualThan_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.GreaterOrEqualThan(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L788">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_GreaterOrEqualThan_" data-uid="NetTopologySuite.Mathematics.DD.GreaterOrEqualThan*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_GreaterOrEqualThan_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.GreaterOrEqualThan(NetTopologySuite.Mathematics.DD)">GreaterOrEqualThan(DD)</h4>
+  <div class="markdown level1 summary"><p>Tests whether this value is greater than or equals to another <tt>DoubleDouble</tt> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool GreaterOrEqualThan(DD y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this value &gt;= <code data-dev-comment-type="paramref" class="paramref">y</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_GreaterThan_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.GreaterThan(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L778">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_GreaterThan_" data-uid="NetTopologySuite.Mathematics.DD.GreaterThan*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_GreaterThan_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.GreaterThan(NetTopologySuite.Mathematics.DD)">GreaterThan(DD)</h4>
+  <div class="markdown level1 summary"><p>Tests whether this value is greater than another <tt>DoubleDouble</tt> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool GreaterThan(DD y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this value &gt; <code data-dev-comment-type="paramref" class="paramref">y</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_IsInfinity_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.IsInfinity(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L736">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_IsInfinity_" data-uid="NetTopologySuite.Mathematics.DD.IsInfinity*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_IsInfinity_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.IsInfinity(NetTopologySuite.Mathematics.DD)">IsInfinity(DD)</h4>
+  <div class="markdown level1 summary"><p>Checks if <code data-dev-comment-type="paramref" class="paramref">value</code> is infinity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsInfinity(DD value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if <code>value</code> is infinity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_IsNaN_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.IsNaN(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L726">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_IsNaN_" data-uid="NetTopologySuite.Mathematics.DD.IsNaN*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_IsNaN_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.IsNaN(NetTopologySuite.Mathematics.DD)">IsNaN(DD)</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this object is positive or not</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsNaN(DD value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_IsPositive.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.IsPositive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L718">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_IsPositive_" data-uid="NetTopologySuite.Mathematics.DD.IsPositive*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_IsPositive" data-uid="NetTopologySuite.Mathematics.DD.IsPositive">IsPositive()</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this object is positive or not</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPositive()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_LessOrEqualThan_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.LessOrEqualThan(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L808">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_LessOrEqualThan_" data-uid="NetTopologySuite.Mathematics.DD.LessOrEqualThan*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_LessOrEqualThan_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.LessOrEqualThan(NetTopologySuite.Mathematics.DD)">LessOrEqualThan(DD)</h4>
+  <div class="markdown level1 summary"><p>Tests whether this value is less than or equal to another <tt>DoubleDouble</tt> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool LessOrEqualThan(DD y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>A <tt>DoubleDouble</tt></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this value is &lt;= <code data-dev-comment-type="paramref" class="paramref">y</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_LessThan_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.LessThan(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L798">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_LessThan_" data-uid="NetTopologySuite.Mathematics.DD.LessThan*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_LessThan_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.LessThan(NetTopologySuite.Mathematics.DD)">LessThan(DD)</h4>
+  <div class="markdown level1 summary"><p>Tests whether this value is less than another <tt>DoubleDouble</tt> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool LessThan(DD y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this value is &lt; <code data-dev-comment-type="paramref" class="paramref">y</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Max_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Max(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L439">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Max_" data-uid="NetTopologySuite.Mathematics.DD.Max*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Max_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.Max(NetTopologySuite.Mathematics.DD)">Max(DD)</h4>
+  <div class="markdown level1 summary"><p>Computes the maximum of this and another DD number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Max(DD x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>A DD number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The maximum of the two numbers</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Min_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Min(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L429">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Min_" data-uid="NetTopologySuite.Mathematics.DD.Min*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Min_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.Min(NetTopologySuite.Mathematics.DD)">Min(DD)</h4>
+  <div class="markdown level1 summary"><p>Computes the minimum of this and another DD number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Min(DD x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>A DD number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The minimum of the two numbers</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Parse_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L1103">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Parse_" data-uid="NetTopologySuite.Mathematics.DD.Parse*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Parse_System_String_" data-uid="NetTopologySuite.Mathematics.DD.Parse(System.String)">Parse(String)</h4>
+  <div class="markdown level1 summary"><p>Converts a string representation of a real number into a DoubleDouble value.
+The format accepted is similar to the standard Java real number syntax.
+It is defined by the following regular expression:</p>
+<pre>
+[<tt>+</tt>|<tt>-</tt>] {<em>digit</em>} [ <tt>.</tt> {<em>digit</em>} ] [ ( <tt>e</tt> | <tt>E</tt> ) [<tt>+</tt>|<tt>-</tt>] {<em>digit</em>}+
+</pre>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD Parse(string str)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">str</span></td>
+        <td><p>The string to parse</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The value of the parsed number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><p>Thrown if <tt>str</tt> is not a valid representation of a number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Pow_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Pow(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L642">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Pow_" data-uid="NetTopologySuite.Mathematics.DD.Pow*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Pow_System_Int32_" data-uid="NetTopologySuite.Mathematics.DD.Pow(System.Int32)">Pow(Int32)</h4>
+  <div class="markdown level1 summary"><p>Computes the value of this number raised to an integral power.
+Follows semantics of .Net Math.Pow as closely as possible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public DD Pow(int exp)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">exp</span></td>
+        <td><p>The integer exponent</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>x raised to the integral power exp</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Reciprocal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Reciprocal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L373">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Reciprocal_" data-uid="NetTopologySuite.Mathematics.DD.Reciprocal*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Reciprocal" data-uid="NetTopologySuite.Mathematics.DD.Reciprocal">Reciprocal()</h4>
+  <div class="markdown level1 summary"><p>Returns a <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> whose value is <code>1 / this</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Reciprocal()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The reciprocal of this value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Rint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Rint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L529">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Rint_" data-uid="NetTopologySuite.Mathematics.DD.Rint*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Rint" data-uid="NetTopologySuite.Mathematics.DD.Rint">Rint()</h4>
+  <div class="markdown level1 summary"><p>Rounds this value to the nearest integer.
+The value is rounded to an integer by adding 1/2 and taking the floor of the result.
+Special cases:</p>
+<ul><li>If this value is NaN, returns NaN.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Rint()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>This value rounded to the nearest integer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Signum.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Signum%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L511">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Signum_" data-uid="NetTopologySuite.Mathematics.DD.Signum*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Signum" data-uid="NetTopologySuite.Mathematics.DD.Signum">Signum()</h4>
+  <div class="markdown level1 summary"><p>Returns an integer indicating the sign of this value.</p>
+<p>
+<ul><li>if this value is > 0, returns 1</li><li>if this value is &lt; 0, returns -1</li><li>if this value is = 0, returns 0</li><li>if this value is NaN, returns 0</li></ul>
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Signum()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>An integer indicating the sign of this value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Sqr.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Sqr%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L574">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Sqr_" data-uid="NetTopologySuite.Mathematics.DD.Sqr*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Sqr" data-uid="NetTopologySuite.Mathematics.DD.Sqr">Sqr()</h4>
+  <div class="markdown level1 summary"><p>Computes the square of this value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Sqr()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The square of this value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Sqr_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Sqr(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L583">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Sqr_" data-uid="NetTopologySuite.Mathematics.DD.Sqr*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Sqr_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.Sqr(System.Double)">Sqr(Double)</h4>
+  <div class="markdown level1 summary"><p>Computes the square of this value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD Sqr(double x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The square of this value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Sqrt.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Sqrt%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L594">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Sqrt_" data-uid="NetTopologySuite.Mathematics.DD.Sqrt*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Sqrt" data-uid="NetTopologySuite.Mathematics.DD.Sqrt">Sqrt()</h4>
+  <div class="markdown level1 summary"><p>Computes the positive square root of this value.<p>
+If the number is NaN or negative, NaN is returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Sqrt()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>If this is NaN or less than zero, the result is NaN.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Sqrt_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Sqrt(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L631">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Sqrt_" data-uid="NetTopologySuite.Mathematics.DD.Sqrt*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Sqrt_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.Sqrt(System.Double)">Sqrt(Double)</h4>
+  <div class="markdown level1 summary"><p>Computes the positive square root of a <tt>DoubleDouble</tt> value.<p>
+If the number is NaN or negative, NaN is returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD Sqrt(double x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>A numeric value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>the positive square root of this number.<p>
+If the argument is NaN or less than zero, the result is NaN.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_ToDoubleValue.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.ToDoubleValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L686">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_ToDoubleValue_" data-uid="NetTopologySuite.Mathematics.DD.ToDoubleValue*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_ToDoubleValue" data-uid="NetTopologySuite.Mathematics.DD.ToDoubleValue">ToDoubleValue()</h4>
+  <div class="markdown level1 summary"><p>Converts this value to the nearest <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a> number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ToDoubleValue()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The nearest <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a> value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_ToIntValue.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.ToIntValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L695">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_ToIntValue_" data-uid="NetTopologySuite.Mathematics.DD.ToIntValue*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_ToIntValue" data-uid="NetTopologySuite.Mathematics.DD.ToIntValue">ToIntValue()</h4>
+  <div class="markdown level1 summary"><p>Converts this value to the nearest <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ToIntValue()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The nearest <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a> value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_ToSciNotation.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.ToSciNotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L917">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_ToSciNotation_" data-uid="NetTopologySuite.Mathematics.DD.ToSciNotation*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_ToSciNotation" data-uid="NetTopologySuite.Mathematics.DD.ToSciNotation">ToSciNotation()</h4>
+  <div class="markdown level1 summary"><p>Returns the string representation of this value in scientific notation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ToSciNotation()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The string representation in scientific notation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_ToStandardNotation.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.ToStandardNotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L879">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_ToStandardNotation_" data-uid="NetTopologySuite.Mathematics.DD.ToStandardNotation*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_ToStandardNotation" data-uid="NetTopologySuite.Mathematics.DD.ToStandardNotation">ToStandardNotation()</h4>
+  <div class="markdown level1 summary"><p>Returns the string representation of this value in standard notation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ToStandardNotation()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The string representation in standard notation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L867">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_ToString_" data-uid="NetTopologySuite.Mathematics.DD.ToString*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_ToString" data-uid="NetTopologySuite.Mathematics.DD.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns a string representation of this number, in either standard or scientific notation.
+If the magnitude of the number is in the range [ 10<sup>-3</sup>, 10<sup>8</sup> ]
+standard notation will be used.  Otherwise, scientific notation will be used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A string representation of this number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#system-valuetype-tostring">ValueType.ToString()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_Truncate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.Truncate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L549">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_Truncate_" data-uid="NetTopologySuite.Mathematics.DD.Truncate*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_Truncate" data-uid="NetTopologySuite.Mathematics.DD.Truncate">Truncate()</h4>
+  <div class="markdown level1 summary"><p>Returns the integer which is largest in absolute value and not further
+from zero than this value.</p>
+<p>
+Special cases:
+<ul><li>If this value is NaN, returns NaN.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DD Truncate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The integer which is largest in absolute value and not further from zero than this value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_ValueOf_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.ValueOf(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L134">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_ValueOf_" data-uid="NetTopologySuite.Mathematics.DD.ValueOf*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_ValueOf_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.ValueOf(System.Double)">ValueOf(Double)</h4>
+  <div class="markdown level1 summary"><p>Converts the <tt>double</tt> argument to a <tt>DoubleDouble</tt> number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD ValueOf(double x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>A numeric value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The extended precision version of the value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_ValueOf_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.ValueOf(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L115">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_ValueOf_" data-uid="NetTopologySuite.Mathematics.DD.ValueOf*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_ValueOf_System_String_" data-uid="NetTopologySuite.Mathematics.DD.ValueOf(System.String)">ValueOf(String)</h4>
+  <div class="markdown level1 summary"><p>Converts the string argument to a DoubleDouble number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD ValueOf(string str)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">str</span></td>
+        <td><p>A string containing a representation of a numeric value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The extended precision version of the value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><p>Thrown if <code data-dev-comment-type="paramref" class="paramref">str</code> is not a valid representation of a number</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Addition_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Addition(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L228">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Addition_" data-uid="NetTopologySuite.Mathematics.DD.op_Addition*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Addition_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.op_Addition(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">Addition(DD, DD)</h4>
+  <div class="markdown level1 summary"><p>Returns the sum of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator +(DD lhs, DD rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>The left hand side</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>The right hand side</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The sum of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Addition_NetTopologySuite_Mathematics_DD_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Addition(NetTopologySuite.Mathematics.DD%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L254">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Addition_" data-uid="NetTopologySuite.Mathematics.DD.op_Addition*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Addition_NetTopologySuite_Mathematics_DD_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.op_Addition(NetTopologySuite.Mathematics.DD,System.Double)">Addition(DD, Double)</h4>
+  <div class="markdown level1 summary"><p>Returns the sum of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator +(DD lhs, double rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>The left hand side</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>The right hand side</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The sum of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Division_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Division(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L347">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Division_" data-uid="NetTopologySuite.Mathematics.DD.op_Division*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Division_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.op_Division(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">Division(DD, DD)</h4>
+  <div class="markdown level1 summary"><p>Divides <code data-dev-comment-type="paramref" class="paramref">lhs</code> by <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator /(DD lhs, DD rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>A DoubleDouble numerator.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>A DoubleDouble divisor.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The result of the division.<p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Division_NetTopologySuite_Mathematics_DD_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Division(NetTopologySuite.Mathematics.DD%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L336">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Division_" data-uid="NetTopologySuite.Mathematics.DD.op_Division*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Division_NetTopologySuite_Mathematics_DD_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.op_Division(NetTopologySuite.Mathematics.DD,System.Double)">Division(DD, Double)</h4>
+  <div class="markdown level1 summary"><p>Divides <code data-dev-comment-type="paramref" class="paramref">lhs</code> by <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator /(DD lhs, double rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>A DoubleDouble numerator.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>A double divisor.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The result of the division.<p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Equality_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Equality(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L757">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Equality_" data-uid="NetTopologySuite.Mathematics.DD.op_Equality*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Equality_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.op_Equality(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">Equality(DD, DD)</h4>
+  <div class="markdown level1 summary"><p>Equality operator for <tt>DoubleDouble</tt> values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(DD lhs, DD rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if <code data-dev-comment-type="paramref" class="paramref">lhs</code> == <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Explicit_System_String__NetTopologySuite_Mathematics_DD.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Explicit(System.String)~NetTopologySuite.Mathematics.DD%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L124">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Explicit_" data-uid="NetTopologySuite.Mathematics.DD.op_Explicit*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Explicit_System_String__NetTopologySuite_Mathematics_DD" data-uid="NetTopologySuite.Mathematics.DD.op_Explicit(System.String)~NetTopologySuite.Mathematics.DD">Explicit(String to DD)</h4>
+  <div class="markdown level1 summary"><p>Operator to parse a <tt>DoubleDouble</tt> from a string</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static explicit operator DD(string val)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">val</span></td>
+        <td><p>The DoubleDouble string</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Implicit_System_Double__NetTopologySuite_Mathematics_DD.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Implicit(System.Double)~NetTopologySuite.Mathematics.DD%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L143">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Implicit_" data-uid="NetTopologySuite.Mathematics.DD.op_Implicit*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Implicit_System_Double__NetTopologySuite_Mathematics_DD" data-uid="NetTopologySuite.Mathematics.DD.op_Implicit(System.Double)~NetTopologySuite.Mathematics.DD">Implicit(Double to DD)</h4>
+  <div class="markdown level1 summary"><p>Operator to convert the <tt>double</tt> value to a <tt>DoubleDouble</tt> value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator DD(double val)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">val</span></td>
+        <td><p>The DoubleDouble string</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Inequality_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Inequality(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L768">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Inequality_" data-uid="NetTopologySuite.Mathematics.DD.op_Inequality*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Inequality_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.op_Inequality(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">Inequality(DD, DD)</h4>
+  <div class="markdown level1 summary"><p>Inequality operator for <tt>DoubleDouble</tt> values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(DD rhs, DD lhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>A DoubleDouble value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if <code data-dev-comment-type="paramref" class="paramref">lhs</code> != <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Multiply_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Multiply(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L309">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Multiply_" data-uid="NetTopologySuite.Mathematics.DD.op_Multiply*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Multiply_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.op_Multiply(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">Multiply(DD, DD)</h4>
+  <div class="markdown level1 summary"><p>Multiplies <code data-dev-comment-type="paramref" class="paramref">lhs</code> by <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator *(DD lhs, DD rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>A DoubleDouble value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>A DoubleDouble value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The result of the multiplication.<p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Multiply_NetTopologySuite_Mathematics_DD_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Multiply(NetTopologySuite.Mathematics.DD%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L298">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Multiply_" data-uid="NetTopologySuite.Mathematics.DD.op_Multiply*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Multiply_NetTopologySuite_Mathematics_DD_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.op_Multiply(NetTopologySuite.Mathematics.DD,System.Double)">Multiply(DD, Double)</h4>
+  <div class="markdown level1 summary"><p>Multiplies <code data-dev-comment-type="paramref" class="paramref">lhs</code> by <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator *(DD lhs, double rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>A DoubleDouble value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>A double value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The result of the multiplication.<p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Subtraction_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Subtraction(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L265">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Subtraction_" data-uid="NetTopologySuite.Mathematics.DD.op_Subtraction*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Subtraction_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.op_Subtraction(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">Subtraction(DD, DD)</h4>
+  <div class="markdown level1 summary"><p>Returns the difference of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator -(DD lhs, DD rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>The left hand side</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>The right hand side</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The difference of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_Subtraction_NetTopologySuite_Mathematics_DD_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_Subtraction(NetTopologySuite.Mathematics.DD%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L275">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_Subtraction_" data-uid="NetTopologySuite.Mathematics.DD.op_Subtraction*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_Subtraction_NetTopologySuite_Mathematics_DD_System_Double_" data-uid="NetTopologySuite.Mathematics.DD.op_Subtraction(NetTopologySuite.Mathematics.DD,System.Double)">Subtraction(DD, Double)</h4>
+  <div class="markdown level1 summary"><p>Returns the difference of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator -(DD lhs, double rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>The left hand side</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>The right hand side</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The difference of <code data-dev-comment-type="paramref" class="paramref">lhs</code> and <code data-dev-comment-type="paramref" class="paramref">rhs</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD_op_UnaryNegation_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD.op_UnaryNegation(NetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L285">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_DD_op_UnaryNegation_" data-uid="NetTopologySuite.Mathematics.DD.op_UnaryNegation*"></a>
+  <h4 id="NetTopologySuite_Mathematics_DD_op_UnaryNegation_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Mathematics.DD.op_UnaryNegation(NetTopologySuite.Mathematics.DD)">UnaryNegation(DD)</h4>
+  <div class="markdown level1 summary"><p>Subtracts the argument from the value of <tt>this</tt>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DD operator -(DD val)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><span class="parametername">val</span></td>
+        <td><p>The subtrahend</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a></td>
+        <td><p>The result of this - y</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Mathematics_DD.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.DD%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Mathematics/DD.cs/#L68" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

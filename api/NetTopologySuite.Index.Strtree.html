@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Index.Strtree
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Index.Strtree
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Index.Strtree">
+  
+  <h1 id="NetTopologySuite_Index_Strtree" data-uid="NetTopologySuite.Index.Strtree" class="text-break">Namespace NetTopologySuite.Index.Strtree
+  </h1>
+  <div class="markdown level0 summary">
+<p>Contains 2-D and 1-D versions of the Sort-Tile-Recursive (STR) tree, a query-only R-tree.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode&lt;T, TItem&gt;</a></h4>
+      <section><p>A node of an <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html">AbstractSTRtree&lt;T, TItem&gt;</a>. A node is one of:</p>
+<ul><li></li><li>an <em>interior node</em> containing child <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode&lt;T, TItem&gt;</a>s</li><li>a <em>leaf node</em> containing data items (<a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">ItemBoundable&lt;T, TItem&gt;</a>s).</li></ul>
+A node stores the bounds of its children, and its level within the index tree.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html">AbstractSTRtree&lt;T, TItem&gt;</a></h4>
+      <section><p>Base class for STRtree and SIRtree. STR-packed R-trees are described in:
+P. Rigaux, Michel Scholl and Agnes Voisard. <em>Spatial Databases With
+Application To GIS</em>. Morgan Kaufmann, San Francisco, 2002.</p>
+<p>
+This implementation is based on <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s rather than just <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode&lt;T, TItem&gt;</a>s,
+because the STR algorithm operates on both nodes and
+data, both of which are treated as <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s.
+</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.EnvelopeDistance.html">EnvelopeDistance</a></h4>
+      <section><p>Utility functions for working with <a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a>s.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.GeometryItemDistance.html">GeometryItemDistance</a></h4>
+      <section><p>An <a class="xref" href="NetTopologySuite.Index.Strtree.IItemDistance-2.html">IItemDistance&lt;T, TItem&gt;</a> function for
+items which are <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> using the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Distance_NetTopologySuite_Geometries_Geometry_">Distance(Geometry)</a> method.</p>
+<p>
+To make this distance function suitable for
+using to query a single index tree,
+the distance metric is <em>anti-reflexive</em>.
+That is, if the two arguments are the same Geometry object,
+the distance returned is <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a>.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.Interval.html">Interval</a></h4>
+      <section><p>A contiguous portion of 1D-space. Used internally by SIRtree.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">ItemBoundable&lt;T, TItem&gt;</a></h4>
+      <section><p>Boundable wrapper for a non-Boundable spatial object. Used internally by
+AbstractSTRtree.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.SIRtree-1.html">SIRtree&lt;TItem&gt;</a></h4>
+      <section><p>One-dimensional version of an STR-packed R-tree. SIR stands for
+&quot;Sort-Interval-Recursive&quot;. STR-packed R-trees are described in:
+P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
+Application To GIS. Morgan Kaufmann, San Francisco, 2002.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a></h4>
+      <section><p>A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
+For two-dimensional spatial data.</p>
+<p>
+The STR packed R-tree is simple to implement and maximizes space
+utilization; that is, as many leaves as possible are filled to capacity.
+Overlap between nodes is far less than in a basic R-tree.
+However, the index is semi-static; once the tree has been built
+(which happens automatically upon the first query), items may
+not be added.<br>
+Items may be removed from the tree using <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html#NetTopologySuite_Index_Strtree_STRtree_1_Remove_NetTopologySuite_Geometries_Envelope__0_">Remove(Envelope, TItem)</a>.
+<p>
+Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
+Application To GIS. Morgan Kaufmann, San Francisco, 2002.
+<p>
+<strong>Note that inserting items into a tree is not thread-safe.</strong>
+Inserting performed on more than one thread must be synchronized externally.
+<p>
+Querying a tree is thread-safe. The building phase is done synchronously,
+and querying is stateless.
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.IIntersectsOp.html">AbstractSTRtree&lt;T, TItem&gt;.IIntersectsOp</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.IItemDistance-2.html">IItemDistance&lt;T, TItem&gt;</a></h4>
+      <section><p>A function method which computes the distance
+between two <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s in an <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a>.
+Used for Nearest Neighbour searches.</p>
+<p>
+To make a distance function suitable for
+querying a single index tree
+via <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html#NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__">NearestNeighbour(IItemDistance&lt;Envelope, TItem&gt;)</a>,
+the function should have a non-zero <em>reflexive distance</em>.
+That is, if the two arguments are the same object,
+the distance returned should be non-zero.
+If it is required that only pairs of <strong>distinct</strong> items be returned,
+the distance function must be <em>anti-reflexive</em>,
+and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a> for identical arguments.
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Index.Strtree.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

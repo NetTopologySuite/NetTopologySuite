@@ -1,0 +1,1290 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CoordinateArraySequence
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CoordinateArraySequence
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence" class="text-break">Class CoordinateArraySequence
+  </h1>
+  <div class="markdown level0 summary"><p>A <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a> backed by an array of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.
+This is the implementation that <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s use by default.</p>
+<p>
+Coordinates returned by <a class="xref" href="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.html#NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ToCoordinateArray">ToCoordinateArray()</a>, <a class="xref" href="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.html#NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_System_Int32_">GetCoordinate(Int32)</a> and <a class="xref" href="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.html#NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_System_Int32_NetTopologySuite_Geometries_Coordinate_">GetCoordinate(Int32, Coordinate)</a> are live --
+modifications to them are actually changing the
+CoordinateSequence&apos;s underlying data.
+A dimension may be specified for the coordinates in the sequence,
+which may be 2 or 3.
+The actual coordinates will always have 3 ordinates,
+but the dimension is useful as metadata in some situations.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></div>
+    <div class="level2"><span class="xref">CoordinateArraySequence</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Dimension">CoordinateSequence.Dimension</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Measures">CoordinateSequence.Measures</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Spatial">CoordinateSequence.Spatial</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Ordinates">CoordinateSequence.Ordinates</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_HasZ">CoordinateSequence.HasZ</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_HasM">CoordinateSequence.HasM</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_ZOrdinateIndex">CoordinateSequence.ZOrdinateIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_MOrdinateIndex">CoordinateSequence.MOrdinateIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_CreateCoordinate">CoordinateSequence.CreateCoordinate()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetX_System_Int32_System_Double_">CoordinateSequence.SetX(Int32, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetY_System_Int32_System_Double_">CoordinateSequence.SetY(Int32, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetZ_System_Int32_System_Double_">CoordinateSequence.SetZ(Int32, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetM_System_Int32_System_Double_">CoordinateSequence.SetM(Int32, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_">CoordinateSequence.GetOrdinate(Int32, Ordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_First">CoordinateSequence.First</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Last">CoordinateSequence.Last</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Count">CoordinateSequence.Count</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_System_Double_">CoordinateSequence.SetOrdinate(Int32, Ordinate, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_TryGetOrdinateIndex_NetTopologySuite_Geometries_Ordinate_System_Int32__">CoordinateSequence.TryGetOrdinateIndex(Ordinate, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Implementation.html">NetTopologySuite.Geometries.Implementation</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class CoordinateArraySequence : CoordinateSequence</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.%23ctor(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L34">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor(NetTopologySuite.Geometries.Coordinate[])">CoordinateArraySequence(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Constructs a sequence based on the given array of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.
+The coordinate dimension defaults to 2</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateArraySequence(Coordinate[] coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>The coordinate array that will be referenced.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The array is not copied.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate___System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.%23ctor(NetTopologySuite.Geometries.Coordinate%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L44">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate___System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor(NetTopologySuite.Geometries.Coordinate[],System.Int32)">CoordinateArraySequence(Coordinate[], Int32)</h4>
+  <div class="markdown level1 summary"><p>Constructs a sequence based on the given array
+of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use an overload that accepts measures.  This overload will be removed in a future release.&quot;)]
+public CoordinateArraySequence(Coordinate[] coordinates, int dimension)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>The coordinate array that will be referenced.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The dimension of the coordinates</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate___System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The Array is not copied</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.%23ctor(NetTopologySuite.Geometries.Coordinate%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L62">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_Coordinate___System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor(NetTopologySuite.Geometries.Coordinate[],System.Int32,System.Int32)">CoordinateArraySequence(Coordinate[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Constructs a sequence based on the given array
+of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.</p>
+<p>
+The Array is <strong>not</strong> copied
+<p>
+It is your responsibility to ensure the array contains Coordinates of the
+indicated dimension and measures (See <a class="xref" href="NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_EnforceConsistency_NetTopologySuite_Geometries_Coordinate___">EnforceConsistency(Coordinate[])</a>).
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateArraySequence(Coordinate[] coordinates, int dimension, int measures)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>The coordinate array that will be referenced.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The dimension of the coordinates</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">measures</span></td>
+        <td><p>The number of measure ordinate values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.%23ctor(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L117">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor(NetTopologySuite.Geometries.CoordinateSequence)">CoordinateArraySequence(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Creates a new sequence based on a deep copy of the given <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateArraySequence(CoordinateSequence coordSeq)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordSeq</span></td>
+        <td><p>The coordinate sequence that will be copied</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L79">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor(System.Int32)">CoordinateArraySequence(Int32)</h4>
+  <div class="markdown level1 summary"><p>Constructs a sequence of a given size, populated with new Coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateArraySequence(int size)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">size</span></td>
+        <td><p>The size of the sequence to create.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.%23ctor(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L88">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor(System.Int32,System.Int32)">CoordinateArraySequence(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Constructs a sequence of a given <code data-dev-comment-type="paramref" class="paramref">size</code>, populated
+with new <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s of the given <code data-dev-comment-type="paramref" class="paramref">dimension</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use an overload that accepts measures.  This overload will be removed in a future release.&quot;)]
+public CoordinateArraySequence(int size, int dimension)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">size</span></td>
+        <td><p>The size of the sequence to create.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>the dimension of the coordinates</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_System_Int32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.%23ctor(System.Int32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L105">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence__ctor_System_Int32_System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.#ctor(System.Int32,System.Int32,System.Int32)">CoordinateArraySequence(Int32, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Constructs a sequence of a given <code data-dev-comment-type="paramref" class="paramref">size</code>, populated
+with new <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s of the given <code data-dev-comment-type="paramref" class="paramref">dimension</code>
+with the given number of <code data-dev-comment-type="paramref" class="paramref">measures</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateArraySequence(int size, int dimension, int measures)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">size</span></td>
+        <td><p>The size of the sequence to create.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>the dimension of the coordinates</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">measures</span></td>
+        <td><p>the number of measures of the coordinates</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Coordinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Coordinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L24">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Coordinates" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Coordinates">Coordinates</h4>
+  <div class="markdown level1 summary"><p>Array of coordinates in sequence</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Coordinate[] Coordinates</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Copy.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Copy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L299">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Copy_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Copy*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Copy" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Copy">Copy()</h4>
+  <div class="markdown level1 summary"><p>Creates a deep copy of the <code>CoordinateArraySequence</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override CoordinateSequence Copy()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><p>The deep copy.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Copy">CoordinateSequence.Copy()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_EnforceArrayConsistency_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.EnforceArrayConsistency(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L139">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_EnforceArrayConsistency_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.EnforceArrayConsistency*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_EnforceArrayConsistency_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.EnforceArrayConsistency(NetTopologySuite.Geometries.Coordinate[])">EnforceArrayConsistency(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Ensure array contents of the same type, making use of <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_CreateCoordinate">CreateCoordinate()</a> as needed.</p>
+<p>
+A new array will be created if needed to return a consistent result.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;It is the clients responsibility to provide consistent arrays&quot;)]
+protected Coordinate[] EnforceArrayConsistency(Coordinate[] array)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">array</span></td>
+        <td><p>array containing consistent coordinate instances</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ExpandEnvelope_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ExpandEnvelope(NetTopologySuite.Geometries.Envelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L358">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ExpandEnvelope_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ExpandEnvelope*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ExpandEnvelope_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ExpandEnvelope(NetTopologySuite.Geometries.Envelope)">ExpandEnvelope(Envelope)</h4>
+  <div class="markdown level1 summary"><p>Expands the given Envelope to include the coordinates in the sequence.
+Allows implementing classes to optimize access to coordinate values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Envelope ExpandEnvelope(Envelope env)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a></td>
+        <td><span class="parametername">env</span></td>
+        <td><p>The envelope to expand.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a></td>
+        <td><p>A reference to the expanded envelope.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_ExpandEnvelope_NetTopologySuite_Geometries_Envelope_">CoordinateSequence.ExpandEnvelope(Envelope)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetClonedCoordinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetClonedCoordinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L309">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetClonedCoordinates_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetClonedCoordinates*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetClonedCoordinates" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetClonedCoordinates">GetClonedCoordinates()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Coordinate[] GetClonedCoordinates()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinate(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L184">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinate*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinate(System.Int32)">GetCoordinate(Int32)</h4>
+  <div class="markdown level1 summary"><p>Get the Coordinate with index i.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Coordinate GetCoordinate(int i)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">i</span></td>
+        <td><p>The index of the coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><p>The requested Coordinate instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_System_Int32_">CoordinateSequence.GetCoordinate(Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_System_Int32_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinate(System.Int32%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L206">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinate*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinate_System_Int32_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinate(System.Int32,NetTopologySuite.Geometries.Coordinate)">GetCoordinate(Int32, Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Copies the i'th coordinate in the sequence to the supplied Coordinate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void GetCoordinate(int index, Coordinate coord)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The index of the coordinate to copy.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">coord</span></td>
+        <td><p>A Coordinate to receive the value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_System_Int32_NetTopologySuite_Geometries_Coordinate_">CoordinateSequence.GetCoordinate(Int32, Coordinate)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinateCopy_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinateCopy(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L194">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinateCopy_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinateCopy*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetCoordinateCopy_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetCoordinateCopy(System.Int32)">GetCoordinateCopy(Int32)</h4>
+  <div class="markdown level1 summary"><p>Get a copy of the Coordinate with index i.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Coordinate GetCoordinateCopy(int i)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">i</span></td>
+        <td><p>The index of the coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><p>A copy of the requested Coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetCoordinateCopy_System_Int32_">CoordinateSequence.GetCoordinateCopy(Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetM_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetM(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L261">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetM_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetM*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetM_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetM(System.Int32)">GetM(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns ordinate M of the specified coordinate if available.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override double GetM(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The value of the M ordinate in the index'th coordinate, or Double.NaN if not defined.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetM_System_Int32_">CoordinateSequence.GetM(Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetOrdinate_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetOrdinate(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L282">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetOrdinate_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetOrdinate*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetOrdinate_System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetOrdinate(System.Int32,System.Int32)">GetOrdinate(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns the ordinate of a coordinate in this sequence.
+Ordinate indices 0 and 1 are assumed to be X and Y.
+Ordinate indices greater than 1 have user-defined semantics
+(for instance, they may contain other dimensions or measure values).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override double GetOrdinate(int index, int ordinateIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The coordinate index in the sequence.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">ordinateIndex</span></td>
+        <td><p>The ordinate index in the coordinate (in range [0, dimension-1]).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_System_Int32_System_Int32_">CoordinateSequence.GetOrdinate(Int32, Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetX_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetX(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L218">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetX_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetX*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetX_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetX(System.Int32)">GetX(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns ordinate X (0) of the specified coordinate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override double GetX(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The value of the X ordinate in the index'th coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetX_System_Int32_">CoordinateSequence.GetX(Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetY_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetY(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L230">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetY_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetY*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetY_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetY(System.Int32)">GetY(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns ordinate Y (1) of the specified coordinate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override double GetY(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The value of the Y ordinate in the index'th coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetY_System_Int32_">CoordinateSequence.GetY(Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetZ_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetZ(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L242">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetZ_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetZ*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_GetZ_System_Int32_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.GetZ(System.Int32)">GetZ(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns ordinate Z of the specified coordinate if available.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override double GetZ(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_GetZ_System_Int32_">CoordinateSequence.GetZ(Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Reversed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Reversed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L366">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Reversed_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Reversed*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_Reversed" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.Reversed">Reversed()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override CoordinateSequence Reversed()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_Reversed">CoordinateSequence.Reversed()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_SetOrdinate_System_Int32_System_Int32_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.SetOrdinate(System.Int32%2CSystem.Int32%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L327">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_SetOrdinate_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.SetOrdinate*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_SetOrdinate_System_Int32_System_Int32_System_Double_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.SetOrdinate(System.Int32,System.Int32,System.Double)">SetOrdinate(Int32, Int32, Double)</h4>
+  <div class="markdown level1 summary"><p>Sets the value for a given ordinate of a coordinate in this sequence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetOrdinate(int index, int ordinateIndex, double value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The coordinate index in the sequence.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">ordinateIndex</span></td>
+        <td><p>The ordinate index in the coordinate (in range [0, dimension-1]).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The new ordinate value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_System_Int32_System_Double_">CoordinateSequence.SetOrdinate(Int32, Int32, Double)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ToCoordinateArray.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ToCoordinateArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L347">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ToCoordinateArray_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ToCoordinateArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ToCoordinateArray" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ToCoordinateArray">ToCoordinateArray()</h4>
+  <div class="markdown level1 summary"><p>This method exposes the internal Array of Coordinate Objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Coordinate[] ToCoordinateArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_ToCoordinateArray">CoordinateSequence.ToCoordinateArray()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L380">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ToString_" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ToString*"></a>
+  <h4 id="NetTopologySuite_Geometries_Implementation_CoordinateArraySequence_ToString" data-uid="NetTopologySuite.Geometries.Implementation.CoordinateArraySequence.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns the string representation of the coordinate array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceEx.html#NetTopologySuite_Geometries_CoordinateSequenceEx_GetHashCode_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_System_Func_System_Int32_System_Int32__">CoordinateSequenceEx.GetHashCode(CoordinateSequence, Int32, Func&lt;Int32, Int32&gt;)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Implementation_CoordinateArraySequence.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Implementation.CoordinateArraySequence%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Implementation/CoordinateArraySequence.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

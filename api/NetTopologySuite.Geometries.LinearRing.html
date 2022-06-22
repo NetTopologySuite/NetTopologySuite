@@ -1,0 +1,927 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LinearRing
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LinearRing
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.LinearRing">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_LinearRing" data-uid="NetTopologySuite.Geometries.LinearRing" class="text-break">Class LinearRing
+  </h1>
+  <div class="markdown level0 summary"><p>Models an OGC SFS <code>LinearRing</code>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></div>
+    <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></div>
+    <div class="level3"><span class="xref">LinearRing</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
+    <div><a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Empty">LineString.Empty</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Coordinates">LineString.Coordinates</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_GetOrdinates_NetTopologySuite_Geometries_Ordinate_">LineString.GetOrdinates(Ordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_CoordinateSequence">LineString.CoordinateSequence</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_GetCoordinateN_System_Int32_">LineString.GetCoordinateN(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Coordinate">LineString.Coordinate</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Dimension">LineString.Dimension</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_IsEmpty">LineString.IsEmpty</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_NumPoints">LineString.NumPoints</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_GetPointN_System_Int32_">LineString.GetPointN(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_StartPoint">LineString.StartPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_EndPoint">LineString.EndPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_IsRing">LineString.IsRing</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_OgcGeometryType">LineString.OgcGeometryType</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Length">LineString.Length</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Boundary">LineString.Boundary</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_IsCoordinate_NetTopologySuite_Geometries_Coordinate_">LineString.IsCoordinate(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_ComputeEnvelopeInternal">LineString.ComputeEnvelopeInternal()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_">LineString.EqualsExact(Geometry, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Apply_NetTopologySuite_Geometries_ICoordinateFilter_">LineString.Apply(ICoordinateFilter)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_">LineString.Apply(ICoordinateSequenceFilter)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_">LineString.Apply(IEntireCoordinateSequenceFilter)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Apply_NetTopologySuite_Geometries_IGeometryFilter_">LineString.Apply(IGeometryFilter)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Apply_NetTopologySuite_Geometries_IGeometryComponentFilter_">LineString.Apply(IGeometryComponentFilter)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Normalize">LineString.Normalize()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_IsEquivalentClass_NetTopologySuite_Geometries_Geometry_">LineString.IsEquivalentClass(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_CompareToSameClass_System_Object_">LineString.CompareToSameClass(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">LineString.CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Item_System_Int32_">LineString.Item[Int32]</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Count">LineString.Count</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNamePoint">Geometry.TypeNamePoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiPoint">Geometry.TypeNameMultiPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameLineString">Geometry.TypeNameLineString</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameLinearRing">Geometry.TypeNameLinearRing</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiLineString">Geometry.TypeNameMultiLineString</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNamePolygon">Geometry.TypeNamePolygon</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiPolygon">Geometry.TypeNameMultiPolygon</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameGeometryCollection">Geometry.TypeNameGeometryCollection</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Factory">Geometry.Factory</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_UserData">Geometry.UserData</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_SRID">Geometry.SRID</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNonEmptyElements_NetTopologySuite_Geometries_Geometry___">Geometry.HasNonEmptyElements(Geometry[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements_System_Object___">Geometry.HasNullElements(Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements__1_System_Collections_Generic_IEnumerable___0__">Geometry.HasNullElements&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_PrecisionModel">Geometry.PrecisionModel</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_NumGeometries">Geometry.NumGeometries</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GetGeometryN_System_Int32_">Geometry.GetGeometryN(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsSimple">Geometry.IsSimple</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">Geometry.IsValid</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Distance_NetTopologySuite_Geometries_Geometry_">Geometry.Distance(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsWithinDistance_NetTopologySuite_Geometries_Geometry_System_Double_">Geometry.IsWithinDistance(Geometry, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Area">Geometry.Area</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Centroid">Geometry.Centroid</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_InteriorPoint">Geometry.InteriorPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_PointOnSurface">Geometry.PointOnSurface</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Envelope">Geometry.Envelope</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_EnvelopeInternal">Geometry.EnvelopeInternal</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChanged">Geometry.GeometryChanged()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChangedAction">Geometry.GeometryChangedAction()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Disjoint_NetTopologySuite_Geometries_Geometry_">Geometry.Disjoint(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Touches_NetTopologySuite_Geometries_Geometry_">Geometry.Touches(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Intersects_NetTopologySuite_Geometries_Geometry_">Geometry.Intersects(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Crosses_NetTopologySuite_Geometries_Geometry_">Geometry.Crosses(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Within_NetTopologySuite_Geometries_Geometry_">Geometry.Within(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Contains_NetTopologySuite_Geometries_Geometry_">Geometry.Contains(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Overlaps_NetTopologySuite_Geometries_Geometry_">Geometry.Overlaps(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Covers_NetTopologySuite_Geometries_Geometry_">Geometry.Covers(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CoveredBy_NetTopologySuite_Geometries_Geometry_">Geometry.CoveredBy(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Relate_NetTopologySuite_Geometries_Geometry_System_String_">Geometry.Relate(Geometry, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Relate_NetTopologySuite_Geometries_Geometry_">Geometry.Relate(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equals_NetTopologySuite_Geometries_Geometry_">Geometry.Equals(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_EqualsTopologically_NetTopologySuite_Geometries_Geometry_">Geometry.EqualsTopologically(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equals_System_Object_">Geometry.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GetHashCode">Geometry.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ToString">Geometry.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ToText">Geometry.ToText()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_AsText">Geometry.AsText()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ToBinary">Geometry.ToBinary()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_AsBinary">Geometry.AsBinary()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ToGMLFeature">Geometry.ToGMLFeature()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_">Geometry.Buffer(Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_NetTopologySuite_Operation_Buffer_EndCapStyle_">Geometry.Buffer(Double, EndCapStyle)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_System_Int32_">Geometry.Buffer(Double, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_System_Int32_NetTopologySuite_Operation_Buffer_EndCapStyle_">Geometry.Buffer(Double, Int32, EndCapStyle)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_">Geometry.Buffer(Double, BufferParameters)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ConvexHull">Geometry.ConvexHull()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Intersection_NetTopologySuite_Geometries_Geometry_">Geometry.Intersection(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Union_NetTopologySuite_Geometries_Geometry_">Geometry.Union(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Difference_NetTopologySuite_Geometries_Geometry_">Geometry.Difference(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_SymmetricDifference_NetTopologySuite_Geometries_Geometry_">Geometry.SymmetricDifference(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Union">Geometry.Union()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_EqualsExact_NetTopologySuite_Geometries_Geometry_">Geometry.EqualsExact(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_EqualsNormalized_NetTopologySuite_Geometries_Geometry_">Geometry.EqualsNormalized(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Copy">Geometry.Copy()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Normalized">Geometry.Normalized()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_">Geometry.CompareTo(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_NetTopologySuite_Geometries_Geometry_">Geometry.CompareTo(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CheckNotGeometryCollection_NetTopologySuite_Geometries_Geometry_">Geometry.CheckNotGeometryCollection(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsGeometryCollection">Geometry.IsGeometryCollection</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Compare_System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__">Geometry.Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equal_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_System_Double_">Geometry.Equal(Coordinate, Coordinate, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsRectangle">Geometry.IsRectangle</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_DefaultFactory">Geometry.DefaultFactory</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CreateArray_System_Int32_System_Double_">Geometry.CreateArray(Int32, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CreateArray_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_Ordinate_">Geometry.CreateArray(CoordinateSequence, Ordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_LinearRing_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class LinearRing : LineString, IComparable, IComparable&lt;Geometry&gt;, ILineal</code></pre>
+  </div>
+  <h5 id="NetTopologySuite_Geometries_LinearRing_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>A <code>LinearRing</code> is a <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> which is both closed and simple.
+In other words,
+the first and last coordinate in the ring must be equal,
+and the ring must not self-intersect.
+Either orientation of the ring is allowed.</p>
+<p>
+A ring must have either 0 or 3 or more points.
+The first and last points must be equal (in 2D).
+If these conditions are not met, the constructors throw
+an <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a><br>
+A ring with 3 points is invalid, because it is collapsed
+and thus has a self-intersection. It is allowed to be constructed
+so that it can be represented, and repaired if needed.
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing__ctor_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.%23ctor(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L137">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing__ctor_" data-uid="NetTopologySuite.Geometries.LinearRing.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing__ctor_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.LinearRing.#ctor(NetTopologySuite.Geometries.Coordinate[])">LinearRing(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearRing(Coordinate[] points)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">points</span></td>
+        <td><p>The points used for create this instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_LinearRing__ctor_NetTopologySuite_Geometries_Coordinate____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>For create this <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> is used a standard <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a>
+with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a> <code> == </code> <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a>.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the ring is not closed, or has too few points</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing__ctor_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.%23ctor(NetTopologySuite.Geometries.CoordinateSequence%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L41">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing__ctor_" data-uid="NetTopologySuite.Geometries.LinearRing.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing__ctor_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Geometries.LinearRing.#ctor(NetTopologySuite.Geometries.CoordinateSequence,NetTopologySuite.Geometries.GeometryFactory)">LinearRing(CoordinateSequence, GeometryFactory)</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>LinearRing</code> with the vertices specified
+by the given <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearRing(CoordinateSequence points, GeometryFactory factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">points</span></td>
+        <td><p>A sequence points forming a closed and simple linestring,
+or <code>null</code> to create the empty geometry.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">factory</span></td>
+        <td><p>The factory that creates this <code>LinearRing</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the ring is not closed, or has too few points</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_MinimumValidSize.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.MinimumValidSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L31">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_MinimumValidSize" data-uid="NetTopologySuite.Geometries.LinearRing.MinimumValidSize">MinimumValidSize</h4>
+  <div class="markdown level1 summary"><p>The minimum number of vertices allowed in a valid non-empty ring.
+Empty rings with 0 vertices are also valid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int MinimumValidSize = 3</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_BoundaryDimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.BoundaryDimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L71">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_BoundaryDimension_" data-uid="NetTopologySuite.Geometries.LinearRing.BoundaryDimension*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_BoundaryDimension" data-uid="NetTopologySuite.Geometries.LinearRing.BoundaryDimension">BoundaryDimension</h4>
+  <div class="markdown level1 summary"><p>Returns <code>Dimensions.False</code>, since by definition LinearRings do not have a boundary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Dimension BoundaryDimension { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_BoundaryDimension">LineString.BoundaryDimension</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_GeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.GeometryType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L93">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_GeometryType_" data-uid="NetTopologySuite.Geometries.LinearRing.GeometryType*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_GeometryType" data-uid="NetTopologySuite.Geometries.LinearRing.GeometryType">GeometryType</h4>
+  <div class="markdown level1 summary"><p>Returns the name of this object's interface.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string GeometryType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>&quot;LinearRing&quot;</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_GeometryType">LineString.GeometryType</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_IsCCW.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.IsCCW%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L124">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_IsCCW_" data-uid="NetTopologySuite.Geometries.LinearRing.IsCCW*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_IsCCW" data-uid="NetTopologySuite.Geometries.LinearRing.IsCCW">IsCCW</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating if this <code>LINEARRING</code> is oriented <a class="xref" href="NetTopologySuite.Algorithm.OrientationIndex.html#NetTopologySuite_Algorithm_OrientationIndex_CounterClockwise">CounterClockwise</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCCW { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_IsClosed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.IsClosed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L76">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_IsClosed_" data-uid="NetTopologySuite.Geometries.LinearRing.IsClosed*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_IsClosed" data-uid="NetTopologySuite.Geometries.LinearRing.IsClosed">IsClosed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsClosed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_IsClosed">LineString.IsClosed</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_SortIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.SortIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L66">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_SortIndex_" data-uid="NetTopologySuite.Geometries.LinearRing.SortIndex*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_SortIndex" data-uid="NetTopologySuite.Geometries.LinearRing.SortIndex">SortIndex</h4>
+  <div class="markdown level1 summary"><p>Gets a value to sort the geometry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Geometry.SortIndexValue SortIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.SortIndexValue.html">Geometry.SortIndexValue</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_SortIndex">LineString.SortIndex</a></div>
+  <h5 id="NetTopologySuite_Geometries_LinearRing_SortIndex_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>NOTE:<br>
+For JTS v1.17 this property's getter has been renamed to <code>getTypeCode()</code>.
+In order not to break binary compatibility we did not follow.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_CopyInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.CopyInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L96">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_CopyInternal_" data-uid="NetTopologySuite.Geometries.LinearRing.CopyInternal*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_CopyInternal" data-uid="NetTopologySuite.Geometries.LinearRing.CopyInternal">CopyInternal()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Geometry CopyInternal()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_CopyInternal">LineString.CopyInternal()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_Reverse.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.Reverse%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L102">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_Reverse_" data-uid="NetTopologySuite.Geometries.LinearRing.Reverse*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_Reverse" data-uid="NetTopologySuite.Geometries.LinearRing.Reverse">Reverse()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Call Geometry.Reverse()&quot;)]
+public override Geometry Reverse()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_Reverse">LineString.Reverse()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing_ReverseInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing.ReverseInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L114">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_LinearRing_ReverseInternal_" data-uid="NetTopologySuite.Geometries.LinearRing.ReverseInternal*"></a>
+  <h4 id="NetTopologySuite_Geometries_LinearRing_ReverseInternal" data-uid="NetTopologySuite.Geometries.LinearRing.ReverseInternal">ReverseInternal()</h4>
+  <div class="markdown level1 summary"><p>The actual implementation of the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Reverse">Reverse()</a> function for <code>LINEARRING</code>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Geometry ReverseInternal()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>A reversed geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.LineString.html#NetTopologySuite_Geometries_LineString_ReverseInternal">LineString.ReverseInternal()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_LinearRing.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.LinearRing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/LinearRing.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

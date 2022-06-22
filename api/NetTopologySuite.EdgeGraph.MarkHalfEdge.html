@@ -1,0 +1,529 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MarkHalfEdge
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MarkHalfEdge
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge">
+  
+  
+  <h1 id="NetTopologySuite_EdgeGraph_MarkHalfEdge" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge" class="text-break">Class MarkHalfEdge
+  </h1>
+  <div class="markdown level0 summary"><p>A <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a> which supports
+marking edges with a boolean flag.
+Useful for algorithms which perform graph traversals.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></div>
+    <div class="level2"><span class="xref">MarkHalfEdge</span></div>
+      <div class="level3"><a class="xref" href="NetTopologySuite.Dissolve.DissolveHalfEdge.html">DissolveHalfEdge</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Create_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_">HalfEdge.Create(Coordinate, Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Init_NetTopologySuite_EdgeGraph_HalfEdge_NetTopologySuite_EdgeGraph_HalfEdge_">HalfEdge.Init(HalfEdge, HalfEdge)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Link_NetTopologySuite_EdgeGraph_HalfEdge_">HalfEdge.Link(HalfEdge)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Init_NetTopologySuite_EdgeGraph_HalfEdge_">HalfEdge.Init(HalfEdge)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Orig">HalfEdge.Orig</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Dest">HalfEdge.Dest</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_DirectionPt">HalfEdge.DirectionPt</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Sym">HalfEdge.Sym</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Next">HalfEdge.Next</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Prev">HalfEdge.Prev</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_ONext">HalfEdge.ONext</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Find_NetTopologySuite_Geometries_Coordinate_">HalfEdge.Find(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Equals_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_">HalfEdge.Equals(Coordinate, Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Insert_NetTopologySuite_EdgeGraph_HalfEdge_">HalfEdge.Insert(HalfEdge)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_IsEdgesSorted">HalfEdge.IsEdgesSorted</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_CompareTo_NetTopologySuite_EdgeGraph_HalfEdge_">HalfEdge.CompareTo(HalfEdge)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_CompareAngularDirection_NetTopologySuite_EdgeGraph_HalfEdge_">HalfEdge.CompareAngularDirection(HalfEdge)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_DeltaX">HalfEdge.DeltaX</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_DeltaY">HalfEdge.DeltaY</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_ToString">HalfEdge.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_ToStringNode">HalfEdge.ToStringNode()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Degree">HalfEdge.Degree()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_PrevNode">HalfEdge.PrevNode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.EdgeGraph.html">NetTopologySuite.EdgeGraph</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MarkHalfEdge : HalfEdge, IComparable&lt;HalfEdge&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge__ctor_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.%23ctor(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L68">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge__ctor_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.#ctor*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge__ctor_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.#ctor(NetTopologySuite.Geometries.Coordinate)">MarkHalfEdge(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Creates a new marked edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MarkHalfEdge(Coordinate orig)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">orig</span></td>
+        <td><p>the coordinate of the edge origin</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge_Marked.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.Marked%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L82">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge_Marked_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.Marked*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_Marked" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.Marked">Marked</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating if this <code>MarkHalfEdge</code> is marked</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Marked { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge_IsMarked_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.IsMarked(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L17">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge_IsMarked_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.IsMarked*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_IsMarked_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.IsMarked(NetTopologySuite.EdgeGraph.HalfEdge)">IsMarked(HalfEdge)</h4>
+  <div class="markdown level1 summary"><p>Returns a value indicating that the given edge is marked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsMarked(HalfEdge e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
+        <td><span class="parametername">e</span></td>
+        <td><p>An edge</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the edge is marked</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge_Mark.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.Mark%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L74">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge_Mark_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.Mark*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_Mark" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.Mark">Mark()</h4>
+  <div class="markdown level1 summary"><p>Marks this edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Mark()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge_Mark_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.Mark(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L26">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge_Mark_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.Mark*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_Mark_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.Mark(NetTopologySuite.EdgeGraph.HalfEdge)">Mark(HalfEdge)</h4>
+  <div class="markdown level1 summary"><p>Marks the edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Mark(HalfEdge e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
+        <td><span class="parametername">e</span></td>
+        <td><p>An edge to mark</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge_MarkBoth_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.MarkBoth(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L56">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge_MarkBoth_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.MarkBoth*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_MarkBoth_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.MarkBoth(NetTopologySuite.EdgeGraph.HalfEdge)">MarkBoth(HalfEdge)</h4>
+  <div class="markdown level1 summary"><p>Marks the edges in a pair.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void MarkBoth(HalfEdge e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
+        <td><span class="parametername">e</span></td>
+        <td><p>an edge of the pair to mark</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge_SetMark_NetTopologySuite_EdgeGraph_HalfEdge_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.SetMark(NetTopologySuite.EdgeGraph.HalfEdge%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L36">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge_SetMark_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.SetMark*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_SetMark_NetTopologySuite_EdgeGraph_HalfEdge_System_Boolean_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.SetMark(NetTopologySuite.EdgeGraph.HalfEdge,System.Boolean)">SetMark(HalfEdge, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Sets the mark for the given edge to a boolean value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetMark(HalfEdge e, bool isMarked)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
+        <td><span class="parametername">e</span></td>
+        <td><p>An Edge to update</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isMarked</span></td>
+        <td><p>The mark value to set</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge_SetMarkBoth_NetTopologySuite_EdgeGraph_HalfEdge_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge.SetMarkBoth(NetTopologySuite.EdgeGraph.HalfEdge%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L46">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_MarkHalfEdge_SetMarkBoth_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.SetMarkBoth*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_MarkHalfEdge_SetMarkBoth_NetTopologySuite_EdgeGraph_HalfEdge_System_Boolean_" data-uid="NetTopologySuite.EdgeGraph.MarkHalfEdge.SetMarkBoth(NetTopologySuite.EdgeGraph.HalfEdge,System.Boolean)">SetMarkBoth(HalfEdge, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Sets the mark for the given edge pair to a boolean value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetMarkBoth(HalfEdge e, bool isMarked)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
+        <td><span class="parametername">e</span></td>
+        <td><p>an edge of the pair to update</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isMarked</span></td>
+        <td><p>the mark value to set</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_MarkHalfEdge.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.MarkHalfEdge%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/EdgeGraph/MarkHalfEdge.cs/#L10" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

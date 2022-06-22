@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class OverlayNGRobust
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class OverlayNGRobust
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust">
+  
+  
+  <h1 id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust" class="text-break">Class OverlayNGRobust
+  </h1>
+  <div class="markdown level0 summary"><p>Performs an overlay operation using <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a>,
+increasing robustness by using a series of
+increasingly robust (but slower) noding strategies.</p>
+<p>
+The noding strategies used are:
+<ol><li>A simple fast noder using <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a> precision</li><li>A <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a> using an automatically-determined snap tolerance</li><li>First snapping each geometry to itself, and then overlaying them wih a <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a></li><li>The above two strategies are repeated with increasing snap tolerance, up to a limit</li><li>Finally a <a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder.html">SnapRoundingNoder</a> is used with a automatically-determined scale factor.</li></ol>
+If all of the above heuristics fail to compute a valid overlay,
+the original <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown.
+In practice this should be extremely unlikely to occur.
+<p>
+This algorithm relies on each overlay operation execution
+throwing a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> if it is unable
+to compute the overlay correctly.
+Generally this occurs because the noding phase does
+not produce a valid noding.
+This requires the use of a <a class="xref" href="NetTopologySuite.Noding.ValidatingNoder.html">ValidatingNoder</a>
+in order to check the results of using a floating noder.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">OverlayNGRobust</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.OverlayNG.html">NetTopologySuite.Operation.OverlayNG</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class OverlayNGRobust</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Overlay(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/OverlayNGRobust.cs/#L92">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Overlay_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Overlay*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Overlay(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction)">Overlay(Geometry, Geometry, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Overlay two geometries, using heuristics to ensure
+computation completes correctly.
+In practice the heuristics are observed to be fully correct.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>A geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>A geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The overlay operation code</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The overlay result geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_OverlaySR_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.OverlaySR(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/OverlayNGRobust.cs/#L333">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_OverlaySR_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.OverlaySR*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_OverlaySR_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.OverlaySR(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction)">OverlaySR(Geometry, Geometry, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Attempt Overlay using Snap-Rounding with an automatically-determined
+scale factor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry OverlaySR(Geometry geom0, Geometry geom1, SpatialFunction opCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>the computed overlay result, or null if the overlay fails</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/OverlayNGRobust.cs/#L45">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union(NetTopologySuite.Geometries.Geometry)">Union(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Computes the unary union of a geometry using robust computation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Union(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to union</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The union result</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/OverlayNGRobust.cs/#L58">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">Union(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Computes the unary union of a collection of geometries using robust computation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>An enumeration of geometries to union</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The union result</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/OverlayNGRobust.cs/#L72">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union*"></a>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.Union(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.GeometryFactory)">Union(IEnumerable&lt;Geometry&gt;, GeometryFactory)</h4>
+  <div class="markdown level1 summary"><p>Computes the unary union of a collection of geometries using robust computation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms, GeometryFactory geomFact)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>An enumeration of geometries to union</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">geomFact</span></td>
+        <td><p>The geometry factory to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The union of the geometries</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_OverlayNGRobust.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.OverlayNGRobust%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/OverlayNGRobust.cs/#L38" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

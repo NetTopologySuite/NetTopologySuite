@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LineSequencer
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LineSequencer
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer">
+  
+  
+  <h1 id="NetTopologySuite_Operation_Linemerge_LineSequencer" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer" class="text-break">Class LineSequencer
+  </h1>
+  <div class="markdown level0 summary"><p>
+Builds a sequence from a set of <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s,
+so that they are ordered end to end.
+A sequence is a complete non-repeating list of the linear
+components of the input.  Each linestring is oriented
+so that identical endpoints are adjacent in the list.
+</p>
+<p>
+The input linestrings may form one or more connected sets.
+The input linestrings should be correctly noded, or the results may
+not be what is expected.
+The output of this method is a single <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>,
+containing the ordered linestrings in the sequence.
+</p>
+<p>
+The sequencing employs the classic &apos;Eulerian path&apos; graph algorithm.
+Since Eulerian paths are not uniquely determined, further rules are used to
+make the computed sequence preserve as much as possible of the input ordering.
+Within a connected subset of lines, the ordering rules are:
+ - If there is degree-1 node which is the start
+node of an linestring, use that node as the start of the sequence.
+ - If there is a degree-1 node which is the end
+node of an linestring, use that node as the end of the sequence.
+ - If the sequence has no degree-1 nodes, use any node as the start
+</p>
+<p>
+Not all arrangements of lines can be sequenced.
+For a connected set of edges in a graph,
+Euler&apos;s Theorem states that there is a sequence containing each edge once
+if and only if there are no more than 2 nodes of odd degree.
+If it is not possible to find a sequence, the <a class="xref" href="NetTopologySuite.Operation.Linemerge.LineSequencer.html#NetTopologySuite_Operation_Linemerge_LineSequencer_IsSequenceable">IsSequenceable()</a>
+property will return <code>false</code>.
+</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">LineSequencer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Linemerge.html">NetTopologySuite.Operation.Linemerge</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_Linemerge_LineSequencer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class LineSequencer</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Linemerge_LineSequencer_Add_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Linemerge.LineSequencer.Add(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Linemerge/LineSequencer.cs/#L128">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Linemerge_LineSequencer_Add_" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.Add*"></a>
+  <h4 id="NetTopologySuite_Operation_Linemerge_LineSequencer_Add_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.Add(NetTopologySuite.Geometries.Geometry)">Add(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Adds a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> to be sequenced.
+May be called multiple times.
+Any dimension of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> may be added;
+the constituent linework will be extracted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(Geometry geometry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geometry</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Linemerge_LineSequencer_Add_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Linemerge.LineSequencer.Add(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Linemerge/LineSequencer.cs/#L115">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Linemerge_LineSequencer_Add_" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.Add*"></a>
+  <h4 id="NetTopologySuite_Operation_Linemerge_LineSequencer_Add_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.Add(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">Add(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s to be sequenced.
+May be called multiple times.
+Any dimension of Geometry may be added; the constituent linework will be extracted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(IEnumerable&lt;Geometry&gt; geometries)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geometries</span></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of geometries to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Linemerge_LineSequencer_GetSequencedLineStrings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Linemerge.LineSequencer.GetSequencedLineStrings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Linemerge/LineSequencer.cs/#L187">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Linemerge_LineSequencer_GetSequencedLineStrings_" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.GetSequencedLineStrings*"></a>
+  <h4 id="NetTopologySuite_Operation_Linemerge_LineSequencer_GetSequencedLineStrings" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.GetSequencedLineStrings">GetSequencedLineStrings()</h4>
+  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> or <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>
+built by the sequencing process, if one exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry GetSequencedLineStrings()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The sequenced linestrings,
+or <code>null</code> if a valid sequence does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Linemerge_LineSequencer_IsSequenceable.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Linemerge.LineSequencer.IsSequenceable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Linemerge/LineSequencer.cs/#L175">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Linemerge_LineSequencer_IsSequenceable_" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.IsSequenceable*"></a>
+  <h4 id="NetTopologySuite_Operation_Linemerge_LineSequencer_IsSequenceable" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.IsSequenceable">IsSequenceable()</h4>
+  <div class="markdown level1 summary"><p>Tests whether the arrangement of linestrings has a valid sequence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSequenceable()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if a valid sequence exists.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Linemerge_LineSequencer_IsSequenced_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Linemerge.LineSequencer.IsSequenced(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Linemerge/LineSequencer.cs/#L58">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Linemerge_LineSequencer_IsSequenced_" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.IsSequenced*"></a>
+  <h4 id="NetTopologySuite_Operation_Linemerge_LineSequencer_IsSequenced_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Linemerge.LineSequencer.IsSequenced(NetTopologySuite.Geometries.Geometry)">IsSequenced(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> is sequenced correctly.
+<a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s are trivially sequenced.
+<a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>s are checked for correct sequencing.
+Otherwise, <code>IsSequenced</code> is defined
+to be <code>true</code> for geometries that are not lineal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsSequenced(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> to test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> is sequenced or is not lineal.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Linemerge_LineSequencer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Linemerge.LineSequencer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Linemerge/LineSequencer.cs/#L45" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

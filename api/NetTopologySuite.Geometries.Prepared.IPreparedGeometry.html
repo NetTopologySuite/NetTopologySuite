@@ -1,0 +1,711 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IPreparedGeometry
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IPreparedGeometry
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry" class="text-break">Interface IPreparedGeometry
+  </h1>
+  <div class="markdown level0 summary"><p>An interface for classes which prepare <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a>s
+in order to optimize the performance of repeated calls to specific geometric operations.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Prepared.html">NetTopologySuite.Geometries.Prepared</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IPreparedGeometry</code></pre>
+  </div>
+  <h5 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>
+A given implementation may provide optimized implementations 
+for only some of the specified methods, and delegate the remaining
+methods to the original <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> operations.
+</p>
+<p>
+An implementation may also only optimize certain situations, and delegate others.
+See the implementing classes for documentation about which methods and situations 
+they optimize.</p>
+<p>
+Subclasses are intended to be thread-safe, to allow <code>IPreparedGeometry</code>
+to be used in a multi-threaded context 
+(which allows extracting maximum benefit from the prepared state).
+</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Geometry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L30">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Geometry*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Geometry">Geometry</h4>
+  <div class="markdown level1 summary"><p>Gets the original <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> which has been prepared.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Geometry Geometry { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Contains_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Contains(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L38">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Contains_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Contains*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Contains_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Contains(NetTopologySuite.Geometries.Geometry)">Contains(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> contains a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Contains(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The Geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this Geometry contains the given Geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_ContainsProperly_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.ContainsProperly(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L65">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_ContainsProperly_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.ContainsProperly*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_ContainsProperly_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.ContainsProperly(NetTopologySuite.Geometries.Geometry)">ContainsProperly(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> contains a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool ContainsProperly(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry properly contains the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_ContainsProperly_NetTopologySuite_Geometries_Geometry__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>
+The <code>ContainsProperly</code> predicate has the following equivalent definitions:
+<ul><li>Every point of the other geometry is a point of this geometry&apos;s interior.</li><li>The DE-9IM Intersection Matrix for the two geometries matches <code>>[T**FF*FF*]</code></li></ul>
+The advantage to using this predicate is that it can be computed
+efficiently, with no need to compute topology at individual points.
+</p>
+<p>
+An example use case for this predicate is computing the intersections
+of a set of geometries with a large polygonal geometry.  
+Since <tt>intersection</tt> is a fairly slow operation, it can be more efficient
+to use <tt>containsProperly</tt> to filter out test geometries which lie
+wholly inside the area.  In these cases the intersection 
+known a priori to be simply the original test geometry. 
+</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_CoveredBy_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.CoveredBy(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L73">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_CoveredBy_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.CoveredBy*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_CoveredBy_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.CoveredBy(NetTopologySuite.Geometries.Geometry)">CoveredBy(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> is covered by a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool CoveredBy(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry is covered by the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Covers_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Covers(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L81">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Covers_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Covers*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Covers_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Covers(NetTopologySuite.Geometries.Geometry)">Covers(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> covers a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Covers(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry covers the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Crosses_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Crosses(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L89">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Crosses_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Crosses*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Crosses_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Crosses(NetTopologySuite.Geometries.Geometry)">Crosses(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> crosses a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Crosses(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry crosses the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Disjoint_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Disjoint(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L100">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Disjoint_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Disjoint*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Disjoint_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Disjoint(NetTopologySuite.Geometries.Geometry)">Disjoint(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> is disjoint from given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Disjoint(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry is disjoint from the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Disjoint_NetTopologySuite_Geometries_Geometry__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method supports <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>s as input</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Intersects_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Intersects(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L111">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Intersects_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Intersects*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Intersects_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Intersects(NetTopologySuite.Geometries.Geometry)">Intersects(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> intersects a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Intersects(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry intersects the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Intersects_NetTopologySuite_Geometries_Geometry__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method supports <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>s as input</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Overlaps_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Overlaps(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L119">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Overlaps_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Overlaps*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Overlaps_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Overlaps(NetTopologySuite.Geometries.Geometry)">Overlaps(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> overlaps a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Overlaps(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry overlaps the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Touches_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Touches(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L127">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Touches_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Touches*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Touches_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Touches(NetTopologySuite.Geometries.Geometry)">Touches(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> touches a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Touches(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry touches the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Within_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Within(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L135">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Within_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Within*"></a>
+  <h4 id="NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Within_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.Within(NetTopologySuite.Geometries.Geometry)">Within(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html#NetTopologySuite_Geometries_Prepared_IPreparedGeometry_Geometry">Geometry</a> is within a given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Within(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this geometry is within the given geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Prepared_IPreparedGeometry.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Prepared.IPreparedGeometry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Prepared/IPreparedGeometry.cs/#L25" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

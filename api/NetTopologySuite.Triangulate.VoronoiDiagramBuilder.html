@@ -1,0 +1,407 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class VoronoiDiagramBuilder
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class VoronoiDiagramBuilder
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder">
+  
+  
+  <h1 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder" class="text-break">Class VoronoiDiagramBuilder
+  </h1>
+  <div class="markdown level0 summary"><p>A utility class which creates Voronoi Diagrams
+from collections of points.
+The diagram is returned as a <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> of <a class="xref" href="NetTopologySuite.Triangulate.Polygon.html">NetTopologySuite.Triangulate.Polygon</a>s,
+representing the faces of the Voronoi diagram.
+/// The faces are clipped to the larger of:</p>
+<ul><li>an envelope supplied by <span class="xref">NetTopologySuite.Triangulate.VoronoiDiagramBuilder.set_ClipEnvelope(NetTopologySuite.Geometries.Envelope)</span>.</li><li>an envelope determined by the input sites.</li></ul>
+The <tt>userData</tt> attribute of each face <tt>Polygon</tt> is set to
+the <tt>Coordinate</tt>  of the corresponding input site.
+This allows using a <tt>Map</tt> to link faces to data associated with sites.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">VoronoiDiagramBuilder</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Triangulate.html">NetTopologySuite.Triangulate</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class VoronoiDiagramBuilder</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_VoronoiDiagramBuilder_ClipEnvelope.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.VoronoiDiagramBuilder.ClipEnvelope%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/VoronoiDiagramBuilder.cs/#L64">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_ClipEnvelope_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.ClipEnvelope*"></a>
+  <h4 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_ClipEnvelope" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.ClipEnvelope">ClipEnvelope</h4>
+  <div class="markdown level1 summary"><p>Sets the envelope to clip the diagram to.
+The diagram will be clipped to the larger
+of this envelope or an envelope surrounding the sites.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Envelope ClipEnvelope { set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_ClipEnvelope_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>the clip envelope.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_VoronoiDiagramBuilder_Tolerance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.VoronoiDiagramBuilder.Tolerance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/VoronoiDiagramBuilder.cs/#L75">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_Tolerance_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.Tolerance*"></a>
+  <h4 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_Tolerance" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.Tolerance">Tolerance</h4>
+  <div class="markdown level1 summary"><p>Sets the snapping tolerance which will be used
+to improved the robustness of the triangulation computation.
+A tolerance of 0.0 specifies that no snapping will take place.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Tolerance { set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_Tolerance_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>tolerance the tolerance distance to use</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_VoronoiDiagramBuilder_GetDiagram_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.VoronoiDiagramBuilder.GetDiagram(NetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/VoronoiDiagramBuilder.cs/#L125">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_GetDiagram_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.GetDiagram*"></a>
+  <h4 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_GetDiagram_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.GetDiagram(NetTopologySuite.Geometries.GeometryFactory)">GetDiagram(GeometryFactory)</h4>
+  <div class="markdown level1 summary"><p>Gets the faces of the computed diagram as a <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>
+of <a class="xref" href="NetTopologySuite.Triangulate.Polygon.html">NetTopologySuite.Triangulate.Polygon</a>s, clipped as specified.</p>
+<p>
+The <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_UserData">UserData</a> attribute of each face <a class="xref" href="NetTopologySuite.Triangulate.Polygon.html">NetTopologySuite.Triangulate.Polygon</a> is set to
+the <code>Coordinate</code> of the corresponding input site.
+This allows using a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary&lt;TKey,TValue&gt;</a> to link faces to data associated with sites.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryCollection GetDiagram(GeometryFactory geomFact)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">geomFact</span></td>
+        <td><p>the geometry factory to use to create the output</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a></td>
+        <td><p>a <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> containing the face <a class="xref" href="NetTopologySuite.Triangulate.Polygon.html">NetTopologySuite.Triangulate.Polygon</a>s of the diagram</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_VoronoiDiagramBuilder_GetSubdivision.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.VoronoiDiagramBuilder.GetSubdivision%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/VoronoiDiagramBuilder.cs/#L109">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_GetSubdivision_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.GetSubdivision*"></a>
+  <h4 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_GetSubdivision" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.GetSubdivision">GetSubdivision()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a> which models the computed diagram.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public QuadEdgeSubdivision GetSubdivision()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a></td>
+        <td><p>the subdivision containing the triangulation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_VoronoiDiagramBuilder_SetSites_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.VoronoiDiagramBuilder.SetSites(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/VoronoiDiagramBuilder.cs/#L41">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_SetSites_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.SetSites*"></a>
+  <h4 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_SetSites_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.SetSites(NetTopologySuite.Geometries.Geometry)">SetSites(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Sets the sites (point or vertices) which will be diagrammed.
+All vertices of the given geometry will be used as sites.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetSites(Geometry geom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>geom the geometry from which the sites will be extracted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_VoronoiDiagramBuilder_SetSites_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Coordinate__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.VoronoiDiagramBuilder.SetSites(System.Collections.Generic.ICollection%7BNetTopologySuite.Geometries.Coordinate%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/VoronoiDiagramBuilder.cs/#L52">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_SetSites_" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.SetSites*"></a>
+  <h4 id="NetTopologySuite_Triangulate_VoronoiDiagramBuilder_SetSites_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Coordinate__" data-uid="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.SetSites(System.Collections.Generic.ICollection{NetTopologySuite.Geometries.Coordinate})">SetSites(ICollection&lt;Coordinate&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets the sites (point or vertices) which will be diagrammed
+from a collection of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetSites(ICollection&lt;Coordinate&gt; coords)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
+        <td><span class="parametername">coords</span></td>
+        <td><p>a collection of Coordinates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_VoronoiDiagramBuilder.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.VoronoiDiagramBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/VoronoiDiagramBuilder.cs/#L28" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

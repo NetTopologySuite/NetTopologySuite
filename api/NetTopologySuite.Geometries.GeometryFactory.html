@@ -1,0 +1,2648 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class GeometryFactory
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class GeometryFactory
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.GeometryFactory">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_GeometryFactory" data-uid="NetTopologySuite.Geometries.GeometryFactory" class="text-break">Class GeometryFactory
+  </h1>
+  <div class="markdown level0 summary"><p>Supplies a set of utility methods for building Geometry objects
+from lists of Coordinates.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">GeometryFactory</span></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.GeometryFactoryEx.html">GeometryFactoryEx</a></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.html">OgcCompliantGeometryFactory</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_GeometryFactory_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class GeometryFactory</code></pre>
+  </div>
+  <h5 id="NetTopologySuite_Geometries_GeometryFactory_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Note that the factory constructor methods do <strong>not</strong> change the input coordinates in any way.
+In particular, they are not rounded to the supplied <code>PrecisionModel</code>.
+It is assumed that input Coordinates meet the given precision.</p>
+<p>
+Instances of this class are thread-safe.
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L171">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor">GeometryFactory()</h4>
+  <div class="markdown level1 summary"><p>Constructs a GeometryFactory that generates Geometries having a floating
+PrecisionModel and a spatial-reference ID of 0.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryFactory()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_CoordinateSequenceFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.CoordinateSequenceFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L145">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.CoordinateSequenceFactory)">GeometryFactory(CoordinateSequenceFactory)</h4>
+  <div class="markdown level1 summary"><p>Constructs a GeometryFactory that generates Geometries having the given
+CoordinateSequence implementation, a double-precision floating PrecisionModel and a
+spatial-reference ID of 0.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a></td>
+        <td><span class="parametername">coordinateSequenceFactory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L154">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel)">GeometryFactory(PrecisionModel)</h4>
+  <div class="markdown level1 summary"><p>Constructs a GeometryFactory that generates Geometries having the given
+{PrecisionModel} and the default CoordinateSequence
+implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryFactory(PrecisionModel precisionModel)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">precisionModel</span></td>
+        <td><p>The PrecisionModel to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L164">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel,System.Int32)">GeometryFactory(PrecisionModel, Int32)</h4>
+  <div class="markdown level1 summary"><p>Constructs a GeometryFactory that generates Geometries having the given
+<code>PrecisionModel</code> and spatial-reference ID, and the default CoordinateSequence
+implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryFactory(PrecisionModel precisionModel, int srid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">precisionModel</span></td>
+        <td><p>The PrecisionModel to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">srid</span></td>
+        <td><p>The SRID to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel%2CSystem.Int32%2CNetTopologySuite.Geometries.CoordinateSequenceFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L135">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel,System.Int32,NetTopologySuite.Geometries.CoordinateSequenceFactory)">GeometryFactory(PrecisionModel, Int32, CoordinateSequenceFactory)</h4>
+  <div class="markdown level1 summary"><p>Constructs a GeometryFactory that generates Geometries having the given
+PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">precisionModel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">srid</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a></td>
+        <td><span class="parametername">coordinateSequenceFactory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_NetTopologySuite_NtsGeometryServices_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel%2CSystem.Int32%2CNetTopologySuite.Geometries.CoordinateSequenceFactory%2CNetTopologySuite.NtsGeometryServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L122">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_NetTopologySuite_NtsGeometryServices_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel,System.Int32,NetTopologySuite.Geometries.CoordinateSequenceFactory,NetTopologySuite.NtsGeometryServices)">GeometryFactory(PrecisionModel, Int32, CoordinateSequenceFactory, NtsGeometryServices)</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>GeometryFactory</code> that generates Geometries having the given
+<code data-dev-comment-type="paramref" class="paramref">precisionModel</code>, <code data-dev-comment-type="paramref" class="paramref">srid</code>,
+<code data-dev-comment-type="paramref" class="paramref">coordinateSequenceFactory</code> and
+<code data-dev-comment-type="paramref" class="paramref">services</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory, NtsGeometryServices services)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">precisionModel</span></td>
+        <td><p>A precision model</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">srid</span></td>
+        <td><p>A spatial reference id</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a></td>
+        <td><span class="parametername">coordinateSequenceFactory</span></td>
+        <td><p>A coordinate sequence factory</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.NtsGeometryServices.html">NtsGeometryServices</a></td>
+        <td><span class="parametername">services</span></td>
+        <td><p><code>NtsGeometryServices</code> object creating this factory</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_Default.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.Default%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L28">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_Default" data-uid="NetTopologySuite.Geometries.GeometryFactory.Default">Default</h4>
+  <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>c
+<code> == </code> <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly GeometryFactory Default</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_Fixed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.Fixed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L47">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_Fixed" data-uid="NetTopologySuite.Geometries.GeometryFactory.Fixed">Fixed</h4>
+  <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>
+<code> == </code> <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Fixed">Fixed</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly GeometryFactory Fixed</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_Floating.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.Floating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L35">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_Floating" data-uid="NetTopologySuite.Geometries.GeometryFactory.Floating">Floating</h4>
+  <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>
+<code> == </code> <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly GeometryFactory Floating</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_GeometryFactory_Floating_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A shortcut for <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_Default">Default</a>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_FloatingSingle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.FloatingSingle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L41">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_FloatingSingle" data-uid="NetTopologySuite.Geometries.GeometryFactory.FloatingSingle">FloatingSingle</h4>
+  <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>
+<code> == </code> <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_FloatingSingle">FloatingSingle</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly GeometryFactory FloatingSingle</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CoordinateSequenceFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L62">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CoordinateSequenceFactory*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory" data-uid="NetTopologySuite.Geometries.GeometryFactory.CoordinateSequenceFactory">CoordinateSequenceFactory</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateSequenceFactory CoordinateSequenceFactory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_GeometryServices.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.GeometryServices%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L95">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_GeometryServices_" data-uid="NetTopologySuite.Geometries.GeometryFactory.GeometryServices*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_GeometryServices" data-uid="NetTopologySuite.Geometries.GeometryFactory.GeometryServices">GeometryServices</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating the <a class="xref" href="NetTopologySuite.NtsGeometryServices.html">NtsGeometryServices</a> object that created this factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NtsGeometryServices GeometryServices { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.NtsGeometryServices.html">NtsGeometryServices</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_PrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.PrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L55">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_PrecisionModel_" data-uid="NetTopologySuite.Geometries.GeometryFactory.PrecisionModel*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_PrecisionModel" data-uid="NetTopologySuite.Geometries.GeometryFactory.PrecisionModel">PrecisionModel</h4>
+  <div class="markdown level1 summary"><p>Returns the PrecisionModel that Geometries created by this factory
+will be associated with.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrecisionModel PrecisionModel { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_SRID.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.SRID%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L69">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_SRID_" data-uid="NetTopologySuite.Geometries.GeometryFactory.SRID*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_SRID" data-uid="NetTopologySuite.Geometries.GeometryFactory.SRID">SRID</h4>
+  <div class="markdown level1 summary"><p>The SRID value defined for this factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SRID { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.BuildGeometry(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L604">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.BuildGeometry*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.BuildGeometry(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">BuildGeometry(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or
+<code>GeometryCollection</code> to contain the <code>Geometry</code>s in
+it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Geometry BuildGeometry(IEnumerable&lt;Geometry&gt; geomList)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geomList</span></td>
+        <td><p>The <code>Geometry</code> to combine.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> of the &quot;smallest&quot;, &quot;most type-specific&quot;
+class that can contain the elements of <code>geomList</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If <code>geomList</code> contains a single <code>Polygon</code>,
+the <code>Polygon</code> is returned.<br>
+If <code>geomList</code> contains several <code>Polygon</code>s, a
+<code>MultiPolygon</code> is returned.<br>
+If <code>geomList</code> contains some <code>Polygon</code>s and
+some <code>LineString</code>s, a <code>GeometryCollection</code> is
+returned.<br>
+If <code>geomList</code> is empty, an empty <code>GeometryCollection</code>
+is returned.
+Note that this method does not &quot;flatten&quot; Geometries in the input, and hence if
+any MultiGeometries are contained in the input a GeometryCollection containing
+them will be returned.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateEmpty_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateEmpty(NetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L668">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateEmpty_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateEmpty*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateEmpty_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateEmpty(NetTopologySuite.Geometries.Dimension)">CreateEmpty(Dimension)</h4>
+  <div class="markdown level1 summary"><p>Creates an empty atomic geometry of the given dimension.
+If passed a dimension of <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Dontcare">Dontcare</a>
+will create an empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry CreateEmpty(Dimension dimension)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The required dimension (<a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Dontcare">Dontcare</a>, <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Point">Point</a>, <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Curve">Curve</a> or <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Surface">Surface</a>)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>An empty atomic geometry of given dimension</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateGeometry(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L697">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometry*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometry(NetTopologySuite.Geometries.Geometry)">CreateGeometry(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Creates a deep copy of the input <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
+The <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a> defined for this factory
+is used to copy the <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>s
+of the input geometry.</p>
+<p>
+This is a convenient way to change the <tt>CoordinateSequence</tt>
+used to represent a geometry, or to change the
+factory used for a geometry.
+<p>
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Copy">Copy()</a> can also be used to make a deep copy,
+but it does not allow changing the CoordinateSequence type.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Geometry CreateGeometry(Geometry g)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">g</span></td>
+        <td><p>The geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>A deep copy of the input geometry, using the CoordinateSequence type of this factory</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_NetTopologySuite_Geometries_Geometry__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Copy">Copy</a>()</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L564">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection">CreateGeometryCollection()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty GeometryCollection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GeometryCollection CreateGeometryCollection()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a></td>
+        <td><p>An empty GeometryCollection</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_NetTopologySuite_Geometries_Geometry___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection(NetTopologySuite.Geometries.Geometry%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L575">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_NetTopologySuite_Geometries_Geometry___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection(NetTopologySuite.Geometries.Geometry[])">CreateGeometryCollection(Geometry[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>GeometryCollection</code> using the given <code>Geometries</code>; a null or empty
+array will create an empty GeometryCollection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual GeometryCollection CreateGeometryCollection(Geometry[] geometries)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">geometries</span></td>
+        <td><p>an array of Geometries, each of which may be empty but not null, or null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L378">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing">CreateLinearRing()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty LinearRing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearRing CreateLinearRing()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><p>An empty LinearRing</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L390">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.Coordinate[])">CreateLinearRing(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>LinearRing</code> using the given <code>Coordinates</code>; a null or empty array
+creates an empty LinearRing. The points must form a closed and simple
+linestring. Consecutive points must not be equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearRing CreateLinearRing(Coordinate[] coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>An array without null elements, or an empty array, or null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the ring is not closed, or has too few points</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L403">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.CoordinateSequence)">CreateLinearRing(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>LinearRing</code> using the given <code>CoordinateSequence</code>; a null or empty CoordinateSequence
+creates an empty LinearRing. The points must form a closed and simple
+linestring. Consecutive points must not be equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual LinearRing CreateLinearRing(CoordinateSequence coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>A CoordinateSequence (possibly empty), or null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the ring is not closed, or has too few points</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLineString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLineString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L349">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString">CreateLineString()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty LineString</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LineString CreateLineString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td><p>An empty LineString</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L360">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.Coordinate[])">CreateLineString(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Creates a LineString using the given Coordinates.
+A null or empty array creates an empty LineString.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LineString CreateLineString(Coordinate[] coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>An array without null elements, or an empty array, or null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L371">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.CoordinateSequence)">CreateLineString(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Creates a LineString using the given CoordinateSequence.
+A null or empty CoordinateSequence creates an empty LineString.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual LineString CreateLineString(CoordinateSequence coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>A CoordinateSequence (possibly empty), or null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L526">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString">CreateMultiLineString()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty MultiLineString</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MultiLineString CreateMultiLineString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a></td>
+        <td><p>An empty MultiLineString</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_NetTopologySuite_Geometries_LineString___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString(NetTopologySuite.Geometries.LineString%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L537">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_NetTopologySuite_Geometries_LineString___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString(NetTopologySuite.Geometries.LineString[])">CreateMultiLineString(LineString[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>MultiLineString</code> using the given <code>LineStrings</code>; a null or empty
+array will create an empty MultiLineString.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual MultiLineString CreateMultiLineString(LineString[] lineStrings)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>[]</td>
+        <td><span class="parametername">lineStrings</span></td>
+        <td><p>LineStrings, each of which may be empty but not null-</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L476">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint">CreateMultiPoint()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty MultiPoint</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MultiPoint CreateMultiPoint()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a></td>
+        <td><p>An empty MultiPoint</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L509">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.CoordinateSequence)">CreateMultiPoint(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> using the given CoordinateSequence.
+A null or empty CoordinateSequence will create an empty MultiPoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MultiPoint CreateMultiPoint(CoordinateSequence coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>A CoordinateSequence (possibly empty), or <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_Point___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.Point%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L487">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_Point___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.Point[])">CreateMultiPoint(Point[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> using the given Points.
+A null or empty array will  create an empty MultiPoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual MultiPoint CreateMultiPoint(Point[] point)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a>[]</td>
+        <td><span class="parametername">point</span></td>
+        <td><p>An array (without null elements), or an empty array, or <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPointFromCoords_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPointFromCoords(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L498">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPointFromCoords_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPointFromCoords*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPointFromCoords_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPointFromCoords(NetTopologySuite.Geometries.Coordinate[])">CreateMultiPointFromCoords(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> using the given Coordinates.
+A null or empty array will create an empty MultiPoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MultiPoint CreateMultiPointFromCoords(Coordinate[] coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>An array (without null elements), or an empty array, or <code>null</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L544">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon">CreateMultiPolygon()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty MultiPolygon</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MultiPolygon CreateMultiPolygon()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPolygon.html">MultiPolygon</a></td>
+        <td><p>An empty MultiPolygon</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_NetTopologySuite_Geometries_Polygon___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon(NetTopologySuite.Geometries.Polygon%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L557">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_NetTopologySuite_Geometries_Polygon___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon(NetTopologySuite.Geometries.Polygon[])">CreateMultiPolygon(Polygon[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>MultiPolygon</code> using the given <code>Polygons</code>; a null or empty array
+will create an empty Polygon. The polygons must conform to the
+assertions specified in the <a href="http://www.opengis.org/techno/specs.htm">http://www.opengis.org/techno/specs.htm</a> OpenGIS Simple Features
+Specification for SQL.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual MultiPolygon CreateMultiPolygon(Polygon[] polygons)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>[]</td>
+        <td><span class="parametername">polygons</span></td>
+        <td><p>Polygons, each of which may be empty but not null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPolygon.html">MultiPolygon</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.MultiPolygon.html">MultiPolygon</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L318">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint">CreatePoint()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty Point</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point CreatePoint()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></td>
+        <td><p>An empty Point</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L329">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.Coordinate)">CreatePoint(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Creates a Point using the given Coordinate.
+A <code>null</code> coordinate creates an empty Geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Point CreatePoint(Coordinate coordinate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">coordinate</span></td>
+        <td><p>a Coordinate, or null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L340">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.CoordinateSequence)">CreatePoint(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>Point</code> using the given <code>CoordinateSequence</code>; a null or empty
+CoordinateSequence will create an empty Point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Point CreatePoint(CoordinateSequence coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>a CoordinateSequence (possibly empty), or null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePointFromInternalCoord_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePointFromInternalCoord(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L106">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePointFromInternalCoord_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePointFromInternalCoord*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePointFromInternalCoord_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePointFromInternalCoord(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Geometry)">CreatePointFromInternalCoord(Coordinate, Geometry)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Point CreatePointFromInternalCoord(Coordinate coord, Geometry exemplar)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">coord</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">exemplar</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L410">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon">CreatePolygon()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty Polygon</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon CreatePolygon()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td><p>An empty Polygon</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L456">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.Coordinate[])">CreatePolygon(Coordinate[])</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>Polygon</code> with the given exterior boundary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Polygon CreatePolygon(Coordinate[] coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>the outer boundary of the new <code>Polygon</code>, or
+<code>null</code> or an empty <code>LinearRing</code> if
+the empty geometry is to be created.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the boundary ring is invalid</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L443">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.CoordinateSequence)">CreatePolygon(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>Polygon</code> with the given exterior boundary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Polygon CreatePolygon(CoordinateSequence coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordinates</span></td>
+        <td><p>the outer boundary of the new <code>Polygon</code>, or
+<code>null</code> or an empty <code>LinearRing</code> if
+the empty geometry is to be created.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the boundary ring is invalid</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L469">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing)">CreatePolygon(LinearRing)</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>Polygon</code> with the given exterior boundary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Polygon CreatePolygon(LinearRing shell)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><span class="parametername">shell</span></td>
+        <td><p>the outer boundary of the new <code>Polygon</code>, or
+<code>null</code> or an empty <code>LinearRing</code> if
+the empty geometry is to be created.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td><p>the created Polygon</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>If the boundary ring is invalid</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.LinearRing%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L430">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing,NetTopologySuite.Geometries.LinearRing[])">CreatePolygon(LinearRing, LinearRing[])</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>Polygon</code> with the given exterior boundary and
+interior boundaries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><span class="parametername">shell</span></td>
+        <td><p>The outer boundary of the new <code>Polygon</code>, or
+<code>null</code> or an empty <code>LinearRing</code> if
+the empty point is to be created.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a>[]</td>
+        <td><span class="parametername">holes</span></td>
+        <td><p>The inner boundaries of the new <code>Polygon</code>, or
+<code>null</code> or empty <code>LinearRing</code> s if
+the empty point is to be created.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_OnDeserialized_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.OnDeserialized(System.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L730">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_OnDeserialized_" data-uid="NetTopologySuite.Geometries.GeometryFactory.OnDeserialized*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_OnDeserialized_System_Runtime_Serialization_StreamingContext_" data-uid="NetTopologySuite.Geometries.GeometryFactory.OnDeserialized(System.Runtime.Serialization.StreamingContext)">OnDeserialized(StreamingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[OnDeserialized]
+protected void OnDeserialized(StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToGeometry(NetTopologySuite.Geometries.Envelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L279">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToGeometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometry*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometry(NetTopologySuite.Geometries.Envelope)">ToGeometry(Envelope)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> with the same extent as the given envelope.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Geometry ToGeometry(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a></td>
+        <td><span class="parametername">envelope</span></td>
+        <td><p>The <code>Envelope</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>An empty <code>Point</code> (for null <code>Envelope</code>s), a <code>Point</code> (when min x = max x and min y = max y) or a <code>Polygon</code> (in all other cases)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_GeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>
+The Geometry returned is guaranteed to be valid.
+To provide this behavior, the following cases occur:
+</p>
+<p>
+If the <code>Envelope</code> is:
+<ul>
+<li>null returns an empty <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></li>
+<li>a point returns a non-empty <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></li>
+<li>a line returns a two-point <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></li>
+<li>a rectangle returns a <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> whose points are (minx, maxy), (minx, maxy), (maxx, maxy), (maxx, miny).</li>
+</ul>
+</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L192">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToGeometryArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry[] ToGeometryArray(IEnumerable&lt;Geometry&gt; geometries)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geometries</span></td>
+        <td><p>The <code>IEnumerable</code> of <code>Geometry</code>'s to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L212">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToLinearRingArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LinearRing[] ToLinearRingArray(IEnumerable&lt;Geometry&gt; linearRings)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">linearRings</span></td>
+        <td><p>The <code>IEnumerable</code> of LinearRings to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L202">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToLineStringArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static LineString[] ToLineStringArray(IEnumerable&lt;Geometry&gt; lineStrings)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">lineStrings</span></td>
+        <td><p>The <code>IEnumerable</code> of LineStrings to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L242">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiLineStringArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MultiLineString[] ToMultiLineStringArray(IEnumerable&lt;Geometry&gt; multiLineStrings)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">multiLineStrings</span></td>
+        <td><p>The <code>IEnumerable</code> of MultiLineStrings to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L232">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiPointArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MultiPoint[] ToMultiPointArray(IEnumerable&lt;Geometry&gt; multiPoints)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">multiPoints</span></td>
+        <td><p>The <code>IEnumerable</code> of MultiPoints to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L252">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiPolygonArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MultiPolygon[] ToMultiPolygonArray(IEnumerable&lt;Geometry&gt; multiPolygons)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">multiPolygons</span></td>
+        <td><p>The <code>IEnumerable</code> of MultiPolygons to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPolygon.html">MultiPolygon</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToPointArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L178">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToPointArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPointArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPointArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToPointArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Point[] ToPointArray(IEnumerable&lt;Geometry&gt; points)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">points</span></td>
+        <td><p>The <code>IEnumerable</code> of Points to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L222">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToPolygonArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Polygon[] ToPolygonArray(IEnumerable&lt;Geometry&gt; polygons)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">polygons</span></td>
+        <td><p>The <code>IEnumerable</code> of Polygons to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>[]</td>
+        <td><p>The <code>IEnumerable</code> in array format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L725">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_ToString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToString*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToString" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_WithSRID_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.WithSRID(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L717">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_WithSRID_" data-uid="NetTopologySuite.Geometries.GeometryFactory.WithSRID*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_WithSRID_System_Int32_" data-uid="NetTopologySuite.Geometries.GeometryFactory.WithSRID(System.Int32)">WithSRID(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns a new <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> whose <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_SRID">SRID</a> is
+the given value and whose other values and behavior are, as near as we possibly can make
+it, the same as our own.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual GeometryFactory WithSRID(int srid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">srid</span></td>
+        <td><p>The <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_SRID">SRID</a> for the result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><p>The cloned instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L21" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

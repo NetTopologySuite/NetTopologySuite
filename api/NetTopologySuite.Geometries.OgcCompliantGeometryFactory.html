@@ -1,0 +1,727 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class OgcCompliantGeometryFactory
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class OgcCompliantGeometryFactory
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory" class="text-break">Class OgcCompliantGeometryFactory
+  </h1>
+  <div class="markdown level0 summary"><p>OGC compliant geometry factory</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></div>
+    <div class="level2"><span class="xref">OgcCompliantGeometryFactory</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_Default">GeometryFactory.Default</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_Floating">GeometryFactory.Floating</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_FloatingSingle">GeometryFactory.FloatingSingle</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_Fixed">GeometryFactory.Fixed</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">GeometryFactory.PrecisionModel</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory">GeometryFactory.CoordinateSequenceFactory</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_SRID">GeometryFactory.SRID</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_GeometryServices">GeometryFactory.GeometryServices</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePointFromInternalCoord_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_">GeometryFactory.CreatePointFromInternalCoord(Coordinate, Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToPointArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToGeometryArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToLineStringArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToLinearRingArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToPolygonArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToMultiPointArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToMultiLineStringArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.ToMultiPolygonArray(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePoint">GeometryFactory.CreatePoint()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_Coordinate_">GeometryFactory.CreatePoint(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_CoordinateSequence_">GeometryFactory.CreatePoint(CoordinateSequence)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateLineString">GeometryFactory.CreateLineString()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_Coordinate___">GeometryFactory.CreateLineString(Coordinate[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_CoordinateSequence_">GeometryFactory.CreateLineString(CoordinateSequence)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing">GeometryFactory.CreateLinearRing()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_Coordinate___">GeometryFactory.CreateLinearRing(Coordinate[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_CoordinateSequence_">GeometryFactory.CreateLinearRing(CoordinateSequence)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePolygon">GeometryFactory.CreatePolygon()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint">GeometryFactory.CreateMultiPoint()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_Point___">GeometryFactory.CreateMultiPoint(Point[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiPointFromCoords_NetTopologySuite_Geometries_Coordinate___">GeometryFactory.CreateMultiPointFromCoords(Coordinate[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_CoordinateSequence_">GeometryFactory.CreateMultiPoint(CoordinateSequence)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString">GeometryFactory.CreateMultiLineString()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_NetTopologySuite_Geometries_LineString___">GeometryFactory.CreateMultiLineString(LineString[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon">GeometryFactory.CreateMultiPolygon()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_NetTopologySuite_Geometries_Polygon___">GeometryFactory.CreateMultiPolygon(Polygon[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection">GeometryFactory.CreateGeometryCollection()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_NetTopologySuite_Geometries_Geometry___">GeometryFactory.CreateGeometryCollection(Geometry[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__">GeometryFactory.BuildGeometry(IEnumerable&lt;Geometry&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateEmpty_NetTopologySuite_Geometries_Dimension_">GeometryFactory.CreateEmpty(Dimension)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_NetTopologySuite_Geometries_Geometry_">GeometryFactory.CreateGeometry(Geometry)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_WithSRID_System_Int32_">GeometryFactory.WithSRID(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToString">GeometryFactory.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_OnDeserialized_System_Runtime_Serialization_StreamingContext_">GeometryFactory.OnDeserialized(StreamingContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GeometryFactoryEx with OrientationOfExteriorRing = CCW&quot;)]
+public class OgcCompliantGeometryFactory : GeometryFactory</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L18">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor">OgcCompliantGeometryFactory()</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class using the default
+values for <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_SRID">SRID</a>,
+<a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a> and
+<a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory">CoordinateSequenceFactory</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OgcCompliantGeometryFactory()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_CoordinateSequenceFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.%23ctor(NetTopologySuite.Geometries.CoordinateSequenceFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L27">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor(NetTopologySuite.Geometries.CoordinateSequenceFactory)">OgcCompliantGeometryFactory(CoordinateSequenceFactory)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class using the default
+values for <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_SRID">SRID</a>,
+<a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>,
+but the specified <code data-dev-comment-type="paramref" class="paramref">factory</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OgcCompliantGeometryFactory(CoordinateSequenceFactory factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a></td>
+        <td><span class="parametername">factory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L35">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel)">OgcCompliantGeometryFactory(PrecisionModel)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OgcCompliantGeometryFactory(PrecisionModel pm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L39">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel,System.Int32)">OgcCompliantGeometryFactory(PrecisionModel, Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OgcCompliantGeometryFactory(PrecisionModel pm, int srid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">srid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel%2CSystem.Int32%2CNetTopologySuite.Geometries.CoordinateSequenceFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L43">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel,System.Int32,NetTopologySuite.Geometries.CoordinateSequenceFactory)">OgcCompliantGeometryFactory(PrecisionModel, Int32, CoordinateSequenceFactory)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OgcCompliantGeometryFactory(PrecisionModel pm, int srid, CoordinateSequenceFactory factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">srid</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceFactory.html">CoordinateSequenceFactory</a></td>
+        <td><span class="parametername">factory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L111">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.Coordinate[])">CreatePolygon(Coordinate[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Polygon CreatePolygon(Coordinate[] coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">coordinates</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate___">GeometryFactory.CreatePolygon(Coordinate[])</a></div>
+  <h5 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="NetTopologySuite.Geometries.Polygon.html#NetTopologySuite_Geometries_Polygon_ExteriorRing">ExteriorRing</a> is guaranteed to be orientated counter-clockwise.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L121">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.CoordinateSequence)">CreatePolygon(CoordinateSequence)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Polygon CreatePolygon(CoordinateSequence coordinates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
+        <td><span class="parametername">coordinates</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence_">GeometryFactory.CreatePolygon(CoordinateSequence)</a></div>
+  <h5 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="NetTopologySuite.Geometries.Polygon.html#NetTopologySuite_Geometries_Polygon_ExteriorRing">ExteriorRing</a> is guaranteed to be orientated counter-clockwise.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L131">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing)">CreatePolygon(LinearRing)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Polygon CreatePolygon(LinearRing shell)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><span class="parametername">shell</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_">GeometryFactory.CreatePolygon(LinearRing)</a></div>
+  <h5 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="NetTopologySuite.Geometries.Polygon.html#NetTopologySuite_Geometries_Polygon_ExteriorRing">ExteriorRing</a> is guaranteed to be orientated counter-clockwise.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.LinearRing%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L141">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing,NetTopologySuite.Geometries.LinearRing[])">CreatePolygon(LinearRing, LinearRing[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><span class="parametername">shell</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a>[]</td>
+        <td><span class="parametername">holes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___">GeometryFactory.CreatePolygon(LinearRing, LinearRing[])</a></div>
+  <h5 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="NetTopologySuite.Geometries.Polygon.html#NetTopologySuite_Geometries_Polygon_ExteriorRing">ExteriorRing</a> is guaranteed to be orientated counter-clockwise.
+<br>The <a class="xref" href="NetTopologySuite.Geometries.Polygon.html#NetTopologySuite_Geometries_Polygon_InteriorRings">InteriorRings</a> are guaranteed to be orientated clockwise.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory.ToGeometry(NetTopologySuite.Geometries.Envelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L72">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_ToGeometry_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.ToGeometry*"></a>
+  <h4 id="NetTopologySuite_Geometries_OgcCompliantGeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.ToGeometry(NetTopologySuite.Geometries.Envelope)">ToGeometry(Envelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Geometry ToGeometry(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope_">GeometryFactory.ToGeometry(Envelope)</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_OgcCompliantGeometryFactory.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.OgcCompliantGeometryFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/OgcCompliantGeometryFactory.cs/#L9" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

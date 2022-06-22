@@ -1,0 +1,1034 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Vertex
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Vertex
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex">
+  
+  
+  <h1 id="NetTopologySuite_Triangulate_QuadEdge_Vertex" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex" class="text-break">Class Vertex
+  </h1>
+  <div class="markdown level0 summary"><p>Models a site (node) in a <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a>.
+The sites can be points on a line string representing a
+linear site.<p>
+The vertex can be considered as a vector with a norm, length, inner product, cross
+product, etc. Additionally, point relations (e.g., is a point to the left of a line, the circle
+defined by this point and two others, etc.) are also defined in this class.</p>
+<p>
+It is common to want to attach user-defined data to
+the vertices of a subdivision.
+One way to do this is to subclass <tt>Vertex</tt>
+to carry any desired information.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">Vertex</span></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Triangulate.ConstraintVertex.html">ConstraintVertex</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.html">NetTopologySuite.Triangulate.QuadEdge</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Vertex : IEquatable&lt;Vertex&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.%23ctor(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L61">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.#ctor*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.#ctor(NetTopologySuite.Geometries.Coordinate)">Vertex(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class using a clone of the given <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html#NetTopologySuite_Triangulate_QuadEdge_Vertex_Coordinate">Coordinate</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vertex(Coordinate p)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p</span></td>
+        <td><p>The coordinate</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.%23ctor(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L41">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.#ctor*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_System_Double_System_Double_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.#ctor(System.Double,System.Double)">Vertex(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class using the given x- and y-ordinate valuse</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vertex(double x, double y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>x-ordinate value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>y-ordinate value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_System_Double_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.%23ctor(System.Double%2CSystem.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L52">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.#ctor*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex__ctor_System_Double_System_Double_System_Double_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.#ctor(System.Double,System.Double,System.Double)">Vertex(Double, Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class using the given x-, y- and z-ordinate values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vertex(double x, double y, double z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>x-ordinate value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>y-ordinate value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">z</span></td>
+        <td><p>z-ordinate value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_Coordinate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.Coordinate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L88">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Coordinate_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Coordinate*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Coordinate" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Coordinate">Coordinate</h4>
+  <div class="markdown level1 summary"><p>Gets the coordinate</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate Coordinate { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_X.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.X%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L69">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_X_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.X*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_X" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.X">X</h4>
+  <div class="markdown level1 summary"><p>Gets the x-ordinate value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double X { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_Y.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.Y%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L74">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Y_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Y*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Y" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Y">Y</h4>
+  <div class="markdown level1 summary"><p>Gets the y-ordinate value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Y { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_Z.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.Z%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L79">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Z_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Z*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Z" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Z">Z</h4>
+  <div class="markdown level1 summary"><p>Gets the z-ordinate value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Z { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_CircleCenter_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.CircleCenter(NetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L318">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_CircleCenter_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.CircleCenter*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_CircleCenter_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.CircleCenter(NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex)">CircleCenter(Vertex, Vertex)</h4>
+  <div class="markdown level1 summary"><p>Computes the centre of the circumcircle of this vertex and two others.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vertex CircleCenter(Vertex b, Vertex c)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">c</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><p>the Coordinate which is the circumcircle of the 3 points.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_CircumRadiusRatio_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.CircumRadiusRatio(NetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L281">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_CircumRadiusRatio_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.CircumRadiusRatio*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_CircumRadiusRatio_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.CircumRadiusRatio(NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex)">CircumRadiusRatio(Vertex, Vertex)</h4>
+  <div class="markdown level1 summary"><p>Computes the value of the ratio of the circumradius to shortest edge. If smaller than some
+given tolerance B, the associated triangle is considered skinny. For an equal lateral
+triangle this value is 0.57735. The ratio is related to the minimum triangle angle theta by:
+circumRadius/shortestEdge = 1/(2sin(theta)).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double CircumRadiusRatio(Vertex b, Vertex c)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">b</span></td>
+        <td><p>second vertex of the triangle</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">c</span></td>
+        <td><p>third vertex of the triangle</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>ratio of circumradius to shortest edge.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_Classify_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.Classify(NetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L116">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Classify_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Classify*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Classify_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Classify(NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex)">Classify(Vertex, Vertex)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Classify(Vertex p0, Vertex p1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">p0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">p1</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_Equals_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.Equals(NetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L97">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Equals_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Equals*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Equals_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Equals(NetTopologySuite.Triangulate.QuadEdge.Vertex)">Equals(Vertex)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(Vertex x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_Equals_NetTopologySuite_Triangulate_QuadEdge_Vertex_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.Equals(NetTopologySuite.Triangulate.QuadEdge.Vertex%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L107">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Equals_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Equals*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_Equals_NetTopologySuite_Triangulate_QuadEdge_Vertex_System_Double_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.Equals(NetTopologySuite.Triangulate.QuadEdge.Vertex,System.Double)">Equals(Vertex, Double)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(Vertex x, double tolerance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">tolerance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZ_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZ(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L398">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZ_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZ*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZ_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZ(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">InterpolateZ(Coordinate, Coordinate, Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Computes the interpolated Z-value for a point p lying on the segment p0-p1</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double InterpolateZ(Coordinate p, Coordinate p0, Coordinate p1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p</span></td>
+        <td><p>The point to interpolate the Z value of</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p0</span></td>
+        <td><p>A vertex of the segment <code data-dev-comment-type="paramref" class="paramref">p</code> is lying on</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p1</span></td>
+        <td><p>A vertex of the segment <code data-dev-comment-type="paramref" class="paramref">p</code> is lying on</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The interpolated Z-value (height) of the point</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZ_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZ(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L374">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZ_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZ*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZ_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZ(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">InterpolateZ(Coordinate, Coordinate, Coordinate, Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Interpolates the Z-value (height) of a point enclosed in a triangle
+whose vertices all have Z values.
+The containing triangle must not be degenerate
+(in other words, the three vertices must enclose a
+non-zero area).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p</span></td>
+        <td><p>The point to interpolate the Z value of</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">v0</span></td>
+        <td><p>A vertex of a triangle containing the <code data-dev-comment-type="paramref" class="paramref">p</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">v1</span></td>
+        <td><p>A vertex of a triangle containing the <code data-dev-comment-type="paramref" class="paramref">p</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">v2</span></td>
+        <td><p>A vertex of a triangle containing the <code data-dev-comment-type="paramref" class="paramref">p</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The interpolated Z-value (height) of the point</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZValue_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZValue(NetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L345">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZValue_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZValue*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_InterpolateZValue_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.InterpolateZValue(NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex)">InterpolateZValue(Vertex, Vertex, Vertex)</h4>
+  <div class="markdown level1 summary"><p>For this vertex enclosed in a triangle defined by three vertices v0, v1 and v2, interpolate
+a z value from the surrounding vertices.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double InterpolateZValue(Vertex v0, Vertex v1, Vertex v2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">v0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">v1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">v2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_IsInCircle_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.IsInCircle(NetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L209">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_IsInCircle_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.IsInCircle*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_IsInCircle_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.IsInCircle(NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex)">IsInCircle(Vertex, Vertex, Vertex)</h4>
+  <div class="markdown level1 summary"><p>Tests if this is inside the circle defined by the points a, b, c. This test uses simple
+double-precision arithmetic, and thus may not be robust.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInCircle(Vertex a, Vertex b, Vertex c)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">a</span></td>
+        <td><p>A vertex of the triangle</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">b</span></td>
+        <td><p>A vertex of the triangle</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">c</span></td>
+        <td><p>A vertex of the triangle</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this vertex is inside the circumcircle (a, b, c)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_MidPoint_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.MidPoint(NetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L304">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_MidPoint_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.MidPoint*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_MidPoint_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.MidPoint(NetTopologySuite.Triangulate.QuadEdge.Vertex)">MidPoint(Vertex)</h4>
+  <div class="markdown level1 summary"><p>returns a new vertex that is mid-way between this vertex and another end point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vertex MidPoint(Vertex a)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">a</span></td>
+        <td><p>the other end point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><p>the point mid-way between this and that.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L91">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_Vertex_ToString_" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.ToString*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_Vertex_ToString" data-uid="NetTopologySuite.Triangulate.QuadEdge.Vertex.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_Vertex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.Vertex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/QuadEdge/Vertex.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

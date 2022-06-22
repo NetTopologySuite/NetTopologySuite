@@ -1,0 +1,559 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class OffsetCurve
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class OffsetCurve
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve">
+  
+  
+  <h1 id="NetTopologySuite_Operation_Buffer_OffsetCurve" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve" class="text-break">Class OffsetCurve
+  </h1>
+  <div class="markdown level0 summary"><p>Computes an offset curve from a geometry.
+The offset curve is a linear geometry which is offset a specified distance
+from the input.
+If the offset distance is positive the curve lies on the left side of the input;
+if it is negative the curve is on the right side.</p>
+<ul><li>For a <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> the offset curve is a line.</li><li>For a <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> the offset curve is an empty <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>.</li><li>For a <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> the offset curve is the boundary of the polygon buffer (which
+may be a <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>).</li><li>For a collection the output is a <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a> containing the element offset curves.</li></ul>
+<p>
+The offset curve is computed as a single contiguous section of the geometry buffer boundary.
+In some geometric situations this definition is ill-defined.
+This algorithm provides a &quot;best-effort&quot; interpretation.
+In particular:
+<ul><li>For self-intersecting lines, the buffer boundary includes
+offset lines for both left and right sides of the input line.
+Only a single contiguous portion on the specified side is returned.</li><li>If the offset corresponds to buffer holes, only the largest hole is used.</li></ul>
+Offset curves support setting the number of quadrant segments,
+the join style, and the mitre limit(if applicable) via
+the <a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html">BufferParameters</a>.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">OffsetCurve</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Buffer.html">NetTopologySuite.Operation.Buffer</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_Buffer_OffsetCurve_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class OffsetCurve</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve__ctor_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve.%23ctor(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L91">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_OffsetCurve__ctor_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_OffsetCurve__ctor_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.#ctor(NetTopologySuite.Geometries.Geometry,System.Double)">OffsetCurve(Geometry, Double)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance for computing an offset curve for a geometryat a given distance.
+with default quadrant segments(<a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html#NetTopologySuite_Operation_Buffer_BufferParameters_DefaultQuadrantSegments">DefaultQuadrantSegments</a>
+and join style (<a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html#NetTopologySuite_Operation_Buffer_BufferParameters_DefaultJoinStyle">DefaultJoinStyle</a>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OffsetCurve(Geometry geom, double distance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>A distance value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve__ctor_NetTopologySuite_Geometries_Geometry_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve.%23ctor(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CNetTopologySuite.Operation.Buffer.BufferParameters)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L106">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_OffsetCurve__ctor_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_OffsetCurve__ctor_NetTopologySuite_Geometries_Geometry_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.#ctor(NetTopologySuite.Geometries.Geometry,System.Double,NetTopologySuite.Operation.Buffer.BufferParameters)">OffsetCurve(Geometry, Double, BufferParameters)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OffsetCurve(Geometry geom, double distance, BufferParameters bufParams)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html">BufferParameters</a></td>
+        <td><span class="parametername">bufParams</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L122">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve">GetCurve()</h4>
+  <div class="markdown level1 summary"><p>Gets the computed offset curve.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry GetCurve()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The offset curve geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L51">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve(NetTopologySuite.Geometries.Geometry,System.Double)">GetCurve(Geometry, Double)</h4>
+  <div class="markdown level1 summary"><p>Computes the offset curve of a geometry at a given distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry GetCurve(Geometry geom, double distance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>A geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>the offset distance (positive = left, negative = right)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The offset curve</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve_NetTopologySuite_Geometries_Geometry_System_Double_System_Int32_NetTopologySuite_Operation_Buffer_JoinStyle_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CSystem.Int32%2CNetTopologySuite.Operation.Buffer.JoinStyle%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L67">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_OffsetCurve_GetCurve_NetTopologySuite_Geometries_Geometry_System_Double_System_Int32_NetTopologySuite_Operation_Buffer_JoinStyle_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.GetCurve(NetTopologySuite.Geometries.Geometry,System.Double,System.Int32,NetTopologySuite.Operation.Buffer.JoinStyle,System.Double)">GetCurve(Geometry, Double, Int32, JoinStyle, Double)</h4>
+  <div class="markdown level1 summary"><p>Computes the offset curve of a geometry at a given distance,
+and for a specified quadrant segments, join style and mitre limit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry GetCurve(Geometry geom, double distance, int quadSegs = -1, JoinStyle joinStyle = JoinStyle.Round, double mitreLimit = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>A geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The offset distance (positive = left, negative = right)</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">quadSegs</span></td>
+        <td><p>The quadrant segments</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Buffer.JoinStyle.html">JoinStyle</a></td>
+        <td><span class="parametername">joinStyle</span></td>
+        <td><p>The join style</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">mitreLimit</span></td>
+        <td><p>The mitre limit</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The offset curve</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve_RawOffset_NetTopologySuite_Geometries_LineString_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve.RawOffset(NetTopologySuite.Geometries.LineString%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L188">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_OffsetCurve_RawOffset_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.RawOffset*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_OffsetCurve_RawOffset_NetTopologySuite_Geometries_LineString_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.RawOffset(NetTopologySuite.Geometries.LineString,System.Double)">RawOffset(LineString, Double)</h4>
+  <div class="markdown level1 summary"><p>Gets the raw offset line, with default buffer parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Coordinate[] RawOffset(LineString geom, double distance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The <code>LineString</code> to offset</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The offset distance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><p>The raw offset line</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve_RawOffset_NetTopologySuite_Geometries_LineString_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve.RawOffset(NetTopologySuite.Geometries.LineString%2CSystem.Double%2CNetTopologySuite.Operation.Buffer.BufferParameters)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L175">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Buffer_OffsetCurve_RawOffset_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.RawOffset*"></a>
+  <h4 id="NetTopologySuite_Operation_Buffer_OffsetCurve_RawOffset_NetTopologySuite_Geometries_LineString_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_" data-uid="NetTopologySuite.Operation.Buffer.OffsetCurve.RawOffset(NetTopologySuite.Geometries.LineString,System.Double,NetTopologySuite.Operation.Buffer.BufferParameters)">RawOffset(LineString, Double, BufferParameters)</h4>
+  <div class="markdown level1 summary"><p>Gets the raw offset line.
+The quadrant segments and join style and mitre limit to be set
+via <a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html">BufferParameters</a>.</p>
+<p>
+The raw offset line may contain loops and other artifacts which are
+not present in the true offset curve.
+The raw offset line is matched to the buffer ring (which is clean)
+to extract the offset curve.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Coordinate[] RawOffset(LineString geom, double distance, BufferParameters bufParams)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The <code>LineString</code> to offset</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The offset distance</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html">BufferParameters</a></td>
+        <td><span class="parametername">bufParams</span></td>
+        <td><p>The buffer parameters to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><p>The raw offset line</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_OffsetCurve.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.OffsetCurve%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Buffer/OffsetCurve.cs/#L38" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

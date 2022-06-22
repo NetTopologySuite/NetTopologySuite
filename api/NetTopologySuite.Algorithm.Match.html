@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Algorithm.Match
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Algorithm.Match
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Algorithm.Match">
+  
+  <h1 id="NetTopologySuite_Algorithm_Match" data-uid="NetTopologySuite.Algorithm.Match" class="text-break">Namespace NetTopologySuite.Algorithm.Match
+  </h1>
+  <div class="markdown level0 summary">
+<p>Classes to compute matching metrics between geometries.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Match.AreaSimilarityMeasure.html">AreaSimilarityMeasure</a></h4>
+      <section><p>Measures the degree of similarity between two <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s
+using the area of intersection between the geometries.
+The measure is normalized to lie in the range [0, 1].
+Higher measures indicate a great degree of similarity.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Match.FrechetSimilarityMeasure.html">FrechetSimilarityMeasure</a></h4>
+      <section><p>Measures the degree of similarity between two
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s using the Fréchet distance metric.
+The measure is normalized to lie in the range [0, 1].
+Higher measures indicate a great degree of similarity.</p>
+<p>
+The measure is computed by computing the Fréchet distance
+between the input geometries, and then normalizing
+this by dividing it by the diagonal distance across
+the envelope of the combined geometries.
+<p>
+Note: the input should be normalized, especially when
+measuring <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> geometries because for the
+Fréchet distance the order of {@link Coordinate}s is
+important.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Match.HausdorffSimilarityMeasure.html">HausdorffSimilarityMeasure</a></h4>
+      <section><p>Measures the degree of similarity between two <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s using the Hausdorff distance metric.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Match.SimilarityMeasureCombiner.html">SimilarityMeasureCombiner</a></h4>
+      <section><p>Provides methods to mathematically combine <a class="xref" href="NetTopologySuite.Algorithm.Match.ISimilarityMeasure.html">ISimilarityMeasure</a> values.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Match.ISimilarityMeasure.html">ISimilarityMeasure</a></h4>
+      <section><p>An interface for classes which measures the degree of similarity between two {@link Geometry}s.</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Algorithm.Match.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
