@@ -44,7 +44,7 @@
 
   <PropertyGroup Label="Version numbers">
     <!-- The highest released version of JTS that we intend our behavior to be compatible with. -->
-    <JTSCompatibilityLevel>1.18.3-SNAPSHOT</JTSCompatibilityLevel>
+    <JTSCompatibilityLevel>1.19</JTSCompatibilityLevel>
 
     <!-- MAJOR, MINOR, and PATCH are defined according to SemVer 2.0.0. -->
     <NtsMajorVersion>2</NtsMajorVersion>
