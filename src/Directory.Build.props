@@ -44,11 +44,11 @@
 
   <PropertyGroup Label="Version numbers">
     <!-- The highest released version of JTS that we intend our behavior to be compatible with. -->
-    <JTSCompatibilityLevel>1.19</JTSCompatibilityLevel>
+    <JTSCompatibilityLevel>1.20.0-SNAPSHOT</JTSCompatibilityLevel>
 
     <!-- MAJOR, MINOR, and PATCH are defined according to SemVer 2.0.0. -->
     <NtsMajorVersion>2</NtsMajorVersion>
-    <NtsMinorVersion>5</NtsMinorVersion>
+    <NtsMinorVersion>6</NtsMinorVersion>
     <NtsPatchVersion>0</NtsPatchVersion>
 
     <NtsBuildTimestamp>$([System.DateTime]::UtcNow.Ticks)</NtsBuildTimestamp>
