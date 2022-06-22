@@ -62,13 +62,17 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var pt2DE = (Point)this.readerXY.Read("Point EMPTY");
             var pt3D = (Point)this.readerXYZ.Read("POINT Z(10 10 10)");
             var pt2DM = (Point)this.readerXYM.Read("POINT M(10 10 11)");
+            var pt2DM2 = (Point)new WKTReader().Read("POINT M(10 10 11)");
             var pt3DM = (Point)this.readerXYZM.Read("POINT ZM(10 10 10 11)");
 
             // assert
             Assert.That(IsEqual(seqPt2D, pt2D.CoordinateSequence));
             Assert.That(IsEqual(seqPt2DE, pt2DE.CoordinateSequence));
             Assert.That(IsEqual(seqPt3D, pt3D.CoordinateSequence));
+            Assert.That(pt2DM.CoordinateSequence.HasM, Is.True);
             Assert.That(IsEqual(seqPt2DM, pt2DM.CoordinateSequence));
+            Assert.That(pt2DM2.CoordinateSequence.HasM, Is.True);
+            Assert.That(IsEqual(seqPt2DM, pt2DM2.CoordinateSequence));
             Assert.That(IsEqual(seqPt3DM, pt3DM.CoordinateSequence));
         }
 
