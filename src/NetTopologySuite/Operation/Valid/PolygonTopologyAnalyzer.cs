@@ -96,7 +96,7 @@ namespace NetTopologySuite.Operation.Valid
                 rPrev = rNext;
                 rNext = temp;
             }
-            return PolygonNode.IsInteriorSegment(p0, rPrev, rNext, p1);
+            return PolygonNodeTopology.IsInteriorSegment(p0, rPrev, rNext, p1);
         }
 
         /// <summary>

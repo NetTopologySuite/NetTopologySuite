@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit
         private readonly NtsGeometryServices _geomServices;
         private readonly GeometryFactory _geomFactory;
         
-        private const string CHECK_EQUAL_FAIL = "FAIL\nExpected = {0}\nActual   = {1}\n";
+        private const string CHECK_EQUAL_FAIL = "FAIL\n{0}Expected = {1}\nActual   = {2}\n";
 
         private readonly WKTWriter _writerZ = new WKTWriter(3);
 
@@ -40,13 +40,36 @@ namespace NetTopologySuite.Tests.NUnit
          */
         protected void CheckEqual(Geometry expected, Geometry actual)
         {
-            var actualNorm = actual.Normalized();
-            var expectedNorm = expected.Normalized();
-            bool equal = actualNorm.EqualsExact(expectedNorm);
-            //var writer = new WKTWriter {MaxCoordinatesPerLine };
-            Assert.That(equal, Is.True, string.Format(CHECK_EQUAL_FAIL, expected, actual));
+            CheckEqual("", expected, actual);
         }
 
+        /**
+         * Checks that the normalized values of the expected and actual
+         * geometries are exactly equal.
+         * 
+         * @param expected the expected value
+         * @param actual the actual value
+         */
+        protected void CheckEqual(string msg, Geometry expected, Geometry actual)
+        {
+            var actualNorm = actual == null ? null : actual.Normalized();
+            var expectedNorm = expected == null ? null : expected.Normalized();
+            bool equal;
+            if (actualNorm == null || expectedNorm == null)
+            {
+                equal = expectedNorm == null && expectedNorm == null;
+            }
+            else
+            {
+                equal = actualNorm.EqualsExact(expectedNorm);
+            }
+            if (!equal)
+            {
+                string description = string.IsNullOrEmpty(msg) ? string.Empty : $"{msg}\n";
+                TestContext.WriteLine(string.Format(CHECK_EQUAL_FAIL, description, expectedNorm, actualNorm));
+            }
+            Assert.That(equal);
+        }
         /**
          * Checks that the values of the expected and actual
          * geometries are exactly equal.
@@ -128,6 +151,16 @@ namespace NetTopologySuite.Tests.NUnit
             }
             return true;
         }
+
+        protected void CheckEqual(Geometry[] expected, Geometry[] actual)
+        {
+            Assert.That(actual.Length, Is.EqualTo(expected.Length), "Array length");
+            for (int i = 0; i < expected.Length; i++)
+            {
+                CheckEqual("element " + i, expected[i], actual[i]);
+            }
+        }
+
 
         protected void CheckEqual(ICollection<Geometry> expected, ICollection<Geometry> actual)
         {
@@ -233,6 +266,17 @@ namespace NetTopologySuite.Tests.NUnit
 
             return geometries;
         }
+
+        protected Geometry[] ReadArray(params string[] wkt)
+        {
+            var geometries = new Geometry[wkt.Length];
+            for (int i = 0; i < wkt.Length; i++)
+            {
+                geometries[i] = (wkt[i] == null) ? null : Read(wkt[i]);
+            }
+            return geometries;
+        }
+
 
         /// <summary>
         /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.

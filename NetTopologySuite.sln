@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Locate.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Locate.md
 		doc\overwrite\namespaces\NetTopologySuite.Algorithm.Match.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.Match.md
 		doc\overwrite\namespaces\NetTopologySuite.Algorithm.md = doc\overwrite\namespaces\NetTopologySuite.Algorithm.md
+		doc\overwrite\namespaces\NetTopologySuite.Coverage.md = doc\overwrite\namespaces\NetTopologySuite.Coverage.md
 		doc\overwrite\namespaces\NetTopologySuite.Densify.md = doc\overwrite\namespaces\NetTopologySuite.Densify.md
 		doc\overwrite\namespaces\NetTopologySuite.Geometries.md = doc\overwrite\namespaces\NetTopologySuite.Geometries.md
 		doc\overwrite\namespaces\NetTopologySuite.Geometries.Utilities.md = doc\overwrite\namespaces\NetTopologySuite.Geometries.Utilities.md

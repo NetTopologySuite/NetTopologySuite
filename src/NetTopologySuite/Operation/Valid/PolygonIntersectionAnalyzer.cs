@@ -147,7 +147,7 @@ namespace NetTopologySuite.Operation.Valid
                 e11 = p11;
             }
 
-            bool hasCrossing = PolygonNode.IsCrossing(intPt, e00, e01, e10, e11);
+            bool hasCrossing = PolygonNodeTopology.IsCrossing(intPt, e00, e01, e10, e11);
             if (hasCrossing)
             {
                 return TopologyValidationErrors.SelfIntersection;

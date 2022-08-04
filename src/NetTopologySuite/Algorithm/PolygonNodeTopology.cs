@@ -1,29 +1,26 @@
-﻿using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using System;
+﻿using NetTopologySuite.Geometries;
 
-namespace NetTopologySuite.Operation.Valid
+namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Functions to compute topological information
     /// about nodes (ring intersections) in polygonal geometry.
     /// </summary>
     /// <author>Martin Davis</author>
-    [Obsolete("Use PolygonNodeTopology")]
-    static class PolygonNode
+    static class PolygonNodeTopology
     {
         /// <summary>
-        /// Check if the edges at a node between two rings (or one ring) cross.
-        /// The node is topologically valid if the ring edges do not cross.
-        /// This function assumes that the edges are not collinear. 
+        /// Check if the segments at a node between two rings (or one ring) cross.
+        /// The node is topologically valid if the rings do not cross.
+        /// This function assumes that the segments are not collinear. 
         /// </summary>
         /// <param name="nodePt">The node location</param>
-        /// <param name="a0">The previous edge endpoint in a ring</param>
-        /// <param name="a1">The next edge endpoint in a ring</param>
-        /// <param name="b0">The previous edge endpoint in the other ring</param>
-        /// <param name="b1">The next edge endpoint in the other ring</param>
+        /// <param name="a0">The previous segment endpoint in a ring</param>
+        /// <param name="a1">The next segment endpoint in a ring</param>
+        /// <param name="b0">The previous segment endpoint in the other ring</param>
+        /// <param name="b1">The next segment endpoint in the other ring</param>
         /// <returns>
-        /// <c>true</c> if the edges cross at the node
+        /// <c>true</c> if the rings cross at the node
         /// </returns>
         public static bool IsCrossing(Coordinate nodePt, Coordinate a0, Coordinate a1, Coordinate b0, Coordinate b1)
         {
@@ -45,16 +42,17 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// Tests whether an edge node-b lies in the interior or exterior
-        /// of a corner of a ring given by a0-node-a1.
-        /// The ring interior is assumed to be on the right of the corner (a CW ring).
-        /// The edge must not be collinear with the corner segments.
+        /// Tests whether an segment node-b lies in the interior or exterior
+        /// of a corner of a ring formed by the two segments a0-node-a1.
+        /// The ring interior is assumed to be on the right of the corner
+        /// (i.e. a CW shell or CCW hole).
+        /// The test segment must not be collinear with the corner segments.
         /// </summary>
         /// <param name="nodePt">The node location</param>
         /// <param name="a0">The first vertex of the corner</param>
         /// <param name="a1">The second vertex of the corner</param>
-        /// <param name="b">The destination vertex of the edge</param>
-        /// <returns><c>true</c> if the edge is interior to the ring corner</returns>
+        /// <param name="b">The other vertex of the test segment</param>
+        /// <returns><c>true</c> if the segment is interior to the ring corner</returns>
         public static bool IsInteriorSegment(Coordinate nodePt, Coordinate a0, Coordinate a1, Coordinate b)
         {
             var aLo = a0;
@@ -67,8 +65,8 @@ namespace NetTopologySuite.Operation.Valid
                 isInteriorBetween = false;
             }
             bool isBetweenVal = IsBetween(nodePt, b, aLo, aHi);
-            bool isInterior = (isBetweenVal && isInteriorBetween)
-                || (!isBetweenVal && !isInteriorBetween);
+            bool isInterior = isBetweenVal && isInteriorBetween
+                || !isBetweenVal && !isInteriorBetween;
             return isInterior;
         }
 
