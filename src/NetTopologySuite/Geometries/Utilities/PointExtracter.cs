@@ -6,7 +6,9 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <summary>
     /// Extracts all the 0-dimensional (<c>Point</c>) components from a <c>Geometry</c>.
     /// </summary>
-    /// <see cref="GeometryExtracter"/>
+    /// <seealso cref="GeometryExtracter"/>
+    /// <seealso cref="Extracter"/>
+    /// <seealso cref="Extracter{T}"/>
     public class PointExtracter : IGeometryFilter
     {
         /// <summary>
