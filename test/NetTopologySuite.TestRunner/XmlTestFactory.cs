@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using Open.Topology.TestRunner.Operations;
 using Open.Topology.TestRunner.Result;
 using Open.Topology.TestRunner.Utility;
@@ -31,17 +32,18 @@ namespace Open.Topology.TestRunner
             C = 3
         }
 
-        private readonly MultiFormatReader _objReader;
+        private readonly PrecisionModel _pm;
         private readonly IGeometryOperation _geometryOperation;
         private readonly IResultMatcher _resultMatcher;
 
+        private MultiFormatReader _objReader;
+
         public XmlTestFactory(PrecisionModel pm, IGeometryOperation geometryOperation, IResultMatcher resultMatcher)
         {
-            var gs = new NtsGeometryServices(pm, 0);
+            _pm = pm;
             //ObjGeometryFactory = gs.CreateGeometryFactory();
             _geometryOperation = geometryOperation;
-            _resultMatcher = resultMatcher;
-            _objReader = new MultiFormatReader(gs);
+            _resultMatcher = resultMatcher;            
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
@@ -101,6 +103,28 @@ namespace Open.Topology.TestRunner
         protected bool ParseType(string testType, XmlTest xmlTestItem)
         {
             testType = testType.ToLower();
+
+            NtsGeometryServices gs;
+            if (testType.EndsWith("ng"))
+            {                
+                gs = new NtsGeometryServices(
+                    CoordinateArraySequenceFactory.Instance,
+                    _pm,
+                    -1,
+                    GeometryOverlay.NG,
+                    new CoordinateEqualityComparer());
+                testType = testType.Substring(0, testType.Length - 2);
+            }
+            else
+            {
+                gs = new NtsGeometryServices(
+                    CoordinateArraySequenceFactory.Instance,
+                    _pm,
+                    -1,
+                    GeometryOverlay.Legacy,
+                    new CoordinateEqualityComparer());
+            }
+            _objReader = new MultiFormatReader(gs);
 
             if (testType == "getarea")
                 xmlTestItem.TestType = XmlTestType.Area;
