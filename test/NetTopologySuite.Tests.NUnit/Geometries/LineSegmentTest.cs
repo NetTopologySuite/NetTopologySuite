@@ -165,6 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckOrientationIndex(seg, 100, 99, 105, 96, -1);
 
             CheckOrientationIndex(seg, 200, 200, 210, 210, 0);
+            CheckOrientationIndex(seg, 105, 105, 110, 100, -1);
 
         }
 
