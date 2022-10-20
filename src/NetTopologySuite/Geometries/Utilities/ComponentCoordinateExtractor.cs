@@ -38,6 +38,9 @@ namespace NetTopologySuite.Geometries.Utilities
 
         public void Filter(Geometry geom)
         {
+            if (geom.IsEmpty)
+                return;
+
             // add coordinates from connected components
             if (geom is LineString
                 || geom is Point)

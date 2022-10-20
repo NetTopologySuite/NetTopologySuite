@@ -51,6 +51,9 @@ namespace NetTopologySuite.Noding
         {
             foreach (var segmentString in segStrings)
             {
+                if (segmentString.Count == 0)
+                    continue;
+
                 AddToIndex(segmentString);
             }
             // build index to ensure thread-safety
@@ -88,6 +91,8 @@ namespace NetTopologySuite.Noding
 
         private static void AddToMonoChains(ISegmentString segStr, List<MonotoneChain> monotoneChains)
         {
+            if (segStr.Count == 0)
+                return;
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (var mc in segChains)
             {
