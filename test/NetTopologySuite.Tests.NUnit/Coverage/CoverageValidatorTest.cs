@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
         //========  Valid cases   =============================
 
         [Test]
-        public void TestChessboard()
+        public void TestGrid()
         {
             CheckValid(ReadArray(
                 "POLYGON ((1 9, 5 9, 5 5, 1 5, 1 9))",
