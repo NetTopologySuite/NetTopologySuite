@@ -1,24 +1,19 @@
-﻿using NetTopologySuite.Geometries;
-using System;
+﻿using NetTopologySuite.Coverage;
+using NetTopologySuite.Geometries;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// A noder which extracts chains of boundary segments
-    /// as {@link SegmentString}s.
-    /// Boundary segments are those which are not duplicated in the input.
-    /// The segment strings are extracted in a way that maximises their length,
-    /// and minimizes the total number of edges.
-    /// This produces the most efficient topological graph structure.
+    /// as {@link SegmentString}s from a polygonal coverage.
+    /// Boundary segments are those which are not duplicated in the input polygonal coverage.
+    /// Extracting chains of segments minimize the number of segment strings created,
+    /// which produces a more efficient topological graph structure.
     /// <para/>
-    /// Segments which are not on the boundary are those which
-    /// have an identical segment in another polygon ring.
-    /// <para/>
-    /// This enables fast overlay of polygonal coverages in {@link CoverageUnion}.
-    /// This noder is faster than {@link SegmentExtractingNoder}
-    /// and {@link BoundarySegmentNoder}.
+    /// This enables fast overlay of polygonal coverages in <see cref="CoverageUnion"/>.
+    /// Using this noder is faster than <see cref="SegmentExtractingNoder"/>
+    /// and <see cref="BoundarySegmentNoder"/>.
     /// <para/>
     /// No precision reduction is carried out.
     /// If that is required, another noder must be used (such as a snap-rounding noder),
@@ -42,25 +37,25 @@ namespace NetTopologySuite.Noding
         public void ComputeNodes(IList<ISegmentString> segStrings)
         {
             var segSet = new HashSet<Segment>();
-            var bdySections = new BoundarySegmentMap[segStrings.Count];
-            AddSegments(segStrings, segSet, bdySections);
+            var boundaryChains = new BoundaryChainMap[segStrings.Count];
+            AddSegments(segStrings, segSet, boundaryChains);
             MarkBoundarySegments(segSet);
-            _chainList = ExtractChains(bdySections);
+            _chainList = ExtractChains(boundaryChains);
         }
 
         private static void AddSegments(ICollection<ISegmentString> segStrings, HashSet<Segment> segSet,
-            BoundarySegmentMap[] includedSegs)
+            BoundaryChainMap[] includedSegs)
         {
             int i = 0;
             foreach (var ss in segStrings)
             {
-                var segInclude = new BoundarySegmentMap(ss);
-                includedSegs[i++] = segInclude;
-                AddSegments(ss, segInclude, segSet);
+                var chainMap = new BoundaryChainMap(ss);
+                includedSegs[i++] = chainMap;
+                AddSegments(ss, chainMap, segSet);
             }
         }
 
-        private static void AddSegments(ISegmentString segString, BoundarySegmentMap segInclude, HashSet<Segment> segSet)
+        private static void AddSegments(ISegmentString segString, BoundaryChainMap segInclude, HashSet<Segment> segSet)
         {
             for (int i = 0; i < segString.Count - 1; i++)
             {
@@ -82,16 +77,16 @@ namespace NetTopologySuite.Noding
         {
             foreach (var seg in segSet)
             {
-                seg.MarkInBoundary();
+                seg.MarkBoundary();
             }
         }
 
-        private static List<ISegmentString> ExtractChains(BoundarySegmentMap[] sections)
+        private static List<ISegmentString> ExtractChains(BoundaryChainMap[] boundaryChains)
         {
             var sectionList = new List<ISegmentString>();
-            foreach (var sect in sections)
+            foreach (var chainMap in boundaryChains)
             {
-                sect.CreateChains(sectionList);
+                chainMap.CreateChains(sectionList);
             }
             return sectionList;
         }
@@ -102,12 +97,12 @@ namespace NetTopologySuite.Noding
             return _chainList;
         }
 
-        private class BoundarySegmentMap
+        private class BoundaryChainMap
         {
             private ISegmentString _segString;
             private bool[] _isBoundary;
 
-            public BoundarySegmentMap(ISegmentString ss)
+            public BoundaryChainMap(ISegmentString ss)
             {
                 _segString = ss;
                 _isBoundary = new bool[ss.Count - 1];
@@ -165,11 +160,11 @@ namespace NetTopologySuite.Noding
 
         private class Segment : LineSegment
         {
-            private readonly BoundarySegmentMap _segMap;
+            private readonly BoundaryChainMap _segMap;
             private readonly int _index;
 
             public Segment(Coordinate p0, Coordinate p1,
-                BoundarySegmentMap segMap, int index)
+                BoundaryChainMap segMap, int index)
                         : base(p0, p1)
             {
                 _segMap = segMap;
@@ -177,7 +172,7 @@ namespace NetTopologySuite.Noding
                 Normalize();
             }
 
-            public void MarkInBoundary()
+            public void MarkBoundary()
             {
                 _segMap.SetBoundarySegment(_index);
             }
