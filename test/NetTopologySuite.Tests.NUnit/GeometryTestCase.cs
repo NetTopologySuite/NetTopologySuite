@@ -31,25 +31,24 @@ namespace NetTopologySuite.Tests.NUnit
             _geomFactory = _geomServices.CreateGeometryFactory();
         }
 
-        /**
-         * Checks that the normalized values of the expected and actual
-         * geometries are exactly equal.
-         * 
-         * @param expected the expected value
-         * @param actual the actual value
-         */
+        /// <summary>
+        /// Checks that the normalized values of the expected and actual
+        /// geometries are exactly equal.
+        /// </summary>
+        /// <param name="expected">The expected value</param>
+        /// <param name="actual">The actual value</param>
         protected void CheckEqual(Geometry expected, Geometry actual)
         {
-            CheckEqual("", expected, actual);
+            CheckEqual(string.Empty, expected, actual);
         }
 
-        /**
-         * Checks that the normalized values of the expected and actual
-         * geometries are exactly equal.
-         * 
-         * @param expected the expected value
-         * @param actual the actual value
-         */
+        /// <summary>
+        /// Checks that the normalized values of the expected and actual
+        /// geometries are exactly equal.
+        /// </summary>
+        /// <param name="msg">The message text that is written when check fails.</param>
+        /// <param name="expected">The expected value</param>
+        /// <param name="actual">The actual value</param>
         protected void CheckEqual(string msg, Geometry expected, Geometry actual)
         {
             var actualNorm = actual == null ? null : actual.Normalized();
@@ -57,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit
             bool equal;
             if (actualNorm == null || expectedNorm == null)
             {
-                equal = expectedNorm == null && expectedNorm == null;
+                equal = actualNorm == null && expectedNorm == null;
             }
             else
             {
@@ -70,13 +69,13 @@ namespace NetTopologySuite.Tests.NUnit
             }
             Assert.That(equal);
         }
-        /**
-         * Checks that the values of the expected and actual
-         * geometries are exactly equal.
-         * 
-         * @param expected the expected value
-         * @param actual the actual value
-         */
+
+        /// <summary>
+        /// Checks that the values of the expected and actual
+        /// geometries are exactly equal.
+        /// </summary>
+        /// <param name="expected">The expected value</param>
+        /// <param name="actual">The actual value</param>
         protected void CheckEqualExact(Geometry expected, Geometry actual)
         {
             bool equal = actual.EqualsExact(expected);

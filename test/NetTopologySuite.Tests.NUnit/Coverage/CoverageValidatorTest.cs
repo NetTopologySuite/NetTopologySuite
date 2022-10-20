@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
                 "POLYGON ((100 300, 180 300, 180 200, 100 200, 100 300))"),
                 ReadArray(
                     "LINESTRING (100 200, 200 200)",
-                    null)
+                    "LINESTRING (100 200, 180 200, 180 300)")
                     );
         }
 
