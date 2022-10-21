@@ -21,6 +21,8 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public LinearRing Ring { get; private set; }
 
+        private Envelope Envelope => Ring.EnvelopeInternal;
+
         /// <summary>
         /// Tests whether this ring is a hole.
         /// </summary>
@@ -109,62 +111,88 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// make the passed shellList as small as possible (e.g.
         /// by using a spatial index filter beforehand).
         /// </summary>
-        /// <returns>The containing EdgeRing, if there is one
-        /// or <c>null</c> if no containing EdgeRing is found
+        /// <returns>The containing EdgeRing or <c>null</c> if no containing EdgeRing is found
         /// </returns>
         public OverlayEdgeRing FindEdgeRingContaining(IEnumerable<OverlayEdgeRing> erList)
         {
-            var testRing = this.Ring;
-            var testEnv = testRing.EnvelopeInternal;
-            var testPt = testRing.GetCoordinateN(0);
+            OverlayEdgeRing minContainingRing = null;
 
-            OverlayEdgeRing minRing = null;
-            Envelope minRingEnv = null;
-            foreach (var tryEdgeRing in erList)
+            foreach (var edgeRing in erList)
             {
-                var tryRing = tryEdgeRing.Ring;
-                var tryShellEnv = tryRing.EnvelopeInternal;
-                // the hole envelope cannot equal the shell envelope
-                // (also guards against testing rings against themselves)
-                if (tryShellEnv.Equals(testEnv)) continue;
-
-                // hole must be contained in shell
-                if (!tryShellEnv.Contains(testEnv)) continue;
-
-                testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryEdgeRing.Coordinates);
-
-                bool isContained = tryEdgeRing.IsInRing(testPt);
-
-                // check if the new containing ring is smaller than the current minimum ring
-                if (isContained)
+                if (edgeRing.Contains(this))
                 {
-                    if (minRing == null
-                        || minRingEnv.Contains(tryShellEnv))
+                    if (minContainingRing == null
+                        || minContainingRing.Envelope.Contains(edgeRing.Envelope))
                     {
-                        minRing = tryEdgeRing;
-                        minRingEnv = minRing.Ring.EnvelopeInternal;
+                        minContainingRing = edgeRing;
                     }
                 }
             }
-            return minRing;
+            return minContainingRing;
         }
 
-        private IPointOnGeometryLocator GetLocator()
+        private IPointOnGeometryLocator Locator
         {
-            if (_locator == null)
+            get
             {
-                _locator = new IndexedPointInAreaLocator(Ring);
+                if (_locator == null)
+                {
+                    _locator = new IndexedPointInAreaLocator(Ring);
+                }
+                return _locator;
             }
-            return _locator;
         }
 
+        public Location Locate(Coordinate pt)
+        {
+            return Locator.Locate(pt);
+        }
+
+        [Obsolete("Will be removed in a future version")]
         public bool IsInRing(Coordinate pt)
         {
             /*
              * Use an indexed point-in-polygon for performance
              */
-            return Location.Exterior != GetLocator().Locate(pt);
+            return Location.Exterior != Locator.Locate(pt);
             //return PointLocation.isInRing(pt, getCoordinates());
+        }
+
+        /// <summary>
+        /// Tests if an edgeRing is properly contained in this ring.
+        /// Relies on property that edgeRings never overlap (although they may
+        /// touch at single vertices).
+        /// </summary>
+        /// <param name="ring">The ring to test</param>
+        /// <returns><c>true</c> if the ring is properly contained</returns>
+        private bool Contains(OverlayEdgeRing ring)
+        {
+            // the test envelope must be properly contained
+            // (guards against testing rings against themselves)
+            var env = Envelope;
+            var testEnv = ring.Envelope;
+            if (!env.ContainsProperly(testEnv))
+                return false;
+            return IsPointInOrOut(ring);
+        }
+
+        private bool IsPointInOrOut(OverlayEdgeRing ring)
+        {
+            // in most cases only one or two points will be checked
+            foreach (var pt in ring.Coordinates)
+            {
+                var loc = Locate(pt);
+                if (loc == Location.Interior)
+                {
+                    return true;
+                }
+                if (loc == Location.Exterior)
+                {
+                    return false;
+                }
+                // pt is on BOUNDARY, so keep checking for a determining location
+            }
+            return false;
         }
 
         public Coordinate Coordinate

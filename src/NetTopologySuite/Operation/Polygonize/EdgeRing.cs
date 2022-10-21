@@ -31,54 +31,23 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="erList"></param>
         /// <param name="testEr"></param>
-        /// <returns>Containing EdgeRing, if there is one <br/>
-        /// or <c>null</c> if no containing EdgeRing is found.</returns>
+        /// <returns>Containing EdgeRing or <c>null</c> if no containing EdgeRing is found.</returns>
         public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> erList)
         {
-            var testRing = testEr.Ring;
-            var testEnv = testRing.EnvelopeInternal;
-            //var testPt = testRing.GetCoordinateN(0);
-
-            EdgeRing minRing = null;
-            Envelope minRingEnv = null;
-            foreach (var tryEdgeRing in erList)
+            EdgeRing minContainingRing = null;
+            for (var it = erList.GetEnumerator(); it.MoveNext();)
             {
-                var tryRing = tryEdgeRing.Ring;
-                var tryRingEnv = tryRing.EnvelopeInternal;
-                if (minRing != null)
-                    minRingEnv = minRing.Ring.EnvelopeInternal;
-
-                // the hole envelope cannot equal the shell envelope
-                // (also guards against testing rings against themselves)
-                if (tryRingEnv.Equals(testEnv)) continue;
-
-                // hole must be contained in shell
-                if (!tryRingEnv.Contains(testEnv)) continue;
-
-                var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryEdgeRing.Coordinates);
-
-                /*
-                 * If testPt is null it indicates that the hole is exactly surrounded by the tryShell.
-                 * This should not happen for fully noded/dissolved linework.
-                 * For now just ignore this hole and continue - this should produce
-                 * "best effort" output.
-                 * In further could flag this as an error (invalid ring).
-                 */
-                if (testPt == null) continue;
-
-                bool isContained = tryEdgeRing.IsInRing(testPt);
-
-                // check if this new containing ring is smaller than the current minimum ring
-                if (isContained)
+                var edgeRing = it.Current;
+                if (edgeRing.Contains(testEr))
                 {
-                    if (minRing == null || minRingEnv.Contains(tryRingEnv))
+                    if (minContainingRing == null
+                        || minContainingRing.Envelope.Contains(edgeRing.Envelope))
                     {
-                        minRing = tryEdgeRing;
-                        minRingEnv = minRing.Ring.EnvelopeInternal;
+                        minContainingRing = edgeRing;
                     }
                 }
             }
-            return minRing;
+            return minContainingRing;
         }
 
         /// <summary>
@@ -254,12 +223,54 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
+        public Location Locate(Coordinate pt)
+        {
+            return Locator.Locate(pt);
+        }
+
+        [Obsolete("Will be removed in a future version")]
         public bool IsInRing(Coordinate pt)
         {
             /*
              * Use an indexed point-in-polygon for performance
              */
             return Location.Exterior != Locator.Locate(pt);
+        }
+
+        /// <summary>
+        /// Tests if an edgeRing is properly contained in this ring.
+        /// Relies on property that edgeRings never overlap (although they may
+        /// touch at single vertices).</summary>
+        /// <param name="ring">The ring to test</param>
+        /// <returns><c>true</c> if ring is properly contained</returns>
+        private bool Contains(EdgeRing ring)
+        {
+            // the test envelope must be properly contained
+            // (guards against testing rings against themselves)
+            var env = this.Envelope;
+            var testEnv = ring.Envelope;
+            if (!env.ContainsProperly(testEnv))
+                return false;
+            return IsPointInOrOut(ring);
+        }
+
+        private bool IsPointInOrOut(EdgeRing ring)
+        {
+            // in most cases only one or two points will be checked
+            foreach (var pt in ring.Coordinates)
+            {
+                var loc = Locate(pt);
+                if (loc == Location.Interior)
+                {
+                    return true;
+                }
+                if (loc == Location.Exterior)
+                {
+                    return false;
+                }
+                // pt is on BOUNDARY, so keep checking for a determining location
+            }
+            return false;
         }
 
         /// <summary>
@@ -321,6 +332,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 return _ring;
             }
         }
+
+        private Envelope Envelope => Ring.EnvelopeInternal;
 
         /// <summary>
         ///

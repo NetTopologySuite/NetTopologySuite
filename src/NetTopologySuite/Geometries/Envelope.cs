@@ -687,6 +687,20 @@ namespace NetTopologySuite.Geometries
             return Covers(x, y);
         }
 
+        /// <summary>
+        /// Tests if an envelope is properly contained in this one.
+        /// The envelope is properly contained if it is contained
+        /// by this one but not equal to it.
+        /// </summary>
+        /// <param name="other">The envelope to test</param>
+        /// <returns><c>true</c> if the envelope is properly contained</returns>
+        public bool ContainsProperly(Envelope other)
+        {
+            if (Equals(other))
+                return false;
+            return Covers(other);
+        }
+
         ///<summary>
         /// Tests if the given point lies in or on the envelope.
         ///</summary>
