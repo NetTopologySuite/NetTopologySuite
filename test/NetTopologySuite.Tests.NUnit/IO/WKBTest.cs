@@ -97,6 +97,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void TestGeometryCollectionContainingEmptyGeometries()
+        {
+            RunWKBTest("GEOMETRYCOLLECTION (LINESTRING EMPTY, MULTIPOINT EMPTY)");
+        }
+
+        [Test]
         public void TestLineStringEmpty()
         {
             RunWKBTest("LINESTRING EMPTY");
