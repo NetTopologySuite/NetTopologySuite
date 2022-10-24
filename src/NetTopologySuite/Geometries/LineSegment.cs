@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.IO;
 using BitConverter = System.BitConverter;
 
 namespace NetTopologySuite.Geometries
@@ -677,21 +678,17 @@ namespace NetTopologySuite.Geometries
                    _p0.Equals(other._p1) && _p1.Equals(other._p0);
         }
 
-        private static readonly System.Globalization.CultureInfo _cultureInfo =
-            System.Globalization.CultureInfo.InvariantCulture;
-
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
-        ///
         public override string ToString()
         {
-            var sb = new StringBuilder("LINESTRING( ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p0.X).Append(" ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p0.Y).Append(", ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p1.X).Append(" ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p1.Y).Append(")");
+            var sb = new StringBuilder($"{WKTConstants.LINESTRING} (");
+            sb.Append(OrdinateFormat.Default.Format(_p0.X)).Append(" ");
+            sb.Append(OrdinateFormat.Default.Format(_p0.Y)).Append(", ");
+            sb.Append(OrdinateFormat.Default.Format(_p1.X)).Append(" ");
+            sb.Append(OrdinateFormat.Default.Format(_p1.Y)).Append(")");
             return sb.ToString();
         }
 
