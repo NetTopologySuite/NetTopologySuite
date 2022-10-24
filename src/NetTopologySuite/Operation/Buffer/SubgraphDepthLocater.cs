@@ -144,14 +144,19 @@ namespace NetTopologySuite.Operation.Buffer
             /// <param name="depth">A depth value</param>
             public DepthSegment(LineSegment seg, int depth)
             {
-                // input seg is assumed to be normalized
+                // Assert: input seg is upward (p0.y <= p1.y)
                 _upwardSeg = new LineSegment(seg);
                 LeftDepth = depth;
             }
 
             /// <summary>
-            /// Defines a comparison operation on <see cref="DepthSegment"/>s
-            /// which orders them left to right.
+            /// Gets a value indicating if the segment is pointing upward
+            /// </summary>
+            public bool IsUpward => _upwardSeg.P0.Y <= _upwardSeg.P1.Y;
+
+            /// <summary>
+            /// A comparison operation
+            /// which orders segments left to right.
             /// </summary>
             /// <remarks>
             /// Assumes the segments are normalized.
@@ -173,13 +178,22 @@ namespace NetTopologySuite.Operation.Buffer
             /// <returns>The comparison value</returns>
             public int CompareTo(DepthSegment other)
             {
-                // fast check if segments are trivially ordered along X
-                if (_upwardSeg.MinX >= other._upwardSeg.MaxX) return 1;
-                if (_upwardSeg.MaxX <= other._upwardSeg.MinX) return -1;
+                /**
+                 * If segment envelopes do not overlap, then
+                 * can use standard segment lexicographic ordering.
+                 */
+                if (_upwardSeg.MinX >= other._upwardSeg.MaxX
+                    || _upwardSeg.MaxX <= other._upwardSeg.MinX
+                    || _upwardSeg.MinY >= other._upwardSeg.MaxX
+                    || _upwardSeg.MaxY <= other._upwardSeg.MinY)
+                {
+                    return _upwardSeg.CompareTo(other._upwardSeg);
+                };
 
                 /*
-                 * try and compute a determinate orientation for the segments.
-                 * Test returns 1 if other is left of this (i.e. this > other)
+                 * Otherwise if envelopes overlap, use relative segment orientation.
+                 * 
+                 * Collinear segments should be evaluated by previous logic
                  */
                 int orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
                 if (orientIndex != 0) return orientIndex;
@@ -192,25 +206,39 @@ namespace NetTopologySuite.Operation.Buffer
                 orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
                 if (orientIndex != 0) return orientIndex;
 
-                // otherwise, use standard lexicographic segment ordering
-                return _upwardSeg.CompareTo(other._upwardSeg);
+                /*
+                 * If segment envelopes overlap and they are collinear,
+                 * since segments do not cross they must be equal.
+                 */
+                // assert: segments are equal
+                return 0;
             }
 
-            ///// <summary>
-            ///// Compare two collinear segments for left-most ordering.
-            ///// If segments are vertical, use vertical ordering for comparison.
-            ///// If segments are equal, return 0.
-            ///// Segments are assumed to be directed so that the second coordinate is >= to the first
-            ///// (e.g. up and to the right).
-            ///// </summary>
-            ///// <param name="seg0">A segment to compare.</param>
-            ///// <param name="seg1">A segment to compare.</param>
-            ///// <returns></returns>
-            //private static int CompareX(LineSegment seg0, LineSegment seg1)
+            //public int OLDcompareTo(object obj)
             //{
-            //    int compare0 = seg0.P0.CompareTo(seg1.P0);
-            //    if (compare0 != 0) return compare0;
-            //    return seg0.P1.CompareTo(seg1.P1);
+            //    var other = (DepthSegment)obj;
+
+            //    // fast check if segments are trivially ordered along X
+            //    if (_upwardSeg.MinX > other._upwardSeg.MaxX) return 1;
+            //    if (_upwardSeg.MaxX < other._upwardSeg.MinX) return -1;
+
+            //    /*
+            //     * try and compute a determinate orientation for the segments.
+            //     * Test returns 1 if other is left of this (i.e. this > other)
+            //     */
+            //    int orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
+            //    if (orientIndex != 0) return orientIndex;
+
+            //    /*
+            //     * If comparison between this and other is indeterminate,
+            //     * try the opposite call order.
+            //     * The sign of the result needs to be flipped.
+            //     */
+            //    orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
+            //    if (orientIndex != 0) return orientIndex;
+
+            //    // otherwise, use standard lexicographic segment ordering
+            //    return _upwardSeg.CompareTo(other._upwardSeg);
             //}
 
             public override string ToString()
