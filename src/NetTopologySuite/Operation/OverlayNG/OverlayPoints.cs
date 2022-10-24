@@ -147,16 +147,12 @@ namespace NetTopologySuite.Operation.OverlayNG
         private Dictionary<Coordinate, Point> BuildPointMap(Geometry geom)
         {
             var map = new Dictionary<Coordinate, Point>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            geom.Apply(new GeometryComponentFilter(g =>
             {
-                var elt = geom.GetGeometryN(i);
-                if (!(elt is Point pt))
-                {
-                    throw new ArgumentException("Non-point geometry input to point overlay", nameof(geom));
-                }
-
-                // don't add empty points
-                if (pt.IsEmpty) continue;
+                if (!(g is Point pt))
+                    return;
+                if (g.IsEmpty)
+                    return;
 
                 var p = RoundCoord(pt, _pm);
                 /*
@@ -165,7 +161,7 @@ namespace NetTopologySuite.Operation.OverlayNG
                  */
                 if (!map.ContainsKey(p))
                     map.Add(p, pt);
-            }
+            }));
 
             return map;
         }

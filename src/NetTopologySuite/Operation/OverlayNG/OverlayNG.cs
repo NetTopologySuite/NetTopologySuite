@@ -25,6 +25,9 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </list>
     /// Input geometries may have different dimension.
     /// Input collections must be homogeneous (all elements must have the same dimension).
+    /// Inputs may be <b>simple</b> <see cref="GeometryCollection"/>s.
+    /// A GeometryCollection is simple if it can be flattened into a valid Multi-geometry;
+    /// i.e.it is homogeneous and does not contain any overlapping Polygons.
     /// <para/>
     /// The precision model used for the computation can be supplied
     /// independent of the precision model of the input geometry.

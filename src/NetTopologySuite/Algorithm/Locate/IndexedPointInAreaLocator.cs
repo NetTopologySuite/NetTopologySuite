@@ -32,13 +32,11 @@ namespace NetTopologySuite.Algorithm.Locate
 
         /// <summary>
         /// Creates a new locator for a given <see cref="Geometry"/>.
-        /// <see cref="IPolygonal"/> and <see cref="LinearRing"/> geometries are supported
+        /// Geometries containing <see cref="IPolygonal"/>s and <see cref="LinearRing"/> geometries are supported
         /// </summary>
         /// <param name="g">The Geometry to locate in</param>
         public IndexedPointInAreaLocator(Geometry g)
         {
-            if (!(g is IPolygonal || g is LinearRing))
-                throw new ArgumentException("Argument must be Polygonal");
             _geom = g;
         }
 
@@ -128,6 +126,9 @@ namespace NetTopologySuite.Algorithm.Locate
                 var lines = LinearComponentExtracter.GetLines(geom);
                 foreach (LineString line in lines)
                 {
+                    //-- only include rings of Polygons or LinearRings
+                    if (!line.IsClosed)
+                        continue;
                     var pts = line.Coordinates;
                     AddLine(pts);
                 }

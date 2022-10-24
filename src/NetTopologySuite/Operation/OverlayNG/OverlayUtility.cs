@@ -338,14 +338,29 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// Note: return value is only copied if rounding is performed.
         /// </summary>
         /// <param name="pt">The point to round</param>
-        /// <param name="pm">The precision model to use</param>
+        /// <param name="pm">The precision model to use for rounding</param>
         /// <returns>The rounded point coordinate, or null if empty</returns>
         public static Coordinate Round(Point pt, PrecisionModel pm)
         {
             if (pt.IsEmpty) return null;
-            var p = pt.Coordinate.Copy();
-            if (!pm.IsFloating)
-                pm.MakePrecise(p);
+            return Round(pt.Coordinate, pm);
+        }
+
+        /// <summary>
+        /// Rounds a coordinate if precision model is fixed.<br/>
+        /// <b>Note:</b> return value is only copied if rounding is performed.
+        /// </summary>
+        /// <param name="p">The coordinate to round</param>
+        /// <param name="pm">The precision model to use for rounding</param>
+        /// <returns>The rounded coordinate</returns>
+        public static Coordinate Round(Coordinate p, PrecisionModel pm)
+        {
+            if (!IsFloating(pm))
+            {
+                var pRound = p.Copy();
+                pm.MakePrecise(pRound);
+                return pRound;
+            }
             return p;
         }
 
