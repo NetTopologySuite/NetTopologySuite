@@ -192,7 +192,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var seg2 = new LineSegment(s0x, s0y, s1x, s1y);
             int orient = seg.OrientationIndex(seg2);
-            Assert.IsTrue(orient == expectedOrient);
+            string msg = string.Empty;
+            if (orient != expectedOrient)
+            {
+                msg = $"orientationIndex of {seg} and {seg2}";
+            }
+            Assert.That(orient, Is.EqualTo(expectedOrient), msg);
         }
     }
 }
