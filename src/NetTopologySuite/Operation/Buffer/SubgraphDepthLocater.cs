@@ -178,13 +178,13 @@ namespace NetTopologySuite.Operation.Buffer
             /// <returns>The comparison value</returns>
             public int CompareTo(DepthSegment other)
             {
-                /**
+                /*
                  * If segment envelopes do not overlap, then
                  * can use standard segment lexicographic ordering.
                  */
                 if (_upwardSeg.MinX >= other._upwardSeg.MaxX
                     || _upwardSeg.MaxX <= other._upwardSeg.MinX
-                    || _upwardSeg.MinY >= other._upwardSeg.MaxX
+                    || _upwardSeg.MinY >= other._upwardSeg.MaxY
                     || _upwardSeg.MaxY <= other._upwardSeg.MinY)
                 {
                     return _upwardSeg.CompareTo(other._upwardSeg);
