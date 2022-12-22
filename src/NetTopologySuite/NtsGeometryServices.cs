@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using NetTopologySuite.Algorithm.Elevation;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 
@@ -46,7 +47,7 @@ namespace NetTopologySuite
         public NtsGeometryServices(GeometryOverlay geometryOverlay)
             : this(CoordinateArraySequenceFactory.Instance,
                 PrecisionModel.Floating.Value,
-                -1, geometryOverlay, new CoordinateEqualityComparer())
+                -1, geometryOverlay, new CoordinateEqualityComparer(), new DefaultElevationModel())
         {
         }
 
@@ -58,7 +59,7 @@ namespace NetTopologySuite
         /// </summary>
         public NtsGeometryServices(PrecisionModel precisionModel)
             : this(CoordinateArraySequenceFactory.Instance,
-                precisionModel, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer())
+                precisionModel, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), new DefaultElevationModel())
         {
         }
 
@@ -70,7 +71,7 @@ namespace NetTopologySuite
         /// </summary>
         public NtsGeometryServices(PrecisionModel precisionModel, int srid)
             : this(CoordinateArraySequenceFactory.Instance,
-                precisionModel, srid, GeometryOverlay.Legacy, new CoordinateEqualityComparer())
+                precisionModel, srid, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), new DefaultElevationModel())
         {
         }
         /// <summary>
@@ -80,7 +81,7 @@ namespace NetTopologySuite
         /// The <see cref="NetTopologySuite.Geometries.GeometryOverlay.Legacy"/> function set for overlay operations is being used.
         /// </summary>
         public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory)
-            : this(coordinateSequenceFactory, PrecisionModel.Floating.Value, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer())
+            : this(coordinateSequenceFactory, PrecisionModel.Floating.Value, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), new DefaultElevationModel())
         {
         }
 
@@ -93,6 +94,19 @@ namespace NetTopologySuite
         /// <param name="srid">The default spatial reference ID</param>
         public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid)
             : this(coordinateSequenceFactory, precisionModel, srid, GeometryOverlay.Legacy, new CoordinateEqualityComparer())
+        {
+        }
+
+        /// <summary>
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>).
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
+        /// <param name="precisionModel">The precision model.</param>
+        /// <param name="srid">The default spatial reference ID</param>
+        /// <param name="elevationModel">The default IElevationModel</param>
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid, IElevationModel elevationModel)
+            : this(coordinateSequenceFactory, precisionModel, srid, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), elevationModel)
         {
         }
 
@@ -118,6 +132,29 @@ namespace NetTopologySuite
         }
 
         /// <summary>
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/>, a spatial reference Id (<paramref name="srid"/>) and
+        /// a <see cref="Geometries.GeometryOverlay"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
+        /// <param name="precisionModel">The precision model.</param>
+        /// <param name="srid">The default spatial reference ID</param>
+        /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
+        /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
+        /// <param name="elevationModel">The default IElevationModel</param>
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
+            GeometryOverlay geometryOverlay, CoordinateEqualityComparer coordinateEqualityComparer, IElevationModel elevationModel)
+        {
+            DefaultCoordinateSequenceFactory = coordinateSequenceFactory ??
+                                               throw new ArgumentNullException(nameof(coordinateSequenceFactory));
+            DefaultPrecisionModel = precisionModel ?? throw new ArgumentNullException(nameof(precisionModel));
+            DefaultSRID = srid;
+            GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
+            ElevationModel = elevationModel;
+            CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
+        }
+
+        /// <summary>
         /// Gets or sets the default instance of <see cref="NtsGeometryServices"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -128,6 +165,12 @@ namespace NetTopologySuite
             get => s_instance;
             set => s_instance = value ?? throw new ArgumentNullException(nameof(value));
         }
+
+
+        /// <summary>
+        /// Gets or sets the ElevationModel to use when doing Z-interpolation in OverlayNG and RobustLineIntersector
+        /// </summary>
+        public IElevationModel ElevationModel { get; }
 
         /// <summary>
         /// Gets or sets a value indicating the operations to use for geometry overlay.  

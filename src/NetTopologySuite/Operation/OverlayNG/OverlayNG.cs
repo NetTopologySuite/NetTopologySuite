@@ -432,7 +432,8 @@ namespace NetTopologySuite.Operation.OverlayNG
             /*
              * The elevation model is only computed if the input geometries have Z values.
              */
-            var elevModel = ElevationModel.Create(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+            NtsGeometryServices.Instance.ElevationModel.Init(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+            var elevModel = NtsGeometryServices.Instance.ElevationModel;
             Geometry result;
             if (_inputGeom.IsAllPoints)
             {

@@ -2,7 +2,7 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
-namespace NetTopologySuite.Operation.OverlayNG
+namespace NetTopologySuite.Algorithm.Elevation
 {
     /// <summary>A simple elevation model used to populate missing Z values
     /// in overlay results.
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// in an overlay result geometry.
     /// </summary>
     /// <author>Martin Davis</author>
-    class ElevationModel
+    internal class ElevationModel
     {
 
         private const int DEFAULT_CELL_NUM = 3;

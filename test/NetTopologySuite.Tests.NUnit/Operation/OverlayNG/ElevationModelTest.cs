@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetTopologySuite.Algorithm.Elevation;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.OverlayNG;
 using NetTopologySuite.Tests.NUnit.Utilities;
