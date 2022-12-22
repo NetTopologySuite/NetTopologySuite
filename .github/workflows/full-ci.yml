@@ -15,7 +15,7 @@ jobs:
     - name: Get source
       uses: actions/checkout@v2
 
-    - name: Setup .NET Core 6
+    - name: Setup .NET 6
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6
@@ -44,7 +44,7 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
 
     steps:
-    - name: Setup .NET Core 6
+    - name: Setup .NET 6
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6
@@ -69,7 +69,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-    - name: Setup .NET Core 6
+    - name: Setup .NET 6
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6
