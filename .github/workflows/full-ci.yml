@@ -15,10 +15,10 @@ jobs:
     - name: Get source
       uses: actions/checkout@v2
 
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.406
+        dotnet-version: 6
 
     - name: Build
       run: dotnet build -c Release -v minimal -p:WarningLevel=3
@@ -44,10 +44,10 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
 
     steps:
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.406
+        dotnet-version: 6
 
     - name: Download Package Files
       uses: actions/download-artifact@v2
@@ -69,10 +69,10 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.406
+        dotnet-version: 6
 
     - name: Download Package Files
       uses: actions/download-artifact@v2
