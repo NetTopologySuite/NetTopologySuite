@@ -4,11 +4,15 @@ namespace NetTopologySuite.Algorithm.Elevation
 {
     internal class DefaultElevationModel : IElevationModel
     {
-        ElevationModel _em;
+        readonly ElevationModel _em;
 
-        public void Init(Geometry geom1, Geometry geom2)
+        private DefaultElevationModel(ElevationModel em) {
+            this._em = em;
+        }
+
+        public IElevationModel Create(Geometry geom1, Geometry geom2)
         {
-            _em = ElevationModel.Create(geom1, geom2);
+            return new DefaultElevationModel(ElevationModel.Create(geom1, geom2));
         }
 
         public double GetZ(double x, double y)
