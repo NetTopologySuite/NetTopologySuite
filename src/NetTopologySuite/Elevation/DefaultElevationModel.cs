@@ -6,6 +6,9 @@ namespace NetTopologySuite.Algorithm.Elevation
     {
         readonly ElevationModel _em;
 
+        public DefaultElevationModel() {
+        }
+
         private DefaultElevationModel(ElevationModel em) {
             this._em = em;
         }

@@ -11,8 +11,9 @@ namespace NetTopologySuite.Algorithm.Elevation
             _z = z;
         }
 
-        public void Init(Geometry geom1, Geometry geom2)
+        public IElevationModel Create(Geometry geom1, Geometry geom2)
         {
+            return this;
         }
 
         public double GetZ(double x, double y)
