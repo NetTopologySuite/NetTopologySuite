@@ -37,22 +37,22 @@ namespace NetTopologySuite.Algorithm.Elevation
             geom.Apply(filter);
         }
 
-        public double zGet(Coordinate p, Coordinate q)
+        public double GetZFrom(Coordinate p, Coordinate q)
         {
             return _z;
         }
 
-        public double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        public double GetZFromOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
             return _z;
         }
 
-        public double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        public double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2)
         {
             return _z;
         }
 
-        public double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        public double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             return _z;
         }

@@ -7,7 +7,7 @@ namespace NetTopologySuite.Algorithm.Elevation
     {
         public static Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
-            return CopyWithZ(p, zGetOrInterpolate(p, p1, p2));
+            return CopyWithZ(p, GetZFromOrInterpolate(p, p1, p2));
         }
 
         public static Coordinate CopyWithZ(Coordinate p, double z)
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Algorithm.Elevation
         * @param q a coordinate, possibly with Z
         * @return the Z value if present
         */
-        public static double zGet(Coordinate p, Coordinate q)
+        public static double GetZFrom(Coordinate p, Coordinate q)
         {
             double z = p.Z;
             if (double.IsNaN(z))
@@ -49,12 +49,12 @@ namespace NetTopologySuite.Algorithm.Elevation
         /// <param name="p1">A segment endpoint, possibly with Z</param>
         /// <param name="p2">A segment endpoint, possibly with Z</param>
         /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
-        public static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        public static double GetZFromOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double z = p.Z;
             if (!double.IsNaN(z))
                 return z;
-            return zInterpolate(p, p1, p2); // may be NaN
+            return InterpolateZ(p, p1, p2); // may be NaN
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Algorithm.Elevation
         /// <param name="p1">A segment endpoint, possibly with Z</param>
         /// <param name="p2">A segment endpoint, possibly with Z</param>
         /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
-        public static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        public static double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double p1z = p1.Z;
             double p2z = p2.Z;
@@ -122,8 +122,8 @@ namespace NetTopologySuite.Algorithm.Elevation
         /// <returns>The averaged interpolated Z value (may be NaN)</returns>    
         public static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            double zp = zInterpolate(p, p1, p2);
-            double zq = zInterpolate(p, q1, q2);
+            double zp = InterpolateZ(p, p1, p2);
+            double zq = InterpolateZ(p, q1, q2);
             if (double.IsNaN(zp))
             {
                 return zq; // may be NaN

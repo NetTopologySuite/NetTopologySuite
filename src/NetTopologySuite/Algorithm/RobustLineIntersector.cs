@@ -117,22 +117,22 @@ namespace NetTopologySuite.Algorithm
                 if (p1.Equals2D(q1))
                 {
                     p = p1;
-                    z = _elevationModel.zGet(p1, q1);
+                    z = _elevationModel.GetZFrom(p1, q1);
                 }
                 else if (p1.Equals2D(q2))
                 {
                     p = p1;
-                    z = _elevationModel.zGet(p1, q2);
+                    z = _elevationModel.GetZFrom(p1, q2);
                 }
                 else if (p2.Equals2D(q1))
                 {
                     p = p2;
-                    z = _elevationModel.zGet(p2, q1);
+                    z = _elevationModel.GetZFrom(p2, q1);
                 }
                 else if (p2.Equals2D(q2))
                 {
                     p = p2;
-                    z = _elevationModel.zGet(p2, q2);
+                    z = _elevationModel.GetZFrom(p2, q2);
                 }
                 /*
                  * Now check to see if any endpoint lies on the interior of the other segment.
@@ -140,29 +140,29 @@ namespace NetTopologySuite.Algorithm
                 else if (Pq1 == 0)
                 {
                     p = q1;
-                    z = _elevationModel.zGetOrInterpolate(q1, p1, p2);
+                    z = _elevationModel.GetZFromOrInterpolate(q1, p1, p2);
                 }
                 else if (Pq2 == 0)
                 {
                     p = q2;
-                    z = _elevationModel.zGetOrInterpolate(q2, p1, p2);
+                    z = _elevationModel.GetZFromOrInterpolate(q2, p1, p2);
                 }
                 else if (Qp1 == 0)
                 {
                     p = p1;
-                    z = _elevationModel.zGetOrInterpolate(p1, q1, q2);
+                    z = _elevationModel.GetZFromOrInterpolate(p1, q1, q2);
                 }
                 else if (Qp2 == 0)
                 {
                     p = p2;
-                    z = _elevationModel.zGetOrInterpolate(p2, q1, q2);
+                    z = _elevationModel.GetZFromOrInterpolate(p2, q1, q2);
                 }
             }
             else
             {
                 IsProper = true;
                 p = Intersection(p1, p2, q1, q2);
-                z = _elevationModel.zInterpolate(p, p1, p2, q1, q2);
+                z = _elevationModel.InterpolateZ(p, p1, p2, q1, q2);
             }
             IntersectionPoint[0] = _elevationModel.CopyWithZ(p, z);
             return PointIntersection;
