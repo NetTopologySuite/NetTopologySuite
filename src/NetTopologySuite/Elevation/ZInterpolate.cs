@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Elevation
 {
-    internal class ZInterpolate
+    internal static class ZInterpolate
     {
         public static Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
