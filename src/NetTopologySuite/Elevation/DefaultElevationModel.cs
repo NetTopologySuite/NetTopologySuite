@@ -13,6 +13,16 @@ namespace NetTopologySuite.Algorithm.Elevation
             this._em = em;
         }
 
+        public Coordinate CopyWithZ(Coordinate p, double z)
+        {
+            return ZInterpolate.CopyWithZ(p, z);
+        }
+
+        public Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        {
+            return ZInterpolate.CopyWithZInterpolate(p, p1, p2);
+        }
+
         public IElevationModel Create(Geometry geom1, Geometry geom2)
         {
             return new DefaultElevationModel(ElevationModel.Create(geom1, geom2));

@@ -5,6 +5,22 @@ namespace NetTopologySuite.Algorithm.Elevation
 {
     internal class ZInterpolate
     {
+        public static Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        {
+            return CopyWithZ(p, zGetOrInterpolate(p, p1, p2));
+        }
+
+        public static Coordinate CopyWithZ(Coordinate p, double z)
+        {
+            Coordinate res;
+            if (double.IsNaN(z))
+                res = p.Copy();
+            else
+                res = new CoordinateZ(p) { Z = z };
+
+            return res;
+        }
+
         /*
         * Gets the Z value of the first argument if present, 
         * otherwise the value of the second argument.

@@ -10,5 +10,7 @@ namespace NetTopologySuite.Algorithm.Elevation
         double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2);
         void PopulateZ(Geometry geom);
         double GetZ(double x, double y);
+        Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2);
+        Coordinate CopyWithZ(Coordinate p, double z);
     }
 }

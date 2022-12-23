@@ -1,5 +1,5 @@
-using System;
 using System.Diagnostics;
+using NetTopologySuite.Algorithm.Elevation;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -9,6 +9,18 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
+        readonly IElevationModel _elevationModel;
+
+        public RobustLineIntersector()
+        {
+            _elevationModel = NtsGeometryServices.Instance.ElevationModel;
+        }
+
+        public RobustLineIntersector(IElevationModel elevationModel)
+        {
+            _elevationModel = elevationModel;
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -82,7 +94,6 @@ namespace NetTopologySuite.Algorithm
              */
             Coordinate p = null;
             double z = double.NaN;
-            var em = NtsGeometryServices.Instance.ElevationModel;
             if (Pq1 == 0 || Pq2 == 0 || Qp1 == 0 || Qp2 == 0)
             {
                 IsProper = false;
@@ -106,22 +117,22 @@ namespace NetTopologySuite.Algorithm
                 if (p1.Equals2D(q1))
                 {
                     p = p1;
-                    z = em.zGet(p1, q1);
+                    z = _elevationModel.zGet(p1, q1);
                 }
                 else if (p1.Equals2D(q2))
                 {
                     p = p1;
-                    z = em.zGet(p1, q2);
+                    z = _elevationModel.zGet(p1, q2);
                 }
                 else if (p2.Equals2D(q1))
                 {
                     p = p2;
-                    z = em.zGet(p2, q1);
+                    z = _elevationModel.zGet(p2, q1);
                 }
                 else if (p2.Equals2D(q2))
                 {
                     p = p2;
-                    z = em.zGet(p2, q2);
+                    z = _elevationModel.zGet(p2, q2);
                 }
                 /*
                  * Now check to see if any endpoint lies on the interior of the other segment.
@@ -129,31 +140,31 @@ namespace NetTopologySuite.Algorithm
                 else if (Pq1 == 0)
                 {
                     p = q1;
-                    z = em.zGetOrInterpolate(q1, p1, p2);
+                    z = _elevationModel.zGetOrInterpolate(q1, p1, p2);
                 }
                 else if (Pq2 == 0)
                 {
                     p = q2;
-                    z = em.zGetOrInterpolate(q2, p1, p2);
+                    z = _elevationModel.zGetOrInterpolate(q2, p1, p2);
                 }
                 else if (Qp1 == 0)
                 {
                     p = p1;
-                    z = em.zGetOrInterpolate(p1, q1, q2);
+                    z = _elevationModel.zGetOrInterpolate(p1, q1, q2);
                 }
                 else if (Qp2 == 0)
                 {
                     p = p2;
-                    z = em.zGetOrInterpolate(p2, q1, q2);
+                    z = _elevationModel.zGetOrInterpolate(p2, q1, q2);
                 }
             }
             else
             {
                 IsProper = true;
                 p = Intersection(p1, p2, q1, q2);
-                z = em.zInterpolate(p, p1, p2, q1, q2);
+                z = _elevationModel.zInterpolate(p, p1, p2, q1, q2);
             }
-            IntersectionPoint[0] = CopyWithZ(p, z);
+            IntersectionPoint[0] = _elevationModel.CopyWithZ(p, z);
             return PointIntersection;
         }
 
@@ -166,61 +177,45 @@ namespace NetTopologySuite.Algorithm
 
             if (q1inP && q2inP)
             {
-                IntersectionPoint[0] = CopyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(q2, p1, p2);
                 return CollinearIntersection;
             }
             if (p1inQ && p2inQ)
             {
-                IntersectionPoint[0] = CopyWithZInterpolate(p1, q1, q2);
-                IntersectionPoint[1] = CopyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p2, q1, q2);
                 return CollinearIntersection;
             }
             if (q1inP && p1inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = CopyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = CopyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p1, q1, q2);
                 return q1.Equals(p1) && !q2inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
             if (q1inP && p2inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = CopyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = CopyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p2, q1, q2);
                 return q1.Equals(p2) && !q2inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
             if (q2inP && p1inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = CopyWithZInterpolate(q2, p1, p2);
-                IntersectionPoint[1] = CopyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p1, q1, q2);
                 return q2.Equals(p1) && !q1inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
             if (q2inP && p2inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = CopyWithZInterpolate(q2, p1, p2);
-                IntersectionPoint[1] = CopyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p2, q1, q2);
                 return q2.Equals(p2) && !q1inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
             return NoIntersection;
-        }
-
-        private static Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
-        {
-            return CopyWithZ(p, NtsGeometryServices.Instance.ElevationModel.zGetOrInterpolate(p, p1, p2));
-        }
-
-        private static Coordinate CopyWithZ(Coordinate p, double z)
-        {
-            Coordinate res;
-            if (double.IsNaN(z))
-                res = p.Copy();
-            else
-                res = new CoordinateZ(p) { Z = z };
-
-            return res;
         }
 
         /// <summary>
