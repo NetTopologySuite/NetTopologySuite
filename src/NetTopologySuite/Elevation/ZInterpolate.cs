@@ -120,7 +120,7 @@ namespace NetTopologySuite.Algorithm.Elevation
         /// <param name="q1">A segment endpoint, possibly with Z</param>
         /// <param name="q2">A segment endpoint, possibly with Z</param>
         /// <returns>The averaged interpolated Z value (may be NaN)</returns>    
-        public static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        public static double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             double zp = InterpolateZ(p, p1, p2);
             double zq = InterpolateZ(p, q1, q2);

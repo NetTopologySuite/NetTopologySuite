@@ -55,7 +55,7 @@ namespace NetTopologySuite.Algorithm.Elevation
 
         public double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            return ZInterpolate.zInterpolate(p, p1, p2, q1, q2);
+            return ZInterpolate.InterpolateZ(p, p1, p2, q1, q2);
         }
     }
 }
