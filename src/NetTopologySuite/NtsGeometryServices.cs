@@ -129,6 +129,7 @@ namespace NetTopologySuite
             DefaultSRID = srid;
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
+            ElevationModel = new DefaultElevationModel();
         }
 
         /// <summary>
@@ -150,8 +151,8 @@ namespace NetTopologySuite
             DefaultPrecisionModel = precisionModel ?? throw new ArgumentNullException(nameof(precisionModel));
             DefaultSRID = srid;
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
-            ElevationModel = elevationModel;
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
+            ElevationModel = elevationModel ?? throw new ArgumentNullException(nameof(elevationModel));
         }
 
         /// <summary>
