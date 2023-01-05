@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using NetTopologySuite.Algorithm.Elevation;
+using NetTopologySuite.Elevation;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -9,16 +9,18 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
-        readonly IElevationModel _elevationModel;
+        private readonly ZHandler _zHandler;
 
-        public RobustLineIntersector()
+        public RobustLineIntersector() : this(null)
         {
-            _elevationModel = NtsGeometryServices.Instance.ElevationModel;
         }
 
         public RobustLineIntersector(IElevationModel elevationModel)
         {
-            _elevationModel = elevationModel;
+            elevationModel = elevationModel ?? NtsGeometryServices.Instance.ElevationModel;
+            _zHandler = elevationModel == null
+                ? new ZHandler()
+                : new ElevationModelZHandler(elevationModel);
         }
 
         /// <summary>
@@ -117,22 +119,22 @@ namespace NetTopologySuite.Algorithm
                 if (p1.Equals2D(q1))
                 {
                     p = p1;
-                    z = _elevationModel.GetZFrom(p1, q1);
+                    z = _zHandler.GetZFrom(p1, q1);
                 }
                 else if (p1.Equals2D(q2))
                 {
                     p = p1;
-                    z = _elevationModel.GetZFrom(p1, q2);
+                    z = _zHandler.GetZFrom(p1, q2);
                 }
                 else if (p2.Equals2D(q1))
                 {
                     p = p2;
-                    z = _elevationModel.GetZFrom(p2, q1);
+                    z = _zHandler.GetZFrom(p2, q1);
                 }
                 else if (p2.Equals2D(q2))
                 {
                     p = p2;
-                    z = _elevationModel.GetZFrom(p2, q2);
+                    z = _zHandler.GetZFrom(p2, q2);
                 }
                 /*
                  * Now check to see if any endpoint lies on the interior of the other segment.
@@ -140,31 +142,31 @@ namespace NetTopologySuite.Algorithm
                 else if (Pq1 == 0)
                 {
                     p = q1;
-                    z = _elevationModel.GetZFromOrInterpolate(q1, p1, p2);
+                    z = _zHandler.GetZFromOrInterpolate(q1, p1, p2);
                 }
                 else if (Pq2 == 0)
                 {
                     p = q2;
-                    z = _elevationModel.GetZFromOrInterpolate(q2, p1, p2);
+                    z = _zHandler.GetZFromOrInterpolate(q2, p1, p2);
                 }
                 else if (Qp1 == 0)
                 {
                     p = p1;
-                    z = _elevationModel.GetZFromOrInterpolate(p1, q1, q2);
+                    z = _zHandler.GetZFromOrInterpolate(p1, q1, q2);
                 }
                 else if (Qp2 == 0)
                 {
                     p = p2;
-                    z = _elevationModel.GetZFromOrInterpolate(p2, q1, q2);
+                    z = _zHandler.GetZFromOrInterpolate(p2, q1, q2);
                 }
             }
             else
             {
                 IsProper = true;
                 p = Intersection(p1, p2, q1, q2);
-                z = _elevationModel.InterpolateZ(p, p1, p2, q1, q2);
+                z = _zHandler.InterpolateZ(p, p1, p2, q1, q2);
             }
-            IntersectionPoint[0] = _elevationModel.CopyWithZ(p, z);
+            IntersectionPoint[0] = _zHandler.CopyWithZ(p, z);
             return PointIntersection;
         }
 
@@ -177,42 +179,42 @@ namespace NetTopologySuite.Algorithm
 
             if (q1inP && q2inP)
             {
-                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[0] = _zHandler.CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = _zHandler.CopyWithZInterpolate(q2, p1, p2);
                 return CollinearIntersection;
             }
             if (p1inQ && p2inQ)
             {
-                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(p1, q1, q2);
-                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = _zHandler.CopyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[1] = _zHandler.CopyWithZInterpolate(p2, q1, q2);
                 return CollinearIntersection;
             }
             if (q1inP && p1inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[0] = _zHandler.CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = _zHandler.CopyWithZInterpolate(p1, q1, q2);
                 return q1.Equals(p1) && !q2inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
             if (q1inP && p2inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q1, p1, p2);
-                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = _zHandler.CopyWithZInterpolate(q1, p1, p2);
+                IntersectionPoint[1] = _zHandler.CopyWithZInterpolate(p2, q1, q2);
                 return q1.Equals(p2) && !q2inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
             if (q2inP && p1inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q2, p1, p2);
-                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p1, q1, q2);
+                IntersectionPoint[0] = _zHandler.CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = _zHandler.CopyWithZInterpolate(p1, q1, q2);
                 return q2.Equals(p1) && !q1inP && !p2inQ ? PointIntersection : CollinearIntersection;
             }
             if (q2inP && p2inQ)
             {
                 // if pts are equal Z is chosen arbitrarily
-                IntersectionPoint[0] = _elevationModel.CopyWithZInterpolate(q2, p1, p2);
-                IntersectionPoint[1] = _elevationModel.CopyWithZInterpolate(p2, q1, q2);
+                IntersectionPoint[0] = _zHandler.CopyWithZInterpolate(q2, p1, p2);
+                IntersectionPoint[1] = _zHandler.CopyWithZInterpolate(p2, q1, q2);
                 return q2.Equals(p2) && !q1inP && !p1inQ ? PointIntersection : CollinearIntersection;
             }
             return NoIntersection;
@@ -361,5 +363,176 @@ namespace NetTopologySuite.Algorithm
             }
             return nearestPt;
         }
-    }
+
+        private class ZHandler
+        {
+
+            public Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+            {
+                return CopyWithZ(p, GetZFromOrInterpolate(p, p1, p2));
+            }
+
+            public Coordinate CopyWithZ(Coordinate p, double z)
+            {
+                Coordinate res;
+                if (double.IsNaN(z))
+                    res = p.Copy();
+                else
+                    res = new CoordinateZ(p) { Z = z };
+
+                return res;
+            }
+
+            /// <summary>
+            /// Gets the Z value of the first argument if present, 
+            /// otherwise the value of the second argument.
+            /// </summary>
+            /// <param name="p">A coordinate, possibly with Z</param>
+            /// <param name="q">A coordinate, possibly with Z</param>
+            /// <returns>The Z value if present</returns>
+            public virtual double GetZFrom(Coordinate p, Coordinate q)
+            {
+                double z = p.Z;
+                if (double.IsNaN(z))
+                {
+                    z = q.Z; // may be NaN
+                }
+                return z;
+            }
+
+            /// <summary>
+            /// Gets the Z value of a coordinate if present, or
+            /// interpolates it from the segment it lies on.
+            /// If the segment Z values are not fully populate
+            /// NaN is returned.
+            /// </summary>
+            /// <param name="p">A coordinate, possibly with Z</param>
+            /// <param name="p1">A segment endpoint, possibly with Z</param>
+            /// <param name="p2">A segment endpoint, possibly with Z</param>
+            /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
+            public virtual double GetZFromOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+            {
+                double z = p.Z;
+                if (!double.IsNaN(z))
+                    return z;
+                return InterpolateZ(p, p1, p2); // may be NaN
+            }
+
+            /// <summary>
+            /// Interpolates a Z value for a point along
+            /// a line segment between two points.
+            /// The Z value of the interpolation point (if any) is ignored.
+            /// If either segment point is missing Z,
+            /// returns NaN.
+            /// </summary>
+            /// <param name="p">A coordinate, possibly with Z</param>
+            /// <param name="p1">A segment endpoint, possibly with Z</param>
+            /// <param name="p2">A segment endpoint, possibly with Z</param>
+            /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
+            public virtual double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2)
+            {
+                double p1z = p1.Z;
+                double p2z = p2.Z;
+                if (double.IsNaN(p1z))
+                {
+                    return p2z; // may be NaN
+                }
+                if (double.IsNaN(p2z))
+                {
+                    return p1z; // may be NaN
+                }
+                if (p.Equals2D(p1))
+                {
+                    return p1z; // not NaN
+                }
+                if (p.Equals2D(p2))
+                {
+                    return p2z; // not NaN
+                }
+                double dz = p2z - p1z;
+                if (dz == 0.0)
+                {
+                    return p1z;
+                }
+                // interpolate Z from distance of p along p1-p2
+                double dx = (p2.X - p1.X);
+                double dy = (p2.Y - p1.Y);
+                // seg has non-zero length since p1 < p < p2 
+                double seglen = (dx * dx + dy * dy);
+                double xoff = (p.X - p1.X);
+                double yoff = (p.Y - p1.Y);
+                double plen = (xoff * xoff + yoff * yoff);
+                double frac = System.Math.Sqrt(plen / seglen);
+                double zoff = dz * frac;
+                double zInterpolated = p1z + zoff;
+                return zInterpolated;
+            }
+
+            /// <summary>
+            /// Interpolates a Z value for a point along
+            /// two line segments and computes their average.
+            /// The Z value of the interpolation point (if any) is ignored.
+            /// If one segment point is missing Z that segment is ignored
+            /// if both segments are missing Z, returns NaN.
+            /// </summary>
+            /// <param name="p">A coordinate</param>
+            /// <param name="p1">A segment endpoint, possibly with Z</param>
+            /// <param name="p2">A segment endpoint, possibly with Z</param>
+            /// <param name="q1">A segment endpoint, possibly with Z</param>
+            /// <param name="q2">A segment endpoint, possibly with Z</param>
+            /// <returns>The averaged interpolated Z value (may be NaN)</returns>    
+            public double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+            {
+                double zp = InterpolateZ(p, p1, p2);
+                double zq = InterpolateZ(p, q1, q2);
+                if (double.IsNaN(zp))
+                {
+                    return zq; // may be NaN
+                }
+                if (double.IsNaN(zq))
+                {
+                    return zp; // may be NaN
+                }
+                // both Zs have values, so average them
+                return (zp + zq) / 2.0;
+            }
+
+        }
+
+        private sealed class ElevationModelZHandler : ZHandler
+        {
+            private readonly IElevationModel _elevationModel;
+            public ElevationModelZHandler(IElevationModel elevationModel)
+            {
+                _elevationModel = elevationModel;
+            }
+
+            public sealed override double GetZFrom(Coordinate p, Coordinate q)
+            {
+                double pz = _elevationModel.GetZ(p, out bool success);
+                if (success) return pz;
+
+                return base.GetZFrom(p, q);
+            }
+
+            public sealed override double GetZFromOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+            {
+                double pz = _elevationModel.GetZ(p, out bool success);
+                if (success) return pz;
+
+                return base.GetZFromOrInterpolate(p, p1, p2);
+            }
+
+            public sealed override double InterpolateZ(Coordinate p, Coordinate p1, Coordinate p2)
+            {
+
+                double pz = _elevationModel.GetZ(p, out bool success);
+                if (success) return pz;
+
+                return base.InterpolateZ(p, p1, p2);
+            }
+
+
+        }
+}
 }

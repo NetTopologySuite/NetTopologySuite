@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetTopologySuite.Algorithm.Elevation;
+using NetTopologySuite.Elevation;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.OverlayNG;
 using NetTopologySuite.Tests.NUnit.Utilities;
@@ -160,7 +160,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
                 double x = ords[3 * i];
                 double y = ords[3 * i + 1];
                 double expectedZ = ords[3 * i + 2];
-                double actualZ = model.GetZ(x, y);
+                double actualZ = model.GetZ(x, y, out _);
                 string msg = "Point ( " + x + ", " + y + " ) : ";
                 Assert.That(actualZ, Is.EqualTo(expectedZ).Within(TOLERANCE), msg);
             }

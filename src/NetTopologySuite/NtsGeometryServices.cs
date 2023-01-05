@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using NetTopologySuite.Algorithm.Elevation;
+using NetTopologySuite.Elevation;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 
@@ -47,7 +47,7 @@ namespace NetTopologySuite
         public NtsGeometryServices(GeometryOverlay geometryOverlay)
             : this(CoordinateArraySequenceFactory.Instance,
                 PrecisionModel.Floating.Value,
-                -1, geometryOverlay, new CoordinateEqualityComparer(), new DefaultElevationModel())
+                -1, geometryOverlay, new CoordinateEqualityComparer(), null)
         {
         }
 
@@ -59,7 +59,7 @@ namespace NetTopologySuite
         /// </summary>
         public NtsGeometryServices(PrecisionModel precisionModel)
             : this(CoordinateArraySequenceFactory.Instance,
-                precisionModel, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), new DefaultElevationModel())
+                precisionModel, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), null)
         {
         }
 
@@ -71,7 +71,7 @@ namespace NetTopologySuite
         /// </summary>
         public NtsGeometryServices(PrecisionModel precisionModel, int srid)
             : this(CoordinateArraySequenceFactory.Instance,
-                precisionModel, srid, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), new DefaultElevationModel())
+                precisionModel, srid, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), null)
         {
         }
         /// <summary>
@@ -81,7 +81,7 @@ namespace NetTopologySuite
         /// The <see cref="NetTopologySuite.Geometries.GeometryOverlay.Legacy"/> function set for overlay operations is being used.
         /// </summary>
         public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory)
-            : this(coordinateSequenceFactory, PrecisionModel.Floating.Value, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), new DefaultElevationModel())
+            : this(coordinateSequenceFactory, PrecisionModel.Floating.Value, -1, GeometryOverlay.Legacy, new CoordinateEqualityComparer(), null)
         {
         }
 
@@ -129,7 +129,7 @@ namespace NetTopologySuite
             DefaultSRID = srid;
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
-            ElevationModel = new DefaultElevationModel();
+            ElevationModel = null;
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace NetTopologySuite
             DefaultSRID = srid;
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
-            ElevationModel = elevationModel ?? throw new ArgumentNullException(nameof(elevationModel));
+            ElevationModel = elevationModel /*?? throw new ArgumentNullException(nameof(elevationModel))*/;
         }
 
         /// <summary>

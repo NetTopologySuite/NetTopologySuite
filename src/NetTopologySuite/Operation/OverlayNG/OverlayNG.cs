@@ -430,9 +430,24 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
 
             /*
-             * The elevation model is only computed if the input geometries have Z values.
+             * Try to get an elevation model
              */
-            var elevModel = NtsGeometryServices.Instance.ElevationModel.Create(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+            var elevModel = _inputGeom.GetGeometry(0).Factory.GeometryServices.ElevationModel ??
+                            _inputGeom.GetGeometry(1)?.Factory.GeometryServices.ElevationModel;
+
+            /*
+             * Determine the extent of the geometries involved in the overlay operation
+             */
+            var opExtent = _inputGeom.GetGeometry(0).EnvelopeInternal;
+
+            opExtent.ExpandToInclude(_inputGeom.GetGeometry(1)?.EnvelopeInternal ?? new Envelope());
+
+            if (elevModel == null || elevModel.Extent.Contains(opExtent))
+                /*
+                 * The elevation model is only computed if the input geometries have Z values.
+                 */
+                elevModel = Elevation.ElevationModel.Create(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+
             Geometry result;
             if (_inputGeom.IsAllPoints)
             {
