@@ -48,7 +48,7 @@ namespace NetTopologySuite.Noding
             return nv.Intersections;
         }
 
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li;
 
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
         private NodingIntersectionFinder _segInt;
@@ -59,8 +59,17 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings">A collection of <see cref="ISegmentString"/>s</param>
         public FastNodingValidator(IEnumerable<ISegmentString> segStrings)
+            : this(segStrings, null)
+        { }
+
+        /// <summary>
+        /// Creates a new noding validator for a given set of linework.
+        /// </summary>
+        /// <param name="segStrings">A collection of <see cref="ISegmentString"/>s</param>
+        public FastNodingValidator(IEnumerable<ISegmentString> segStrings, Elevation.ElevationModel elevationModel)
         {
             _segStrings.AddRange(segStrings);
+            _li = LineIntersectorFactory.CreateFor(elevationModel);
         }
 
         /// <summary>

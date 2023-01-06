@@ -18,6 +18,7 @@ namespace NetTopologySuite.Noding
     {
 
         private readonly INoder _noder;
+        private readonly Elevation.ElevationModel _elevationModel;
         private IList<ISegmentString> _nodedSs;
 
         /// <summary>
@@ -25,8 +26,17 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="noder">The noder to validate</param>
         public ValidatingNoder(INoder noder)
+            : this(noder, null) { }
+
+        /// <summary>
+        /// Creates a noding validator wrapping the given <paramref name="noder"/>
+        /// </summary>
+        /// <param name="noder">The noder to validate</param>
+        /// <param name="elevationModel">An optional elevation model</param>
+        public ValidatingNoder(INoder noder, Elevation.ElevationModel elevationModel)
         {
-            this._noder = noder;
+            _noder = noder;
+            _elevationModel = elevationModel;
         }
 
         /// <summary>
@@ -43,7 +53,7 @@ namespace NetTopologySuite.Noding
 
         private void Validate()
         {
-            var nv = new FastNodingValidator(_nodedSs);
+            var nv = new FastNodingValidator(_nodedSs, _elevationModel);
             nv.CheckValid();
         }
 

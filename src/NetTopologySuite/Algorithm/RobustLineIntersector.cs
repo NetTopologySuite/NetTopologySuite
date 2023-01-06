@@ -9,6 +9,12 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
+#if DEBUG
+        public RobustLineIntersector()
+        {
+            // just to see stack trace when creating this
+        }
+#endif
         /// <summary>
         ///
         /// </summary>
@@ -206,7 +212,7 @@ namespace NetTopologySuite.Algorithm
             return NoIntersection;
         }
 
-        private static Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        private Coordinate CopyWithZInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
             return CopyWithZ(p, zGetOrInterpolate(p, p1, p2));
         }
@@ -217,7 +223,9 @@ namespace NetTopologySuite.Algorithm
             if (double.IsNaN(z))
                 res = p.Copy();
             else
-                res = new CoordinateZ(p) { Z = z };
+                res = double.IsNaN(p.M)
+                    ? new CoordinateZ(p) { Z = z }
+                    : new CoordinateZM(p) { Z = z };
 
             return res;
         }
@@ -366,15 +374,14 @@ namespace NetTopologySuite.Algorithm
             return nearestPt;
         }
 
-        /*
-         * Gets the Z value of the first argument if present, 
-         * otherwise the value of the second argument.
-         * 
-         * @param p a coordinate, possibly with Z
-         * @param q a coordinate, possibly with Z
-         * @return the Z value if present
-         */
-        private static double zGet(Coordinate p, Coordinate q)
+        /// <summary>
+        /// Gets the Z value of the first argument if present,
+        /// otherwise the value of the second argument.
+        /// </summary>
+        /// <param name="p">A coordinate, possibly with Z</param>
+        /// <param name="q">A coordinate, possibly with Z</param>
+        /// <returns>The Z value if present</returns>
+        protected virtual double zGet(Coordinate p, Coordinate q)
         {
             double z = p.Z;
             if (double.IsNaN(z))
@@ -394,7 +401,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p1">A segment endpoint, possibly with Z</param>
         /// <param name="p2">A segment endpoint, possibly with Z</param>
         /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
-        private static double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        protected virtual double zGetOrInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double z = p.Z;
             if (!double.IsNaN(z))
@@ -413,7 +420,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p1">A segment endpoint, possibly with Z</param>
         /// <param name="p2">A segment endpoint, possibly with Z</param>
         /// <returns>The extracted or interpolated Z value (may be NaN)</returns>
-        private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
+        protected virtual double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double p1z = p1.Z;
             double p2z = p2.Z;
@@ -465,7 +472,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q1">A segment endpoint, possibly with Z</param>
         /// <param name="q2">A segment endpoint, possibly with Z</param>
         /// <returns>The averaged interpolated Z value (may be NaN)</returns>    
-        private static double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        protected virtual double zInterpolate(Coordinate p, Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             double zp = zInterpolate(p, p1, p2);
             double zq = zInterpolate(p, q1, q2);

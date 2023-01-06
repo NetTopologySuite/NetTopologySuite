@@ -46,13 +46,19 @@ namespace NetTopologySuite.Noding.Snapround
 
         private readonly PrecisionModel _pm;
         private readonly HotPixelIndex _pixelIndex;
+        private readonly Elevation.ElevationModel _elevationModel;
 
         private List<NodedSegmentString> _snappedResult;
 
         public SnapRoundingNoder(PrecisionModel pm)
+            :this(pm, null)
+        { }
+
+        public SnapRoundingNoder(PrecisionModel pm, Elevation.ElevationModel elevationModel)
         {
             _pm = pm;
             _pixelIndex = new HotPixelIndex(pm);
+            _elevationModel = elevationModel;
         }
 
         /// <summary>
@@ -103,7 +109,7 @@ namespace NetTopologySuite.Noding.Snapround
             double snapGridSize = 1.0 / _pm.Scale;
             double nearnessTol = snapGridSize / NEARNESS_FACTOR;
 
-            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol);
+            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol, _elevationModel);
             var noder = new MCIndexNoder(intAdder, nearnessTol);
             noder.ComputeNodes(segStrings);
             var intPts = intAdder.Intersections;
