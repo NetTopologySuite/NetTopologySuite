@@ -394,7 +394,15 @@ namespace NetTopologySuite.Geometries
                 return p.Copy();
 
             double r = ProjectionFactor(p);
-            return p.Create(_p0.X + r * (_p1.X - _p0.X), _p0.Y + r * (_p1.Y - _p0.Y));
+            return Project(p, r);
+        }
+
+        private Coordinate Project(Coordinate p, double projectionFactor)
+        {
+            var coord = p.Copy();
+            coord.X = _p0.X + projectionFactor * (_p1.X - _p0.X);
+            coord.Y = _p0.Y + projectionFactor * (_p1.Y - _p0.Y);
+            return coord;
         }
 
         /// <summary>
@@ -415,11 +423,11 @@ namespace NetTopologySuite.Geometries
             if (pf0 >= 1.0 && pf1 >= 1.0) return null;
             if (pf0 <= 0.0 && pf1 <= 0.0) return null;
 
-            var newp0 = Project(seg._p0);
+            var newp0 = Project(seg._p0, pf0);
             if (pf0 < 0.0) newp0 = _p0;
             if (pf0 > 1.0) newp0 = _p1;
 
-            var newp1 = Project(seg._p1);
+            var newp1 = Project(seg._p1, pf1);
             if (pf1 < 0.0) newp1 = _p0;
             if (pf1 > 1.0) newp1 = _p1;
 
@@ -454,7 +462,7 @@ namespace NetTopologySuite.Geometries
         {
             double factor = ProjectionFactor(p);
             if (factor > 0 && factor < 1)
-                return Project(p);
+                return Project(p, factor);
             double dist0 = _p0.Distance(p);
             double dist1 = _p1.Distance(p);
             return dist0 < dist1 ? _p0 : _p1;
