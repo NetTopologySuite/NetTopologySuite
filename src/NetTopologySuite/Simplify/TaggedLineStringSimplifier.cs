@@ -10,7 +10,7 @@ namespace NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineStringSimplifier
     {
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = LineIntersectorFactory.CreateFor(null);
         private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private TaggedLineString _line;

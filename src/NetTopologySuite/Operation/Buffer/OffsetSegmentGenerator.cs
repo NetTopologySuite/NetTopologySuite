@@ -90,7 +90,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             // compute intersections in full precision, to provide accuracy
             // the points are rounded as they are inserted into the curve line
-            _li = new RobustLineIntersector();
+            _li = LineIntersectorFactory.CreateFor(null);
 
             int quadSegs = bufParams.QuadrantSegments;
             if (quadSegs < 1) quadSegs = 1;

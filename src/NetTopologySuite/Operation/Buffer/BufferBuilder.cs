@@ -136,7 +136,9 @@ namespace NetTopologySuite.Operation.Buffer
             if (_workingNoder != null) return _workingNoder;
 
             // otherwise use a fast (but non-robust) noder
-            var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
+            var li = LineIntersectorFactory.CreateFor(null);
+            li.PrecisionModel = precisionModel;
+            var noder = new MCIndexNoder(new IntersectionAdder(li));
 
             //var li = new RobustLineIntersector();
             //li.PrecisionModel = precisionModel;

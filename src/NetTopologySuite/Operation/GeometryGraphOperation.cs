@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation
     public class GeometryGraphOperation
     {
 
-        private LineIntersector _li = new RobustLineIntersector();
+        private LineIntersector _li = LineIntersectorFactory.CreateFor(null);
 
         /// <summary>
         ///

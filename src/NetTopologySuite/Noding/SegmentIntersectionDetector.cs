@@ -28,7 +28,7 @@ namespace NetTopologySuite.Noding
         /// Creates an intersection finder using a <see cref="RobustLineIntersector"/>
         /// </summary>
         public SegmentIntersectionDetector()
-            :this(new RobustLineIntersector())
+            :this(LineIntersectorFactory.CreateFor(null))
         {
         }
 

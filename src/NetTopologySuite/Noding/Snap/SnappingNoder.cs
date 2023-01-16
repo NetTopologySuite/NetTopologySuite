@@ -29,18 +29,28 @@ namespace NetTopologySuite.Noding.Snap
     /// <version>1.17</version>
     public sealed class SnappingNoder : INoder
     {
-        private readonly SnappingPointIndex snapIndex;
+        private readonly SnappingPointIndex _snapIndex;
         private readonly double _snapTolerance;
+        private readonly Elevation.ElevationModel _elevationModel;
         private IList<ISegmentString> _nodedResult;
 
         /// <summary>
         /// Creates a snapping noder using the given snap distance tolerance.
         /// </summary>
         /// <param name="snapTolerance">Points are snapped if within this distance</param>
-        public SnappingNoder(double snapTolerance)
+        public SnappingNoder(double snapTolerance) 
+           : this(snapTolerance, null)
+        { }
+        /// <summary>
+        /// Creates a snapping noder using the given snap distance tolerance.
+        /// </summary>
+        /// <param name="snapTolerance">Points are snapped if within this distance</param>
+        /// <param name="elevationModel">An elevation model to use with the line intersector</param>
+        public SnappingNoder(double snapTolerance, Elevation.ElevationModel elevationModel)
         {
             _snapTolerance = snapTolerance;
-            snapIndex = new SnappingPointIndex(snapTolerance);
+            _snapIndex = new SnappingPointIndex(snapTolerance);
+            _elevationModel = elevationModel;
         }
 
         /// <inheritdoc cref="INoder.GetNodedSubstrings"/>>
@@ -92,7 +102,7 @@ namespace NetTopologySuite.Noding.Snap
                 {
                     rand = MathUtil.QuasiRandom(rand);
                     int index = (int)(pts.Length * rand);
-                    snapIndex.Snap(pts[index]);
+                    _snapIndex.Snap(pts[index]);
                 }
             }
         }
@@ -108,7 +118,7 @@ namespace NetTopologySuite.Noding.Snap
             var snapCoords = new CoordinateList();
             for (int i = 0; i < coords.Length; i++)
             {
-                var pt = snapIndex.Snap(coords[i]);
+                var pt = _snapIndex.Snap(coords[i]);
                 snapCoords.Add(pt, false);
             }
             return snapCoords.ToCoordinateArray();
@@ -123,7 +133,7 @@ namespace NetTopologySuite.Noding.Snap
         /// <returns>A list of noded substrings</returns>
         private IList<ISegmentString> ComputeIntersections(IList<ISegmentString> inputSS)
         {
-            var intAdder = new SnappingIntersectionAdder(_snapTolerance, snapIndex);
+            var intAdder = new SnappingIntersectionAdder(_snapTolerance, _snapIndex, _elevationModel);
             /*
              * Use an overlap tolerance to ensure all 
              * possible snapped intersections are found

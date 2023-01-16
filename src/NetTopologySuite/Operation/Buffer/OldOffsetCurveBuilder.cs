@@ -88,7 +88,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             // compute intersections in full precision, to provide accuracy
             // the points are rounded as they are inserted into the curve line
-            _li = new RobustLineIntersector();
+            _li = LineIntersectorFactory.CreateFor(null);
             _filletAngleQuantum = Math.PI / 2.0 / bufParams.QuadrantSegments;
 
             /*

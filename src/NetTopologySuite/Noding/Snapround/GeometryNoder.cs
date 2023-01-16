@@ -23,6 +23,7 @@ namespace NetTopologySuite.Noding.Snapround
     {
         private GeometryFactory _geomFact;
         private readonly PrecisionModel _pm;
+        private readonly Elevation.ElevationModel _em;
         //private bool isValidityChecked = false;
 
         /// <summary>
@@ -30,8 +31,19 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="pm">The precision model for the grid to snap-round to.</param>
         public GeometryNoder(PrecisionModel pm)
+            : this(pm, null)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new noder which snap-rounds to a grid specified by the given <see cref="PrecisionModel"/>
+        /// </summary>
+        /// <param name="pm">The precision model for the grid to snap-round to.</param>
+        /// <param name="em">The elevation model to use for evaluating z-ordinate values</param>
+        public GeometryNoder(PrecisionModel pm, Elevation.ElevationModel em)
         {
             _pm = pm;
+            _em = em;
         }
 
         /// <summary>

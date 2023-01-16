@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Predicate
     public class SegmentIntersectionTester
     {
         // for purposes of intersection testing, don't need to set precision model
-        private readonly LineIntersector li = new RobustLineIntersector();
+        private readonly LineIntersector li = LineIntersectorFactory.CreateFor(null);
 
         private bool _hasIntersection;
         private readonly Coordinate pt00 = new Coordinate();

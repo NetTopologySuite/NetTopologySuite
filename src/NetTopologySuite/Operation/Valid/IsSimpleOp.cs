@@ -323,7 +323,7 @@ namespace NetTopologySuite.Operation.Valid
             private readonly bool _isClosedEndpointsInInterior;
             private readonly bool _isFindAll;
 
-            readonly LineIntersector _li = new RobustLineIntersector();
+            readonly LineIntersector _li = LineIntersectorFactory.CreateFor(null);
             private readonly List<Coordinate> _intersectionPts;
 
             //private bool _hasInteriorInt;

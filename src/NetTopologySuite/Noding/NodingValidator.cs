@@ -13,7 +13,7 @@ namespace NetTopologySuite.Noding
     {
         private static readonly GeometryFactory Factory = new GeometryFactory();
 
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li;
         private readonly IList<ISegmentString> _segStrings;
 
         /// <summary>
@@ -22,8 +22,18 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
         public NodingValidator(IList<ISegmentString> segStrings)
+            : this(segStrings, null)
+        { }
+
+        /// <summary>
+        /// Creates a new validator for the given collection
+        /// of <see cref="ISegmentString"/>s.
+        /// </summary>
+        /// <param name="segStrings">The seg strings.</param>
+        public NodingValidator(IList<ISegmentString> segStrings, Elevation.ElevationModel em)
         {
             _segStrings = segStrings;
+            _li = LineIntersectorFactory.CreateFor(em);
         }
 
         /// <summary>
