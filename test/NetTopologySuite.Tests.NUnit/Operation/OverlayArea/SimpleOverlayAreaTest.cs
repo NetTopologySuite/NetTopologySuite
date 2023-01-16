@@ -1,16 +1,10 @@
 ﻿using NetTopologySuite.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Operation.OverlayArea;
-using NetTopologySuite.Tests.NUnit.Operation.OverlayArea;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayArea
 {
-    public class OverlayAreaTest : GeometryTestCase
+    public class SimpleOverlayAreaTest : GeometryTestCase
     {
         [Test]
         public void TestDisjoint()
@@ -20,8 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayArea
                 "POLYGON ((90 10, 50 10, 50 50, 90 50, 90 10))");
         }
 
-        //TODO: fix this bug
-        [Test, Ignore("Known to fail")]
+        [Test, Ignore("fix this bug")]
         public void TestTouching()
         {
             CheckIntersectionArea(
@@ -69,37 +62,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayArea
                 "POLYGON ((400 350, 150 250, 350 200, 200 150, 350 100, 180 50, 400 50, 400 350))");
         }
 
-        [Test]
-        public void TestAOverlapBWithHole()
-        {
-            CheckIntersectionArea(
-                "POLYGON ((100 300, 305 299, 150 200, 300 150, 150 100, 300 50, 100 50, 100 300))",
-                "POLYGON ((185 206, 350 206, 350 100, 185 100, 185 206), (230 190, 310 190, 310 120, 230 120, 230 190))");
-        }
-
-        [Test]
-        public void TestAOverlapBMulti()
-        {
-            CheckIntersectionArea(
-                "POLYGON ((50 250, 250 250, 250 50, 50 50, 50 250))",
-                "MULTIPOLYGON (((100 200, 100 100, 0 100, 0 200, 100 200)), ((200 200, 300 200, 300 100, 200 100, 200 200)))");
-        }
-
-        [Test]
-        public void TestAOverlapBMultiHole()
-        {
-            CheckIntersectionArea(
-                "POLYGON ((60 200, 250 280, 111 135, 320 120, 50 40, 30 120, 60 200))",
-                "MULTIPOLYGON (((55 266, 150 150, 170 290, 55 266)), ((100 0, 70 130, 260 160, 291 45, 100 0), (150 40, 125 98, 220 110, 150 40)))");
-        }
-
         private void CheckIntersectionArea(string wktA, string wktB)
         {
-            var a = Read(wktA);
-            var b = Read(wktB);
+            var a = (Polygon)Read(wktA);
+            var b = (Polygon)Read(wktB);
 
-            var ova = new NetTopologySuite.Operation.OverlayArea.OverlayArea(a);
-            double ovIntArea = ova.IntersectionArea(b);
+            double ovIntArea = SimpleOverlayArea.IntersectionArea(a, b);
 
             double intAreaFull = a.Intersection(b).Area;
 
