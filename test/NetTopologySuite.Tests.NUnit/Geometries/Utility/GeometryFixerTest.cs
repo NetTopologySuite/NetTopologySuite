@@ -1,5 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
@@ -459,6 +460,49 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         public void TestIssue852Case2()
         {
             CheckFix("POLYGON ((50.69544005538049 4.587126197745181, 50.699035986722194 4.592752502415541, 50.699395579856365 4.592049214331746, 50.699125885005735 4.590501980547397, 50.69867639358802 4.591064611014433, 50.69795720731968 4.591064611014433, 50.69759761418551 4.590501980547397, 50.69759761418551 4.589376719613325, 50.69831680045385 4.588251458679252, 50.69723802105134 4.586563567278144, 50.69579964851466 4.586563567278144, 50.69544005538049 4.587126197745181))");
+        }
+
+        //----------------------------------------
+        [Test]
+        public void TestDimensionConsistence()
+        {
+            // test 2d case
+            var reader = new WKTReader();
+            reader.IsOldNtsCoordinateSyntaxAllowed = false;
+            var geom2d = Read(reader, "POLYGON((0 0, 1 0.1, 1 1, 0.5 1, 0.5 1.5, 1 1, 1.5 1.5, 1.5 1, 1 1, 1.5 0.5, 1 0.1, 2 0, 2 2,0 2, 0 0))");
+            Assert.That(CoordinateArrays.Dimension(geom2d.Coordinates), Is.EqualTo(2));
+            Assert.That(CoordinateArrays.Measures(geom2d.Coordinates), Is.EqualTo(0));
+
+            var fix2d = GeometryFixer.Fix(geom2d);
+            Assert.That(CoordinateArrays.Dimension(fix2d.Coordinates), Is.EqualTo(2));
+            Assert.That(CoordinateArrays.Measures(fix2d.Coordinates), Is.EqualTo(0));
+
+            // test 3d case
+            var geom3d = Read(reader, "POLYGON Z ((10 90 1, 60 90 6, 60 10 6, 10 10 1, 10 90 1), (20 80 2, 90 80 9, 90 20 9, 20 20 2, 20 80 2))");
+            Assert.That(CoordinateArrays.Dimension(geom3d.Coordinates), Is.EqualTo(3));
+            Assert.That(CoordinateArrays.Measures(geom3d.Coordinates), Is.EqualTo(0));
+
+            var fix3d = GeometryFixer.Fix(geom3d);
+            Assert.That(CoordinateArrays.Dimension(fix3d.Coordinates), Is.EqualTo(3));
+            Assert.That(CoordinateArrays.Measures(fix3d.Coordinates), Is.EqualTo(0));
+
+            // test 2dm case
+            var geom2dm = Read(reader, "POLYGON M ((10 90 1, 60 90 6, 60 10 6, 10 10 1, 10 90 1), (20 80 2, 90 80 9, 90 20 9, 20 20 2, 20 80 2))");
+            Assert.That(CoordinateArrays.Dimension(geom2dm.Coordinates), Is.EqualTo(3));
+            Assert.That(CoordinateArrays.Measures(geom2dm.Coordinates), Is.EqualTo(1));
+
+            var fix2dm = GeometryFixer.Fix(geom2dm);
+            Assert.That(CoordinateArrays.Dimension(fix2dm.Coordinates), Is.EqualTo(3));
+            Assert.That(CoordinateArrays.Measures(fix2dm.Coordinates), Is.EqualTo(1));
+
+            // test 3dm case
+            var geom3dm = Read(reader, "POLYGON ZM ((10 90 1 4, 60 90 6 4, 60 10 6 4, 10 10 1 4, 10 90 1 4), (20 80 2 4, 90 80 9 4, 90 20 9 4, 20 20 2 4, 20 80 2 4))");
+            Assert.That(CoordinateArrays.Dimension(geom3dm.Coordinates), Is.EqualTo(4));
+            Assert.That(CoordinateArrays.Measures(geom3dm.Coordinates), Is.EqualTo(1));
+
+            var fix3dm = GeometryFixer.Fix(geom3dm);
+            Assert.That(CoordinateArrays.Dimension(fix3dm.Coordinates), Is.EqualTo(4));
+            Assert.That(CoordinateArrays.Measures(fix3dm.Coordinates), Is.EqualTo(1));
         }
 
         //================================================
