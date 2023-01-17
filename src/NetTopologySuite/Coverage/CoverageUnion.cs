@@ -17,8 +17,10 @@ namespace NetTopologySuite.Coverage
         /// <returns>The union of the coverage polygons</returns>
         public static Geometry Union(Geometry[] coverage)
         {
+            // union of an empty coverage is null, since no factory is available
             if (coverage.Length == 0)
                 return null;
+
             var geomFact = coverage[0].Factory;
             var geoms = geomFact.CreateGeometryCollection(coverage);
             return Operation.OverlayNG.CoverageUnion.Union(geoms);
