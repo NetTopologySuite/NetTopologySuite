@@ -556,8 +556,22 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The topological dimensions of this geometry
         /// </returns>
+        /// <seealso cref="HasDimension(Dimension)"/>
         public abstract Dimension Dimension { get; }
 
+        /// <summary>
+        /// Tests whether an atomic geometry or any element of a collection
+        /// has the specified dimension.<br/>
+        /// In particular, this can be used with mixed-dimension <see cref="GeometryCollection"/>s
+        /// to test if they contain an element of the specified dimension.
+        /// </summary>
+        /// <param name="dim">The dimension to test</param>
+        /// <returns><c>true</c> if the geometry has or contains an element with the dimension</returns>
+        /// <seealso cref="Dimension"/>
+        public virtual bool HasDimension(Dimension dim)
+        {
+            return dim == Dimension;
+        }
         /// <summary>
         /// Returns the boundary, or an empty geometry of appropriate dimension
         /// if this <c>Geometry</c> is empty.
