@@ -50,7 +50,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 throw new ArgumentException("Edges do not form a triangle");
         }
 
-        private const double EdgeCoincidenceToleranceFactor = 1000;
+        private const double EdgeCoincidenceToleranceFactor = 1000.0;
+        private const double FrameSizeFactor = 100.0;
 
         // debugging only - preserve current subdiv statically
         // private static QuadEdgeSubdivision currentSubdiv;
@@ -85,24 +86,28 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             _locator = new LastFoundQuadEdgeLocator(this);
         }
 
+        /// <summary>
+        /// Creates a triangular frame which contains the vertices to be triangulated.
+        /// <para/>
+        /// The frame must be large enough so that its vertices are not in the circumcircle
+        /// of any constructed triangle.
+        /// This ensures that the vertices of the frame do not prevent the convex hull
+        /// of the input vertices from forming edges of the triangulation.
+        /// This is done by using a heuristic size
+        /// of the frame.  However, it may be that this is not fully robust,
+        /// for input points which contain very narry triangles.
+        /// </summary>
+        /// <param name="env">The envelope of the input points</param>
         private void CreateFrame(Envelope env)
         {
             double deltaX = env.Width;
             double deltaY = env.Height;
-            double offset;
-            if (deltaX > deltaY)
-            {
-                offset = deltaX * 10.0;
-            }
-            else
-            {
-                offset = deltaY * 10.0;
-            }
+            double frameSize = Math.Max(deltaX, deltaY) * FrameSizeFactor;
 
-            _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0, env.MaxY + offset);
-            _frameVertex[1] = new Vertex(env.MinX - offset, env.MinY - offset);
-            _frameVertex[2] = new Vertex(env.MaxX + offset, env.MinY - offset);
-
+            _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0,
+                                          env.MaxY + frameSize);
+            _frameVertex[1] = new Vertex(env.MinX - frameSize, env.MinY - frameSize);
+            _frameVertex[2] = new Vertex(env.MaxX + frameSize, env.MinY - frameSize);
             _frameEnv = new Envelope(_frameVertex[0].Coordinate, _frameVertex[1].Coordinate);
             _frameEnv.ExpandToInclude(_frameVertex[2].Coordinate);
         }

@@ -57,7 +57,16 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             RunDelaunayEdges(wkt, expected);
         }
 
-        private const double ComparisonTolerance = 1.0e-7;
+
+        [Test]
+        public void TestFrameTooSmallBug()
+        {
+            const string wkt = "MULTIPOINT ((0 194), (66 151), (203 80), (273 43), (340 0))";
+            const string expected = "GEOMETRYCOLLECTION (POLYGON ((0 194, 66 151, 203 80, 0 194)), POLYGON ((0 194, 203 80, 273 43, 0 194)), POLYGON ((273 43, 203 80, 340 0, 273 43)), POLYGON ((340 0, 203 80, 66 151, 340 0)))";
+            RunDelaunay(wkt, true, expected);
+  }
+
+    private const double ComparisonTolerance = 1.0e-7;
 
         private static void RunDelaunayEdges(string sitesWKT, string expectedWKT)
         {
