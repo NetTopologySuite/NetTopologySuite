@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixture]
-    public class ConvexHullTest
+    public class ConvexHullTest : GeometryTestCase
     {
         private readonly GeometryFactory _geometryFactory;
         private readonly WKTReader _reader;
@@ -158,5 +158,38 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 Assert.That(actual.IsEmpty);
             }
         }
+
+        [Test]
+        public void TestCollinearPoints()
+        {
+            CheckConvexHull(
+                "MULTIPOINT ((-0.2 -0.1), (0 -0.1), (0.2 -0.1), (0 -0.1), (-0.2 0.1), (0 0.1), (0.2 0.1), (0 0.1))",
+                "POLYGON ((-0.2 -0.1, -0.2 0.1, 0.2 0.1, 0.2 -0.1, -0.2 -0.1))");
+        }
+
+        [Test]
+        public void TestCollinearPointsTinyX()
+        {
+            CheckConvexHull(
+                "MULTIPOINT (-0.2 -0.1, 1.38777878e-17 -0.1, 0.2 -0.1, -1.38777878e-17 -0.1, -0.2 0.1, 1.38777878e-17 0.1, 0.2 0.1, -1.38777878e-17 0.1)",
+                "POLYGON ((-0.2 -0.1, -0.2 0.1, 0.2 0.1, 0.2 -0.1, -0.2 -0.1))");
+        }
+
+        [Test]
+        public void TestCollinearPointsTinyXAlt()
+        {
+            CheckConvexHull(
+                "MULTIPOINT (-0.2 -0.1, 1.38777878e-7 -0.1, 0.2 -0.1, -1.38777878e-7 -0.1, -0.2 0.1, 1.38777878e-7 0.1, 0.2 0.1, -1.38777878e-7 0.1)",
+                "POLYGON ((-0.2 -0.1, -0.2 0.1, 0.2 0.1, 0.2 -0.1, -0.2 -0.1))");
+        }
+
+        private void CheckConvexHull(string wkt, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var actual = geom.ConvexHull();
+            var expected = Read(wktExpected);
+            CheckEqual(expected, actual);
+        }
+
     }
 }
