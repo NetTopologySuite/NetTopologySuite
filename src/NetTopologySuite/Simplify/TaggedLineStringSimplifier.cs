@@ -157,7 +157,7 @@ namespace NetTopologySuite.Simplify
             var querySegs = _outputIndex.Query(candidateSeg);
             foreach (var querySeg in querySegs)
             {
-                bool interior = HasInteriorIntersection(querySeg, candidateSeg);
+                bool interior = HasInvalidIntersection(querySeg, candidateSeg);
                 if (interior)
                     return true;
             }
@@ -170,9 +170,10 @@ namespace NetTopologySuite.Simplify
             var querySegs = _inputIndex.Query(candidateSeg);
             foreach (TaggedLineSegment querySeg in querySegs)
             {
-                bool interior = HasInteriorIntersection(querySeg, candidateSeg);
+                bool interior = HasInvalidIntersection(querySeg, candidateSeg);
                 if (interior)
                 {
+                    //-- don't fail if the segment is part of parent line
                     bool inline = IsInLineSection(parentLine, sectionIndex, querySeg);
                     if (inline)
                         continue;
@@ -202,8 +203,11 @@ namespace NetTopologySuite.Simplify
             return false;
         }
 
-        private bool HasInteriorIntersection(LineSegment seg0, LineSegment seg1)
+        private bool HasInvalidIntersection(LineSegment seg0, LineSegment seg1)
         {
+            //-- segments must not be equal
+            if (seg0.EqualsTopologically(seg1))
+                return true;
             _li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
             return _li.IsInteriorIntersection();
         }

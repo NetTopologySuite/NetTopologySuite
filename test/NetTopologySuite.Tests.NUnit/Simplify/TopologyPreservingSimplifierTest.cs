@@ -2,11 +2,12 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NUnit.Framework;
+using System;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
     [TestFixture]
-    public class TopologyPreservingSimplifierTest
+    public class TopologyPreservingSimplifierTest : GeometryTestCase
     {
         [Test]
         public void TestEmptyPolygon()
@@ -209,6 +210,31 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     + ")"
                     , 10.0))
                 .Test();
+        }
+
+        [Test]
+        public void TestNoCollapse_mL()
+        {
+            checkTPS("MULTILINESTRING ((0 0, 100 0), (0 0, 60 1, 100 0))", 10.0,
+                     "MULTILINESTRING ((0 0, 100 0), (0 0, 60 1, 100 0))");
+        }
+
+        [Test]
+        public void TestNoCollapseMany_mL()
+        {
+            checkTPS(
+                "MULTILINESTRING ((0 100, 400 100), (0 100, 105 122, 245 116, 280 110, 330 120, 400 100), (0 100, 155 79, 270 90, 350 70, 400 100), (0 100, 110 130, 205 138, 330 130, 400 100))",
+                100.0,
+                "MULTILINESTRING ((0 100, 400 100), (0 100, 105 122, 400 100), (0 100, 350 70, 400 100), (0 100, 110 130, 205 138, 400 100))"
+            );
+        }
+
+        private void checkTPS(string wkt, double tolerance, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var actual = TopologyPreservingSimplifier.Simplify(geom, tolerance);
+            var expected = Read(wktExpected);
+            CheckEqual(expected, actual);
         }
     }
 
