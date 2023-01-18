@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
 
@@ -109,14 +111,11 @@ namespace NetTopologySuite.Operation.Polygonize
         private IList<LinearRing> _holes;
         private EdgeRing _shell;
         private bool _isHole;
+        private bool _isValid;
         private bool _isProcessed;
         private bool _isIncludedSet;
         private bool _isIncluded = false;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="factory"></param>
         public EdgeRing(GeometryFactory factory)
         {
             _factory = factory;
@@ -143,6 +142,8 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             _deList.Add(de);
         }
+
+        public IList<PolygonizeDirectedEdge> Edges => _deList;
 
         /// <summary>
         /// Tests whether this ring is a hole.
@@ -208,21 +209,26 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Tests if the <see cref="LinearRing" /> ring formed by this edge ring is topologically valid.
+        /// Gets a value indicating if the <see cref="LinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
+        /// <remarks><see cref="ComputeValid"/> must be called prior to accessing this property.</remarks>
         /// <return>true if the ring is valid.</return>
-        public bool IsValid
+        public bool IsValid => _isValid;
+
+        /// <summary>
+        /// Computes the validity of the ring.
+        /// Must be called prior to calling <see cref="IsValid"/>.
+        /// </summary>
+        public void ComputeValid()
         {
-            get
+            var ringPts = Coordinates;
+            if (ringPts.Length <= 3)
             {
-                var tempcoords = Coordinates;
-                tempcoords = null;
-                if (_ringPts.Length <= 3)
-                    return false;
-                var tempring = Ring;
-                tempring = null;
-                return _ring.IsValid;
+                _isValid = false;
+                return;
             }
+            var ring = Ring;
+            _isValid = ring.IsValid;
         }
 
         public bool IsIncludedSet => _isIncludedSet;
@@ -494,6 +500,21 @@ namespace NetTopologySuite.Operation.Polygonize
 
             }
         }
+
+        /// <summary>
+        /// Compares EdgeRings based on the area of their envelopes.
+        /// Smaller envelopes sort before bigger ones.
+        /// This effectively sorts EdgeRings in order of containment.
+        /// </summary>
+        /// <author>mbdavis</author>
+        public class EnvelopeAreaComparator : IComparer<EdgeRing>
+        {
+            public int Compare(EdgeRing r0, EdgeRing r1)
+            {
+                return r0.Ring.Envelope.Area.CompareTo(r1.Ring.Envelope.Area);
+            }
+        }
+
     }
 }
 
