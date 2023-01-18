@@ -122,6 +122,12 @@ public class NodedSegmentString : INodableSegmentString
         public bool IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
 
         /// <summary>
+        /// Gets a value indicating if any nodes have been added.
+        /// </summary>
+        public bool HasNodes => _nodeList.Count > 0;
+        
+
+        /// <summary>
         ///  Gets the octant of the segment starting at vertex <c>index</c>.
         /// </summary>
         /// <param name="index">
@@ -178,21 +184,7 @@ public class NodedSegmentString : INodableSegmentString
         /// <param name="segmentIndex"></param>
         public void AddIntersection(Coordinate intPt, int segmentIndex)
         {
-            int normalizedSegmentIndex = segmentIndex;
-            // normalize the intersection point location
-            int nextSegIndex = normalizedSegmentIndex + 1;
-            if(nextSegIndex < _pts.Length)
-            {
-                var nextPt = _pts[nextSegIndex];
-
-                // Normalize segment index if intPt falls on vertex
-                // The check for point equality is 2D only - Z values are ignored
-                if (intPt.Equals2D(nextPt))
-                    normalizedSegmentIndex = nextSegIndex;
-            }
-
-            // Add the intersection point to edge intersection list.
-            /*var ei = */_nodeList.Add(intPt, normalizedSegmentIndex);
+            AddIntersectionNode(intPt, segmentIndex);
         }
 
         public LineSegment this[int index]
@@ -210,6 +202,41 @@ public class NodedSegmentString : INodableSegmentString
             set => throw new NotSupportedException(
                 "Setting line segments in a ISegmentString not supported.");
         }
+
+        /// <summary>
+        /// Adds an intersection node for a given point and segment to this segment string.
+        /// If an intersection already exists for this exact location, the existing
+        /// node will be returned.
+        /// </summary>
+        /// <param name="intPt">The location of the intersection</param>
+        /// <param name="segmentIndex">The index of the segment containing the intersection</param>
+        /// <returns>the intersection node for the point</returns>
+        public SegmentNode AddIntersectionNode(Coordinate intPt, int segmentIndex)
+        {
+            int normalizedSegmentIndex = segmentIndex;
+            //Debug.println("edge intpt: " + intPt + " dist: " + dist);
+            // normalize the intersection point location
+            int nextSegIndex = normalizedSegmentIndex + 1;
+            if (nextSegIndex < _pts.Length)
+            {
+                var nextPt = _pts[nextSegIndex];
+                //Debug.println("next pt: " + nextPt);
+
+                // Normalize segment index if intPt falls on vertex
+                // The check for point equality is 2D only - Z values are ignored
+                if (intPt.Equals2D(nextPt))
+                {
+                    //Debug.println("normalized distance");
+                    normalizedSegmentIndex = nextSegIndex;
+                }
+            }
+            /*
+              Add the intersection point to edge intersection list.
+             */
+            var ei = _nodeList.Add(intPt, normalizedSegmentIndex);
+            return ei;
+        }
+
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
