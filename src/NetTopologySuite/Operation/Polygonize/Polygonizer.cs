@@ -73,7 +73,7 @@ namespace NetTopologySuite.Operation.Polygonize
         private ICollection<LineString> _dangles = new List<LineString>();
         private ICollection<LineString> _cutEdges = new List<LineString>();
         private IList<Geometry> _invalidRingLines = new List<Geometry>();
-        private List<EdgeRing> _holeList;
+        private IList<EdgeRing> _holeList;
         private List<EdgeRing> _shellList;
         private ICollection<Geometry> _polyList;
 

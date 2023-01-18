@@ -35,9 +35,8 @@ namespace NetTopologySuite.Operation.Polygonize
         public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> erList)
         {
             EdgeRing minContainingRing = null;
-            for (var it = erList.GetEnumerator(); it.MoveNext();)
+            foreach (var edgeRing in erList)
             {
-                var edgeRing = it.Current;
                 if (edgeRing.Contains(testEr))
                 {
                     if (minContainingRing == null
@@ -55,8 +54,12 @@ namespace NetTopologySuite.Operation.Polygonize
         /// This assumes that all dangling directed edges have been removed
         /// from the graph, so that there is always a next dirEdge.
         /// </summary>
+        /// <remarks>This function has a different return type than its counterpart
+        /// in JTS. Use <see cref="FindPolyDirEdgesInRing(PolygonizeDirectedEdge)"/>
+        /// instead.</remarks>
         /// <param name="startDE">The DirectedEdge to start traversing at</param>
         /// <returns>A list of DirectedEdges that form a ring</returns>
+        [Obsolete]
         public static List<DirectedEdge> FindDirEdgesInRing(PolygonizeDirectedEdge startDE)
         {
             var de = startDE;
@@ -71,9 +74,31 @@ namespace NetTopologySuite.Operation.Polygonize
             return edges;
         }
 
+        /// <summary>
+        /// Traverses a ring of DirectedEdges, accumulating them into a list.
+        /// This assumes that all dangling directed edges have been removed
+        /// from the graph, so that there is always a next dirEdge.
+        /// </summary>
+        /// <remarks>This function is called <c>FindDirEdgesInRing</c> in JTS.</remarks>
+        /// <param name="startDE">The DirectedEdge to start traversing at</param>
+        /// <returns>A list of DirectedEdges that form a ring</returns>
+        public static IList<PolygonizeDirectedEdge> FindPolyDirEdgesInRing(PolygonizeDirectedEdge startDE)
+        {
+            var de = startDE;
+            var edges = new List<PolygonizeDirectedEdge>();
+            do
+            {
+                edges.Add(de);
+                de = de.Next;
+                Assert.IsTrue(de != null, "found null DE in ring");
+                Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+            } while (de != startDE);
+            return edges;
+        }
+
         private readonly GeometryFactory _factory;
 
-        private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
+        private readonly List<PolygonizeDirectedEdge> _deList = new List<PolygonizeDirectedEdge>();
         //private DirectedEdge lowestEdge = null;
 
         // cache the following data for efficiency
@@ -81,7 +106,7 @@ namespace NetTopologySuite.Operation.Polygonize
         private IndexedPointInAreaLocator locator;
 
         private Coordinate[] _ringPts;
-        private List<LinearRing> _holes;
+        private IList<LinearRing> _holes;
         private EdgeRing _shell;
         private bool _isHole;
         private bool _isProcessed;
@@ -114,7 +139,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
         /// <param name="de">The DirectedEdge to add.</param>
-        private void Add(DirectedEdge de)
+        private void Add(PolygonizeDirectedEdge de)
         {
             _deList.Add(de);
         }
