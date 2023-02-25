@@ -28,7 +28,7 @@ jobs:
       shell: bash # defaults disagree on how to quote the filter string
 
     - name: Pack
-      run: dotnet pack -c Release --no-build -o artifacts -p:NoWarn=NU5105
+      run: dotnet pack -c Release --no-build -o artifacts -p:NoWarn=NU5105 NetTopologySuite/NetTopologySuite.csproj
 
     - name: Upload
       uses: actions/upload-artifact@v2
