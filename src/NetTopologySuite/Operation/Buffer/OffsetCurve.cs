@@ -3,6 +3,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Chain;
 using System;
+using System.Collections.Generic;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -46,7 +47,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Computes the offset curve of a geometry at a given distance.
         /// </summary>
         /// <param name="geom">A geometry</param>
-        /// <param name="distance">the offset distance (positive = left, negative = right)</param>
+        /// <param name="distance">the offset distance (positive for left, negative for right)</param>
         /// <returns>The offset curve</returns>
         public static Geometry GetCurve(Geometry geom, double distance)
         {
@@ -59,7 +60,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// and for a specified quadrant segments, join style and mitre limit.
         /// </summary>
         /// <param name="geom">A geometry</param>
-        /// <param name="distance">The offset distance (positive = left, negative = right)</param>
+        /// <param name="distance">The offset distance (positive for left, negative for right)</param>
         /// <param name="quadSegs">The quadrant segments</param>
         /// <param name="joinStyle">The join style</param>
         /// <param name="mitreLimit">The mitre limit</param>
@@ -87,22 +88,20 @@ namespace NetTopologySuite.Operation.Buffer
         /// and join style (<see cref="BufferParameters.DefaultJoinStyle"/>).
         /// </summary>
         /// <param name="geom">The geometry</param>
-        /// <param name="distance">A distance value</param>
+        /// <param name="distance">The offset distance (positive for left, negative for right)</param>
         public OffsetCurve(Geometry geom, double distance)
             : this(geom, distance, null)
         {
         }
 
-
-        /**
-         * Creates a new instance for computing an offset curve for a geometry at a given distance.
-         * allowing the quadrant segments and join style and mitre limit to be set
-         * via {@link BufferParameters}.
-         * 
-         * @param geom
-         * @param distance
-         * @param bufParams
-         */
+        /// <summary>
+        /// Creates a new instance for computing an offset curve for a geometry at a given distance.
+        /// allowing the quadrant segments and join style and mitre limit to be set
+        /// via <see cref="BufferParameters"/>.
+        /// </summary>
+        /// <param name="geom">The geometry</param>
+        /// <param name="distance">The offset distance (positive for left, negative for right)</param>
+        /// <param name="bufParams">The buffer paramters to use</param>
         public OffsetCurve(Geometry geom, double distance, BufferParameters bufParams)
         {
             _inputGeom = geom;
@@ -159,35 +158,34 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Gets the raw offset line.
-        /// The quadrant segments and join style and mitre limit to be set
+        /// Gets the raw offset curve for a line at a given distance.
+        /// The quadrant segments, join style and mitre limit can be specified
         /// via <see cref="BufferParameters"/>.
         /// <para/>
         /// The raw offset line may contain loops and other artifacts which are
         /// not present in the true offset curve.
-        /// The raw offset line is matched to the buffer ring (which is clean)
-        /// to extract the offset curve.
         /// </summary>
-        /// <param name="geom">The <c>LineString</c> to offset</param>
-        /// <param name="distance">The offset distance</param>
+        /// <param name="line">The <c>LineString</c> to offset</param>
+        /// <param name="distance">The offset distance (positive for left, negative for right)</param>
         /// <param name="bufParams">The buffer parameters to use</param>
-        /// <returns>The raw offset line</returns>
-        public static Coordinate[] RawOffset(LineString geom, double distance, BufferParameters bufParams)
+        /// <returns>The raw offset curve points</returns>
+        public static Coordinate[] RawOffset(LineString line, double distance, BufferParameters bufParams)
         {
-            var ocb = new OffsetCurveBuilder(geom.Factory.PrecisionModel, bufParams);
-            var pts = ocb.GetOffsetCurve(geom.Coordinates, distance);
+            var ocb = new OffsetCurveBuilder(line.Factory.PrecisionModel, bufParams);
+            var pts = ocb.GetOffsetCurve(line.Coordinates, distance);
             return pts;
         }
 
         /// <summary>
-        /// Gets the raw offset line, with default buffer parameters.
+        /// Gets the raw offset curve for a line at a given distance,
+        /// with default buffer parameters.
         /// </summary>
-        /// <param name="geom">The <c>LineString</c> to offset</param>
-        /// <param name="distance">The offset distance</param>
+        /// <param name="line">The <c>LineString</c> to offset</param>
+        /// <param name="distance">The offset distance (positive for left, negative for right)</param>
         /// <returns>The raw offset line</returns>
-        public static Coordinate[] RawOffset(LineString geom, double distance)
+        public static Coordinate[] RawOffset(LineString line, double distance)
         {
-            return RawOffset(geom, distance, new BufferParameters());
+            return RawOffset(line, distance, new BufferParameters());
         }
 
         private LineString ComputeCurve(LineString lineGeom, double distance)
