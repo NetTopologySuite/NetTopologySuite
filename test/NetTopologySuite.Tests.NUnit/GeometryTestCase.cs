@@ -16,7 +16,8 @@ namespace NetTopologySuite.Tests.NUnit
         private readonly NtsGeometryServices _geomServices;
         private readonly GeometryFactory _geomFactory;
         
-        private const string CHECK_EQUAL_FAIL = "FAIL\n{0}Expected = {1}\nActual   = {2}\n";
+        private const string CHECK_EQUAL_FAIL = "FAIL:\nExpected = {1}\nActual   = {2}\n";
+        private const string CHECK_EQUAL_FAIL_MSG = "FAIL: {0}\nExpected = {1}\nActual   = {2}\n";
 
         private readonly WKTWriter _writerZ = new WKTWriter(3);
 
@@ -65,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit
             if (!equal)
             {
                 string description = string.IsNullOrEmpty(msg) ? string.Empty : $"{msg}\n";
-                TestContext.WriteLine(string.Format(CHECK_EQUAL_FAIL, description, expectedNorm, actualNorm));
+                TestContext.WriteLine(string.Format(CHECK_EQUAL_FAIL_MSG, description, expectedNorm, actualNorm));
             }
             Assert.That(equal);
         }
