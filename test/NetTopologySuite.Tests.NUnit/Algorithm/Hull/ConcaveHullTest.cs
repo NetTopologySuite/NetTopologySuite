@@ -1,5 +1,6 @@
 ﻿using System;
 using NetTopologySuite.Algorithm.Hull;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Hull
@@ -105,17 +106,50 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Hull
         [Test]
         public void TestLengthHolesCircle()
         {
-            CheckHullWithHolesByLength("MULTIPOINT ((90 20), (80 10), (45 5), (10 20), (20 10), (21 30), (40 20), (11 60), (20 70), (20 90), (40 80), (70 80), (80 60), (90 70), (80 90), (56 95), (95 45), (80 40), (70 20), (15 45), (5 40), (40 96), (60 15))",
-               40, "POLYGON ((20 90, 40 96, 56 95, 80 90, 90 70, 95 45, 90 20, 80 10, 45 5, 20 10, 10 20, 5 40, 11 60, 20 90), (20 70, 15 45, 40 20, 70 20, 80 40, 80 60, 70 80, 40 80, 20 70))");
+            CheckHullWithHolesByLength(WKT_CIRCLE, 40,
+               "POLYGON ((20 90, 40 96, 56 95, 80 90, 90 70, 95 45, 90 20, 80 10, 45 5, 20 10, 10 20, 5 40, 11 60, 20 90), (20 70, 15 45, 40 20, 70 20, 80 40, 80 60, 70 80, 40 80, 20 70))");
         }
 
         [Test]
         public void TestLengthHolesCircle0()
         {
-            CheckHullWithHolesByLength("MULTIPOINT ((90 20), (80 10), (45 5), (10 20), (20 10), (21 30), (40 20), (11 60), (20 70), (20 90), (40 80), (70 80), (80 60), (90 70), (80 90), (56 95), (95 45), (80 40), (70 20), (15 45), (5 40), (40 96), (60 15))",
-                0, "POLYGON ((20 90, 40 96, 56 95, 70 80, 80 90, 90 70, 80 60, 95 45, 80 40, 70 20, 90 20, 80 10, 60 15, 45 5, 40 20, 40 80, 15 45, 21 30, 20 10, 10 20, 5 40, 11 60, 20 70, 20 90))");
+            CheckHullWithHolesByLength(WKT_CIRCLE,  0,
+                "POLYGON ((20 90, 40 96, 56 95, 70 80, 80 90, 90 70, 80 60, 95 45, 80 40, 70 20, 90 20, 80 10, 60 15, 45 5, 40 20, 40 80, 15 45, 21 30, 20 10, 10 20, 5 40, 11 60, 20 70, 20 90))");
         }
 
+
+        //------------------------------------------------
+
+        private const string WKT_SIMPLE = "MULTIPOINT ((14 18), (18 14), (15 6), (15 2), (5 5), (3 13), (8 14), (8 10), (16 8))";
+        private const string WKT_CIRCLE = "MULTIPOINT ((90 20), (80 10), (45 5), (10 20), (20 10), (21 30), (40 20), (11 60), (20 70), (20 90), (40 80), (70 80), (80 60), (90 70), (80 90), (56 95), (95 45), (80 40), (70 20), (15 45), (5 40), (40 96), (60 15))";
+
+        [Test]
+        public void TestLengthSimple()
+        {
+            CheckHullByLength(WKT_SIMPLE, 8,
+                "POLYGON ((8 10, 5 5, 3 13, 8 14, 14 18, 18 14, 16 8, 15 2, 15 6, 8 10))");
+        }
+
+        [Test]
+        public void TestAlphaSimple()
+        {
+            CheckAlphaShape(WKT_SIMPLE, 4,
+                "POLYGON ((5 5, 3 13, 8 14, 14 18, 18 14, 16 8, 8 10, 15 6, 15 2, 5 5))");
+        }
+
+        [Test]
+        public void TestAlphaCircle()
+        {
+            CheckAlphaShape(WKT_CIRCLE, 20,
+                "POLYGON ((20 70, 20 90, 40 96, 56 95, 80 90, 90 70, 95 45, 90 20, 80 10, 60 15, 45 5, 20 10, 10 20, 5 40, 11 60, 20 70))");
+        }
+
+        [Test]
+        public void TestAlphaWithHolesCircle()
+        {
+            CheckAlphaShape(WKT_CIRCLE, 20, true,
+                "POLYGON ((20 90, 40 96, 56 95, 80 90, 90 70, 95 45, 90 20, 80 10, 60 15, 45 5, 20 10, 10 20, 5 40, 11 60, 20 70, 20 90), (40 80, 15 45, 21 30, 40 20, 70 20, 80 40, 80 60, 70 80, 40 80))");
+        }
         //==========================================================================
 
         private void CheckHullByLengthRatio(string wkt, double threshold, string wktExpected)
@@ -149,6 +183,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Hull
             var expected = Read(wktExpected);
             CheckEqual(expected, actual);
         }
+
+        private void CheckAlphaShape(string wkt, double alpha, string wktExpected)
+        {
+            CheckAlphaShape(wkt, alpha, false, wktExpected);
+        }
+
+        private void CheckAlphaShape(string wkt, double alpha, bool isHolesAllowed, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var actual = ConcaveHull.AlphaShape(geom, alpha, isHolesAllowed);
+            var expected = Read(wktExpected);
+            CheckEqual(expected, actual);
+        }
+
     }
 }
 
