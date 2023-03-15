@@ -2,6 +2,7 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.Triangulate;
 using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
@@ -19,13 +20,16 @@ namespace NetTopologySuite.Operation.Buffer
     internal class OffsetSegmentGenerator
     {
         /// <summary>
-        /// Factor which controls how close offset segments can be to
-        /// skip adding a filler or mitre.
+        /// Factor controlling how close offset segments can be to
+        /// skip adding a fillet or mitre.
+        /// This eliminates very short fillet segments,
+        /// reduces the number of offset curve vertices.
+        /// and improves the robustness of mitre construction.
         /// </summary>
-        private const double OffsetSegmentSeparationFactor = 1.0E-3;
+        private const double OffsetSegmentSeparationFactor = 0.05;
 
         /// <summary>
-        /// Factor which controls how close curve vertices on inside turns can be to be snapped
+        /// Factor controlling how close curve vertices on inside turns can be to be snapped
         /// </summary>
         private const double InsideTurnVertexSnapDistanceFactor = 1.0E-3;
 
@@ -121,14 +125,13 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void Init(double distance)
         {
-            _distance = distance;
-            _maxCurveSegmentError = distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
-            _segList = new OffsetSegmentString();
-            _segList.PrecisionModel = _precisionModel;
-            /*
-             * Choose the min vertex separation as a small fraction of the offset distance.
-             */
-            _segList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
+            _distance = Math.Abs(distance);
+            _maxCurveSegmentError = _distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
+            _segList = new OffsetSegmentString {
+                PrecisionModel = _precisionModel,
+                // Choose the min vertex separation as a small fraction of the offset distance.
+                MinimumVertexDistance = _distance * CurveVertexSnapDistanceFactor
+            };
         }
 
         [Obsolete("Use InitSideSegments(Coordinate, Coordinate, Geometries.Position)")]
@@ -252,14 +255,20 @@ namespace NetTopologySuite.Operation.Buffer
         {
             /*
              * Heuristic: If offset endpoints are very close together,
-             * just use one of them as the corner vertex.
-             * This avoids problems with computing mitre corners in the case
-             * where the two segments are almost parallel
-             * (which is hard to compute a robust intersection for).
+             * (which happens for nearly-parallel segments),
+             * use an endpoint as the single offset corner vertex.
+             * This eliminates very short single-segment joins
+             * and reduces the number of offset curve vertices.
+             * This also avoids robustness problems with computing mitre corners 
+             * for nearly-parallel segments.
              */
             if (_offset0.P1.Distance(_offset1.P0) < _distance * OffsetSegmentSeparationFactor)
             {
-                _segList.AddPt(_offset0.P1);
+                //-- use endpoint of longest segment, to reduce change in area
+                double segLen0 = _s1.Distance(_s2);
+                double segLen1 = _s1.Distance(_s2);
+                var offsetPt = (segLen0 > segLen1) ? _offset0.P1 : _offset1.P0;
+                _segList.AddPt(offsetPt);
                 return;
             }
 
@@ -274,8 +283,10 @@ namespace NetTopologySuite.Operation.Buffer
             else
             {
                 // add a circular fillet connecting the endpoints of the offset segments
-                if (addStartPoint) _segList.AddPt(_offset0.P1);
-                // TESTING - comment out to produce beveled joins
+                if (addStartPoint)
+                {
+                    _segList.AddPt(_offset0.P1);
+                }
                 AddCornerFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
                 _segList.AddPt(_offset1.P0);
             }
