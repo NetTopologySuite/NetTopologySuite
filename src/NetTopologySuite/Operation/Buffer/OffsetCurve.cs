@@ -2,35 +2,47 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Chain;
+using NetTopologySuite.Operation.Distance;
+using NetTopologySuite.Simplify;
+using NetTopologySuite.Utilities;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using static System.Collections.Specialized.BitVector32;
 
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Computes an offset curve from a geometry.
-    /// The offset curve is a linear geometry which is offset a specified distance
+    /// An offset curve is a linear geometry which is offset a given distance
     /// from the input.
     /// If the offset distance is positive the curve lies on the left side of the input;
     /// if it is negative the curve is on the right side.
+    /// The curve(s) have the same direction as the input line(s).
+    /// <para/>
+    /// The offset curve is based on the boundary of the buffer for the geometry
+    /// at the offset distance(see <see cref="BufferOp"/>.
+    /// The normal mode of operation is to return the sections of the buffer boundarywhich lie on the raw offset curve
+    /// (obtained via <see cref="RawOffset(LineString, double)"/>.
+    /// The offset curve will contain multiple sections
+    /// if the input self-intersects or has close approaches.The computed sections are ordered along the raw offset curve.
+    /// Sections are disjoint.They never self-intersect, but may be rings.
     /// <list type="bullet">
-    /// <item><description>For a <see cref="LineString"/> the offset curve is a line.</description></item>
-    /// <item><description>For a <see cref="Point"/> the offset curve is an empty <see cref="LineString"/>.</description></item>
+    /// <item><description>For a <see cref="LineString"/> the offset curve is a linear geometry
+    /// (<see cref="LineString"/> or <see cref="MultiLineString"/>).</description></item>
+    /// <item><description>For a <see cref="Point"/> or <see cref="MultiPoint"/> the offset curve is an empty <see cref="LineString"/>.</description></item>
     /// <item><description>For a <see cref="Polygon"/> the offset curve is the boundary of the polygon buffer (which
     /// may be a <see cref="MultiLineString"/>).</description></item>
-    /// <item><description>For a collection the output is a <see cref="MultiLineString"/> containing the element offset curves.</description></item>
+    /// <item><description>For a collection the output is a <see cref="MultiLineString"/> containing the offset curves of the elements.</description></item>
     /// </list>
     /// <para/>
-    /// The offset curve is computed as a single contiguous section of the geometry buffer boundary.
-    /// In some geometric situations this definition is ill-defined.
-    /// This algorithm provides a "best-effort" interpretation.
-    /// In particular:
-    /// <list type="bullet">
-    /// <item><description>For self-intersecting lines, the buffer boundary includes
-    /// offset lines for both left and right sides of the input line.
-    /// Only a single contiguous portion on the specified side is returned.</description></item>
-    /// <item><description>If the offset corresponds to buffer holes, only the largest hole is used.</description></item>
-    /// </list>
+    /// In "joined" mode (see {@link #setJoined(boolean)}
+    /// the sections computed for each input line are joined into a single offset curve line.
+    /// The joined curve may self-intersect.
+    /// At larger offset distances the curve may contain "flat-line" artifacts
+    /// in places where the input self-intersects.
+    /// <para/>
     /// Offset curves support setting the number of quadrant segments,
     /// the join style, and the mitre limit(if applicable) via
     /// the <see cref="BufferParameters"/>.
@@ -39,9 +51,9 @@ namespace NetTopologySuite.Operation.Buffer
     public class OffsetCurve
     {
         /// <summary>
-        /// The nearness tolerance between the raw offset linework and the buffer curve.
+        /// The nearness tolerance for matching the raw offset linework and the buffer curve.
         /// </summary>
-        private const int NearnessFactor = 10000;
+        private const int MatchDistanceFactor = 10000;
 
         /// <summary>
         /// Computes the offset curve of a geometry at a given distance.
@@ -57,7 +69,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Computes the offset curve of a geometry at a given distance,
-        /// and for a specified quadrant segments, join style and mitre limit.
+        /// with specified quadrant segments, join style and mitre limit.
         /// </summary>
         /// <param name="geom">A geometry</param>
         /// <param name="distance">The offset distance (positive for left, negative for right)</param>
@@ -76,14 +88,39 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
 
+        /**
+         * Computes the offset curve of a geometry at a given distance,
+         * joining curve sections into a single line for each input line.
+         * 
+         * @param geom a geometry
+         * @param distance the offset distance (positive for left, negative for right)
+         * @return the joined offset curve
+         */
+        /// <summary>
+        /// Computes the offset curve of a geometry at a given distance,
+        /// joining curve sections into a single line for each input line.
+        /// </summary>
+        /// <param name="geom">A geometry</param>
+        /// <param name="distance">the offset distance (positive for left, negative for right)</param>
+        /// <returns>The joined offset curve</returns>
+        public static Geometry GetCurveJoined(Geometry geom, double distance)
+        {
+            var oc = new OffsetCurve(geom, distance) {
+                Joined = true
+            };
+            return oc.GetCurve();
+        }
+
         private readonly Geometry _inputGeom;
         private readonly double _distance;
+        private bool _isJoined;
+
         private readonly BufferParameters _bufferParams;
         private readonly double _matchDistance;
         private readonly GeometryFactory _geomFactory;
 
         /// <summary>
-        /// Creates a new instance for computing an offset curve for a geometryat a given distance.
+        /// Creates a new instance for computing an offset curve for a geometry at a given distance.
         /// with default quadrant segments(<see cref="BufferParameters.DefaultQuadrantSegments"/>
         /// and join style (<see cref="BufferParameters.DefaultJoinStyle"/>).
         /// </summary>
@@ -96,7 +133,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Creates a new instance for computing an offset curve for a geometry at a given distance.
-        /// allowing the quadrant segments and join style and mitre limit to be set
+        /// setting the quadrant segments, join style and mitre limit
         /// via <see cref="BufferParameters"/>.
         /// </summary>
         /// <param name="geom">The geometry</param>
@@ -107,11 +144,23 @@ namespace NetTopologySuite.Operation.Buffer
             _inputGeom = geom;
             _distance = distance;
 
-            _matchDistance = Math.Abs(distance) / NearnessFactor;
+            _matchDistance = Math.Abs(distance) / MatchDistanceFactor;
             _geomFactory = _inputGeom.Factory;
 
             //-- make new buffer params since the end cap style must be the default
             _bufferParams = bufParams?.Copy() ?? new BufferParameters();
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating if a single curve line for
+        /// each input linear component is computed
+        /// by joining curve sections in order along the raw offset curve.
+        /// The default mode is to compute separate curve sections.
+        /// </summary>
+        public bool Joined
+        {
+            get => _isJoined;
+            set => _isJoined = value;
         }
 
         /// <summary>
@@ -169,11 +218,30 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="distance">The offset distance (positive for left, negative for right)</param>
         /// <param name="bufParams">The buffer parameters to use</param>
         /// <returns>The raw offset curve points</returns>
+        [Obsolete("Will be removed in a future version. Use RawOffsetCurve")]
         public static Coordinate[] RawOffset(LineString line, double distance, BufferParameters bufParams)
+            => RawOffsetCurve(line, distance, bufParams);
+
+        /// <summary>
+        /// Gets the raw offset curve for a line at a given distance.
+        /// The quadrant segments, join style and mitre limit can be specified
+        /// via <see cref="BufferParameters"/>.
+        /// <para/>
+        /// The raw offset line may contain loops and other artifacts which are
+        /// not present in the true offset curve.
+        /// </summary>
+        /// <param name="line">The <c>LineString</c> to offset</param>
+        /// <param name="distance">The offset distance (positive for left, negative for right)</param>
+        /// <param name="bufParams">The buffer parameters to use</param>
+        /// <returns>The raw offset curve points</returns>
+        public static Coordinate[] RawOffsetCurve(LineString line, double distance, BufferParameters bufParams)
         {
+            var pts = line.Coordinates;
+            var cleanPts = CoordinateArrays.RemoveRepeatedOrInvalidPoints(pts);
+
             var ocb = new OffsetCurveBuilder(line.Factory.PrecisionModel, bufParams);
-            var pts = ocb.GetOffsetCurve(line.Coordinates, distance);
-            return pts;
+            var rawPts = ocb.GetOffsetCurve(cleanPts, distance);
+            return rawPts;
         }
 
         /// <summary>
@@ -185,26 +253,46 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The raw offset line</returns>
         public static Coordinate[] RawOffset(LineString line, double distance)
         {
-            return RawOffset(line, distance, new BufferParameters());
+            return RawOffsetCurve(line, distance, new BufferParameters());
         }
 
-        private LineString ComputeCurve(LineString lineGeom, double distance)
+        private Geometry ComputeCurve(LineString lineGeom, double distance)
         {
-            //-- first handle special/simple cases
+            //-- first handle simple cases
+            //-- empty or single-point lines
             if (lineGeom.NumPoints < 2 || lineGeom.Length == 0.0)
             {
                 return _geomFactory.CreateLineString();
             }
+            //-- two-point-line
             if (lineGeom.NumPoints == 2)
             {
                 return OffsetSegment(lineGeom.Coordinates, distance);
             }
 
-            var rawOffset = RawOffset(lineGeom, distance, _bufferParams);
-            if (rawOffset.Length == 0)
+            var sections = ComputeSections(lineGeom, distance);
+
+            Geometry offsetCurve;
+            if (_isJoined)
             {
-                return _geomFactory.CreateLineString();
+                offsetCurve = OffsetCurveSection.ToLine(sections, _geomFactory);
             }
+            else
+            {
+                offsetCurve = OffsetCurveSection.ToGeometry(sections, _geomFactory);
+            }
+            return offsetCurve;
+        }
+
+        private List<OffsetCurveSection> ComputeSections(LineString lineGeom, double distance)
+        {
+            var rawCurve = RawOffsetCurve(lineGeom, distance, _bufferParams);
+            var sections = new List<OffsetCurveSection>();
+            if (rawCurve.Length == 0)
+            {
+                return sections;
+            }
+
             /*
              * Note: If the raw offset curve has no
              * narrow concave angles or self-intersections it could be returned as is.
@@ -215,17 +303,17 @@ namespace NetTopologySuite.Operation.Buffer
 
             var bufferPoly = GetBufferOriented(lineGeom, distance, _bufferParams);
 
-            //-- first try matching shell to raw curve
+            //-- first extract offset curve sections from shell
             var shell = bufferPoly.ExteriorRing.Coordinates;
-            var offsetCurve = ComputeCurve(shell, rawOffset);
-            if (!offsetCurve.IsEmpty
-                || bufferPoly.NumInteriorRings == 0)
-                return offsetCurve;
+            ComputeCurveSections(shell, rawCurve, sections);
 
-            //-- if shell didn't work, try matching to largest hole 
-            var holePts = ExtractLongestHole(bufferPoly).Coordinates;
-            offsetCurve = ComputeCurve(holePts, rawOffset);
-            return offsetCurve;
+            //-- extract offset curve sections from holes
+            for (int i = 0; i < bufferPoly.NumInteriorRings; i++)
+            {
+                var hole = bufferPoly.GetInteriorRingN(i).Coordinates;
+                ComputeCurveSections(hole, rawCurve, sections);
+            }
+            return sections;
         }
 
         private LineString OffsetSegment(Coordinate[] pts, double distance)
@@ -248,7 +336,8 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Extracts the largest polygon by area from a geometry.
-        /// Used here to avoid issues with non-robust buffer results which have spurious extra polygons.
+        /// Used here to avoid issues with non-robust buffer results
+        /// which have spurious extra polygons.
         /// </summary>
         /// <param name="geom">A geometry</param>
         /// <returns>The polygon element of largest area</returns>
@@ -272,56 +361,66 @@ namespace NetTopologySuite.Operation.Buffer
             return maxPoly;
         }
 
-        private static LinearRing ExtractLongestHole(Polygon poly)
+
+        private const double NOT_IN_CURVE = -1;
+
+        private void ComputeCurveSections(Coordinate[] bufferRingPts,
+            Coordinate[] rawCurve, List<OffsetCurveSection> sections)
         {
-            LinearRing largestHole = null;
-            double maxLen = -1;
-            for (int i = 0; i < poly.NumInteriorRings; i++)
+            double[] rawPosition = new double[bufferRingPts.Length - 1];
+            for (int i = 0; i < rawPosition.Length; i++)
             {
-                var hole = (LinearRing)poly.GetInteriorRingN(i);
-                double len = hole.Length;
-                if (len > maxLen)
+                rawPosition[i] = NOT_IN_CURVE;
+            }
+            var bufferSegIndex = new SegmentMCIndex(bufferRingPts);
+            int bufferFirstIndex = -1;
+            double minRawPosition = -1;
+            for (int i = 0; i < rawCurve.Length - 1; i++)
+            {
+                int minBufferIndexForSeg = MatchSegments(
+                                rawCurve[i], rawCurve[i + 1], i, bufferSegIndex, bufferRingPts, rawPosition);
+                if (minBufferIndexForSeg >= 0)
                 {
-                    largestHole = hole;
-                    maxLen = len;
+                    double pos = rawPosition[minBufferIndexForSeg];
+                    if (bufferFirstIndex < 0 || pos < minRawPosition)
+                    {
+                        minRawPosition = pos;
+                        bufferFirstIndex = minBufferIndexForSeg;
+                    }
                 }
             }
-            return largestHole;
+            //-- no matching sections found in this buffer ring
+            if (bufferFirstIndex < 0)
+                return;
+            ExtractSections(bufferRingPts, rawPosition, bufferFirstIndex, sections);
         }
 
-        private LineString ComputeCurve(Coordinate[] bufferPts, Coordinate[] rawOffset)
+        /// <summary>
+        /// Matches the segments in a buffer ring to the raw offset curve
+        /// to obtain their match positions(if any).
+        /// </summary>
+        /// <param name="raw0">A raw curve segment start point</param>
+        /// <param name="raw1">A raw curve segment end point</param>
+        /// <param name="rawCurveIndex">The index of the raw curve segment</param>
+        /// <param name="bufferSegIndex">The spatial index of the buffer ring segments</param>
+        /// <param name="bufferPts">The points of the buffer ring</param>
+        /// <param name="rawCurvePos">The raw curve positions of the buffer ring segments</param>
+        /// <returns>The index of the minimum matched buffer segment</returns>
+        private int MatchSegments(Coordinate raw0, Coordinate raw1, int rawCurveIndex,
+            SegmentMCIndex bufferSegIndex, Coordinate[] bufferPts,
+            double[] rawCurvePos)
         {
-            bool[] isInCurve = new bool[bufferPts.Length - 1];
-            var segIndex = new SegmentMCIndex(bufferPts);
-            int curveStart = -1;
-            for (int i = 0; i < rawOffset.Length - 1; i++)
-            {
-                int index = MarkMatchingSegments(
-                                rawOffset[i], rawOffset[i + 1], segIndex, bufferPts, isInCurve);
-                if (curveStart < 0)
-                {
-                    curveStart = index;
-                }
-            }
-            var curvePts = ExtractSection(bufferPts, curveStart, isInCurve);
-            return _geomFactory.CreateLineString(curvePts);
-        }
-
-        private int MarkMatchingSegments(Coordinate p0, Coordinate p1,
-            SegmentMCIndex segIndex, Coordinate[] bufferPts,
-            bool[] isInCurve)
-        {
-            var matchEnv = new Envelope(p0, p1);
+            var matchEnv = new Envelope(raw0, raw1);
             matchEnv.ExpandBy(_matchDistance);
-            var action = new MatchCurveSegmentAction(p0, p1, bufferPts, _matchDistance, isInCurve);
-            segIndex.Query(matchEnv, action);
-            return action.MinCurveIndex;
+            var matchAction = new MatchCurveSegmentAction(raw0, raw1, rawCurveIndex, _matchDistance, bufferPts, rawCurvePos);
+            bufferSegIndex.Query(matchEnv, matchAction);
+            return matchAction.BufferMinIndex;
         }
 
         /// <summary>
         /// An action to match a raw offset curve segment
-        /// to segments in the buffer ring
-        /// and mark them as being in the offset curve.
+        /// to segments in a buffer ring
+        /// and record the matched segment locations(s) along the raw curve.
         /// </summary>
         /// <author>Martin Davis</author>
         private class MatchCurveSegmentAction
@@ -329,22 +428,26 @@ namespace NetTopologySuite.Operation.Buffer
         {
             private readonly Coordinate _p0;
             private readonly Coordinate _p1;
-            private readonly Coordinate[] _bufferPts;
+            private readonly int _rawCurveIndex;
+            private readonly Coordinate[] _bufferRingPts;
             private readonly double _matchDistance;
-            private readonly bool[] _isInCurve;
-
-            private double _minFrac = -1;
-            private int _minCurveIndex = -1;
+            private readonly double[] _rawCurveLoc;
+            private double _minRawLocation = -1;
+            private int _bufferRingMinIndex = -1;
 
             public MatchCurveSegmentAction(Coordinate p0, Coordinate p1,
-                Coordinate[] bufferPts, double matchDistance, bool[] isInCurve)
+                int rawCurveIndex,
+                 double matchDistance, Coordinate[] bufferRingPts, double[] rawCurveLoc)
             {
                 _p0 = p0;
                 _p1 = p1;
-                _bufferPts = bufferPts;
+                _rawCurveIndex = rawCurveIndex;
+                _bufferRingPts = bufferRingPts;
                 _matchDistance = matchDistance;
-                _isInCurve = isInCurve;
+                _rawCurveLoc = rawCurveLoc;
             }
+
+            public int BufferMinIndex => _bufferRingMinIndex;
 
             public override void Select(MonotoneChain mc, int segIndex)
             {
@@ -353,115 +456,141 @@ namespace NetTopologySuite.Operation.Buffer
                  * There may be multiple curve ring segs that match along the raw segment.
                  * The one closest to the segment start is recorded as the offset curve start.      
                  */
-                double frac = SubsegmentMatchFrac(_bufferPts[segIndex], _bufferPts[segIndex + 1], _p0, _p1, _matchDistance);
+                double frac = SegmentMatchFrac(_bufferRingPts[segIndex], _bufferRingPts[segIndex + 1],
+                                               _p0, _p1, _matchDistance);
+
                 //-- no match
                 if (frac < 0) return;
 
-                _isInCurve[segIndex] = true;
-
+                //-- location is used to sort segments along raw curve
+                double location = _rawCurveIndex + frac;
+                _rawCurveLoc[segIndex] = location;
                 //-- record lowest index
-                if (_minFrac < 0 || frac < _minFrac)
+                if (_minRawLocation < 0 || location < _minRawLocation)
                 {
-                    _minFrac = frac;
-                    _minCurveIndex = segIndex;
+                    _minRawLocation = location;
+                    _bufferRingMinIndex = segIndex;
                 }
             }
-
-            public int MinCurveIndex =>  _minCurveIndex;
         }
-
-        /*
-        // Slower, non-indexed algorithm.  Left here for future testing.
-
-        private Coordinate[] OLDcomputeCurve(Coordinate[] curveRingPts, Coordinate[] rawOffset) {
-          boolean[] isInCurve = new boolean[curveRingPts.length - 1];
-          int curveStart = -1;
-          for (int i = 0; i < rawOffset.length - 1; i++) {
-            int index = markMatchingSegments(
-                            rawOffset[i], rawOffset[i + 1], curveRingPts, isInCurve);
-            if (curveStart < 0) {
-              curveStart = index;
-            }
-          }
-          Coordinate[] curvePts = extractSection(curveRingPts, isInCurve, curveStart);
-          return curvePts;
-        }
-
-        private int markMatchingSegments(Coordinate p0, Coordinate p1, Coordinate[] curveRingPts, boolean[] isInCurve) {
-          double minFrac = -1;
-          int minCurveIndex = -1;
-          for (int i = 0; i < curveRingPts.length - 1; i++) {
-             // A curveRingPt seg will only match a portion of a single raw segment.
-             // But there may be multiple curve ring segs that match along that segment.
-             // The one closest to the segment start is recorded.
-            double frac = subsegmentMatchFrac(curveRingPts[i], curveRingPts[i+1], p0, p1, matchDistance);
-            //-- no match
-            if (frac < 0) continue;
-
-            isInCurve[i] = true;
-
-            //-- record lowest index
-            if (minFrac < 0 || frac < minFrac) {
-              minFrac = frac;
-              minCurveIndex = i;
-            }
-          }
-          return minCurveIndex;
-        }
-        */
-
-        private static double SubsegmentMatchFrac(Coordinate p0, Coordinate p1,
-            Coordinate seg0, Coordinate seg1, double matchDistance)
+    
+        private static double SegmentMatchFrac(Coordinate p0, Coordinate p1,
+    Coordinate seg0, Coordinate seg1, double matchDistance)
         {
             if (matchDistance < DistanceComputer.PointToSegment(p0, seg0, seg1))
                 return -1;
             if (matchDistance < DistanceComputer.PointToSegment(p1, seg0, seg1))
                 return -1;
-            //-- matched - determine position as fraction
+            //-- matched - determine position as fraction along segment
             var seg = new LineSegment(seg0, seg1);
             return seg.SegmentFraction(p0);
         }
 
-        /// <summary>
-        /// Extracts a section of a ring of coordinates, starting at a given index,
-        /// and keeping coordinates which are flagged as being required.
-        /// </summary>
-        /// <param name="ring">The ring of points</param>
-        /// <param name="startIndex">The index of the start coordinate</param>
-        /// <param name="isExtracted">A flag indicating if coordinate is to be extracted</param>
-        private static Coordinate[] ExtractSection(Coordinate[] ring, int startIndex, bool[] isExtracted)
+        /**
+         * This is only called when there is at least one ring segment matched
+         * (so rawCurvePos has at least one entry != NOT_IN_CURVE).
+         * The start index of the first section must be provided.
+         * This is intended to be the section with lowest position
+         * along the raw curve.
+         * @param ringPts the points in a buffer ring
+         * @param rawCurveLoc the position of buffer ring segments along the raw curve
+         * @param startIndex the index of the start of a section
+         * @param sections the list of extracted offset curve sections
+         */
+        private void ExtractSections(Coordinate[] ringPts, double[] rawCurveLoc,
+            int startIndex, List<OffsetCurveSection> sections)
         {
-            if (startIndex < 0)
-                return new Coordinate[0];
-
-            var coordList = new CoordinateList();
-            int i = startIndex;
+            int sectionStart = startIndex;
+            int sectionCount = 0;
+            int sectionEnd;
             do
             {
-                coordList.Add(ring[i], false);
-                if (!isExtracted[i])
+                sectionEnd = FindSectionEnd(rawCurveLoc, sectionStart, startIndex);
+                double location = rawCurveLoc[sectionStart];
+                int lastIndex = Prev(sectionEnd, rawCurveLoc.Length);
+                double lastLoc = rawCurveLoc[lastIndex];
+                var section = OffsetCurveSection.Create(ringPts, sectionStart, sectionEnd, location, lastLoc);
+                sections.Add(section);
+                sectionStart = FindSectionStart(rawCurveLoc, sectionEnd);
+
+                //-- check for an abnormal state
+                if (sectionCount++ > ringPts.Length)
                 {
-                    break;
+                    Assert.ShouldNeverReachHere("Too many sections for ring - probable bug");
                 }
-                i = Next(i, ring.Length - 1);
-            } while (i != startIndex);
-            //-- handle case where every segment is extracted
-            if (isExtracted[i])
+            } while (sectionStart != startIndex && sectionEnd != startIndex);
+        }
+
+        private int FindSectionStart(double[] loc, int end)
+        {
+            int start = end;
+            do
             {
-                coordList.Add(ring[i], false);
-            }
+                int next = Next(start, loc.Length);
+                //-- skip ahead if segment is not in raw curve
+                if (loc[start] == NOT_IN_CURVE)
+                {
+                    start = next;
+                    continue;
+                }
+                int prev = Prev(start, loc.Length);
+                //-- if prev segment is not in raw curve then have found a start
+                if (loc[prev] == NOT_IN_CURVE)
+                {
+                    return start;
+                }
+                if (_isJoined)
+                {
+                    /*
+                     *  Start section at next gap in raw curve.
+                     *  Only needed for joined curve, since otherwise
+                     *  contiguous buffer segments can be in same curve section.
+                     */
+                    double locDelta = Math.Abs(loc[start] - loc[prev]);
+                    if (locDelta > 1)
+                        return start;
+                }
+                start = next;
+            } while (start != end);
+            return start;
+        }
 
-            //-- if only one point found return empty LineString
-            if (coordList.Count == 1)
-                return new Coordinate[0];
-
-            return coordList.ToCoordinateArray();
+        private int FindSectionEnd(double[] loc, int start, int firstStartIndex)
+        {
+            // assert: pos[start] is IN CURVE
+            int end = start;
+            int next;
+            do
+            {
+                next = Next(end, loc.Length);
+                if (loc[next] == NOT_IN_CURVE)
+                    return next;
+                if (_isJoined)
+                {
+                    /*
+                     *  End section at gap in raw curve.
+                     *  Only needed for joined curve, since otherwise
+                     *  contigous buffer segments can be in same section
+                     */
+                    double locDelta = Math.Abs(loc[next] - loc[end]);
+                    if (locDelta > 1)
+                        return next;
+                }
+                end = next;
+            } while (end != start && end != firstStartIndex);
+            return end;
         }
 
         private static int Next(int i, int size)
         {
             i += 1;
             return (i < size) ? i : 0;
+        }
+
+        private static int Prev(int i, int size)
+        {
+            i -= 1;
+            return (i < 0) ? size - 1 : i;
         }
     }
 }

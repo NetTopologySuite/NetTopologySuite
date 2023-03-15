@@ -14,6 +14,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// of all the noded raw curves and tracing outside contours.
     /// The points in the raw curve are rounded
     /// to a given <see cref="PrecisionModel"/>.
+    /// <para/>
+    /// Note: this may not produce correct results if the input
+    /// contains repeated or invalid points.
+    /// Repeated points should be removed before calling.
+    /// <see cref="CoordinateArrays.RemoveRepeatedOrInvalidPoints(Coordinate[])"/>.
     /// </summary>
     public class OffsetCurveBuilder
     {
