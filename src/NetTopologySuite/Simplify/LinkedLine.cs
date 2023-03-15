@@ -39,7 +39,7 @@ namespace NetTopologySuite.Simplify
             {
                 next[i] = i + 1;
             }
-            next[size - 1] = _isRing ? 0 : size;
+            next[size - 1] = _isRing ? 0 : NoCoordIndex;
             return next;
         }
 

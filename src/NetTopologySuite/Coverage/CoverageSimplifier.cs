@@ -1,5 +1,11 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace NetTopologySuite.Coverage
 {
@@ -21,16 +27,23 @@ namespace NetTopologySuite.Coverage
     /// The simplified result coverage has the following characteristics:
     /// <list type="bullet">
     /// <item><description>It has the same number and types of polygonal geometries as the input</description></item>
-    /// <item><description>Coverage node points (inner vertices shared by three or more polygons,
+    /// <item><description>Node points (inner vertices shared by three or more polygons,
     /// or boundary vertices shared by two or more) are not changed</description></item>
-    /// <item><description>if the input is a valid coverage, then so is the result</description></item>
+    /// <item><description>If the input is a valid coverage, then so is the result</description></item>
     /// </list>
+    /// <para/>
+    /// This class also supports inner simplification, which simplifies
+    /// only edges of the coverage which are adjacent to two polygons.
+    /// This allows partial simplification of a coverage, since a simplified
+    /// subset of a coverage still matches the remainder of the coverage.
+    /// <para/>
+    /// The input coverage should be valid according to <see cref="CoverageValidator"/>.
     /// </summary>
     /// <author>Martin Davis</author>
     public sealed class CoverageSimplifier
     {
         /// <summary>
-        /// Simplify the boundaries of a set of polygonal geometries forming a coverage,
+        /// Simplifies the boundaries of a set of polygonal geometries forming a coverage,
         /// preserving the coverage topology.
         /// </summary>
         /// <param name="coverage">A set of polygonal geometries forming a coverage</param>
@@ -43,8 +56,9 @@ namespace NetTopologySuite.Coverage
         }
 
         /// <summary>
-        /// Simplify the inner boundaries of a set of polygonal geometries forming a coverage,
+        /// Simplifies the inner boundaries of a set of polygonal geometries forming a coverage,
         /// preserving the coverage topology.
+        /// Edges which form the exterior boundary of the coverage are left unchanged.
         /// </summary>
         /// <param name="coverage">A set of polygonal geometries forming a coverage</param>
         /// <param name="tolerance">The simplification tolerance</param>
@@ -59,7 +73,7 @@ namespace NetTopologySuite.Coverage
         private readonly GeometryFactory _geomFactory;
 
         /// <summary>
-        /// Create a new simplifier instance.
+        /// Create a new coverage simplifier instance.
         /// </summary>
         /// <param name="coverage">A set of polygonal geometries forming a coverage</param>
         public CoverageSimplifier(Geometry[] coverage)
@@ -83,7 +97,8 @@ namespace NetTopologySuite.Coverage
 
         /// <summary>
         /// Computes the inner-boundary simplified coverage,
-        /// preserving the coverage topology.
+        /// preserving the coverage topology,
+        /// and leaving outer boundary edges unchanged.
         /// </summary>
         /// <param name="tolerance">The simplification tolerance</param>
         /// <returns>The simplified polygons</returns>
@@ -92,9 +107,9 @@ namespace NetTopologySuite.Coverage
             var cov = CoverageRingEdges.Create(_input);
             var innerEdges = cov.SelectEdges(2);
             var outerEdges = cov.SelectEdges(1);
-            var constraint = CreateLines(outerEdges);
+            var constraintEdges = CreateLines(outerEdges);
 
-            SimplifyEdges(innerEdges, constraint, tolerance);
+            SimplifyEdges(innerEdges, constraintEdges, tolerance);
             var result = cov.BuildCoverage();
             return result;
         }
@@ -102,7 +117,8 @@ namespace NetTopologySuite.Coverage
         private void SimplifyEdges(IList<CoverageEdge> edges, MultiLineString constraints, double tolerance)
         {
             var lines = CreateLines(edges);
-            var linesSimp = TPVWSimplifier.Simplify(lines, constraints, tolerance);
+            var freeRings = GetFreeRings(edges);
+            var linesSimp = TPVWSimplifier.Simplify(lines, freeRings, constraints, tolerance);
             //Assert: mlsSimp.getNumGeometries = edges.length
 
             SetCoordinates(edges, linesSimp);
@@ -121,10 +137,21 @@ namespace NetTopologySuite.Coverage
             var lines = new LineString[edges.Count];
             for (int i = 0; i < edges.Count; i++)
             {
-                lines[i] = _geomFactory.CreateLineString(edges[i].Coordinates);
+                var edge = edges[i];
+                lines[i] = _geomFactory.CreateLineString(edge.Coordinates);
             }
             var mls = _geomFactory.CreateMultiLineString(lines);
             return mls;
+        }
+
+        private static BitArray GetFreeRings(IList<CoverageEdge> edges)
+        {
+            var freeRings = new BitArray(edges.Count);
+            for (int i = 0; i < edges.Count; i++)
+            {
+                freeRings[i] = edges[i].IsFreeRing;
+            }
+            return freeRings;
         }
 
     }

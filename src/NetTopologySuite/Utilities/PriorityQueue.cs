@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetTopologySuite.Utilities
 {
@@ -69,7 +70,7 @@ namespace NetTopologySuite.Utilities
         /// <remarks>The smallest item, or <c>default(T)</c> if empty.</remarks>
         public T Poll()
         {
-            var node = this._queue.Dequeue();
+            var node = _queue.Dequeue();
             return node == null
                 ? default
                 : node.Data;
@@ -85,6 +86,15 @@ namespace NetTopologySuite.Utilities
             return node == null
                 ? default
                 : node.Data;
+        }
+
+        public bool RemoveIf(Predicate<T> predicate)
+        {
+            var items = _queue.Where(t => t != null ? predicate(t.Data) : false) ?? Array.Empty<PriorityQueueNode<T, T>>();
+            foreach (var item in items)
+                if (!_queue.Remove(item))
+                    return false;
+            return true;
         }
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>>

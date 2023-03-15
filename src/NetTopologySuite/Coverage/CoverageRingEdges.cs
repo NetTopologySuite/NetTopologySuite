@@ -16,13 +16,11 @@ namespace NetTopologySuite.Coverage
     /// <author>Martin Davis</author>
     class CoverageRingEdges
     {
-
-        /**
-         * Create a new instance for a given coverage.
-         * 
-         * @param coverage the set of polygonal geometries in the coverage
-         * @return the edges of the coverage
-         */
+        /// <summary>
+        /// Create a new instance for a given coverage.
+        /// </summary>
+        /// <param name="coverage">The set of polygonal geometries in the coverage</param>
+        /// <returns>The edges of the coverage</returns>
         public static CoverageRingEdges Create(Geometry[] coverage)
         {
             var edges = new CoverageRingEdges(coverage);
@@ -66,6 +64,9 @@ namespace NetTopologySuite.Coverage
         {
             var nodes = FindNodes(_coverage);
             var boundarySegs = CoverageBoundarySegmentFinder.FindBoundarySegments(_coverage);
+            foreach(var node in FindBoundaryNodes(boundarySegs))
+                nodes.Add(node);
+
             var uniqueEdgeMap = new Dictionary<LineSegment, CoverageEdge>();
             foreach (var geom in _coverage)
             {
@@ -158,7 +159,7 @@ namespace NetTopologySuite.Coverage
 
         private CoverageEdge CreateEdge(LinearRing ring, int start, int end, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
         {
-            var edgeKey = CoverageEdge.Key(ring, start, end);
+            var edgeKey = end == start ? CoverageEdge.Key(ring) : CoverageEdge.Key(ring, start, end);
             if (!uniqueEdgeMap.TryGetValue(edgeKey, out var edge))
             {
                 edge = CoverageEdge.CreateEdge(ring, start, end);
@@ -211,6 +212,22 @@ namespace NetTopologySuite.Coverage
                 }
             }
             return nodes;
+        }
+
+
+        private IEnumerable<Coordinate> FindBoundaryNodes(ISet<LineSegment> lineSegments)
+        {
+            var counter = new Dictionary<Coordinate, int>();
+            foreach (var line in lineSegments)
+            {
+                if (!counter.TryGetValue(line.P0, out int count)) count = 0;
+                counter[line.P0] = count + 1;
+                if (!counter.TryGetValue(line.P1, out count)) count = 0;
+                counter[line.P1] = count + 1;
+            }
+
+            foreach (var kvp in counter)
+                if (kvp.Value > 2) yield return kvp.Key;
         }
 
         /// <summary>
