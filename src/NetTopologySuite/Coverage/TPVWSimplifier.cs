@@ -49,7 +49,7 @@ namespace NetTopologySuite.Coverage
         /// </summary>
         /// <param name="lines">The lines to simplify</param>
         /// <param name="freeRings">flags indicating which ring edges do not have node endpoints</param>
-        /// <param name="constraints">The linear constraints</param>
+        /// <param name="constraintLines">The linear constraints</param>
         /// <param name="distanceTolerance">The simplification tolerance</param>
         /// <returns>The simplified lines</returns>
         public static MultiLineString Simplify(MultiLineString lines, BitArray freeRings, 
@@ -131,15 +131,24 @@ namespace NetTopologySuite.Coverage
             private readonly double _areaTolerance;
             private readonly LinkedLine _linkedLine;
             private readonly int _minEdgeSize;
-            private readonly bool _constraintFree;
+            private readonly bool _isFreeRing;
             private readonly int _nbPts;
+
             private readonly VertexSequencePackedRtree _vertexIndex;
             private readonly Envelope _envelope;
 
-            public Edge(LineString inputLine, bool constraintFree, double areaTolerance)
+            /// <summary>
+            /// Creates a new edge.
+            /// The endpoints of the edge are preserved during simplification,
+            /// unless it is a ring and the <paramref name="isFreeRing"/> flag is set.
+            /// </summary>
+            /// <param name="inputLine">The line or ring</param>
+            /// <param name="isFreeRing">A flag indiciating if a ring endpoint can be removed</param>
+            /// <param name="areaTolerance">The simplification tolerance</param>
+            public Edge(LineString inputLine, bool isFreeRing, double areaTolerance)
             {
                 _areaTolerance = areaTolerance;
-                _constraintFree = constraintFree;
+                _isFreeRing = isFreeRing;
                 _envelope = inputLine.EnvelopeInternal;
                 var pts = inputLine.Coordinates;
                 _nbPts = pts.Length;
@@ -195,7 +204,7 @@ namespace NetTopologySuite.Coverage
             private PriorityQueue<Corner> CreateQueue()
             {
                 var cornerQueue = new PriorityQueue<Corner>();
-                int minIndex = (_linkedLine.IsRing && _constraintFree) ? 0 : 1;
+                int minIndex = (_linkedLine.IsRing && _isFreeRing) ? 0 : 1;
                 int maxIndex = _nbPts - 1;
                 for (int i = minIndex; i < maxIndex; i++)
                 {
@@ -206,12 +215,13 @@ namespace NetTopologySuite.Coverage
 
             private void AddCorner(int i, PriorityQueue<Corner> cornerQueue)
             {
-                if (!_linkedLine.IsCorner(i))
-                    return;
-                var corner = new Corner(_linkedLine, i);
-                if (corner.Area <= _areaTolerance)
+                if (_isFreeRing || (i != 0 && i != _nbPts - 1))
                 {
-                    cornerQueue.Add(corner);
+                    var corner = new Corner(_linkedLine, i);
+                    if (corner.Area <= _areaTolerance)
+                    {
+                        cornerQueue.Add(corner);
+                    }
                 }
             }
 
