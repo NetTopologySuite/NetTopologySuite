@@ -33,6 +33,22 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
                     );
         }
 
+        [Test]
+        public void TestFullyCoveredTriangles()
+        {
+            CheckInvalid(ReadArray(
+                "POLYGON ((1 9, 9 1, 1 1, 1 9))",
+                "POLYGON ((9 9, 1 9, 9 1, 9 9))",
+                "POLYGON ((9 9, 9 1, 1 1, 1 9, 9 9))"
+                ),
+                ReadArray(
+                    "LINESTRING (9 1, 1 1, 1 9)",
+                    "LINESTRING (9 1, 9 9, 1 9)",
+                    "LINESTRING (9 9, 9 1, 1 1, 1 9, 9 9)")
+                    );
+        }
+
+
         //========  Gap cases   =============================
 
         [Test]

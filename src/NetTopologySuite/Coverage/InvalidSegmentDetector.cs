@@ -1,6 +1,8 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
+using System;
+using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Coverage
 {
@@ -9,7 +11,10 @@ namespace NetTopologySuite.Coverage
     /// The inputs to <see cref="ProcessIntersections(ISegmentString, int, ISegmentString, int)"/>
     /// must be <see cref="CoverageRing"/>s.
     /// If an invalid situation is detected the input target segment is
-    /// marked invalid using {@link CoverageRing#markInvalid(int)}.
+    /// marked invalid using <see cref="CoverageRing.MarkInvalid(int)"/>.
+    /// <para/>
+    /// This class assumes it is used with <see cref="ISegmentSetMutualIntersector"/>,
+    /// so that segments in the same ring are not evaluated.
     /// </summary>
     internal class InvalidSegmentDetector : ISegmentIntersector
     {
@@ -39,8 +44,10 @@ namespace NetTopologySuite.Coverage
             var target = (CoverageRing)ssTarget;
             var adj = (CoverageRing)ssAdj;
 
+            //-- Assert: rings are not equal (because this is used with SegmentSetMutualIntersector)
+
             //-- skip target segments with known status
-            if (target.IsKnown(iTarget)) return;
+            if (target.IsKnownAt(iTarget)) return;
 
             var t0 = target.Coordinates[iTarget];
             var t1 = target.Coordinates[iTarget + 1];
@@ -53,6 +60,8 @@ namespace NetTopologySuite.Coverage
 
             //-- skip zero-length segments
             if (t0.Equals2D(t1) || adj0.Equals2D(adj1))
+                return;
+            if (IsEqual(t0, t1, adj0, adj1))
                 return;
 
             /*
@@ -67,6 +76,15 @@ namespace NetTopologySuite.Coverage
             {
                 target.MarkInvalid(iTarget);
             }
+        }
+
+        private bool IsEqual(Coordinate t0, Coordinate t1, Coordinate adj0, Coordinate adj1)
+        {
+            if (t0.Equals2D(adj0) && t1.Equals2D(adj1))
+                return true;
+            if (t0.Equals2D(adj1) && t1.Equals2D(adj0))
+                return true;
+            return false;
         }
 
         private bool IsInvalid(Coordinate tgt0, Coordinate tgt1,
@@ -134,6 +152,13 @@ namespace NetTopologySuite.Coverage
             //-- find adjacent-ring vertices on either side of intersection vertex
             var adjPrev = adj.FindVertexPrev(indexAdj, intVertex);
             var adjNext = adj.FindVertexNext(indexAdj, intVertex);
+
+            //-- don't check if test segment is equal to either corner segment
+            if (tgtEnd.Equals2D(adjPrev) || tgtEnd.Equals2D(adjNext))
+            {
+                return false;
+            }
+
             //-- if needed, re-orient corner to have interior on right
             if (!adj.IsInteriorOnRight)
             {

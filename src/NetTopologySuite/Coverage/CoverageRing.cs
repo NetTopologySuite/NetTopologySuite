@@ -37,17 +37,31 @@ namespace NetTopologySuite.Coverage
         private static CoverageRing CreateRing(LineString ring, bool isShell)
         {
             var pts = ring.Coordinates;
+            if (CoordinateArrays.HasRepeatedOrInvalidPoints(pts)) {
+                pts = CoordinateArrays.RemoveRepeatedOrInvalidPoints(pts);
+            }
             bool isCCW = Orientation.IsCCW(pts);
             bool isInteriorOnRight = isShell ? !isCCW : isCCW;
             return new CoverageRing(pts, isInteriorOnRight);
         }
 
         /// <remarks>Named <c>isValid</c> in JTS</remarks>
+        [Obsolete("Will be removed in a future version")]
         public static bool AllRingsValid(IList<CoverageRing> rings)
+            => AllRingsKnown(rings);
+
+        /// <summary>
+        /// Tests if all rings have known status (matched or invalid)
+        /// for all segments.
+        /// </summary>
+        /// <remarks>Named <c>isKnown</c> in JTS</remarks>
+        /// <param name="rings">A list of rings</param>
+        /// <returns><c>true</c> if all ring segments hav known status</returns>
+        public static bool AllRingsKnown(IList<CoverageRing> rings)
         {
             foreach (var ring in rings)
             {
-                if (!ring.IsValid)
+                if (!ring.IsKnown)
                     return false;
             }
             return true;
@@ -55,27 +69,58 @@ namespace NetTopologySuite.Coverage
 
         private readonly bool _isInteriorOnRight;
         private readonly bool[] _isInvalid;
-        private readonly bool[] _isValid;
+        private readonly bool[] _isMatched;
 
-        public CoverageRing(Coordinate[] pts, bool isInteriorOnRight)
+        private CoverageRing(Coordinate[] pts, bool isInteriorOnRight)
                 : base(pts, null)
         {
             _isInteriorOnRight = isInteriorOnRight;
             _isInvalid = new bool[Count - 1];
-            _isValid = new bool[Count - 1];
+            _isMatched = new bool[Count - 1];
         }
 
+        /// <summary>
+        /// Reports if the ring has canonical orientation,
+        /// with the polygon interior on the right (shell is CW).
+        /// </summary>
         public bool IsInteriorOnRight => _isInteriorOnRight;
 
         /// <summary>
-        /// Tests if a segment is marked valid.
+        /// Marks a segment as invalid.
         /// </summary>
-        /// <param name="index">The segment index</param>
-        /// <returns><c>true</c> if the segment is valid.</returns>
-        /// <remarks>Named <c>isValid</c> in JTS</remarks>
-        public bool IsValidAt(int index)
+        /// <param name="i">The segment index</param>
+        public void MarkInvalid(int i)
         {
-            return _isValid[index];
+            _isInvalid[i] = true;
+        }
+
+        /// <summary>
+        /// Marks a segment as matched.
+        /// </summary>
+        /// <param name="i">The segment index</param>
+        public void MarkMatched(int i)
+        {
+            //if (_isInvalid[i])
+            //    throw new InvalidOperationException("Setting invalid edge to matched");
+            _isMatched[i] = true;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether all segments in the ring have a known status,
+        /// matched or invalid.
+        /// </summary>
+        /// <returns><c>true</c></returns>
+        public bool IsKnown
+        {
+            get
+            {
+                for (int i = 0; i < _isMatched.Length; i++)
+                {
+                    if (!(_isMatched[i] && _isInvalid[i]))
+                        return false;
+                }
+                return true;
+            }
         }
 
         /// <summary>
@@ -87,22 +132,6 @@ namespace NetTopologySuite.Coverage
         public bool IsInvalidAt(int index)
         {
             return _isInvalid[index];
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether all segments are valid.
-        /// </summary>
-        public bool IsValid
-        {
-            get
-            {
-                for (int i = 0; i < _isValid.Length; i++)
-                {
-                    if (!_isValid[i])
-                        return false;
-                }
-                return true;
-            }
         }
 
         /// <summary>
@@ -142,9 +171,10 @@ namespace NetTopologySuite.Coverage
         /// </summary>
         /// <param name="i">The index of the ring segment</param>
         /// <returns><c>true</c> if the segment validity state is known.</returns>
-        public bool IsKnown(int i)
+        /// <remarks>Named <c>isKnown(int)</c> int JTS</remarks>
+        public bool IsKnownAt(int i)
         {
-            return _isValid[i] || _isInvalid[i];
+            return _isMatched[i] || _isInvalid[i];
         }
 
         /// <summary>
@@ -206,28 +236,6 @@ namespace NetTopologySuite.Coverage
             if (index < Count - 2)
                 return index + 1;
             return 0;
-        }
-
-        /// <summary>
-        /// Marks a segment as invalid.
-        /// </summary>
-        /// <param name="i">The segment index</param>
-        public void MarkInvalid(int i)
-        {
-            if (_isValid[i])
-                throw new InvalidOperationException("Setting valid edge to invalid");
-            _isInvalid[i] = true;
-        }
-
-        /// <summary>
-        /// Marks a segment as valid.
-        /// </summary>
-        /// <param name="i">The segment index</param>
-        public void MarkValid(int i)
-        {
-            if (_isInvalid[i])
-                throw new InvalidOperationException("Setting invalid edge to valid");
-            _isValid[i] = true;
         }
 
         public void CreateInvalidLines(GeometryFactory geomFactory, List<LineString> lines)

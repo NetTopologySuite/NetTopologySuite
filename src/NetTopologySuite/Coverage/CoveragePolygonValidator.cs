@@ -1,17 +1,20 @@
-﻿using NetTopologySuite.Algorithm.Locate;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
+using NetTopologySuite.Triangulate;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NetTopologySuite.Coverage
 {
 
     /// <summary>
     /// Validates that a polygon forms a valid polygonal coverage
-    /// with the set of polygons surrounding it.
+    /// with the set of polygons adjacent to it.
     /// If the polygon is coverage-valid an empty { @link LineString} is returned.
     /// Otherwise, the result is a linear geometry containing
     /// the polygon boundary linework causing the invalidity.
@@ -26,7 +29,11 @@ namespace NetTopologySuite.Coverage
     /// The algorithm detects the following coverage errors:
     /// <list type="number">
     /// <item><description>the polygon is a duplicate of another one</description></item>
-    /// <item><description>a polygon boundary segment is collinear with an adjacent segment but not equal to it</description></item>
+    /// <item><description>a polygon boundary segment equals an adjacent segment (with same orientation).
+    /// This determines that the polygons overlap</description></item>
+    /// <item><description>a polygon boundary segment is collinear and overlaps an adjacent segment
+    /// but is not equal to it
+    /// </description></item>
     /// <item><description>a polygon boundary segment touches an adjacent segment at a non-vertex point</description></item>
     /// <item><description>a polygon boundary segment crosses into an adjacent polygon</description></item>
     /// <item><description>a polygon boundary segment is in the interior of an adjacent polygon</description></item>
@@ -36,13 +43,15 @@ namespace NetTopologySuite.Coverage
     /// If any of these errors is present, the target polygon
     /// does not form a valid coverage with the adjacent polygons.
     /// <para/>
-    /// The validity rules does not preclude gaps between coverage polygons.
+    /// The validity rules do not preclude properly noded gaps between coverage polygons.
     /// However, this class can detect narrow gaps,
     /// by specifying a maximum gap width using {@link #setGapWidth(double)}.
     /// Note that this will also identify narrow gaps separating disjoint coverage regions,
     /// and narrow gores.
     /// In some situations it may also produce false positives
     /// (i.e.linework identified as part of a gap which is wider than the given width).
+    /// To fully identify gaps it maybe necessary to use <see cref="CoverageUnion"/> and analyze
+    /// the holes in the result to see if they are acceptable.
     /// <para/>
     /// A polygon may be coverage-valid with respect to
     /// a set of surrounding polygons, but the collection as a whole may not
@@ -50,7 +59,10 @@ namespace NetTopologySuite.Coverage
     /// by adjacent boundary segments, but the adjacent set contains polygons
     /// which are not coverage - valid relative to other ones in the set.
     /// A coverage is valid only if every polygon in the coverage is coverage - valid.
-    /// Use { @link CoverageValidator} to validate an entire set of polygons.
+    /// Use <see cref="CoverageValidator"/> to validate an entire set of polygons.
+    /// <para/>
+    /// The adjacent set may contain polygons which do not intersect the target polygon.
+    /// These are effectively ignored during validation (but may decrease performance).
     /// </summary>
     /// <seealso cref="CoverageValidator"/>
     /// <author>Martin Davis</author>
@@ -91,8 +103,9 @@ namespace NetTopologySuite.Coverage
         private readonly Geometry _targetGeom;
         private double _gapWidth = 0.0;
         private GeometryFactory _geomFactory;
-        private IndexedPointInAreaLocator[] _adjPolygonLocators;
         private readonly Geometry[] _adjGeoms;
+        private List<Polygon> _adjPolygons;
+        private IndexedPointInAreaLocator[] _adjPolygonLocators;
 
         /// <summary>
         /// Create a new validator.
@@ -120,39 +133,50 @@ namespace NetTopologySuite.Coverage
         /// <returns>A linear geometry containing the segments causing invalidity (if any)</returns>
         public Geometry Validate()
         {
-            var adjPolygons = ExtractPolygons(_adjGeoms);
-            _adjPolygonLocators = new IndexedPointInAreaLocator[adjPolygons.Count];
-
-            if (HasDuplicateGeom(_targetGeom, adjPolygons))
-            {
-                //TODO: convert to LineString copies
-                return _targetGeom.Boundary;
-            }
+            _adjPolygons = ExtractPolygons(_adjGeoms);
+            _adjPolygonLocators = new IndexedPointInAreaLocator[_adjPolygons.Count];
 
             var targetRings = CoverageRing.CreateRings(_targetGeom);
-            var adjRings = CoverageRing.CreateRings(adjPolygons);
+            var adjRings = CoverageRing.CreateRings(_adjPolygons);
 
             /*
              * Mark matching segments as valid first.
-             * Valid segments are not considered for further checks. 
+             * Matched segments are not considered for further checks. 
              * This improves performance substantially for mostly-valid coverages.
              */
             var targetEnv = _targetGeom.EnvelopeInternal.Copy();
             targetEnv.ExpandBy(_gapWidth);
-            MarkMatchedSegments(targetRings, adjRings, targetEnv);
 
-            //-- check if target is fully matched and thus forms a clean coverage 
-            if (CoverageRing.AllRingsValid(targetRings))
-                return CreateEmptyResult();
-
-            FindInvalidInteractingSegments(targetRings, adjRings, _gapWidth);
-
-            FindInteriorSegments(targetRings, adjPolygons);
+            CheckTargetRings(targetRings, adjRings, targetEnv);
 
             return CreateInvalidLines(targetRings);
         }
 
-        private static IList<Polygon> ExtractPolygons(Geometry[] geoms)
+        private void CheckTargetRings(List<CoverageRing> targetRings, List<CoverageRing> adjRings, Envelope targetEnv)
+        {
+            MarkMatchedSegments(targetRings, adjRings, targetEnv);
+
+            /**
+             * Short-circuit if target is fully known (matched or invalid).
+             * This often happens in clean coverages,
+             * when the target is surrounded by matching polygons.
+             * It can also happen in invalid coverages 
+             * which have polygons which are duplicates, 
+             * or perfectly overlap other polygons.
+             * 
+             */
+            if (CoverageRing.AllRingsKnown(targetRings))
+                return;
+
+            /**
+             * Here target has at least one unmatched segment.
+             * Do further checks to see if any of them are are invalid.
+             */
+            MarkInvalidInteractingSegments(targetRings, adjRings, _gapWidth);
+            MarkInvalidInteriorSegments(targetRings, _adjPolygons);
+        }
+
+        private static List<Polygon> ExtractPolygons(Geometry[] geoms)
         {
             var polygons = new List<Polygon>();
             foreach (var geom in geoms)
@@ -168,30 +192,14 @@ namespace NetTopologySuite.Coverage
         }
 
         /// <summary>
-        /// Check if adjacent geoms contains a duplicate of the target.
-        /// This situation is not detected by segment alignment checking,
-        /// since all segments are matches.
-        /// </summary>
-        private bool HasDuplicateGeom(Geometry geom, IList<Polygon> adjPolygons)
-        {
-            foreach (var adjPoly in adjPolygons)
-            {
-                if (adjPoly.EnvelopeInternal.Equals(geom.EnvelopeInternal))
-                {
-                    if (adjPoly.EqualsTopologically(geom))
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Marks matched segments as valid.
+        /// Marks matched segments.
         /// This improves the efficiency of validity testing, since in valid coverages
-        /// all segments (except exterior ones) will be matched,
+        /// all segments (except exterior ones) are matched,
         /// and hence do not need to be tested further.
-        /// In fact, the entire target polygon may be marked valid,
-        /// which allows avoiding all further tests.
+        /// Segments which are equal and have same orientation
+        /// are detected and marked invalid.
+        /// In fact, the entire target polygon may be matched and valid,
+        /// which allows avoiding further tests.
         /// Segments matched between adjacent polygons are also marked valid,
         /// since this prevents them from being detected as misaligned,
         /// if this is being done.
@@ -207,15 +215,11 @@ namespace NetTopologySuite.Coverage
             MarkMatchedSegments(adjRngs, targetEnv, segmentMap);
         }
 
-        /**
-         * Adds ring segments to the segment map, 
-         * and detects if they match an existing segment.
-         * Matched segments are marked as coverage-valid.
-         * 
-         * @param rings
-         * @param envLimit
-         * @param segMap
-         */
+        /// <summary>
+        /// Adds ring segments to the segment map,
+        /// and detects if they match an existing segment.
+        /// Matched segments are marked.
+        /// </summary>
         private void MarkMatchedSegments(IList<CoverageRing> rings, Envelope envLimit,
             IDictionary<CoverageRingSegment, CoverageRingSegment> segmentMap)
         {
@@ -223,155 +227,237 @@ namespace NetTopologySuite.Coverage
             {
                 for (int i = 0; i < ring.Count - 1; i++)
                 {
-                    var seg = CoverageRingSegment.Create(ring, i);
+                    var p0 = ring.Coordinates[i];
+                    var p1 = ring.Coordinates[i + 1];
+
                     //-- skip segments which lie outside the limit envelope
-                    if (!envLimit.Intersects(seg.P0, seg.P1))
+                    if (!envLimit.Intersects(p0, p1))
                     {
                         continue;
                     }
-                    //-- if segments match, mark them valid
+                    //-- if segment keys match, mark them as matched (or invalid)
+                    var seg = CoverageRingSegment.Create(ring, i);
                     if (segmentMap.TryGetValue(seg, out var segMatch))
                     {
-                        segMatch.MarkValid();
-                        seg.MarkValid();
+                        /*
+                         * Since inputs should be valid, 
+                         * the segments are assumed to be in different rings.
+                         */
+                        seg.Match(segMatch);
                     }
                     else
                     {
+                        //-- store the segment as key and value, to allow retrieving when matched
                         segmentMap[seg] = seg;
                     }
                 }
             }
         }
 
+        /// <summary>
+        ///  Models a segment in a CoverageRing.
+        ///  The segment is normalized so it can be compared with segments
+        ///  in any orientation.
+        ///  Records valid matching segments in a coverage,
+        ///  which must have opposite orientations.
+        ///  Also detects equal segments with identical
+        ///  orientation, and marks them as coverage-invalid.
+        /// </summary>
         private class CoverageRingSegment : LineSegment
         {
             public static CoverageRingSegment Create(CoverageRing ring, int index)
             {
                 var p0 = ring.Coordinates[index];
                 var p1 = ring.Coordinates[index + 1];
-                return new CoverageRingSegment(p0, p1, ring, index);
+                //-- orient segment as if ring is in canonical orientation
+                if (ring.IsInteriorOnRight)
+                {
+                    return new CoverageRingSegment(p0, p1, ring, index);
+                }
+                else
+                {
+                    return new CoverageRingSegment(p1, p0, ring, index);
+                }
             }
 
-            private readonly CoverageRing _ring;
-            private readonly int _index;
+            private CoverageRing _ringForward;
+            private int _indexForward = -1;
+            private CoverageRing _ringOpp = null;
+            private int _indexOpp = -1;
 
             private CoverageRingSegment(Coordinate p0, Coordinate p1, CoverageRing ring, int index)
                     : base(p0, p1)
             {
-                Normalize();
-                _ring = ring;
-                _index = index;
+                if (p1.CompareTo(p0) < 0)
+                {
+                    Reverse();
+                    _ringOpp = ring;
+                    _indexOpp = index;
+                }
+                else
+                {
+                    _ringForward = ring;
+                    _indexForward = index;
+                }
             }
 
-            public void MarkValid()
+
+            public void Match(CoverageRingSegment seg)
             {
-                _ring.MarkValid(_index);
+                bool isInvalid = CheckInvalid(seg);
+                if (isInvalid)
+                {
+                    return;
+                }
+                //-- record the match
+                if (_ringForward == null)
+                {
+                    _ringForward = seg._ringForward;
+                    _indexForward = seg._indexForward;
+                }
+                else
+                {
+                    _ringOpp = seg._ringOpp;
+                    _indexOpp = seg._indexOpp;
+                }
+                //-- mark ring segments as matched
+                _ringForward.MarkMatched(_indexForward);
+                _ringOpp.MarkMatched(_indexOpp);
+            }
+
+            private bool CheckInvalid(CoverageRingSegment seg)
+            {
+                if (_ringForward != null && seg._ringForward != null)
+                {
+                    _ringForward.MarkInvalid(_indexForward);
+                    seg._ringForward.MarkInvalid(seg._indexForward);
+                    return true;
+                }
+                if (_ringOpp != null && seg._ringOpp != null)
+                {
+                    _ringOpp.MarkInvalid(_indexOpp);
+                    seg._ringOpp.MarkInvalid(seg._indexOpp);
+                    return true;
+                }
+                return false;
             }
         }
 
-    //--------------------------------------------------
+        //--------------------------------------------------
 
-
-    private void FindInvalidInteractingSegments(List<CoverageRing> targetRings, List<CoverageRing> adjRings,
-        double distanceTolerance)
-    {
-        var detector = new InvalidSegmentDetector(distanceTolerance);
-        var segSetMutInt = new MCIndexSegmentSetMutualIntersector(targetRings, distanceTolerance);
-        segSetMutInt.Process(adjRings, detector);
-    }
-
-    private void FindInteriorSegments(List<CoverageRing> targetRings, IList<Polygon> adjPolygons)
-    {
-        foreach (var ring in targetRings)
+        /// <summary>
+        /// Marks invalid target segments which cross an adjacent ring segment,
+        /// lie partially in the interior of an adjacent ring,
+        /// or are nearly collinear with an adjacent ring segment up to the distance tolerance
+        /// </summary>
+        /// <param name="targetRings">The rings with segments to test</param>
+        /// <param name="adjRings">The adjacent rings</param>
+        /// <param name="distanceTolerance">The gap distance tolerance, if any</param>
+        private void MarkInvalidInteractingSegments(List<CoverageRing> targetRings, List<CoverageRing> adjRings,
+            double distanceTolerance)
         {
-            for (int i = 0; i < ring.Count - 1; i++)
-            {
-                //-- skip check for segments with known state. 
-                if (ring.IsKnown(i))
-                    continue;
+            var detector = new InvalidSegmentDetector(distanceTolerance);
+            var segSetMutInt = new MCIndexSegmentSetMutualIntersector(targetRings, distanceTolerance);
+            segSetMutInt.Process(adjRings, detector);
+        }
 
-                /*
-                 * Check if vertex is in interior of an adjacent polygon.
-                 * If so, the segments on either side are in the interior.
-                 * Mark them invalid, unless they are already matched.
-                 */
-                var p = ring.Coordinates[i];
-                if (IsInteriorVertex(p, adjPolygons))
+        /// <summary>
+        /// Marks invalid target segments which are fully interior
+        /// to an adjacent polygon.
+        /// </summary>
+        /// <param name="targetRings">The rings with segments to test</param>
+        /// <param name="adjPolygons">The adjacent polygons</param>
+        private void MarkInvalidInteriorSegments(List<CoverageRing> targetRings, List<Polygon> adjPolygons)
+        {
+            foreach (var ring in targetRings)
+            {
+                for (int i = 0; i < ring.Count - 1; i++)
                 {
-                    ring.MarkInvalid(i);
-                    //-- previous segment may be interior (but may also be matched)
-                    int iPrev = i == 0 ? ring.Count - 2 : i - 1;
-                    if (!ring.IsKnown(iPrev))
-                        ring.MarkInvalid(iPrev);
+                    //-- skip check for segments with known state. 
+                    if (ring.IsKnownAt(i))
+                        continue;
+
+                    /*
+                     * Check if vertex is in interior of an adjacent polygon.
+                     * If so, the segments on either side are in the interior.
+                     * Mark them invalid, unless they are already matched.
+                     */
+                    var p = ring.Coordinates[i];
+                    if (IsInteriorVertex(p, adjPolygons))
+                    {
+                        ring.MarkInvalid(i);
+                        //-- previous segment may be interior (but may also be matched)
+                        int iPrev = i == 0 ? ring.Count - 2 : i - 1;
+                        if (!ring.IsKnownAt(iPrev))
+                            ring.MarkInvalid(iPrev);
+                    }
                 }
             }
         }
-    }
 
-    /**
-     * Tests if a coordinate is in the interior of some adjacent polygon.
-     * Uses the cached Point-In-Polygon indexed locators, for performance.
-     * 
-     * @param p the coordinate to test
-     * @param adjPolygons the list of polygons
-     * @return true if the point is in the interior
-     */
-    private bool IsInteriorVertex(Coordinate p, IList<Polygon> adjPolygons)
-    {
-        /*
-         * There should not be too many adjacent polygons, 
-         * and hopefully not too many segments with unknown status
-         * so a linear scan should not be too inefficient
-         */
-        //TODO: try a spatial index?
-        for (int i = 0; i < adjPolygons.Count; i++)
+        /// <summary>
+        /// Tests if a coordinate is in the interior of some adjacent polygon.
+        /// Uses the cached Point-In-Polygon indexed locators, for performance.
+        /// </summary>
+        /// <param name="p">The coordinate to test</param>
+        /// <param name="adjPolygons">A list of polygons</param>
+        /// <returns><c>true</c> if the point is in the interior</returns>
+        private bool IsInteriorVertex(Coordinate p, IList<Polygon> adjPolygons)
         {
-            var adjPoly = adjPolygons[i];
-            if (!adjPoly.EnvelopeInternal.Intersects(p))
-                continue;
+            /*
+             * There should not be too many adjacent polygons, 
+             * and hopefully not too many segments with unknown status
+             * so a linear scan should not be too inefficient
+             */
+            //TODO: try a spatial index?
+            for (int i = 0; i < adjPolygons.Count; i++)
+            {
+                var adjPoly = adjPolygons[i];
 
-            if (PolygonContainsPoint(i, adjPoly, p))
-                return true;
-        }
-        return false;
-    }
-
-    private bool PolygonContainsPoint(int index, Polygon poly, Coordinate pt)
-    {
-        var pia = GetLocator(index, poly);
-        return Location.Interior == pia.Locate(pt);
-    }
-
-    private IPointOnGeometryLocator GetLocator(int index, Polygon poly)
-    {
-        var loc = _adjPolygonLocators[index];
-        if (loc == null)
-        {
-            loc = new IndexedPointInAreaLocator(poly);
-            _adjPolygonLocators[index] = loc;
-        }
-        return loc;
-    }
-
-    private Geometry CreateInvalidLines(List<CoverageRing> rings)
-    {
-        var lines = new List<LineString>();
-        foreach (var ring in rings)
-        {
-            ring.CreateInvalidLines(_geomFactory, lines);
+                if (PolygonContainsPoint(i, adjPoly, p))
+                    return true;
+            }
+            return false;
         }
 
-        if (lines.Count == 0)
+        private bool PolygonContainsPoint(int index, Polygon poly, Coordinate pt)
         {
-            return CreateEmptyResult();
+            if (!poly.EnvelopeInternal.Intersects(pt))
+                return false;
+
+            var pia = GetLocator(index, poly);
+            return Location.Interior == pia.Locate(pt);
         }
-        else if (lines.Count == 1)
+
+        private IPointOnGeometryLocator GetLocator(int index, Polygon poly)
         {
+            var loc = _adjPolygonLocators[index];
+            if (loc == null)
+            {
+                loc = new IndexedPointInAreaLocator(poly);
+                _adjPolygonLocators[index] = loc;
+            }
+            return loc;
+        }
+
+        private Geometry CreateInvalidLines(List<CoverageRing> rings)
+        {
+            var lines = new List<LineString>();
+            foreach (var ring in rings)
+            {
+                ring.CreateInvalidLines(_geomFactory, lines);
+            }
+
+            if (lines.Count == 0)
+            {
+                return CreateEmptyResult();
+            }
+            else if (lines.Count == 1)
+            {
                 return lines[0];
+            }
+            return _geomFactory.CreateMultiLineString(lines.ToArray());
         }
-        return _geomFactory.CreateMultiLineString(lines.ToArray());
+
     }
-
-}
-
 }

@@ -19,10 +19,18 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
         }
 
         [Test]
-        public void TestDuplicateGeometry()
+        public void TestDuplicate()
         {
             CheckInvalid("POLYGON ((1 3, 3 3, 3 1, 1 1, 1 3))",
                 "MULTIPOLYGON (((1 3, 3 3, 3 1, 1 1, 1 3)), ((5 3, 5 1, 3 1, 3 3, 5 3)))",
+                "LINEARRING (1 3, 1 1, 3 1, 3 3, 1 3)");
+        }
+
+        [Test]
+        public void TestDuplicateReversed()
+        {
+            CheckInvalid("POLYGON ((1 3, 3 3, 3 1, 1 1, 1 3))",
+                "MULTIPOLYGON (((1 3, 1 1, 3 1, 3 3, 1 3))), ((5 3, 5 1, 3 1, 3 3, 5 3)))",
                 "LINEARRING (1 3, 1 1, 3 1, 3 3, 1 3)");
         }
 
@@ -108,7 +116,7 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
         {
             CheckInvalid("POLYGON ((7 6, 1 1, 3 6, 7 6))",
                 "MULTIPOLYGON (((1 9, 9 9, 9 1, 1 1, 3 6, 1 9)), ((0 1, 0 9, 1 9, 3 6, 1 1, 0 1)))",
-                "LINESTRING (3 6, 7 6, 1 1)");
+                "LINESTRING (7 6, 1 1, 3 6, 7 6)");
         }
 
         [Test]
@@ -133,6 +141,31 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
             CheckInvalid("POLYGON ((3 7, 7 7, 7 3, 3 3, 3 7))",
                 "POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))",
                 "LINESTRING (3 7, 7 7, 7 3, 3 3, 3 7)");
+        }
+
+
+        [Test]
+        public void TestFullyCoveredAndMatched()
+        {
+            CheckInvalid("POLYGON ((1 3, 2 3, 2 2, 1 2, 1 3))",
+                "MULTIPOLYGON (((1 1, 1 2, 2 2, 2 1, 1 1)), ((3 1, 2 1, 2 2, 3 2, 3 1)), ((3 3, 3 2, 2 2, 2 3, 3 3)), ((2 3, 3 3, 3 2, 3 1, 2 1, 1 1, 1 2, 1 3, 2 3)))",
+                "LINESTRING (1 2, 1 3, 2 3)");
+        }
+
+        [Test]
+        public void TestTargetCoveredAndMatching()
+        {
+            CheckInvalid("POLYGON ((1 7, 5 7, 9 7, 9 3, 5 3, 1 3, 1 7))",
+                "MULTIPOLYGON (((5 9, 9 7, 5 7, 1 7, 5 9)), ((1 7, 5 7, 5 3, 1 3, 1 7)), ((9 3, 5 3, 5 7, 9 7, 9 3)), ((1 3, 5 3, 9 3, 5 1, 1 3)))",
+                "LINESTRING (1 7, 5 7, 9 7, 9 3, 5 3, 1 3, 1 7))");
+        }
+
+        [Test]
+        public void TestCoveredBy2AndMatching()
+        {
+            CheckInvalid("POLYGON ((1 9, 9 9, 9 5, 1 5, 1 9))",
+                "MULTIPOLYGON (((1 5, 9 5, 9 1, 1 1, 1 5)), ((1 9, 5 9, 5 1, 1 1, 1 9)), ((9 9, 9 1, 5 1, 5 9, 9 9)))",
+                "LINESTRING (1 5, 1 9, 9 9, 9 5)");
         }
 
         //========  Gap cases   =============================
@@ -160,13 +193,6 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
         {
             CheckValid("POLYGON ((1 1, 6 5, 4 9, 1 9, 1 1))",
                 "POLYGON ((1 1, 9 1, 9 4, 6 5, 1 1))");
-        }
-
-        [Test]
-        public void TestTargetCoveredAndMatching()
-        {
-            CheckValid("POLYGON ((1 7, 5 7, 9 7, 9 3, 5 3, 1 3, 1 7))",
-                "MULTIPOLYGON (((5 9, 9 7, 5 7, 1 7, 5 9)), ((1 7, 5 7, 5 3, 1 3, 1 7)), ((9 3, 5 3, 5 7, 9 7, 9 3)), ((1 3, 5 3, 9 3, 5 1, 1 3)))");
         }
 
         //-- confirms zero-length segments are skipped in processing
