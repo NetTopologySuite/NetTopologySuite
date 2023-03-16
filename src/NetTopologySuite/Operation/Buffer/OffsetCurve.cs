@@ -218,23 +218,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="distance">The offset distance (positive for left, negative for right)</param>
         /// <param name="bufParams">The buffer parameters to use</param>
         /// <returns>The raw offset curve points</returns>
-        [Obsolete("Will be removed in a future version. Use RawOffsetCurve")]
         public static Coordinate[] RawOffset(LineString line, double distance, BufferParameters bufParams)
-            => RawOffsetCurve(line, distance, bufParams);
-
-        /// <summary>
-        /// Gets the raw offset curve for a line at a given distance.
-        /// The quadrant segments, join style and mitre limit can be specified
-        /// via <see cref="BufferParameters"/>.
-        /// <para/>
-        /// The raw offset line may contain loops and other artifacts which are
-        /// not present in the true offset curve.
-        /// </summary>
-        /// <param name="line">The <c>LineString</c> to offset</param>
-        /// <param name="distance">The offset distance (positive for left, negative for right)</param>
-        /// <param name="bufParams">The buffer parameters to use</param>
-        /// <returns>The raw offset curve points</returns>
-        public static Coordinate[] RawOffsetCurve(LineString line, double distance, BufferParameters bufParams)
         {
             var pts = line.Coordinates;
             var cleanPts = CoordinateArrays.RemoveRepeatedOrInvalidPoints(pts);
@@ -253,7 +237,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The raw offset line</returns>
         public static Coordinate[] RawOffset(LineString line, double distance)
         {
-            return RawOffsetCurve(line, distance, new BufferParameters());
+            return RawOffset(line, distance, new BufferParameters());
         }
 
         private Geometry ComputeCurve(LineString lineGeom, double distance)
@@ -286,7 +270,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private List<OffsetCurveSection> ComputeSections(LineString lineGeom, double distance)
         {
-            var rawCurve = RawOffsetCurve(lineGeom, distance, _bufferParams);
+            var rawCurve = RawOffset(lineGeom, distance, _bufferParams);
             var sections = new List<OffsetCurveSection>();
             if (rawCurve.Length == 0)
             {
