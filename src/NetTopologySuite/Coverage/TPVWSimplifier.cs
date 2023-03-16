@@ -4,6 +4,7 @@ using NetTopologySuite.Index;
 using NetTopologySuite.Simplify;
 using NetTopologySuite.Utilities;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace NetTopologySuite.Coverage
 {
@@ -11,7 +12,9 @@ namespace NetTopologySuite.Coverage
     /// Computes a Topology-Preserving Visvalingnam-Whyatt simplification
     /// of a set of input lines.
     /// The simplified lines will contain no more intersections than are present
-    /// in the original input, and line endpoints are preserved.
+    /// in the original input.
+    /// Line and ring endpoints are preserved, except for rings
+    /// which are flagged as "free".
     /// <para/>
     /// The amount of simplification is determined by a tolerance value,
     /// which is a non-zero quantity.
@@ -39,43 +42,56 @@ namespace NetTopologySuite.Coverage
         /// <summary>
         /// Simplifies a set of lines, preserving the topology of the lines between
         /// themselves and a set of linear constraints.
+        /// The endpoints of lines are preserved.
+        /// The endpoint of rings are preserved as well, unless
+        /// the ring is indicated as "free" via a bit flag with the same index.
         /// </summary>
         /// <param name="lines">The lines to simplify</param>
-        /// <param name="constraints">The linear constraints</param>
+        /// <param name="freeRings">flags indicating which ring edges do not have node endpoints</param>
+        /// <param name="constraintLines">The linear constraints</param>
         /// <param name="distanceTolerance">The simplification tolerance</param>
         /// <returns>The simplified lines</returns>
-        public static MultiLineString Simplify(MultiLineString lines,
-            MultiLineString constraints, double distanceTolerance)
+        public static MultiLineString Simplify(MultiLineString lines, BitArray freeRings, 
+            MultiLineString constraintLines, double distanceTolerance)
         {
-            var simp = new TPVWSimplifier(lines, distanceTolerance) { 
-                Constraints = constraints
+            var simp = new TPVWSimplifier(lines, distanceTolerance) {
+                FreeRingIndices = freeRings,
+                Constraints = constraintLines
             };
             var result = (MultiLineString)simp.Simplify();
             return result;
         }
 
-        private readonly MultiLineString _input;
+        private readonly MultiLineString _inputLines;
+        private BitArray _isFreeRing;
+
         private readonly double _areaTolerance;
         private readonly GeometryFactory _geomFactory;
-        private MultiLineString _constraints = null;
+        private MultiLineString _constraintLines = null;
 
         private TPVWSimplifier(MultiLineString lines, double distanceTolerance)
         {
-            _input = lines;
+            _inputLines = lines;
             _areaTolerance = distanceTolerance * distanceTolerance;
-            _geomFactory = _input.Factory;
+            _geomFactory = _inputLines.Factory;
         }
 
         private MultiLineString Constraints
         {
-            get => _constraints;
-            set => _constraints = value;
+            get => _constraintLines;
+            set => _constraintLines = value;
         }
 
+        private BitArray FreeRingIndices
+        {
+            get => _isFreeRing;
+            //Assert: bit set has same size as number of lines.
+            set => _isFreeRing = value;
+        }
         private Geometry Simplify()
         {
-            var edges = CreateEdges(_input);
-            var constraintEdges = CreateEdges(_constraints);
+            var edges = CreateEdges(_inputLines, _isFreeRing);
+            var constraintEdges = CreateEdges(_constraintLines, null);
 
             var edgeIndex = new EdgeIndex();
             edgeIndex.Add(edges);
@@ -91,15 +107,20 @@ namespace NetTopologySuite.Coverage
             return _geomFactory.CreateMultiLineString(result);
         }
 
-        private List<Edge> CreateEdges(MultiLineString lines)
+        private List<Edge> CreateEdges(MultiLineString lines, BitArray isFreeRing)
         {
             var edges = new List<Edge>();
             if (lines == null)
                 return edges;
+            if (isFreeRing == null)
+            {
+                isFreeRing = new BitArray(lines.NumGeometries);
+                //for (int i = 0; i < lines.NumGeometries; i++) isFreeRing[i] = false;
+            }
             for (int i = 0; i < lines.NumGeometries; i++)
             {
                 var line = (LineString)lines.GetGeometryN(i);
-                edges.Add(new Edge(line, _areaTolerance));
+                edges.Add(new Edge(line, isFreeRing[i], _areaTolerance));
             }
             return edges;
         }
@@ -109,15 +130,28 @@ namespace NetTopologySuite.Coverage
             private readonly double _areaTolerance;
             private readonly LinkedLine _linkedLine;
             private readonly int _minEdgeSize;
+            private readonly bool _isFreeRing;
+            private readonly int _nbPts;
 
             private readonly VertexSequencePackedRtree _vertexIndex;
             private readonly Envelope _envelope;
+            private int _cornerNo;
 
-            public Edge(LineString inputLine, double areaTolerance)
+            /// <summary>
+            /// Creates a new edge.
+            /// The endpoints of the edge are preserved during simplification,
+            /// unless it is a ring and the <paramref name="isFreeRing"/> flag is set.
+            /// </summary>
+            /// <param name="inputLine">The line or ring</param>
+            /// <param name="isFreeRing">A flag indiciating if a ring endpoint can be removed</param>
+            /// <param name="areaTolerance">The simplification tolerance</param>
+            public Edge(LineString inputLine, bool isFreeRing, double areaTolerance)
             {
                 _areaTolerance = areaTolerance;
+                _isFreeRing = isFreeRing;
                 _envelope = inputLine.EnvelopeInternal;
                 var pts = inputLine.Coordinates;
+                _nbPts = pts.Length;
                 _linkedLine = new LinkedLine(pts);
                 _minEdgeSize = _linkedLine.IsRing ? 3 : 2;
 
@@ -170,7 +204,9 @@ namespace NetTopologySuite.Coverage
             private PriorityQueue<Corner> CreateQueue()
             {
                 var cornerQueue = new PriorityQueue<Corner>();
-                for (int i = 1; i < _linkedLine.Count - 1; i++)
+                int minIndex = (_linkedLine.IsRing && _isFreeRing) ? 0 : 1;
+                int maxIndex = _nbPts - 1;
+                for (int i = minIndex; i < maxIndex; i++)
                 {
                     AddCorner(i, cornerQueue);
                 }
@@ -179,12 +215,13 @@ namespace NetTopologySuite.Coverage
 
             private void AddCorner(int i, PriorityQueue<Corner> cornerQueue)
             {
-                if (!_linkedLine.IsCorner(i))
-                    return;
-                var corner = new Corner(_linkedLine, i);
-                if (corner.Area <= _areaTolerance)
+                if (_isFreeRing || (i != 0 && i != _nbPts - 1))
                 {
-                    cornerQueue.Add(corner);
+                    var corner = new Corner(_linkedLine, i, _cornerNo++);
+                    if (corner.Area <= _areaTolerance)
+                    {
+                        cornerQueue.Add(corner);
+                    }
                 }
             }
 
@@ -221,10 +258,8 @@ namespace NetTopologySuite.Coverage
                 Edge edge)
             {
                 int[] result = edge.Query(cornerEnv);
-                for (int i = 0; i < result.Length; i++)
+                foreach (int index in result)
                 {
-                    int index = result[i];
-
                     var v = edge.GetCoordinate(index);
                     // ok if corner touches another line - should only happen at endpoints
                     if (corner.IsVertex(v))

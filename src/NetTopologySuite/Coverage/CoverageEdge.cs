@@ -6,6 +6,8 @@ namespace NetTopologySuite.Coverage
 {
     /// <summary>
     /// An edge of a polygonal coverage formed from all or a section of a polygon ring.
+    /// An edge may be a free ring, which is a ring which has not node points
+    /// (i.e.does not touch any other rings in the parent coverage).
     /// </summary>
     /// <author>Martin Davis</author>
     internal sealed class CoverageEdge
@@ -14,13 +16,13 @@ namespace NetTopologySuite.Coverage
         public static CoverageEdge CreateEdge(LinearRing ring)
         {
             var pts = ExtractEdgePoints(ring, 0, ring.NumPoints - 1);
-            return new CoverageEdge(pts);
+            return new CoverageEdge(pts, true);
         }
 
         public static CoverageEdge CreateEdge(LinearRing ring, int start, int end)
         {
             var pts = ExtractEdgePoints(ring, start, end);
-            return new CoverageEdge(pts);
+            return new CoverageEdge(pts, false);
         }
 
         private static Coordinate[] ExtractEdgePoints(LinearRing ring, int start, int end)
@@ -118,10 +120,12 @@ namespace NetTopologySuite.Coverage
 
         private Coordinate[] _pts;
         private int _ringCount = 0;
+        private readonly bool _isFreeRing;
 
-        public CoverageEdge(Coordinate[] pts)
+        public CoverageEdge(Coordinate[] pts, bool isFreeRing)
         {
             _pts = pts;
+            _isFreeRing = isFreeRing;
         }
 
         public void IncrementRingCount()
@@ -130,6 +134,12 @@ namespace NetTopologySuite.Coverage
         }
 
         public int RingCount => _ringCount;
+
+        /// <summary>
+        /// Gets a value indicating if this edge is a free ring;
+        /// i.e.one with no constrained nodes.
+        /// </summary>
+        public bool IsFreeRing { get => _isFreeRing; }
 
         public Coordinate[] Coordinates
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetTopologySuite.Utilities
 {
@@ -69,7 +70,7 @@ namespace NetTopologySuite.Utilities
         /// <remarks>The smallest item, or <c>default(T)</c> if empty.</remarks>
         public T Poll()
         {
-            var node = this._queue.Dequeue();
+            var node = _queue.Dequeue();
             return node == null
                 ? default
                 : node.Data;
