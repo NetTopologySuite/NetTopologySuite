@@ -5,7 +5,6 @@ using NetTopologySuite.Simplify;
 using NetTopologySuite.Utilities;
 using System.Collections.Generic;
 using System.Collections;
-using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Coverage
 {
@@ -290,7 +289,6 @@ namespace NetTopologySuite.Coverage
                 int index = corner.Index;
                 int prev = _linkedLine.Prev(index);
                 int next = _linkedLine.Next(index);
-                cornerQueue.RemoveIf(c => c.Index == prev || c.Index == next);
                 _linkedLine.Remove(index);
                 _vertexIndex.RemoveAt(index);
 

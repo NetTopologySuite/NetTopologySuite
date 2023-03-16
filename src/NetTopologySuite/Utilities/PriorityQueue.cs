@@ -88,15 +88,6 @@ namespace NetTopologySuite.Utilities
                 : node.Data;
         }
 
-        public bool RemoveIf(Predicate<T> predicate)
-        {
-            var items = _queue.Where(t => t != null ? predicate(t.Data) : false) ?? Array.Empty<PriorityQueueNode<T, T>>();
-            foreach (var item in items)
-                if (!_queue.Remove(item))
-                    return false;
-            return true;
-        }
-
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>>
         public IEnumerator<T> GetEnumerator()
         {
