@@ -2,7 +2,6 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.Triangulate;
 using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
@@ -265,7 +264,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (_offset0.P1.Distance(_offset1.P0) < _distance * OffsetSegmentSeparationFactor)
             {
                 //-- use endpoint of longest segment, to reduce change in area
-                double segLen0 = _s1.Distance(_s2);
+                double segLen0 = _s0.Distance(_s1);
                 double segLen1 = _s1.Distance(_s2);
                 var offsetPt = (segLen0 > segLen1) ? _offset0.P1 : _offset1.P0;
                 _segList.AddPt(offsetPt);
