@@ -364,9 +364,9 @@ namespace NetTopologySuite.Geometries
         public override int GetHashCode()
         {
             const int prime = 31;
-            int result = prime + _modelType.GetHashCode();
+            int result = unchecked(prime + (int)_modelType);
             long temp = BitConverter.DoubleToInt64Bits(_scale);
-            result = prime * result + (int)(temp ^ (temp >> 32));
+            result = unchecked(prime * result + (int)(temp ^ (temp >> 32)));
             return result;
         }
         /// <summary>
