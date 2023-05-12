@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
             Assert.IsNotNull(document.Element(XName.Get("MultiGeometry", "http://www.opengis.net/gml")).Element(XName.Get("geometryMember", "http://www.opengis.net/gml")));
         }
 
-        private XmlSchemaSet CreateSchemaSet()
+        private static XmlSchemaSet CreateSchemaSet()
         {
             var schemaSet = new XmlSchemaSet();
             schemaSet.Add("http://www.opengis.net/gml", "http://schemas.opengis.net/gml/2.1.2/geometry.xsd");
