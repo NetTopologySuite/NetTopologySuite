@@ -1,7 +1,8 @@
 ﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Simplify;
 using System;
 
-namespace NetTopologySuite.Simplify
+namespace NetTopologySuite.Coverage
 {
     internal sealed class Corner : IComparable<Corner>
     {

@@ -5,7 +5,6 @@ using NetTopologySuite.Simplify;
 using NetTopologySuite.Utilities;
 using System.Collections.Generic;
 using System.Collections;
-using System;
 
 namespace NetTopologySuite.Coverage
 {
