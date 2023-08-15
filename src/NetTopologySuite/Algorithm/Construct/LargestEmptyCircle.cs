@@ -1,6 +1,7 @@
 ﻿using System;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Utilities;
 
@@ -8,16 +9,24 @@ namespace NetTopologySuite.Algorithm.Construct
 {
     /// <summary>
     /// Constructs the Largest Empty Circle for a set
-    /// of obstacle geometries, up to a specified tolerance.
+    /// of obstacle geometries, up to a given accuracy distance tolerance.
     /// The obstacles are point and line geometries.
+    /// (Polygonal obstacles may be supplied, but only their boundaries are used.)
     /// <para/>
-    /// The Largest Empty Circle is the largest circle which
-    /// has its center in the convex hull of the obstacles (the <i>boundary</i>),
-    /// and whose interior does not intersect with any obstacle.
+    /// The Largest Empty Circle (LEC) is the largest circle
+    /// whose interior does not intersect with any obstacle
+    /// and whose center lies within a polygonal boundary.
     /// The circle center is the point in the interior of the boundary
-    /// which has the farthest distance from the obstacles (up to tolerance).
-    /// The circle is determined by the center point
-    /// and a point lying on an obstacle indicating the circle radius.
+    /// which has the farthest distance from the obstacles
+    /// (up to the accuracy of the distance tolerance).
+    /// The circle itself is determined by the center point
+    /// and a point lying on an obstacle determining the circle radius.
+    /// <para/>
+    /// The polygonal boundary may be supplied explicitly.
+    /// If it is not specified the convex hull of the obstacles is used as the boundary.
+    /// <para/>
+    /// To compute an LEC which lies <i>wholly</i> within
+    /// a polygonal boundary, include the boundary polygon as an obstacle as well.
     /// <para/>
     /// The implementation uses a successive-approximation technique
     /// over a grid of square cells covering the obstacles and boundary.
@@ -28,7 +37,6 @@ namespace NetTopologySuite.Algorithm.Construct
     /// <h3>Future Enhancements</h3>
     /// <list type="bullet">
     /// <item><description>Support polygons as obstacles</description></item>
-    /// <item><description>Support a client-defined boundary polygon</description></item>
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
@@ -46,31 +54,65 @@ namespace NetTopologySuite.Algorithm.Construct
         /// <returns>The center point of the Largest Empty Circle</returns>
         public static Point GetCenter(Geometry obstacles, double tolerance)
         {
-            var lec = new LargestEmptyCircle(obstacles, tolerance);
+            return GetCenter(obstacles, null, tolerance);
+        }
+
+        /// <summary>
+        /// Computes the center point of the Largest Empty Circle
+        /// interior-disjoint to a set of obstacles and within a polygonal boundary, 
+        /// with accuracy to a given tolerance distance.
+        /// The center of the LEC lies within the boundary.
+        /// </summary>
+        /// <param name="obstacles">A geometry representing the obstacles (points and lines)</param>
+        /// <param name="boundary">A polygonal geometry to contain the LEC center</param>
+        /// <param name="tolerance">The distance tolerance for computing the center point</param>
+        /// <returns>The center point of the Largest Empty Circle</returns>
+        public static Point GetCenter(Geometry obstacles, Geometry boundary, double tolerance)
+        {
+            var lec = new LargestEmptyCircle(obstacles, boundary, tolerance);
             return lec.GetCenter();
         }
 
         /// <summary>
         /// Computes a radius line of the Largest Empty Circle
-        /// within a set of obstacles, up to a given distance tolerance.
+        /// interior-disjoint to a set of obstacles,
+        /// with accuracy to a given tolerance distance.
+        /// The center of the LEC lies within the convex hull of the obstacles.
         /// </summary>
         /// <param name="obstacles">A geometry representing the obstacles (points and lines)</param>
         /// <param name="tolerance">The distance tolerance for computing the center point</param>
         /// <returns>A line from the center of the circle to a point on the edge</returns>
         public static LineString GetRadiusLine(Geometry obstacles, double tolerance)
         {
-            var lec = new LargestEmptyCircle(obstacles, tolerance);
+            return GetRadiusLine(obstacles, null, tolerance);
+        }
+
+        /// <summary>
+        /// Computes a radius line of the Largest Empty Circle
+        /// interior-disjoint to a set of obstacles and within a polygonal boundary,
+        /// with accuracy to a given tolerance distance.
+        /// The center of the LEC lies within the boundary.
+        /// </summary>
+        /// <param name="obstacles">A geometry representing the obstacles (points and lines)</param>
+        /// <param name="boundary">A polygonal geometry to contain the LEC center</param>
+        /// <param name="tolerance">The distance tolerance for computing the center point</param>
+        /// <returns>A line from the center of the circle to a point on the edge</returns>
+        public static LineString GetRadiusLine(Geometry obstacles, Geometry boundary, double tolerance)
+        {
+            var lec = new LargestEmptyCircle(obstacles, boundary, tolerance);
             return lec.GetRadiusLine();
         }
 
+
         private readonly Geometry _obstacles;
+        private readonly Geometry _boundary;
         private readonly double _tolerance;
 
         private readonly GeometryFactory _factory;
-        private Geometry _boundary;
         private IndexedPointInAreaLocator _ptLocater;
         private readonly IndexedFacetDistance _obstacleDistance;
         private IndexedFacetDistance _boundaryDistance;
+        private Envelope _gridEnv;
         private Cell _farthestCell;
 
         private Cell _centerCell;
@@ -84,36 +126,39 @@ namespace NetTopologySuite.Algorithm.Construct
         /// </summary>
         /// <param name="obstacles">A geometry representing the obstacles (points and lines)</param>
         /// <param name="tolerance">The distance tolerance for computing the center point</param>
+        [Obsolete("Will be removed in a future version")]
         public LargestEmptyCircle(Geometry obstacles, double tolerance)
-        {
-            if (obstacles.IsEmpty)
-            {
-                throw new ArgumentException("Empty obstacles geometry is not supported");
-            }
+            :this(obstacles, null, tolerance)
+        { }
 
+        /// <summary>
+        /// Creates a new instance of a Largest Empty Circle construction,
+        /// interior-disjoint to a set of obstacle geometries and within a polygonal boundary.
+        /// If the boundary is null or empty the convex hull
+        /// of the obstacles is used as the boundary.
+        /// </summary>
+        /// <param name="obstacles">A non-empty geometry representing the obstacles (points and lines)</param>
+        /// <param name="boundary">A polygonal geometry to contain the LEC center (may be null or empty)</param>
+        /// <param name="tolerance">The distance tolerance for computing the center point (a positive value)</param>
+        public LargestEmptyCircle(Geometry obstacles, Geometry boundary, double tolerance)
+        {
+            if (obstacles == null || obstacles.IsEmpty)
+            {
+                throw new ArgumentException("Obstacles geometry is empty or null", nameof(obstacles));
+            }
+            if (boundary != null && !(boundary is IPolygonal)) {
+                throw new ArgumentException("Boundary must be polygonal", nameof(boundary));
+            }
+            if (tolerance <= 0)
+            {
+                throw new ArgumentException(string.Format("Accuracy tolerance is non-positive: {0:R}", tolerance), nameof(tolerance));
+            }
             _obstacles = obstacles;
+            _boundary = boundary;
             _factory = obstacles.Factory;
             _tolerance = tolerance;
             _obstacleDistance = new IndexedFacetDistance(obstacles);
-            SetBoundary(obstacles);
         }
-
-        /// <summary>
-        /// Sets the area boundary as the convex hull
-        /// of the obstacles.
-        /// </summary>
-        private void SetBoundary(Geometry obstacles)
-        {
-            // TODO: allow this to be set by client as arbitrary polygon
-            this._boundary = obstacles.ConvexHull();
-            // if boundary does not enclose an area cannot create a ptLocater
-            if (_boundary.Dimension >= Dimension.Surface)
-            {
-                _ptLocater = new IndexedPointInAreaLocator(_boundary);
-                _boundaryDistance = new IndexedFacetDistance(_boundary);
-            }
-        }
-
         /// <summary>
         /// Gets the center point of the Largest Empty Circle
         /// (up to the tolerance distance).
@@ -180,8 +225,27 @@ namespace NetTopologySuite.Algorithm.Construct
             return DistanceToConstraints(pt);
         }
 
+        private void InitBoundary()
+        {
+            var bounds = _boundary;
+            if (bounds == null || bounds.IsEmpty)
+            {
+                bounds = _obstacles.ConvexHull();
+            }
+            //-- the centre point must be in the extent of the boundary
+            _gridEnv = bounds.EnvelopeInternal;
+            // if bounds does not enclose an area cannot create a ptLocater
+            if (bounds.Dimension >= Dimension.Surface)
+            {
+                _ptLocater = new IndexedPointInAreaLocator(bounds);
+                _boundaryDistance = new IndexedFacetDistance(bounds);
+            }
+        }
+
         private void Compute()
         {
+            InitBoundary();
+
             // check if already computed
             if (_centerCell != null) return;
 
@@ -199,7 +263,8 @@ namespace NetTopologySuite.Algorithm.Construct
             // Priority queue of cells, ordered by decreasing distance from constraints
             var cellQueue = new PriorityQueue<Cell>();
 
-            CreateInitialGrid(_obstacles.EnvelopeInternal, cellQueue);
+            //-- grid covers extent of obstacles and boundary (if any)
+            CreateInitialGrid(_gridEnv, cellQueue);
 
             // use the area centroid as the initial candidate center point
             _farthestCell = CreateCentroidCell(_obstacles);

@@ -70,17 +70,68 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
                 0.01);
         }
 
+        //---------------------------------------------------------
+        // Obstacles and Boundary
 
-        private void CheckCircle(string wkt, double tolerance,
-            double x, double y, double expectedRadius)
+        [Test]
+        public void TestBoundaryEmpty()
         {
-            CheckCircle(Read(wkt), tolerance, x, y, expectedRadius);
+            CheckCircle("MULTIPOINT ((2 2), (8 8), (7 5))",
+                "POLYGON EMPTY",
+                0.01, 4.127, 4.127, 3);
         }
 
-        private void CheckCircle(Geometry geom, double tolerance,
+        [Test]
+        public void TestBoundarySquare()
+        {
+            CheckCircle("MULTIPOINT ((2 2), (6 4), (8 8))",
+                "POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))",
+                0.01, 1.00390625, 8.99609375, 7.065);
+        }
+
+        [Test]
+        public void TestBoundarySquareObstaclesOutside()
+        {
+            CheckCircle("MULTIPOINT ((10 10), (10 0))",
+                "POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))",
+                0.01, 1.0044, 4.997, 10.29);
+        }
+
+        [Test]
+        public void TestBoundaryMultiSquares()
+        {
+            CheckCircle("MULTIPOINT ((10 10), (10 0), (5 5))",
+                "MULTIPOLYGON (((1 9, 9 9, 9 1, 1 1, 1 9)), ((15 20, 20 20, 20 15, 15 15, 15 20)))",
+                0.01, 19.995, 19.997, 14.137);
+        }
+
+        [Test]
+        public void TestBoundaryAsObstacle()
+        {
+            CheckCircle("GEOMETRYCOLLECTION (POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9)), POINT (4 3), POINT (7 6))",
+                "POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))",
+                0.01, 4, 6, 3);
+        }
+
+        //========================================================
+
+        private void CheckCircle(string wktObstacles, double tolerance,
             double x, double y, double expectedRadius)
         {
-            var lec = new LargestEmptyCircle(geom, tolerance);
+            CheckCircle(Read(wktObstacles), null, tolerance, x, y, expectedRadius);
+        }
+
+
+        private void CheckCircle(string wktObstacles, string wktBoundary, double tolerance,
+            double x, double y, double expectedRadius)
+        {
+            CheckCircle(Read(wktObstacles), Read(wktBoundary), tolerance, x, y, expectedRadius);
+        }
+
+        private void CheckCircle(Geometry geomObstacles, Geometry geomBoundary, double tolerance,
+            double x, double y, double expectedRadius)
+        {
+            var lec = new LargestEmptyCircle(geomObstacles, geomBoundary, tolerance);
             Geometry centerPoint = lec.GetCenter();
             var centerPt = centerPoint.Coordinate;
             var expectedCenter = new Coordinate(x, y);
