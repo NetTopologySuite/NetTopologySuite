@@ -1,6 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using System;
+using System.Collections.Generic;
 
 namespace NetTopologySuite.Coverage
 {
@@ -24,6 +25,19 @@ namespace NetTopologySuite.Coverage
             var pts = ExtractEdgePoints(ring, start, end);
             return new CoverageEdge(pts, false);
         }
+
+        internal static MultiLineString CreateLines(IList<CoverageEdge> edges, GeometryFactory geomFactory)
+        {
+            var lines = new LineString[edges.Count];
+            for (int i = 0; i < edges.Count; i++)
+            {
+                var edge = edges[i];
+                lines[i] = edge.ToLineString(geomFactory);
+            }
+            var mls = geomFactory.CreateMultiLineString(lines);
+            return mls;
+        }
+
 
         private static Coordinate[] ExtractEdgePoints(LinearRing ring, int start, int end)
         {
@@ -155,6 +169,11 @@ namespace NetTopologySuite.Coverage
         public Coordinate StartCoordinate
         {
             get => _pts[0];
+        }
+
+        public LineString ToLineString(GeometryFactory geomFactory)
+        {
+            return geomFactory.CreateLineString(Coordinates);
         }
 
         public override string ToString()

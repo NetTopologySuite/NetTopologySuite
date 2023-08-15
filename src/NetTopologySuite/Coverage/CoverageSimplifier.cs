@@ -111,7 +111,7 @@ namespace NetTopologySuite.Coverage
             var cov = CoverageRingEdges.Create(_input);
             var innerEdges = cov.SelectEdges(2);
             var outerEdges = cov.SelectEdges(1);
-            var constraintEdges = CreateLines(outerEdges);
+            var constraintEdges = CoverageEdge.CreateLines(outerEdges, _geomFactory);
 
             SimplifyEdges(innerEdges, constraintEdges, tolerance);
             var result = cov.BuildCoverage();
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Coverage
 
         private void SimplifyEdges(IList<CoverageEdge> edges, MultiLineString constraints, double tolerance)
         {
-            var lines = CreateLines(edges);
+            var lines = CoverageEdge.CreateLines(edges, _geomFactory);
             var freeRings = GetFreeRings(edges);
             var linesSimp = TPVWSimplifier.Simplify(lines, freeRings, constraints, tolerance);
             //Assert: mlsSimp.getNumGeometries = edges.length
@@ -134,18 +134,6 @@ namespace NetTopologySuite.Coverage
             {
                 edges[i].Coordinates = lines.GetGeometryN(i).Coordinates;
             }
-        }
-
-        private MultiLineString CreateLines(IList<CoverageEdge> edges)
-        {
-            var lines = new LineString[edges.Count];
-            for (int i = 0; i < edges.Count; i++)
-            {
-                var edge = edges[i];
-                lines[i] = _geomFactory.CreateLineString(edge.Coordinates);
-            }
-            var mls = _geomFactory.CreateMultiLineString(lines);
-            return mls;
         }
 
         private static BitArray GetFreeRings(IList<CoverageEdge> edges)

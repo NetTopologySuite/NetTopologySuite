@@ -1,10 +1,6 @@
 ﻿using NetTopologySuite.Coverage;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Tests.NUnit.Coverage;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Tests.NUnit.Coverage
 {
