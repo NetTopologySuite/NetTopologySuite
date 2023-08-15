@@ -14,7 +14,7 @@ namespace NetTopologySuite.Coverage
     /// (either <see cref="Polygon"/>s or <see cref="MultiPolygon"/>s).
     /// </summary>
     /// <author>Martin Davis</author>
-    class CoverageRingEdges
+    internal sealed class CoverageRingEdges
     {
         /// <summary>
         /// Create a new instance for a given coverage.
@@ -97,11 +97,11 @@ namespace NetTopologySuite.Coverage
         private void AddBoundaryNodes(LinearRing ring, ISet<LineSegment> boundarySegs, HashSet<Coordinate> nodes)
         {
             var seq = ring.CoordinateSequence;
-            bool isBdyLast = IsBoundarySegment(seq, seq.Count - 2, boundarySegs);
+            bool isBdyLast = CoverageBoundarySegmentFinder.IsBoundarySegment(boundarySegs, seq, seq.Count - 2);
             bool isBdyPrev = isBdyLast;
             for (int i = 0; i < seq.Count - 1; i++)
             {
-                bool isBdy = IsBoundarySegment(seq, i, boundarySegs);
+                bool isBdy = CoverageBoundarySegmentFinder.IsBoundarySegment(boundarySegs, seq, i);
                 if (isBdy != isBdyPrev)
                 {
                     var nodePt = seq.GetCoordinate(i);
@@ -109,12 +109,6 @@ namespace NetTopologySuite.Coverage
                 }
                 isBdyPrev = isBdy;
             }
-        }
-
-        private bool IsBoundarySegment(CoordinateSequence seq, int i, ISet<LineSegment> boundarySegs)
-        {
-            var seg = CoverageBoundarySegmentFinder.CreateSegment(seq, i);
-            return boundarySegs.Contains(seg);
         }
 
         private List<CoverageEdge> ExtractRingEdges(LinearRing ring,

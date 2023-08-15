@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using System;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Coverage
@@ -14,6 +15,12 @@ namespace NetTopologySuite.Coverage
                 geom.Apply(finder);
             }
             return segs;
+        }
+
+        public static bool IsBoundarySegment(ISet<LineSegment> boundarySegs, CoordinateSequence seq, int i)
+        {
+            var seg = CreateSegment(seq, i);
+            return boundarySegs.Contains(seg);
         }
 
         private readonly ISet<LineSegment> _boundarySegs;
@@ -40,7 +47,7 @@ namespace NetTopologySuite.Coverage
             }
         }
 
-        public static LineSegment CreateSegment(CoordinateSequence seq, int i)
+        private static LineSegment CreateSegment(CoordinateSequence seq, int i)
         {
             var seg = new LineSegment(seq.GetCoordinate(i), seq.GetCoordinate(i + 1));
             seg.Normalize();
