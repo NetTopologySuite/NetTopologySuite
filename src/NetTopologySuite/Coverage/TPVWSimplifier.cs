@@ -132,7 +132,6 @@ namespace NetTopologySuite.Coverage
 
             private readonly VertexSequencePackedRtree _vertexIndex;
             private readonly Envelope _envelope;
-            private int _cornerNo;
 
             /// <summary>
             /// Creates a new edge.
@@ -214,7 +213,7 @@ namespace NetTopologySuite.Coverage
             {
                 if (_isFreeRing || (i != 0 && i != _nbPts - 1))
                 {
-                    var corner = new Corner(_linkedLine, i, _cornerNo++);
+                    var corner = new Corner(_linkedLine, i);
                     if (corner.Area <= _areaTolerance)
                     {
                         cornerQueue.Add(corner);

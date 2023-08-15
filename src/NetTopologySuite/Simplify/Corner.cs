@@ -11,21 +11,14 @@ namespace NetTopologySuite.Simplify
         private int _prev;
         private int _next;
         private double _area;
-        private readonly int _instanceNo;
 
         public Corner(LinkedLine edge, int i)
-            : this(edge, i, 0)
-        { }
-
-        public Corner(LinkedLine edge, int i, int instanceNo)
         {
             _edge = edge;
             _index = i;
             _prev = edge.Prev(i);
             _next = edge.Next(i);
             _area = AreaFn(edge, i);
-
-            _instanceNo = instanceNo;
         }
 
         public bool IsVertex(int index)
@@ -36,6 +29,8 @@ namespace NetTopologySuite.Simplify
         }
 
         public int Index => _index;
+
+        public Coordinate Coordinate => _edge.GetCoordinate(_index);
 
         public double Area => _area;
 
@@ -59,12 +54,14 @@ namespace NetTopologySuite.Simplify
 
         /// <summary>
         /// Orders corners by increasing area
+        /// To ensure equal-area corners have a deterministic ordering,
+        /// if area is equal then compares corner index.
         /// </summary>
         public int CompareTo(Corner o)
         {
             int res = _area.CompareTo(o._area);
             if (res != 0) return res;
-            return _instanceNo.CompareTo(o._instanceNo);
+            return _index.CompareTo(o._index);
         }
 
         public Envelope Envelope
