@@ -5,6 +5,7 @@ using NetTopologySuite.Simplify;
 using NetTopologySuite.Utilities;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 namespace NetTopologySuite.Coverage
 {
@@ -112,15 +113,11 @@ namespace NetTopologySuite.Coverage
             var edges = new List<Edge>();
             if (lines == null)
                 return edges;
-            if (isFreeRing == null)
-            {
-                isFreeRing = new BitArray(lines.NumGeometries);
-                //for (int i = 0; i < lines.NumGeometries; i++) isFreeRing[i] = false;
-            }
             for (int i = 0; i < lines.NumGeometries; i++)
             {
                 var line = (LineString)lines.GetGeometryN(i);
-                edges.Add(new Edge(line, isFreeRing[i], _areaTolerance));
+                bool isFree = isFreeRing == null ? false : isFreeRing[i];
+                edges.Add(new Edge(line, isFree, _areaTolerance));
             }
             return edges;
         }
