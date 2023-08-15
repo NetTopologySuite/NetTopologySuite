@@ -42,6 +42,24 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                 );
         }
 
+        [Test]
+        public void TestZeroOffsetLine()
+        {
+            CheckOffsetCurve(
+                "LINESTRING (0 0, 1 0, 1 1)", 0,
+                "LINESTRING (0 0, 1 0, 1 1)"
+                );
+        }
+
+        [Test]
+        public void TestZeroOffsetPolygon()
+        {
+            CheckOffsetCurve(
+                "POLYGON ((1 9, 9 1, 1 1, 1 9))", 0,
+                "LINESTRING (1 9, 1 1, 9 1, 1 9)"
+                );
+        }
+
         /**
          * Test bug fix for removing repeated points in input for raw curve.
          * See https://github.com/locationtech/jts/issues/957

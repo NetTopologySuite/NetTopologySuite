@@ -20,6 +20,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// If the offset distance is positive the curve lies on the left side of the input;
     /// if it is negative the curve is on the right side.
     /// The curve(s) have the same direction as the input line(s).
+    /// The result for a zero offset distance is a copy of the input linework.
     /// <para/>
     /// The offset curve is based on the boundary of the buffer for the geometry
     /// at the offset distance(see <see cref="BufferOp"/>.
@@ -247,6 +248,11 @@ namespace NetTopologySuite.Operation.Buffer
             if (lineGeom.NumPoints < 2 || lineGeom.Length == 0.0)
             {
                 return _geomFactory.CreateLineString();
+            }
+            //-- zero offset distance
+            if (distance == 0)
+            {
+                return lineGeom.Copy();
             }
             //-- two-point-line
             if (lineGeom.NumPoints == 2)
