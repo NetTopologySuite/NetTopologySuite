@@ -234,6 +234,9 @@ namespace NetTopologySuite.Index.Strtree
             return size;
         }
 
+        /// <summary>
+        /// Gets the number of levels in the tree.
+        /// </summary>
         public int Depth
         {
             get
