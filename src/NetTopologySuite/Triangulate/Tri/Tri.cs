@@ -20,6 +20,8 @@ namespace NetTopologySuite.Triangulate.Tri
     /// <author>Martin Davis</author>
     public class Tri
     {
+        private const string INVALID_TRI_INDEX = "Invalid Tri index: {0}";
+
         /// <summary>
         /// Creates a <see cref="GeometryCollection"/> of <see cref="Polygon"/>s
         /// representing the triangles in a list.
@@ -186,7 +188,7 @@ namespace NetTopologySuite.Triangulate.Tri
                 case 1: _tri1 = tri; return;
                 case 2: _tri2 = tri; return;
             }
-            Assert.ShouldNeverReachHere();
+            throw new ArgumentOutOfRangeException(nameof(edgeIndex), string.Format(INVALID_TRI_INDEX, edgeIndex));
         }
 
         private void SetCoordinates(Coordinate p0, Coordinate p1, Coordinate p2)
@@ -468,15 +470,14 @@ namespace NetTopologySuite.Triangulate.Tri
         /// <returns>The vertex coordinate</returns>
         public Coordinate GetCoordinate(int index)
         {
-            if (index == 0)
+            switch (index)
             {
-                return _p0;
+                case 0: return _p0;
+                case 1: return _p1;
+                case 2: return _p2;
             }
-            if (index == 1)
-            {
-                return _p1;
-            }
-            return _p2;
+            throw new ArgumentOutOfRangeException(nameof(index), string.Format(INVALID_TRI_INDEX, index));
+
         }
 
         /// <summary>
@@ -526,8 +527,7 @@ namespace NetTopologySuite.Triangulate.Tri
                 case 1: return _tri1;
                 case 2: return _tri2;
             }
-            Assert.ShouldNeverReachHere();
-            return null;
+            throw new ArgumentOutOfRangeException(nameof(index), string.Format(INVALID_TRI_INDEX, index));
         }
 
         /// <summary>
@@ -596,6 +596,10 @@ namespace NetTopologySuite.Triangulate.Tri
                 var adj = curr.GetAdjacent(currIndex);
                 if (adj == null) return false;
                 int adjIndex = adj.GetIndex(curr);
+                if (adjIndex < 0)
+                {
+                    throw new Exception("Inconsistent adjacency - invalid triangulation");
+                }
                 curr = adj;
                 currIndex = Tri.Next(adjIndex);
             }
