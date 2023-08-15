@@ -49,7 +49,7 @@ namespace NetTopologySuite.Coverage
         /// </summary>
         /// <param name="lines">The lines to simplify</param>
         /// <param name="freeRings">flags indicating which ring edges do not have node endpoints</param>
-        /// <param name="constraintLines">The linear constraints</param>
+        /// <param name="constraintLines">The linear constraints (may be null)</param>
         /// <param name="distanceTolerance">The simplification tolerance</param>
         /// <returns>The simplified lines</returns>
         public static MultiLineString Simplify(MultiLineString lines, BitArray freeRings, 
