@@ -91,6 +91,9 @@ namespace NetTopologySuite.Coverage
                     for (int ihole = 0; ihole < poly.NumInteriorRings; ihole++)
                     {
                         var hole = (LinearRing)poly.GetInteriorRingN(ihole);
+                        //-- skip empty rings. Missing rings are copied in result
+                        if (hole.IsEmpty)
+                            continue;
                         AddRingEdges(hole, nodes, boundarySegs, uniqueEdgeMap);
                     }
                 }
@@ -306,6 +309,7 @@ namespace NetTopologySuite.Coverage
         private Polygon BuildPolygon(Polygon polygon)
         {
             var shell = BuildRing((LinearRing)polygon.ExteriorRing);
+
             if (polygon.NumInteriorRings == 0)
             {
                 return polygon.Factory.CreatePolygon(shell);

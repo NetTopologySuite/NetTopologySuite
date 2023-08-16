@@ -301,6 +301,48 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
             );
 
         }
+
+        //---------------------------------
+
+        [Test]
+        public void TestAllEmpty()
+        {
+            CheckResult(ReadArray(
+                "POLYGON EMPTY",
+                "POLYGON EMPTY"),
+                1,
+                ReadArray(
+                    "POLYGON EMPTY",
+                    "POLYGON EMPTY")
+            );
+        }
+
+        [Test]
+        public void TestOneEmpty()
+        {
+            CheckResult(ReadArray(
+                "POLYGON ((1 9, 5 9.1, 9 9, 9 1, 1 1, 1 9))",
+                "POLYGON EMPTY"),
+                1,
+                ReadArray(
+                    "POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))",
+                    "POLYGON EMPTY")
+            );
+        }
+
+        [Test]
+        public void TestEmptyHole()
+        {
+            CheckResult(ReadArray(
+                "POLYGON ((1 9, 5 9.1, 9 9, 9 1, 1 1, 1 9), EMPTY)",
+                "POLYGON EMPTY"),
+                1,
+                ReadArray(
+                    "POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9), EMPTY)",
+                    "POLYGON EMPTY")
+            );
+        }
+
         //=================================
 
 
