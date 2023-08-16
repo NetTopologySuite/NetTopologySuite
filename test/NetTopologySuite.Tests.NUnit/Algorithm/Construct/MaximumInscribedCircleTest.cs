@@ -1,5 +1,4 @@
-﻿using System;
-using NetTopologySuite.Algorithm.Construct;
+﻿using NetTopologySuite.Algorithm.Construct;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -56,14 +55,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         public void TestCollapsedLine()
         {
             CheckCircle("POLYGON ((100 100, 200 200, 100 100, 100 100))",
-                0.01, 150, 150, 0);
+                0.01);
         }
 
         [Test, Description("Invalid polygon collapsed to a flat line (originally caused infinite loop)")]
         public void TestCollapsedLineFlat()
         {
             CheckCircle("POLYGON((1 2, 1 2, 1 2, 1 2, 3 2, 1 2))",
-                0.01, 2, 2, 0);
+                0.01);
         }
 
         [Test, Description("Invalid polygon collapsed to a point")]
@@ -105,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
             var geom = Read(wkt);
             var mic = new MaximumInscribedCircle(geom, tolerance);
             Geometry centerPoint = mic.GetCenter();
-            double dist = geom.Distance(centerPoint);
+            double dist = geom.Boundary.Distance(centerPoint);
             Assert.That(dist < 2 * tolerance);
         }
 

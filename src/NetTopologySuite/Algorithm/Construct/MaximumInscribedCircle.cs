@@ -3,6 +3,7 @@ using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Utilities;
+using Point = NetTopologySuite.Geometries.Point;
 
 namespace NetTopologySuite.Algorithm.Construct
 {
@@ -68,31 +69,23 @@ namespace NetTopologySuite.Algorithm.Construct
 
         /// <summary>
         /// Computes the maximum number of iterations allowed.
-        /// Uses a heuristic based on the area of the input geometry
+        /// Uses a heuristic based on the size of the input geometry
         /// and the tolerance distance.
-        /// The number of tolerance-sized cells that cover the input geometry area
-        /// is computed, times a safety factor.
-        /// This prevents massive numbers of iterations and created cells
-        /// for casees where the input geometry has extremely small area
-        /// (e.g. is very thin).
+        /// A smaller tolerance distance allows more iterations.
+        /// This is a rough heuristic, intended
+        /// to prevent huge iterations for very thin geometries.
         /// </summary>
         /// <param name="geom">The input geometry</param>
         /// <param name="toleranceDist">The tolerance distance</param>
         /// <returns>The maximum number of iterations allowed</returns>
         internal static long ComputeMaximumIterations(Geometry geom, double toleranceDist)
         {
-            int safetyFactor = 100;
-            int maximumIter = 1_000_000;
-            //-- use FP in case values are way big or small
-            double maxCellCount = geom.Area / toleranceDist / toleranceDist;
-            //-- enforce an absolute maximum
-            if (maxCellCount > (maximumIter / safetyFactor))
-                return maximumIter;
-            long maxIter = safetyFactor * (long)maxCellCount;
-            //-- ensure a reasonable number of iterations
-            if (maxIter < 100)
-                return 100;
-            return maxIter;
+            double diam = geom.EnvelopeInternal.Diameter;
+            double ncells = diam / toleranceDist;
+            //-- Using log of ncells allows control over number of iterations
+            int factor = (int)Math.Log(ncells);
+            if (factor < 1) factor = 1;
+            return 2000 + 2000 * factor;
         }
 
         private readonly Geometry _inputGeom;
@@ -202,8 +195,8 @@ namespace NetTopologySuite.Algorithm.Construct
 
             CreateInitialGrid(_inputGeom.EnvelopeInternal, cellQueue);
 
-            // use the area centroid as the initial candidate center point
-            var farthestCell = CreateCentroidCell(_inputGeom);
+            // initial candidate center point
+            var farthestCell = CreateInteriorPointCell(_inputGeom);
             //int totalCells = cellQueue.size();
 
             /*
@@ -219,10 +212,14 @@ namespace NetTopologySuite.Algorithm.Construct
 
                 // pick the most promising cell from the queue
                 var cell = cellQueue.Poll();
-                //System.out.println(factory.toGeometry(cell.getEnvelope()));
-                //System.out.println(iter + "] Dist: " + cell.getDistance() + "  size: " + cell.getHSide());
+                //Console.WriteLine(_factory.ToGeometry(cell.Envelope));
+                //Console.WriteLine($"{iter}] Dist: {cell.Distance} size: {cell.HSide}");
 
-                // update the center cell if the candidate is further from the boundary
+                //-- if cell must be closer than furthest, terminate since all remaining cells in queue are even closer. 
+                if (cell.MaxDistance < farthestCell.Distance)
+                    break;
+
+                // update the circle center cell if the candidate is further from the boundary
                 if (cell.Distance > farthestCell.Distance)
                 {
                     farthestCell = cell;
@@ -256,8 +253,6 @@ namespace NetTopologySuite.Algorithm.Construct
             _radiusPoint = _factory.CreatePoint(_radiusPt);
         }
 
-        private const int INITIAL_GRID_SIDE = 25;
-
         /// <summary>
         /// Initializes the queue with a grid of cells covering
         /// the extent of the area.
@@ -266,25 +261,15 @@ namespace NetTopologySuite.Algorithm.Construct
         /// <param name="cellQueue">The queue to initialize</param>
         private void CreateInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue)
         {
-            double minX = env.MinX;
-            double maxX = env.MaxX;
-            double minY = env.MinY;
-            double maxY = env.MaxY;
-            double cellSize = env.Diameter / INITIAL_GRID_SIDE;
+            double cellSize = env.MaxExtent;
             double hSide = cellSize / 2.0;
 
             // Check for flat collapsed input and if so short-circuit
             // Result will just be centroid
             if (cellSize == 0) return;
 
-            // compute initial grid of cells to cover area
-            for (double x = minX; x < maxX; x += cellSize)
-            {
-                for (double y = minY; y < maxY; y += cellSize)
-                {
-                    cellQueue.Add(CreateCell(x + hSide, y + hSide, hSide));
-                }
-            }
+            var centre = env.Centre;
+            cellQueue.Add(CreateCell(centre.X, centre.Y, hSide));
         }
 
         private Cell CreateCell(double x, double y, double hSide)
@@ -292,10 +277,10 @@ namespace NetTopologySuite.Algorithm.Construct
             return new Cell(x, y, hSide, DistanceToBoundary(x, y));
         }
 
-        // create a cell centered on area centroid
-        private Cell CreateCentroidCell(Geometry geom)
+        // create a cell at an interior point
+        private Cell CreateInteriorPointCell(Geometry geom)
         {
-            var p = geom.Centroid;
+            var p = geom.InteriorPoint;
             return new Cell(p.X, p.Y, 0, DistanceToBoundary(p));
         }
 
@@ -343,10 +328,13 @@ namespace NetTopologySuite.Algorithm.Construct
 
             public double Y { get; }
 
+            /// <summary>
+            /// For maximum efficieny sort the PriorityQueue with largest maxDistance at front.
+            /// Since AlternativePriorityQueue sorts least-first, need to invert the comparison
+            /// </summary>
             public int CompareTo(Cell o)
             {
-                // A cell is greater if its maximum distance is larger.
-                return (int)(o.MaxDistance - this.MaxDistance);
+                return -MaxDistance.CompareTo(o.MaxDistance);
             }
         }
 

@@ -3,6 +3,7 @@ using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Utilities;
+using Point = NetTopologySuite.Geometries.Point;
 
 namespace NetTopologySuite.Algorithm.Construct
 {
@@ -66,7 +67,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// <param name="boundary">A polygonal geometry to contain the LEC center</param>
         /// <param name="tolerance">The distance tolerance for computing the center point</param>
         /// <returns>The center point of the Largest Empty Circle</returns>
-        public static Point GetCenter(Geometry obstacles, Geometry boundary, double tolerance)
+        public static Geometries.Point GetCenter(Geometry obstacles, Geometry boundary, double tolerance)
         {
             var lec = new LargestEmptyCircle(obstacles, boundary, tolerance);
             return lec.GetCenter();
@@ -283,6 +284,7 @@ namespace NetTopologySuite.Algorithm.Construct
 
                 // pick the cell with greatest distance from the queue
                 var cell = cellQueue.Poll();
+                //Console.WriteLine($"{iter}] Dist: {cell.Distance} Max D: {cell.MaxDistance} size: {cell.HSide}");
 
                 // update the center cell if the candidate is further from the constraints
                 if (cell.Distance > _farthestCell.Distance)
@@ -357,31 +359,23 @@ namespace NetTopologySuite.Algorithm.Construct
             return potentialIncrease > _tolerance;
         }
 
-        private const int INITIAL_GRID_SIDE = 25;
-
         /// <summary>
-        /// Initializes the queue with a grid of cells covering
+        /// Initializes the queue with a cell covering
         /// the extent of the area.
         /// </summary>
         /// <param name="env">The area extent to cover</param>
         /// <param name="cellQueue">The queue to initialize</param>
         private void CreateInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue)
         {
-            double minX = env.MinX;
-            double maxX = env.MaxX;
-            double minY = env.MinY;
-            double maxY = env.MaxY;
-            double cellSize = env.Diameter / INITIAL_GRID_SIDE;
-            double hSize = cellSize / 2.0;
+            double cellSize = env.MaxExtent;
+            double hSide = cellSize / 2.0;
 
-            // compute initial grid of cells to cover area
-            for (double x = minX; x < maxX; x += cellSize)
-            {
-                for (double y = minY; y < maxY; y += cellSize)
-                {
-                    cellQueue.Add(CreateCell(x + hSize, y + hSize, hSize));
-                }
-            }
+            // Check for flat collapsed input and if so short-circuit
+            // Result will just be centroid
+            if (cellSize == 0) return;
+
+            var centre = env.Centre;
+            cellQueue.Add(CreateCell(centre.X, centre.Y, hSide));
         }
 
         private Cell CreateCell(double x, double y, double h)
@@ -440,10 +434,13 @@ namespace NetTopologySuite.Algorithm.Construct
 
             public double Y { get; }
 
+            /// <summary>
+            /// For maximum efficieny sort the PriorityQueue with largest maxDistance at front.
+            /// Since AlternativePriorityQueue sorts least-first, need to invert the comparison
+            /// </summary>
             public int CompareTo(Cell o)
             {
-                // A cell is greater if its maximum distance is larger.
-                return (int) (o.MaxDistance - this.MaxDistance);
+                return -MaxDistance.CompareTo(o.MaxDistance);
             }
         }
 
