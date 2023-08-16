@@ -73,6 +73,44 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
                 0.01, 100, 100, 0);
         }
 
+        /**
+         * Tests that a nearly flat geometry doesn't make the initial cell grid huge.
+         * 
+         * See https://github.com/libgeos/geos/issues/875
+         */
+        [Test]
+        public void TestNearlyFlat()
+        {
+            CheckCircle("POLYGON ((59.3 100.00000000000001, 99.7 100.00000000000001, 99.7 100, 59.3 100, 59.3 100.00000000000001))",
+               0.01);
+        }
+
+        [Test]
+        public void TestVeryThin()
+        {
+            CheckCircle("POLYGON ((100 100, 200 300, 300 100, 450 250, 300 99.999999, 200 299.99999, 100 100))",
+               0.01);
+        }
+
+        /**
+         * A coarse distance check, mainly testing 
+         * that there is not a huge number of iterations.
+         * (This will be revealed by CI taking a very long time!)
+         * 
+         * @param wkt
+         * @param tolerance
+         */
+        private void CheckCircle(string wkt, double tolerance)
+        {
+            var geom = Read(wkt);
+            var mic = new MaximumInscribedCircle(geom, tolerance);
+            Geometry centerPoint = mic.GetCenter();
+            double dist = geom.Distance(centerPoint);
+            Assert.That(dist < 2 * tolerance);
+        }
+
+
+
         private void CheckCircle(string wkt, double tolerance,
             double x, double y, double expectedRadius)
         {

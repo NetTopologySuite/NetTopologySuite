@@ -66,6 +66,35 @@ namespace NetTopologySuite.Algorithm.Construct
             return mic.GetRadiusLine();
         }
 
+        /// <summary>
+        /// Computes the maximum number of iterations allowed.
+        /// Uses a heuristic based on the area of the input geometry
+        /// and the tolerance distance.
+        /// The number of tolerance-sized cells that cover the input geometry area
+        /// is computed, times a safety factor.
+        /// This prevents massive numbers of iterations and created cells
+        /// for casees where the input geometry has extremely small area
+        /// (e.g. is very thin).
+        /// </summary>
+        /// <param name="geom">The input geometry</param>
+        /// <param name="toleranceDist">The tolerance distance</param>
+        /// <returns>The maximum number of iterations allowed</returns>
+        internal static long ComputeMaximumIterations(Geometry geom, double toleranceDist)
+        {
+            int safetyFactor = 100;
+            int maximumIter = 1_000_000;
+            //-- use FP in case values are way big or small
+            double maxCellCount = geom.Area / toleranceDist / toleranceDist;
+            //-- enforce an absolute maximum
+            if (maxCellCount > (maximumIter / safetyFactor))
+                return maximumIter;
+            long maxIter = safetyFactor * (long)maxCellCount;
+            //-- ensure a reasonable number of iterations
+            if (maxIter < 100)
+                return 100;
+            return maxIter;
+        }
+
         private readonly Geometry _inputGeom;
         private readonly double _tolerance;
 
@@ -181,11 +210,17 @@ namespace NetTopologySuite.Algorithm.Construct
              * Carry out the branch-and-bound search
              * of the cell space
              */
-            while (!cellQueue.IsEmpty())
+            long maxIter = ComputeMaximumIterations(_inputGeom, _tolerance);
+            long iter = 0;
+            while (!cellQueue.IsEmpty() && iter < maxIter)
             {
+                // Increase iteration counter
+                iter++;
+
                 // pick the most promising cell from the queue
                 var cell = cellQueue.Poll();
                 //System.out.println(factory.toGeometry(cell.getEnvelope()));
+                //System.out.println(iter + "] Dist: " + cell.getDistance() + "  size: " + cell.getHSide());
 
                 // update the center cell if the candidate is further from the boundary
                 if (cell.Distance > farthestCell.Distance)
@@ -221,6 +256,8 @@ namespace NetTopologySuite.Algorithm.Construct
             _radiusPoint = _factory.CreatePoint(_radiusPt);
         }
 
+        private const int INITIAL_GRID_SIDE = 25;
+
         /// <summary>
         /// Initializes the queue with a grid of cells covering
         /// the extent of the area.
@@ -233,9 +270,7 @@ namespace NetTopologySuite.Algorithm.Construct
             double maxX = env.MaxX;
             double minY = env.MinY;
             double maxY = env.MaxY;
-            double width = env.Width;
-            double height = env.Height;
-            double cellSize = Math.Min(width, height);
+            double cellSize = env.Diameter / INITIAL_GRID_SIDE;
             double hSide = cellSize / 2.0;
 
             // Check for flat collapsed input and if so short-circuit

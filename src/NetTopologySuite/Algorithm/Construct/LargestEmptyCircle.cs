@@ -1,7 +1,6 @@
 ﻿using System;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Utilities;
 
@@ -120,6 +119,7 @@ namespace NetTopologySuite.Algorithm.Construct
         private Point _centerPoint;
         private Coordinate _radiusPt;
         private Point _radiusPoint;
+        private Geometry _bounds;
 
         /// <summary>
         /// Creates a new instance of a Largest Empty Circle construction.
@@ -128,7 +128,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// <param name="tolerance">The distance tolerance for computing the center point</param>
         [Obsolete("Will be removed in a future version")]
         public LargestEmptyCircle(Geometry obstacles, double tolerance)
-            :this(obstacles, null, tolerance)
+            : this(obstacles, null, tolerance)
         { }
 
         /// <summary>
@@ -227,18 +227,18 @@ namespace NetTopologySuite.Algorithm.Construct
 
         private void InitBoundary()
         {
-            var bounds = _boundary;
-            if (bounds == null || bounds.IsEmpty)
+            _bounds = _boundary;
+            if (_bounds == null || _bounds.IsEmpty)
             {
-                bounds = _obstacles.ConvexHull();
+                _bounds = _obstacles.ConvexHull();
             }
             //-- the centre point must be in the extent of the boundary
-            _gridEnv = bounds.EnvelopeInternal;
+            _gridEnv = _bounds.EnvelopeInternal;
             // if bounds does not enclose an area cannot create a ptLocater
-            if (bounds.Dimension >= Dimension.Surface)
+            if (_bounds.Dimension >= Dimension.Surface)
             {
-                _ptLocater = new IndexedPointInAreaLocator(bounds);
-                _boundaryDistance = new IndexedFacetDistance(bounds);
+                _ptLocater = new IndexedPointInAreaLocator(_bounds);
+                _boundaryDistance = new IndexedFacetDistance(_bounds);
             }
         }
 
@@ -274,8 +274,13 @@ namespace NetTopologySuite.Algorithm.Construct
              * Carry out the branch-and-bound search
              * of the cell space
              */
-            while (!cellQueue.IsEmpty())
+            long maxIter = MaximumInscribedCircle.ComputeMaximumIterations(_bounds, _tolerance);
+            long iter = 0;
+            while (!cellQueue.IsEmpty() && iter < maxIter)
             {
+                // Increase iteration counter
+                iter++;
+
                 // pick the cell with greatest distance from the queue
                 var cell = cellQueue.Poll();
 
@@ -352,6 +357,8 @@ namespace NetTopologySuite.Algorithm.Construct
             return potentialIncrease > _tolerance;
         }
 
+        private const int INITIAL_GRID_SIDE = 25;
+
         /// <summary>
         /// Initializes the queue with a grid of cells covering
         /// the extent of the area.
@@ -364,9 +371,7 @@ namespace NetTopologySuite.Algorithm.Construct
             double maxX = env.MaxX;
             double minY = env.MinY;
             double maxY = env.MaxY;
-            double width = env.Width;
-            double height = env.Height;
-            double cellSize = Math.Min(width, height);
+            double cellSize = env.Diameter / INITIAL_GRID_SIDE;
             double hSize = cellSize / 2.0;
 
             // compute initial grid of cells to cover area

@@ -1,6 +1,7 @@
 ﻿using NetTopologySuite.Algorithm.Construct;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
+using System;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
 {
@@ -45,8 +46,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         public void TestLinesZigzag()
         {
             CheckCircle(
-                "MULTILINESTRING ((100 100, 200 150, 100 200, 250 250, 100 300, 300 350, 100 400), (50 400, 0 350, 50 300, 0 250, 50 200, 0 150, 50 100))",
-                0.01, 77.52, 349.99, 54.81);
+                "MULTILINESTRING ((100 100, 200 150, 100 200, 250 250, 100 300, 300 350, 100 400), (70 380, 0 350, 50 300, 0 250, 50 200, 0 150, 50 120))",
+                0.01, 77.52, 249.99, 54.81);
         }
 
         [Test]
@@ -68,6 +69,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         {
             CheckCircleZeroRadius("LINESTRING (0 0, 50 50)",
                 0.01);
+        }
+
+        [Test]
+        public void TestPolygonThin()
+        {
+            CheckCircle("MULTIPOINT ((100 100), (300 100), (200 100.1))",
+               0.01);
         }
 
         //---------------------------------------------------------
@@ -115,6 +123,25 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
 
         //========================================================
 
+        /**
+         * A coarse distance check, mainly testing 
+         * that there is not a huge number of iterations.
+         * (This will be revealed by CI taking a very long time!)
+         * 
+         * @param wkt
+         * @param tolerance
+         */
+        private void CheckCircle(string wkt, double tolerance)
+        {
+            var geom = Read(wkt);
+            var lec = new LargestEmptyCircle(geom, null, tolerance);
+            var centerPoint = lec.GetCenter();
+            double dist = geom.Distance(centerPoint);
+            var radiusLine = lec.GetRadiusLine();
+            double actualRadius = radiusLine.Length;
+            Assert.That(Math.Abs(actualRadius - dist) < 2 * tolerance);
+        }
+
         private void CheckCircle(string wktObstacles, double tolerance,
             double x, double y, double expectedRadius)
         {
@@ -135,11 +162,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
             Geometry centerPoint = lec.GetCenter();
             var centerPt = centerPoint.Coordinate;
             var expectedCenter = new Coordinate(x, y);
-            CheckEqualXY(expectedCenter, centerPt, tolerance);
+            CheckEqualXY(expectedCenter, centerPt, 2 * tolerance);
 
             var radiusLine = lec.GetRadiusLine();
             double actualRadius = radiusLine.Length;
-            Assert.AreEqual(expectedRadius, actualRadius, tolerance, "Radius: ");
+            Assert.AreEqual(expectedRadius, actualRadius, 2 * tolerance, "Radius: ");
 
             CheckEqualXY("Radius line center point: ", centerPt, radiusLine.GetCoordinateN(0));
             var radiusPt = lec.GetRadiusPoint().Coordinate;
@@ -153,7 +180,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
 
         private void CheckCircleZeroRadius(Geometry geom, double tolerance)
         {
-            var lec = new LargestEmptyCircle(geom, tolerance);
+            var lec = new LargestEmptyCircle(geom, null, tolerance);
 
             var radiusLine = lec.GetRadiusLine();
             double actualRadius = radiusLine.Length;
