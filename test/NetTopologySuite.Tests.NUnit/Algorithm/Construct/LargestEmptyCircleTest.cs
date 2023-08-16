@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         }
 
         [Test]
-        public void TestPolygonThin()
+        public void TestThinExtent()
         {
             CheckCircle("MULTIPOINT ((100 100), (300 100), (200 100.1))",
                0.01);
