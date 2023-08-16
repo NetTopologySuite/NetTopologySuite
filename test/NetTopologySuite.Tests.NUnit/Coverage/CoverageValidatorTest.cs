@@ -108,6 +108,53 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
                 "POLYGON ((9 1, 5 1, 5 5, 9 5, 9 1))"));
         }
 
+        [Test]
+        public void TestMultiPolygon()
+        {
+            CheckValid(ReadArray(
+                "MULTIPOLYGON (((1 9, 5 9, 5 5, 1 5, 1 9)), ((9 1, 5 1, 5 5, 9 5, 9 1)))",
+                "MULTIPOLYGON (((1 1, 1 5, 5 5, 5 1, 1 1)), ((9 9, 9 5, 5 5, 5 9, 9 9)))"));
+        }
+
+        [Test]
+        public void TestValidDuplicatePoints()
+        {
+            CheckValid(ReadArray(
+                "POLYGON ((1 9, 5 9, 5 5, 1 5, 1 5, 1 5, 1 9))",
+                "POLYGON ((9 9, 9 5, 5 5, 5 9, 9 9))",
+                "POLYGON ((1 1, 1 5, 5 5, 5 1, 1 1))",
+                "POLYGON ((9 1, 5 1, 5 5, 9 5, 9 1))"));
+        }
+
+        [Test]
+        public void TestRingCollapse()
+        {
+            CheckValid(ReadArray(
+                "POLYGON ((1 9, 5 9, 1 9))",
+                "POLYGON ((9 9, 9 5, 5 5, 5 9, 9 9))",
+                "POLYGON ((1 1, 1 5, 5 5, 5 1, 1 1))",
+                "POLYGON ((9 1, 5 1, 5 5, 9 5, 9 1))"));
+        }
+
+        //========  Valid cases with EMPTY  =============================
+
+        [Test]
+        public void TestPolygonEmpty()
+        {
+            CheckValid(ReadArray(
+                "POLYGON ((1 9, 5 9, 5 5, 1 5, 1 9))",
+                "POLYGON ((9 9, 9 5, 5 5, 5 9, 9 9))",
+                "POLYGON ((1 1, 1 5, 5 5, 5 1, 1 1))",
+                "POLYGON EMPTY"));
+        }
+
+        [Test]
+        public void TestMultiPolygonWithEmptyRing()
+        {
+            CheckValid(ReadArray(
+                "MULTIPOLYGON (((9 9, 9 1, 1 1, 2 4, 7 7, 9 9)), EMPTY)"));
+        }
+
         //------------------------------------------------------------
 
         private void CheckValid(Geometry[] coverage)

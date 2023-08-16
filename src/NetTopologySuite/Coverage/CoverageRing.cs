@@ -27,14 +27,21 @@ namespace NetTopologySuite.Coverage
 
         private static void CreateRings(Polygon poly, IList<CoverageRing> rings)
         {
-            rings.Add(CreateRing(poly.ExteriorRing, true));
+            if (poly.IsEmpty)
+                return;
+
+            AddRing((LinearRing)poly.ExteriorRing, true, rings);
             for (int i = 0; i < poly.NumInteriorRings; i++)
-            {
-                rings.Add(CreateRing(poly.GetInteriorRingN(i), false));
-            }
+                AddRing((LinearRing)poly.GetInteriorRingN(i), false, rings);
         }
 
-        private static CoverageRing CreateRing(LineString ring, bool isShell)
+        private static void AddRing(LinearRing ring, bool isShell, IList<CoverageRing> rings)
+        {
+            if (!ring.IsEmpty)
+                rings.Add(CreateRing(ring, isShell));
+        }
+
+        private static CoverageRing CreateRing(LinearRing ring, bool isShell)
         {
             var pts = ring.Coordinates;
             if (CoordinateArrays.HasRepeatedOrInvalidPoints(pts)) {
