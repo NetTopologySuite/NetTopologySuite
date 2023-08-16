@@ -38,6 +38,7 @@ namespace NetTopologySuite.Coverage
     /// subset of a coverage still matches the remainder of the coverage.
     /// <para/>
     /// The input coverage should be valid according to <see cref="CoverageValidator"/>.
+    /// Invalid coverages may still be simplified, but the result will still be invalid.
     /// <para/>
     /// <b>NOTE:</b><br/>Due to different implementations of the <c>PriorityQueue</c> classes used in JTS and NTS
     /// the results of the <c>CoverageSimplifier</c>'s simplification methods are not guaranteed

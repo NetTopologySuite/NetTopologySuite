@@ -1,7 +1,9 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 
 namespace NetTopologySuite.Coverage
 {
@@ -12,6 +14,11 @@ namespace NetTopologySuite.Coverage
     /// it is an inner or outer edge of the coverage.
     /// The source coverage is represented as a array of polygonal geometries
     /// (either <see cref="Polygon"/>s or <see cref="MultiPolygon"/>s).
+    ///  <para/>
+    ///  Coverage edges are found by identifying vertices which are nodes in the coverage,
+    ///  splitting edges at nodes, and then identifying unique edges.
+    ///  The unique edges are associated to their parent ring(in order),
+    ///  to allow reforming the coverage polygons.
     /// </summary>
     /// <author>Martin Davis</author>
     internal sealed class CoverageRingEdges
@@ -41,12 +48,11 @@ namespace NetTopologySuite.Coverage
 
         public IList<CoverageEdge> Edges => _edges;
 
-        /**
-         * Selects the edges with a given ring count (which can be 1 or 2).
-         * 
-         * @param ringCount the edge ring count to select (1 or 2)
-         * @return the selected edges
-         */
+        /// <summary>
+        /// Selects the edges with a given ring count (which can be 1 or 2).
+        /// </summary>
+        /// <param name="ringCount">The edge ring count to select (1 or 2)</param>
+        /// <returns>The selected edges</returns>
         public IList<CoverageEdge> SelectEdges(int ringCount)
         {
             var result = new List<CoverageEdge>();
@@ -62,7 +68,7 @@ namespace NetTopologySuite.Coverage
 
         private void Build()
         {
-            var nodes = FindNodes(_coverage);
+            var nodes = FindMultiRingNodes(_coverage);
             var boundarySegs = CoverageBoundarySegmentFinder.FindBoundarySegments(_coverage);
             foreach(var node in FindBoundaryNodes(boundarySegs))
                 nodes.Add(node);
@@ -73,6 +79,11 @@ namespace NetTopologySuite.Coverage
                 for (int ipoly = 0; ipoly < geom.NumGeometries; ipoly++)
                 {
                     var poly = (Polygon)geom.GetGeometryN(ipoly);
+
+                    //-- skip empty elements. Missing elements are copied in result
+                    if (poly.IsEmpty)
+                        continue;
+
                     //-- extract shell
                     var shell = (LinearRing)poly.ExteriorRing;
                     AddRingEdges(shell, nodes, boundarySegs, uniqueEdgeMap);
@@ -86,15 +97,26 @@ namespace NetTopologySuite.Coverage
             }
         }
 
-        private void AddRingEdges(LinearRing ring, HashSet<Coordinate> nodes, ISet<LineSegment> boundarySegs,
+
+        private void AddRingEdges(LinearRing ring, ISet<Coordinate> nodes, ISet<LineSegment> boundarySegs,
             Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
         {
-            AddBoundaryNodes(ring, boundarySegs, nodes);
+            AddBoundaryInnerNodes(ring, boundarySegs, nodes);
             var ringEdges = ExtractRingEdges(ring, uniqueEdgeMap, nodes);
-            _ringEdgesMap[ring] = ringEdges;
+            if (ringEdges != null)
+                _ringEdgesMap[ring] = ringEdges;
         }
 
-        private void AddBoundaryNodes(LinearRing ring, ISet<LineSegment> boundarySegs, HashSet<Coordinate> nodes)
+        /// <summary>
+        /// Detects nodes occurring at vertices which are between a boundary segment
+        /// and an inner (shared) segment.
+        /// These occur where two polygons are adjacent at the coverage boundary
+        /// (this is not detected by <see cref="FindMultiRingNodes(Geometry[])"/>.
+        /// </summary>
+        /// <param name="ring"></param>
+        /// <param name="boundarySegs"></param>
+        /// <param name="nodes"></param>
+        private void AddBoundaryInnerNodes(LinearRing ring, ISet<LineSegment> boundarySegs, ISet<Coordinate> nodes)
         {
             var seq = ring.CoordinateSequence;
             bool isBdyLast = CoverageBoundarySegmentFinder.IsBoundarySegment(boundarySegs, seq, seq.Count - 2);
@@ -113,14 +135,20 @@ namespace NetTopologySuite.Coverage
 
         private List<CoverageEdge> ExtractRingEdges(LinearRing ring,
             Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap,
-            HashSet<Coordinate> nodes)
+            ISet<Coordinate> nodes)
         {
             var ringEdges = new List<CoverageEdge>();
-            int first = FindNextNodeIndex(ring, -1, nodes);
+            var pts = ring.Coordinates;
+            pts = CoordinateArrays.RemoveRepeatedPoints(pts);
+            //-- if compacted ring is too short, don't process it
+            if (pts.Length < 3)
+                return null;
+
+            int first = FindNextNodeIndex(pts, -1, nodes);
             if (first < 0)
             {
                 //-- ring does not contain a node, so edge is entire ring
-                var edge = CreateEdge(ring, uniqueEdgeMap);
+                var edge = CreateEdge(pts, uniqueEdgeMap);
                 ringEdges.Add(edge);
             }
             else
@@ -129,8 +157,8 @@ namespace NetTopologySuite.Coverage
                 int end = start;
                 do
                 {
-                    end = FindNextNodeIndex(ring, start, nodes);
-                    var edge = CreateEdge(ring, start, end, uniqueEdgeMap);
+                    end = FindNextNodeIndex(pts, start, nodes);
+                    var edge = CreateEdge(pts, start, end, uniqueEdgeMap);
                     ringEdges.Add(edge);
                     start = end;
                 } while (end != first);
@@ -138,7 +166,7 @@ namespace NetTopologySuite.Coverage
             return ringEdges;
         }
 
-        private CoverageEdge CreateEdge(LinearRing ring, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
+        private CoverageEdge CreateEdge(Coordinate[] ring, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
         {
             var edgeKey = CoverageEdge.Key(ring);
             if (!uniqueEdgeMap.TryGetValue(edgeKey, out var edge))
@@ -151,7 +179,7 @@ namespace NetTopologySuite.Coverage
             return edge;
         }
 
-        private CoverageEdge CreateEdge(LinearRing ring, int start, int end, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
+        private CoverageEdge CreateEdge(Coordinate[] ring, int start, int end, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
         {
             var edgeKey = end == start ? CoverageEdge.Key(ring) : CoverageEdge.Key(ring, start, end);
             if (!uniqueEdgeMap.TryGetValue(edgeKey, out var edge))
@@ -164,7 +192,7 @@ namespace NetTopologySuite.Coverage
             return edge;
         }
 
-        private int FindNextNodeIndex(LinearRing ring, int start, HashSet<Coordinate> nodes)
+        private int FindNextNodeIndex(Coordinate[] ring, int start, ISet<Coordinate> nodes)
         {
             int index = start;
             bool isScanned0 = false;
@@ -177,7 +205,7 @@ namespace NetTopologySuite.Coverage
                         return -1;
                     isScanned0 = true;
                 }
-                var pt = ring.GetCoordinateN(index);
+                var pt = ring[index];
                 if (nodes.Contains(pt))
                 {
                     return index;
@@ -186,38 +214,54 @@ namespace NetTopologySuite.Coverage
             return -1;
         }
 
-        private static int Next(int index, LinearRing ring)
+        private static int Next(int index, Coordinate[] ring)
         {
             index++;
-            if (index >= ring.NumPoints - 1)
+            if (index >= ring.Length - 1)
                 index = 0;
             return index;
         }
 
-        private HashSet<Coordinate> FindNodes(Geometry[] coverage)
+        /**
+         * Finds nodes in a coverage at vertices which are shared by 3 or more rings.
+         * 
+         * @param coverage a list of polygonal geometries
+         * @return the set of nodes contained in 3 or more rings
+         */
+        private ISet<Coordinate> FindMultiRingNodes(Geometry[] coverage)
         {
-            var vertexCount = VertexCounter.Count(coverage);
+            var vertexRingCount = VertexRingCounter.Count(coverage);
             var nodes = new HashSet<Coordinate>();
-            foreach (var v in vertexCount.Keys)
+            foreach (var v in vertexRingCount)
             {
-                if (vertexCount[v] > 2)
+                if (v.Value >= 3)
                 {
-                    nodes.Add(v);
+                    nodes.Add(v.Key);
                 }
             }
             return nodes;
         }
 
-
-        private IEnumerable<Coordinate> FindBoundaryNodes(ISet<LineSegment> lineSegments)
+        /// <summary>
+        /// Finds nodes occurring between boundary segments.
+        /// Nodes on boundaries occur at vertices which have
+        /// 3 or more incident boundary segments.
+        /// This detects situations where two rings touch only at a vertex
+        /// (i.e. two polygons touch, or a polygon shell touches a hole)
+        /// These nodes lie in only 2 adjacent rings,
+        /// so are not detected by <see cref="FindMultiRingNodes"/>{@link #findMultiRingNodes(Geometry[])}. 
+        /// </summary>
+        /// <param name="boundarySegments"></param>
+        /// <returns>A set of vertices which are nodes where two rings touch</returns>
+        private IEnumerable<Coordinate> FindBoundaryNodes(ISet<LineSegment> boundarySegments)
         {
             var counter = new Dictionary<Coordinate, int>();
-            foreach (var line in lineSegments)
+            foreach (var seg in boundarySegments)
             {
-                if (!counter.TryGetValue(line.P0, out int count)) count = 0;
-                counter[line.P0] = count + 1;
-                if (!counter.TryGetValue(line.P1, out count)) count = 0;
-                counter[line.P1] = count + 1;
+                if (!counter.TryGetValue(seg.P0, out int count)) count = 0;
+                counter[seg.P0] = count + 1;
+                if (!counter.TryGetValue(seg.P1, out count)) count = 0;
+                counter[seg.P1] = count + 1;
             }
 
             foreach (var kvp in counter)
@@ -277,7 +321,10 @@ namespace NetTopologySuite.Coverage
 
         private LinearRing BuildRing(LinearRing ring)
         {
-            var ringEdges = _ringEdgesMap[ring];
+            //-- if ring is not in map, must have been invalid. Just copy original
+            if (!_ringEdgesMap.TryGetValue(ring, out var ringEdges))
+                return (LinearRing)ring.Copy();
+
             var ptsList = new CoordinateList();
             for (int i = 0; i < ringEdges.Count; i++)
             {

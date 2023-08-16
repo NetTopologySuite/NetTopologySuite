@@ -14,13 +14,13 @@ namespace NetTopologySuite.Coverage
     internal sealed class CoverageEdge
     {
 
-        public static CoverageEdge CreateEdge(LinearRing ring)
+        public static CoverageEdge CreateEdge(Coordinate[] ring)
         {
-            var pts = ExtractEdgePoints(ring, 0, ring.NumPoints - 1);
+            var pts = ExtractEdgePoints(ring, 0, ring.Length - 1);
             return new CoverageEdge(pts, true);
         }
 
-        public static CoverageEdge CreateEdge(LinearRing ring, int start, int end)
+        public static CoverageEdge CreateEdge(Coordinate[] ring, int start, int end)
         {
             var pts = ExtractEdgePoints(ring, start, end);
             return new CoverageEdge(pts, false);
@@ -38,19 +38,18 @@ namespace NetTopologySuite.Coverage
             return mls;
         }
 
-
-        private static Coordinate[] ExtractEdgePoints(LinearRing ring, int start, int end)
+        private static Coordinate[] ExtractEdgePoints(Coordinate[] ring, int start, int end)
         {
             int size = start < end
                           ? end - start + 1
-                          : ring.NumPoints - start + end;
+                          : ring.Length - start + end;
             var pts = new Coordinate[size];
             int iring = start;
             for (int i = 0; i < size; i++)
             {
-                pts[i] = ring.GetCoordinateN(iring).Copy();
+                pts[i] = ring[iring].Copy();
                 iring += 1;
-                if (iring >= ring.NumPoints) iring = 1;
+                if (iring >= ring.Length) iring = 1;
             }
             return pts;
         }
@@ -62,20 +61,19 @@ namespace NetTopologySuite.Coverage
         /// </summary>
         /// <param name="ring">A linear ring</param>
         /// <returns>A LineSegment representing the key</returns>
-        public static LineSegment Key(LinearRing ring)
+        public static LineSegment Key(Coordinate[] ring)
         {
-            var pts = ring.Coordinates;
             // find lowest vertex index
             int indexLow = 0;
-            for (int i = 1; i < pts.Length - 1; i++)
+            for (int i = 1; i < ring.Length - 1; i++)
             {
-                if (pts[indexLow].CompareTo(pts[i]) < 0)
+                if (ring[indexLow].CompareTo(ring[i]) < 0)
                     indexLow = i;
             }
-            var key0 = pts[indexLow];
+            var key0 = ring[indexLow];
             // find distinct adjacent vertices
-            var adj0 = FindDistinctPoint(pts, indexLow, true, key0);
-            var adj1 = FindDistinctPoint(pts, indexLow, false, key0);
+            var adj0 = FindDistinctPoint(ring, indexLow, true, key0);
+            var adj1 = FindDistinctPoint(ring, indexLow, false, key0);
             var key1 = adj0.CompareTo(adj1) < 0 ? adj0 : adj1;
             return new LineSegment(key0, key1);
         }
@@ -87,23 +85,22 @@ namespace NetTopologySuite.Coverage
         /// <param name="start">The index of the start of the section</param>
         /// <param name="end">The end index of the end of the section</param>
         /// <returns>A LineSegment representing the key</returns>
-        public static LineSegment Key(LinearRing ring, int start, int end)
+        public static LineSegment Key(Coordinate[] ring, int start, int end)
         {
-            var pts = ring.Coordinates;
             //-- endpoints are distinct in a line edge
-            var end0 = pts[start];
-            var end1 = pts[end];
+            var end0 = ring[start];
+            var end1 = ring[end];
             bool isForward = 0 > end0.CompareTo(end1);
             Coordinate key0, key1;
             if (isForward)
             {
                 key0 = end0;
-                key1 = FindDistinctPoint(pts, start, true, key0);
+                key1 = FindDistinctPoint(ring, start, true, key0);
             }
             else
             {
                 key0 = end1;
-                key1 = FindDistinctPoint(pts, end, false, key0);
+                key1 = FindDistinctPoint(ring, end, false, key0);
             }
             return new LineSegment(key0, key1);
         }

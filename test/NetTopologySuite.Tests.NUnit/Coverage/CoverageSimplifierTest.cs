@@ -46,6 +46,52 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
         //---------------------------------------------
 
         [Test]
+        public void TestRepeatedPointRemoved()
+        {
+            CheckResult(ReadArray(
+                "POLYGON ((5 9, 6.5 6.5, 9 5, 5 5, 5 5, 5 9))"),
+                2,
+                ReadArray(
+                    "POLYGON ((5 5, 5 9, 9 5, 5 5))")
+            );
+        }
+
+        [Test]
+        public void TestRepeatedPointCollapseToLine()
+        {
+            CheckResult(ReadArray(
+                "MULTIPOLYGON (((10 10, 10 20, 20 19, 30 20, 30 10, 10 10)), ((10 30, 20 29, 30 30, 30 20, 20 19, 10 20, 10 30)), ((10 20, 20 19, 20 19, 10 20)))"),
+                5,
+                ReadArray(
+                    "MULTIPOLYGON (((10 20, 20 19, 30 20, 30 10, 10 10, 10 20)), ((30 20, 20 19, 10 20, 10 30, 30 30, 30 20)), ((10 20, 20 19, 10 20)))")
+            );
+        }
+
+        [Test]
+        public void TestRepeatedPointCollapseToPoint()
+        {
+            CheckResult(ReadArray(
+                "MULTIPOLYGON (((10 10, 10 20, 20 19, 30 20, 30 10, 10 10)), ((10 30, 20 29, 30 30, 30 20, 20 19, 10 20, 10 30)), ((20 19, 20 19, 20 19)))"),
+                5,
+                ReadArray(
+                    "MULTIPOLYGON (((10 10, 10 20, 20 19, 30 20, 30 10, 10 10)), ((10 20, 10 30, 30 30, 30 20, 20 19, 10 20)), ((20 19, 20 19, 20 19)))")
+            );
+        }
+
+        [Test]
+        public void TestRepeatedPointCollapseToPoint2()
+        {
+            CheckResult(ReadArray(
+                "MULTIPOLYGON (((100 200, 150 195, 200 200, 200 100, 100 100, 100 200)), ((150 195, 150 195, 150 195, 150 195)))"),
+                40,
+                ReadArray(
+                    "MULTIPOLYGON (((150 195, 200 200, 200 100, 100 100, 100 200, 150 195)), ((150 195, 150 195, 150 195, 150 195)))")
+            );
+        }
+
+        //---------------------------------------------
+
+        [Test]
         public void TestSimple2()
         {
             CheckResult(ReadArray(
@@ -57,6 +103,20 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
                     "POLYGON ((150 0, 100 100, 300 100, 250 0, 150 0))")
             );
         }
+
+        [Test]
+        public void TestMultiPolygons()
+        {
+            CheckResult(ReadArray(
+                "MULTIPOLYGON (((5 9, 2.5 7.5, 1 5, 5 5, 5 9)), ((5 5, 9 5, 7.5 2.5, 5 1, 5 5)))",
+                "MULTIPOLYGON (((5 9, 6.5 6.5, 9 5, 5 5, 5 9)), ((1 5, 5 5, 5 1, 3.5 3.5, 1 5)))"),
+                3,
+                ReadArray(
+                    "MULTIPOLYGON (((1 5, 5 9, 5 5, 1 5)), ((5 1, 5 5, 9 5, 5 1))))",
+                    "MULTIPOLYGON (((1 5, 5 5, 5 1, 1 5)), ((5 5, 5 9, 9 5, 5 5)))")
+            );
+        }
+
 
         [Test]
         public void TestSingleRingNoCollapse()
