@@ -14,16 +14,14 @@ namespace NetTopologySuite.Index.HPRtree
 
         public HilbertEncoder(int level, Envelope extent)
         {
-            this._level = level;
+            _level = level;
             int hside = (int)Math.Pow(2, level) - 1;
 
             _minx = extent.MinX;
-            double extentX = extent.Width;
-            _strideX = extentX / hside;
+            _strideX = extent.Width / hside;
 
-            _miny = extent.MinX;
-            double extentY = extent.Height;
-            _strideY = extentY / hside;
+            _miny = extent.MinY;
+            _strideY = extent.Height / hside;
         }
 
         public int Encode(Envelope env)
