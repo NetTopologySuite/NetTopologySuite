@@ -57,6 +57,12 @@ namespace NetTopologySuite.Operation.Buffer
         private const int MatchDistanceFactor = 10000;
 
         /// <summary>
+        /// A QuadSegs minimum value that will prevent generating
+        /// unwanted offset curve artifacts near end caps.
+        /// </summary>
+        private const int MinQuadrantSegments = 8;
+
+        /// <summary>
         /// Computes the offset curve of a geometry at a given distance.
         /// </summary>
         /// <param name="geom">A geometry</param>
@@ -88,15 +94,6 @@ namespace NetTopologySuite.Operation.Buffer
             return oc.GetCurve();
         }
 
-
-        /**
-         * Computes the offset curve of a geometry at a given distance,
-         * joining curve sections into a single line for each input line.
-         * 
-         * @param geom a geometry
-         * @param distance the offset distance (positive for left, negative for right)
-         * @return the joined offset curve
-         */
         /// <summary>
         /// Computes the offset curve of a geometry at a given distance,
         /// joining curve sections into a single line for each input line.
@@ -149,7 +146,20 @@ namespace NetTopologySuite.Operation.Buffer
             _geomFactory = _inputGeom.Factory;
 
             //-- make new buffer params since the end cap style must be the default
-            _bufferParams = bufParams?.Copy() ?? new BufferParameters();
+            _bufferParams = new BufferParameters();
+            if (bufParams != null)
+            {
+                /*
+                 * Prevent using a very small QuadSegs value, to avoid 
+                 * offset curve artifacts near the end caps. 
+                 */
+                int quadSegs = bufParams.QuadrantSegments;
+                if (quadSegs < MinQuadrantSegments)
+                    quadSegs = MinQuadrantSegments;
+                _bufferParams.QuadrantSegments = quadSegs;
+                _bufferParams.JoinStyle = bufParams.JoinStyle;
+                _bufferParams.MitreLimit = bufParams.MitreLimit;
+            }
         }
 
         /// <summary>
