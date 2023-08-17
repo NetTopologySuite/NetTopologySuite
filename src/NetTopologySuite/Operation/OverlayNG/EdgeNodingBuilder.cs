@@ -155,7 +155,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// Nodes a set of segment strings and creates <see cref="Edge"/>s from the result.
         /// The input segment strings each carry a <see cref="EdgeSourceInfo"/> object,
         /// which is used to provide source topology info to the constructed Edges
-        /// (and is then discarded).
+        /// (and then is discarded).
         /// </summary>
         private List<Edge> Node(IList<ISegmentString> segStrings)
         {
@@ -163,11 +163,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             noder.ComputeNodes(segStrings);
 
             var nodedSS = noder.GetNodedSubstrings();
-
-            //scanForEdges(nodedSS);
-
             var edges = CreateEdges(nodedSS);
-
             return edges;
         }
 
@@ -178,13 +174,12 @@ namespace NetTopologySuite.Operation.OverlayNG
             {
                 var pts = ss.Coordinates;
 
-                // don't create edges from collapsed lines
-                if (Edge.IsCollapsed(pts)) continue;
+                //-- don't create edges from collapsed lines
+                if (Edge.IsCollapsed(pts))
+                    continue;
 
                 var info = (EdgeSourceInfo)ss.Context;
-                /*
-                 * Record that a non-collapsed edge exists for the parent geometry
-                 */
+                //-- Record that a non-collapsed edge exists for the parent geometry
                 _hasEdges[info.Index] = true;
 
                 edges.Add(new Edge(pts, info));
