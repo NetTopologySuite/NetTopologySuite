@@ -70,6 +70,47 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestDistancePerpendicular()
+        {
+            CheckDistancePerpendicular(1, 1, 1, 3, 2, 4, 1);
+            CheckDistancePerpendicular(1, 1, 1, 3, 0, 4, 1);
+            CheckDistancePerpendicular(1, 1, 1, 3, 1, 4, 0);
+            CheckDistancePerpendicular(1, 1, 2, 2, 4, 4, 0);
+            //-- zero-length line segment
+            CheckDistancePerpendicular(1, 1, 1, 1, 1, 2, 1);
+        }
+
+        [Test]
+        public void TestDistancePerpendicularOriented()
+        {
+            //-- right of line
+            CheckDistancePerpendicularOriented(1, 1, 1, 3, 2, 4, -1);
+            //-- left of line
+            CheckDistancePerpendicularOriented(1, 1, 1, 3, 0, 4, 1);
+            //-- on line
+            CheckDistancePerpendicularOriented(1, 1, 1, 3, 1, 4, 0);
+            CheckDistancePerpendicularOriented(1, 1, 2, 2, 4, 4, 0);
+            //-- zero-length segment
+            CheckDistancePerpendicularOriented(1, 1, 1, 1, 1, 2, 1);
+        }
+
+        private static void CheckDistancePerpendicular(double x0, double y0, double x1, double y1, double px, double py,
+            double expected)
+        {
+            var seg = new LineSegment(x0, y0, x1, y1);
+            double dist = seg.DistancePerpendicular(new Coordinate(px, py));
+            Assert.That(dist, Is.EqualTo(expected).Within(0.000001));
+        }
+
+        private static void CheckDistancePerpendicularOriented(double x0, double y0, double x1, double y1, double px, double py,
+            double expected)
+        {
+            var seg = new LineSegment(x0, y0, x1, y1);
+            double dist = seg.DistancePerpendicularOriented(new Coordinate(px, py));
+            Assert.That(dist, Is.EqualTo(expected).Within(0.000001));
+        }
+
+        [Test]
         public void TestOffsetPoint()
         {
             CheckOffsetPoint(0, 0, 10, 10, 0.0, ROOT2, -1, 1);

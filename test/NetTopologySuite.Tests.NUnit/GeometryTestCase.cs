@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit
         private readonly NtsGeometryServices _geomServices;
         private readonly GeometryFactory _geomFactory;
         
-        private const string CHECK_EQUAL_FAIL = "FAIL:\nExpected = {1}\nActual   = {2}\n";
+        private const string CHECK_EQUAL_FAIL = "FAIL:\nExpected = {0}\nActual   = {1}\n";
         private const string CHECK_EQUAL_FAIL_MSG = "FAIL: {0}\nExpected = {1}\nActual   = {2}\n";
 
         private readonly WKTWriter _writerZ = new WKTWriter(3);

@@ -226,5 +226,30 @@ namespace NetTopologySuite.Algorithm
             return Math.Abs(s) * Math.Sqrt(len2);
         }
 
+        /// <summary>
+        /// Computes the perpendicular distance from a point p to the (infinite) line
+        /// containing the points AB. The result is positive if to the left, otherwise negative.
+        /// </summary>
+        /// <param name="p">The point to compute the distance for</param>
+        /// <param name="A">The first point of the first line</param>
+        /// <param name="B">The second point of the first line (must be different to A)</param>
+        /// <returns>The perpendicular distance from p to line segment AB</returns>
+        public static double PointToLinePerpendicularSigned(Coordinate p,
+            Coordinate A, Coordinate B)
+        {
+            // use comp.graphics.algorithms Frequently Asked Questions method
+            /*
+             * (2) s = (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay) 
+             *         ----------------------------- 
+             *                    L^2
+             * 
+             * Then the distance from C to P = |s|*L.
+             */
+            double len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y);
+            double s = ((A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y))
+                / len2;
+
+            return s * Math.Sqrt(len2);
+        }
     }
 }

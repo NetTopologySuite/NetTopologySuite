@@ -3,7 +3,7 @@ using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-
+using System.Runtime.CompilerServices;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
@@ -126,10 +126,7 @@ namespace NetTopologySuite.Algorithm
             var sortedPts = PreSort(reducedPts);
 
             // Use Graham scan to find convex hull.
-            var convexHullStack = GrahamScan(sortedPts);
-
-            // Convert stack to an array.
-            var convexHull = convexHullStack.ToArray();
+            var convexHull = GrahamScan(sortedPts);
 
             // Convert array to appropriate output geometry.
             return LineOrPolygon(convexHull);
@@ -233,27 +230,35 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        private static Stack<Coordinate> GrahamScan(Coordinate[] c)
+        private static Coordinate[] GrahamScan(Coordinate[] c)
         {
-            var ps = new Stack<Coordinate>(c.Length);
-            ps.Push(c[0]);
-            ps.Push(c[1]);
-            ps.Push(c[2]);
+            // NOTE: Original implementation uses a Stack<Coordinate>
+            // Unlike java's Stack implementation .NET's implementation
+            // of ToArray() has the LIFO order.
+            var ps = new List<Coordinate>(new []{ c[0], c[1], c[2] });
             for (int i = 3; i < c.Length; i++)
             {
                 var cp = c[i];
-                var p = ps.Pop();
+                var p = RemoveLast(ps);
 
                 // check for empty stack to guard against robustness problems
                 while (
                     ps.Count > 0 /*(IsEmpty Hack)*/ &&
-                    Orientation.Index(ps.Peek(), p, cp) > 0)
-                    p = ps.Pop();
-                ps.Push(p);
-                ps.Push(cp);
+                    Orientation.Index(Enumerable.Last(ps), p, cp) > 0)
+                    p = RemoveLast(ps);
+                ps.Add(p);
+                ps.Add(cp);
             }
-            ps.Push(c[0]);
-            return ps;
+            ps.Add(c[0]);
+            return ps.ToArray();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Coordinate RemoveLast(List<Coordinate> list)
+        {
+            var res = list[list.Count-1];
+            list.RemoveAt(list.Count-1);
+            return res;
         }
 
         /// <summary>

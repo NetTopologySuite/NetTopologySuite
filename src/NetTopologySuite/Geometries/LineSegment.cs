@@ -248,12 +248,36 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Computes the perpendicular distance between the (infinite) line defined
         /// by this line segment and a point.
+        /// <para/>
+        /// If the segment has zero length this returns the distance between
+        /// the segment and the point.
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
+        /// <param name="p">The point to compute the distance to</param>
+        /// <returns>The perpendicular distance between the line and point</returns>
         public double DistancePerpendicular(Coordinate p)
         {
+            if (P0.Equals2D(P1))
+                return P0.Distance(p);
             return DistanceComputer.PointToLinePerpendicular(p, _p0, _p1);
+        }
+
+        /// <summary>Computes the oriented perpendicular distance between the (infinite) line
+        /// defined by this line segment and a point.
+        /// The oriented distance is positive if the point on the left of the line,
+        /// and negative if it is on the right.
+        /// If the segment has zero length this returns the distance between
+        /// the segment and the point.
+        /// </summary>
+        /// <param name="p">The point to compute the distance to</param>
+        /// <returns>The oriented perpendicular distance between the line and point</returns>
+        public double DistancePerpendicularOriented(Coordinate p)
+        {
+            if (P0.Equals2D(P1))
+                return P0.Distance(p);
+            double dist = DistancePerpendicular(p);
+            if (OrientationIndex(p) < 0)
+                return -dist;
+            return dist;
         }
 
         /// <summary>
