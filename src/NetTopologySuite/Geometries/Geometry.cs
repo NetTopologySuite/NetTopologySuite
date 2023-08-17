@@ -327,13 +327,14 @@ namespace NetTopologySuite.Geometries
         public PrecisionModel PrecisionModel => Factory.PrecisionModel;
 
         /// <summary>
-        /// Returns a vertex of this <c>Geometry</c>
-        /// (usually, but not necessarily, the first one).
+        /// Returns a vertex of this geometry
+        /// (usually, but not necessarily, the first one),
+        /// or <c>null</c> if the geometry is empty.
         /// </summary>
         /// <remarks>
-        /// The returned coordinate should not be assumed to be an actual Coordinate object used in the internal representation.
+        /// The returned coordinate should not be assumed to be an actual <c>Coordinate</c> object used in the internal representation.
         /// </remarks>
-        /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
+        /// <returns>A coordinate which is a vertex of this <c>Geometry</c>.</returns>
         /// <returns><c>null</c> if this Geometry is empty.
         /// </returns>
         public abstract Coordinate Coordinate { get; }

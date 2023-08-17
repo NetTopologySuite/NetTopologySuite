@@ -64,16 +64,19 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         protected override SortIndexValue SortIndex => SortIndexValue.GeometryCollection;
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc/>
         public override Coordinate Coordinate
         {
             get
             {
-                if (IsEmpty)
-                    return null;
-                return _geometries[0].Coordinate;
+                for (int i = 0; i < _geometries.Length; i++)
+                {
+                    if (!_geometries[i].IsEmpty)
+                    {
+                        return _geometries[i].Coordinate;
+                    }
+                }
+                return null;
             }
         }
 
