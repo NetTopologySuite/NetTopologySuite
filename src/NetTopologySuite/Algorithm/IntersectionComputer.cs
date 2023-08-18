@@ -36,6 +36,8 @@ namespace NetTopologySuite.Algorithm
         public static Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             return CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
+            //-- this is less robust
+            //return IntersectionFP(p1, p2, q1, q2);
         }
 
         /// <summary>
