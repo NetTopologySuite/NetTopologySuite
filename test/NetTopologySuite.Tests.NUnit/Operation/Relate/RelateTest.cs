@@ -2,6 +2,7 @@
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Relate;
 using NUnit.Framework;
+using System;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 {
@@ -17,18 +18,37 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
         /**
          * From GEOS #572
          *
-         * The cause is that the longer line nodes the single-segment line.
-         * The node then tests as not lying precisely on the original longer line.
+         * The original failure is caused by the intersection computed
+         * during noding not lying exactly on each original line segment.
+         * This is due to numerical error in the FP intersection algorithm.
+         * This is fixed by using DD intersection calculation.
          *
          * @throws Exception
          */
 
-        [Test, Ignore("Known bug")]
-        public void TestContainsIncorrectIntersectionMatrix()
+        [Test]
+        public void TestContainsNoding()
         {
             string a = "LINESTRING (1 0, 0 2, 0 0, 2 2)";
             string b = "LINESTRING (0 0, 2 2)";
             RunRelateTest(a, b, "101F00FF2");
+        }
+
+        /**
+         * From GEOS https://github.com/libgeos/geos/issues/933
+         * 
+         * The original failure is caused by the intersection computed
+         * during noding not lying exactly on each original line segment.
+         * This is due to numerical error in the FP intersection algorithm.
+         * This is fixed by using DD intersection calculation.
+         */
+        [Test]
+        public void TestContainsNoding2()
+        {
+            string a = "MULTILINESTRING ((0 0, 1 1), (0.5 0.5, 1 0.1, -1 0.1))";
+            string b = "LINESTRING (0 0, 1 1)";
+
+            RunRelateTest(a, b, "1F1000FF2");
         }
 
         /**
@@ -66,10 +86,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             var g1 = Read(wkt1);
             var g2 = Read(wkt2);
             var im = RelateOp.Relate(g1, g2);
-            string imStr = im.ToString();
             //TestContext.WriteLine("expected: {0}", expectedIM);
             //TestContext.WriteLine("result:   {0}", imStr);
-            Assert.IsTrue(im.Matches(expectedIM));
+            Assert.That(im.ToString(), Is.EqualTo(expectedIM));
         }
     }
 }

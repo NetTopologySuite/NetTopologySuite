@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
@@ -187,6 +188,11 @@ namespace NetTopologySuite.Algorithm
 
             double xInt = (x / w).ToDoubleValue();
             double yInt = (y / w).ToDoubleValue();
+
+            if (double.IsNaN(xInt) || double.IsInfinity(xInt) || double.IsNaN(yInt) || double.IsInfinity(yInt))
+            {
+                return null;
+            }
 
             return new Coordinate(xInt, yInt);
         }

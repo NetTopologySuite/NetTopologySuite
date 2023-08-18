@@ -14,6 +14,9 @@ namespace NetTopologySuite.Algorithm
     /// <para/>
     /// The Z-ordinate is ignored, and not populated.
     /// </summary>
+    /// <remarks>
+    /// NOTE: In JTS this function is called Intersection.
+    /// </remarks>
     /// <author>mdavis</author>
     public class IntersectionComputer
     {
@@ -27,14 +30,29 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q1">An endpoint of line 2</param>
         /// <param name="q2">An endpoint of line 2</param>
         /// <returns>
-        /// <remarks>
-        /// NOTE: In JTS this function is called Intersection.
-        /// </remarks>
         /// The intersection point between the lines, if there is one,
         /// or null if the lines are parallel or collinear</returns>
         /// <seealso cref="CGAlgorithmsDD.Intersection(Coordinate, Coordinate, Coordinate, Coordinate)"/>
-
         public static Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        {
+            return CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
+        }
+
+        /// <summary>
+        /// Compute intersection of two lines, using a floating-point algorithm.
+        /// This is less accurate than {@link CGAlgorithmsDD#intersection(Coordinate, Coordinate, Coordinate, Coordinate)}.
+        /// It has caused spatial predicate failures in some cases.
+        /// This is kept for testing purposes.
+        /// </summary>
+        /// </summary>
+        /// <param name="p1">An endpoint of line 1</param>
+        /// <param name="p2">An endpoint of line 1</param>
+        /// <param name="q1">An endpoint of line 2</param>
+        /// <param name="q2">An endpoint of line 2</param>
+        /// <returns>
+        /// The intersection point between the lines, if there is one,
+        /// or null if the lines are parallel or collinear</returns>
+        private static Coordinate IntersectionFP(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             // compute midpoint of "kernel envelope"
             double minX0 = p1.X < p2.X ? p1.X : p2.X;
