@@ -7,6 +7,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
 {
     public class LargestEmptyCircleTest : GeometryTestCase
     {
+        //------------ Point Obstacles -----------------
+
         [Test]
         public void TestPointsSquare()
         {
@@ -27,6 +29,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
             CheckCircle("MULTIPOINT ((100 100), (300 100), (200 250))",
                 0.01, 200.00, 141.66, 108.33);
         }
+
+        [Test]
+        public void TestPoint()
+        {
+            CheckCircleZeroRadius("POINT (100 100)",
+               0.01);
+        }
+
+        //------------ Line Obstacles -----------------
 
         [Test]
         public void TestLinesOpenDiamond()
@@ -51,17 +62,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         }
 
         [Test]
-        public void TestPointsLinesTriangle()
+        public void TestLinePointTriangle()
         {
             CheckCircle("GEOMETRYCOLLECTION (LINESTRING (100 100, 300 100), POINT (250 200))",
                 0.01, 196.49, 164.31, 64.31);
-        }
-
-        [Test]
-        public void TestPoint()
-        {
-            CheckCircleZeroRadius("POINT (100 100)",
-                0.01);
         }
 
         [Test]
@@ -76,6 +80,29 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         {
             CheckCircle("MULTIPOINT ((100 100), (300 100), (200 100.1))",
                0.01);
+        }
+
+        //------------ Polygon Obstacles -----------------
+
+        [Test]
+        public void TestPolygonConcave()
+        {
+            CheckCircle("POLYGON ((1 9, 9 6, 6 5, 5 3, 8 3, 9 4, 9 1, 1 1, 1 9))",
+                0.01, 7.495, 4.216, 1.21);
+        }
+
+        [Test]
+        public void TestPolygonsBoxes()
+        {
+            CheckCircle("MULTIPOLYGON (((1 6, 6 6, 6 1, 1 1, 1 6)), ((6 7, 4 7, 4 9, 6 9, 6 7)))",
+                0.01, 2.50, 7.50, 1.50);
+        }
+
+        [Test]
+        public void TestPolygonLines()
+        {
+            CheckCircle("GEOMETRYCOLLECTION (POLYGON ((1 6, 6 6, 6 1, 1 1, 1 6)), LINESTRING (6 7, 3 9), LINESTRING (1 7, 3 8))",
+                0.01, 3.74, 7.14, 1.14);
         }
 
         //---------------------------------------------------------
@@ -132,7 +159,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         //========================================================
 
         /**
-         * A coarse distance check, mainly testing 
+         * A simple distance check, mainly testing 
          * that there is not a huge number of iterations.
          * (This will be revealed by CI taking a very long time!)
          * 
