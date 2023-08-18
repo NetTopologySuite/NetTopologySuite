@@ -12,12 +12,12 @@ namespace NetTopologySuite.Algorithm.Construct
     /// Uses spatial indexing to provide efficient performance.
     /// </summary>
     /// <author>Martin Davis</author>
-    internal sealed class IndexedPointInPolygonsLocater : IPointOnGeometryLocator
+    internal sealed class IndexedPointInPolygonsLocator : IPointOnGeometryLocator
     {
         private readonly Geometry _geom;
         private STRtree<IndexedPointInAreaLocator> _index;
 
-        public IndexedPointInPolygonsLocater(Geometry geom)
+        public IndexedPointInPolygonsLocator(Geometry geom)
         {
             _geom = geom;
         }

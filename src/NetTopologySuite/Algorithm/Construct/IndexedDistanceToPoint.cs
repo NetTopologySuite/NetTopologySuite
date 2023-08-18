@@ -15,7 +15,7 @@ namespace NetTopologySuite.Algorithm.Construct
 
         private readonly Geometry _targetGeometry;
         private IndexedFacetDistance _facetDistance;
-        private IndexedPointInPolygonsLocater _ptLocater;
+        private IndexedPointInPolygonsLocator _ptLocater;
 
         public IndexedDistanceToPoint(Geometry geom)
         {
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Algorithm.Construct
             if (_facetDistance != null)
                 return;
             _facetDistance = new IndexedFacetDistance(_targetGeometry);
-            _ptLocater = new IndexedPointInPolygonsLocater(_targetGeometry);
+            _ptLocater = new IndexedPointInPolygonsLocator(_targetGeometry);
         }
 
         /// <summary>
