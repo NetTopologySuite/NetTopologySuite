@@ -10,8 +10,7 @@ namespace NetTopologySuite.Algorithm.Construct
     /// <summary>
     /// Constructs the Largest Empty Circle for a set
     /// of obstacle geometries, up to a given accuracy distance tolerance.
-    /// The obstacles are point and line geometries.
-    /// (Polygonal obstacles may be supplied, but only their boundaries are used.)
+    /// The obstacles may be any combination of point, linear and polygonal geometries.
     /// <para/>
     /// The Largest Empty Circle (LEC) is the largest circle
     /// whose interior does not intersect with any obstacle
@@ -26,7 +25,7 @@ namespace NetTopologySuite.Algorithm.Construct
     /// If it is not specified the convex hull of the obstacles is used as the boundary.
     /// <para/>
     /// To compute an LEC which lies <i>wholly</i> within
-    /// a polygonal boundary, include the boundary polygon as an obstacle as well.
+    /// a polygonal boundary, include the boundary of the polygon(s) as an obstacle.
     /// <para/>
     /// The implementation uses a successive-approximation technique
     /// over a grid of square cells covering the obstacles and boundary.
@@ -34,10 +33,6 @@ namespace NetTopologySuite.Algorithm.Construct
     /// Point containment and distance are computed in a performant
     /// way by using spatial indexes.
     /// <para/>
-    /// <h3>Future Enhancements</h3>
-    /// <list type="bullet">
-    /// <item><description>Support polygons as obstacles</description></item>
-    /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
     /// <see cref="MaximumInscribedCircle"/>
@@ -109,8 +104,8 @@ namespace NetTopologySuite.Algorithm.Construct
         private readonly double _tolerance;
 
         private readonly GeometryFactory _factory;
-        private IndexedPointInAreaLocator _ptLocater;
-        private readonly IndexedFacetDistance _obstacleDistance;
+        private readonly IndexedDistanceToPoint _obstacleDistance;
+        private IndexedPointInAreaLocator _boundaryPtLocater;
         private IndexedFacetDistance _boundaryDistance;
         private Envelope _gridEnv;
         private Cell _farthestCell;
@@ -158,7 +153,7 @@ namespace NetTopologySuite.Algorithm.Construct
             _boundary = boundary;
             _factory = obstacles.Factory;
             _tolerance = tolerance;
-            _obstacleDistance = new IndexedFacetDistance(obstacles);
+            _obstacleDistance = new IndexedDistanceToPoint(obstacles);
         }
         /// <summary>
         /// Gets the center point of the Largest Empty Circle
@@ -208,7 +203,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// <returns>The signed distance to the constraints (negative indicates outside the boundary)</returns>
         private double DistanceToConstraints(Point p)
         {
-            bool isOutide = Location.Exterior == _ptLocater.Locate(p.Coordinate);
+            bool isOutide = Location.Exterior == _boundaryPtLocater.Locate(p.Coordinate);
             if (isOutide)
             {
                 double boundaryDist = _boundaryDistance.Distance(p);
@@ -238,7 +233,7 @@ namespace NetTopologySuite.Algorithm.Construct
             // if bounds does not enclose an area cannot create a ptLocater
             if (_bounds.Dimension >= Dimension.Surface)
             {
-                _ptLocater = new IndexedPointInAreaLocator(_bounds);
+                _boundaryPtLocater = new IndexedPointInAreaLocator(_bounds);
                 _boundaryDistance = new IndexedFacetDistance(_bounds);
             }
         }
@@ -250,8 +245,8 @@ namespace NetTopologySuite.Algorithm.Construct
             // check if already computed
             if (_centerCell != null) return;
 
-            // if ptLocater is not present then result is degenerate (represented as zero-radius circle)
-            if (_ptLocater == null)
+            // if _boundaryPtLocater is not present then result is degenerate (represented as zero-radius circle)
+            if (_boundaryPtLocater == null)
             {
                 var pt = _obstacles.Coordinate;
                 _centerPt = pt.Copy();
