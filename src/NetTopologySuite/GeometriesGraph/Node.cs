@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IO;
 using NetTopologySuite.Geometries;
 
@@ -191,7 +192,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            return _coord + " " + _edges;
+            return string.Format(NumberFormatInfo.InvariantInfo, "Node({0}, {1})", _coord.X, _coord.Y);
         }
     }
 }
