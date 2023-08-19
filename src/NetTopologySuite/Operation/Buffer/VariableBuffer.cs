@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// at each vertex along a line.
     /// Vertex distances may be zero.
     /// <para/>
-    /// Only single linestring are supported as input, since buffer widths
+    /// Only single linestring is supported as input, since buffer widths
     /// generally need to be specified individually for each line.
     /// </summary>
     /// <author>Martin Davis</author>
