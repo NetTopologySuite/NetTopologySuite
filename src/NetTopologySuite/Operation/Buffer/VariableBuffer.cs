@@ -8,8 +8,9 @@ namespace NetTopologySuite.Operation.Buffer
     /// <summary>
     /// Creates a buffer polygon with a varying buffer distance
     /// at each vertex along a line.
+    /// Vertex distances may be zero.
     /// <para/>
-    /// Only single lines are supported as input, since buffer widths
+    /// Only single linestring is supported as input, since buffer widths
     /// generally need to be specified individually for each line.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -206,7 +207,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Computes the buffer polygon.
+        /// Computes the variable buffer polygon.
         /// </summary>
         /// <returns>A buffer polygon</returns>
         public Geometry GetResult()
@@ -243,15 +244,24 @@ namespace NetTopologySuite.Operation.Buffer
         /// with the given endpoints and buffer distances.
         /// The individual segment buffers are unioned
         /// to form the final buffer.
+        /// If one distance is zero, the end cap at that 
+        /// segment end is the endpoint of the segment.
+        /// If both distances are zero, no polygon is returned.
         /// </summary>
         /// <param name="p0">The segment start point</param>
         /// <param name="p1">The segment end point</param>
         /// <param name="dist0">The buffer distance at the start point</param>
         /// <param name="dist1">The buffer distance at the end point</param>
-        /// <returns>The segment buffer</returns>
+        /// <returns>The segment buffer, or null if void</returns>
         private Polygon SegmentBuffer(Coordinate p0, Coordinate p1,
             double dist0, double dist1)
         {
+            /*
+             * Skip polygon if both distances are zero
+             */
+            if (dist0 <= 0 && dist1 <= 0)
+                return null;
+
             /*
              * Compute for increasing distance only, so flip if needed
              */
@@ -283,22 +293,26 @@ namespace NetTopologySuite.Operation.Buffer
             var seg = new LineSegment(p0, p1);
             var tr0 = seg.Reflect(t0);
             var tr1 = seg.Reflect(t1);
+            
+            //-- avoid numeric jitter if first distance is zero
+            if (dist0 == 0)
+                tr0 = p0.Copy();
 
             var coords = new CoordinateList();
-            coords.Add(t0);
-            coords.Add(t1);
+            coords.Add(t0, false);
+            coords.Add(t1, false);
 
             // end cap
             AddCap(p1, dist1, t1, tr1, coords);
 
-            coords.Add(tr1);
-            coords.Add(tr0);
+            coords.Add(tr1, false);
+            coords.Add(tr0, false);
 
             // start cap
             AddCap(p0, dist0, tr0, t0, coords);
 
             // close
-            coords.Add(t0);
+            coords.Add(t0, false);
 
             var pts = coords.ToCoordinateArray();
             var polygon = _geomFactory.CreatePolygon(pts);
@@ -336,7 +350,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="coords">The coordinate list to add to</param>
         private void AddCap(Coordinate p, double r, Coordinate t1, Coordinate t2, CoordinateList coords)
         {
-
+            //-- handle zero-width at vertex
+            if (r == 0)
+            {
+                coords.Add(p.Copy(), false);
+                return;
+            }
             double angStart = AngleUtility.Angle(p, t1);
             double angEnd = AngleUtility.Angle(p, t2);
             if (angStart < angEnd)
@@ -349,7 +368,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 // use negative increment to create points CW
                 double ang = CapAngle(i);
-                coords.Add(ProjectPolar(p, r, ang));
+                coords.Add(ProjectPolar(p, r, ang), false);
             }
         }
 
