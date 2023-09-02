@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
     [Serializable]
-    public class GeometryCollection : Geometry, IEnumerable<Geometry>
+    public class GeometryCollection : Geometry, IReadOnlyList<Geometry>
     {
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
