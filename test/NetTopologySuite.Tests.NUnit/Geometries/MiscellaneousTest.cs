@@ -158,23 +158,8 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(0, (int) p.Dimension);
             Assert.AreEqual(new Envelope(), p.EnvelopeInternal);
             Assert.IsTrue(p.IsSimple);
-            try
-            {
-                double tmp = p.X;
-                Assert.IsTrue(false);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-            }
-            try
-            {
-                double tmp = p.Y;
-                Assert.IsTrue(false);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-            }
-
+            Assert.IsTrue(double.IsNaN(p.X));
+            Assert.IsTrue(double.IsNaN(p.Y));
             Assert.AreEqual("POINT EMPTY", p.ToString());
             Assert.AreEqual("POINT EMPTY", p.AsText());
         }

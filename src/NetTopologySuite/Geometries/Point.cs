@@ -68,7 +68,7 @@ namespace NetTopologySuite.Geometries
             if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             NetTopologySuite.Utilities.Assert.IsTrue(coordinates.Count <= 1);
-            this._coordinates = coordinates;
+            _coordinates = coordinates;
         }
 
         /// <summary>
@@ -113,46 +113,44 @@ namespace NetTopologySuite.Geometries
         public override Dimension BoundaryDimension => Dimension.False;
 
         /// <summary>
-        ///
+        /// Gets a value indicating the x-ordinate of this point
         /// </summary>
+        /// <remarks>
+        /// Deviation from JTS: this implementation <b>does not</b> throw an exception
+        /// when this property is accessed or set
+        /// </remarks>
         public double X
         {
             get
             {
-                if (Coordinate == null)
-                    throw new ArgumentOutOfRangeException("X called on empty Point");
-                return Coordinate.X;
+                return !IsEmpty ? CoordinateSequence.GetX(0) : Coordinate.NullOrdinate;
             }
             set
             {
-                if (CoordinateSequence.Count == 0)
-                    throw new ArgumentOutOfRangeException("X called on empty Point");
-                CoordinateSequence.SetX(0, value);
+                if (!IsEmpty) CoordinateSequence.SetX(0, value);
             }
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating the y-ordinate of this point
         /// </summary>
+        /// <remarks>
+        /// Deviation from JTS: this implementation <b>does not</b> throw an exception
+        /// when this property is accessed or set
+        /// </remarks>
         public double Y
         {
             get
             {
-                if (Coordinate == null)
-                    throw new ArgumentOutOfRangeException("Y called on empty Point");
-                return Coordinate.Y;
+                return !IsEmpty ? CoordinateSequence.GetY(0) : Coordinate.NullOrdinate;
             }
             set
             {
-                if (CoordinateSequence.Count == 0)
-                    throw new ArgumentOutOfRangeException("Y called on empty Point");
-                CoordinateSequence.SetY(0, value);
+                if (!IsEmpty) CoordinateSequence.SetY(0, value);
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc/>
         public override Coordinate Coordinate => _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
 
         /// <summary>
@@ -200,10 +198,8 @@ namespace NetTopologySuite.Geometries
             return Factory.CoordinateEqualityComparer.Equals(other.Coordinate, Coordinate, tolerance);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+
+        /// <inheritdoc />
         public override void Apply(ICoordinateFilter filter)
         {
             if (IsEmpty)
@@ -211,6 +207,7 @@ namespace NetTopologySuite.Geometries
             filter.Filter(Coordinate);
         }
 
+        /// <inheritdoc />
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             if (IsEmpty)
@@ -241,19 +238,13 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc />
         public override void Apply(IGeometryFilter filter)
         {
             filter.Filter(this);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc />
         public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
