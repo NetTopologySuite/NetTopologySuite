@@ -123,7 +123,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return !IsEmpty ? CoordinateSequence.GetX(0) : double.NaN;
+                return !IsEmpty ? CoordinateSequence.GetX(0) : Coordinate.NullOrdinate;
             }
             set
             {
@@ -142,7 +142,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return !IsEmpty ? CoordinateSequence.GetY(0) : double.NaN;
+                return !IsEmpty ? CoordinateSequence.GetY(0) : Coordinate.NullOrdinate;
             }
             set
             {
