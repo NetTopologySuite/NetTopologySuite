@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             var expected = Read(expectedWKT);
             result.Normalize();
             expected.Normalize();
-            Assert.That(expected.EqualsExact(result, ComparisonTolerance));
+            CheckEqual(expected, result, ComparisonTolerance);
         }
     }
 }
