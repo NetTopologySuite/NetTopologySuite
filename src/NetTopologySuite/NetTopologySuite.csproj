@@ -7,8 +7,8 @@
     <NoWarn>659,168,1587</NoWarn>
     <EnableApiCompat>true</EnableApiCompat>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<EnablePackageValidation>true</EnablePackageValidation>
-	<PackageValidationBaselineVersion>2.4.0</PackageValidationBaselineVersion>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>2.5.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Assembly Info">
