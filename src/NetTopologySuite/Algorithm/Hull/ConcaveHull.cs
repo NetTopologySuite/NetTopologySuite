@@ -3,7 +3,6 @@ using NetTopologySuite.Triangulate.Tri;
 using NetTopologySuite.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Algorithm.Hull
 {
