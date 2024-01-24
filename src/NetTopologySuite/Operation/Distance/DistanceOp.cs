@@ -313,8 +313,12 @@ namespace NetTopologySuite.Operation.Distance
         {
             foreach (Point pt0 in points0)
             {
+                if (pt0.IsEmpty)
+                    continue;
                 foreach (Point pt1 in points1)
                 {
+                    if (pt1.IsEmpty)
+                        continue;
                     double dist = pt0.Coordinate.Distance(pt1.Coordinate);
                     if (dist < _minDistance)
                     {
