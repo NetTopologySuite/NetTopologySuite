@@ -2,6 +2,7 @@
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.IO;
 using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace NetTopologySuite.Samples.Tests.Github
@@ -71,15 +72,52 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             public void Filter(Geometry geom)
             {
-                if (geom is MultiPoint)
-                    return;
-                if (geom is not Point pt)
-                    throw new System.ArgumentException(nameof(geom));
+                if (geom is MultiPoint mp)
+                {
+                    var pts = new Point[mp.NumGeometries];
+                    for (int i = 0; i < mp.NumGeometries; i++)
+                        pts[i] = (Point)mp.GetGeometryN(i);
+                    Shuffle(new Random(17), pts);
 
-                _tree.Insert(pt.Coordinate, pt.CoordinateSequence.Copy());
-                _env.ExpandToInclude(pt.Coordinate);
+                    for (int i = 0; i < pts.Length; i++)
+                        _tree.Insert(pts[i].Coordinate, pts[i].CoordinateSequence.Copy());
+                    _env.ExpandToInclude(geom.EnvelopeInternal);
+                }
+                return;
             }
 
+            private class ShuffleIndex
+            {
+                private static Random Rnd = new Random(13);
+                private int _n;
+
+                public ShuffleIndex(int n)
+                {
+                    _n = n;
+                }
+
+                public int GetNextIndex()
+                {
+                    if (_n >= 0)
+                    {
+
+                    }
+                        return -1;
+
+                }
+            }
+
+            public static void Shuffle(Random rng, Point[] array)
+            {
+                int n = array.Length;
+                while (n > 1)
+                {
+                    int k = rng.Next(n--);
+                    var temp = array[n];
+                    array[n] = array[k];
+                    array[k] = temp;
+                }
+            }
             public Geometry GetResult(GeometryFactory factory)
             {
                 var pts = _tree.Query(_env).Select(t => factory.CreatePoint(t.Data)).ToArray();
