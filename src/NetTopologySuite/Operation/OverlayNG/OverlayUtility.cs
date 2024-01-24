@@ -386,6 +386,8 @@ namespace NetTopologySuite.Operation.OverlayNG
             if (geom0 == null || geom1 == null)
                 return true;
 
+            if (result.Dimension < Dimension.Surface) return true;
+
             double areaResult = result.Area;
             double areaA = geom0.Area;
             double areaB = geom1.Area;
@@ -398,8 +400,7 @@ namespace NetTopologySuite.Operation.OverlayNG
                                 && IsLess(areaResult, areaB, AreaHeuristicTolerance);
                     break;
                 case OverlayNG.DIFFERENCE:
-                    isConsistent = IsLess(areaResult, areaA, AreaHeuristicTolerance)
-                                && IsGreater(areaResult, areaA - areaB, AreaHeuristicTolerance);
+                    isConsistent = IsDifferenceAreaConsistent(areaA, areaB, areaResult, AreaHeuristicTolerance);
                     break;
                 case OverlayNG.SYMDIFFERENCE:
                     isConsistent = IsLess(areaResult, areaA + areaB, AreaHeuristicTolerance);
@@ -411,6 +412,23 @@ namespace NetTopologySuite.Operation.OverlayNG
                     break;
             }
             return isConsistent;
+        }
+
+        /// <summary>
+        /// Tests if the area of a difference is greater than the minimum possible difference area.
+        /// This is a heuristic which will only detect gross overlay errors.
+        /// </summary>
+        /// <param name="areaA">The area of A</param>
+        /// <param name="areaB">The area of B</param>
+        /// <param name="areaResult">The result area</param>
+        /// <param name="tolFrac">The area tolerance fraction</param>
+        /// <returns><c>true</c> if the difference area is consistent.</returns>
+        private static bool IsDifferenceAreaConsistent(double areaA, double areaB, double areaResult, double tolFrac)
+        {
+            if (!IsLess(areaResult, areaA, tolFrac))
+                return false;
+            double areaDiffMin = areaA - areaB - tolFrac * areaA;
+            return areaResult > areaDiffMin;
         }
 
         private static bool IsLess(double v1, double v2, double tol)
