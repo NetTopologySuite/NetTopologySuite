@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
@@ -25,6 +26,10 @@ namespace NetTopologySuite.Simplify
     /// any intersecting line segments, this property
     /// will be preserved in the output.
     /// <para/>
+    /// <para>
+    /// For polygonal geometries and LinearRings the endpoint will participate
+    /// in simplification.For LineStrings the endpoints will not be unchanged.
+    /// </para>
     /// For all geometry types, the result will contain
     /// enough vertices to ensure validity.  For polygons
     /// and closed linear geometries, the result will have at
@@ -166,13 +171,13 @@ namespace NetTopologySuite.Simplify
             /// <param name="geom">A geometry of any type</param>
             public void Filter(Geometry geom)
             {
-                var line = geom as LineString;
-                if (line == null)
+                if (!(geom is LineString line))
                     return;
                 if (line.IsEmpty)
                     return;
                 int minSize = line.IsClosed ? 4 : 2;
-                var taggedLine = new TaggedLineString(line, minSize);
+                bool isPreserveEndpoint = line is LinearRing ? false : true;
+                var taggedLine = new TaggedLineString(line, minSize, isPreserveEndpoint);
                 _container._lineStringMap.Add(line, taggedLine);
             }
         }

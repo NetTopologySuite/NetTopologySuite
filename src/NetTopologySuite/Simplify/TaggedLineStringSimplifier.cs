@@ -1,5 +1,8 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using System;
+using static System.Collections.Specialized.BitVector32;
+using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Simplify
 {
@@ -44,12 +47,16 @@ namespace NetTopologySuite.Simplify
             _line = line;
             _linePts = line.ParentCoordinates;
             SimplifySection(0, _linePts.Length - 1, 0);
+
+            if (!line.PreserveEndpoint && CoordinateArrays.IsRing(_linePts))
+            {
+                SimplifyRingEndpoint();
+            }
         }
 
         private void SimplifySection(int i, int j, int depth)
         {
             depth += 1;
-            int[] sectionIndex = new int[2];
             if ((i + 1) == j)
             {
                 var newSeg = _line.GetSegment(i);
@@ -82,9 +89,7 @@ namespace NetTopologySuite.Simplify
             var candidateSeg = new LineSegment();
             candidateSeg.P0 = _linePts[i];
             candidateSeg.P1 = _linePts[j];
-            sectionIndex[0] = i;
-            sectionIndex[1] = j;
-            if (HasBadIntersection(_line, sectionIndex, candidateSeg))
+            if (HasBadIntersection(_line, i, j, candidateSeg))
                 isValidToSimplify = false;
 
             if (isValidToSimplify)
@@ -95,6 +100,23 @@ namespace NetTopologySuite.Simplify
             }
             SimplifySection(i, furthestPtIndex, depth);
             SimplifySection(furthestPtIndex, j, depth);
+        }
+
+        private void SimplifyRingEndpoint()
+        {
+            if (_line.ResultSize > _line.MinimumSize)
+            {
+                var firstSeg = _line.GetResultSegment(0);
+                var lastSeg = _line.GetResultSegment(-1);
+
+                var simpSeg = new LineSegment(lastSeg.P0, firstSeg.P1);
+                //-- the excluded segments are the ones containing the endpoint
+                if (simpSeg.Distance(firstSeg.P0) <= _distanceTolerance
+                    && !HasBadIntersection(_line, _line.Segments.Length - 2, 0, simpSeg))
+                {
+                    _line.RemoveRingEndpoint();
+                }
+            }
         }
 
         private int FindFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
@@ -140,15 +162,19 @@ namespace NetTopologySuite.Simplify
             return newSeg;
         }
 
-        private bool HasBadIntersection(TaggedLineString parentLine,
-            int[] sectionIndex, LineSegment candidateSeg)
+        /// <summary>
+        /// Tests if a flattening segment intersects a line
+        /// (excluding a given section of segments).
+        /// The excluded section is being replaced by the flattening segment,
+        /// so there is no need to test it
+        /// (and it may well intersect the segment).
+        /// </summary>
+        private bool HasBadIntersection(TaggedLineString line,
+                             int excludeStart, int excludeEnd,
+                             LineSegment candidateSeg)
         {
-            bool badOutput = HasBadOutputIntersection(candidateSeg);
-            if (badOutput)
-                return true;
-            bool badInput = HasBadInputIntersection(parentLine, sectionIndex, candidateSeg);
-            if (badInput)
-                return true;
+            if (HasBadOutputIntersection(candidateSeg)) return true;
+            if (HasBadInputIntersection(line, excludeStart, excludeEnd, candidateSeg)) return true;
             return false;
         }
 
@@ -165,7 +191,8 @@ namespace NetTopologySuite.Simplify
         }
 
         private bool HasBadInputIntersection(TaggedLineString parentLine,
-            int[] sectionIndex, LineSegment candidateSeg)
+                        int excludeStart, int excludeEnd,
+                        LineSegment candidateSeg)
         {
             var querySegs = _inputIndex.Query(candidateSeg);
             foreach (TaggedLineSegment querySeg in querySegs)
@@ -173,9 +200,11 @@ namespace NetTopologySuite.Simplify
                 bool interior = HasInvalidIntersection(querySeg, candidateSeg);
                 if (interior)
                 {
-                    //-- don't fail if the segment is part of parent line
-                    bool inline = IsInLineSection(parentLine, sectionIndex, querySeg);
-                    if (inline)
+                    /*
+                     * Ignore the intersection if the intersecting segment is part of the section being collapsed
+                     * to the candidate segment
+                     */
+                    if (IsInLineSection(_line, excludeStart, excludeEnd, querySeg))
                         continue;
                     return true;
                 }
@@ -184,22 +213,36 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// Tests whether a segment is in a section of a <see cref="TaggedLineString"/>.
+        /// Tests whether a segment is in a section of a TaggedLineString.
+        /// Sections may wrap around the endpoint of the line,
+        /// to support ring endpoint simplification.
+        /// This is indicated by excludedStart > excludedEnd
         /// </summary>
-        /// <param name="line"></param>
-        /// <param name="sectionIndex"></param>
-        /// <param name="seg"></param>
-        /// <returns></returns>
+        /// <param name="line">The TaggedLineString containing the section segments</param>
+        /// <param name="excludeStart">The index of the first segment in the excluded section  </param>
+        /// <param name="excludeEnd">The index of the last segment in the excluded section</param>
+        /// <param name="seg">The segment to test</param>
+        /// <returns><c>true</c> if the test segment intersects some segment in the line not in the excluded section</returns>
         private static bool IsInLineSection(TaggedLineString line,
-            int[] sectionIndex, TaggedLineSegment seg)
+            int excludeStart, int excludeEnd,
+            TaggedLineSegment seg)
         {
-            // not in this line
+            //-- test segment is not in this line
             if (seg.Parent != line.Parent)
                 return false;
             int segIndex = seg.Index;
-            if (segIndex >= sectionIndex[0] &&
-                segIndex < sectionIndex[1])
-                return true;
+            if (excludeStart <= excludeEnd)
+            {
+                //-- section is contiguous
+                if (segIndex >= excludeStart && segIndex < excludeEnd)
+                    return true;
+            }
+            else
+            {
+                //-- section wraps around the end of a ring
+                if (segIndex >= excludeStart || segIndex <= excludeEnd)
+                    return true;
+            }
             return false;
         }
 

@@ -467,6 +467,8 @@ namespace NetTopologySuite.Tests.NUnit
         /// </summary>
         protected GeometryFactory GeometryFactory => _geomFactory;
 
+        protected void CheckValid(Geometry geom) => Assert.That(geom.IsValid);
+
         private class GeometryEqualityComparer : IEqualityComparer<Geometry>
         {
             public bool Equals(Geometry x, Geometry y)

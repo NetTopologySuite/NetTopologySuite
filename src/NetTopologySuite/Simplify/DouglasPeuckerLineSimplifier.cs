@@ -9,15 +9,28 @@ namespace NetTopologySuite.Simplify
     public class DouglasPeuckerLineSimplifier
     {
         /// <summary>
-        ///
+        /// Simplifies a series of <see cref="Coordinate"/>s. The series' endpoints are preserved.
         /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="distanceTolerance"></param>
-        /// <returns></returns>
+        /// <param name="pts">The series of <c>Coordinate</c>s to simplify</param>
+        /// <param name="distanceTolerance">A simplification tolerance distance</param>
+        /// <returns>The simplified series of <c>Coordinate</c>s</returns>
         public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
+            => Simplify(pts, distanceTolerance, true);
+
+        /// <summary>
+        /// Simplifies a series of <see cref="Coordinate"/>s.
+        /// </summary>
+        /// <param name="pts">The series of <c>Coordinate</c>s to simplify</param>
+        /// <param name="distanceTolerance">A simplification tolerance distance</param>
+        /// <param name="isPreserveEndpoint">A flag indicating if the endpoint should be preserved</param>
+        /// <returns></returns>
+        public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance, bool isPreserveEndpoint)
         {
-            var simp = new DouglasPeuckerLineSimplifier(pts);
-            simp.DistanceTolerance = distanceTolerance;
+            var simp = new DouglasPeuckerLineSimplifier(pts)
+            {
+                DistanceTolerance = distanceTolerance,
+                PreserveEndpoint = isPreserveEndpoint
+            };
             return simp.Simplify();
         }
 
@@ -39,6 +52,11 @@ namespace NetTopologySuite.Simplify
         public double DistanceTolerance { get; set; }
 
         /// <summary>
+        /// Gets a flag indicating if the endpoint should be preserved
+        /// </summary>
+        public bool PreserveEndpoint { get; private set; }
+
+        /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
@@ -49,11 +67,35 @@ namespace NetTopologySuite.Simplify
                 _usePt[i] = true;
 
             SimplifySection(0, _pts.Length - 1);
+
             var coordList = new CoordinateList(_pts.Length);
             for (int i = 0; i < _pts.Length; i++)
                 if (_usePt[i])
                     coordList.Add(_pts[i].Copy());
+
+            if (!PreserveEndpoint && CoordinateArrays.IsRing(_pts))
+            {
+                SimplifyRingEndpoint(coordList);
+            }
+
             return coordList.ToCoordinateArray();
+        }
+
+        private void SimplifyRingEndpoint(CoordinateList pts)
+        {
+            //-- avoid collapsing triangles
+            if (pts.Count < 4)
+                return;
+            //-- base segment for endpoint
+            _seg.P0 = pts[1];
+            _seg.P1 = pts[pts.Count - 2];
+            double distance = _seg.Distance(pts[0]);
+            if (distance <= DistanceTolerance)
+            {
+                pts.RemoveAt(0);
+                pts.RemoveAt(pts.Count - 1);
+                pts.CloseRing();
+            }
         }
 
         private readonly LineSegment _seg = new LineSegment();
