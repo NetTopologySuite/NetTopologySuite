@@ -142,10 +142,8 @@ namespace NetTopologySuite.Triangulate
                 {
                     return baseQuadEdge; // no more suspect edges.
                 }
-                else
-                {
-                    e = e.ONext.LPrev;
-                }
+                //-- check next edge
+                e = e.ONext.LPrev;
             } while (true);
         }
 
