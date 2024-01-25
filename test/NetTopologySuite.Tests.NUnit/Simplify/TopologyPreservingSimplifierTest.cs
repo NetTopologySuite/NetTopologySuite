@@ -179,6 +179,24 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         }
 
         [Test]
+        public void TestLineStringRingRemoveEndpoint()
+        {
+            CheckTPS(
+                "LINESTRING (220 180, 261 175, 380 220, 300 40, 140 30, 30 220, 176 176, 220 180)",
+                40,
+                "LINESTRING (30 220, 380 220, 300 40, 140 30, 30 220)"
+            );
+        }
+
+        [Test]
+        public void TestPolygonKeepFlatEndpointWithTouch()
+        {
+            CheckTPSNoChange("POLYGON ((0 0, 5 2.05, 10 0, 10 10, 0 10, 0 0),  (5 2.1, 6 2, 6 4, 4 4, 4 2, 5 2.1))",
+                0.1 );
+        }
+
+
+    [Test]
         public void TestPolygonKeepEndpointWithCross()
         {
             CheckTPS(
