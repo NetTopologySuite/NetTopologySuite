@@ -112,6 +112,35 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Implicit conversion of a <c>(double x, double y, double m)</c> value to a <c>CoordinateM</c>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator CoordinateM((double x, double y) value)
+            => new CoordinateM(value.x, value.y);
+        
+        /// <summary>
+        /// Implicit conversion of a <c>(double x, double y, double z, double m)</c> value to a <c>CoordinateM</c>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator CoordinateM((double x, double y, double z) value)
+            => new CoordinateM(value.x, value.y, value.z);
+
+        /// <summary>
+        /// Deconstructs this <c>CoordinateM</c> into its x, y and m values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="m"></param>
+        public void Deconstruct(out double x, out double y, out double m)
+        {
+            x = X;
+            y = Y;
+            m = M;
+        }
+
+        /// <summary>
         /// Gets/Sets <c>CoordinateM</c>s (x,y,z) values.
         /// </summary>
         public override Coordinate CoordinateValue
