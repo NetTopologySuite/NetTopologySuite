@@ -119,6 +119,37 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Implicit conversion of a <c>Tuple</c> to a <c>CoordinateZM</c>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator CoordinateZM((double x, double y) value)
+            => new CoordinateZM(value.x, value.y);
+
+        /// <summary>
+        /// Implicit conversion of a <c>Tuple</c> to a <c>CoordinateZM</c>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator CoordinateZM((double x, double y, double z, double m) value)
+            => new CoordinateZM(value.x, value.y, value.z, value.m);
+
+        /// <summary>
+        /// Deconstructs this <c>CoordinateZM</c> into its x, y, z and values.
+        /// </summary>
+        /// <param name="x">The x-ordinate value</param>
+        /// <param name="y">The y-ordinate value</param>
+        /// <param name="z">The z-ordinate value</param>
+        /// <param name="m"></param>
+        public void Deconstruct(out double x, out double y, out double z, out double m)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+            m = M;
+        }
+
+        /// <summary>
         /// Gets/Sets <c>CoordinateZM</c>s (x,y,z) values.
         /// </summary>
         public override Coordinate CoordinateValue

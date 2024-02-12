@@ -313,6 +313,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.That(testM.X, Is.EqualTo(1d));
             Assert.That(testM.Y, Is.EqualTo(2d));
             Assert.That(testM.M, Is.EqualTo(3d));
+
+            CoordinateZM testZM = (1, 2);
+            Assert.That(testZM.X, Is.EqualTo(1d));
+            Assert.That(testZM.Y, Is.EqualTo(2d));
+            Assert.That(testZM.Z, Is.EqualTo(Coordinate.NullOrdinate));
+            Assert.That(testZM.M, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testZM = (1, 2, 3, 4);
+            Assert.That(testZM.X, Is.EqualTo(1d));
+            Assert.That(testZM.Y, Is.EqualTo(2d));
+            Assert.That(testZM.Z, Is.EqualTo(3d));
+            Assert.That(testZM.M, Is.EqualTo(4d));
         }
 
         [Test]
@@ -350,6 +362,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.That(x, Is.EqualTo(1d));
             Assert.That(y, Is.EqualTo(2d));
             Assert.That(m, Is.EqualTo(3d));
+
+            CoordinateZM testZM = (1, 2);
+            (x, y, z, m) = testZM;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(z, Is.EqualTo(Coordinate.NullOrdinate));
+            Assert.That(m, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testZM = (1, 2, 3, 4);
+            (x, y, z, m) = testZM;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(z, Is.EqualTo(3d));
+            Assert.That(m, Is.EqualTo(4d));
         }
 
         [Test]
