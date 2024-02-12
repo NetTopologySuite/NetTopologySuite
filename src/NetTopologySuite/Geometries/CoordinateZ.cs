@@ -112,7 +112,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Implicit conversion of a <c>Tuple</c> to a <c>Coordinate</c>.
+        /// Implicit conversion of a <c>Tuple</c> to a <c>CoordinateZ</c>.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Geometries
             => new CoordinateZ(value.x, value.y);
 
         /// <summary>
-        /// Implicit conversion of a <c>Tuple</c> to a <c>Coordinate</c>.
+        /// Implicit conversion of a <c>Tuple</c> to a <c>CoordinateZ</c>.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
