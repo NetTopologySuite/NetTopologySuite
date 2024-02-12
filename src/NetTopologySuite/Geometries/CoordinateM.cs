@@ -112,7 +112,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Implicit conversion of a <c>(double x, double y, double m)</c> value to a <c>CoordinateM</c>.
+        /// Implicit conversion of a <c>(double x, double y)</c> value to a <c>CoordinateM</c>.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -120,12 +120,12 @@ namespace NetTopologySuite.Geometries
             => new CoordinateM(value.x, value.y);
         
         /// <summary>
-        /// Implicit conversion of a <c>(double x, double y, double z, double m)</c> value to a <c>CoordinateM</c>.
+        /// Implicit conversion of a <c>(double x, double y, double m)</c> value to a <c>CoordinateM</c>.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static implicit operator CoordinateM((double x, double y, double z) value)
-            => new CoordinateM(value.x, value.y, value.z);
+        public static implicit operator CoordinateM((double x, double y, double m) value)
+            => new CoordinateM(value.x, value.y, value.m);
 
         /// <summary>
         /// Deconstructs this <c>CoordinateM</c> into its x, y and m values.
