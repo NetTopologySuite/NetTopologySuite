@@ -288,6 +288,99 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestCastFromTuple()
+        {
+            Coordinate test = (1, 2);
+            Assert.That(test.X, Is.EqualTo(1d));
+            Assert.That(test.Y, Is.EqualTo(2d));
+
+            CoordinateZ testZ = (1, 2);
+            Assert.That(testZ.X, Is.EqualTo(1d));
+            Assert.That(testZ.Y, Is.EqualTo(2d));
+            Assert.That(testZ.Z, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testZ = (1, 2, 3);
+            Assert.That(testZ.X, Is.EqualTo(1d));
+            Assert.That(testZ.Y, Is.EqualTo(2d));
+            Assert.That(testZ.Z, Is.EqualTo(3d));
+
+            CoordinateM testM = (1, 2);
+            Assert.That(testM.X, Is.EqualTo(1d));
+            Assert.That(testM.Y, Is.EqualTo(2d));
+            Assert.That(testM.M, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testM = (1, 2, 3);
+            Assert.That(testM.X, Is.EqualTo(1d));
+            Assert.That(testM.Y, Is.EqualTo(2d));
+            Assert.That(testM.M, Is.EqualTo(3d));
+
+            CoordinateZM testZM = (1, 2);
+            Assert.That(testZM.X, Is.EqualTo(1d));
+            Assert.That(testZM.Y, Is.EqualTo(2d));
+            Assert.That(testZM.Z, Is.EqualTo(Coordinate.NullOrdinate));
+            Assert.That(testZM.M, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testZM = (1, 2, 3, 4);
+            Assert.That(testZM.X, Is.EqualTo(1d));
+            Assert.That(testZM.Y, Is.EqualTo(2d));
+            Assert.That(testZM.Z, Is.EqualTo(3d));
+            Assert.That(testZM.M, Is.EqualTo(4d));
+        }
+
+        [Test]
+        public void TestDeconstruct()
+        {
+            Coordinate test = (1, 2);
+            var (x, y) = test;
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+
+            CoordinateZ testZ = (1, 2);
+            (x, y, double z) = testZ;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(z, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testZ = (1, 2, 3);
+            (x, y, z) = testZ;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(z, Is.EqualTo(3d));
+
+            CoordinateM testM = (1, 2);
+            (x, y, double m) = testM;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(m, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testM = (1, 2, 3);
+            (x, y, m) = testM;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(m, Is.EqualTo(3d));
+
+            CoordinateZM testZM = (1, 2);
+            (x, y, z, m) = testZM;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(z, Is.EqualTo(Coordinate.NullOrdinate));
+            Assert.That(m, Is.EqualTo(Coordinate.NullOrdinate));
+
+            testZM = (1, 2, 3, 4);
+            (x, y, z, m) = testZM;
+
+            Assert.That(x, Is.EqualTo(1d));
+            Assert.That(y, Is.EqualTo(2d));
+            Assert.That(z, Is.EqualTo(3d));
+            Assert.That(m, Is.EqualTo(4d));
+        }
+
+        [Test]
         public void TestCoordinateHash()
         {
             DoTestCoordinateHash(true, new Coordinate(1, 2), new Coordinate(1, 2));
