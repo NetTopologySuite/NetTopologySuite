@@ -137,14 +137,39 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestPointPatternMatching()
         {
             Point p1 = (1, 2);
-            Assert.That(p1 is (1,_), Is.True);
+            Assert.That(p1 is (1, 2), Is.True);
             Assert.That(p1 is (_, 2), Is.True);
 
             Point p2 = (1, 2, 3);
+
+            Assert.That(p2 is (1, 2, 3), Is.True);
+            Assert.That(p2 is (1, 2, _), Is.True);
             Assert.That(p2 is (1, _, 3), Is.True);
             Assert.That(p2 is (_, 2, 3), Is.True);
-            Assert.That(p2 is (1, 2, _), Is.True);
+            Assert.That(p2 is (1, _, _), Is.True);
+            Assert.That(p2 is (_, 2, _), Is.True);
+            Assert.That(p2 is (_, _, 3), Is.True);
 
+            // More complex pattern matching
+            Assert.That(p2 is (1, > 1, >= 3), Is.True);
+            Assert.That(p2 is (_, >= 2, _), Is.True);
+        }
+
+        [Test]
+        public void TestPointSwitchPatternMatching()
+        {
+            Point p = (1, 2, 3);
+
+            Assert.That(p is (_, > 1, _), Is.True);
+
+            bool isValid = p switch
+            {
+                (1, >1, >=3) => true,
+                (_, >=2, _) => true,
+                _ => false
+            };
+
+            Assert.That(isValid, Is.True);
         }
     }
 }
