@@ -59,6 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestCreateEmpty()
         {
+            CheckEmpty(Factory.CreateEmpty(Dimension.False), typeof(GeometryCollection));
             CheckEmpty(Factory.CreateEmpty(Dimension.Point), typeof(Point));
             CheckEmpty(Factory.CreateEmpty(Dimension.Curve), typeof(LineString));
             CheckEmpty(Factory.CreateEmpty(Dimension.Surface), typeof(Polygon));
