@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
@@ -138,5 +139,13 @@ namespace NetTopologySuite.Geometries
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 
         /* END ADDED BY MPAUL42: monoGIS team */
+
+        /// <summary>
+        /// Implicitly cast a tuple to a new <see cref="LinearRing"/> as a copy of this instance.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator LinearRing((double x, double y)[] value)
+            => new LinearRing(value.Select(v => new Coordinate(v.x, v.y)).ToArray());
     }
 }
