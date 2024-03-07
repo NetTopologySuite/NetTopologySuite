@@ -251,7 +251,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public LineString ExteriorRing => _shell;
+        public LinearRing ExteriorRing => _shell;
 
         /// <summary>
         ///
@@ -261,14 +261,14 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public LineString[] InteriorRings => _holes.ToArray<LineString>();
+        public LinearRing[] InteriorRings => _holes.ToArray<LinearRing>();
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public LineString GetInteriorRingN(int n)
+        public LinearRing GetInteriorRingN(int n)
         {
             return _holes[n];
         }
