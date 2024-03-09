@@ -204,3 +204,6 @@ NetTopologySuite.Samples.Shapefiles/tmp*.dbf
 NetTopologySuite.Samples.Shapefiles/test_arcview.shp
 NetTopologySuite.Samples.Shapefiles/test_buffer.shp
 /Sandcastle/Help
+
+# Jetbrains IDE
+.idea/
