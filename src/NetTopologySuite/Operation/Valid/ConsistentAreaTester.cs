@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Valid
     [Obsolete]
     public class ConsistentAreaTester
     {
-        private readonly LineIntersector li = new RobustLineIntersector();
+        private readonly LineIntersector li = LineIntersectorFactory.CreateFor(null);
         private readonly GeometryGraph geomGraph;
         private readonly RelateNodeGraph nodeGraph = new RelateNodeGraph();
 

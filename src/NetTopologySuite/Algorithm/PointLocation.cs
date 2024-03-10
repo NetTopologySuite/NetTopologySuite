@@ -21,7 +21,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static bool IsOnLine(Coordinate p, Coordinate[] line)
         {
-            var lineIntersector = new RobustLineIntersector();
+            var lineIntersector = LineIntersectorFactory.CreateFor(null);
             for (int i = 1; i < line.Length; i++)
             {
                 var p0 = line[i - 1];
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static bool IsOnLine(Coordinate p, CoordinateSequence line)
         {
-            var lineIntersector = new RobustLineIntersector();
+            var lineIntersector = LineIntersectorFactory.CreateFor(null);
             var p0 = line.CreateCoordinate();
             var p1 = p0.Copy();
             int n = line.Count;

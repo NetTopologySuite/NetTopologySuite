@@ -165,7 +165,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns>The intersection segment index, or <c>-1</c> if not intersection is found.</returns>
         private static int IntersectingSegIndex(Coordinate[] ringPts, Coordinate pt)
         {
-            LineIntersector li = new RobustLineIntersector();
+            LineIntersector li = LineIntersectorFactory.CreateFor(null);
             for (int i = 0; i < ringPts.Length - 1; i++)
             {
                 li.ComputeIntersection(pt, ringPts[i], ringPts[i + 1]);

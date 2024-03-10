@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateComputer
     {
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = LineIntersectorFactory.CreateFor(null);
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly GeometryGraph[] _arg;     // the arg(s) of the operation
         private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());

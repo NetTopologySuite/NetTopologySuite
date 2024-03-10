@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Valid
         //private const int NoInvalidIntersection = -1;
         private readonly bool _isInvertedRingValid;
 
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = LineIntersectorFactory.CreateFor(null);
         private TopologyValidationErrors _invalidCode = TopologyValidationErrors.NoInvalidIntersection;
         private Coordinate _invalidLocation;
 

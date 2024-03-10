@@ -24,7 +24,7 @@ namespace NetTopologySuite.Noding.Snapround
     /// </summary>
     public sealed class SnapRoundingIntersectionAdder : ISegmentIntersector
     {
-
+        private readonly Elevation.ElevationModel _elevationModel;
         private readonly LineIntersector _li;
         private readonly double _nearnessTol;
 
@@ -45,6 +45,16 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="nearnessTol">the intersection distance tolerance</param>
         public SnapRoundingIntersectionAdder(double nearnessTol)
+            : this(nearnessTol, null)
+        { }
+
+        /// <summary>
+        /// Creates an intersector which finds all snapped interior intersections,
+        /// and adds them as nodes.
+        /// </summary>
+        /// <param name="nearnessTol">the intersection distance tolerance</param>
+        /// <param name="elevationModel">An (optional) elevation model</param>
+        public SnapRoundingIntersectionAdder(double nearnessTol, Elevation.ElevationModel elevationModel)
         {
             _nearnessTol = nearnessTol;
 
@@ -52,7 +62,10 @@ namespace NetTopologySuite.Noding.Snapround
              * Intersections are detected and computed using full precision.
              * They are snapped in a subsequent phase.
              */
-            _li = new RobustLineIntersector();
+            _li = LineIntersectorFactory.CreateFor(elevationModel);
+            if (!(elevationModel is Operation.OverlayNG.ElevationModel))
+                _elevationModel = elevationModel;
+
             Intersections = new Collection<Coordinate>();
         }
 

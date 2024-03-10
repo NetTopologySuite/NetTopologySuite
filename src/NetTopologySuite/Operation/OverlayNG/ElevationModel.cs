@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// in an overlay result geometry.
     /// </summary>
     /// <author>Martin Davis</author>
-    class ElevationModel
+    class ElevationModel : Elevation.ElevationModel
     {
 
         private const int DEFAULT_CELL_NUM = 3;
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="x">x-ordinate of the location</param>
         /// <param name="y">y-ordinate of the location</param>
         /// <returns>The computed Z value</returns>
-        public double GetZ(double x, double y)
+        public override double GetZ(double x, double y)
         {
             if (!_isInitialized)
                 Init();
@@ -167,7 +167,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// does not include Z, the geometry is not updated.
         /// </summary>
         /// <param name="geom">The geometry to populate Z values for</param>
-        public void PopulateZ(Geometry geom)
+        public override void PopulateZ(Geometry geom)
         {
             // short-circuit if no Zs are present in model
             if (!_hasZValue)
@@ -176,8 +176,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             if (!_isInitialized)
                 Init();
 
-            var filter = new PopulateZFilter(this);
-            geom.Apply(filter);
+            base.PopulateZ(geom);
         }
 
         private ElevationCell GetCell(double x, double y, bool isCreateIfMissing)
@@ -204,43 +203,6 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
 
             return cell;
-        }
-
-        private class PopulateZFilter : IEntireCoordinateSequenceFilter
-        {
-            private readonly ElevationModel _em;
-
-            public PopulateZFilter(ElevationModel em)
-            {
-                _em = em;
-            }
-
-            public bool Done { get; private set; }
-
-            public bool GeometryChanged
-            {
-                get => false;
-            }
-
-            public void Filter(CoordinateSequence seq)
-            {
-                if (!seq.HasZ)
-                {
-                    // if no Z then short-circuit evaluation
-                    Done = true;
-                    return;
-                }
-
-                for (int i = 0; i < seq.Count; i++)
-                {
-                    // if Z not populated then assign using model
-                    if (double.IsNaN(seq.GetZ(i)))
-                    {
-                        double z = _em.GetZ(seq.GetOrdinate(i, Ordinate.X), seq.GetOrdinate(i, Ordinate.Y));
-                        seq.SetOrdinate(i, Ordinate.Z, z);
-                    }
-                }
-            }
         }
 
         private class HasZFilter : IEntireCoordinateSequenceFilter

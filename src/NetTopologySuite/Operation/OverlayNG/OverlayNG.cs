@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using NetTopologySuite.Elevation;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
@@ -178,9 +178,12 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="pm">The precision model to use</param>
         /// <returns>The result of the overlay operation</returns>
         public static Geometry Overlay(Geometry geom0, Geometry geom1,
-            SpatialFunction opCode, PrecisionModel pm)
+            SpatialFunction opCode, PrecisionModel pm) => Overlay(geom0, geom1, opCode, pm, (Elevation.ElevationModel)null);
+        public static Geometry Overlay(Geometry geom0, Geometry geom1,
+            SpatialFunction opCode, PrecisionModel pm, Elevation.ElevationModel em)
         {
             var ov = new OverlayNG(geom0, geom1, pm, opCode);
+            ov.ElevationModel = em;
             var geomOv = ov.GetResult();
             return geomOv;
         }
@@ -196,10 +199,13 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="noder">The noder to use</param>
         /// <returns>The result of the overlay operation</returns>
         public static Geometry Overlay(Geometry geom0, Geometry geom1,
-            SpatialFunction opCode, PrecisionModel pm, INoder noder)
+            SpatialFunction opCode, PrecisionModel pm, INoder noder) => Overlay(geom0, geom1, opCode, pm, noder, (Elevation.ElevationModel)null);
+        public static Geometry Overlay(Geometry geom0, Geometry geom1,
+            SpatialFunction opCode, PrecisionModel pm, INoder noder, Elevation.ElevationModel em)
         {
             var ov = new OverlayNG(geom0, geom1, pm, opCode);
             ov.Noder = noder;
+            ov.ElevationModel = em;
             var geomOv = ov.GetResult();
             return geomOv;
         }
@@ -214,10 +220,13 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="noder">The noder to use</param>
         /// <returns>The result of the overlay operation</returns>
         public static Geometry Overlay(Geometry geom0, Geometry geom1,
-            SpatialFunction opCode, INoder noder)
+        SpatialFunction opCode, INoder noder) => Overlay(geom0, geom1, opCode, noder, (Elevation.ElevationModel)null);
+        public static Geometry Overlay(Geometry geom0, Geometry geom1,
+            SpatialFunction opCode, INoder noder, Elevation.ElevationModel em)
         {
             var ov = new OverlayNG(geom0, geom1, null, opCode);
             ov.Noder = noder;
+            ov.ElevationModel = em;
             var geomOv = ov.GetResult();
             return geomOv;
         }
@@ -242,9 +251,12 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="geom1">The second geometry argument</param>
         /// <param name="opCode">The code for the desired overlay operation</param>
         /// <returns>The result of the overlay operation</returns>
-        public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
+        public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode) =>
+            Overlay(geom0, geom1, opCode, (Elevation.ElevationModel)null);
+        public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode, Elevation.ElevationModel em)
         {
             var ov = new OverlayNG(geom0, geom1, opCode);
+            ov.ElevationModel = em;
             return ov.GetResult();
         }
 
@@ -263,9 +275,12 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="pm">The precision model to use</param>
         /// <returns>The result of the union operation</returns>
         /// <seealso cref="OverlayMixedPoints"/>
-        internal static Geometry Union(Geometry geom, PrecisionModel pm)
+        internal static Geometry Union(Geometry geom, PrecisionModel pm) =>
+            Union(geom, pm, (Elevation.ElevationModel)null);
+        internal static Geometry Union(Geometry geom, PrecisionModel pm, Elevation.ElevationModel em)
         {
             var ov = new OverlayNG(geom, null, pm, SpatialFunction.Union);
+            ov.ElevationModel = em;
             var geomOv = ov.GetResult();
             return geomOv;
         }
@@ -281,10 +296,13 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="noder">The noder to use</param>
         /// <returns>the result geometry</returns>
         /// <seealso cref="CoverageUnion"/>
-        internal static Geometry Union(Geometry geom, PrecisionModel pm, INoder noder)
+        internal static Geometry Union(Geometry geom, PrecisionModel pm, INoder noder) =>
+            Union(geom, pm, noder, null);
+        internal static Geometry Union(Geometry geom, PrecisionModel pm, INoder noder, Elevation.ElevationModel em)
         {
             var ov = new OverlayNG(geom, null, pm, SpatialFunction.Union);
             ov.Noder = noder;
+            ov.ElevationModel = em;
             ov.StrictMode = true;
             var geomOv = ov.GetResult();
             return geomOv;
@@ -413,6 +431,11 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         //---------------------------------
 
+        /// <summary>
+        /// Gets or sets a value indicating the elevation model to use
+        /// </summary>
+        public Elevation.ElevationModel ElevationModel { get; set; }
+
         public INoder Noder { get; set; }
 
         /// <summary>
@@ -432,10 +455,15 @@ namespace NetTopologySuite.Operation.OverlayNG
                 return CreateEmptyResult();
             }
 
-            /*
-             * The elevation model is only computed if the input geometries have Z values.
-             */
-            var elevModel = ElevationModel.Create(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+            // Check if the assigned noder has an elevation model attached
+            var hasEm = Noder as IHasElevationModel;
+
+            // Determine elevation model to use
+            var elevModel = ElevationModel ??
+                        hasEm?.ElevationModel ??
+                        // Note: The elevation model is only computed if the input geometries have Z values.
+                        Operation.OverlayNG.ElevationModel.Create(_inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1));
+
             Geometry result;
             if (_inputGeom.IsAllPoints)
             {
@@ -450,7 +478,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             else
             {
                 // handle case where both inputs are formed of edges (Lines and Polygons)
-                result = ComputeEdgeOverlay();
+                result = ComputeEdgeOverlay(elevModel);
             }
             /*
              * This is a no-op if the elevation model was not computed due to Z not present
@@ -459,9 +487,9 @@ namespace NetTopologySuite.Operation.OverlayNG
             return result;
         }
 
-        private Geometry ComputeEdgeOverlay()
+        private Geometry ComputeEdgeOverlay(Elevation.ElevationModel elevationModel)
         {
-            var edges = NodeEdges();
+            var edges = NodeEdges(elevationModel);
 
             var graph = BuildGraph(edges);
 
@@ -494,12 +522,12 @@ namespace NetTopologySuite.Operation.OverlayNG
             return result;
         }
 
-        private IList<Edge> NodeEdges()
+        private IList<Edge> NodeEdges(Elevation.ElevationModel elevationModel)
         {
             /*
              * Node the edges, using whatever noder is being used
              */
-            var nodingBuilder = new EdgeNodingBuilder(_pm, Noder);
+            var nodingBuilder = new EdgeNodingBuilder(_pm, Noder, elevationModel);
 
             /*
              * Optimize Intersection and Difference by clipping to the 

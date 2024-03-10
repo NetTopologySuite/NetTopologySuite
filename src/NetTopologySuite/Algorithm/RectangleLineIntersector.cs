@@ -20,7 +20,7 @@ namespace NetTopologySuite.Algorithm
     public class RectangleLineIntersector
     {
         // for intersection testing, don't need to set precision model
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = LineIntersectorFactory.CreateFor(null);
 
         private readonly Envelope _rectEnv;
 

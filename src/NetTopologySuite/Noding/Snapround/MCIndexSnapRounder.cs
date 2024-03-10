@@ -39,7 +39,8 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="pm">The <see cref="PrecisionModel" /> to use.</param>
         public MCIndexSnapRounder(PrecisionModel pm)
         {
-            _li = new RobustLineIntersector { PrecisionModel = pm };
+            _li = LineIntersectorFactory.CreateFor(null);
+            _li.PrecisionModel = pm;
             _scaleFactor = pm.Scale;
         }
 

@@ -589,7 +589,7 @@ namespace NetTopologySuite.Geometries
         /// <see cref="RobustLineIntersector"/>
         public Coordinate Intersection(LineSegment line)
         {
-            var li = new RobustLineIntersector();
+            var li = LineIntersectorFactory.CreateFor(null);
             li.ComputeIntersection(_p0, _p1, line.P0, line.P1);
             if (li.HasIntersection)
                 return li.GetIntersection(0);
