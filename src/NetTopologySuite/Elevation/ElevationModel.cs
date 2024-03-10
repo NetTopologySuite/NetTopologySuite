@@ -2,7 +2,7 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
-namespace NetTopologySuite.Operation.OverlayNG
+namespace NetTopologySuite.Elevation
 {
     /// <summary>A simple elevation model used to populate missing Z values
     /// in overlay results.
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// in an overlay result geometry.
     /// </summary>
     /// <author>Martin Davis</author>
-    class ElevationModel
+    internal sealed class ElevationModel : BaseElevationModel
     {
 
         private const int DEFAULT_CELL_NUM = 3;
@@ -48,14 +48,13 @@ namespace NetTopologySuite.Operation.OverlayNG
             if (extent.IsNull)
                 throw new ArgumentException("Arguments don't have an extent!");
 
-            var model = new ElevationModel(extent, DEFAULT_CELL_NUM, DEFAULT_CELL_NUM);
+            var model = new ElevationModel(geom1.SRID, extent, DEFAULT_CELL_NUM, DEFAULT_CELL_NUM);
             if (geom1 != null) model.Add(geom1);
             if (geom2 != null) model.Add(geom2);
 
             return model;
         }
 
-        private readonly Envelope _extent;
         private readonly int _numCellX;
         private readonly int _numCellY;
         private readonly double _cellSizeX;
@@ -68,12 +67,12 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <summary>
         /// Creates a new elevation model covering an extent by a grid of given dimensions.
         /// </summary>
+        /// <param name="srid">The id of the spatial reference system in which x- and y-ordinates have to query for z-ordinate values</param>
         /// <param name="extent">The XY extent to cover</param>
         /// <param name="numCellX">The number of grid cells in the X dimension</param>
         /// <param name="numCellY">The number of grid cells in the Y dimension</param>
-        public ElevationModel(Envelope extent, int numCellX, int numCellY)
+        public ElevationModel(int srid, Envelope extent, int numCellX, int numCellY) : base(srid, extent)
         {
-            _extent = extent;
             _numCellX = numCellX;
             _numCellY = numCellY;
 
@@ -93,6 +92,11 @@ namespace NetTopologySuite.Operation.OverlayNG
             for (int i = 0; i < numCellY; i++)
                 _cells[i] = new ElevationCell[numCellX];
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating if this elevation model is only valid within the defined <see cref="BaseElevationModel.Extent"/>.
+        /// </summary>
+        public bool Strict { get; set; }
 
         /// <summary>
         /// Updates the model using the Z values of a given geometry.
@@ -140,6 +144,14 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
         }
 
+        public override double GetZ(double x, double y, out bool success)
+        {
+            if (Strict)
+                return base.GetZ(x, y, out success);
+            success = true;
+            return GetZValue(x, y);
+        }
+
         /// <summary>
         /// Gets the model Z value at a given location.
         /// If the location lies outside the model grid extent,
@@ -150,7 +162,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="x">x-ordinate of the location</param>
         /// <param name="y">y-ordinate of the location</param>
         /// <returns>The computed Z value</returns>
-        public double GetZ(double x, double y)
+        protected override double GetZValue(double x, double y)
         {
             if (!_isInitialized)
                 Init();
@@ -167,7 +179,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// does not include Z, the geometry is not updated.
         /// </summary>
         /// <param name="geom">The geometry to populate Z values for</param>
-        public void PopulateZ(Geometry geom)
+        public override void PopulateZ(Geometry geom)
         {
             // short-circuit if no Zs are present in model
             if (!_hasZValue)
@@ -185,14 +197,14 @@ namespace NetTopologySuite.Operation.OverlayNG
             int ix = 0;
             if (_numCellX > 1)
             {
-                ix = (int) ((x - _extent.MinX) / _cellSizeX);
+                ix = (int) ((x - Extent.MinX) / _cellSizeX);
                 ix = MathUtil.Clamp(ix, 0, _numCellX - 1);
             }
 
             int iy = 0;
             if (_numCellY > 1)
             {
-                iy = (int) ((y - _extent.MinY) / _cellSizeY);
+                iy = (int) ((y - Extent.MinY) / _cellSizeY);
                 iy = MathUtil.Clamp(iy, 0, _numCellY - 1);
             }
 
@@ -236,7 +248,7 @@ namespace NetTopologySuite.Operation.OverlayNG
                     // if Z not populated then assign using model
                     if (double.IsNaN(seq.GetZ(i)))
                     {
-                        double z = _em.GetZ(seq.GetOrdinate(i, Ordinate.X), seq.GetOrdinate(i, Ordinate.Y));
+                        double z = _em.GetZ(seq.GetOrdinate(i, Ordinate.X), seq.GetOrdinate(i, Ordinate.Y), out _);
                         seq.SetOrdinate(i, Ordinate.Z, z);
                     }
                 }
