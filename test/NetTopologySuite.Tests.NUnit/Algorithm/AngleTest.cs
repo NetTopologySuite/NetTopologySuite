@@ -145,6 +145,48 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(45, AngleUtility.ToDegrees(AngleUtility.Bisector(p(13, 10), p(10, 10), p(10, 20))), 0.01);
         }
 
+        [Test]
+        public void TestSinCosSnap()
+        {
+
+            // -720 to 720 degrees with 1 degree increments
+            for (int angdeg = -720; angdeg <= 720; angdeg++)
+            {
+                double ang = AngleUtility.ToRadians(angdeg);
+
+                double rSin = AngleUtility.SinSnap(ang);
+                double rCos = AngleUtility.CosSnap(ang);
+
+                double cSin = Math.Sin(ang);
+                double cCos = Math.Cos(ang);
+                if ((angdeg % 90) == 0)
+                {
+                    // not always the same for multiples of 90 degrees
+                    Assert.That(Math.Abs(rSin - cSin) < 1e-15);
+                    Assert.That(Math.Abs(rCos - cCos) < 1e-15);
+                }
+                else
+                {
+                    Assert.That(rSin, Is.EqualTo(cSin));
+                    Assert.That(rCos, Is.EqualTo(cCos));
+                }
+
+            }
+
+            // use radian increments that don't snap to exact degrees or zero
+            for (double angrad = -6.3; angrad < 6.3; angrad += 0.013)
+            {
+
+                double rSin = AngleUtility.SinSnap(angrad);
+                double rCos = AngleUtility.CosSnap(angrad);
+
+                Assert.That(rSin, Is.EqualTo(Math.Sin(angrad)));
+                Assert.That(rCos, Is.EqualTo(Math.Cos(angrad)));
+
+            }
+        }
+
+
         private static Coordinate p(double x, double y) => new Coordinate(x, y);
     }
 }

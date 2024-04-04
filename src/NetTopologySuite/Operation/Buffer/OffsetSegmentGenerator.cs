@@ -97,7 +97,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             int quadSegs = bufParams.QuadrantSegments;
             if (quadSegs < 1) quadSegs = 1;
-            _filletAngleQuantum = Math.PI / 2.0 / quadSegs;
+            _filletAngleQuantum = AngleUtility.PiOver2 / quadSegs;
 
             /*
              * Non-round joins cause issues with short closing segments, so don't use
@@ -423,7 +423,7 @@ namespace NetTopologySuite.Operation.Buffer
                 case EndCapStyle.Round:
                     // add offset seg points with a fillet between them
                     _segList.AddPt(offsetL.P1);
-                    AddDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, OrientationIndex.Clockwise, _distance);
+                    AddDirectedFillet(p1, angle + AngleUtility.PiOver2, angle - AngleUtility.PiOver2, OrientationIndex.Clockwise, _distance);
                     _segList.AddPt(offsetR.P1);
                     break;
                 case EndCapStyle.Flat:
@@ -530,7 +530,7 @@ namespace NetTopologySuite.Operation.Buffer
             var bevelMidPt = Project(cornerPt, -mitreLimitDistance, dirBisector);
 
             // direction of bevel segment (at right angle to corner bisector)
-            double dirBevel = AngleUtility.Normalize(dirBisector + Math.PI / 2.0);
+            double dirBevel = AngleUtility.Normalize(dirBisector + AngleUtility.PiOver2);
 
             // compute the candidate bevel segment by projecting both sides of the midpoint
             var bevel0 = Project(bevelMidPt, distance, dirBevel);
@@ -564,8 +564,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The projected point</returns>
         private static Coordinate Project(Coordinate pt, double d, double dir)
         {
-            double x = pt.X + d * Math.Cos(dir);
-            double y = pt.Y + d * Math.Sin(dir);
+            double x = pt.X + d * AngleUtility.CosSnap(dir);
+            double y = pt.Y + d * AngleUtility.SinSnap(dir);
             return new Coordinate(x, y);
         }
 
@@ -603,11 +603,11 @@ namespace NetTopologySuite.Operation.Buffer
 
             if (direction == OrientationIndex.Clockwise)
             {
-                if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
+                if (startAngle <= endAngle) startAngle += AngleUtility.PiTimes2;
             }
             else
             {    // direction == COUNTERCLOCKWISE
-                if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI;
+                if (startAngle >= endAngle) startAngle -= AngleUtility.PiTimes2;
             }
             _segList.AddPt(p0);
             AddDirectedFillet(p, startAngle, endAngle, direction, radius);
@@ -640,8 +640,8 @@ namespace NetTopologySuite.Operation.Buffer
             for (int i = 0; i < nSegs; i++)
             {
                 double angle = startAngle + directionFactor * i * angleInc;
-                pt.X = p.X + radius * Math.Cos(angle);
-                pt.Y = p.Y + radius * Math.Sin(angle);
+                pt.X = p.X + radius * AngleUtility.CosSnap(angle);
+                pt.Y = p.Y + radius * AngleUtility.SinSnap(angle);
                 _segList.AddPt(pt);
             }
         }
@@ -654,7 +654,7 @@ namespace NetTopologySuite.Operation.Buffer
             // add start point
             var pt = new Coordinate(p.X + _distance, p.Y);
             _segList.AddPt(pt);
-            AddDirectedFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, _distance);
+            AddDirectedFillet(p, 0.0, AngleUtility.PiTimes2, OrientationIndex.Clockwise, _distance);
             _segList.CloseRing();
         }
 

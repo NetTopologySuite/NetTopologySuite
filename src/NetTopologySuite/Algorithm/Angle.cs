@@ -1,5 +1,4 @@
 using NetTopologySuite.Geometries;
-using System;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -293,11 +292,36 @@ namespace NetTopologySuite.Algorithm
 
             if (delAngle > System.Math.PI)
             {
-                delAngle = (2 * System.Math.PI) - delAngle;
+                delAngle = PiTimes2 - delAngle;
             }
 
             return delAngle;
         }
+
+        /// <summary>
+        /// Computes <c>Math.Sin</c> of an angle, snapping near-zero values to zero.
+        /// </summary>
+        /// <param name="ang">The input angle (in radians)</param>
+        /// <returns>The result of the trigonometric function</returns>
+        public static double SinSnap(double ang)
+        {
+            double res = System.Math.Sin(ang);
+            if (System.Math.Abs(res) < 5e-16) return 0.0;
+            return res;
+        }
+
+        /// <summary>
+        /// Computes <c>Math.Cos</c> of an angle, snapping near-zero values to zero.
+        /// </summary>
+        /// <param name="ang">The input angle (in radians)</param>
+        /// <returns>The result of the trigonometric function</returns>
+        public static double CosSnap(double ang)
+        {
+            double res = System.Math.Cos(ang);
+            if (System.Math.Abs(res) < 5e-16) return 0.0;
+            return res;
+        }
+
 
         /// <summary>
         /// Projects a point by a given angle and distance.
@@ -308,8 +332,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The projected point</returns>
         public static Coordinate Project(Coordinate p, double angle, double dist)
         {
-            double x = p.X + dist * Math.Cos(angle);
-            double y = p.Y + dist * Math.Sin(angle);
+            double x = p.X + dist * CosSnap(angle);
+            double y = p.Y + dist * SinSnap(angle);
             return new Coordinate(x, y);
         }
     }

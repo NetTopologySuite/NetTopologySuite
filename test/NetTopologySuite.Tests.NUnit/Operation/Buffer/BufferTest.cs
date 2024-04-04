@@ -793,5 +793,25 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             return false;
         }
 
+        /**
+         * See GEOS PR https://github.com/libgeos/geos/pull/978
+         */
+        [Test]
+        public void TestDefaultBuffer()
+        {
+            var g = Read("POINT (0 0)").Buffer(1.0);
+            var b = g.Boundary;
+            var coords = b.Coordinates;
+            Assert.That(coords.Length, Is.EqualTo(33));
+            Assert.That(coords[0].X, Is.EqualTo(1.0));
+            Assert.That(coords[0].Y, Is.EqualTo(0.0));
+            Assert.That(coords[8].X, Is.EqualTo(0.0));
+            Assert.That(coords[8].Y, Is.EqualTo(-1.0));
+            Assert.That(coords[16].X, Is.EqualTo(-1.0));
+            Assert.That(coords[16].Y, Is.EqualTo(0.0));
+            Assert.That(coords[24].X, Is.EqualTo(0.0));
+            Assert.That(coords[24].Y, Is.EqualTo(1.0));
+        }
+
     }
 }
