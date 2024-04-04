@@ -81,6 +81,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, "FF10F0102");
         }
 
+        [Test]
+        public void TestMultiPointWithEmpty()
+        {
+            string a = "MULTIPOINT(EMPTY,(0 0))";
+            string b = "POLYGON ((1 0,0 1,-1 0,0 -1, 1 0))";
+            RunRelateTest(a, b, "0FFFFF212");
+        }
+
         private void RunRelateTest(string wkt1, string wkt2, string expectedIM)
         {
             var g1 = Read(wkt1);

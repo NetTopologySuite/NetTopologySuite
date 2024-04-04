@@ -216,7 +216,7 @@ namespace NetTopologySuite.GeometriesGraph
             for (int i = 0; i < gc.NumGeometries; i++)
             {
                 var g = gc.GetGeometryN(i);
-                Add(g);
+                if (!g.IsEmpty) Add(g);
             }
         }
 

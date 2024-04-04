@@ -82,6 +82,9 @@ namespace NetTopologySuite.Algorithm
 
         private void ComputeLocation(Coordinate p, Geometry geom)
         {
+            if (geom.IsEmpty)
+                return;
+
             if (geom is Point)
                 UpdateLocationInfo(LocateOnPoint(p, (Point) geom));
             if (geom is LineString)
