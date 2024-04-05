@@ -17,6 +17,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckInteriorPoint(Read("POLYGON ((10 10, 10 10, 10 10, 10 10))"), new Coordinate(10, 10));
         }
 
+        [Test]
+        public void TestMultiLineWithEmpty()
+        {
+            CheckInteriorPoint(Read("MULTILINESTRING ((0 0, 1 1), EMPTY)"), new Coordinate(0, 0));
+        }
+
+
         [TestCase("europe.wkt")]
         ////[TestCase("africa.wkt")]
         public void TestAll(string name)

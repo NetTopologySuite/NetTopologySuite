@@ -57,6 +57,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         private void AddInterior(Geometry geom)
         {
+            if (geom.IsEmpty)
+                return;
+
             if(geom is LineString)
                 AddInterior(geom.Coordinates);
             else if(geom is GeometryCollection)
@@ -86,6 +89,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         private void AddEndpoints(Geometry geom)
         {
+            if (geom.IsEmpty)
+                return;
+
             if(geom is LineString)
                 AddEndpoints(geom.Coordinates);
             else if(geom is GeometryCollection)
