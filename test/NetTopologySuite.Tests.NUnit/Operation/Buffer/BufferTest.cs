@@ -1,5 +1,7 @@
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Buffer;
 using NUnit.Framework;
+using System;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
@@ -760,7 +762,61 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             CheckBufferHasHole(wkt, 70, false);
         }
 
+        /**
+         * See GEOS PR https://github.com/libgeos/geos/pull/978
+         */
+        [Test]
+        public void TestDefaultBuffer()
+        {
+            var g = Read("POINT (0 0)").Buffer(1.0);
+            var b = g.Boundary;
+            var coords = b.Coordinates;
+            Assert.That(coords.Length, Is.EqualTo(33));
+            Assert.That(coords[0].X, Is.EqualTo(1.0));
+            Assert.That(coords[0].Y, Is.EqualTo(0.0));
+            Assert.That(coords[8].X, Is.EqualTo(0.0));
+            Assert.That(coords[8].Y, Is.EqualTo(-1.0));
+            Assert.That(coords[16].X, Is.EqualTo(-1.0));
+            Assert.That(coords[16].Y, Is.EqualTo(0.0));
+            Assert.That(coords[24].X, Is.EqualTo(0.0));
+            Assert.That(coords[24].Y, Is.EqualTo(1.0));
+        }
+
+        [Test]
+        public void TestRingStartSimplified()
+        {
+            checkBuffer("POLYGON ((200 300, 200 299.9999, 350 100, 30 40, 200 300))",
+                20, BufParamRoundMitre(5),
+                "POLYGON ((198.88 334.83, 385.3 86.27, -12.4 11.7, 198.88 334.83))"
+                );
+        }
+
+        [Test]
+        public void TestRingEndSimplified()
+        {
+            checkBuffer("POLYGON ((200 300, 350 100, 30 40, 200 299.9999, 200 300))",
+                20, BufParamRoundMitre(5),
+                "POLYGON ((198.88 334.83, 385.3 86.27, -12.4 11.7, 198.88 334.83))"
+                );
+        }
+
         //===================================================
+
+        private static BufferParameters BufParamRoundMitre(double mitreLimit)
+        {
+            var param = new BufferParameters();
+            param.JoinStyle = JoinStyle.Mitre;
+            param.MitreLimit = mitreLimit;
+            return param;
+        }
+
+        private void checkBuffer(string wkt, double dist, BufferParameters param, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var result = BufferOp.Buffer(geom, dist, param);
+            var expected = Read(wktExpected);
+            CheckEqual(expected, result, 0.01);
+        }
 
         private void CheckBufferEmpty(string wkt, double dist, bool isEmptyExpected)
         {
@@ -792,26 +848,5 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             }
             return false;
         }
-
-        /**
-         * See GEOS PR https://github.com/libgeos/geos/pull/978
-         */
-        [Test]
-        public void TestDefaultBuffer()
-        {
-            var g = Read("POINT (0 0)").Buffer(1.0);
-            var b = g.Boundary;
-            var coords = b.Coordinates;
-            Assert.That(coords.Length, Is.EqualTo(33));
-            Assert.That(coords[0].X, Is.EqualTo(1.0));
-            Assert.That(coords[0].Y, Is.EqualTo(0.0));
-            Assert.That(coords[8].X, Is.EqualTo(0.0));
-            Assert.That(coords[8].Y, Is.EqualTo(-1.0));
-            Assert.That(coords[16].X, Is.EqualTo(-1.0));
-            Assert.That(coords[16].Y, Is.EqualTo(0.0));
-            Assert.That(coords[24].X, Is.EqualTo(0.0));
-            Assert.That(coords[24].Y, Is.EqualTo(1.0));
-        }
-
     }
 }
