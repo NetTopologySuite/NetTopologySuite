@@ -207,16 +207,11 @@ namespace NetTopologySuite.GeometriesGraph
                 throw new NotSupportedException(g.GetType().FullName);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="gc"></param>
         private void AddCollection(GeometryCollection gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
-                var g = gc.GetGeometryN(i);
-                if (!g.IsEmpty) Add(g);
+                Add(gc.GetGeometryN(i));
             }
         }
 
