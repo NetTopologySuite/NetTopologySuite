@@ -6,13 +6,13 @@ using NetTopologySuite.Index.Strtree;
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
-    /// "Snaps" all <see cref="ISegmentString" />s in a <see cref="ISpatialIndex" /> containing
+    /// "Snaps" all <see cref="ISegmentString" />s in a <see cref="ISpatialIndex{T}" /> containing
     /// <see cref="MonotoneChain" />s to a given <see cref="HotPixel" />.
     /// </summary>
     public class MCIndexPointSnapper
     {
         //private IList<MonotoneChain> _monoChains;
-        private readonly STRtree<MonotoneChain> _index;
+        private readonly ISpatialIndex<MonotoneChain> _index;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexPointSnapper"/> class.

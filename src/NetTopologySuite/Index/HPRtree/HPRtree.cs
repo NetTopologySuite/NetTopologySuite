@@ -45,11 +45,13 @@ namespace NetTopologySuite.Index.HPRtree
 
         private const int HILBERT_LEVEL = 12;
 
-        private static int DEFAULT_NODE_CAPACITY = 16;
+        private const int DEFAULT_NODE_CAPACITY = 16;
 
-        private readonly List<Item<T>> _items = new List<Item<T>>();
+        private List<Item<T>> _itemsToLoad = new List<Item<T>>();
 
         private readonly int _nodeCapacity;
+
+        private int _numItems;
 
         private readonly Envelope _totalExtent = new Envelope();
 
@@ -57,9 +59,11 @@ namespace NetTopologySuite.Index.HPRtree
 
         private double[] _nodeBounds;
 
-        private bool _isBuilt;
+        private double[] _itemBounds;
 
-        //public int nodeIntersectsCount;
+        private T[] _itemValues;
+
+        private volatile bool _isBuilt;
 
         /// <summary>
         /// Creates a new index with the default node capacity.
@@ -81,7 +85,7 @@ namespace NetTopologySuite.Index.HPRtree
         /// <returns>The number of items</returns>
         public int Count
         {
-            get => _items.Count;
+            get => _numItems;
         }
 
         /// <inheritdoc cref="ISpatialIndex{T}.Insert" />
@@ -92,7 +96,8 @@ namespace NetTopologySuite.Index.HPRtree
                 throw new InvalidOperationException("Cannot insert items after tree is built.");
             }
 
-            _items.Add(new Item<T>(itemEnv, item));
+            _numItems++;
+            _itemsToLoad.Add(new Item<T>(itemEnv, item));
             _totalExtent.ExpandToInclude(itemEnv);
         }
 
@@ -140,7 +145,7 @@ namespace NetTopologySuite.Index.HPRtree
         {
             int layerStart = _layerStartIndex[layerIndex];
             int nodeIndex = layerStart + nodeOffset;
-            if (!Intersects(nodeIndex, searchEnv)) return;
+            if (!Intersects(_nodeBounds, nodeIndex, searchEnv)) return;
             if (layerIndex == 0)
             {
                 int childNodesOffset = nodeOffset / ENV_SIZE * _nodeCapacity;
@@ -153,13 +158,14 @@ namespace NetTopologySuite.Index.HPRtree
             }
         }
 
-        private bool Intersects(int nodeIndex, Envelope env)
+        private static bool Intersects(double[] bounds, int nodeIndex, Envelope env)
         {
             //nodeIntersectsCount++;
-            bool isBeyond = (env.MaxX < _nodeBounds[nodeIndex])
-                            || (env.MaxY < _nodeBounds[nodeIndex + 1])
-                            || (env.MinX > _nodeBounds[nodeIndex + 2])
-                            || (env.MinY > _nodeBounds[nodeIndex + 3]);
+            bool isBeyond = (env.MaxX < bounds[nodeIndex])
+                || (env.MaxY < bounds[nodeIndex + 1])
+                || (env.MinX > bounds[nodeIndex + 2])
+                || (env.MinY > bounds[nodeIndex + 3]);
+
             return !isBeyond;
         }
 
@@ -183,31 +189,12 @@ namespace NetTopologySuite.Index.HPRtree
             {
                 int itemIndex = blockStart + i;
                 // don't query past end of items
-                if (itemIndex >= _items.Count) break;
+                if (itemIndex >= _numItems) break;
 
-                // visit the item if its envelope intersects search env
-                var item = _items[itemIndex];
-                //nodeIntersectsCount++;
-                if (Intersects(item.Envelope, searchEnv))
-                {
-                    //if (item.getEnvelope().intersects(searchEnv)) {
-                    visitor.VisitItem(item.Value);
+                if (Intersects(_itemBounds, itemIndex * ENV_SIZE, searchEnv)) {
+                    visitor.VisitItem(_itemValues[itemIndex]);
                 }
             }
-        }
-
-        /// <summary>
-        /// Tests whether two envelopes intersect.<para/>
-        /// Avoids the <c>null</c> check in <see cref="Envelope.Intersects(Envelope)"/>.</summary>
-        /// <param name="env1">An envelope</param>
-        /// <param name="env2">An envelope</param>
-        /// <returns><c>true</c> if the envelopes intersect</returns>
-        private static bool Intersects(Envelope env1, Envelope env2)
-        {
-            return !(env2.MinX > env1.MaxX ||
-                     env2.MaxX < env1.MinX ||
-                     env2.MinY > env1.MaxY ||
-                     env2.MaxY < env1.MinY);
         }
 
         private int GetLayerSize(int layerIndex)
@@ -233,15 +220,24 @@ namespace NetTopologySuite.Index.HPRtree
             // skip if already built
             if (_isBuilt) return;
 
-            Monitor.Enter(_items);
-            _isBuilt = true;
+            Monitor.Enter(this);
+            if (!_isBuilt)
+            {
+                PrepareIndex();
+                prepareItems();
+                _isBuilt = true;
+            }
+            Monitor.Exit(this);
+        }
+
+        private void PrepareIndex()
+        { 
             // don't need to build an empty or very small tree
-            if (_items.Count <= _nodeCapacity) return;
+            if (_numItems <= _nodeCapacity) return;
 
             SortItems();
-            //dumpItems(items);
 
-            _layerStartIndex = ComputeLayerIndices(_items.Count, _nodeCapacity);
+            _layerStartIndex = ComputeLayerIndices(_numItems, _nodeCapacity);
             // allocate storage
             int nodeCount = _layerStartIndex[_layerStartIndex.Length - 1] / 4;
             _nodeBounds = CreateBoundsArray(nodeCount);
@@ -252,29 +248,27 @@ namespace NetTopologySuite.Index.HPRtree
             {
                 ComputeLayerNodes(i);
             }
-
-            //dumpNodes();
         }
 
-        /*
-        private void dumpNodes() {
-          GeometryFactory fact = new GeometryFactory();
-          for (int i = 0; i < nodeMinX.length; i++) {
-            Envelope env = new Envelope(nodeMinX[i], nodeMaxX[i], nodeMinY[i], nodeMaxY[i]);;
-            System.out.println(fact.toGeometry(env));
-          }
-        }
-
-        private static void dumpItems(IList<Item<T>> items)
+        private void prepareItems()
         {
-            var fact = GeometryFactory.Default;
-            foreach (var item in items)
+            // copy item contents out to arrays for querying
+            int boundsIndex = 0;
+            int valueIndex = 0;
+            _itemBounds = new double[_numItems * 4];
+            _itemValues = new T[_numItems];
+            foreach (var item in _itemsToLoad)
             {
-                var env = item.Envelope;
-                Console.WriteLine(fact.ToGeometry(env));
+                var envelope = item.Envelope;
+                _itemBounds[boundsIndex++] = envelope.MinX;
+                _itemBounds[boundsIndex++] = envelope.MinY;
+                _itemBounds[boundsIndex++] = envelope.MaxX;
+                _itemBounds[boundsIndex++] = envelope.MaxY;
+                _itemValues[valueIndex++] = item.Value;
             }
+            // and let GC free the original list
+            _itemsToLoad = null;
         }
-         */
 
         private static double[] CreateBoundsArray(int size)
         {
@@ -301,7 +295,6 @@ namespace NetTopologySuite.Index.HPRtree
             {
                 int childStart = childLayerStart + _nodeCapacity * i;
                 ComputeNodeBounds(layerStart + i, childStart, childLayerEnd);
-                //System.out.println("Layer: " + layerIndex + " node: " + i + " - " + getNodeEnvelope(layerStart + i));
             }
         }
 
@@ -329,8 +322,8 @@ namespace NetTopologySuite.Index.HPRtree
             for (int i = 0; i <= _nodeCapacity; i++)
             {
                 int itemIndex = blockStart + i;
-                if (itemIndex >= _items.Count) break;
-                var env = _items[itemIndex].Envelope;
+                if (itemIndex >= _numItems) break;
+                var env = _itemsToLoad[itemIndex].Envelope;
                 UpdateNodeBounds(nodeIndex, env.MinX, env.MinY, env.MaxX, env.MaxY);
             }
         }
@@ -341,12 +334,6 @@ namespace NetTopologySuite.Index.HPRtree
             if (minY < _nodeBounds[nodeIndex + 1]) _nodeBounds[nodeIndex + 1] = minY;
             if (maxX > _nodeBounds[nodeIndex + 2]) _nodeBounds[nodeIndex + 2] = maxX;
             if (maxY > _nodeBounds[nodeIndex + 3]) _nodeBounds[nodeIndex + 3] = maxY;
-        }
-
-        private Envelope GetNodeEnvelope(int i)
-        {
-            //return new Envelope(nodeBounds[i], nodeBounds[i + 1], nodeBounds[i + 2], nodeBounds[i + 3]);
-            return new Envelope(_nodeBounds[i], _nodeBounds[i + 2], _nodeBounds[i + 1], _nodeBounds[i + 3]);
         }
 
         private static int[] ComputeLayerIndices(int itemSize, int nodeCapacity)
@@ -391,9 +378,8 @@ namespace NetTopologySuite.Index.HPRtree
             for (int i = numNodes - 1; i >= 0; i--)
             {
                 int boundIndex = 4 * i;
-                bounds[i] = GetNodeEnvelope(boundIndex);
-                //          new Envelope(nodeBounds[boundIndex], nodeBounds[boundIndex + 2],
-                //                       nodeBounds[boundIndex + 1], nodeBounds[boundIndex + 3]);
+                bounds[i] = new Envelope(_nodeBounds[boundIndex], _nodeBounds[boundIndex + 2],
+                                         _nodeBounds[boundIndex + 1], _nodeBounds[boundIndex + 3]);
             }
 
             return bounds;
@@ -401,30 +387,52 @@ namespace NetTopologySuite.Index.HPRtree
 
         private void SortItems()
         {
-            var comp = new ItemComparator(new HilbertEncoder(HILBERT_LEVEL, _totalExtent));
-            _items.Sort(comp);
+            var encoder = new HilbertEncoder(HILBERT_LEVEL, _totalExtent);
+            int[] hilbertValues = new int[_numItems];
+            int pos = 0;
+            foreach (var item in _itemsToLoad)
+            {
+                hilbertValues[pos++] = encoder.Encode(item.Envelope);
+            }
+            QuickSortItemsIntoNodes(hilbertValues, 0, _numItems - 1);
         }
 
-        private class ItemComparator : IComparer<Item<T>>
+        private void QuickSortItemsIntoNodes(int[] values, int lo, int hi)
         {
-            private readonly HilbertEncoder _encoder;
-
-            public ItemComparator(HilbertEncoder encoder)
+            // stop sorting when left/right pointers are within the same node
+            // because queryItems just searches through them all sequentially
+            if (lo / _nodeCapacity < hi / _nodeCapacity)
             {
-                _encoder = encoder;
+                int pivot = HoarePartition(values, lo, hi);
+                QuickSortItemsIntoNodes(values, lo, pivot);
+                QuickSortItemsIntoNodes(values, pivot + 1, hi);
             }
+        }
 
-            public int Compare(Item<T> item1, Item<T> item2)
+        private int HoarePartition(int[] values, int lo, int hi)
+        {
+            int pivot = values[(lo + hi) >> 1];
+            int i = lo - 1;
+            int j = hi + 1;
+
+            while (true)
             {
-                if (item1 == null)
-                    throw new ArgumentNullException(nameof(item1));
-                if (item2 == null)
-                    throw new ArgumentNullException(nameof(item1));
-
-                int hcode1 = _encoder.Encode(item1.Envelope);
-                int hcode2 = _encoder.Encode(item2.Envelope );
-                return hcode1.CompareTo(hcode2);
+                do i++; while (values[i] < pivot);
+                do j--; while (values[j] > pivot);
+                if (i >= j) return j;
+                SwapItems(values, i, j);
             }
+        }
+
+        private void SwapItems(int[] values, int i, int j)
+        {
+            var tmpItem = _itemsToLoad[i];
+            _itemsToLoad[i] = _itemsToLoad[j];
+            _itemsToLoad[j] = tmpItem;
+
+            int tmpValue = values[i];
+            values[i] = values[j];
+            values[j] = tmpValue;
         }
 
     }
