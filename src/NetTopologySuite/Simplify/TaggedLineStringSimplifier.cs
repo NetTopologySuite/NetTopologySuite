@@ -1,7 +1,7 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using System;
-using static System.Collections.Specialized.BitVector32;
+using System.Diagnostics;
 using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Simplify
@@ -14,16 +14,27 @@ namespace NetTopologySuite.Simplify
     public class TaggedLineStringSimplifier
     {
         private readonly LineIntersector _li = new RobustLineIntersector();
-        private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
-        private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
+        private readonly LineSegmentIndex _inputIndex;
+        private readonly LineSegmentIndex _outputIndex;
+        private readonly ComponentJumpChecker _jumpChecker;
+
         private TaggedLineString _line;
         private Coordinate[] _linePts;
+        [Obsolete]
         private double _distanceTolerance;
 
+        [Obsolete("Using this constructor Will not work and it will be removed in a future version.", true)]
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
+            : this(inputIndex, outputIndex, null)
+        {
+
+        }
+
+        public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex, ComponentJumpChecker crossChecker)
         {
             _inputIndex = inputIndex;
             _outputIndex = outputIndex;
+            _jumpChecker = crossChecker;
         }
 
         /// <summary>
@@ -31,6 +42,7 @@ namespace NetTopologySuite.Simplify
         /// All vertices in the simplified geometry will be within this
         /// distance of the original geometry.
         /// </summary>
+        [Obsolete]
         public double DistanceTolerance
         {
             get => _distanceTolerance;
@@ -42,26 +54,37 @@ namespace NetTopologySuite.Simplify
         /// using the distance tolerance specified.
         /// </summary>
         /// <param name="line">The linestring to simplify.</param>
-        public void Simplify(TaggedLineString line)
+        [Obsolete("Will be removed in a future version. Use overload with distanceTolerance parameter.")]
+        public void Simplify(TaggedLineString line) => Simplify(line, DistanceTolerance);
+
+        /// <summary>
+        /// Simplifies the given <see cref="TaggedLineString"/>
+        /// using the distance tolerance specified.
+        /// </summary>
+        /// <param name="line">The linestring to simplify.</param>
+        /// <param name="distanceTolerance">The simplification distance tolerance</param>
+        public void Simplify(TaggedLineString line, double distanceTolerance)
         {
             _line = line;
             _linePts = line.ParentCoordinates;
-            SimplifySection(0, _linePts.Length - 1, 0);
+            SimplifySection(0, _linePts.Length - 1, 0, distanceTolerance);
 
-            if (!line.PreserveEndpoint && CoordinateArrays.IsRing(_linePts))
+            if (line.IsRing && CoordinateArrays.IsRing(_linePts))
             {
-                SimplifyRingEndpoint();
+                SimplifyRingEndpoint(distanceTolerance);
             }
         }
 
-        private void SimplifySection(int i, int j, int depth)
+        private void SimplifySection(int i, int j, int depth, double distanceTolerance)
         {
             depth += 1;
+            //-- if section has only one segment just keep the segment
             if ((i + 1) == j)
             {
                 var newSeg = _line.GetSegment(i);
                 _line.AddToResult(newSeg);
-                // leave this segment in the input index, for efficiency
+                //-- do not add segment to output index, since it is unchanged
+                //-- leave the segment in the input index, for efficiency
                 return;
             }
 
@@ -82,15 +105,21 @@ namespace NetTopologySuite.Simplify
 
             double[] distance = new double[1];
             int furthestPtIndex = FindFurthestPoint(_linePts, i, j, distance);
+
             // flattening must be less than distanceTolerance
-            if (distance[0] > _distanceTolerance)
+            if (distance[0] > distanceTolerance)
+            {
                 isValidToSimplify = false;
-            // test if flattened section would cause intersection
-            var candidateSeg = new LineSegment();
-            candidateSeg.P0 = _linePts[i];
-            candidateSeg.P1 = _linePts[j];
-            if (HasBadIntersection(_line, i, j, candidateSeg))
-                isValidToSimplify = false;
+            }
+
+            if (isValidToSimplify)
+            {
+                // test if flattened section would cause intersection
+                var candidateSeg = new LineSegment();
+                candidateSeg.P0 = _linePts[i];
+                candidateSeg.P1 = _linePts[j];
+                isValidToSimplify = IsTopologyValid(_line, i, j, candidateSeg);
+            }
 
             if (isValidToSimplify)
             {
@@ -98,11 +127,18 @@ namespace NetTopologySuite.Simplify
                 _line.AddToResult(newSeg);
                 return;
             }
-            SimplifySection(i, furthestPtIndex, depth);
-            SimplifySection(furthestPtIndex, j, depth);
+
+            SimplifySection(i, furthestPtIndex, depth, distanceTolerance);
+            SimplifySection(furthestPtIndex, j, depth, distanceTolerance);
         }
 
-        private void SimplifyRingEndpoint()
+        /// <summary>
+        /// Simplifies the result segments on either side of a ring endpoint
+        /// (which was not processed by the initial simplification).
+        /// This ensures that simplification removes flat(collinear) endpoints.
+        /// </summary>
+        /// <param name="distanceTolerance">The simplification distance tolerance</param>
+        private void SimplifyRingEndpoint(double distanceTolerance)
         {
             if (_line.ResultSize > _line.MinimumSize)
             {
@@ -111,15 +147,16 @@ namespace NetTopologySuite.Simplify
 
                 var simpSeg = new LineSegment(lastSeg.P0, firstSeg.P1);
                 //-- the excluded segments are the ones containing the endpoint
-                if (simpSeg.Distance(firstSeg.P0) <= _distanceTolerance
-                    && !HasBadIntersection(_line, _line.Segments.Length - 2, 0, simpSeg))
+                var endPt = firstSeg.P0;
+                if (simpSeg.Distance(endPt) <= distanceTolerance
+                    && IsTopologyValid(_line, firstSeg, lastSeg, simpSeg))
                 {
                     _line.RemoveRingEndpoint();
                 }
             }
         }
 
-        private int FindFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
+        private static int FindFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
         {
             var seg = new LineSegment();
             seg.P0 = pts[i];
@@ -156,55 +193,83 @@ namespace NetTopologySuite.Simplify
             var p0 = _linePts[start];
             var p1 = _linePts[end];
             var newSeg = new LineSegment(p0, p1);
-            // update the indexes
-            Remove(_line, start, end);
+            // update the input and output indexes
             _outputIndex.Add(newSeg);
+            Remove(_line, start, end);
             return newSeg;
         }
 
         /// <summary>
-        /// Tests if a flattening segment intersects a line
-        /// (excluding a given section of segments).
-        /// The excluded section is being replaced by the flattening segment,
+        /// Tests if line topology remains valid after flattening a section of the line.
+        /// The flattened section is being replaced by the flattening segment,
         /// so there is no need to test it
         /// (and it may well intersect the segment).
         /// </summary>
-        private bool HasBadIntersection(TaggedLineString line,
-                             int excludeStart, int excludeEnd,
-                             LineSegment candidateSeg)
+        /// <returns><c>true</c> if the flattening leaves valid topology</returns>
+        private bool IsTopologyValid(TaggedLineString line,
+                             int sectionStart, int sectionEnd,
+                             LineSegment flatSeg)
         {
-            if (HasBadOutputIntersection(candidateSeg)) return true;
-            if (HasBadInputIntersection(line, excludeStart, excludeEnd, candidateSeg)) return true;
-            return false;
+            if (HasOutputIntersection(flatSeg))
+                return false;
+            if (HasInputIntersection(line, sectionStart, sectionEnd, flatSeg))
+                return false;
+            if (_jumpChecker.HasJump(line, sectionStart, sectionEnd, flatSeg))
+                return false;
+            return true;
         }
 
-        private bool HasBadOutputIntersection(LineSegment candidateSeg)
+        private bool IsTopologyValid(TaggedLineString line, LineSegment seg1, LineSegment seg2,
+            LineSegment flatSeg)
         {
-            var querySegs = _outputIndex.Query(candidateSeg);
+            //-- if segments are already flat, topology is unchanged and so is valid
+            //-- (otherwise, output and/or input intersection test would report false positive)
+            if (IsCollinear(seg1.P0, flatSeg))
+                return true;
+            if (HasOutputIntersection(flatSeg))
+                return false;
+            if (HasInputIntersection(flatSeg))
+                return false;
+            if (_jumpChecker.HasJump(line, seg1, seg2, flatSeg))
+                return false;
+            return true;
+        }
+
+        private bool IsCollinear(Coordinate pt, LineSegment seg)
+        {
+            return OrientationIndex.Collinear == (OrientationIndex)seg.OrientationIndex(pt);
+        }
+
+        private bool HasOutputIntersection(LineSegment flatSeg)
+        {
+            var querySegs = _outputIndex.Query(flatSeg);
             foreach (var querySeg in querySegs)
             {
-                bool interior = HasInvalidIntersection(querySeg, candidateSeg);
+                bool interior = HasInvalidIntersection(querySeg, flatSeg);
                 if (interior)
                     return true;
             }
             return false;
         }
 
-        private bool HasBadInputIntersection(TaggedLineString parentLine,
-                        int excludeStart, int excludeEnd,
-                        LineSegment candidateSeg)
+        private bool HasInputIntersection(LineSegment flatSeg) => HasInputIntersection(null, -1, -1, flatSeg);
+
+        private bool HasInputIntersection(TaggedLineString line,
+                        int sectionStart, int sectionEnd,
+                        LineSegment flatSeg)
         {
-            var querySegs = _inputIndex.Query(candidateSeg);
+            var querySegs = _inputIndex.Query(flatSeg);
             foreach (TaggedLineSegment querySeg in querySegs)
             {
-                bool interior = HasInvalidIntersection(querySeg, candidateSeg);
+                bool interior = HasInvalidIntersection(querySeg, flatSeg);
                 if (interior)
                 {
                     /*
                      * Ignore the intersection if the intersecting segment is part of the section being collapsed
                      * to the candidate segment
                      */
-                    if (IsInLineSection(_line, excludeStart, excludeEnd, querySeg))
+                    if (line != null &&
+                        IsInLineSection(line, sectionStart, sectionEnd, querySeg))
                         continue;
                     return true;
                 }

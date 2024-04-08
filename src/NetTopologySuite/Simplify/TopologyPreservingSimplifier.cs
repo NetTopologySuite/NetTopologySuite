@@ -9,8 +9,7 @@ namespace NetTopologySuite.Simplify
     /// Simplifies a point and ensures that
     /// the result is a valid point having the
     /// same dimension and number of components as the input,
-    /// and with the components having the same topological
-    /// relationship.
+    /// and with the components having the same topological relationship.
     /// <para/>
     /// If the input is a polygonal geometry
     /// (<see cref="Polygon"/> or <see cref="MultiPolygon"/>):
@@ -27,8 +26,8 @@ namespace NetTopologySuite.Simplify
     /// will be preserved in the output.
     /// <para/>
     /// <para>
-    /// For polygonal geometries and LinearRings the endpoint will participate
-    /// in simplification.For LineStrings the endpoints will not be unchanged.
+    /// For polygonal geometries and LinearRings the endpoint will ring endpoint will be simplified.
+    /// For LineStrings the endpoints will be unchanged.
     /// </para>
     /// For all geometry types, the result will contain
     /// enough vertices to ensure validity.  For polygons
@@ -43,20 +42,6 @@ namespace NetTopologySuite.Simplify
     /// The simplification uses a maximum-distance difference algorithm
     /// similar to the Douglas-Peucker algorithm.
     /// </summary>
-    /// <remarks>
-    /// <h3>KNOWN BUGS</h3>
-    /// <list type="bullet">
-    /// <item><description>May create invalid topology if there are components which are small
-    /// relative to the tolerance value.
-    /// In particular, if a small hole is very near an edge,
-    /// it is possible for the edge to be moved by a relatively large tolerance value
-    /// and end up with the hole outside the result shell (or inside another hole).
-    /// Similarly, it is possible for a small polygon component to end up inside
-    /// a nearby larger polygon.
-    /// A workaround is to test for this situation in post-processing and remove
-    /// any invalid holes or polygons.</description></item>
-    /// </list>
-    /// </remarks>
     /// <seealso cref="DouglasPeuckerSimplifier"/>
     public class TopologyPreservingSimplifier
     {
@@ -75,7 +60,7 @@ namespace NetTopologySuite.Simplify
 
         private readonly Geometry _inputGeom;
         private readonly TaggedLinesSimplifier _lineSimplifier = new TaggedLinesSimplifier();
-        private Dictionary<LineString, TaggedLineString> _lineStringMap;
+        //private Dictionary<LineString, TaggedLineString> _lineStringMap;
 
         /// <summary>
         /// Creates an instance of this class for the provided <paramref name="inputGeom"/> geometry
@@ -107,11 +92,11 @@ namespace NetTopologySuite.Simplify
             if (_inputGeom.IsEmpty)
                 return (Geometry)_inputGeom.Copy();
 
-            _lineStringMap = new Dictionary<LineString, TaggedLineString>();
-            var filter = new LineStringMapBuilderFilter(this);
+            var lineStringMap = new Dictionary<LineString, TaggedLineString>();
+            var filter = new LineStringMapBuilderFilter(lineStringMap);
             _inputGeom.Apply(filter);
-            _lineSimplifier.Simplify(_lineStringMap.Values);
-            var transformer = new LineStringTransformer(this);
+            _lineSimplifier.Simplify(lineStringMap.Values);
+            var transformer = new LineStringTransformer(lineStringMap);
             var result = transformer.Transform(_inputGeom);
             return result;
         }
@@ -121,11 +106,11 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         private class LineStringTransformer : GeometryTransformer
         {
-            private readonly TopologyPreservingSimplifier _container;
+            private readonly Dictionary<LineString, TaggedLineString> _lineStringMap;
 
-            public LineStringTransformer(TopologyPreservingSimplifier container)
+            public LineStringTransformer(Dictionary<LineString, TaggedLineString> lineStringMap)
             {
-                _container = container;
+                _lineStringMap = lineStringMap;
             }
 
             /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(CoordinateSequence, Geometry)"/>>
@@ -139,7 +124,7 @@ namespace NetTopologySuite.Simplify
                 var s = parent as LineString;
                 if (s != null)
                 {
-                    var taggedLine = _container._lineStringMap[s];
+                    var taggedLine = _lineStringMap[s];
                     return CreateCoordinateSequence(taggedLine.ResultCoordinates);
                 }
                 // for anything else (e.g. points) just copy the coordinates
@@ -158,11 +143,11 @@ namespace NetTopologySuite.Simplify
         /// <author>Martin Davis</author>
         private class LineStringMapBuilderFilter : IGeometryComponentFilter
         {
-            private readonly TopologyPreservingSimplifier _container;
+            private readonly Dictionary<LineString, TaggedLineString> _lineStringMap;
 
-            public LineStringMapBuilderFilter(TopologyPreservingSimplifier container)
+            public LineStringMapBuilderFilter(Dictionary<LineString, TaggedLineString> lineStringMap)
             {
-                _container = container;
+                _lineStringMap = lineStringMap;
             }
 
             /// <summary>
@@ -176,9 +161,9 @@ namespace NetTopologySuite.Simplify
                 if (line.IsEmpty)
                     return;
                 int minSize = line.IsClosed ? 4 : 2;
-                bool isPreserveEndpoint = line is LinearRing ? false : true;
-                var taggedLine = new TaggedLineString(line, minSize, isPreserveEndpoint);
-                _container._lineStringMap.Add(line, taggedLine);
+                bool isRing = line is LinearRing ? true : false;
+                var taggedLine = new TaggedLineString(line, minSize, isRing);
+                _lineStringMap.Add(line, taggedLine);
             }
         }
     }

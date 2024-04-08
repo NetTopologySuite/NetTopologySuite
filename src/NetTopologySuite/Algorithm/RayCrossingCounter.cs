@@ -168,6 +168,11 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
+        /// Gets the count of crossings.
+        /// </summary>
+        public int Count => _crossingCount;
+
+        /// <summary>
         /// Reports whether the point lies exactly on one of the supplied segments.
         /// </summary>
         /// <remarks>

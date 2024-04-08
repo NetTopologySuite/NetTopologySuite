@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Simplify
@@ -26,13 +27,20 @@ namespace NetTopologySuite.Simplify
         /// <param name="taggedLines">The collection of lines to simplify.</param>
         public void Simplify(ICollection<TaggedLineString> taggedLines)
         {
+            var tmp = new TaggedLineString[taggedLines.Count];
+            taggedLines.CopyTo(tmp, 0);
+            Array.Sort(tmp, (u, v) => u.Parent.Envelope.Area.CompareTo(v.Parent.Envelope.Area));
+            taggedLines = tmp;
+
+            var jumpChecker = new ComponentJumpChecker(taggedLines);
+
             foreach (var taggedLineString in taggedLines)
                 _inputIndex.Add(taggedLineString);
+
             foreach (var taggedLineString in taggedLines)
             {
-                var tlss = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
-                tlss.DistanceTolerance = DistanceTolerance;
-                tlss.Simplify(taggedLineString);
+                var tlss = new TaggedLineStringSimplifier(_inputIndex, _outputIndex, jumpChecker);
+                tlss.Simplify(taggedLineString, DistanceTolerance);
             }
         }
     }

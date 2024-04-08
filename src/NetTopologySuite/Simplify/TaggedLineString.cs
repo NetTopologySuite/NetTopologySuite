@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Simplify
@@ -14,22 +16,25 @@ namespace NetTopologySuite.Simplify
         private TaggedLineSegment[] _segs;
         private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
         private readonly int _minimumSize;
+        private readonly bool _isRing;
 
         /// <summary>
         /// Creates an instance of this class using the provided <paramref name="parentLine"/>.
         /// The <see cref="MinimumSize"/> is set to <c>2</c> and <see cref="PreserveEndpoint"/> is <c>true</c>.
         /// </summary>
         /// <param name="parentLine">The <c>LineString</c> that is to be simplified.</param>
+        [Obsolete]
         public TaggedLineString(LineString parentLine) : this(parentLine, 2) { }
 
         /// <summary>
         /// Creates an instance of this class using the provided <paramref name="parentLine"/> and
-        /// <paramref name="minimumSize"/> values. The value for <see cref="PreserveEndpoint"/> is <c>true</c>
+        /// <paramref name="minimumSize"/> values. The value for <see cref="IsRing"/> is <c>LineString.IsRing</c>
         /// </summary>
         /// <param name="parentLine">The <c>LineString</c> that is to be simplified.</param>
         /// <param name="minimumSize">The number of vertices to must be kept.</param>
+        [Obsolete]
         public TaggedLineString(LineString parentLine, int minimumSize)
-            : this(parentLine, minimumSize, true)
+            : this(parentLine, minimumSize, parentLine.IsRing)
         { }
 
         /// <summary>
@@ -38,19 +43,19 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         /// <param name="parentLine">The <c>LineString</c> that is to be simplified.</param>
         /// <param name="minimumSize">The number of vertices to must be kept.</param>
-        /// <param name="isPreserveEndpoint">A flag indicating if the endpoint should be preserved</param>
-        public TaggedLineString(LineString parentLine, int minimumSize, bool isPreserveEndpoint)
+        /// <param name="isRing">A flag indicating if the <paramref name="parentLine"/> forms a ring</param>
+        public TaggedLineString(LineString parentLine, int minimumSize, bool isRing)
         {
             _parentLine = parentLine;
             _minimumSize = minimumSize;
-            PreserveEndpoint = isPreserveEndpoint;
+            IsRing = isRing;
             Init();
         }
 
         /// <summary>
         /// Gets a value indicating if the endpoints are to be preserved.
         /// </summary>
-        public bool PreserveEndpoint { get; private set; }
+        public bool IsRing { get; private set; }
 
         /// <summary>
         ///
@@ -72,6 +77,29 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public Coordinate[] ResultCoordinates => ExtractCoordinates(_resultSegs);
 
+        /// <summary>
+        /// Gets the <paramref name="i"/>'th <c>Coordinate</c> of <see cref="Parent"/> line.
+        /// </summary>
+        /// <param name="i">The index of the coordinate to get</param>
+        /// <returns>The <paramref name="i"/>'th <c>Coordinate</c> of <see cref="Parent"/> line.</returns>
+        public Coordinate GetCoordinate(int i)
+        {
+            return _parentLine.GetCoordinateN(i);
+        }
+
+        /// <summary>
+        /// Gets a value indicating the number of points of the <see cref="Parent"/> line.
+        /// </summary>
+        public int Count => _parentLine.NumPoints;
+
+        /// <summary>
+        /// Gets a <c>Coordinate</c> of the <see cref="Parent"/> line.
+        /// </summary>
+        /// <returns>A <c>Coordinate</c> of the <see cref="Parent"/> line.</returns>
+        public Coordinate GetComponentPoint()
+        {
+            return ParentCoordinates[1];
+        }
         /// <summary>
         ///
         /// </summary>
@@ -130,9 +158,11 @@ namespace NetTopologySuite.Simplify
         public TaggedLineSegment[] Segments => _segs;
 
         /// <summary>
-        ///
+        /// Add a simplified segment to the result.
+        /// This assumes simplified segments are computed in the order
+        /// they occur in the line.
         /// </summary>
-        /// <param name="seg"></param>
+        /// <param name="seg">The result segment to add.</param>
         public void AddToResult(LineSegment seg)
         {
             _resultSegs.Add(seg);
@@ -185,6 +215,7 @@ namespace NetTopologySuite.Simplify
             firstSeg.P0 = lastSeg.P0;
             _resultSegs.RemoveAt(_resultSegs.Count - 1);
         }
+
 
     }
 }
