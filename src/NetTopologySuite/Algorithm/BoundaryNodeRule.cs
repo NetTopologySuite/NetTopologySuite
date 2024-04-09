@@ -1,6 +1,7 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Relate;
+using System;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -99,6 +100,11 @@ namespace NetTopologySuite.Algorithm
                 // the "Mod-2 Rule"
                 return boundaryCount % 2 == 1;
             }
+
+            public override string ToString()
+            {
+                return "Mod2 Boundary Node Rule";
+            }
         }
 
         /// <summary>
@@ -128,6 +134,11 @@ namespace NetTopologySuite.Algorithm
             {
                 return boundaryCount > 0;
             }
+
+            public override string ToString()
+            {
+                return "EndPoint Boundary Node Rule";
+            }
         }
 
         /// <summary>
@@ -144,6 +155,11 @@ namespace NetTopologySuite.Algorithm
             {
                 return boundaryCount > 1;
             }
+
+            public override string ToString()
+            {
+                return "MultiValent EndPoint Boundary Node Rule";
+            }
         }
 
         /// <summary>
@@ -159,6 +175,12 @@ namespace NetTopologySuite.Algorithm
             {
                 return boundaryCount == 1;
             }
+
+            public override string ToString()
+            {
+                return "MonoValent EndPoint Boundary Node Rule";
+            }
+
         }
 
     }
