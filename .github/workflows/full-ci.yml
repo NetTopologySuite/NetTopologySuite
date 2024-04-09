@@ -23,8 +23,12 @@ jobs:
     - name: Build
       run: dotnet build -c Release -v minimal -p:WarningLevel=3
 
-    - name: Test
-      run: dotnet test -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+    - name: Test NUnit
+      run: dotnet test test/NetTopologySuite.Tests.NUnit/NetTopologySuite.Tests.NUnit.csproj -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+      shell: bash # defaults disagree on how to quote the filter string
+
+    - name: Test Samples
+      run: dotnet test test/NetTopologySuite.Samples.Console/NetTopologySuite.Samples.Console.csproj -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
       shell: bash # defaults disagree on how to quote the filter string
 
     - name: Pack
