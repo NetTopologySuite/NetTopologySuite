@@ -2,14 +2,9 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Chain;
-using NetTopologySuite.Operation.Distance;
-using NetTopologySuite.Simplify;
 using NetTopologySuite.Utilities;
 using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using static System.Collections.Specialized.BitVector32;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -426,8 +421,9 @@ namespace NetTopologySuite.Operation.Buffer
         private class MatchCurveSegmentAction
             : MonotoneChainSelectAction
         {
-            private readonly Coordinate _p0;
-            private readonly Coordinate _p1;
+            private readonly Coordinate _raw0;
+            private readonly Coordinate _raw1;
+            private readonly double _rawLen;
             private readonly int _rawCurveIndex;
             private readonly Coordinate[] _bufferRingPts;
             private readonly double _matchDistance;
@@ -435,12 +431,13 @@ namespace NetTopologySuite.Operation.Buffer
             private double _minRawLocation = -1;
             private int _bufferRingMinIndex = -1;
 
-            public MatchCurveSegmentAction(Coordinate p0, Coordinate p1,
+            public MatchCurveSegmentAction(Coordinate raw0, Coordinate raw1,
                 int rawCurveIndex,
-                 double matchDistance, Coordinate[] bufferRingPts, double[] rawCurveLoc)
+                double matchDistance, Coordinate[] bufferRingPts, double[] rawCurveLoc)
             {
-                _p0 = p0;
-                _p1 = p1;
+                _raw0 = raw0;
+                _raw1 = raw1;
+                _rawLen = raw0.Distance(raw1);
                 _rawCurveIndex = rawCurveIndex;
                 _bufferRingPts = bufferRingPts;
                 _matchDistance = matchDistance;
@@ -452,12 +449,21 @@ namespace NetTopologySuite.Operation.Buffer
             public override void Select(MonotoneChain mc, int segIndex)
             {
                 /*
-                 * A curveRingPt segment may match all or only a portion of a single raw segment.
-                 * There may be multiple curve ring segs that match along the raw segment.
-                 * The one closest to the segment start is recorded as the offset curve start.      
+                 * Generally buffer segments are no longer than raw curve segments, 
+                 * since the final buffer line likely has node points added.
+                 * So a buffer segment may match all or only a portion of a single raw segment.
+                 * There may be multiple buffer ring segs that match along the raw segment.
+                 * 
+                 * HOWEVER, in some cases the buffer construction may contain 
+                 * a matching buffer segment which is slightly longer than a raw curve segment.
+                 * Specifically, at the endpoint of a closed line with nearly parallel end segments
+                 * - the closing fillet line is very short so is heuristically removed in the buffer.
+                 * In this case, the buffer segment must still be matched.
+                 * This produces closed offset curves, which is technically
+                 * an anomaly, but only happens in rare cases.
                  */
                 double frac = SegmentMatchFrac(_bufferRingPts[segIndex], _bufferRingPts[segIndex + 1],
-                                               _p0, _p1, _matchDistance);
+                                               _raw0, _raw1, _matchDistance);
 
                 //-- no match
                 if (frac < 0) return;
@@ -465,38 +471,59 @@ namespace NetTopologySuite.Operation.Buffer
                 //-- location is used to sort segments along raw curve
                 double location = _rawCurveIndex + frac;
                 _rawCurveLoc[segIndex] = location;
-                //-- record lowest index
+                //-- buffer seg index at lowest raw location is the curve start
                 if (_minRawLocation < 0 || location < _minRawLocation)
                 {
                     _minRawLocation = location;
                     _bufferRingMinIndex = segIndex;
                 }
             }
-        }
-    
-        private static double SegmentMatchFrac(Coordinate p0, Coordinate p1,
-    Coordinate seg0, Coordinate seg1, double matchDistance)
-        {
-            if (matchDistance < DistanceComputer.PointToSegment(p0, seg0, seg1))
-                return -1;
-            if (matchDistance < DistanceComputer.PointToSegment(p1, seg0, seg1))
-                return -1;
-            //-- matched - determine position as fraction along segment
-            var seg = new LineSegment(seg0, seg1);
-            return seg.SegmentFraction(p0);
+
+
+            private double SegmentMatchFrac(Coordinate buf0, Coordinate buf1,
+                Coordinate raw0, Coordinate raw1, double matchDistance)
+            {
+                if (!IsMatch(buf0, buf1, raw0, raw1, matchDistance))
+                    return -1;
+
+                //-- matched - determine position as fraction along segment
+                var seg = new LineSegment(raw0, raw1);
+                return seg.SegmentFraction(buf0);
+            }
+
+            private bool IsMatch(Coordinate buf0, Coordinate buf1, Coordinate raw0, Coordinate raw1, double matchDistance)
+            {
+                double bufSegLen = buf0.Distance(buf1);
+                if (_rawLen <= bufSegLen)
+                {
+                    if (matchDistance < DistanceComputer.PointToSegment(raw0, buf0, buf1))
+                        return false;
+                    if (matchDistance < DistanceComputer.PointToSegment(raw1, buf0, buf1))
+                        return false;
+                }
+                else
+                {
+                    //TODO: only match longer buf segs at raw curve end segs?
+                    if (matchDistance < DistanceComputer.PointToSegment(buf0, raw0, raw1))
+                        return false;
+                    if (matchDistance < DistanceComputer.PointToSegment(buf1, raw0, raw1))
+                        return false;
+                }
+                return true;
+            }
         }
 
-        /**
-         * This is only called when there is at least one ring segment matched
-         * (so rawCurvePos has at least one entry != NOT_IN_CURVE).
-         * The start index of the first section must be provided.
-         * This is intended to be the section with lowest position
-         * along the raw curve.
-         * @param ringPts the points in a buffer ring
-         * @param rawCurveLoc the position of buffer ring segments along the raw curve
-         * @param startIndex the index of the start of a section
-         * @param sections the list of extracted offset curve sections
-         */
+        /// <summary>
+        /// This is only called when there is at least one ring segment matched
+        /// (so rawCurvePos has at least one entry != <see cref="NOT_IN_CURVE"/>).
+        /// The start index of the first section must be provided.
+        /// This is intended to be the section with lowest position
+        /// along the raw curve.
+        /// </summary>
+        /// <param name="ringPts">The points in a buffer ring</param>
+        /// <param name="rawCurveLoc">The position of buffer ring segments along the raw curve</param>
+        /// <param name="startIndex">The index of the start of a section</param>
+        /// <param name="sections">The list of extracted offset curve sections</param>
         private void ExtractSections(Coordinate[] ringPts, double[] rawCurveLoc,
             int startIndex, List<OffsetCurveSection> sections)
         {
