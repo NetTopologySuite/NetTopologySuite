@@ -47,12 +47,32 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.That(pointLocator.Locate(new Coordinate(350, 50), polygon), Is.EqualTo(Location.Boundary));
             Assert.That(pointLocator.Locate(new Coordinate(410, 50), polygon), Is.EqualTo(Location.Boundary));
             Assert.That(pointLocator.Locate(new Coordinate(190, 150), polygon), Is.EqualTo(Location.Interior));
-    }
+        }
 
-    private void RunPtLocator(Location expected, Coordinate pt, string wkt)
+        [Test]
+        public void TestRingBoundaryNodeRule()
+        {
+            string wkt = "LINEARRING(10 10, 10 20, 20 10, 10 10)";
+            var pt = new Coordinate(10, 10);
+            RunPtLocator(Location.Interior, pt, wkt, BoundaryNodeRules.Mod2BoundaryRule);
+            RunPtLocator(Location.Boundary, pt, wkt, BoundaryNodeRules.EndpointBoundaryRule);
+            RunPtLocator(Location.Interior, pt, wkt, BoundaryNodeRules.MonoValentEndpointBoundaryRule);
+            RunPtLocator(Location.Boundary, pt, wkt, BoundaryNodeRules.MultivalentEndpointBoundaryRule);
+        }
+
+        private void RunPtLocator(Location expected, Coordinate pt, string wkt)
         {
             var geom = reader.Read(wkt);
             var pointLocator = new PointLocator();
+            var loc = pointLocator.Locate(pt, geom);
+            Assert.AreEqual(expected, loc);
+        }
+
+        private void RunPtLocator(Location expected, Coordinate pt, string wkt,
+            IBoundaryNodeRule bnr)
+        {
+            var geom = reader.Read(wkt);
+            var pointLocator = new PointLocator(bnr);
             var loc = pointLocator.Locate(pt, geom);
             Assert.AreEqual(expected, loc);
         }
