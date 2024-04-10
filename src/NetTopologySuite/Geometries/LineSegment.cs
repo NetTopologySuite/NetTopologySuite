@@ -223,9 +223,19 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return _p0.Create((_p0.X + _p1.X) / 2d, (_p0.Y + _p1.Y) / 2d);
+                return ComputeMidPoint(_p0, _p1);
             }
         }
+
+        /// <summary>
+        /// Computes the midpoint of two coordinates
+        /// </summary>
+        /// <remarks>This method is named <c>midPoint</c> in JTS.</remarks>
+        /// <param name="p0">A coordinate</param>
+        /// <param name="p1">A coordinate</param>
+        /// <returns>The mid point</returns>
+        public static Coordinate ComputeMidPoint(Coordinate p0, Coordinate p1)
+            => p0.Create((p0.X + p1.X) / 2d, (p0.Y + p1.Y) / 2d);
 
         /// <summary>
         /// Computes the distance between this line segment and another one.

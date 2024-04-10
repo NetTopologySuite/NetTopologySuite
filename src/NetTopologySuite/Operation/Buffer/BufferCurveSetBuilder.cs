@@ -300,61 +300,79 @@ namespace NetTopologySuite.Operation.Buffer
         /// <para/>
         /// See <a href="https://github.com/locationtech/jts/issues/472"/>
         /// </summary>
-        /// <param name="inputPts">the input ring</param>
+        /// <param name="inputRing">the input ring</param>
         /// <param name="distance">the buffer distance</param>
-        /// <param name="curvePts">the generated offset curve</param>
+        /// <param name="curveRing">the generated offset curve</param>
         /// <returns>true if the offset curve is inverted</returns>
-        private static bool IsRingCurveInverted(Coordinate[] inputPts, double distance, Coordinate[] curvePts)
+        private static bool IsRingCurveInverted(Coordinate[] inputRing, double distance, Coordinate[] curveRing)
         {
             if (distance == 0.0) return false;
             /*
              * Only proper rings can invert.
              */
-            if (inputPts.Length <= 3) return false;
+            if (inputRing.Length <= 3) return false;
             /*
              * Heuristic based on low chance that a ring with many vertices will invert.
              * This low limit ensures this test is fairly efficient.
              */
-            if (inputPts.Length >= MAX_INVERTED_RING_SIZE) return false;
+            if (inputRing.Length >= MAX_INVERTED_RING_SIZE) return false;
 
             /*
              * Don't check curves which are much larger than the input.
              * This improves performance by avoiding checking some concave inputs 
              * (which can produce fillet arcs with many more vertices)
              */
-            if (curvePts.Length > INVERTED_CURVE_VERTEX_FACTOR * inputPts.Length) return false;
+            if (curveRing.Length > INVERTED_CURVE_VERTEX_FACTOR * inputRing.Length) return false;
 
             /*
-             * Check if the curve vertices are all closer to the input ring
-             * than the buffer distance.
-             * If so, the curve is NOT a valid buffer curve.
+             * If curve contains points which are on the buffer, 
+             * it is not inverted and can be included in the raw curves.
              */
-            double distTol = NEARNESS_FACTOR * Math.Abs(distance);
-            double maxDist = MaxDistance(curvePts, inputPts);
-            bool isCurveTooClose = maxDist < distTol;
-            return isCurveTooClose;
+            if (hasPointOnBuffer(inputRing, distance, curveRing))
+                return false;
+
+            //-- curve is inverted, so discard it
+            return true;
         }
 
         /// <summary>
-        /// Computes the maximum distance out of a set of points to a linestring.
+        /// Tests if there are points on the raw offset curve which may
+        /// lie on the final buffer curve
+        /// (i.e.they are (approximately) at the buffer distance from the input ring).
+        /// For efficiency this only tests a limited set of points on the curve.
         /// </summary>
-        /// <param name="pts">The points</param>
-        /// <param name="line">The linestring vertices</param>
-        /// <returns>The maximum distance</returns>
-        private static double MaxDistance(Coordinate[] pts, Coordinate[] line)
+        /// <param name="inputRing">The input ring</param>
+        /// <param name="distance">The distance</param>
+        /// <param name="curveRing">The curve ring</param>
+        /// <returns><c>true</c> if the curve contains points lying at the required buffer distance</returns>
+        private static bool hasPointOnBuffer(Coordinate[] inputRing, double distance, Coordinate[] curveRing)
         {
-            double maxDistance = 0;
-            foreach (var p in pts)
+            double distTol = NEARNESS_FACTOR * Math.Abs(distance);
+
+            for (int i = 0; i < curveRing.Length - 1; i++)
             {
-                double dist = DistanceComputer.PointToSegmentString(p, line);
-                if (dist > maxDistance)
+                var v = curveRing[i];
+
+                //-- check curve vertices
+                double dist = DistanceComputer.PointToSegmentString(v, inputRing);
+                if (dist > distTol)
                 {
-                    maxDistance = dist;
+                    return true;
+                }
+
+                //-- check curve segment midpoints
+                int iNext = (i < curveRing.Length - 1) ? i + 1 : 0;
+                var vnext = curveRing[iNext];
+                var midPt = LineSegment.ComputeMidPoint(v, vnext);
+
+                double distMid = DistanceComputer.PointToSegmentString(midPt, inputRing);
+                if (distMid > distTol)
+                {
+                    return true;
                 }
             }
-            return maxDistance;
+            return false;
         }
-
 
         /// <summary>
         /// Tests whether a ring buffer is eroded completely (is empty)

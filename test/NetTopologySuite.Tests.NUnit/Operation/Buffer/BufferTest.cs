@@ -762,9 +762,28 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             CheckBufferHasHole(wkt, 70, false);
         }
 
+        [Test]
+        public void TestSmallPolygonNegativeBuffer_1()
+        {
+            string wkt = "MULTIPOLYGON (((833454.7163917861 6312507.405413097, 833455.3726665961 6312510.208920742, 833456.301153878 6312514.207390314, 833492.2432584754 6312537.770332065, 833493.0901320165 6312536.098774815, 833502.6580673696 6312517.561360772, 833503.9404352929 6312515.0542803425, 833454.7163917861 6312507.405413097)))";
+            CheckBuffer(wkt, -3.8,
+                "POLYGON ((833459.9671068499 6312512.066918822, 833490.7876785189 6312532.272283619, 833498.1465258132 6312517.999574621, 833459.9671068499 6312512.066918822))");
+            CheckBuffer(wkt, -7,
+                "POLYGON ((833474.0912127121 6312517.50004999, 833489.5713439264 6312527.648521655, 833493.2674441456 6312520.479822435, 833474.0912127121 6312517.50004999))");
+        }
+
+        [Test]
+        public void TestSmallPolygonNegativeBuffer_2()
+        {
+            string wkt = "POLYGON ((182719.04521570954238996 224897.14115349075291306, 182807.02887436276068911 224880.64421749324537814, 182808.47314301913138479 224877.25002362736267969, 182718.38701137207681313 224740.00115247094072402, 182711.82697281913715415 224742.08599378637154587, 182717.1393717635946814 224895.61432328051887453, 182719.04521570954238996 224897.14115349075291306))";
+            CheckBuffer(wkt, -5,
+                "POLYGON ((182717 224746.99999999997, 182722.00000000003 224891.5, 182801.99999999997 224876.49999999997, 182717 224746.99999999997))");
+            CheckBuffer(wkt, -30,
+                "POLYGON ((182745.07127364463 224835.32741176756, 182745.97926048582 224861.56823147752, 182760.5070499446 224858.844270954, 182745.07127364463 224835.32741176756))");
+        }
         /**
-         * See GEOS PR https://github.com/libgeos/geos/pull/978
-         */
+       * See GEOS PR https://github.com/libgeos/geos/pull/978
+       */
         [Test]
         public void TestDefaultBuffer()
         {
@@ -785,7 +804,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         [Test]
         public void TestRingStartSimplified()
         {
-            checkBuffer("POLYGON ((200 300, 200 299.9999, 350 100, 30 40, 200 300))",
+            CheckBuffer("POLYGON ((200 300, 200 299.9999, 350 100, 30 40, 200 300))",
                 20, BufParamRoundMitre(5),
                 "POLYGON ((198.88 334.83, 385.3 86.27, -12.4 11.7, 198.88 334.83))"
                 );
@@ -794,7 +813,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         [Test]
         public void TestRingEndSimplified()
         {
-            checkBuffer("POLYGON ((200 300, 350 100, 30 40, 200 299.9999, 200 300))",
+            CheckBuffer("POLYGON ((200 300, 350 100, 30 40, 200 299.9999, 200 300))",
                 20, BufParamRoundMitre(5),
                 "POLYGON ((198.88 334.83, 385.3 86.27, -12.4 11.7, 198.88 334.83))"
                 );
@@ -810,10 +829,18 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             return param;
         }
 
-        private void checkBuffer(string wkt, double dist, BufferParameters param, string wktExpected)
+        private void CheckBuffer(string wkt, double dist, BufferParameters param, string wktExpected)
         {
             var geom = Read(wkt);
             var result = BufferOp.Buffer(geom, dist, param);
+            var expected = Read(wktExpected);
+            CheckEqual(expected, result, 0.01);
+        }
+
+        private void CheckBuffer(string wkt, double dist, string wktExpected)
+        {
+            var geom = Read(wkt);
+            var result = BufferOp.Buffer(geom, dist);
             var expected = Read(wktExpected);
             CheckEqual(expected, result, 0.01);
         }

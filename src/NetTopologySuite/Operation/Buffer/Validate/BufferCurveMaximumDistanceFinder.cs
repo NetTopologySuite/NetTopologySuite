@@ -28,7 +28,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         public double FindDistance(Geometry bufferCurve)
         {
             ComputeMaxVertexDistance(bufferCurve);
-            computeMaxMidpointDistance(bufferCurve);
+            ComputeMaxMidpointDistance(bufferCurve);
             return _maxPtDist.Distance;
         }
 
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
         }
 
-        private void computeMaxMidpointDistance(Geometry curve)
+        private void ComputeMaxMidpointDistance(Geometry curve)
         {
             var distFilter = new MaxMidpointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
