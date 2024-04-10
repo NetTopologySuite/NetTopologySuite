@@ -1,4 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
+using static System.Collections.Specialized.BitVector32;
+using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -10,9 +12,10 @@ namespace NetTopologySuite.Algorithm
     static class PolygonNodeTopology
     {
         /// <summary>
-        /// Check if the segments at a node between two rings (or one ring) cross.
+        /// Check if four segments at a node cross.
+        /// Typically the segments lie in two different rings, or different sections of one ring.
         /// The node is topologically valid if the rings do not cross.
-        /// This function assumes that the segments are not collinear. 
+        /// If any segments are collinear, the test returns false.
         /// </summary>
         /// <param name="nodePt">The node location</param>
         /// <param name="a0">The previous segment endpoint in a ring</param>
@@ -32,13 +35,24 @@ namespace NetTopologySuite.Algorithm
                 aHi = a0;
             }
             /*
-             * Find positions of b0 and b1.  
-             * If they are the same they do not cross the other edge
-             */
-            bool isBetween0 = IsBetween(nodePt, b0, aLo, aHi);
-            bool isBetween1 = IsBetween(nodePt, b1, aLo, aHi);
+            boolean isBetween0 = isBetween(nodePt, b0, aLo, aHi);
+            boolean isBetween1 = isBetween(nodePt, b1, aLo, aHi);
 
             return isBetween0 != isBetween1;
+            */
+
+            /*
+             * Find positions of b0 and b1.  
+             * The edges cross if the positions are different.
+             * If any edge is collinear they are reported as not crossing
+             */
+            int compBetween0 = CompareBetween(nodePt, b0, aLo, aHi);
+            if (compBetween0 == 0) return false;
+            int compBetween1 = CompareBetween(nodePt, b1, aLo, aHi);
+            if (compBetween1 == 0) return false;
+
+            return compBetween0 != compBetween1;
+
         }
 
         /// <summary>
@@ -90,6 +104,28 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
+        /// Compares whether an edge p is between or outside the edges e0 and e1,
+        /// where the edges all originate at a common origin.
+        /// The "inside" of e0 and e1 is the arc which does not include
+        /// the positive X-axis at the origin.
+        /// If p is collinear with an edge 0 is returned.
+        /// </summary>
+        /// <param name="origin">The origin</param>
+        /// <param name="p">The destination point of edge p</param>
+        /// <param name="e0">The destination point of edge e0</param>
+        /// <param name="e1">The destination point of edge e1</param>
+        /// <returns>A negative integer, zero or positive integer as the vector P lies outside, collinear with, or inside the vectors E0 and E1</returns>
+        private static int CompareBetween(Coordinate origin, Coordinate p, Coordinate e0, Coordinate e1)
+        {
+            int comp0 = CompareAngle(origin, p, e0);
+            if (comp0 == 0) return 0;
+            int comp1 = CompareAngle(origin, p, e1);
+            if (comp1 == 0) return 0;
+            if (comp0 > 0 && comp1 < 0) return 1;
+            return -1;
+        }
+
+        /// <summary>
         /// Tests if the angle with the origin of a vector P is greater than that of the
         /// vector Q.
         /// </summary>
@@ -115,6 +151,41 @@ namespace NetTopologySuite.Algorithm
             var orient = Orientation.Index(origin, q, p);
             return orient == OrientationIndex.CounterClockwise;
         }
+
+        /// <summary>
+        /// Compares the angles of two vectors
+        /// relative to the positive X-axis at their origin.
+        /// </summary>
+        /// <param name="origin">The origin of the vectors</param>
+        /// <param name="p">The endpoint of the vector P</param>
+        /// <param name="q">The endpoint of the vector Q</param>
+        /// <returns>
+        /// A negative integer, zero, or a positive integer as this vector P has angle less than, equal to, or greater than vector Q
+        /// </returns>
+        public static int CompareAngle(Coordinate origin, Coordinate p, Coordinate q)
+        {
+            var quadrantP = Quadrant(origin, p);
+            var quadrantQ = Quadrant(origin, q);
+
+            /*
+             * If the vectors are in different quadrants, 
+             * that determines the ordering
+             */
+            if (quadrantP > quadrantQ) return 1;
+            if (quadrantP < quadrantQ) return -1;
+
+            //--- vectors are in the same quadrant
+            // Check relative orientation of vectors
+            // P > Q if it is CCW of Q
+            var orient = Orientation.Index(origin, q, p);
+            switch (orient)
+            {
+                case OrientationIndex.CounterClockwise: return 1;
+                case OrientationIndex.Clockwise: return -1;
+                default: return 0;
+            }
+        }
+
 
         private static Quadrant Quadrant(Coordinate origin, Coordinate p)
         {

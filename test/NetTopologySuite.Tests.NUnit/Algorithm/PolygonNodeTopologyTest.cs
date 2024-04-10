@@ -29,6 +29,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [Test]
+        public void TestNonCrossingCollinear()
+        {
+            CheckNonCrossing("LINESTRING (3 1, 5 5, 9 9)",
+                "LINESTRING (2 1, 5 5, 9 9)");
+        }
+
+        [Test]
+        public void TestNonCrossingBothCollinear()
+        {
+            CheckNonCrossing("LINESTRING (3 1, 5 5, 9 9)",
+                "LINESTRING (3 1, 5 5, 9 9)");
+        }
+
+        [Test]
         public void TestInteriorSegment()
         {
             CheckInterior("LINESTRING (5 9, 5 5, 9 5)",
