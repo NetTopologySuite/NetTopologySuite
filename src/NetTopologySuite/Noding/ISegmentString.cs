@@ -19,14 +19,6 @@ namespace NetTopologySuite.Noding
         /// </summary>
         int Count { get; }
 
-//#if NETSTANDARD2_1_OR_GREATER
-//        /// <summary>
-//        /// Gets the segment string <c>Coordinate</c> at a given index
-//        /// </summary>
-//        /// <param name="idx">An index</param>
-//        /// <returns>The <c>Coordinate</c> at the index</returns>
-//        Coordinate GetCoordinate(int idx) => Coordinates[idx];
-//#endif
         /// <summary>
         /// Points that make up <see cref="ISegmentString"/>
         /// </summary>
@@ -38,81 +30,81 @@ namespace NetTopologySuite.Noding
         bool IsClosed { get; }
 
         LineSegment this[int index] { get; set; }
-
-//#if NETSTANDARD2_1_OR_GREATER || false
-//        /// <summary>
-//        /// Gets the previous vertex in a ring from a vertex index.
-//        /// </summary>
-//        /// <param name="index">The vertex index</param>
-//        /// <returns>The previous vertex in the ring</returns>
-//        /// <seealso cref="ISegmentString.IsClosed"/>
-//        public Coordinate PrevInRing(int index)
-//        {
-//            int prevIndex = index - 1;
-//            if (prevIndex < 0)
-//                prevIndex = Count - 2;
-//            return GetCoordinate(prevIndex);
-//        }
-
-//        /// <summary>
-//        /// Gets the next vertex in a ring from a vertex index.
-//        /// </summary>
-//        /// <param name="index">The vertex index</param>
-//        /// <returns>The next vertex in the ring</returns>
-//        /// <seealso cref="ISegmentString.IsClosed"/>
-//        public Coordinate NextInRing(int index)
-//        {
-//            int nextIndex = index + 1;
-//            if (nextIndex > Count - 1)
-//                nextIndex = 1;
-//            return GetCoordinate(nextIndex);
-//        }
-//#endif
     }
 
-//#if NETSTANDARD2_0
     /// <summary>
-    /// Extension methods to mimic JTS' default methods on SegmentString interface
+    /// Contains additional methods that could not be added to <see cref="ISegmentString"/> directly
+    /// (for compatibility reasons).
     /// </summary>
-    public static class SegmentStringEx
+    public interface ISegmentStringEx1 : ISegmentString
     {
         /// <summary>
         /// Gets the segment string <c>Coordinate</c> at a given index
         /// </summary>
-        /// <param name="self">A segment string forming a ring</param>
         /// <param name="idx">An index</param>
         /// <returns>The <c>Coordinate</c> at the index</returns>
-        public static Coordinate GetCoordinate(this ISegmentString self, int idx) => self.Coordinates[idx];
+        Coordinate GetCoordinate(int idx);
 
         /// <summary>
         /// Gets the previous vertex in a ring from a vertex index.
         /// </summary>
-        /// <param name="self">A segment string forming a ring</param>
         /// <param name="index">The vertex index</param>
         /// <returns>The previous vertex in the ring</returns>
         /// <seealso cref="ISegmentString.IsClosed"/>
-        public static Coordinate PrevInRing(this ISegmentString self, int index)
-        {
-            int prevIndex = index - 1;
-            if (prevIndex < 0)
-                prevIndex = self.Count - 2;
-            return self.GetCoordinate(prevIndex);
-        }
+        Coordinate PrevInRing(int index);
 
         /// <summary>
         /// Gets the next vertex in a ring from a vertex index.
         /// </summary>
-        /// <param name="self">A segment string forming a ring</param>
         /// <param name="index">The vertex index</param>
         /// <returns>The next vertex in the ring</returns>
         /// <seealso cref="ISegmentString.IsClosed"/>
+        Coordinate NextInRing(int index);
+    }
+
+    /// <summary>
+    /// Contains extension methods to bring the <see cref="ISegmentStringEx1"/> functionality to
+    /// <see cref="ISegmentString"/> without breaking compatibility.
+    /// </summary>
+    public static class SegmentStringEx
+    {
+        /// <inheritdoc cref="ISegmentStringEx1.GetCoordinate"/>
+        public static Coordinate GetCoordinate(this ISegmentString self, int idx)
+        {
+            if (self is ISegmentStringEx1 ex)
+            {
+                return ex.GetCoordinate(idx);
+            }
+
+            return self.Coordinates[idx];
+        }
+
+        /// <inheritdoc cref="ISegmentStringEx1.PrevInRing"/>
+        public static Coordinate PrevInRing(this ISegmentString self, int index)
+        {
+            if (self is ISegmentStringEx1 ex)
+            {
+                return ex.PrevInRing(index);
+            }
+
+            int prevIndex = index - 1;
+            if (prevIndex < 0)
+                prevIndex = self.Count - 2;
+            return self.Coordinates[prevIndex];
+        }
+
+        /// <inheritdoc cref="ISegmentStringEx1.NextInRing"/>
         public static Coordinate NextInRing(this ISegmentString self, int index)
         {
+            if (self is ISegmentStringEx1 ex)
+            {
+                return ex.NextInRing(index);
+            }
+
             int nextIndex = index + 1;
             if (nextIndex > self.Count - 1)
                 nextIndex = 1;
-            return self.GetCoordinate(nextIndex);
+            return self.Coordinates[nextIndex];
         }
     }
-//#endif
 }
