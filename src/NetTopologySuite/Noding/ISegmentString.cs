@@ -19,14 +19,6 @@ namespace NetTopologySuite.Noding
         /// </summary>
         int Count { get; }
 
-//#if NETSTANDARD2_1_OR_GREATER
-//        /// <summary>
-//        /// Gets the segment string <c>Coordinate</c> at a given index
-//        /// </summary>
-//        /// <param name="idx">An index</param>
-//        /// <returns>The <c>Coordinate</c> at the index</returns>
-//        Coordinate GetCoordinate(int idx) => Coordinates[idx];
-//#endif
         /// <summary>
         /// Points that make up <see cref="ISegmentString"/>
         /// </summary>
@@ -39,38 +31,37 @@ namespace NetTopologySuite.Noding
 
         LineSegment this[int index] { get; set; }
 
-//#if NETSTANDARD2_1_OR_GREATER || false
-//        /// <summary>
-//        /// Gets the previous vertex in a ring from a vertex index.
-//        /// </summary>
-//        /// <param name="index">The vertex index</param>
-//        /// <returns>The previous vertex in the ring</returns>
-//        /// <seealso cref="ISegmentString.IsClosed"/>
-//        public Coordinate PrevInRing(int index)
-//        {
-//            int prevIndex = index - 1;
-//            if (prevIndex < 0)
-//                prevIndex = Count - 2;
-//            return GetCoordinate(prevIndex);
-//        }
-
-//        /// <summary>
-//        /// Gets the next vertex in a ring from a vertex index.
-//        /// </summary>
-//        /// <param name="index">The vertex index</param>
-//        /// <returns>The next vertex in the ring</returns>
-//        /// <seealso cref="ISegmentString.IsClosed"/>
-//        public Coordinate NextInRing(int index)
-//        {
-//            int nextIndex = index + 1;
-//            if (nextIndex > Count - 1)
-//                nextIndex = 1;
-//            return GetCoordinate(nextIndex);
-//        }
-//#endif
     }
 
-//#if NETSTANDARD2_0
+    /// <summary>
+    /// Extension of the <see cref="ISegmentString"/> interface
+    /// </summary>
+    public interface ISegmentString2 : ISegmentString
+    {
+        /// <summary>
+        /// Gets the segment string <c>Coordinate</c> at a given index
+        /// </summary>
+        /// <param name="index">The index</param>
+        /// <returns>The <c>Coordinate</c> at the index</returns>
+        Coordinate GetCoordinate(int index);
+
+        /// <summary>
+        /// Gets the previous vertex in a ring from a vertex index.
+        /// </summary>
+        /// <param name="index">The vertex index</param>
+        /// <returns>The previous vertex in the ring</returns>
+        /// <seealso cref="ISegmentString.IsClosed"/>
+        Coordinate PrevInRing(int index);
+
+        /// <summary>
+        /// Gets the next vertex in a ring from a vertex index.
+        /// </summary>
+        /// <param name="index">The vertex index</param>
+        /// <returns>The next vertex in the ring</returns>
+        /// <seealso cref="ISegmentString.IsClosed"/>
+        Coordinate NextInRing(int index);
+    }
+
     /// <summary>
     /// Extension methods to mimic JTS' default methods on SegmentString interface
     /// </summary>
@@ -82,7 +73,14 @@ namespace NetTopologySuite.Noding
         /// <param name="self">A segment string forming a ring</param>
         /// <param name="idx">An index</param>
         /// <returns>The <c>Coordinate</c> at the index</returns>
-        public static Coordinate GetCoordinate(this ISegmentString self, int idx) => self.Coordinates[idx];
+        public static Coordinate GetCoordinate(this ISegmentString self, int idx)
+        {
+            if (self is ISegmentString2 self2)
+                return self2.GetCoordinate(idx);
+
+            // fallback
+            return self.Coordinates[idx];
+        }
 
         /// <summary>
         /// Gets the previous vertex in a ring from a vertex index.
@@ -92,6 +90,14 @@ namespace NetTopologySuite.Noding
         /// <returns>The previous vertex in the ring</returns>
         /// <seealso cref="ISegmentString.IsClosed"/>
         public static Coordinate PrevInRing(this ISegmentString self, int index)
+        {
+            if (self is ISegmentString2 self2)
+                return self2.PrevInRing(index);
+
+            return DefaultPrevInRingImpl(self, index);
+        }
+
+        internal static Coordinate DefaultPrevInRingImpl(ISegmentString self, int index)
         {
             int prevIndex = index - 1;
             if (prevIndex < 0)
@@ -108,11 +114,18 @@ namespace NetTopologySuite.Noding
         /// <seealso cref="ISegmentString.IsClosed"/>
         public static Coordinate NextInRing(this ISegmentString self, int index)
         {
+            if (self is ISegmentString2 self2)
+                return self2.NextInRing(index);
+
+            return DefaultNextInRingImpl(self, index);
+        }
+
+        internal static Coordinate DefaultNextInRingImpl(ISegmentString self, int index)
+        {
             int nextIndex = index + 1;
             if (nextIndex > self.Count - 1)
                 nextIndex = 1;
             return self.GetCoordinate(nextIndex);
         }
     }
-//#endif
 }

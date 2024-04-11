@@ -14,7 +14,7 @@ namespace NetTopologySuite.Noding
     /// If adding nodes is required use <see cref="NodedSegmentString"/>.
     /// </summary>
     /// <seealso cref="NodedSegmentString"/>
-    public class BasicSegmentString : ISegmentString
+    public class BasicSegmentString : ISegmentString, ISegmentString2
     {
 
         private readonly Coordinate[] _pts;
@@ -76,6 +76,14 @@ namespace NetTopologySuite.Noding
             set => throw new NotSupportedException(
                 "Setting line segments in a ISegmentString not supported.");
         }
+
+        /// <inheritdoc/>
+        public virtual Coordinate PrevInRing(int index)
+            => SegmentStringEx.DefaultPrevInRingImpl(this, index);
+
+        /// <inheritdoc/>
+        public virtual Coordinate NextInRing(int index)
+            => SegmentStringEx.DefaultNextInRingImpl(this, index);
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()

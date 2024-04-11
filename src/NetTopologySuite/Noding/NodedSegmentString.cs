@@ -21,7 +21,7 @@ namespace NetTopologySuite.Noding
     /// which is (slightly)more lightweight.
     /// </summary>
     /// <seealso cref="BasicSegmentString"/>
-public class NodedSegmentString : INodableSegmentString
+public class NodedSegmentString : INodableSegmentString, ISegmentString2
     {
         /// <summary>
         /// Gets the <see cref="ISegmentString"/>s which result from splitting this string at node points.
@@ -236,6 +236,14 @@ public class NodedSegmentString : INodableSegmentString
             var ei = _nodeList.Add(intPt, normalizedSegmentIndex);
             return ei;
         }
+
+        /// <inheritdoc/>
+        public virtual Coordinate PrevInRing(int index)
+            => SegmentStringEx.DefaultPrevInRingImpl(this, index);
+
+        /// <inheritdoc/>
+        public virtual Coordinate NextInRing(int index)
+            => SegmentStringEx.DefaultNextInRingImpl(this, index);
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
