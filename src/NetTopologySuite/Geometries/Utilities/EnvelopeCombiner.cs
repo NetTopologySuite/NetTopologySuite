@@ -132,7 +132,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </returns>
         public Geometry CombineAsGeometry()
         {
-            Envelope env = Combine();
+            var env = Combine();
             GeometryFactory factory = null;
             foreach (var geom in _geoms)
             {
