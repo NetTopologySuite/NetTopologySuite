@@ -141,9 +141,9 @@ namespace NetTopologySuite.Operation.OverlayArea
              */
             for (int i = 0; i < ring.Count - 1; i++)
             {
-                Coordinate vPrev = i == 0 ? ring.GetCoordinate(ring.Count - 2) : ring.GetCoordinate(i - 1);
-                Coordinate v = ring.GetCoordinate(i);
-                Coordinate vNext = ring.GetCoordinate(i + 1);
+                var vPrev = i == 0 ? ring.GetCoordinate(ring.Count - 2) : ring.GetCoordinate(i - 1);
+                var v = ring.GetCoordinate(i);
+                var vNext = ring.GetCoordinate(i + 1);
                 var loc = RayCrossingCounter.LocatePointInRing(v, ring2);
                 if (loc == Location.Interior)
                 {
