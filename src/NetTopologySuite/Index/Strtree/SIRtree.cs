@@ -52,8 +52,10 @@ namespace NetTopologySuite.Index.Strtree
             {
                 Interval bounds = null;
                 //var bounds = Interval.Create();
-                foreach (var childBoundable in ChildBoundables)
+                var childBoundables = ChildBoundables;
+                for (int i = 0; i < childBoundables.Count; i++)
                 {
+                    var childBoundable = childBoundables[i];
                     if (bounds == null)
                          bounds = new Interval(childBoundable.Bounds);
                     else

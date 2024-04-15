@@ -61,8 +61,10 @@ namespace NetTopologySuite.Index.Strtree
             protected override Envelope ComputeBounds()
             {
                 /*Envelope*/var bounds = new Envelope() /*= null*/;
-                foreach (var childBoundable in ChildBoundables)
+                var childBoundables = ChildBoundables;
+                for (int i = 0; i < childBoundables.Count; i++)
                 {
+                    var childBoundable = childBoundables[i];
                     /*
                     if (bounds == null)
                         bounds = new Envelope(childBoundable.Bounds);
