@@ -314,8 +314,10 @@ namespace NetTopologySuite.Index.Strtree
 
         private void QueryInternal(T searchBounds, AbstractNode<T, TItem> node, IList<TItem> matches)
         {
-            foreach (var childBoundable in node.ChildBoundables)
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var childBoundable = childBoundables[i];
                 if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
                     continue;
 
