@@ -47,6 +47,32 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
+        /// Returns whether the i'th coordinate is valid
+        /// </summary>
+        public sealed override bool IsCoordinateValidAt(int i)
+        {
+            double d = GetX(i);
+            if (double.IsInfinity(d) || double.IsNaN(d)) return false;
+
+            d = GetY(i);
+            if (double.IsInfinity(d) || double.IsNaN(d)) return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Returns whether the coordinate sequence is closed
+        /// </summary>
+        public sealed override bool IsClosed
+        {
+            get
+            {
+                int count = Count;
+                return count > 0 && GetX(0) == GetX(count - 1) && GetY(0) == GetY(count - 1);
+            }
+        }
+
+        /// <summary>
         /// Returns (possibly copies of) the Coordinates in this collection.
         /// Whether or not the Coordinates returned are the actual underlying
         /// Coordinates or merely copies depends on the implementation.

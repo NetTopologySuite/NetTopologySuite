@@ -218,15 +218,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating if this <c>LINESTRING</c> is closed.
         /// </summary>
-        public virtual bool IsClosed
-        {
-            get
-            {
-                if (IsEmpty)
-                    return false;
-                return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
-            }
-        }
+        public virtual bool IsClosed => _points.IsClosed;
 
         /// <summary>
         /// Gets a value indicating if this <c>LINESTRING</c> forms a ring.
