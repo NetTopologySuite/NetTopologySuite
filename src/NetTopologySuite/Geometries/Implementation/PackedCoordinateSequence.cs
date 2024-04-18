@@ -49,16 +49,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Returns whether the i'th coordinate is valid
         /// </summary>
-        public sealed override bool IsCoordinateValidAt(int i)
-        {
-            double d = GetX(i);
-            if (double.IsInfinity(d) || double.IsNaN(d)) return false;
-
-            d = GetY(i);
-            if (double.IsInfinity(d) || double.IsNaN(d)) return false;
-
-            return true;
-        }
+        public sealed override bool IsCoordinateValidAt(int i) =>
+            Coordinate.IsValidOrdinateValue(GetX(i)) && Coordinate.IsValidOrdinateValue(GetY(i));
 
         /// <summary>
         /// Returns whether the coordinate sequence is closed

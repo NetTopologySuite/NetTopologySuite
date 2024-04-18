@@ -189,7 +189,7 @@ namespace NetTopologySuite.Algorithm
             double xInt = (x / w).ToDoubleValue();
             double yInt = (y / w).ToDoubleValue();
 
-            if (double.IsNaN(xInt) || double.IsInfinity(xInt) || double.IsNaN(yInt) || double.IsInfinity(yInt))
+            if (!Coordinate.IsValidOrdinateValue(xInt) || !Coordinate.IsValidOrdinateValue(yInt))
             {
                 return null;
             }
