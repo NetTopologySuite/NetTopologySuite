@@ -110,6 +110,12 @@ namespace NetTopologySuite.Operation.Distance
                 throw new ApplicationException("null geometries are not supported");
             if (_geom[0].IsEmpty || _geom[1].IsEmpty)
                 return 0.0;
+
+            //-- optimization for Point/Point case
+            if (_geom[0] is Point pt0 && _geom[1] is Point pt1) {
+                return pt0.Coordinate.Distance(pt1.Coordinate);
+            }
+
             ComputeMinDistance();
             return _minDistance;
         }

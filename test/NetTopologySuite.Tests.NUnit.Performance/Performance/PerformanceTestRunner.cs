@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -16,25 +17,26 @@ namespace NetTopologySuite.Tests.NUnit.Performance
 
         public static void Run(Type clz)
         {
-            var runner = new PerformanceTestRunner();
-            runner.RunInternal(clz);
+            try
+            {
+                var ctor = clz.GetConstructor(Array.Empty<Type>());
+                var test = (PerformanceTestCase)ctor.Invoke(Array.Empty<object>());
+                Run(test);
+            }
+            catch (Exception ex)
+            {
+                TestContext.WriteLine(ex.Message);
+                TestContext.WriteLine(ex.StackTrace);
+            }
         }
 
-        private PerformanceTestRunner()
-        {
-
-        }
-
-        private void RunInternal(Type clz)
+        public static void Run(PerformanceTestCase test)
         {
             try
             {
-                var ctor = clz.GetConstructor(new Type[0]);
-
-                var test = (PerformanceTestCase) ctor.Invoke(new object[0]);
                 int[] runSize = test.RunSize;
                 int runIter = test.RunIterations;
-                var runMethod = FindMethods(clz, RunPrefix);
+                var runMethod = FindMethods(test.GetType(), RunPrefix);
 
                 // do the run
                 test.SetUp();
@@ -66,7 +68,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             {
                 Console.WriteLine(e.StackTrace);
             }
+
         }
+
 
         private static MethodInfo[] FindMethods(Type clz, string methodPrefix)
         {
