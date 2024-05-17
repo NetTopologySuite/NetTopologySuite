@@ -2,7 +2,6 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using System;
-using System.Diagnostics;
 
 namespace NetTopologySuite.Shape
 {
