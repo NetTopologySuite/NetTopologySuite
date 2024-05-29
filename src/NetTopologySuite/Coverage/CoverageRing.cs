@@ -86,6 +86,17 @@ namespace NetTopologySuite.Coverage
             _isMatched = new bool[Count - 1];
         }
 
+        public Envelope GetEnvelope(int start, int end)
+        {
+            var env = new Envelope();
+            for (int i = start; i < end; i++)
+            {
+                env.ExpandToInclude(GetCoordinate(i));
+            }
+            return env;
+        }
+
+
         /// <summary>
         /// Reports if the ring has canonical orientation,
         /// with the polygon interior on the right (shell is CW).
