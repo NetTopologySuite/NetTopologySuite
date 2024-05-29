@@ -23,11 +23,11 @@ namespace NetTopologySuite.Triangulate.Polygon
     {
 
         private readonly bool[] _isHoleTouching;
-        private IList<ISegmentString> nodedRings;
+        private readonly IList<ISegmentString> _nodedRings;
 
         public PolygonNoder(Coordinate[] shellRing, Coordinate[][] holeRings)
         {
-            nodedRings = CreateNodedSegmentStrings(shellRing, holeRings);
+            _nodedRings = CreateNodedSegmentStrings(shellRing, holeRings);
             _isHoleTouching = new bool[holeRings.Length];
         }
 
@@ -35,19 +35,19 @@ namespace NetTopologySuite.Triangulate.Polygon
         {
             var nodeAdder = new NodeAdder(_isHoleTouching);
             var noder = new MCIndexNoder(nodeAdder);
-            noder.ComputeNodes(nodedRings);
+            noder.ComputeNodes(_nodedRings);
         }
 
-        public bool IsShellNoded => ((NodedSegmentString)nodedRings[0]).HasNodes;
+        public bool IsShellNoded => ((NodedSegmentString)_nodedRings[0]).HasNodes;
 
         public bool IsHoleNoded(int i)
         {
-            return ((NodedSegmentString)nodedRings[i + 1]).HasNodes;
+            return ((NodedSegmentString)_nodedRings[i + 1]).HasNodes;
         }
 
-        public Coordinate[] NodedShell => ((NodedSegmentString)nodedRings[0]).NodedCoordinates;
+        public Coordinate[] NodedShell => ((NodedSegmentString)_nodedRings[0]).NodedCoordinates;
 
-        public Coordinate[] GetNodedHole(int i) => ((NodedSegmentString)nodedRings[i + 1]).NodedCoordinates;
+        public Coordinate[] GetNodedHole(int i) => ((NodedSegmentString)_nodedRings[i + 1]).NodedCoordinates;
 
         public bool[] HolesTouching => _isHoleTouching;
 
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Triangulate.Polygon
         }
 
         /// <summary>
-        /// A <see cref="ISegmentIntersector>"/> that added node vertices
+        /// A <see cref="ISegmentIntersector"/> that added node vertices
         /// to <see cref="NodedSegmentString"/>s where a segment touches another
         /// segment in its interior.
         /// </summary>
@@ -77,7 +77,8 @@ namespace NetTopologySuite.Triangulate.Polygon
         {
 
             private readonly LineIntersector li = new RobustLineIntersector();
-            private bool[] _isHoleTouching;
+            private readonly bool[] _isHoleTouching;
+
             public NodeAdder(bool[] isHoleTouching)
             {
                 _isHoleTouching = isHoleTouching;

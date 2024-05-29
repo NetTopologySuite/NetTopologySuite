@@ -27,7 +27,7 @@ namespace NetTopologySuite.Noding
         public BasicSegmentString(Coordinate[] pts, object data)
         {
             _pts = pts;
-            this.Context = data;
+            Context = data;
         }
 
         /// <summary>Gets the user-defined data for this segment string.
