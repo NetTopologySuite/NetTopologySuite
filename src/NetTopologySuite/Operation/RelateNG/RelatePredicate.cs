@@ -6,11 +6,8 @@ namespace NetTopologySuite.Operation.RelateNG
     /// Creates predicate instances for evaluating OGC-standard named topological relationships.
     /// Predicates can be evaluated for geometries using <see cref="RelateNG"/>.
     /// </summary>
-    /// <remarks>
-    /// Note: In JTS this is an interface named <c>RelatePredicate</c>.
-    /// </remarks>
     /// <author>Martin Davis</author>
-    public static class RelatePredicateFactory
+    public static class RelatePredicate
     {
         /// <summary>
         /// Creates a predicate to determine whether two geometries intersect.

@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation.RelateNG
     /// <summary>
     /// Computes the value of topological predicates between two geometries based on the
     /// <a href = "https://en.wikipedia.org/wiki/DE-9IM" > Dimensionally - Extended 9-Intersection Model</a>(DE-9IM).
-    /// Standard and custom topological predicates are provided by <see cref="RelatePredicateFactory"/>.
+    /// Standard and custom topological predicates are provided by <see cref="RelatePredicate"/>.
     /// <para/>
     /// The RelateNG algorithm has the following capabilities:
     /// <list type="number">
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Operation.RelateNG
         /// <seealso cref="IntersectionMatrixPattern"/>
         public bool Evaluate(Geometry b, string imPattern)
         {
-            return Evaluate(b, RelatePredicateFactory.Matches(imPattern));
+            return Evaluate(b, RelatePredicate.Matches(imPattern));
         }
 
         /// <summary>
@@ -297,7 +297,11 @@ namespace NetTopologySuite.Operation.RelateNG
              * if it has areas OR if the predicate requires checking for 
              * exterior interaction.
              * In particular, this avoids testing line ends against lines 
-             * for the intersects predicate. 
+             * for the intersects predicate (since these are checked
+             * during segment/segment intersection checking anyway). 
+             * Checking points against areas is necessary, since the input
+             * linework may be entirely disjoint if one input lies wholly 
+             * inside an area. 
              */
             bool checkDisjointPoints = geomTarget.HasDimension(Dimension.A)
                 || topoComputer.IsExteriorCheckRequired(isA);

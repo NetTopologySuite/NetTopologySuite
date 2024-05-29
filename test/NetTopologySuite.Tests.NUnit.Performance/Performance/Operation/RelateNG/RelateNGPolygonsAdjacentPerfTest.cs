@@ -84,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
             {
                 foreach (var b in polygons)
                 {
-                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicateFactory.Intersects());
+                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicate.Intersects());
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
                 var rng = NetTopologySuite.Operation.RelateNG.RelateNG.Prepare(a);
                 foreach (var b in polygons)
                 {
-                    rng.Evaluate(b, RelatePredicateFactory.Intersects());
+                    rng.Evaluate(b, RelatePredicate.Intersects());
                 }
             }
         }
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
             {
                 foreach (var b in polygons)
                 {
-                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicateFactory.Touches());
+                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicate.Touches());
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
                 var rng = NetTopologySuite.Operation.RelateNG.RelateNG.Prepare(a);
                 foreach (var b in polygons)
                 {
-                    rng.Evaluate(b, RelatePredicateFactory.Touches());
+                    rng.Evaluate(b, RelatePredicate.Touches());
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
             {
                 foreach (var b in polygons)
                 {
-                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicateFactory.Matches(IntersectionMatrixPattern.Adjacent));
+                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicate.Matches(IntersectionMatrixPattern.Adjacent));
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
                 var rng = NetTopologySuite.Operation.RelateNG.RelateNG.Prepare(a);
                 foreach (var b in polygons)
                 {
-                    rng.Evaluate(b, RelatePredicateFactory.Matches(IntersectionMatrixPattern.Adjacent));
+                    rng.Evaluate(b, RelatePredicate.Matches(IntersectionMatrixPattern.Adjacent));
                 }
             }
         }
@@ -186,7 +186,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
             {
                 foreach (var b in polygons)
                 {
-                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicateFactory.Matches(IntersectionMatrixPattern.InteriorIntersects));
+                    NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, RelatePredicate.Matches(IntersectionMatrixPattern.InteriorIntersects));
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
                 var rng = NetTopologySuite.Operation.RelateNG.RelateNG.Prepare(a);
                 foreach (var b in polygons)
                 {
-                    rng.Evaluate(b, RelatePredicateFactory.Matches(IntersectionMatrixPattern.InteriorIntersects));
+                    rng.Evaluate(b, RelatePredicate.Matches(IntersectionMatrixPattern.InteriorIntersects));
                 }
             }
         }

@@ -560,7 +560,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckContainsWithin(b, a, false);
             //CheckCoversCoveredBy(false, a, b);
             //CheckOverlaps(true, a, b);
-            CheckPredicate(RelatePredicateFactory.Contains(), a, b, false);
+            CheckPredicate(RelatePredicate.Contains(), a, b, false);
             //CheckTouches(false, a, b);
         }
 
@@ -601,7 +601,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckContainsWithin(a, b, false);
             CheckCoversCoveredBy(a, b, false);
             CheckOverlaps(a, b, false);
-            CheckPredicate(RelatePredicateFactory.Within(), a, b, false);
+            CheckPredicate(RelatePredicate.Within(), a, b, false);
             CheckTouches(a, b, true);
         }
 
@@ -614,7 +614,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckContainsWithin(a, b, false);
             CheckCoversCoveredBy(a, b, false);
             CheckOverlaps(a, b, false);
-            CheckPredicate(RelatePredicateFactory.Within(), a, b, false);
+            CheckPredicate(RelatePredicate.Within(), a, b, false);
             CheckTouches(a, b, true);
         }
 

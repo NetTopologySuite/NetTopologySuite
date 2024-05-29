@@ -7,7 +7,7 @@ computes topological relationships of <xref href="NetTopologySuite.Geometries.Ge
 Topology is evaluated based on the 
 <a href="https://en.wikipedia.org/wiki/DE-9IM">Dimensionally-Extended 9-Intersection Model</a> (DE-9IM).  
 The <xref href="NetTopologySuite.Operation.RelateNG.RelateNG">RelateNG</xref> class supports computing the value of boolean topological predicates
-Standard OGC named predicates are provided by the <xref href="NetTopologySuite.Operation.RelateNG.RelatePredicateFactory">RelatePredicateFactory</xref> functions. 
+Standard OGC named predicates are provided by the <xref href="NetTopologySuite.Operation.RelateNG.RelatePredicate">RelatePredicate</xref> functions. 
 Custom relationships can be specified via testing against DE-9IM matrix patterns
 (see <xref href="NetTopologySuite.Operation.RelateNG.IntersectionMatrixPattern">IntersectionMatrixPattern</xref> for examples).
 The full DE-9IM <xref href="NetTopologySuite.Operation.RelateNG.IntersectionMatrix">IntersectionMatrix</xref> can also be computed.

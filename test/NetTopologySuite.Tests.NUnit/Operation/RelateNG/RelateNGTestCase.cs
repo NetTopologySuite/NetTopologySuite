@@ -10,46 +10,46 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
 
         protected void CheckIntersectsDisjoint(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicateFactory.Intersects(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicateFactory.Intersects(), wktb, wkta, expectedValue);
-            CheckPredicate(RelatePredicateFactory.Disjoint(), wkta, wktb, !expectedValue);
-            CheckPredicate(RelatePredicateFactory.Disjoint(), wktb, wkta, !expectedValue);
+            CheckPredicate(RelatePredicate.Intersects(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.Intersects(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.Disjoint(), wkta, wktb, !expectedValue);
+            CheckPredicate(RelatePredicate.Disjoint(), wktb, wkta, !expectedValue);
         }
 
         protected void CheckContainsWithin(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicateFactory.Contains(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicateFactory.Within(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.Contains(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.Within(), wktb, wkta, expectedValue);
         }
 
         protected void CheckCoversCoveredBy(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicateFactory.Covers(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicateFactory.CoveredBy(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.Covers(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.CoveredBy(), wktb, wkta, expectedValue);
         }
 
         protected void CheckCrosses(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicateFactory.Crosses(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicateFactory.Crosses(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.Crosses(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.Crosses(), wktb, wkta, expectedValue);
         }
 
         protected void CheckOverlaps(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicateFactory.Overlaps(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicateFactory.Overlaps(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.Overlaps(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.Overlaps(), wktb, wkta, expectedValue);
         }
 
         protected void CheckTouches(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicateFactory.Touches(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicateFactory.Touches(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.Touches(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.Touches(), wktb, wkta, expectedValue);
         }
 
         protected void CheckEquals(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicateFactory.EqualsTopo(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicateFactory.EqualsTopo(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.EqualsTopo(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.EqualsTopo(), wktb, wkta, expectedValue);
         }
 
         protected void CheckRelate(string wkta, string wktb, string expectedValue)
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
 
         protected void CheckRelateMatches(string wkta, string wktb, string pattern, bool expectedValue)
         {
-            var pred = RelatePredicateFactory.Matches(pattern);
+            var pred = RelatePredicate.Matches(pattern);
             CheckPredicate(pred, wkta, wktb, expectedValue);
         }
 

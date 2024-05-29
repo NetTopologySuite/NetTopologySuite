@@ -93,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
         {
             foreach (var b in geomB)
             {
-                NetTopologySuite.Operation.RelateNG.RelateNG.Relate(geomA, b, RelatePredicateFactory.Intersects());
+                NetTopologySuite.Operation.RelateNG.RelateNG.Relate(geomA, b, RelatePredicate.Intersects());
             }
         }
 
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
             var rng = NetTopologySuite.Operation.RelateNG.RelateNG.Prepare(geomA);
             foreach (var b in geomB)
             {
-                rng.Evaluate(b, RelatePredicateFactory.Intersects());
+                rng.Evaluate(b, RelatePredicate.Intersects());
             }
         }
 

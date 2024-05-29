@@ -2,7 +2,8 @@
 
 namespace NetTopologySuite.Operation.RelateNG
 {
-    /// <summary>The API for strategy classes implementing
+    /// <summary>
+    /// The API for strategy classes implementing
     /// spatial predicates based on the DE-9IM topology model.
     /// Predicate values for specific geometry pairs can be evaluated by <see cref="RelateNG"/>.
     /// </summary>
@@ -33,8 +34,8 @@ namespace NetTopologySuite.Operation.RelateNG
         /// <para/>
         /// Most predicates require this, but it can
         /// be avoided for simple intersection detection
-        /// (such as in <see cref="RelatePredicateFactory.Intersects()"/>
-        /// and <see cref="RelatePredicateFactory.Disjoint()"/>.
+        /// (such as in <see cref="RelatePredicate.Intersects()"/>
+        /// and <see cref="RelatePredicate.Disjoint()"/>.
         /// Avoiding self-noding improves performance for polygonal inputs.
         /// </summary>
         public virtual bool RequiresSelfNoding { get => true; }
@@ -42,9 +43,13 @@ namespace NetTopologySuite.Operation.RelateNG
         /// <summary>
         /// Reports whether this predicate requires checking if the source input intersects
         /// the Exterior of the target input.
-        /// This allows some performance optimizations if not required.
+        /// This is the case if:
+        /// <code>
+        /// IM[Int(Src), Ext(Tgt)] >= 0 or IM[Bdy(Src), Ext(Tgt)] >= 0
+        /// </code>
+        /// When not required to evaluate a predicate this permits performance optimization.
         /// </summary>
-        /// <param name="isSourceA"></param>
+        /// <param name="isSourceA">A flag indicating which input geometry is the source</param>
         /// <returns><c>true</c> if the predicate requires checking whether the source intersects the target exterior</returns>
         public virtual bool RequiresExteriorCheck(bool isSourceA)
         {
