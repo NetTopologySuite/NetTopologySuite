@@ -15,7 +15,7 @@ namespace NetTopologySuite.Coverage
             _polyEnv = polygon.EnvelopeInternal;
         }
 
-        public bool Intersects(Envelope env)
+        public bool IntersectsEnv(Envelope env)
         {
             //-- test intersection explicitly to avoid expensive null check
             //return polyEnv.intersects(env);
@@ -25,20 +25,20 @@ namespace NetTopologySuite.Coverage
                   || env.MaxY < _polyEnv.MinY);
         }
 
-        public bool Contains(Coordinate p)
-        {
-            //-- test intersection explicitly to avoid expensive null check
-            if (!Intersects(p))
-                return false;
-            return Location.Interior == Locator.Locate(p);
-        }
-
-        private bool Intersects(Coordinate p)
+        private bool IntersectsEnv(Coordinate p)
         {
             return !(p.X > _polyEnv.MaxX
                   || p.X < _polyEnv.MinX
                   || p.Y > _polyEnv.MaxY
                   || p.Y < _polyEnv.MinY);
+        }
+
+        public bool Contains(Coordinate p)
+        {
+            //-- test intersection explicitly to avoid expensive null check
+            if (!IntersectsEnv(p))
+                return false;
+            return Location.Interior == Locator.Locate(p);
         }
 
         private IPointOnGeometryLocator Locator

@@ -412,7 +412,7 @@ namespace NetTopologySuite.Coverage
                 var sectionEnv = ring.GetEnvelope(iStart, iEnd);
                 //TODO: is it worth indexing polygons?
                 foreach (var adjPoly in adjPolygons) {
-                if (adjPoly.Intersects(sectionEnv))
+                if (adjPoly.IntersectsEnv(sectionEnv))
                 {
                     //-- test vertices in section
                     for (int i = iStart; i < iEnd; i++)
