@@ -54,19 +54,18 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                         }
                         sw.Stop();
                         test.SetTime(runNum, sw.ElapsedMilliseconds);
-                        Console.WriteLine(runMethod[i].Name + " : " + sw.Elapsed);
-                    }
+                        TestContext.WriteLine($"{runMethod[i].Name}: {sw.ElapsedMilliseconds} ms");                    }
                     test.EndRun();
                 }
                 test.TearDown();
             }
             catch (TargetInvocationException e)
             {
-                Console.WriteLine(e.StackTrace);
+                TestContext.WriteLine(e.StackTrace);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                TestContext.WriteLine(e.StackTrace);
             }
 
         }
