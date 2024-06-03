@@ -35,26 +35,21 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             foreach (var e in edges)
             {
-                e.setAreaInterior(isA);
+                e.SetAreaInterior(isA);
             }
         }
 
-        /**
-         * The dimension of an input geometry which is not known
-         */
+        /// <summary>
+        /// The dimension of an input geometry which is not known
+        /// </summary>
         public const Dimension DIM_UNKNOWN = Geometries.Dimension.Unknown;
 
-        /**
-         * Indicates that the location is currently unknown
-         */
+        /// <summary>
+        /// Indicates that the location is currently unknown
+        /// </summary>
         private const Location LOC_UNKNOWN = Geometries.Location.Null;
 
-        private static bool IsKnown(Location loc)
-        {
-            return loc != LOC_UNKNOWN;
-        }
-
-        private RelateNode _node;
+        private readonly RelateNode _node;
         private readonly Coordinate _dirPt;
 
         private Dimension _aDim = DIM_UNKNOWN;
@@ -212,7 +207,7 @@ namespace NetTopologySuite.Operation.RelateNG
             //-- INTERIOR takes precedence over EXTERIOR
             if (currLoc != Geometries.Location.Interior)
             {
-                setLocation(isA, pos, loc);
+                SetLocation(isA, pos, loc);
             }
         }
 
@@ -228,7 +223,7 @@ namespace NetTopologySuite.Operation.RelateNG
             }
         }
 
-        public void setLocation(bool isA, Position pos, Location loc)
+        public void SetLocation(bool isA, Position pos, Location loc)
         {
             switch (pos.Index)
             {
@@ -244,26 +239,26 @@ namespace NetTopologySuite.Operation.RelateNG
             }
         }
 
-        public void setAllLocations(bool isA, Location loc)
+        public void SetAllLocations(bool isA, Location loc)
         {
             SetLeft(isA, loc);
             SetRight(isA, loc);
             SetOn(isA, loc);
         }
 
-        public void setUnknownLocations(bool isA, Location loc)
+        public void SetUnknownLocations(bool isA, Location loc)
         {
             if (!IsKnown(isA, Position.Left))
             {
-                setLocation(isA, Position.Left, loc);
+                SetLocation(isA, Position.Left, loc);
             }
             if (!IsKnown(isA, Position.Right))
             {
-                setLocation(isA, Position.Right, loc);
+                SetLocation(isA, Position.Right, loc);
             }
             if (!IsKnown(isA, Position.On))
             {
-                setLocation(isA, Position.On, loc);
+                SetLocation(isA, Position.On, loc);
             }
         }
 
@@ -344,12 +339,12 @@ namespace NetTopologySuite.Operation.RelateNG
             return Location(isA, pos) != LOC_UNKNOWN;
         }
 
-        public bool isInterior(bool isA, Position position)
+        public bool IsInterior(bool isA, Position position)
         {
             return Location(isA, position) == Geometries.Location.Interior;
         }
 
-        public void setDimLocations(bool isA, Dimension dim, Location loc)
+        public void SetDimLocations(bool isA, Dimension dim, Location loc)
         {
             if (isA)
             {
@@ -367,7 +362,7 @@ namespace NetTopologySuite.Operation.RelateNG
             }
         }
 
-        public void setAreaInterior(bool isA)
+        public void SetAreaInterior(bool isA)
         {
             if (isA)
             {

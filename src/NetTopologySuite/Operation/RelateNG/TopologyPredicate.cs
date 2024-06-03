@@ -38,7 +38,40 @@ namespace NetTopologySuite.Operation.RelateNG
         /// and <see cref="RelatePredicate.Disjoint()"/>.
         /// Avoiding self-noding improves performance for polygonal inputs.
         /// </summary>
-        public virtual bool RequiresSelfNoding { get => true; }
+        public virtual bool RequireSelfNoding() { return true; }
+
+        /// <summary>
+        /// Reports whether this predicate requires interaction between
+        /// the input geometries.
+        /// This is the case if
+        /// <code>
+        /// IM[I, I] >= 0 or IM[I, B] >= 0 or IM[B, I] >= 0 or IM[B, B] >= 0
+        /// </code>
+        /// This allows a fast result if
+        /// the envelopes of the geometries are disjoint.
+        /// </summary>
+        /// <returns><c>true</c> if the geometries must interact</returns>
+        public virtual bool RequireInteraction()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Reports whether this predicate requires that the source
+        /// cover the target.
+        /// This is the case if
+        /// <code>
+        /// IM[Ext(Src), Int(Tgt)] = F and IM[Ext(Src), Bdy(Tgt)] = F
+        /// </code>
+        /// If <c>true</c>, this allows a fast result if
+        /// the source envelope does not cover the target envelope.
+        /// </summary>
+        /// <param name="isSourceA">A flag indicating the source input geometry</param>
+        /// <returns><c>true</c> if the predicate requires checking whether the source covers the target</returns>
+        public virtual bool RequireCovers(bool isSourceA)
+        {
+            return false;
+        }
 
         /// <summary>
         /// Reports whether this predicate requires checking if the source input intersects
@@ -47,11 +80,11 @@ namespace NetTopologySuite.Operation.RelateNG
         /// <code>
         /// IM[Int(Src), Ext(Tgt)] >= 0 or IM[Bdy(Src), Ext(Tgt)] >= 0
         /// </code>
-        /// When not required to evaluate a predicate this permits performance optimization.
+        /// If <c>false</c>, this may permit a faster result in some geometric situations.
         /// </summary>
-        /// <param name="isSourceA">A flag indicating which input geometry is the source</param>
+        /// <param name="isSourceA">A flag indicating the source input geometry</param>
         /// <returns><c>true</c> if the predicate requires checking whether the source intersects the target exterior</returns>
-        public virtual bool RequiresExteriorCheck(bool isSourceA)
+        public virtual bool RequireExteriorCheck(bool isSourceA)
         {
             return true;
         }

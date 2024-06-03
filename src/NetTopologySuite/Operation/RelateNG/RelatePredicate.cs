@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using System;
 
 namespace NetTopologySuite.Operation.RelateNG
 {
@@ -38,13 +39,13 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             public IntersectsPredicate() : base("intersects") { }
 
-            public override bool RequiresSelfNoding
+            public override bool RequireSelfNoding()
             {
                 //-- self-noding is not required to check for a simple interaction
-                get => false;
+                return false;
             }
 
-            public override bool RequiresExteriorCheck(bool isSourceA)
+            public override bool RequireExteriorCheck(bool isSourceA)
             {
                 //-- intersects only requires testing interaction
                 return false;
@@ -90,13 +91,19 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             public DisjointPredicate() : base("disjoint") { }
 
-            public override bool RequiresSelfNoding
+            public override bool RequireSelfNoding()
             {
                 //-- self-noding is not required to check for a simple interaction
-                get => false;
+                return false;
             }
 
-            public override bool RequiresExteriorCheck(bool isSourceA)
+            public override bool RequireInteraction()
+            {
+                //-- ensure entire matrix is computed
+                return false;
+            }
+
+            public override bool RequireExteriorCheck(bool isSourceA)
             {
                 //-- disjoint only requires testing interaction
                 return false;
@@ -149,7 +156,12 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             public ContainsPredicate() : base("contains") { }
 
-            public override bool RequiresExteriorCheck(bool isSourceA)
+            public override bool RequireCovers(bool isSourceA)
+            {
+                return isSourceA == RelateGeometry.GEOM_A;
+            }
+
+            public override bool RequireExteriorCheck(bool isSourceA)
             {
                 //-- only need to check B against Exterior of A
                 return isSourceA == RelateGeometry.GEOM_B;
@@ -205,7 +217,12 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             public WithinPredicate() : base("within") { }
 
-            public override bool RequiresExteriorCheck(bool isSourceA)
+            public override bool RequireCovers(bool isSourceA)
+            {
+                return isSourceA == RelateGeometry.GEOM_B;
+            }
+
+            public override bool RequireExteriorCheck(bool isSourceA)
             {
                 //-- only need to check A against Exterior of B
                 return isSourceA == RelateGeometry.GEOM_A;
@@ -267,7 +284,12 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             public CoversPredicate() : base("covers") { }
 
-            public override bool RequiresExteriorCheck(bool isSourceA)
+            public override bool RequireCovers(bool isSourceA)
+            {
+                return isSourceA == RelateGeometry.GEOM_A;
+            }
+
+            public override bool RequireExteriorCheck(bool isSourceA)
             {
                 //-- only need to check B against Exterior of A
                 return isSourceA == RelateGeometry.GEOM_B;
@@ -324,7 +346,12 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             public CoveredByPredicate() : base("coveredBy") { }
 
-            public override bool RequiresExteriorCheck(bool isSourceA)
+            public override bool RequireCovers(bool isSourceA)
+            {
+                return isSourceA == RelateGeometry.GEOM_B;
+            }
+
+            public override bool RequireExteriorCheck(bool isSourceA)
             {
                 //-- only need to check A against Exterior of B
                 return isSourceA == RelateGeometry.GEOM_A;

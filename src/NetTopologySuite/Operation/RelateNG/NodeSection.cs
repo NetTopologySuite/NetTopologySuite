@@ -33,18 +33,18 @@ namespace NetTopologySuite.Operation.RelateNG
             private EdgeAngleComparator() { }
             public int Compare(NodeSection ns1, NodeSection ns2)
             {
-                return PolygonNodeTopology.CompareAngle(ns1.nodePt, ns1.getVertex(0), ns2.getVertex(0));
+                return PolygonNodeTopology.CompareAngle(ns1.NodePt, ns1.GetVertex(0), ns2.GetVertex(0));
             }
         }
 
         public static bool IsAreaArea(NodeSection a, NodeSection b)
         {
-            return a.dimension == Dimension.A && b.dimension == Dimension.A;
+            return a.Dimension == Dimension.A && b.Dimension == Dimension.A;
         }
 
         public static bool AreProper(NodeSection a, NodeSection b)
         {
-            return a.isProper && b.isProper;
+            return a.IsProper && b.IsProper;
         }
 
 
@@ -62,62 +62,62 @@ namespace NetTopologySuite.Operation.RelateNG
             Dimension dimension, int id, int ringId,
             Geometry poly, bool isNodeAtVertex, Coordinate v0, Coordinate nodePt, Coordinate v1)
         {
-            this.isA = isA;
-            this.dimension = dimension;
-            this.id = id;
-            this.ringId = ringId;
+            this.IsA = isA;
+            this.Dimension = dimension;
+            this.Id = id;
+            this.RingId = ringId;
             Polygonal = poly;
-            this.isNodeAtVertex = isNodeAtVertex;
-            this.nodePt = nodePt;
+            this.IsNodeAtVertex = isNodeAtVertex;
+            this.NodePt = nodePt;
             this._v0 = v0;
             this._v1 = v1;
         }
 
-        public Coordinate getVertex(int i)
+        public Coordinate GetVertex(int i)
         {
             return i == 0 ? _v0 : _v1;
         }
 
-        public Coordinate nodePt { get; }
+        public Coordinate NodePt { get; }
 
-        public Dimension dimension { get; private set; }
+        public Dimension Dimension { get; private set; }
 
-        public int id { get; }
+        public int Id { get; }
 
-        public int ringId { get; }
+        public int RingId { get; }
 
         public Geometry Polygonal { get; }
 
-        public bool isShell => ringId == 0;
+        public bool IsShell => RingId == 0;
 
 
-        public bool isArea => dimension == Dimension.A;
+        public bool IsArea => Dimension == Dimension.A;
 
 
-        public bool isA { get; }
+        public bool IsA { get; }
 
         public bool isSameGeometry(NodeSection ns)
         {
-            return isA == ns.isA;
+            return IsA == ns.IsA;
         }
 
-        public bool isSamePolygon(NodeSection ns)
+        public bool IsSamePolygon(NodeSection ns)
         {
-            return isA == ns.isA && id == ns.id;
+            return IsA == ns.IsA && Id == ns.Id;
         }
 
-        public bool isNodeAtVertex { get; }
+        public bool IsNodeAtVertex { get; }
 
-        public bool isProper => !isNodeAtVertex;
+        public bool IsProper => !IsNodeAtVertex;
 
 
         public override string ToString()
         {
-            string geomName = RelateGeometry.Name(isA);
-            string atVertexInd = isNodeAtVertex ? "-V-" : "---";
-            string polyId = id >= 0 ? "[" + id + ":" + ringId + "]" : "";
+            string geomName = RelateGeometry.Name(IsA);
+            string atVertexInd = IsNodeAtVertex ? "-V-" : "---";
+            string polyId = Id >= 0 ? "[" + Id + ":" + RingId + "]" : "";
             return string.Format("%s%d%s: %s %s %s",
-                geomName, dimension, polyId, EdgeRep(_v0, nodePt), atVertexInd, EdgeRep(nodePt, _v1));
+                geomName, Dimension, polyId, EdgeRep(_v0, NodePt), atVertexInd, EdgeRep(NodePt, _v1));
         }
 
         private static string EdgeRep(Coordinate p0, Coordinate p1)
@@ -136,20 +136,20 @@ namespace NetTopologySuite.Operation.RelateNG
             // Assert: nodePt.equals2D(o.nodePt())
 
             // sort A before B
-            if (isA != o.isA)
+            if (IsA != o.IsA)
             {
-                if (isA) return -1;
+                if (IsA) return -1;
                 return 1;
             }
             //-- sort on dimensions
-            int compDim = dimension.CompareTo(o.dimension);
+            int compDim = Dimension.CompareTo(o.Dimension);
             if (compDim != 0) return compDim;
 
             //-- sort on id and ring id
-            int compId = id.CompareTo(o.id);
+            int compId = Id.CompareTo(o.Id);
             if (compId != 0) return compId;
 
-            int compRingId = ringId.CompareTo(o.ringId);
+            int compRingId = RingId.CompareTo(o.RingId);
             if (compRingId != 0) return compRingId;
 
             //-- sort on edge coordinates

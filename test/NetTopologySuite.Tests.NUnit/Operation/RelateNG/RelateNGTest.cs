@@ -7,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
     internal class RelateNGTest : RelateNGTestCase
     {
         [Test]
-        public void TestDisjoint()
+        public void TestPointsDisjoint()
         {
             const string a = "POINT (0 0)";
             const string b = "POINT (1 1)";

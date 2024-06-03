@@ -33,22 +33,27 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             Init(dimA, dimB);
             //-- if pattern specifies any non-E/non-E interaction, envelopes must not be disjoint
-            bool requiresInteractionVal = RequiresInteraction(_patternMatrix);
+            bool requiresInteractionVal = RequireInteraction(_patternMatrix);
             bool isDisjoint = envA.Disjoint(envB);
             SetValueIf(false, requiresInteractionVal && isDisjoint);
         }
 
-        private static bool RequiresInteraction(IntersectionMatrix im)
+        public override bool RequireInteraction()
+        {
+            return RequireInteraction(_patternMatrix);
+        }
+
+        private static bool RequireInteraction(IntersectionMatrix im)
         {
             bool result =
-                RequiresInteraction(im.Get(Location.Interior, Location.Interior))
-                || RequiresInteraction(im.Get(Location.Interior, Location.Boundary))
-                || RequiresInteraction(im.Get(Location.Boundary, Location.Interior))
-                || RequiresInteraction(im.Get(Location.Boundary, Location.Boundary));
+                IsInteraction(im.Get(Location.Interior, Location.Interior))
+                || IsInteraction(im.Get(Location.Interior, Location.Boundary))
+                || IsInteraction(im.Get(Location.Boundary, Location.Interior))
+                || IsInteraction(im.Get(Location.Boundary, Location.Boundary));
             return result;
         }
 
-        private static bool RequiresInteraction(Dimension imDim)
+        private static bool IsInteraction(Dimension imDim)
         {
             return imDim == Dimension.True || imDim >= Dimension.P;
         }

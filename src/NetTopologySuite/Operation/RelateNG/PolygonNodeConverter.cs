@@ -66,23 +66,23 @@ namespace NetTopologySuite.Operation.RelateNG
             List<NodeSection> convertedSections)
         {
             var shellSection = sections[shellIndex];
-            var inVertex = shellSection.getVertex(0);
+            var inVertex = shellSection.GetVertex(0);
             int i = Next(sections, shellIndex);
             NodeSection holeSection, ns;
             Coordinate outVertex;
-            while (!sections[i].isShell)
+            while (!sections[i].IsShell)
             {
                 holeSection = sections[i];
                 // Assert: holeSection.isShell() = false
-                outVertex = holeSection.getVertex(1);
+                outVertex = holeSection.GetVertex(1);
                 ns = CreateSection(shellSection, inVertex, outVertex);
                 convertedSections.Add(ns);
 
-                inVertex = holeSection.getVertex(0);
+                inVertex = holeSection.GetVertex(0);
                 i = Next(sections, i);
             }
             //-- create final section for corner from last hole to shell
-            outVertex = shellSection.getVertex(1);
+            outVertex = shellSection.GetVertex(1);
             ns = CreateSection(shellSection, inVertex, outVertex);
             convertedSections.Add(ns);
             return i;
@@ -95,8 +95,8 @@ namespace NetTopologySuite.Operation.RelateNG
             for (int i = 0; i < sections.Count; i++)
             {
                 int inext = Next(sections, i);
-                var inVertex = sections[i].getVertex(0);
-                var outVertex = sections[inext].getVertex(1);
+                var inVertex = sections[i].GetVertex(0);
+                var outVertex = sections[inext].GetVertex(1);
                 var ns = CreateSection(copySection, inVertex, outVertex);
                 convertedSections.Add(ns);
             }
@@ -105,10 +105,10 @@ namespace NetTopologySuite.Operation.RelateNG
 
         private static NodeSection CreateSection(NodeSection ns, Coordinate v0, Coordinate v1)
         {
-            return new NodeSection(ns.isA,
-                Dimension.A, ns.id, 0, ns.Polygonal,
-                ns.isNodeAtVertex,
-                v0, ns.nodePt, v1);
+            return new NodeSection(ns.IsA,
+                Dimension.A, ns.Id, 0, ns.Polygonal,
+                ns.IsNodeAtVertex,
+                v0, ns.NodePt, v1);
         }
 
         private static List<NodeSection> ExtractUnique(List<NodeSection> sections)
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             for (int i = 0; i < polySections.Count; i++)
             {
-                if (polySections[i].isShell)
+                if (polySections[i].IsShell)
                     return i;
             }
             return -1;

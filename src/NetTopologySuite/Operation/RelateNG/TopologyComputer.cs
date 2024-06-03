@@ -136,13 +136,13 @@ namespace NetTopologySuite.Operation.RelateNG
                 //TODO: change to testing for lines or GC with > 1 polygon
                 if (_geomA.IsPointsOrPolygons) return false;
                 if (_geomB.IsPointsOrPolygons) return false;
-                return _predicate.RequiresSelfNoding;
+                return _predicate.RequireSelfNoding();
             }
         }
 
         public bool IsExteriorCheckRequired(bool isA)
         {
-            return _predicate.RequiresExteriorCheck(isA);
+            return _predicate.RequireExteriorCheck(isA);
         }
 
         private void UpdateDim(Location locA, Location locB, Dimension dimension)
@@ -199,7 +199,7 @@ namespace NetTopologySuite.Operation.RelateNG
 
         private void AddNodeSections(NodeSection ns0, NodeSection ns1)
         {
-            var sections = GetNodeSections(ns0.nodePt);
+            var sections = GetNodeSections(ns0.NodePt);
             sections.AddNodeSection(ns0);
             sections.AddNodeSection(ns1);
         }
@@ -214,13 +214,13 @@ namespace NetTopologySuite.Operation.RelateNG
             {
                 UpdateAreaAreaCross(a, b);
             }
-            UpdateNodeLocation(a.nodePt, a, b);
+            UpdateNodeLocation(a.NodePt, a, b);
         }
 
         private void UpdateABIntersectionProper(NodeSection a, NodeSection b)
         {
-            var dimA = a.dimension;
-            var dimB = b.dimension;
+            var dimA = a.Dimension;
+            var dimB = b.Dimension;
             if (dimA == Dimension.Surface && dimB == Dimension.Surface)
             {
                 //- a proper edge intersection is an edge cross. 
@@ -254,11 +254,11 @@ namespace NetTopologySuite.Operation.RelateNG
              * may also be a node of a hole, or of another shell, or both.
              * Full topology is determined when the node topology is evaluated.
              */
-            bool geomLine = eLine.isA;
-            var nodePt = eArea.nodePt;
+            bool geomLine = eLine.IsA;
+            var nodePt = eArea.NodePt;
             var locLine = GetGeometry(geomLine).LocateNode(nodePt, eLine.Polygonal);
-            var locArea = GetGeometry(eArea.isA).LocateNode(nodePt, eArea.Polygonal);
-            UpdateDim(eArea.isA, locArea, locLine, Dimension.P);
+            var locArea = GetGeometry(eArea.IsA).LocateNode(nodePt, eArea.Polygonal);
+            UpdateDim(eArea.IsA, locArea, locLine, Dimension.P);
         }
 
         private void UpdateAreaAreaCross(NodeSection a, NodeSection b)
@@ -267,9 +267,9 @@ namespace NetTopologySuite.Operation.RelateNG
             /*
              * A crossing of area edges determines that the interiors intersect.
              */
-            if (areProper || PolygonNodeTopology.IsCrossing(a.nodePt,
-                a.getVertex(0), a.getVertex(1),
-                b.getVertex(0), b.getVertex(1)))
+            if (areProper || PolygonNodeTopology.IsCrossing(a.NodePt,
+                a.GetVertex(0), a.GetVertex(1),
+                b.GetVertex(0), b.GetVertex(1)))
             {
                 UpdateDim(Location.Interior, Location.Interior, Dimension.A);
             }

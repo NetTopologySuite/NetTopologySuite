@@ -21,6 +21,7 @@ namespace NetTopologySuite.Operation.RelateNG
         private readonly Geometry _geom;
         private readonly bool _isPrepared;
 
+        private readonly Envelope _geomEnv;
         private Dimension _geomDim;// = Dimension.False;
         private HashSet<Coordinate> _uniquePoints;
         private readonly IBoundaryNodeRule _boundaryNodeRule;
@@ -45,6 +46,7 @@ namespace NetTopologySuite.Operation.RelateNG
         public RelateGeometry(Geometry input, bool isPrepared, IBoundaryNodeRule bnRule)
         {
             _geom = input;
+            _geomEnv = input.EnvelopeInternal;
             _isPrepared = isPrepared;
             _boundaryNodeRule = bnRule;
             //-- cache geometry metadata
@@ -133,7 +135,7 @@ namespace NetTopologySuite.Operation.RelateNG
 
         public bool IsPrepared { get => _isPrepared; }
 
-        public Envelope Envelope { get => _geom.EnvelopeInternal; }
+        public Envelope Envelope { get => _geomEnv; }
 
         public Dimension Dimension { get => _geomDim; }
 

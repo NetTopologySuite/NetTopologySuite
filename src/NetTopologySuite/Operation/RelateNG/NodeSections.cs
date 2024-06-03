@@ -32,7 +32,7 @@ namespace NetTopologySuite.Operation.RelateNG
                 bool isB = false;
                 foreach (var ns in _sections)
                 {
-                    if (ns.isA)
+                    if (ns.IsA)
                         isA = true;
                     else
                         isB = true;
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             foreach (var ns in _sections)
             {
-                if (ns.isA == isA)
+                if (ns.IsA == isA)
                 {
                     var poly = ns.Polygonal;
                     if (poly != null)
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Operation.RelateNG
             {
                 var ns = _sections[i];
                 //-- if there multiple polygon sections incident at node convert them to maximal-ring structure 
-                if (ns.isArea && HasMultiplePolygonSections(_sections, i))
+                if (ns.IsArea && HasMultiplePolygonSections(_sections, i))
                 {
                     var polySections = CollectPolygonSections(_sections, i);
                     var nsConvert = PolygonNodeConverter.Convert(polySections);
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Operation.RelateNG
             //-- check if there are at least two sections for same polygon
             var ns = sections[i];
             var nsNext = sections[i + 1];
-            return ns.isSamePolygon(nsNext);
+            return ns.IsSamePolygon(nsNext);
         }
 
         private static List<NodeSection> CollectPolygonSections(List<NodeSection> sections, int i)
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Operation.RelateNG
             //-- note ids are only unique to a geometry
             var polySection = sections[i];
             while (i < sections.Count &&
-                polySection.isSamePolygon(sections[i]))
+                polySection.IsSamePolygon(sections[i]))
             {
                 polySections.Add(sections[i]);
                 i++;

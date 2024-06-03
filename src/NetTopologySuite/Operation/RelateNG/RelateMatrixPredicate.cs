@@ -12,6 +12,12 @@ namespace NetTopologySuite.Operation.RelateNG
         {
         }
 
+        public override bool RequireInteraction()
+        {
+            // -- ensure entire matrix is computed
+            return false;
+        }
+
         public override bool IsDetermined 
             //-- ensure entire matrix is computed
             => false;

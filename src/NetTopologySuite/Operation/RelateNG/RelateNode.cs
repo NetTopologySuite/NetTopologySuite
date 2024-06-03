@@ -7,7 +7,7 @@ namespace NetTopologySuite.Operation.RelateNG
     internal class RelateNode
     {
 
-        private readonly Coordinate nodePt;
+        private readonly Coordinate _nodePt;
 
         /// <summary>
         /// A list of the edges around the node in CCW order,
@@ -17,10 +17,10 @@ namespace NetTopologySuite.Operation.RelateNG
 
         public RelateNode(Coordinate pt)
         {
-            nodePt = pt;
+            _nodePt = pt;
         }
 
-        public Coordinate Coordinate => nodePt;
+        public Coordinate Coordinate => _nodePt;
 
         public IList<RelateEdge> Edges => _edges;
 
@@ -35,24 +35,24 @@ namespace NetTopologySuite.Operation.RelateNG
         public void AddEdges(NodeSection ns)
         {
             //Debug.println("Adding NS: " + ns);
-            switch (ns.dimension)
+            switch (ns.Dimension)
             {
                 case Dimension.L:
-                    AddLineEdge(ns.isA, ns.getVertex(0));
-                    AddLineEdge(ns.isA, ns.getVertex(1));
+                    AddLineEdge(ns.IsA, ns.GetVertex(0));
+                    AddLineEdge(ns.IsA, ns.GetVertex(1));
                     break;
                 case Dimension.A:
                     //-- assumes node edges have CW orientation (as per JTS norm)
                     //-- entering edge - interior on L
-                    var e0 = AddAreaEdge(ns.isA, ns.getVertex(0), false);
+                    var e0 = AddAreaEdge(ns.IsA, ns.GetVertex(0), false);
                     //-- exiting edge - interior on R
-                    var e1 = AddAreaEdge(ns.isA, ns.getVertex(1), true);
+                    var e1 = AddAreaEdge(ns.IsA, ns.GetVertex(1), true);
 
                     int index0 = _edges.IndexOf(e0);
                     int index1 = _edges.IndexOf(e1);
-                    UpdateEdgesInArea(ns.isA, index0, index1);
-                    UpdateIfAreaPrev(ns.isA, index0);
-                    UpdateIfAreaNext(ns.isA, index1);
+                    UpdateEdgesInArea(ns.IsA, index0, index1);
+                    UpdateIfAreaPrev(ns.IsA, index0);
+                    UpdateIfAreaNext(ns.IsA, index1);
                     break;
             }
         }
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Operation.RelateNG
             while (index != indexTo)
             {
                 var edge = _edges[index];
-                edge.setAreaInterior(isA);
+                edge.SetAreaInterior(isA);
                 index = NextIndex(_edges, index);
             }
         }
@@ -72,10 +72,10 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             int indexPrev = PrevIndex(_edges, index);
             var edgePrev = _edges[indexPrev];
-            if (edgePrev.isInterior(isA, Position.Left))
+            if (edgePrev.IsInterior(isA, Position.Left))
             {
                 var edge = _edges[index];
-                edge.setAreaInterior(isA);
+                edge.SetAreaInterior(isA);
             }
         }
 
@@ -83,10 +83,10 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             int indexNext = NextIndex(_edges, index);
             var edgeNext = _edges[indexNext];
-            if (edgeNext.isInterior(isA, Position.Right))
+            if (edgeNext.IsInterior(isA, Position.Right))
             {
                 var edge = _edges[index];
-                edge.setAreaInterior(isA);
+                edge.SetAreaInterior(isA);
             }
         }
 
@@ -112,7 +112,7 @@ namespace NetTopologySuite.Operation.RelateNG
             //-- check for well-formed edge - skip null or zero-len input
             if (dirPt == null)
                 return null;
-            if (nodePt.Equals2D(dirPt))
+            if (_nodePt.Equals2D(dirPt))
                 return null;
 
             int insertIndex = -1;
@@ -190,7 +190,7 @@ namespace NetTopologySuite.Operation.RelateNG
             while (index != startIndex)
             {
                 var e = _edges[index];
-                e.setUnknownLocations(isA, currLoc);
+                e.SetUnknownLocations(isA, currLoc);
                 currLoc = e.Location(isA, Position.Left);
                 index = NextIndex(_edges, index);
             }
@@ -216,7 +216,7 @@ namespace NetTopologySuite.Operation.RelateNG
         public override string ToString()
         {
             var buf = new StringBuilder();
-            buf.Append("Node[" + IO.WKTWriter.ToPoint(nodePt) + "]:");
+            buf.Append("Node[" + IO.WKTWriter.ToPoint(_nodePt) + "]:");
             buf.Append("\n");
             foreach (var e in _edges)
             {

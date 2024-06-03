@@ -74,6 +74,12 @@ namespace NetTopologySuite.Operation.RelateNG
         /// </summary>
         public abstract bool IsDetermined { get; }
 
+        /// <summary>
+        /// Tests whether the exterior of the specified input geometry
+        /// is intersected by any part of the other input.
+        /// </summary>
+        /// <param name="isA">A flag defining the input geometry</param>
+        /// <returns><c>true</c> if the input geometry exterior is intersected</returns>
         protected bool IntersectsExteriorOf(bool isA)
         {
             if (isA)
@@ -116,6 +122,10 @@ namespace NetTopologySuite.Operation.RelateNG
             SetValue(ValueIM);
         }
 
+        /// <summary>
+        /// Gets the value of the predicate according to the current
+        /// intersection matrix state.
+        /// </summary>
         public abstract bool ValueIM { get; }
 
         public override string ToString()

@@ -42,11 +42,14 @@ namespace NetTopologySuite.Operation.RelateNG
                 this.tw = tw;
             }
 
-            public override bool RequiresSelfNoding
-                => pred.RequiresSelfNoding;
+            public override bool RequireSelfNoding()
+                => pred.RequireSelfNoding();
 
-            public override bool RequiresExteriorCheck(bool isSourceA)
-                    => pred.RequiresExteriorCheck(isSourceA);
+            public override bool RequireCovers(bool isSourceA)
+                    => pred.RequireCovers(isSourceA);
+
+            public override bool RequireExteriorCheck(bool isSourceA)
+                    => pred.RequireExteriorCheck(isSourceA);
 
             public override void Init(Dimension dimA, Dimension dimB)
             {

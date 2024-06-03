@@ -1,6 +1,7 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -189,6 +190,11 @@ namespace NetTopologySuite.Operation.RelateNG
         /// <returns><c>true</c> if the predicate is satisfied</returns>
         public bool Evaluate(Geometry b, TopologyPredicate predicate)
         {
+            //-- fast envelope checks
+            if (!HasRequiredEnvelopeInteraction(b, predicate))
+            {
+                return false;
+            }
 
             var geomB = new RelateGeometry(b, _boundaryNodeRule);
 
@@ -240,6 +246,36 @@ namespace NetTopologySuite.Operation.RelateNG
             topoComputer.Finish();
             return topoComputer.Result;
         }
+
+        private bool HasRequiredEnvelopeInteraction(Geometry b, TopologyPredicate predicate)
+        {
+            var envB = b.EnvelopeInternal;
+            bool isInteracts = false;
+            if (predicate.RequireCovers(RelateGeometry.GEOM_A))
+            {
+                if (!_geomA.Envelope.Covers(envB))
+                {
+                    return false;
+                }
+                isInteracts = true;
+            }
+            else if (predicate.RequireCovers(RelateGeometry.GEOM_B))
+            {
+                if (!envB.Covers(_geomA.Envelope))
+                {
+                    return false;
+                }
+                isInteracts = true;
+            }
+            if (!isInteracts
+                && predicate.RequireInteraction()
+                && !_geomA.Envelope.Intersects(envB))
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         private bool FinishValue(TopologyPredicate predicate)
         {
@@ -300,8 +336,8 @@ namespace NetTopologySuite.Operation.RelateNG
              * for the intersects predicate (since these are checked
              * during segment/segment intersection checking anyway). 
              * Checking points against areas is necessary, since the input
-             * linework may be entirely disjoint if one input lies wholly 
-             * inside an area. 
+             * linework is disjoint if one input lies wholly inside an area,
+             * so segment intersection checking is not sufficient.
              */
             bool checkDisjointPoints = geomTarget.HasDimension(Dimension.A)
                 || topoComputer.IsExteriorCheckRequired(isA);
