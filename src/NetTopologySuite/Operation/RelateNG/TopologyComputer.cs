@@ -2,6 +2,7 @@
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
+using static System.Collections.Specialized.BitVector32;
 
 namespace NetTopologySuite.Operation.RelateNG
 {
@@ -187,87 +188,42 @@ namespace NetTopologySuite.Operation.RelateNG
 
         public void AddIntersection(NodeSection a, NodeSection b)
         {
-            if (!a.isSameGeometry(b))
+            if (!a.IsSameGeometry(b))
             {
-                UpdateABIntersection(a, b);
+                UpdateIntersectionAB(a, b);
             }
-            //TODO: for self-intersections add virtual nodes to geometry components 
-
-            //-- add edges to node to allow full topology update later
+            //-- add edges to node to allow full topology evaluation later
             AddNodeSections(a, b);
         }
 
-        private void AddNodeSections(NodeSection ns0, NodeSection ns1)
+        /// <summary>
+        /// Update topology for an intersection between A and B.
+        /// </summary>
+        /// <param name="a">The section for geometry A</param>
+        /// <param name="b">The section for geometry B</param>
+        private void UpdateIntersectionAB(NodeSection a, NodeSection b)
         {
-            var sections = GetNodeSections(ns0.NodePt);
-            sections.AddNodeSection(ns0);
-            sections.AddNodeSection(ns1);
-        }
-
-        private void UpdateABIntersection(NodeSection a, NodeSection b)
-        {
-            if (NodeSection.AreProper(a, b))
-            {
-                UpdateABIntersectionProper(a, b);
-            }
-            else if (NodeSection.IsAreaArea(a, b))
+            if (NodeSection.IsAreaArea(a, b))
             {
                 UpdateAreaAreaCross(a, b);
             }
-            UpdateNodeLocation(a.NodePt, a, b);
+            UpdateNodeLocation(a, b);
         }
 
-        private void UpdateABIntersectionProper(NodeSection a, NodeSection b)
-        {
-            var dimA = a.Dimension;
-            var dimB = b.Dimension;
-            if (dimA == Dimension.Surface && dimB == Dimension.Surface)
-            {
-                //- a proper edge intersection is an edge cross. 
-                UpdateAreaAreaCross(a, b);
-            }
-            else if (dimA == Dimension.Surface && dimB == Dimension.Curve)
-            {
-                UpdateAreaLineCross(a, b);
-            }
-            else if (dimA == Dimension.Curve && dimB == Dimension.Surface)
-            {
-                UpdateAreaLineCross(b, a);
-            }
-            else if (dimA == Dimension.Curve && dimB == Dimension.Curve)
-            {
-                //-- nothing to do here - node topology is updated by caller
-            }
-            else
-            {
-                Utilities.Assert.ShouldNeverReachHere(MSG_GEOMETRY_DIMENSION_UNEXPECTED);
-            }
-        }
-
-        private void UpdateAreaLineCross(NodeSection eArea, NodeSection eLine)
-        {
-            //TODO: does this give any info apart from node? which is checked by caller
-            /*
-             * A proper crossing of a line and and area
-             * provides limited topological information,
-             * since the area edge intersection point
-             * may also be a node of a hole, or of another shell, or both.
-             * Full topology is determined when the node topology is evaluated.
-             */
-            bool geomLine = eLine.IsA;
-            var nodePt = eArea.NodePt;
-            var locLine = GetGeometry(geomLine).LocateNode(nodePt, eLine.Polygonal);
-            var locArea = GetGeometry(eArea.IsA).LocateNode(nodePt, eArea.Polygonal);
-            UpdateDim(eArea.IsA, locArea, locLine, Dimension.P);
-        }
-
+        /// <summary>
+        /// Updates topology for an AB Area-Area crossing node.
+        /// Sections cross at a node if (a) the intersection is proper
+        /// (i.e. in the interior of two segments)
+        /// or(b) if non-proper then whether the linework crosses
+        /// is determined by the geometry of the segments on either side of the node.
+        /// In these situations the area geometry interiors intersect(in dimension 2).
+        /// </summary>
+        /// <param name="a">The section for geometry A</param>
+        /// <param name="b">The section for geometry B</param>
         private void UpdateAreaAreaCross(NodeSection a, NodeSection b)
         {
-            bool areProper = NodeSection.AreProper(a, b);
-            /*
-             * A crossing of area edges determines that the interiors intersect.
-             */
-            if (areProper || PolygonNodeTopology.IsCrossing(a.NodePt,
+            bool isProper = NodeSection.AreProper(a, b);
+            if (isProper || PolygonNodeTopology.IsCrossing(a.NodePt,
                 a.GetVertex(0), a.GetVertex(1),
                 b.GetVertex(0), b.GetVertex(1)))
             {
@@ -276,13 +232,23 @@ namespace NetTopologySuite.Operation.RelateNG
         }
 
         /// <summary>
-        /// Adds a basic edge intersection point.
+        /// Updates topology for a node at an AB edge intersection.
         /// </summary>
-        private void UpdateNodeLocation(Coordinate pt, NodeSection a, NodeSection b)
+        /// <param name="a">The section for geometry A</param>
+        /// <param name="b">The section for geometry B</param>
+        private void UpdateNodeLocation(NodeSection a, NodeSection b)
         {
+            var pt = a.NodePt;
             var locA = _geomA.LocateNode(pt, a.Polygonal);
             var locB = _geomB.LocateNode(pt, b.Polygonal);
             UpdateDim(locA, locB, Dimension.P);
+        }
+
+        private void AddNodeSections(NodeSection ns0, NodeSection ns1)
+        {
+            var sections = GetNodeSections(ns0.NodePt);
+            sections.AddNodeSection(ns0);
+            sections.AddNodeSection(ns1);
         }
 
         public void AddPointOnPointInterior(Coordinate pt)

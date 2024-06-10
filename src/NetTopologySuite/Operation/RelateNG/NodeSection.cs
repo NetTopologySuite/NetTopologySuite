@@ -96,7 +96,7 @@ namespace NetTopologySuite.Operation.RelateNG
 
         public bool IsA { get; }
 
-        public bool isSameGeometry(NodeSection ns)
+        public bool IsSameGeometry(NodeSection ns)
         {
             return IsA == ns.IsA;
         }
