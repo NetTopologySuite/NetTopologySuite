@@ -35,6 +35,8 @@ namespace NetTopologySuite.Operation.RelateNG
             return false;
         }
 
+        public bool HasBoundary { get; }
+
         public bool IsBoundary(Coordinate pt)
         {
             if (!_vertexDegree.ContainsKey(pt))
@@ -69,12 +71,6 @@ namespace NetTopologySuite.Operation.RelateNG
         //    dim++;
         //    degree[p] = dim;
         //}
-
-        public IReadOnlyCollection<Coordinate> EndPoints
-            => _vertexDegree.Keys;
-
-        public bool HasBoundary { get; }
-
     }
 
 }
