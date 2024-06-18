@@ -2,6 +2,10 @@
 
 namespace NetTopologySuite.Operation.RelateNG
 {
+    /// <summary>
+    /// Codes which combine a geometry <see cref="Geometries.Dimension"/> and a <see cref="Geometries.Location"/>
+    /// </summary>
+    /// <author>Martin Davis</author>
     internal static class DimensionLocation
     {
 

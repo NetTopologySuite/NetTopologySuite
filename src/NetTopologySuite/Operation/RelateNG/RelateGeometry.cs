@@ -150,6 +150,10 @@ namespace NetTopologySuite.Operation.RelateNG
             return false;
         }
 
+        /// <summary>
+        /// Gets the actual non-empty dimension of the geometry.
+        /// Zero-length <c>LineString</c>s are treated as <c>Point</c>s.
+        /// </summary>
         public Dimension DimensionReal
         {
             get
@@ -185,9 +189,14 @@ namespace NetTopologySuite.Operation.RelateNG
 
         /// <summary>
         /// Locates a vertex of a polygon.
+        /// <para/>
+        /// A vertex of a <c>Polygon</c> or <c>MultiPolygon</c> is on
+        /// the <see cref="Location.Boundary"/>.
+        /// But a vertex of an overlapped polygon in a <c>GeometryCollection</c>
+        /// may be in the <see cref="Location.Interior"/>.
         /// </summary>
         /// <param name="pt">The polygon vertex</param>
-        /// <returns>The location of the service</returns>
+        /// <returns>The location of the vertex</returns>
         public Location LocateAreaVertex(Coordinate pt)
         {
             /*

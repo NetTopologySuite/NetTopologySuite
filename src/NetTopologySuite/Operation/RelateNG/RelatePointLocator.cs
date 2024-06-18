@@ -135,47 +135,53 @@ namespace NetTopologySuite.Operation.RelateNG
         /// (i.e. a point or on an edge).
         /// </summary>
         /// <param name="p">The node point to locate</param>
-        /// <param name="parentPolygonal">The parent polygonal</param>
+        /// <param name="parentPolygonal">The polygon the point is a node of</param>
         /// <returns>The location of the node point</returns>
         public Location LocateNode(Coordinate p, Geometry parentPolygonal)
         {
             return DimensionLocation.Location(LocateNodeWithDim(p, parentPolygonal));
         }
 
+        /// <summary>
+        /// Locates a point which is known to be a node of the geometry,
+        /// as a <see cref="DimensionLocation"/>.
+        /// </summary>
+        /// <param name="p">The node point to locate</param>
+        /// <param name="parentPolygonal">The polygon the point is a node of</param>
+        /// <returns>The dimension and location of the point</returns>
         public int LocateNodeWithDim(Coordinate p, Geometry parentPolygonal)
         {
             return LocateWithDim(p, true, parentPolygonal);
         }
 
-        /**
-         * Computes the topological location ({@link Location}) of a single point
-         * in a Geometry, as well as the dimension of the geometry element the point
-         * is located in (if not in the Exterior).
-         * It handles both single-element and multi-element Geometries.
-         * The algorithm for multi-part Geometries
-         * takes into account the SFS Boundary Determination Rule.
-         *
-         * @param p the point to locate
-         * @return the {@link Location} of the point relative to the input Geometry
-         */
+        /// <summary>
+        /// Computes the topological location (<see cref="Location"/>) of a single point
+        /// in a Geometry, as well as the dimension of the geometry element the point
+        /// is located in (if not in the Exterior).
+        /// It handles both single-element and multi-element Geometries.
+        /// The algorithm for multi-part Geometries
+        /// takes into account the SFS Boundary Determination Rule.
+        /// </summary>
+        /// <param name="p">The point to locate</param>
+        /// <returns>The <see cref="Location"/> of the point relative to the input Geometry</returns>
         public int LocateWithDim(Coordinate p)
         {
             return LocateWithDim(p, false, null);
         }
 
-        /**
-         * Computes the topological location ({@link Location}) of a single point
-         * in a Geometry, as well as the dimension of the geometry element the point
-         * is located in (if not in the Exterior).
-         * It handles both single-element and multi-element Geometries.
-         * The algorithm for multi-part Geometries
-         * takes into account the SFS Boundary Determination Rule.
-         *
-         * @param p the coordinate to locate
-         * @param isNode whether the coordinate is a node (on an edge) of the geometry
-         * @param polygon 
-         * @return the {@link Location} of the point relative to the input Geometry
-         */
+        /// <summary>
+        /// Computes the topological location (<see cref="Location"/>) of a single point
+        /// in a Geometry, as well as the dimension of the geometry element the point
+        /// is located in (if not in the Exterior).
+        /// It handles both single-element and multi-element Geometries.
+        /// The algorithm for multi-part Geometries
+        /// takes into account the SFS Boundary Determination Rule.
+        /// </summary>
+        /// <param name="p">The coordinate to locate</param>
+        /// <param name="isNode">A flag indicating whether the coordinate is a node (on an edge) of the geometry</param>
+        /// <param name="parentPolygonal">The polygon the point is a node of</param>
+        /// <returns>The <see cref="Location"/> and <see cref="Dimension"/> of the point relative to the input Geometry
+        /// </returns>
         private int LocateWithDim(Coordinate p, bool isNode, Geometry parentPolygonal)
         {
             if (_isEmpty) return DimensionLocation.EXTERIOR;

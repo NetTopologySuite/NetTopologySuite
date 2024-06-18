@@ -3,25 +3,23 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Operation.RelateNG
 {
-    /**
-     * Represents a computed node along with the incident edges on either side of
-     * it (if they exist).
-     * This captures the information about a node in a geometry component
-     * required to determine the component's contribution to the node topology.
-     * A node in an area geometry always has edges on both sides of the node.
-     * A node in a linear geometry may have one or other incident edge missing, if
-     * the node occurs at an endpoint of the line.
-     * The edges of an area node are assumed to be provided 
-     * with CW-shell orientation (as per JTS norm).
-     * This must be enforced by the caller.
-     * 
-     * @author Martin Davis
-     *
-     */
+    /// <summary>
+    /// Represents a computed node along with the incident edges on either side of
+    /// it (if they exist).
+    /// <para/>
+    /// This captures the information about a node in a geometry component
+    /// required to determine the component's contribution to the node topology.
+    /// A node in an area geometry always has edges on both sides of the node.
+    /// A node in a linear geometry may have one or other incident edge missing, if
+    /// the node occurs at an endpoint of the line.
+    /// The edges of an area node are assumed to be provided
+    /// with CW-shell orientation (as per JTS and NTS norm).
+    /// This must be enforced by the caller.
+    /// </summary>
+    /// <author>Martin Davis</author>
     internal class NodeSection : IComparable<NodeSection>
     {
         /// <summary>
@@ -86,6 +84,10 @@ namespace NetTopologySuite.Operation.RelateNG
 
         public int RingId { get; }
 
+        /// <summary>
+        /// Gets the polygon this section is part of.
+        /// Will be <c>null</c> if section is not on a polygon boundary.
+        /// </summary>
         public Geometry Polygonal { get; }
 
         public bool IsShell => RingId == 0;
