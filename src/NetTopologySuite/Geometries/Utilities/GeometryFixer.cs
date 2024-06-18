@@ -22,7 +22,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <item><description><c>Point</c>: keep valid coordinate, or EMPTY</description></item>
     /// <item><description><c>LineString</c>: coordinates are fixed</description></item>
     /// <item><description><c>LinearRing</c>: coordinates are feixed, keep valid ring or else convert into <c>LineString</c></description></item>
-    /// <item><description><c>Polygon</c>: transform into a valid polygon, 
+    /// <item><description><c>Polygon</c>: transform into a valid polygon or multipolygon, 
     /// preserving as much of the extent and vertices as possible.
     /// <list type="bullet">
     /// <item><description>Rings are fixed to ensure they are valid</description></item>
