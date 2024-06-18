@@ -23,7 +23,7 @@ namespace NetTopologySuite.Simplify
         [Obsolete]
         private double _distanceTolerance;
 
-        [Obsolete("Using this constructor Will not work and it will be removed in a future version.", true)]
+        [Obsolete("Using this constructor will not work and it will be removed in a future version.", true)]
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
             : this(inputIndex, outputIndex, null)
         {
@@ -151,7 +151,14 @@ namespace NetTopologySuite.Simplify
                 if (simpSeg.Distance(endPt) <= distanceTolerance
                     && IsTopologyValid(_line, firstSeg, lastSeg, simpSeg))
                 {
-                    _line.RemoveRingEndpoint();
+                    //-- don't know if segments are original or new, so remove from all indexes
+                    _inputIndex.Remove(firstSeg);
+                    _inputIndex.Remove(lastSeg);
+                    _outputIndex.Remove(firstSeg);
+                    _outputIndex.Remove(lastSeg);
+
+                    _line.RemoveRingEndpoint(out var flatSeg);
+                    _outputIndex.Add(flatSeg);
                 }
             }
         }
