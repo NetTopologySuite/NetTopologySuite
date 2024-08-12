@@ -108,6 +108,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckEquals(a, b, true);
         }
 
+        // tests bug involving checking for non-zero-length lines
+        [Test]
+        public void TestNonZeroLengthLinePoint()
+        {
+            const string a = "LINESTRING (0 0, 0 0, 9 9)";
+            const string b = "POINT (1 1)";
+            CheckRelate(a, b, "0F1FF0FF2");
+            CheckIntersectsDisjoint(a, b, true);
+            CheckContainsWithin(a, b, true);
+            CheckContainsWithin(b, a, false);
+            CheckCoversCoveredBy(a, b, true);
+            CheckCoversCoveredBy(b, a, false);
+            CheckEquals(a, b, false);
+        }
+
         [Test]
         public void TestLinePointIntAndExt()
         {

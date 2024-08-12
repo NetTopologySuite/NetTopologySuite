@@ -39,6 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckDimension("POINT (0 0)", Dimension.P, Dimension.P);
             CheckDimension("LINESTRING (0 0, 0 0)", Dimension.L, Dimension.P);
             CheckDimension("LINESTRING (0 0, 9 9)", Dimension.L, Dimension.L);
+            CheckDimension("LINESTRING (0 0, 0 0, 9 9)", Dimension.L, Dimension.L);
             CheckDimension("POLYGON ((1 9, 5 9, 5 5, 1 5, 1 9))", Dimension.A, Dimension.A);
             CheckDimension("GEOMETRYCOLLECTION (POLYGON ((1 9, 5 9, 5 5, 1 5, 1 9)), LINESTRING (1 1, 5 4), POINT (6 5))", Dimension.A, Dimension.A);
             CheckDimension("GEOMETRYCOLLECTION (POLYGON EMPTY, LINESTRING (1 1, 5 4), POINT (6 5))", Dimension.A, Dimension.L);
