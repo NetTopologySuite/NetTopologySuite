@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
 {
@@ -231,5 +232,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckCoversCoveredBy(a, b, true);
         }
 
+        [Test]
+        public void TestEmptyMultiPointElements()
+        {
+            const string a = "POLYGON ((3 7, 7 7, 7 3, 3 3, 3 7))";
+            const string b = "GEOMETRYCOLLECTION (MULTIPOINT (EMPTY, (5 5)), LINESTRING (1 9, 4 9))";
+            CheckIntersectsDisjoint(a, b, true);
+        }
     }
 }

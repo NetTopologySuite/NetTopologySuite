@@ -286,6 +286,8 @@ namespace NetTopologySuite.Operation.RelateNG
             var ptList = new List<Point>();
             foreach (var p in ptListAll)
             {
+                if (p.IsEmpty)
+                    continue;
                 int locDim = LocateWithDim(p.Coordinate);
                 if (DimensionLocation.Dimension(locDim) == Dimension.P)
                 {
