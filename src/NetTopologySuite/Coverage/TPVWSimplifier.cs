@@ -5,6 +5,8 @@ using NetTopologySuite.Simplify;
 using NetTopologySuite.Utilities;
 using System.Collections.Generic;
 using System.Collections;
+using System;
+using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Coverage
 {
@@ -15,6 +17,8 @@ namespace NetTopologySuite.Coverage
     /// in the original input.
     /// Line and ring endpoints are preserved, except for rings
     /// which are flagged as "free".
+    /// Rings which are smaller than the tolerance area
+    /// may be removed entirely, as long as they are flagged as removable.
     /// <para/>
     /// The amount of simplification is determined by a tolerance value,
     /// which is a non-zero quantity.
@@ -26,141 +30,127 @@ namespace NetTopologySuite.Coverage
     /// <author>Martin Davis</author>
     internal sealed class TPVWSimplifier
     {
-        /// <summary>
-        /// Simplifies a set of lines, preserving the topology of the lines.
-        /// </summary>
-        /// <param name="lines">The lines to simplify</param>
-        /// <param name="distanceTolerance">The simplification tolerance</param>
-        /// <returns>The simplified lines</returns>
-        public static MultiLineString Simplify(MultiLineString lines, double distanceTolerance)
+        public static void Simplify(Edge[] edges,
+            CornerArea cornerArea,
+            double removableSizeFactor)
         {
-            var simp = new TPVWSimplifier(lines, distanceTolerance);
-            var result = (MultiLineString)simp.Simplify();
-            return result;
+            var simp = new TPVWSimplifier(edges);
+            simp.CornerArea = cornerArea;
+            simp.RemovableRingSizeFactor = removableSizeFactor;
+            simp.Simplify();
         }
 
-        /// <summary>
-        /// Simplifies a set of lines, preserving the topology of the lines between
-        /// themselves and a set of linear constraints.
-        /// The endpoints of lines are preserved.
-        /// The endpoint of rings are preserved as well, unless
-        /// the ring is indicated as "free" via a bit flag with the same index.
-        /// </summary>
-        /// <param name="lines">The lines to simplify</param>
-        /// <param name="freeRings">flags indicating which ring edges do not have node endpoints</param>
-        /// <param name="constraintLines">The linear constraints (may be null)</param>
-        /// <param name="distanceTolerance">The simplification tolerance</param>
-        /// <returns>The simplified lines</returns>
-        public static MultiLineString Simplify(MultiLineString lines, BitArray freeRings, 
-            MultiLineString constraintLines, double distanceTolerance)
+        private CornerArea _cornerArea;
+        private double _removableSizeFactor = 1.0;
+        private readonly Edge[] _edges;
+
+        public TPVWSimplifier(Edge[] edges)
         {
-            var simp = new TPVWSimplifier(lines, distanceTolerance) {
-                FreeRingIndices = freeRings,
-                Constraints = constraintLines
-            };
-            var result = (MultiLineString)simp.Simplify();
-            return result;
+            _edges = edges;
         }
 
-        private readonly MultiLineString _inputLines;
-        private BitArray _isFreeRing;
-
-        private readonly double _areaTolerance;
-        private readonly GeometryFactory _geomFactory;
-        private MultiLineString _constraintLines = null;
-
-        private TPVWSimplifier(MultiLineString lines, double distanceTolerance)
+        public double RemovableRingSizeFactor
         {
-            _inputLines = lines;
-            _areaTolerance = distanceTolerance * distanceTolerance;
-            _geomFactory = _inputLines.Factory;
+            get => _removableSizeFactor;
+            set => _removableSizeFactor = value;
         }
 
-        private MultiLineString Constraints
+        public CornerArea CornerArea
         {
-            get => _constraintLines;
-            set => _constraintLines = value;
+            get => _cornerArea;
+            set => _cornerArea = value;
         }
 
-        private BitArray FreeRingIndices
+        private void Simplify()
         {
-            get => _isFreeRing;
-            //Assert: bit set has same size as number of lines.
-            set => _isFreeRing = value;
-        }
-        private Geometry Simplify()
-        {
-            var edges = CreateEdges(_inputLines, _isFreeRing);
-            var constraintEdges = CreateEdges(_constraintLines, null);
-
             var edgeIndex = new EdgeIndex();
-            edgeIndex.Add(edges);
-            edgeIndex.Add(constraintEdges);
+            Add(_edges, edgeIndex);
 
-            var result = new LineString[edges.Count];
-            for (int i = 0; i < edges.Count; i++)
-            {
-                var edge = edges[i];
-                var ptsSimp = edge.Simplify(edgeIndex);
-                result[i] = _geomFactory.CreateLineString(ptsSimp);
+            for (int i = 0 ; i < _edges.Length; i++) {
+              var edge = _edges[i];
+              edge.Simplify(_cornerArea, edgeIndex);
             }
-            return _geomFactory.CreateMultiLineString(result);
         }
 
-        private List<Edge> CreateEdges(MultiLineString lines, BitArray isFreeRing)
+        private void Add(Edge[] edges, EdgeIndex edgeIndex)
         {
-            var edges = new List<Edge>();
-            if (lines == null)
-                return edges;
-            for (int i = 0; i < lines.NumGeometries; i++)
-            {
-                var line = (LineString)lines.GetGeometryN(i);
-                bool isFree = isFreeRing == null ? false : isFreeRing[i];
-                edges.Add(new Edge(line, isFree, _areaTolerance));
+            foreach (var edge in edges) {
+                //-- don't include removed edges in index
+                edge.UpdateRemoved(_removableSizeFactor);
+                if (!edge.IsRemoved)
+                {
+                    //-- avoid fluffing up removed edges
+                    edge.Init();
+                    edgeIndex.Add(edge);
+                }
             }
-            return edges;
         }
 
-        private sealed class Edge
+        internal sealed class Edge
         {
-            private readonly double _areaTolerance;
-            private readonly LinkedLine _linkedLine;
-            private readonly int _minEdgeSize;
+            private const int MIN_EDGE_SIZE = 2;
+            private const int MIN_RING_SIZE = 4;
+
+            private LinkedLine _linkedLine;
             private readonly bool _isFreeRing;
-            private readonly int _nbPts;
-
-            private readonly VertexSequencePackedRtree _vertexIndex;
+            private readonly int _nPts;
+            private Coordinate[] _pts;
+            private VertexSequencePackedRtree _vertexIndex;
             private readonly Envelope _envelope;
+            private bool _isRemoved;
+            private readonly bool _isRemovable;
+            private readonly double _distanceTolerance;
 
             /// <summary>
             /// Creates a new edge.
             /// The endpoints of the edge are preserved during simplification,
             /// unless it is a ring and the <paramref name="isFreeRing"/> flag is set.
             /// </summary>
-            /// <param name="inputLine">The line or ring</param>
+            /// <param name="pts"></param>
+            /// <param name="distanceTolerance">The simplification tolerance</param>
             /// <param name="isFreeRing">A flag indiciating if a ring endpoint can be removed</param>
-            /// <param name="areaTolerance">The simplification tolerance</param>
-            public Edge(LineString inputLine, bool isFreeRing, double areaTolerance)
+            /// <param name="isRemovable"></param>
+            public Edge(Coordinate[] pts, double distanceTolerance, bool isFreeRing, bool isRemovable)
             {
-                _areaTolerance = areaTolerance;
+                _envelope = CoordinateArrays.Envelope(pts);
+                _pts = pts;
+                _nPts = pts.Length;
                 _isFreeRing = isFreeRing;
-                _envelope = inputLine.EnvelopeInternal;
-                var pts = inputLine.Coordinates;
-                _nbPts = pts.Length;
-                _linkedLine = new LinkedLine(pts);
-                _minEdgeSize = _linkedLine.IsRing ? 3 : 2;
-
-                _vertexIndex = new VertexSequencePackedRtree(pts);
-                //-- remove ring duplicate final vertex
-                if (_linkedLine.IsRing)
-                {
-                    _vertexIndex.RemoveAt(pts.Length - 1);
-                }
+                _isRemovable = isRemovable;
+                _distanceTolerance  = distanceTolerance;
             }
+
+            public void UpdateRemoved(double removableSizeFactor)
+            {
+                if (!_isRemovable)
+                    return;
+                double areaTolerance = _distanceTolerance * _distanceTolerance;
+                _isRemoved = CoordinateArrays.IsRing(_pts)
+                    && Algorithm.Area.OfRing(_pts) < removableSizeFactor * areaTolerance;
+            }
+
+            public void Init()
+            {
+                _linkedLine = new LinkedLine(_pts);
+            }
+
+            public double Tolerance => _distanceTolerance;
+
+            public bool IsRemoved =>  _isRemoved;
 
             private Coordinate GetCoordinate(int index)
             {
-                return _linkedLine.GetCoordinate(index);
+                return _pts[index];
+            }
+
+            public Coordinate[] Coordinates
+            {
+                get
+                {
+                    if (_isRemoved)
+                        return Array.Empty<Coordinate>();
+                    return _linkedLine.Coordinates;
+                }
             }
 
             public Envelope Envelope
@@ -173,12 +163,22 @@ namespace NetTopologySuite.Coverage
                 get => _linkedLine.Count;
             }
 
-            public Coordinate[] Simplify(EdgeIndex edgeIndex)
+            public void Simplify(CornerArea cornerArea, EdgeIndex edgeIndex)
             {
-                var cornerQueue = CreateQueue();
+                if (_isRemoved)
+                    return;
+
+                //-- don't simplify
+                if (_distanceTolerance <= 0.0)
+                    return;
+
+                double areaTolerance = _distanceTolerance * _distanceTolerance;
+                int minEdgeSize = _linkedLine.IsRing ? MIN_RING_SIZE : MIN_EDGE_SIZE;
+
+                var cornerQueue = CreateQueue(areaTolerance, cornerArea);
 
                 while (!cornerQueue.IsEmpty()
-                    && Count > _minEdgeSize)
+                    && Count > minEdgeSize)
                 {
                     var corner = cornerQueue.Poll();
                     //-- a corner may no longer be valid due to removal of adjacent corners
@@ -186,38 +186,47 @@ namespace NetTopologySuite.Coverage
                         continue;
                     //System.out.println(corner.toLineString(edge));
                     //-- done when all small corners are removed
-                    if (corner.Area > _areaTolerance)
+                    if (corner.Area > areaTolerance)
                         break;
                     if (IsRemovable(corner, edgeIndex))
                     {
-                        RemoveCorner(corner, cornerQueue);
+                        RemoveCorner(corner, areaTolerance, cornerArea, cornerQueue);
                     }
                 }
-                return _linkedLine.Coordinates;
             }
 
-            private PriorityQueue<Corner> CreateQueue()
+            private PriorityQueue<Corner> CreateQueue(double areaTolerance, CornerArea cornerArea)
             {
                 var cornerQueue = new PriorityQueue<Corner>();
                 int minIndex = (_linkedLine.IsRing && _isFreeRing) ? 0 : 1;
-                int maxIndex = _nbPts - 1;
+                int maxIndex = _nPts - 1;
                 for (int i = minIndex; i < maxIndex; i++)
                 {
-                    AddCorner(i, cornerQueue);
+                    AddCorner(i, areaTolerance, cornerArea, cornerQueue);
                 }
                 return cornerQueue;
             }
 
-            private void AddCorner(int i, PriorityQueue<Corner> cornerQueue)
+            private void AddCorner(int i, double areaTolerance, CornerArea cornerArea, PriorityQueue<Corner> cornerQueue)
             {
-                if (_isFreeRing || (i != 0 && i != _nbPts - 1))
+                //-- add if this vertex can be a corner
+                if (_isFreeRing || (i != 0 && i != _nPts - 1))
                 {
-                    var corner = new Corner(_linkedLine, i);
-                    if (corner.Area <= _areaTolerance)
+                    double area = Area(i, cornerArea);
+                    if (area <= areaTolerance)
                     {
+                        var corner = new Corner(_linkedLine, i, area);
                         cornerQueue.Add(corner);
                     }
                 }
+            }
+
+            private double Area(int index, CornerArea cornerArea)
+            {
+                var pp = _linkedLine.PrevCoordinate(index);
+                var p = _linkedLine.GetCoordinate(index);
+                var pn = _linkedLine.NextCoordinate(index);
+                return cornerArea.Area(pp, p, pn);
             }
 
             private bool IsRemovable(Corner corner, EdgeIndex edgeIndex)
@@ -267,8 +276,21 @@ namespace NetTopologySuite.Coverage
                 return false;
             }
 
+            private void InitIndex()
+            {
+                _vertexIndex = new VertexSequencePackedRtree(_pts);
+                //-- remove ring duplicate final vertex
+                if (CoordinateArrays.IsRing(_pts))
+                {
+                    _vertexIndex.RemoveAt(_pts.Length - 1);
+                }
+            }
+
+
             private int[] Query(Envelope cornerEnv)
             {
+                if (_vertexIndex == null)
+                    InitIndex();
                 return _vertexIndex.Query(cornerEnv);
             }
 
@@ -279,8 +301,10 @@ namespace NetTopologySuite.Coverage
             /// (if they are non-convex and thus removable).
             /// </summary>
             /// <param name="corner">The corner to remove</param>
+            /// <param name="areaTolerance"></param>
+            /// <param name="cornerArea"></param>
             /// <param name="cornerQueue">The corner queue</param>
-            private void RemoveCorner(Corner corner, PriorityQueue<Corner> cornerQueue)
+            private void RemoveCorner(Corner corner, double areaTolerance, CornerArea cornerArea, PriorityQueue<Corner> cornerQueue)
             {
                 int index = corner.Index;
                 int prev = _linkedLine.Prev(index);
@@ -289,8 +313,8 @@ namespace NetTopologySuite.Coverage
                 _vertexIndex.RemoveAt(index);
 
                 //-- potentially add the new corners created
-                AddCorner(prev, cornerQueue);
-                AddCorner(next, cornerQueue);
+                AddCorner(prev, areaTolerance, cornerArea, cornerQueue);
+                AddCorner(next, areaTolerance, cornerArea, cornerQueue);
             }
 
             public override string ToString()
@@ -299,18 +323,9 @@ namespace NetTopologySuite.Coverage
             }
         }
 
-        private sealed class EdgeIndex
+        internal sealed class EdgeIndex
         {
-
             private readonly STRtree<Edge> _index = new STRtree<Edge>();
-
-            public void Add(IList<Edge> edges)
-            {
-                foreach (var edge in edges)
-                {
-                    Add(edge);
-                }
-            }
 
             public void Add(Edge edge)
             {

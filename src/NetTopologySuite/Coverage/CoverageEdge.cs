@@ -2,40 +2,31 @@
 using NetTopologySuite.IO;
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Coverage
 {
     /// <summary>
     /// An edge of a polygonal coverage formed from all or a section of a polygon ring.
     /// An edge may be a free ring, which is a ring which has not node points
-    /// (i.e.does not touch any other rings in the parent coverage).
+    /// (i.e.does not share a vertex with any other rings in the parent coverage).
     /// </summary>
     /// <author>Martin Davis</author>
     internal sealed class CoverageEdge
     {
+        public const int RING_COUNT_INNER = 2;
+        public const int RING_COUNT_OUTER = 1;
 
-        public static CoverageEdge CreateEdge(Coordinate[] ring)
+        public static CoverageEdge CreateEdge(Coordinate[] ring, bool isPrimary)
         {
             var pts = ExtractEdgePoints(ring, 0, ring.Length - 1);
-            return new CoverageEdge(pts, true);
+            return new CoverageEdge(pts, isPrimary, true);
         }
 
-        public static CoverageEdge CreateEdge(Coordinate[] ring, int start, int end)
+        public static CoverageEdge CreateEdge(Coordinate[] ring, int start, int end, bool isPrimary)
         {
             var pts = ExtractEdgePoints(ring, start, end);
-            return new CoverageEdge(pts, false);
-        }
-
-        internal static MultiLineString CreateLines(IList<CoverageEdge> edges, GeometryFactory geomFactory)
-        {
-            var lines = new LineString[edges.Count];
-            for (int i = 0; i < edges.Count; i++)
-            {
-                var edge = edges[i];
-                lines[i] = edge.ToLineString(geomFactory);
-            }
-            var mls = geomFactory.CreateMultiLineString(lines);
-            return mls;
+            return new CoverageEdge(pts, isPrimary, false);
         }
 
         private static Coordinate[] ExtractEdgePoints(Coordinate[] ring, int start, int end)
@@ -132,10 +123,14 @@ namespace NetTopologySuite.Coverage
         private Coordinate[] _pts;
         private int _ringCount = 0;
         private readonly bool _isFreeRing;
+        private bool _isPrimary;
+        private int _adjacentIndex0 = -1;
+        private int _adjacentIndex1 = -1;
 
-        public CoverageEdge(Coordinate[] pts, bool isFreeRing)
+        public CoverageEdge(Coordinate[] pts, bool isPrimary, bool isFreeRing)
         {
             _pts = pts;
+            _isPrimary = isPrimary;
             _isFreeRing = isFreeRing;
         }
 
@@ -146,9 +141,34 @@ namespace NetTopologySuite.Coverage
 
         public int RingCount => _ringCount;
 
+        public bool IsInner => _ringCount == RING_COUNT_INNER;
+
+        public bool IsOuter => _ringCount == RING_COUNT_OUTER;
+
+        public bool IsPrimary
+        {
+            get { return _isPrimary; }
+            set
+            {
+                // preserve status if set
+                if (_isPrimary) return;
+                _isPrimary = value;
+            }
+        }
+
+        public bool IsRemovableRing
+        {
+            get
+            {
+                bool isRing = CoordinateArrays.IsRing(_pts);
+                return isRing && !_isPrimary;
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating if this edge is a free ring;
-        /// i.e.one with no constrained nodes.
+        /// i.e.one that does not have nodes
+        /// which are anchored because they occur in another ring.
         /// </summary>
         public bool IsFreeRing { get => _isFreeRing; }
 
@@ -177,6 +197,36 @@ namespace NetTopologySuite.Coverage
         {
             return WKTWriter.ToLineString(_pts);
         }
+
+        public void AddIndex(int index)
+        {
+            //TODO: keep information about which element is L and R?
+
+            // assert: at least one elementIndex is unset (< 0)
+            if (_adjacentIndex0 < 0)
+            {
+                _adjacentIndex0 = index;
+            }
+            else
+            {
+                _adjacentIndex1 = index;
+            }
+        }
+
+        public int GetAdjacentIndex(int index)
+        {
+            if (index == 0)
+                return _adjacentIndex0;
+            return _adjacentIndex1;
+        }
+
+        public bool HasAdjacentIndex(int index)
+        {
+            if (index == 0)
+                return _adjacentIndex0 >= 0;
+            return _adjacentIndex1 >= 0;
+        }
+
     }
 
 }

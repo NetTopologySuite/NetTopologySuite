@@ -40,31 +40,13 @@ namespace NetTopologySuite.Coverage
 
         public CoverageRingEdges(Geometry[] coverage)
         {
-            this._coverage = coverage;
+            _coverage = coverage;
             _ringEdgesMap = new Dictionary<LinearRing, List<CoverageEdge>>();
             _edges = new List<CoverageEdge>();
             Build();
         }
 
         public IList<CoverageEdge> Edges => _edges;
-
-        /// <summary>
-        /// Selects the edges with a given ring count (which can be 1 or 2).
-        /// </summary>
-        /// <param name="ringCount">The edge ring count to select (1 or 2)</param>
-        /// <returns>The selected edges</returns>
-        public IList<CoverageEdge> SelectEdges(int ringCount)
-        {
-            var result = new List<CoverageEdge>();
-            foreach (var edge in _edges)
-            {
-                if (edge.RingCount == ringCount)
-                {
-                    result.Add(edge);
-                }
-            }
-            return result;
-        }
 
         private void Build()
         {
@@ -74,8 +56,11 @@ namespace NetTopologySuite.Coverage
                 nodes.Add(node);
 
             var uniqueEdgeMap = new Dictionary<LineSegment, CoverageEdge>();
-            foreach (var geom in _coverage)
+            for (int i = 0; i < _coverage.Length; i++)
             {
+                //-- geom is a Polygon or MultiPolygon
+                var geom = _coverage[i];
+                int indexLargest = FindLargestPolygonIndex(geom);
                 for (int ipoly = 0; ipoly < geom.NumGeometries; ipoly++)
                 {
                     var poly = (Polygon)geom.GetGeometryN(ipoly);
@@ -84,28 +69,51 @@ namespace NetTopologySuite.Coverage
                     if (poly.IsEmpty)
                         continue;
 
+                    //-- largest polygon is the primary one, which is never removed
+                    bool isPrimary = ipoly == indexLargest;
+
                     //-- extract shell
                     var shell = (LinearRing)poly.ExteriorRing;
-                    AddRingEdges(shell, nodes, boundarySegs, uniqueEdgeMap);
+                    AddRingEdges(i, shell, isPrimary, nodes, boundarySegs, uniqueEdgeMap);
                     //-- extract holes
                     for (int ihole = 0; ihole < poly.NumInteriorRings; ihole++)
                     {
                         var hole = (LinearRing)poly.GetInteriorRingN(ihole);
-                        //-- skip empty rings. Missing rings are copied in result
+                        //-- skip empty holes. Missing rings are copied in result
                         if (hole.IsEmpty)
                             continue;
-                        AddRingEdges(hole, nodes, boundarySegs, uniqueEdgeMap);
+                        //-- holes are never primary
+                        AddRingEdges(i, hole, false, nodes, boundarySegs, uniqueEdgeMap);
                     }
                 }
             }
         }
 
+        private int FindLargestPolygonIndex(Geometry geom)
+        {
+            if (geom is Polygon)
+                return 0;
 
-        private void AddRingEdges(LinearRing ring, ISet<Coordinate> nodes, ISet<LineSegment> boundarySegs,
+            int indexLargest = -1;
+            double areaLargest = -1;
+            for (int ipoly = 0; ipoly < geom.NumGeometries; ipoly++)
+            {
+                var poly = (Polygon)geom.GetGeometryN(ipoly);
+                double area = poly.Area;
+                if (area > areaLargest)
+                {
+                    areaLargest = area;
+                    indexLargest = ipoly;
+                }
+            }
+            return indexLargest;
+        }
+
+        private void AddRingEdges(int index, LinearRing ring, bool isPrimary, ISet<Coordinate> nodes, ISet<LineSegment> boundarySegs,
             Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
         {
             AddBoundaryInnerNodes(ring, boundarySegs, nodes);
-            var ringEdges = ExtractRingEdges(ring, uniqueEdgeMap, nodes);
+            var ringEdges = ExtractRingEdges(index, ring, isPrimary, uniqueEdgeMap, nodes);
             if (ringEdges != null)
                 _ringEdgesMap[ring] = ringEdges;
         }
@@ -136,8 +144,17 @@ namespace NetTopologySuite.Coverage
             }
         }
 
-        private List<CoverageEdge> ExtractRingEdges(LinearRing ring,
-            Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap,
+        /// <summary>
+        /// Extracts the <see cref="CoverageEdge"/>s for a ring.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="ring"></param>
+        /// <param name="isPrimary"></param>
+        /// <param name="uniqueEdgeMap"></param>
+        /// <param name="nodes"></param>
+        /// <returns><c>null</c> if the ring has too few distinct vertices</returns>
+        private List<CoverageEdge> ExtractRingEdges(int index, LinearRing ring,
+            bool isPrimary, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap,
             ISet<Coordinate> nodes)
         {
             var ringEdges = new List<CoverageEdge>();
@@ -151,17 +168,23 @@ namespace NetTopologySuite.Coverage
             if (first < 0)
             {
                 //-- ring does not contain a node, so edge is entire ring
-                var edge = CreateEdge(pts, uniqueEdgeMap);
+                var edge = CreateEdge(pts, -1, -1, index, isPrimary, uniqueEdgeMap);
                 ringEdges.Add(edge);
             }
             else
             {
                 int start = first;
                 int end = start;
+                //-- two-node edges are always primary
+                bool isEdgePrimary = true;
                 do
                 {
                     end = FindNextNodeIndex(pts, start, nodes);
-                    var edge = CreateEdge(pts, start, end, uniqueEdgeMap);
+                    //-- a single-node ring is only retained if specified
+                    if (end == start)
+                        isEdgePrimary = isPrimary;
+
+                    var edge = CreateEdge(pts, start, end, index, isEdgePrimary, uniqueEdgeMap);
                     ringEdges.Add(edge);
                     start = end;
                 } while (end != first);
@@ -169,28 +192,25 @@ namespace NetTopologySuite.Coverage
             return ringEdges;
         }
 
-        private CoverageEdge CreateEdge(Coordinate[] ring, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
-        {
-            var edgeKey = CoverageEdge.Key(ring);
-            if (!uniqueEdgeMap.TryGetValue(edgeKey, out var edge))
-            {
-                edge = CoverageEdge.CreateEdge(ring);
-                uniqueEdgeMap[edgeKey] = edge;
-                _edges.Add(edge);
-            }
-            edge.IncrementRingCount();
-            return edge;
-        }
-
-        private CoverageEdge CreateEdge(Coordinate[] ring, int start, int end, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
+        private CoverageEdge CreateEdge(Coordinate[] ring, int start, int end, int index, bool isPrimary, Dictionary<LineSegment, CoverageEdge> uniqueEdgeMap)
         {
             var edgeKey = end == start ? CoverageEdge.Key(ring) : CoverageEdge.Key(ring, start, end);
-            if (!uniqueEdgeMap.TryGetValue(edgeKey, out var edge))
+            if (uniqueEdgeMap.TryGetValue(edgeKey, out var edge))
             {
-                edge = CoverageEdge.CreateEdge(ring, start, end);
+                // update shared attributes
+                edge.IsPrimary = isPrimary;
+            }
+            else
+            {
+                if (start < 0)
+                    edge = CoverageEdge.CreateEdge(ring, isPrimary);
+                else
+                    edge = CoverageEdge.CreateEdge(ring, start, end, isPrimary);
+
                 uniqueEdgeMap[edgeKey] = edge;
                 _edges.Add(edge);
             }
+            edge.AddIndex(index);
             edge.IncrementRingCount();
             return edge;
         }
@@ -225,12 +245,11 @@ namespace NetTopologySuite.Coverage
             return index;
         }
 
-        /**
-         * Finds nodes in a coverage at vertices which are shared by 3 or more rings.
-         * 
-         * @param coverage a list of polygonal geometries
-         * @return the set of nodes contained in 3 or more rings
-         */
+        /// <summary>
+        /// Finds nodes in a coverage at vertices which are shared by 3 or more rings.
+        /// </summary>
+        /// <param name="coverage">A list of polygonal geometries</param>
+        /// <returns>The set of nodes contained in 3 or more rings</returns>
         private ISet<Coordinate> FindMultiRingNodes(Geometry[] coverage)
         {
             var vertexRingCount = VertexRingCounter.Count(coverage);
@@ -298,28 +317,45 @@ namespace NetTopologySuite.Coverage
 
         private Geometry BuildMultiPolygon(MultiPolygon geom)
         {
-            var polys = new Polygon[geom.NumGeometries];
-            for (int i = 0; i < polys.Length; i++)
+            var polyList = new List<Polygon>(geom.NumGeometries);
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
-                polys[i] = BuildPolygon((Polygon)geom.GetGeometryN(i));
+                var poly = BuildPolygon((Polygon)geom.GetGeometryN(i));
+                if (poly != null)
+                    polyList.Add(poly);
             }
+
+            if (polyList.Count == 1)
+                return polyList[0];
+
+            var polys = polyList.ToArray();
             return geom.Factory.CreateMultiPolygon(polys);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <returns><c>null</c> if the polygon has been removed</returns>
         private Polygon BuildPolygon(Polygon polygon)
         {
             var shell = BuildRing((LinearRing)polygon.ExteriorRing);
+            if (shell == null)
+                return null;
 
             if (polygon.NumInteriorRings == 0)
             {
                 return polygon.Factory.CreatePolygon(shell);
             }
-            var holes = new LinearRing[polygon.NumInteriorRings];
-            for (int i = 0; i < holes.Length; i++)
+            var holeList = new List<LinearRing>(polygon.NumInteriorRings);
+            for (int i = 0; i < polygon.NumInteriorRings; i++)
             {
                 var hole = (LinearRing)polygon.GetInteriorRingN(i);
-                holes[i] = BuildRing(hole);
+                var newHole = BuildRing(hole);
+                if (newHole != null)
+                    holeList.Add(newHole);
             }
+            var holes = holeList.ToArray();
             return polygon.Factory.CreatePolygon(shell, holes);
         }
 
@@ -328,6 +364,11 @@ namespace NetTopologySuite.Coverage
             //-- if ring is not in map, must have been invalid. Just copy original
             if (!_ringEdgesMap.TryGetValue(ring, out var ringEdges))
                 return (LinearRing)ring.Copy();
+
+            bool isRemoved = ringEdges.Count == 1
+                && ringEdges[0].Coordinates.Length == 0;
+            if (isRemoved)
+                return null;
 
             var ptsList = new CoordinateList();
             for (int i = 0; i < ringEdges.Count; i++)
