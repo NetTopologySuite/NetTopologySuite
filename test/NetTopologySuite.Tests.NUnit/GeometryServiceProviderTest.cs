@@ -16,6 +16,8 @@ namespace NetTopologySuite.Tests.NUnit
                     NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.Instance,
                     new PrecisionModel(10d), 4326);
 
+            Assert.That(nts.ElevationModel, Is.Null);
+
             var factory = nts.CreateGeometryFactory();
 
             Assert.IsNotNull(factory);
