@@ -233,24 +233,41 @@ namespace NetTopologySuite.Geometries
                 X = value.X;
                 Y = value.Y;
 
-                int maxInputDim = Coordinates.Dimension(value);
-                int maxOutputDim = Dimension;
-                if (maxInputDim > maxOutputDim)
-                {
-                    maxInputDim = maxOutputDim;
-                }
+                // Reset extra values array
+                ResetExtraValues();
 
-                int dim;
-                for (dim = 2; dim < maxInputDim; dim++)
-                {
-                    _extraValues[dim - 2] = value[dim];
-                }
+                // Get number of dimensions and measures for value
+                int valDimension = Coordinates.Dimension(value);
+                int valMeasures = Coordinates.Measures(value);
 
-                for (; dim < maxOutputDim; dim++)
-                {
-                    _extraValues[dim - 2] = NullOrdinate;
-                }
+                // Get number of values to transfer
+                int numSpatialToCopy = -2 + Math.Min(Dimension - Measures, valDimension - valMeasures);
+                int numMeasuresToCopy = Math.Min(Measures, valMeasures);
+
+                // Transfer remaining spatial values
+                for (int i = 0; i < numSpatialToCopy; i++)
+                    _extraValues[i] = value[2 + i];
+
+                // Transfer measure values
+                int j1 = Dimension - Measures - 2;
+                int j2 = valDimension - valMeasures;
+                for (int i = 0; i < numMeasuresToCopy; i++)
+                    _extraValues[j1++] = value[j2++];
             }
+        }
+
+        /// <summary>
+        /// Resets the <see cref="_extraValues"/> array to default values.
+        /// </summary>
+        private void ResetExtraValues()
+        {
+            // Get number of spatial dimensions stored in _extraValues
+            int numSpatial = Dimension - Measures;
+
+            // Fill extra spatial values with NULL_ORDINATE, measure values 
+            int i = 0;
+            for (; i < numSpatial - 2; i++) _extraValues[i] = NullOrdinate;
+            for (; i < Dimension - 2; i++) _extraValues[i] = 0;
         }
 
         public override Coordinate Copy() => new ExtraDimensionalCoordinate(X, Y, (double[])_extraValues.Clone(), Measures);
