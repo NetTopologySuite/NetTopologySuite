@@ -190,9 +190,9 @@ namespace NetTopologySuite.Operation.RelateNG
             return loc == DimensionLocation.AREA_INTERIOR;
         }
 
-        public Location LocateLineEnd(Coordinate p)
+        public int LocateLineEndWithDim(Coordinate p)
         {
-            return GetLocator().LocateLineEnd(p);
+            return GetLocator().LocateLineEndWithDim(p);
         }
 
         /// <summary>

@@ -256,5 +256,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckEquals(a, b, true);
         }
 
+        [Test]
+        public void TestPolygonContainingLineInBoundaryAndInterior()
+        {
+            const string a = "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))";
+            const string b = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), LINESTRING (0 2, 0 5, 5 5))";
+            CheckEquals(a, b, true);
+        }
+
     }
 }

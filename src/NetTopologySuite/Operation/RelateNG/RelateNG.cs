@@ -3,6 +3,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace NetTopologySuite.Operation.RelateNG
 {
@@ -402,7 +403,6 @@ namespace NetTopologySuite.Operation.RelateNG
                         && elem.EnvelopeInternal.Disjoint(geomTarget.Envelope))
                         continue;
 
-                    //TODO: add optimzation to skip disjoint elements once exterior point found
                     var e0 = line.CoordinateSequence.First;
                     hasExteriorIntersection |= ComputeLineEnd(geom, isA, e0, geomTarget, topoComputer);
                     if (topoComputer.IsResultKnown)
@@ -425,10 +425,27 @@ namespace NetTopologySuite.Operation.RelateNG
             return false;
         }
 
+        /// <summary>
+        /// Compute the topology of a line endpoint.
+        /// Also reports if the line end is in the exterior of the target geometry,
+        /// to optimize testing multiple exterior endpoints.
+        /// </summary>
+        /// <param name="geom"></param>
+        /// <param name="isA"></param>
+        /// <param name="pt"></param>
+        /// <param name="geomTarget"></param>
+        /// <param name="topoComputer"></param>
+        /// <returns><c>true</c> if the line endpoint is in the exterior of the target</returns>
         private bool ComputeLineEnd(RelateGeometry geom, bool isA, Coordinate pt,
             RelateGeometry geomTarget, TopologyComputer topoComputer)
         {
-            var locLineEnd = geom.LocateLineEnd(pt);
+            int locDimLineEnd = geom.LocateLineEndWithDim(pt);
+            var dimLineEnd = DimensionLocation.Dimension(locDimLineEnd, topoComputer.GetDimension(isA));
+            //-- skip line ends which are in a GC area
+            if (dimLineEnd != Dimension.L)
+                return false;
+            var locLineEnd = DimensionLocation.Location(locDimLineEnd);
+
             int locDimTarget = geomTarget.LocateWithDim(pt);
             var locTarget = DimensionLocation.Location(locDimTarget);
             var dimTarget = DimensionLocation.Dimension(locDimTarget, topoComputer.GetDimension(!isA));

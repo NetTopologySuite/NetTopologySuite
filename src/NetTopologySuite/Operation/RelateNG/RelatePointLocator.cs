@@ -125,14 +125,33 @@ namespace NetTopologySuite.Operation.RelateNG
             return DimensionLocation.Location(LocateWithDim(p));
         }
 
-        public Location LocateLineEnd(Coordinate p)
+        /// <summary>
+        /// Locates a point which is a line endpoint,
+        /// as a <see cref="DimensionLocation"/>.
+        /// For a mixed-dim GC, the line end point may also lie in an area,
+        /// in which case this location is reported.
+        /// Otherwise, the dimLoc will be either LINE_BOUNDARY
+        /// or LINE_INTERIOR, depending on the endpoint valence
+        /// and the BoundaryNodeRule in place.
+        /// </summary>
+        /// <param name="p">The line end point to locate</param>
+        /// <returns>The dimension and location of the point</returns>
+        public int LocateLineEndWithDim(Coordinate p)
         {
-            return _lineBoundary.IsBoundary(p) ? Location.Boundary : Location.Interior;
+            if (_polygons != null)
+            {
+                var locPoly = LocateOnPolygons(p, false, null);
+                if (locPoly != Location.Exterior)
+                    return DimensionLocation.LocationArea(locPoly);
+            }
+            return _lineBoundary.IsBoundary(p)
+                ? DimensionLocation.LINE_BOUNDARY
+                : DimensionLocation.LINE_INTERIOR;
         }
 
         /// <summary>
         /// Locates a point which is known to be a node of the geometry
-        /// (i.e. a point or on an edge).
+        /// (i.e. a vertex or on an edge).
         /// </summary>
         /// <param name="p">The node point to locate</param>
         /// <param name="parentPolygonal">The polygon the point is a node of</param>

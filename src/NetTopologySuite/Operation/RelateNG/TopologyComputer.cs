@@ -294,12 +294,27 @@ namespace NetTopologySuite.Operation.RelateNG
             throw new InvalidOperationException("Unknown target dimension: " + dimTarget);
         }
 
+        /// <summary>
+        /// Add topology for a line end.
+        /// The line end point must be "significant";
+        /// i.e.not contained in an area if the source is a mixed-dimension GC.
+        /// </summary>
+        /// <param name="isLineA">the input containing the line end</param>
+        /// <param name="locLineEnd">the location of the line end (Interior or Boundary)</param>
+        /// <param name="locTarget">the location on the target geometry</param>
+        /// <param name="dimTarget">the dimension of the interacting target geometry element,
+        /// (if any), or the dimension of the target</param>
+        /// <param name="pt">the line end coordinate</param>
+        /// <exception cref="InvalidOperationException"></exception>
         public void AddLineEndOnGeometry(bool isLineA, Location locLineEnd, Location locTarget, Dimension dimTarget, Coordinate pt)
         {
+            //-- record topology at line end point
+            UpdateDim(isLineA, locLineEnd, locTarget, Dimension.P);
+
+            //-- Line and Area targets may have additional topology
             switch (dimTarget)
             {
                 case Dimension.P:
-                    AddLineEndOnPoint(isLineA, locLineEnd, locTarget, pt);
                     return;
                 case Dimension.L:
                     AddLineEndOnLine(isLineA, locLineEnd, locTarget, pt);
@@ -311,17 +326,13 @@ namespace NetTopologySuite.Operation.RelateNG
             throw new InvalidOperationException("Unknown target dimension: " + dimTarget);
         }
 
-        private void AddLineEndOnPoint(bool isLineA, Location locLineEnd, Location locPoint, Coordinate pt)
-        {
-            UpdateDim(isLineA, locLineEnd, locPoint, Dimension.P);
-        }
-
         private void AddLineEndOnLine(bool isLineA, Location locLineEnd, Location locLine, Coordinate pt)
         {
             UpdateDim(isLineA, locLineEnd, locLine, Dimension.P);
             /*
-             * When a line end is in the exterior, some length of the line interior
-             * must also be in the exterior. 
+             * When a line end is in the EXTERIOR of a Line, 
+             * some length of the source Line INTERIOR
+             * is also in the target Line EXTERIOR. 
              * This works for zero-length lines as well. 
              */
 
@@ -333,15 +344,17 @@ namespace NetTopologySuite.Operation.RelateNG
 
         private void AddLineEndOnArea(bool isLineA, Location locLineEnd, Location locArea, Coordinate pt)
         {
-            if (locArea == Location.Boundary)
+            if (locArea != Location.Boundary)
             {
-                UpdateDim(isLineA, locLineEnd, locArea, Dimension.P);
-            }
-            else
-            {
+                /*
+                 * When a line end is in an Area INTERIOR or EXTERIOR 
+                 * some length of the source Line Interior  
+                 * AND the Exterior of the line
+                 * is also in that location of the target.
+                 * NOTE: this assumes the line end is NOT also in an Area of a mixed-dim GC
+                 */
                 //TODO: handle zero-length lines?
                 UpdateDim(isLineA, Location.Interior, locArea, Dimension.L);
-                UpdateDim(isLineA, locLineEnd, locArea, Dimension.P);
                 UpdateDim(isLineA, Location.Exterior, locArea, Dimension.A);
             }
         }

@@ -67,11 +67,29 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckNodeLocation(gcPLA, 3, 1, Location.Boundary);
         }
 
+        [Test]
+        public void testLineEndInGCLA()
+        {
+            const string wkt = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), LINESTRING (12 2, 0 2, 0 5, 5 5), LINESTRING (12 10, 12 2))";
+            CheckLineEndDimLocation(wkt, 5, 5, DimensionLocation.AREA_INTERIOR);
+            CheckLineEndDimLocation(wkt, 12, 2, DimensionLocation.LINE_INTERIOR);
+            CheckLineEndDimLocation(wkt, 12, 10, DimensionLocation.LINE_BOUNDARY);
+        }
+
+
         private void CheckDimLocation(string wkt, double x, double y, int expectedDimLoc)
         {
             var geom = Read(wkt);
             var locator = new RelatePointLocator(geom);
             int actual = locator.LocateWithDim(new Coordinate(x, y));
+            Assert.That(actual, Is.EqualTo(expectedDimLoc));
+        }
+
+        private void CheckLineEndDimLocation(string wkt, double x, double y, int expectedDimLoc)
+        {
+            var geom = Read(wkt);
+            var locator = new RelatePointLocator(geom);
+            int actual = locator.LocateLineEndWithDim(new Coordinate(x, y));
             Assert.That(actual, Is.EqualTo(expectedDimLoc));
         }
 
