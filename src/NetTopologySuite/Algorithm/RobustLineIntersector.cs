@@ -213,12 +213,29 @@ namespace NetTopologySuite.Algorithm
 
         private static Coordinate CopyWithZ(Coordinate p, double z)
         {
-            Coordinate res;
+            // If there is not z-ordinate to apply just return the copy
             if (double.IsNaN(z))
-                res = p.Copy();
-            else
-                res = new CoordinateZ(p) { Z = z };
+                return p.Copy();
 
+            // If there is a z-ordinate value we need to make sure it
+            // can be assigned.
+            Coordinate res;
+            var ptype = p.GetType();
+            if (ptype == typeof(CoordinateZ)) // this includes CoordinateZM
+                res = p.Copy();
+            else if (ptype == typeof(CoordinateM))
+                res = new CoordinateZM { CoordinateValue = p };
+            else if (ptype == typeof(ExtraDimensionalCoordinate))
+            {
+                var edc = (ExtraDimensionalCoordinate)p;
+                res = (edc.Dimension - edc.Measures > 2)
+                    ? edc.Copy()
+                    : new ExtraDimensionalCoordinate(edc.Dimension + 1, edc.Measures) { CoordinateValue = p };
+            }
+            else
+                res = new CoordinateZ(p);
+
+            res.Z = z;
             return res;
         }
 

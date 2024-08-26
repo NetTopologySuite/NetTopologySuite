@@ -86,6 +86,32 @@
         }
 
         /// <summary>
+        /// Evaluates the number of spatial dimensions (x, y, z) that a coordinate can carry.
+        /// </summary>
+        /// <param name="c">A coordinate</param>
+        /// <returns>The number of spatial dimensions</returns>
+        public static int SpatialDimension(Coordinate c)
+        {
+            if (c is CoordinateZ) // includes CoordinateZM
+                return 3;
+            if (c is ExtraDimensionalCoordinate edc)
+                return edc.Dimension - edc.Measures;
+
+            return c != null ? 2 : 0;
+        }
+
+
+        /// <summary>
+        /// Check if coordinate can store a z-ordinate value, based on subclass of <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="coordinate">A coordinate</param>
+        /// <returns><c>true</c> if <paramref name="coordinate"/> can carry a z-ordinate value</returns>
+        public static bool HasZ(Coordinate coordinate)
+        {
+            return SpatialDimension(coordinate) > 2;
+        }
+
+        /// <summary>
         /// Determine number of measures based on subclass of <see cref="Coordinate"/>.
         /// </summary>
         /// <param name="coordinate">supplied coordinate</param>
