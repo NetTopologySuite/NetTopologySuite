@@ -2,6 +2,7 @@
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using static System.Collections.Specialized.BitVector32;
 
 namespace NetTopologySuite.Operation.RelateNG
@@ -122,8 +123,9 @@ namespace NetTopologySuite.Operation.RelateNG
         /// for correct evaluation of specific spatial predicates.
         /// Self-noding is required for geometries which may self-cross
         /// - i.e.lines, and overlapping polygons in GeometryCollections.
-        /// Self-noding is not required for polygonal geometries.
-        /// This ensures that the locations of nodes created by
+        /// Self-noding is not required for polygonal geometries,
+        /// since they can only touch at vertices.
+        /// This ensures that the coordinates of nodes created by
         /// crossing segments are computed explicitly.
         /// This ensures that node locations match in situations
         /// where a self-crossing and mutual crossing occur at the same logical location.
@@ -134,9 +136,8 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             get
             {
-                //TODO: change to testing for lines or GC with > 1 polygon
-                if (_geomA.IsPointsOrPolygons) return false;
-                if (_geomB.IsPointsOrPolygons) return false;
+                if (_geomA.IsSelfNodingRequired) return true;
+                if (_geomB.IsSelfNodingRequired) return true;
                 return _predicate.RequireSelfNoding();
             }
         }
@@ -148,6 +149,7 @@ namespace NetTopologySuite.Operation.RelateNG
 
         private void UpdateDim(Location locA, Location locB, Dimension dimension)
         {
+            //System.Diagnostics.Trace.WriteLine(LocationUtility.ToLocationSymbol(locA) + "/" + LocationUtility.ToLocationSymbol(locB) + ": " + dimension);
             _predicate.UpdateDimension(locA, locB, dimension);
         }
 

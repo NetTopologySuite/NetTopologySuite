@@ -239,5 +239,22 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             const string b = "GEOMETRYCOLLECTION (MULTIPOINT (EMPTY, (5 5)), LINESTRING (1 9, 4 9))";
             CheckIntersectsDisjoint(a, b, true);
         }
+
+        [Test]
+        public void TestPolygonContainingPointsInBoundary()
+        {
+            const string a = "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))";
+            const string b = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), MULTIPOINT ((0 2), (0 5)))";
+            CheckEquals(a, b, true);
+        }
+
+        [Test]
+        public void TestPolygonContainingLineInBoundary()
+        {
+            const string a = "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))";
+            const string b = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), LINESTRING (0 2, 0 5))";
+            CheckEquals(a, b, true);
+        }
+
     }
 }

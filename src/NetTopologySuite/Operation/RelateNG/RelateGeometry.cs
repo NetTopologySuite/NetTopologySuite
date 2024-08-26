@@ -225,15 +225,32 @@ namespace NetTopologySuite.Operation.RelateNG
             return loc;
         }
 
-        public bool IsPointsOrPolygons
+        /// <summary>
+        /// Gets a value that indicates whether the geometry requires self-noding
+        /// for correct evaluation of specific spatial predicates.
+        /// Self-noding is required for geometries which may self-cross
+        /// - i.e.lines, and overlapping polygons in GeometryCollections.
+        /// Self-noding is not required for polygonal geometries,
+        /// since they can only touch at vertices.
+        /// This ensures that the coordinates of nodes created by
+        /// crossing segments are computed explicitly.
+        /// This ensures that node locations match in situations
+        /// where a self-crossing and mutual crossing occur at the same logical location.
+        /// E.g.a self-crossing line tested against a single segment
+        /// identical to one of the crossed segments.
+        /// </summary>
+        public bool IsSelfNodingRequired
         {
             get
             {
-                return _geom is IPuntal || _geom is IPolygonal;
-                //return geom is Point
-                //    || geom is MultiPoint
-                //    || geom is Polygon
-                //    || geom is MultiPolygon;
+                if (_geom is IPuntal ||
+                    _geom is IPolygonal)
+                    return false;
+
+                if (_hasAreas && _geom.NumGeometries == 1)
+                    return false;
+
+                return true;
             }
         }
 

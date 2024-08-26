@@ -1,9 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 
 namespace NetTopologySuite.Operation.RelateNG
 {
@@ -44,6 +42,9 @@ namespace NetTopologySuite.Operation.RelateNG
 
             public override bool RequireSelfNoding()
                 => pred.RequireSelfNoding();
+
+            public override bool RequireInteraction()
+                => pred.RequireInteraction();
 
             public override bool RequireCovers(bool isSourceA)
                     => pred.RequireCovers(isSourceA);
