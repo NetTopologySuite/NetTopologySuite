@@ -22,6 +22,8 @@ namespace NetTopologySuite.Operation.RelateNG
     /// of the collection geometry.</description></item>
     /// </list>
     /// Prepared mode is supported via cached spatial indexes.
+    /// <para/>
+    /// Supports specifying the <see cref="IBoundaryNodeRule"/> to use.
     /// </summary>
     /// <author>Martin Davis</author>
     internal class RelatePointLocator
@@ -126,24 +128,25 @@ namespace NetTopologySuite.Operation.RelateNG
         }
 
         /// <summary>
-        /// Locates a point which is a line endpoint,
-        /// as a <see cref="DimensionLocation"/>.
-        /// For a mixed-dim GC, the line end point may also lie in an area,
-        /// in which case this location is reported.
-        /// Otherwise, the dimLoc will be either LINE_BOUNDARY
+        /// Locates a line endpoint, as a <see cref="DimensionLocation"/>.
+        /// In a mixed-dim GC, the line end point may also lie in an area.
+        /// In this case the area location is reported.
+        /// Otherwise, the dimLoc is either LINE_BOUNDARY
         /// or LINE_INTERIOR, depending on the endpoint valence
         /// and the BoundaryNodeRule in place.
         /// </summary>
         /// <param name="p">The line end point to locate</param>
-        /// <returns>The dimension and location of the point</returns>
+        /// <returns>The dimension and location of the line end point</returns>
         public int LocateLineEndWithDim(Coordinate p)
         {
+            //-- if a GC with areas, check for point on area
             if (_polygons != null)
             {
                 var locPoly = LocateOnPolygons(p, false, null);
                 if (locPoly != Location.Exterior)
                     return DimensionLocation.LocationArea(locPoly);
             }
+            //-- not in area, so return line end location
             return _lineBoundary.IsBoundary(p)
                 ? DimensionLocation.LINE_BOUNDARY
                 : DimensionLocation.LINE_INTERIOR;

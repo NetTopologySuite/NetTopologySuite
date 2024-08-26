@@ -2,8 +2,6 @@
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using static System.Collections.Specialized.BitVector32;
 
 namespace NetTopologySuite.Operation.RelateNG
 {
