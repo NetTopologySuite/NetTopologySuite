@@ -100,6 +100,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
         }
 
         [Test]
+        public void TestPolygonEqualRotated()
+        {
+            const string a = "POLYGON ((0 0, 140 0, 140 140, 0 140, 0 0))";
+            const string b = "POLYGON ((140 0, 0 0, 0 140, 140 140, 140 0))";
+
+            // BNR only considers linear endpoints, so results are equal for all rules
+            RunRelate(a, b, BoundaryNodeRules.OgcSfsBoundaryRule, "2FFF1FFF2");
+            RunRelate(a, b, BoundaryNodeRules.EndpointBoundaryRule, "2FFF1FFF2");
+            RunRelate(a, b, BoundaryNodeRules.MonoValentEndpointBoundaryRule, "2FFF1FFF2");
+            RunRelate(a, b, BoundaryNodeRules.MultivalentEndpointBoundaryRule, "2FFF1FFF2");
+        }
+
+        [Test]
         public void TestLineStringInteriorTouchMultivalent()
         {
             const string a = "POLYGON EMPTY";
