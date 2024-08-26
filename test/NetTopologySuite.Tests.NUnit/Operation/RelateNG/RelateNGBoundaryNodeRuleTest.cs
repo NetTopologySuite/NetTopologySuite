@@ -39,13 +39,32 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             const string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
             const string b = "LINESTRING (10 10, 20 0)";
 
-            // under Mod2, A has no boundary - A.int / B.bdy = 0
-            //    runRelateTest(a, b,  BoundaryNodeRule.OGC_SFS_BOUNDARY_RULE,   "F01FFF102"    );
+            // under Mod2, A touch point is not boundary - A.int / B.bdy = 0
+            RunRelate(a, b,  BoundaryNodeRules.OgcSfsBoundaryRule,  "F01FF0102");
             // under EndPoint, A has a boundary node - A.bdy / B.bdy = 0
             RunRelate(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FF1F00102");
-            // under MultiValent, A has a boundary node but B does not - A.bdy / B.bdy = F and A.int
-            //    runRelateTest(a, b,  BoundaryNodeRule.MULTIVALENT_ENDPOINT_BOUNDARY_RULE,  "0F1FFF1F2"    );
+            // under MonoValent, A touch point is not boundary - A.bdy / B.bdy = F and A.int / B.bdy = 0
+            RunRelate(a, b, BoundaryNodeRules.MonoValentEndpointBoundaryRule, "F01FF0102");
+            // under MultiValent, A has a boundary node but B does not - A.bdy / B.bdy = F and A.bdy / B.int = 0
+            RunRelate(a, b,  BoundaryNodeRules.MultivalentEndpointBoundaryRule, "FF10FF1F2");
         }
+
+        [Test]
+        public void testMultiLineStringClosedTouchAtEndpoint()
+        {
+            const string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 0 20, 0 0))";
+            const string b = "LINESTRING (10 10, 20 0)";
+
+            // under Mod2, A has no boundary - A.int / B.bdy = 0
+            RunRelate(a, b, BoundaryNodeRules.OgcSfsBoundaryRule, "F01FFF102");
+            // under EndPoint, A endpoints are in boundary - A.bdy / B.bdy = 0
+            RunRelate(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FF1F00102");
+            // under MonoValent, A touch point is not boundary - A.bdy / B.bdy = F and A.int / B.bdy = 0
+            RunRelate(a, b, BoundaryNodeRules.MonoValentEndpointBoundaryRule, "F01FFF102");
+            // under MultiValent, A has a boundary node but B does not - A.bdy / B.bdy = F and A.bdy / B.int = 0
+            RunRelate(a, b, BoundaryNodeRules.MultivalentEndpointBoundaryRule, "FF10F01F2");
+        }
+
 
         [Test]
         public void TestLineRingTouchAtEndpoints()
@@ -57,7 +76,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             RunRelate(a, b, BoundaryNodeRules.OgcSfsBoundaryRule, "F01FFF102");
             // under EndPoint, A has a boundary node - A.bdy / B.bdy = 0
             RunRelate(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FF1F0F102");
-            // under MultiValent, A has a boundary node but B does not - A.bdy / B.bdy = F and A.int
+            // under MonoValent, A has no boundary node but B does - A.bdy / B.bdy = F and A.int / B.bdy = 0
+            RunRelate(a, b, BoundaryNodeRules.MonoValentEndpointBoundaryRule, "F01FFF102");
+            // under MultiValent, A has a boundary node but B does not - A.bdy / B.bdy = F and A.bdy / B.int = 0
             RunRelate(a, b, BoundaryNodeRules.MultivalentEndpointBoundaryRule, "FF10FF1F2");
         }
 
