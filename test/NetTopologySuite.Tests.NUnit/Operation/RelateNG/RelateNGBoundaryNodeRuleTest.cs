@@ -1,5 +1,6 @@
 ﻿using NetTopologySuite.Algorithm;
 using NUnit.Framework;
+using System;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
 {
@@ -97,6 +98,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             // closed line has boundary under ENDPOINT rule
             RunRelate(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FFFFFF102");
         }
+
+        [Test]
+        public void TestLineStringInteriorTouchMultivalent()
+        {
+            const string a = "POLYGON EMPTY";
+            const string b = "MULTILINESTRING ((0 0, 0 1), (0 1, 1 1, 1 0, 0 0))";
+
+            // closed line has no boundary under SFS rule
+            RunRelate(a, b, BoundaryNodeRules.OgcSfsBoundaryRule, "FFFFFF1F2");
+
+            // closed line has boundary under ENDPOINT rule
+            RunRelate(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FFFFFF102");
+        }
+
 
         private void RunRelate(string wkt1, string wkt2, IBoundaryNodeRule bnRule, string expectedIM)
         {

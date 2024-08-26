@@ -700,5 +700,41 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckRelate(a, b, "212F01FF2");
         }
 
+        //================  Repeated Points  ==============
+        [Test]
+        public void TestEmptyEquals()
+        {
+            string[] empties = {
+        "POINT EMPTY",
+        "LINESTRING EMPTY",
+        "POLYGON EMPTY",
+        "MULTIPOINT EMPTY",
+        "MULTILINESTRING EMPTY",
+        "MULTIPOLYGON EMPTY",
+        "GEOMETRYCOLLECTION EMPTY"
+    };
+            int nempty = 7;
+            for (int i = 0; i < nempty; i++)
+            {
+                for (int j = 0; j < nempty; j++)
+                {
+                    string a = empties[i];
+                    string b = empties[j];
+                    CheckRelate(a, b, "FFFFFFFF2");
+                    //-- currently in JTS empty geometries do NOT test equal
+                    CheckEquals(a, b, false);
+                }
+            }
+        }
+
+        //================  Prepared Relate  ==============
+        [Test]
+        public void TestPreparedAA()
+        {
+            const string a = "POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))";
+            const string b = "POLYGON((0.5 0.5, 1.5 0.5, 1.5 1.5, 0.5 1.5, 0.5 0.5))";
+            CheckPrepared(a, b);
+        }
+
     }
 }

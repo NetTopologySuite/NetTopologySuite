@@ -1,5 +1,7 @@
 ﻿using NetTopologySuite.Operation.RelateNG;
 using NUnit.Framework;
+using System;
+using _RelateNG = NetTopologySuite.Operation.RelateNG.RelateNG;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
 {
@@ -74,8 +76,39 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             var a = Read(wkta);
             var b = Read(wktb);
             var predTrace = Trace(pred);
-            bool actualVal = NetTopologySuite.Operation.RelateNG.RelateNG.Relate(a, b, predTrace);
+            bool actualVal = _RelateNG.Relate(a, b, predTrace);
             Assert.That(actualVal, Is.EqualTo(expectedValue));
+        }
+
+
+        protected void CheckPrepared(string wkta, string wktb)
+        {
+            var a = Read(wkta);
+            var b = Read(wktb);
+            var prep_a = _RelateNG.Prepare(a);
+
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.EqualsTopo()),
+                        Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.EqualsTopo())), "EqualsTopo");
+
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.Intersects()),
+                        Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Intersects())), "Intersects");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.Disjoint()),
+                Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Disjoint())), "Disjoint");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.Covers()),
+                Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Covers())), "Covers");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.CoveredBy()),
+                Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.CoveredBy())), "CoveredBy");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.Within()),
+                Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Within())), "Within");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.Contains()),
+                Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Contains())), "Contains");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.Crosses()),
+                Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Crosses())), "Crosses");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.Touches()),
+                Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Touches())), "Touches");
+
+            Assert.That(prep_a.Evaluate(b).ToString(),
+                 Is.EqualTo(_RelateNG.Relate(a, b).ToString()), "Relate");
         }
 
         private TopologyPredicate Trace(TopologyPredicate pred)
