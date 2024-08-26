@@ -51,9 +51,17 @@ namespace NetTopologySuite.Operation.RelateNG
             _boundaryNodeRule = bnRule;
             //-- cache geometry metadata
             _isGeomEmpty = _geom.IsEmpty;
-            _isLineZeroLen = IsZeroLength(_geom);
             _geomDim = input.Dimension;
             AnalyzeDimensions();
+            _isLineZeroLen = IsZeroLengthLine(_geom);
+        }
+
+        private bool IsZeroLengthLine(Geometry geom)
+        {
+            // avoid expensive zero-length calculation if not linear
+            if (Dimension != Dimension.L)
+                return false;
+            return IsZeroLength(geom);
         }
 
         private void AnalyzeDimensions()
