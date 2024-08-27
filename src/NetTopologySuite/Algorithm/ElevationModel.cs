@@ -107,25 +107,14 @@ namespace NetTopologySuite.Algorithm
             double z = GetZ(c);
             if (double.IsNaN(z)) return c.Copy();
 
-            // Depending on the type return specific coordinate classes.
-            if (c.GetType() == typeof(CoordinateM))
-                return new CoordinateZM(c.X, c.Y, z, c.M);
-
-            if (c is ExtraDimensionalCoordinate edc)
-            {
-                ExtraDimensionalCoordinate edcRes = null;
-                if (edc.Dimension - edc.Measures > 2)
-                    edcRes = (ExtraDimensionalCoordinate)edc.Copy();
-                else 
-                    edcRes = new ExtraDimensionalCoordinate(edc.Dimension + 1, edc.Measures) {
-                        CoordinateValue = edc
-                    };
-                edcRes.Z = z;
-                return edcRes;
-            }
-
-            // Last resort
-            return new CoordinateZ(c.X, c.Y, z);
+            int dim = Coordinates.Dimension(c);
+            int measures = Coordinates.Measures(c);
+            int spatial = Math.Max(3, dim - measures);
+            dim = spatial + measures;
+            var copy = Coordinates.Create(dim, measures);
+            copy.CoordinateValue = c;
+            copy.Z = z;
+            return copy;
         }
     }
 
