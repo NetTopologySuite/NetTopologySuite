@@ -225,6 +225,7 @@ namespace NetTopologySuite.Geometries
                 return "NG";
             }
         }
+
         #endregion
     }
 }

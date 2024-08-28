@@ -712,10 +712,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public virtual bool Touches(Geometry g)
         {
-            // short-circuit test
-            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
-                return false;
-            return Relate(g).IsTouches(Dimension, g.Dimension);
+            return Factory.GeometryRelate.Touches(this, g);
         }
 
         /// <summary>
@@ -763,20 +760,7 @@ namespace NetTopologySuite.Geometries
             if (g.IsRectangle)
                 return RectangleIntersects.Intersects((Polygon)g, this);
 
-            if (IsGeometryCollection || g.IsGeometryCollection)
-            {
-                for (int i = 0; i < NumGeometries; i++)
-                {
-                    for (int j = 0; j < g.NumGeometries; j++)
-                    {
-                        if (GetGeometryN(i).Intersects(g.GetGeometryN(j)))
-                            return true;
-                    }
-                }
-                return false;
-            }
-
-            return Relate(g).IsIntersects();
+            return Factory.GeometryRelate.Intersects(this, g);
         }
 
         /// <summary>
@@ -840,7 +824,7 @@ namespace NetTopologySuite.Geometries
         /// <see cref="CoveredBy"/>
         public bool Within(Geometry g)
         {
-            return g.Contains(this);
+            return Factory.GeometryRelate.Within(this, g);
         }
 
         /// <summary>
@@ -871,39 +855,22 @@ namespace NetTopologySuite.Geometries
         /// <see cref="Covers"/>
         public virtual bool Contains(Geometry g)
         {
-            // optimization - lower dimension cannot contain areas
-            if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
-                return false;
-
-            // optimization - P cannot contain a non-zero-length L
-            // Note that a point can contain a zero-length lineal geometry,
-            // since the line has no boundary due to Mod-2 Boundary Rule
-            if (g.Dimension == Dimension.Curve && Dimension < Dimension.Curve && g.Length > 0.0)
-                return false;
-
-            // optimization - envelope test
-            if (!EnvelopeInternal.Contains(g.EnvelopeInternal))
-                return false;
-
             // optimizations for rectangle arguments
             if (IsRectangle)
                 return RectangleContains.Contains((Polygon)this, g);
 
             // general case
-            return Relate(g).IsContains();
+            return Factory.GeometryRelate.Contains(this, g);
         }
 
-        /*
-   * <li>The geometries have at least one point each not shared by the other
-   * (or equivalently neither covers the other),
-         */
         /// <summary>
         /// Tests whether this geometry overlaps the specified geometry.
         /// </summary>
         /// <remarks>
         /// The <c>Overlaps</c> predicate has the following equivalent definitions:
         /// <list type="bullet">
-        /// <item><description>The geometries have at least one point each not shared by the other (or equivalently neither covers the other),
+        /// <item><description>The geometries have at least one point each not shared by the other
+        /// (or equivalently neither covers the other),
         /// they have the same dimension,
         /// and the intersection of the interiors of the two geometries has
         /// the same dimension as the geometries themselves.</description></item>
@@ -921,10 +888,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public virtual bool Overlaps(Geometry g)
         {
-            // short-circuit test
-            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
-                return false;
-            return Relate(g).IsOverlaps(Dimension, g.Dimension);
+            return Factory.GeometryRelate.Overlaps(this, g);
         }
 
         /// <summary>
@@ -963,25 +927,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="CoveredBy" />
         public virtual bool Covers(Geometry g)
         {
-            // optimization - lower dimension cannot cover areas
-            if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
-                return false;
-
-            // optimization - P cannot cover a non-zero-length L
-            // Note that a point can cover a zero-length lineal geometry
-            if (g.Dimension == Dimension.Curve && Dimension < Dimension.Curve && g.Length > 0.0)
-                return false;
-
-            // optimization - envelope test
-            if (!EnvelopeInternal.Covers(g.EnvelopeInternal))
-                return false;
-
-            // optimization for rectangle arguments
-            if (IsRectangle)
-                // since we have already tested that the test envelope is covered
-                return true;
-
-            return Relate(g).IsCovers();
+            return Factory.GeometryRelate.Covers(this, g);
         }
 
         /// <summary>Tests whether this geometry is covered by the specified geometry.</summary>
@@ -1012,7 +958,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Covers"/>
         public bool CoveredBy(Geometry g)
         {
-            return g.Covers(this);
+            return Factory.GeometryRelate.CoveredBy(this, g);
         }
 
         /// <summary>
@@ -1040,7 +986,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="IntersectionMatrix"/>
         public virtual bool Relate(Geometry g, string intersectionPattern)
         {
-            return Relate(g).Matches(intersectionPattern);
+            return Factory.GeometryRelate.Relate(this, g, intersectionPattern);
         }
 
         /// <summary>
@@ -1053,10 +999,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public virtual IntersectionMatrix Relate(Geometry g)
         {
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(g);
-
-            return RelateOp.Relate(this, g);
+            return Factory.GeometryRelate.Relate(this, g);
         }
 
         /// <summary>
@@ -1105,11 +1048,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <c>Geometry</c>s are topologically equal</returns>
         public virtual bool EqualsTopologically(Geometry g)
         {
-            // short-circuit test
-            if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
-                return false;
-
-            return Relate(g).IsEquals(Dimension, g.Dimension);
+            return Factory.GeometryRelate.EqualsTopologically(this, g);
         }
 
         /// <summary>

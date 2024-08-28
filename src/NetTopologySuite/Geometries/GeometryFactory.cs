@@ -78,6 +78,15 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Gets a value indicating the geometry relation function set to use
+        /// </summary>
+        /// <returns>A geometry relation function set.</returns>
+        internal GeometryRelate GeometryRelate
+        {
+            get { return GeometryServices.GeometryRelate; }
+        }
+
+        /// <summary>
         /// Gets a value indicating the geometry overlay function set to use
         /// </summary>
         /// <returns>A geometry overlay function set.</returns>

@@ -50,8 +50,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
 
         protected void CheckEquals(string wkta, string wktb, bool expectedValue)
         {
-            CheckPredicate(RelatePredicate.EqualsTopo(), wkta, wktb, expectedValue);
-            CheckPredicate(RelatePredicate.EqualsTopo(), wktb, wkta, expectedValue);
+            CheckPredicate(RelatePredicate.EqualsTopologically(), wkta, wktb, expectedValue);
+            CheckPredicate(RelatePredicate.EqualsTopologically(), wktb, wkta, expectedValue);
         }
 
         protected void CheckRelate(string wkta, string wktb, string expectedValue)
@@ -87,8 +87,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             var b = Read(wktb);
             var prep_a = _RelateNG.Prepare(a);
 
-            Assert.That(prep_a.Evaluate(b, RelatePredicate.EqualsTopo()),
-                        Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.EqualsTopo())), "EqualsTopo");
+            Assert.That(prep_a.Evaluate(b, RelatePredicate.EqualsTopologically()),
+                        Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.EqualsTopologically())), "EqualsTopo");
 
             Assert.That(prep_a.Evaluate(b, RelatePredicate.Intersects()),
                         Is.EqualTo(_RelateNG.Relate(a, b, RelatePredicate.Intersects())), "Intersects");

@@ -51,6 +51,33 @@ namespace NetTopologySuite
         }
 
         /// <summary>
+        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/>
+        /// as default and a <see cref="PrecisionModels.Floating"/> precision model.
+        /// No <see cref="DefaultSRID"/> is specified
+        /// </summary>
+        /// <param name="geometryRelate">The geometry relate function set to use.</param>
+        public NtsGeometryServices(GeometryRelate geometryRelate)
+            : this(CoordinateArraySequenceFactory.Instance,
+                PrecisionModel.Floating.Value,
+                -1, GeometryOverlay.Legacy, geometryRelate, new CoordinateEqualityComparer())
+        {
+        }
+
+        /// <summary>
+        /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/>
+        /// as default and a <see cref="PrecisionModels.Floating"/> precision model.
+        /// No <see cref="DefaultSRID"/> is specified
+        /// </summary>
+        /// <param name="geometryOverlay">The function set to perform overlay operations</param>
+        /// <param name="geometryRelate">The geometry relate function set to use.</param>
+        public NtsGeometryServices(GeometryOverlay geometryOverlay, GeometryRelate geometryRelate)
+            : this(CoordinateArraySequenceFactory.Instance,
+                PrecisionModel.Floating.Value,
+                -1, geometryOverlay, geometryRelate, new CoordinateEqualityComparer())
+        {
+        }
+
+        /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default.<br/>
         /// No <see cref="DefaultSRID"/> is specified.<br/>
         /// The default precision model is defined by <paramref name="precisionModel"/>.<br/>
@@ -108,12 +135,29 @@ namespace NetTopologySuite
         /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
         public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
             GeometryOverlay geometryOverlay, CoordinateEqualityComparer coordinateEqualityComparer)
+            : this(coordinateSequenceFactory, precisionModel, srid, geometryOverlay, GeometryRelate.Legacy, coordinateEqualityComparer)
+        { }
+
+        /// <summary>
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/>, a spatial reference Id (<paramref name="srid"/>) and
+        /// a <see cref="Geometries.GeometryOverlay"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
+        /// <param name="precisionModel">The precision model.</param>
+        /// <param name="srid">The default spatial reference ID</param>
+        /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
+        /// <param name="geometryRelate">The geometry relate function set to use.</param>
+        /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
+            GeometryOverlay geometryOverlay, GeometryRelate geometryRelate, CoordinateEqualityComparer coordinateEqualityComparer)
         {
             DefaultCoordinateSequenceFactory = coordinateSequenceFactory ??
                                                throw new ArgumentNullException(nameof(coordinateSequenceFactory));
             DefaultPrecisionModel = precisionModel ?? throw new ArgumentNullException(nameof(precisionModel));
             DefaultSRID = srid;
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
+            GeometryRelate = geometryRelate ?? throw new ArgumentNullException(nameof(geometryRelate));
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
         }
 
@@ -130,10 +174,16 @@ namespace NetTopologySuite
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the operations to use for geometry overlay.  
+        /// Gets a value indicating the operations to use for geometry overlay.  
         /// </summary>
         /// <returns>A set of geometry overlay functions.</returns>
         public GeometryOverlay GeometryOverlay { get; }
+
+        /// <summary>
+        /// Gets a value indicating the operations to use for geometry relation determination.  
+        /// </summary>
+        /// <returns>A set of geometry relation functions.</returns>
+        public GeometryRelate GeometryRelate { get; }
 
         /// <summary>
         /// Gets an object that is used to test 2 coordinates for equality.

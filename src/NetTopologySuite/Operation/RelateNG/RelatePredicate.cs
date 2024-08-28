@@ -207,7 +207,8 @@ namespace NetTopologySuite.Operation.RelateNG
         /// this subtle limitation, see <see cref="CoveredBy"/>.
         /// </summary>
         /// <returns>The predicate instance</returns>
-        /// <seealso cref="Within"/>
+        /// <seealso cref="Contains"/>
+        /// <seealso cref="CoveredBy"/>
         public static TopologyPredicate Within()
         {
             return new WithinPredicate();
@@ -394,7 +395,7 @@ namespace NetTopologySuite.Operation.RelateNG
         /// To make the relation symmetric
         /// NTS extends the definition to apply to L/P, A/P and A/L cases as well.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The crosses predicate</returns>
         public static TopologyPredicate Crosses()
         {
             return new CrossesPredicate();
@@ -458,7 +459,7 @@ namespace NetTopologySuite.Operation.RelateNG
         /// the pattern <c>T*F**FFF*</c></description></item></list>
         /// </summary>
         /// <returns>The predicate instance</returns>
-        public static TopologyPredicate EqualsTopo()
+        public static TopologyPredicate EqualsTopologically()
         {
             return new EqualsTopoPredicate();
         }
