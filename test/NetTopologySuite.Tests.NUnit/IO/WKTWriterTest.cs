@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System;
 using System.Globalization;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -221,6 +223,29 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("LINESTRING Z(1 1 NaN, 2 2 2)", wkt);
             wkt = _writer2DM.Write(line);
             Assert.AreEqual("LINESTRING (1 1, 2 2)", wkt);
+        }
+
+        [Test]
+        public void TestWktLineStringZM()
+        {
+            var sLineZM = new GeometryFactory().CreateLineString(new Coordinate[]{new CoordinateZM(1,2,3,4), new CoordinateZM(5,6,7,8)});
+            string wkt = new WKTWriter { OutputOrdinates = Ordinates.XYZM }.Write(sLineZM);
+
+            var dLineZM = (LineString)new WKTReader() { IsOldNtsCoordinateSyntaxAllowed = false }.Read(wkt);
+
+            Assert.That(dLineZM, Is.EqualTo(sLineZM));
+            var sCoords = sLineZM.Coordinates;
+            var dCoords = dLineZM.Coordinates;
+
+            Assert.That(dCoords[0].X, Is.EqualTo(sCoords[0].X));
+            Assert.That(dCoords[0].Y, Is.EqualTo(sCoords[0].Y));
+            Assert.That(dCoords[0].Z, Is.EqualTo(sCoords[0].Z));
+            Assert.That(dCoords[0].M, Is.EqualTo(sCoords[0].M));
+
+            Assert.That(dCoords[1].X, Is.EqualTo(sCoords[1].X));
+            Assert.That(dCoords[1].Y, Is.EqualTo(sCoords[1].Y));
+            Assert.That(dCoords[1].Z, Is.EqualTo(sCoords[1].Z));
+            Assert.That(dCoords[1].M, Is.EqualTo(sCoords[1].M));
         }
 
         [Test]
