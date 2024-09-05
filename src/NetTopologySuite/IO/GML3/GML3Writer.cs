@@ -10,8 +10,23 @@ namespace NetTopologySuite.IO.GML3
         /// Initializes a new instance of the <see cref="GML3Writer"/> class.
         /// </summary>
         public GML3Writer()
-            : base(GML2.GMLVersion.Three)
+            : this(false)
         {
+        }
+
+        public GML3Writer(bool writeSrsNameAttribute)
+            : base(GML2.GMLVersion.Three, writeSrsNameAttribute)
+        {
+        }
+
+        /// <summary>
+        /// Provides the srsName exposing the SRID of the geometry
+        /// </summary>
+        /// <param name="srid">The SRID of the geometry</param>
+        /// <returns></returns>
+        protected override string GetSrsName(int srid)
+        {
+            return $"https://www.opengis.net/def/crs/EPSG/0/{srid}";
         }
     }
 }
