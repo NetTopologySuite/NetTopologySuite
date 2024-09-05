@@ -246,25 +246,19 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the coordinate is valid</returns>
         /// <see cref="double.IsInfinity"/>
         /// <see cref="double.IsNaN"/>
-        public bool IsValid 
-        {
-            get
-            {
-                if (!/*double.*/IsFinite(X)) return false;
-                if (!/*double.*/IsFinite(Y)) return false;
-                return true;
-            }
-        }
+        public bool IsValid => IsValidOrdinateValue(X) && IsValidOrdinateValue(Y);
 
         /// <summary>
-        /// Predicate to check if a <see cref="double"/> value is finite.
-        /// <para/>
-        /// It is finite if both <see cref="double.IsInfinity"/> and <see cref="double.IsNaN"/> return <c>false</c>
+        /// Tests if a value is a valid for an ordinate.
+        /// Valid ordinate values are finite.
         /// </summary>
-        /// <param name="value">The value to test</param>
-        /// <returns><c>value</c></returns>
+        /// <param name="value">The ordinate value</param>
+        /// <returns><c>true</c> if <paramref name="value"/> has a finite value</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsFinite(double value) => !double.IsInfinity(value) && !double.IsNaN(value);
+        public static bool IsValidOrdinateValue(double value)
+        {
+            return (~BitConverter.DoubleToInt64Bits(value) & 0x7ff0000000000000L) != 0;
+        }
 
         /// <summary>
         /// Returns whether the planar projections of the two <c>Coordinate</c>s are equal.
