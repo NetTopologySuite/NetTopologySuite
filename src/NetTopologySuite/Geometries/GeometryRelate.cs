@@ -5,24 +5,10 @@ using RelatePredicate = NetTopologySuite.Operation.RelateNG.RelatePredicate;
 
 namespace NetTopologySuite.Geometries
 {
-    /**
-     * Internal class which encapsulates the runtime switch to use RelateNG.
-     * <p>
-     * This class allows the {@link Geometry} predicate methods to be 
-     * switched between the original {@link RelateOp} algorithm 
-     * and the modern {@link RelateNG} codebase
-     * via a system property <code>jts.relate</code>.
-     * <ul>
-     * <li><code>jts.relate=old</code> - (default) use original RelateOp algorithm
-     * <li><code>jts.relate=ng</code> - use RelateNG
-     * </ul>
-     * 
-     * @author mdavis
-     *
-     */
     /// <summary>
+    /// Class which provides the available Relate operations for <see cref="NtsGeometryServices"/>.
     /// </summary>
-    /// <author>Martin Davis</author>
+    /// <author>Felix Obermaier</author>
     public abstract class GeometryRelate
     {
         /// <summary>
