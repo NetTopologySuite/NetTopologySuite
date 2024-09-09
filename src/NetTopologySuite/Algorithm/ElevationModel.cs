@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using System;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -11,7 +12,6 @@ namespace NetTopologySuite.Algorithm
 
         private readonly double _z;
         private readonly Envelope _extent;
-        private readonly int _srid;
 
         /// <summary>
         /// Creates an elevation model that always returns <see cref="Coordinate.NullOrdinate"/> as result.
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Algorithm
         /// Creates an elevation model that always returns <paramref name="z"/> as result.
         /// </summary>
         /// <param name="z">The result value for <see cref="GetZ(Coordinate)"/> or its overloads.</param>
-        internal ElevationModel(double z)
+        public ElevationModel(double z)
         {
             _z = z;
         }
@@ -33,12 +33,10 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="z">The result value for <see cref="GetZ(Coordinate)"/> or its overloads.</param>
         /// <param name="extent">The extent where this elevation model is valid</param>
-        /// <param name="srid">The spatial reference id</param>
-        public ElevationModel(double z, Envelope extent, int srid)
+        public ElevationModel(double z, Envelope extent)
         {
             _z = z;
             _extent = extent;
-            _srid = srid;
         }
 
         /// <summary>
@@ -66,56 +64,65 @@ namespace NetTopologySuite.Algorithm
         public Envelope Extent { get => _extent; }
 
         /// <summary>
-        /// Gets a value indicating the spatial reference system this elevation model belongs to.
-        /// </summary>
-        public int SRID { get => _srid; }
-
-        /// <summary>
         /// Gets the z-ordinate value for a given <paramref name="coordinate"/>.
+        /// <para/>
+        /// For locations outside of <see cref="Extent"/>, <see cref="Coordinate.NullOrdinate"/> is returned.
         /// </summary>
         /// <param name="coordinate">A coordinate to get the z-ordinate value.</param>
         /// <returns>The z-ordinate value</returns>
         public virtual double GetZ(Coordinate coordinate)
         {
-            if (_extent != null && !_extent.Contains(coordinate))
-                return Coordinate.NullOrdinate;
-
-            return _z;
+            if (!double.IsNaN(coordinate.Z))
+                return coordinate.Z;
+            return GetZ(coordinate.X, coordinate.Y);
         }
 
         /// <summary>
         /// Gets the z-ordinate value for a given pair of <paramref name="x"/> and <paramref name="y"/> ordinates.
+        /// <para/>
+        /// For locations outside of <see cref="Extent"/>, <see cref="Coordinate.NullOrdinate"/> is returned.
         /// </summary>
         /// <param name="x">A x-ordinate value.</param>
         /// <param name="y">A y-ordinate value.</param>
         /// <returns>The z-ordinate value</returns>
-        public double GetZ(double x, double y) => GetZ(new Coordinate(x, y));
+        public virtual double GetZ(double x, double y)
+        {
+            Span<double> xy = stackalloc double[2];
+            Span<double> z = stackalloc double[1];
+            xy[0] = x;
+            xy[1] = y;
+            z[0] = double.NaN;
+            GetZ(xy, z);
 
+            return z[0];
+        }
 
         /// <summary>
-        /// Creates a copy of <paramref name="c"/> that has the z-ordinate value at <paramref name="c"/>.
-        /// If the elevation model can't retrieve a 
+        /// Gets missing <paramref name="z"/>-ordinate values for <paramref name="xy"/>-ordinate pairs.
+        /// <para/>
+        /// For locations outside of <see cref="Extent"/>, <see cref="Coordinate.NullOrdinate"/> is set.
+        /// <para/>
+        /// In order to update z-ordinate at index idx <c>double.IsNaN(z[idx])</c> has to be true.
         /// </summary>
-        /// <param name="c">A coordinate</param>
-        /// <returns>A copy of <paramref name="c"/> with the z-ordinate value.</returns>
-        public Coordinate CopyWithZ(Coordinate c)
+        /// <param name="xy">An array of x- and y- ordinates</param>
+        /// <param name="z">An array for the missing z-ordinate values</param>
+        /// <exception cref="ArgumentException">Thrown if xy span isn't twice the size of z-span</exception>
+        public virtual void GetZ(ReadOnlySpan<double> xy, Span<double> z)
         {
-            // If it already has a z-ordinate value, return a copy
-            if (!double.IsNaN(c.Z)) return c.Copy();
+            if (xy.Length == 0) return;
 
-            // Get the z-ordinate value for c. If no z-ordinate value was supplied, return a copy of c
-            double z = GetZ(c);
-            if (double.IsNaN(z)) return c.Copy();
+            if (xy.Length != 2 * z.Length)
+                throw new ArgumentException($"xy-span not twice the size of z-span.");
 
-            int dim = Coordinates.Dimension(c);
-            int measures = Coordinates.Measures(c);
-            int spatial = Math.Max(3, dim - measures);
-            dim = spatial + measures;
-            var copy = Coordinates.Create(dim, measures);
-            copy.CoordinateValue = c;
-            copy.Z = z;
-            return copy;
+            for (int i = 0, j = 0; i < z.Length; i+=2, j++)
+            {
+                if (double.IsNaN(z[j]))
+                {
+                    z[j] = _extent != null && !_extent.Contains(xy[i], xy[i+1])
+                        ? Coordinate.NullOrdinate
+                        : _z;
+                }
+            }
         }
     }
-
 }

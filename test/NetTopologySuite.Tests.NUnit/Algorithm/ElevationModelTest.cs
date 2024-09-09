@@ -13,7 +13,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var emdl = new ElevationModel();
             Assert.That(emdl, Is.Not.Null);
             Assert.That(emdl.Extent, Is.Null);
-            Assert.That(emdl.SRID, Is.EqualTo(0));
 
             foreach ((var pos, double z) in SamplePosZs(double.NaN))
                 Assert.That(emdl.GetZ(pos), Is.EqualTo(double.NaN));
@@ -25,20 +24,18 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var emdl = new ElevationModel(1d);
             Assert.That(emdl, Is.Not.Null);
             Assert.That(emdl.Extent, Is.Null);
-            Assert.That(emdl.SRID, Is.EqualTo(0));
 
             foreach((var pos, double z) in SamplePosZs(1d))
                 Assert.That(emdl.GetZ(pos), Is.EqualTo(1d));
         }
 
-        [TestCase(4326, -10, 10, 30, 60, 10)]
-        public void TestConstructorWithAllArguments(int srid, double minX, double maxX, double minY, double maxY, double defaultZ)
+        [TestCase(-10, 10, 30, 60, 10)]
+        public void TestConstructorWithAllArguments(double minX, double maxX, double minY, double maxY, double defaultZ)
         {
-            var emdl = new ElevationModel(defaultZ, new Envelope(minX, maxX, minY, maxY), srid);
+            var emdl = new ElevationModel(defaultZ, new Envelope(minX, maxX, minY, maxY));
 
             Assert.That(emdl, Is.Not.Null);
             Assert.That(emdl.Extent, Is.Not.Null);
-            Assert.That(emdl.SRID, Is.EqualTo(srid));
 
             int i = 0;
             foreach ((var pos, double z) in SamplePosZs(emdl.Extent, defaultZ))
@@ -77,7 +74,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             yield return (new Coordinate(), defaultZ);
         }
-
 
         private static IEnumerable<(Coordinate pos, double z)> SamplePosZs(Envelope extent, double defaultZ)
         {

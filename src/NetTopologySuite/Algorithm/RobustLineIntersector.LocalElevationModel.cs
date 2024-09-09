@@ -15,6 +15,7 @@ namespace NetTopologySuite.Algorithm
             private readonly Coordinate _p1, _p2, _q1, _q2;
             private readonly OrientationIndex _Pq1, _Pq2, _Qp1, _Qp2;
             private readonly bool _collinear;
+            private readonly bool _hasZ;
 
             public LocalElevationModel(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2,
                 OrientationIndex Pq1, OrientationIndex Pq2, OrientationIndex Qp1, OrientationIndex Qp2,
@@ -25,6 +26,10 @@ namespace NetTopologySuite.Algorithm
                 _Pq1 = Pq1; _Pq2 = Pq2;
                 _Qp1 = Qp1; _Qp2 = Qp2;
                 _collinear = collinear;
+
+                // Flag indicating if any of the relevant coordinates has a z-ordinage value
+                _hasZ = !double.IsNaN(_p1.Z) || !double.IsNaN(_p2.Z) ||
+                        !double.IsNaN(_q1.Z) || !double.IsNaN(_q2.Z);
             }
 
             /* 
@@ -43,6 +48,8 @@ namespace NetTopologySuite.Algorithm
             /// <inheritdoc/>
             public override double GetZ(Coordinate c)
             {
+                if (!_hasZ) return Coordinate.NullOrdinate;
+
                 if (_collinear)
                 {
                     if (_q1inP && _q2inP)
@@ -63,13 +70,13 @@ namespace NetTopologySuite.Algorithm
                     if (_Pq1 == 0 || _Pq2 == 0 || _Qp1 == 0 || _Qp2 == 0)
                     {
                         if (_p1.Equals2D(_q1))
-                            return GetZFromEitherOr(_p1, _q1);
+                            return GetZFromEither(_p1, _q1);
                         if (_p1.Equals2D(_q2))
-                            return GetZFromEitherOr(_p1, _q2);
+                            return GetZFromEither(_p1, _q2);
                         if (_p2.Equals2D(_q1))
-                            return GetZFromEitherOr(_p2, _q1);
+                            return GetZFromEither(_p2, _q1);
                         if (_p2.Equals2D(_q2))
-                            return GetZFromEitherOr(_p2, _q2);
+                            return GetZFromEither(_p2, _q2);
                         if (_Pq1 == 0)
                             return GetZOrInterpolate(_q1, _p1, _p2);
                         if (_Pq2 == 0)
@@ -92,13 +99,23 @@ namespace NetTopologySuite.Algorithm
             }
 
             /// <summary>
+            /// Not supported
+            /// </summary>
+            public override double GetZ(double x, double y) => throw new NotSupportedException();
+
+            /// <summary>
+            /// Not supported
+            /// </summary>
+            public override void GetZ(ReadOnlySpan<double> xy, Span<double> z) => throw new NotSupportedException();
+
+            /// <summary>
             /// Gets the Z value of the first argument if present,
             /// otherwise the value of the second argument.
             /// </summary>
             /// <param name="p">A coordinate, possibly with Z</param>
             /// <param name="q">A coordinate, possibly with Z</param>
             /// <returns>The Z value if present</returns>
-            private static double GetZFromEitherOr(Coordinate p, Coordinate q)
+            private static double GetZFromEither(Coordinate p, Coordinate q)
             {
                 double z = p.Z;
                 if (double.IsNaN(z))
