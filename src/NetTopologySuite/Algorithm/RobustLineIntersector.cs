@@ -110,19 +110,19 @@ namespace NetTopologySuite.Algorithm
                  */
                 if (p1.Equals2D(q1))
                 {
-                    p = p1;
+                    p = WithZ(p1, q1);
                 }
                 else if (p1.Equals2D(q2))
                 {
-                    p = p1;
+                    p = WithZ(p1, q2);
                 }
                 else if (p2.Equals2D(q1))
                 {
-                    p = p2;
+                    p = WithZ(p2, q1);
                 }
                 else if (p2.Equals2D(q2))
                 {
-                    p = p2;
+                    p = WithZ(p2, q2);
                 }
                 /*
                  * Now check to see if any endpoint lies on the interior of the other segment.
@@ -344,6 +344,20 @@ namespace NetTopologySuite.Algorithm
             return nearestPt;
         }
 
+        /// <summary>
+        /// Returns either <paramref name="p"/> or <paramref name="q"/>, depending on which one has a valid z-ordinate value
+        /// </summary>
+        /// <param name="p">A coordinate, possibly with z-ordinate</param>
+        /// <param name="q">A coordinate, possibly with z-ordinate</param>
+        /// <returns>Returns eihter p or q.</returns>
+        private static Coordinate WithZ(Coordinate p, Coordinate q)
+        {
+            return double.IsNaN(p.Z) ? q : p;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the elevation model to use when z-ordinate is not known
+        /// </summary>
         public ElevationModel ElevationModel { get; set; }
 
         /// <summary>
@@ -353,6 +367,19 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public static bool UseLocalElevationModel { get; set; } = true;
 
+        /// <summary>
+        /// Factory method to create an elevation model for retrieving missing z-ordinate values
+        /// </summary>
+        /// <param name="p1">Start point of the first line segment (P)</param>
+        /// <param name="p2">End point of the first line segment (P)</param>
+        /// <param name="q1">Start point of the second line segment (Q)</param>
+        /// <param name="q2">End point of the second line segment (Q)</param>
+        /// <param name="Pq1">Orientation of q1 in regartd to P</param>
+        /// <param name="Pq2">Orientation of q2 in regartd to P</param>
+        /// <param name="Qp1">Orientation of p1 in regartd to Q</param>
+        /// <param name="Qp2">Orientation of p2 in regartd to Q</param>
+        /// <param name="collinear">Flag indicating that the two line segments are collinear</param>
+        /// <returns>An elevation model</returns>
         private ElevationModel CreateElevationModel(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2,
             OrientationIndex Pq1, OrientationIndex Pq2, OrientationIndex Qp1, OrientationIndex Qp2,
             bool collinear)
