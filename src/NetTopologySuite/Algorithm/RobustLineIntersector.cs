@@ -8,6 +8,22 @@ namespace NetTopologySuite.Algorithm
     public partial class RobustLineIntersector : LineIntersector
     {
         /// <summary>
+        /// Creates an instance of this class. No <see cref="Algorithm.ElevationModel"/> is assigned
+        /// </summary>
+        public RobustLineIntersector()
+            :this(null)
+        {
+        }
+
+        /// <summary>
+        /// Creates an instance of this class assigning the provided <see cref="Algorithm.ElevationModel"/>.
+        /// </summary>
+        public RobustLineIntersector(ElevationModel elevationModel)
+        {
+            ElevationModel = elevationModel;
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="p"></param>
@@ -358,14 +374,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Gets or sets a value indicating the elevation model to use when z-ordinate is not known
         /// </summary>
-        public ElevationModel ElevationModel { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating if a local <see cref="Algorithm.ElevationModel"/> should be computed from
-        /// the coordinates involved in the robust line intersection test, if other means to
-        /// get one fail. 
-        /// </summary>
-        public static bool UseLocalElevationModel { get; set; } = true;
+        public ElevationModel ElevationModel { get; }
 
         /// <summary>
         /// Factory method to create an elevation model for retrieving missing z-ordinate values
@@ -384,14 +393,7 @@ namespace NetTopologySuite.Algorithm
             OrientationIndex Pq1, OrientationIndex Pq2, OrientationIndex Qp1, OrientationIndex Qp2,
             bool collinear)
         {
-            var res = ElevationModel;
-            if (res != null)
-                return ElevationModel;
-
-            if (UseLocalElevationModel)
-                return new LocalElevationModel(p1, p2, q1, q2, Pq1, Pq2, Qp1, Qp2, collinear);
-
-            return ElevationModel.Default;
+            return ElevationModel ?? new LocalElevationModel(p1, p2, q1, q2, Pq1, Pq2, Qp1, Qp2, collinear);
         }
     }
 }
