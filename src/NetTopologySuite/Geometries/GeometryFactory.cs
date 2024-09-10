@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
 
@@ -57,7 +58,7 @@ namespace NetTopologySuite.Geometries
         private readonly CoordinateSequenceFactory _coordinateSequenceFactory;
 
         /// <summary>
-        ///
+        /// Gets a value indicating the factory to use for creating <see cref="CoordinateSequence"/>s
         /// </summary>
         public CoordinateSequenceFactory CoordinateSequenceFactory => _coordinateSequenceFactory;
 
@@ -85,6 +86,16 @@ namespace NetTopologySuite.Geometries
         {
             get { return GeometryServices.GeometryRelate; }
         }
+
+
+        [NonSerialized]
+        private ElevationModel _elevationModel;
+
+        /// <summary>
+        /// Gets a value indicating the elevation model that is attached to this geometry factory
+        /// </summary>
+        public ElevationModel ElevationModel => _elevationModel;
+
 
         /// <summary>
         /// Gets a value indicating the geometry overlay function set to use
@@ -130,11 +141,28 @@ namespace NetTopologySuite.Geometries
         /// <param name="services"><c>NtsGeometryServices</c> object creating this factory</param>
         public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory,
             NtsGeometryServices services)
+            :this(precisionModel, null, srid, coordinateSequenceFactory, services)
+        { }
+
+        /// <summary>
+        /// Constructs a <c>GeometryFactory</c> that generates Geometries having the given
+        /// <paramref name="precisionModel">precision model</paramref>, <paramref name="elevationModel"/>,
+        /// <paramref name="srid">spatial-reference ID</paramref>, <paramref name="coordinateSequenceFactory">CoordinateSequence</paramref> and
+        /// <paramref name="services"><c>NtsGeometryServices</c></paramref>.
+        /// </summary>
+        /// <param name="precisionModel">A precision model</param>
+        /// <param name="elevationModel">An elevation model. May be <c>null</c></param>
+        /// <param name="srid">A spatial reference id</param>
+        /// <param name="coordinateSequenceFactory">A coordinate sequence factory</param>
+        /// <param name="services"><c>NtsGeometryServices</c> object creating this factory</param>
+        public GeometryFactory(PrecisionModel precisionModel, ElevationModel elevationModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory,
+            NtsGeometryServices services)
         {
             _precisionModel = precisionModel;
+            _elevationModel = elevationModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _srid = srid;
-            _services = services;
+            _services = services ?? NtsGeometryServices.Instance;
         }
 
         /// <summary>
@@ -740,6 +768,7 @@ namespace NetTopologySuite.Geometries
         protected void OnDeserialized(StreamingContext context)
         {
             _services = NtsGeometryServices.Instance;
+            _elevationModel = NtsGeometryServices.Instance.DefaultElevationModel;
         }
     }
 }

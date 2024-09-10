@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 
@@ -151,11 +153,31 @@ namespace NetTopologySuite
         /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
         public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
             GeometryOverlay geometryOverlay, GeometryRelate geometryRelate, CoordinateEqualityComparer coordinateEqualityComparer)
+            : this(coordinateSequenceFactory, precisionModel, srid, geometryOverlay, geometryRelate, coordinateEqualityComparer, null)
+        { }
+
+        /// <summary>
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>,
+        /// <see cref="PrecisionModel"/>, a spatial reference Id (<paramref name="srid"/>) and
+        /// a <see cref="Geometries.GeometryOverlay"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
+        /// <param name="precisionModel">The precision model.</param>
+        /// <param name="srid">The default spatial reference ID</param>
+        /// <param name="geometryOverlay">The geometry overlay function set to use.</param>
+        /// <param name="geometryRelate">The geometry relate function set to use.</param>
+        /// <param name="coordinateEqualityComparer">The equality comparer for coordinates</param>
+        /// <param name="elevationModel">The elevation model that is used as default. May be <c>null</c></param>
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel, int srid,
+            GeometryOverlay geometryOverlay, GeometryRelate geometryRelate, CoordinateEqualityComparer coordinateEqualityComparer,
+            ElevationModel elevationModel)
         {
             DefaultCoordinateSequenceFactory = coordinateSequenceFactory ??
                                                throw new ArgumentNullException(nameof(coordinateSequenceFactory));
             DefaultPrecisionModel = precisionModel ?? throw new ArgumentNullException(nameof(precisionModel));
             DefaultSRID = srid;
+            DefaultElevationModel = elevationModel;
+
             GeometryOverlay = geometryOverlay ?? throw new ArgumentNullException(nameof(geometryOverlay));
             GeometryRelate = geometryRelate ?? throw new ArgumentNullException(nameof(geometryRelate));
             CoordinateEqualityComparer = coordinateEqualityComparer ?? throw new ArgumentNullException(nameof(coordinateEqualityComparer));
@@ -197,14 +219,19 @@ namespace NetTopologySuite
         public int DefaultSRID { get; }
 
         /// <summary>
-        /// Gets or sets the coordiate sequence factory to use
+        /// Gets the default coordiate sequence factory to use
         /// </summary>
         public CoordinateSequenceFactory DefaultCoordinateSequenceFactory { get; }
 
         /// <summary>
-        /// Gets or sets the default precision model
+        /// Gets the default precision model
         /// </summary>
         public PrecisionModel DefaultPrecisionModel { get; }
+
+        /// <summary>
+        /// Gets the default elevation model
+        /// </summary>
+        public ElevationModel DefaultElevationModel { get; }
 
         internal int NumFactories => m_factories.Count;
 
@@ -279,6 +306,18 @@ namespace NetTopologySuite
         /// <param name="coordinateSequenceFactory"></param>
         /// <returns>A geometry factory</returns>
         public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+            => CreateGeometryFactory(precisionModel, DefaultElevationModel, srid, coordinateSequenceFactory);
+
+        /// <summary>
+        /// Creates or retrieves a geometry factory using <paramref name="srid"/>, <paramref name="precisionModel"/>
+        /// <paramref name="elevationModel"/> and <paramref name="coordinateSequenceFactory"/>.
+        /// </summary>
+        /// <param name="precisionModel">The precision model to use.</param>
+        /// <param name="elevationModel">The elevation model to use. May be <c>null</c></param>
+        /// <param name="srid">The spatial reference id.</param>
+        /// <param name="coordinateSequenceFactory"></param>
+        /// <returns>A geometry factory</returns>
+        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, ElevationModel elevationModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
         {
             if (precisionModel is null)
             {
@@ -290,8 +329,8 @@ namespace NetTopologySuite
                 throw new ArgumentNullException(nameof(coordinateSequenceFactory));
             }
 
-            return m_factories.GetOrAdd(new GeometryFactoryKey(precisionModel, srid, coordinateSequenceFactory),
-                                        key => CreateGeometryFactoryCore(key.PrecisionModel, key.SRID, key.CoordinateSequenceFactory));
+            return m_factories.GetOrAdd(new GeometryFactoryKey(precisionModel, elevationModel, srid, coordinateSequenceFactory),
+                                        key => CreateGeometryFactoryCore(key.PrecisionModel, key.ElevationModel, key.SRID, key.CoordinateSequenceFactory));
         }
 
         /// <summary>
@@ -326,34 +365,85 @@ namespace NetTopologySuite
         /// </para>
         /// </remarks>
         protected virtual GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+            => CreateGeometryFactoryCore(precisionModel, null, srid, coordinateSequenceFactory);
+
+        /// <summary>
+        /// Creates a <see cref="GeometryFactory"/> based on the given parameters.
+        /// </summary>
+        /// <param name="precisionModel">
+        /// The value for <see cref="GeometryFactory.PrecisionModel"/>.
+        /// </param>
+        /// <param name="elevationModel">
+        /// The value for <see cref="GeometryFactory.ElevationModel"/>. May be <c>null</c></param>
+        /// <param name="srid">
+        /// The value for <see cref="GeometryFactory.SRID"/>.
+        /// </param>
+        /// <param name="coordinateSequenceFactory">
+        /// The value for <see cref="GeometryFactory.CoordinateSequenceFactory"/>.
+        /// </param>
+        /// <returns>
+        /// A <see cref="GeometryFactory"/> that has the given values.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This method is expected to be safe to call from any number of threads at once.
+        /// </para>
+        /// <para>
+        /// Implementations <strong>must</strong> make sure to use a constructor which
+        /// is properly assigning <see cref="GeometryOverlay"/> to the factory.
+        /// </para>
+        /// <para>
+        /// Although the result for a given set of parameters is cached, there is no guarantee that,
+        /// once this method is called with some set of parameters, it will never be called again
+        /// with an exactly equal set of parameters.  When this does happen, an arbitrary result is
+        /// chosen as the winner (not necessarily the first one to start or finish), and all other
+        /// results are discarded.
+        /// </para>
+        /// </remarks>
+        protected virtual GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, ElevationModel elevationModel,
+            int srid, CoordinateSequenceFactory coordinateSequenceFactory)
         {
-            return new GeometryFactory(precisionModel, srid, coordinateSequenceFactory, this);
+            return new GeometryFactory(precisionModel, elevationModel, srid, coordinateSequenceFactory, this);
         }
 
         private readonly struct GeometryFactoryKey : IEquatable<GeometryFactoryKey>
         {
-            public GeometryFactoryKey(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory factory)
+            public GeometryFactoryKey(PrecisionModel precisionModel, ElevationModel elevationModel, int srid, CoordinateSequenceFactory factory)
             {
                 PrecisionModel = precisionModel;
+                ElevationModel = elevationModel;
                 CoordinateSequenceFactory = factory;
                 SRID = srid;
             }
 
             public PrecisionModel PrecisionModel { get; }
 
+            public ElevationModel ElevationModel { get; }
+
             public CoordinateSequenceFactory CoordinateSequenceFactory { get; }
 
             public int SRID { get; }
 
-            public override int GetHashCode() => (PrecisionModel, CoordinateSequenceFactory, SRID).GetHashCode();
+            public override int GetHashCode()
+            {
+                int res = (PrecisionModel, CoordinateSequenceFactory, SRID).GetHashCode();
+                if (ElevationModel != null) res ^= ElevationModel.GetHashCode();
+
+                return res;
+            }
 
             public override bool Equals(object obj) => obj is GeometryFactoryKey other && Equals(other);
 
             public bool Equals(GeometryFactoryKey other)
             {
-                return SRID == other.SRID &&
-                       Equals(CoordinateSequenceFactory, other.CoordinateSequenceFactory) &&
-                       Equals(PrecisionModel, other.PrecisionModel);
+                if (SRID != other.SRID) return false;
+                if (!Equals(CoordinateSequenceFactory, other.CoordinateSequenceFactory)) return false;
+                if (!Equals(PrecisionModel, other.PrecisionModel)) return false;
+
+                if ((ElevationModel != null || other.ElevationModel != null) &&
+                    Equals(ElevationModel, other.ElevationModel)) return false;
+
+                return true;
             }
         }
     }
