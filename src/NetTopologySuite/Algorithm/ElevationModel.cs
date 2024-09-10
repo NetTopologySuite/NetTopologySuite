@@ -8,7 +8,7 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class ElevationModel
     {
-        private static ElevationModel _default = new ElevationModel();
+        private static readonly ElevationModel _noZ = new ElevationModel();
 
         private readonly double _z;
         private readonly Envelope _extent;
@@ -43,15 +43,9 @@ namespace NetTopologySuite.Algorithm
         /// Gets or sets a value indicating the default <see cref="ElevationModel"/>
         /// </summary>
         /// <remarks>The value <c>null</c> cannot be assigned to this property, it will be converted to a no-op elevation model.</remarks>
-        public static ElevationModel Default
+        public static ElevationModel NoZ
         {
-            get => _default;
-            set
-            {
-                if (value == null)
-                    value = new ElevationModel();
-                _default = value;
-            }
+            get => _noZ;
         }
 
         /// <summary>

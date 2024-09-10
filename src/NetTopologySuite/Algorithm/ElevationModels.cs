@@ -28,7 +28,7 @@ namespace NetTopologySuite.Algorithm
 
             int dim = Coordinates.Dimension(c);
             int measures = Coordinates.Measures(c);
-            int spatial = System.Math.Max(3, dim - measures);
+            int spatial = Math.Max(3, dim - measures);
             dim = spatial + measures;
             var copy = Coordinates.Create(dim, measures);
             copy.CoordinateValue = c;
