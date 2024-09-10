@@ -122,7 +122,7 @@ namespace NetTopologySuite.Triangulate.Polygon
 
         private void NodeRings()
         {
-            var noder = new PolygonNoder(_shellRing, _holeRings);
+            var noder = new PolygonNoder(_shellRing, _holeRings, _inputPolygon.Factory.ElevationModel);
             noder.Node();
             if (noder.IsShellNoded)
             {
@@ -473,7 +473,7 @@ namespace NetTopologySuite.Triangulate.Polygon
         private class InteriorIntersectionDetector : ISegmentIntersector
         {
 
-            private readonly LineIntersector li = new RobustLineIntersector();
+            private readonly LineIntersector _li = new RobustLineIntersector(ElevationModel.NoZ);
 
             public bool HasIntersection { get; private set; }
 
@@ -484,14 +484,14 @@ namespace NetTopologySuite.Triangulate.Polygon
                 var p10 = ss1.Coordinates[segIndex1];
                 var p11 = ss1.Coordinates[segIndex1 + 1];
 
-                li.ComputeIntersection(p00, p01, p10, p11);
-                if (li.IntersectionNum == 0)
+                _li.ComputeIntersection(p00, p01, p10, p11);
+                if (_li.IntersectionNum == 0)
                 {
                     return;
                 }
-                else if (li.IntersectionNum == 1)
+                else if (_li.IntersectionNum == 1)
                 {
-                    if (li.IsInteriorIntersection())
+                    if (_li.IsInteriorIntersection())
                         HasIntersection = true;
                 }
                 else

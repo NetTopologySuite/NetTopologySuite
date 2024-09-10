@@ -33,6 +33,16 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
+        /// Creates an intersection finder using a <see cref="RobustLineIntersector"/>
+        /// with an <see cref="ElevationModel"/>
+        /// </summary>
+        /// <param name="em">An elevation model. May be <c>null</c></param>
+        public SegmentIntersectionDetector(ElevationModel em)
+            : this(new RobustLineIntersector(em))
+        {
+        }
+
+        /// <summary>
         /// Creates an intersection finder using a given <see cref="LineIntersector"/>
         /// </summary>
         /// <param name="li">The LineIntersector to use</param>

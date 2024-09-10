@@ -37,6 +37,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly BufferParameters _bufParams;
 
         private PrecisionModel _workingPrecisionModel;
+
         private INoder _workingNoder;
         private GeometryFactory _geomFact;
         private PlanarGraph _graph;
@@ -66,6 +67,12 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
+        /// Gets or sets the elevation model to use during the curve computation and noding,
+        /// if it is different to the elevation model of the Geometry.
+        /// </summary>
+        public ElevationModel WorkingElevationModel { get; set; }
+
+        /// <summary>
         /// Sets the <see cref="INoder"/> to use during noding.
         /// This allows choosing fast but non-robust noding, or slower
         /// but robust noding.
@@ -86,14 +93,18 @@ namespace NetTopologySuite.Operation.Buffer
 
         public Geometry Buffer(Geometry g, double distance)
         {
-            var precisionModel = _workingPrecisionModel;
-            if (precisionModel == null)
-                precisionModel = g.PrecisionModel;
-
             // factory must be the same as the one used by the input
             _geomFact = g.Factory;
 
-            var curveSetBuilder = new BufferCurveSetBuilder(g, distance, precisionModel, _bufParams);
+            var precisionModel = _workingPrecisionModel;
+            if (precisionModel == null)
+                precisionModel = _geomFact.PrecisionModel;
+
+            var em = WorkingElevationModel;
+            if (em == null)
+                em = _geomFact.ElevationModel;
+
+            var curveSetBuilder = new BufferCurveSetBuilder(g, distance, precisionModel, em, _bufParams);
             curveSetBuilder.InvertOrientation = InvertOrientation;
 
             var bufferSegStrList = curveSetBuilder.GetCurves();
@@ -111,7 +122,7 @@ namespace NetTopologySuite.Operation.Buffer
              * (see JTS-852).
              */
             bool isNodingValidated = distance == 0.0;
-            ComputeNodedEdges(bufferSegStrList, precisionModel, isNodingValidated);
+            ComputeNodedEdges(bufferSegStrList, precisionModel, em, isNodingValidated);
 
             _graph = new PlanarGraph(new OverlayNodeFactory());
             _graph.AddEdges(_edgeList.Edges);
@@ -131,12 +142,12 @@ namespace NetTopologySuite.Operation.Buffer
             return resultGeom;
         }
 
-        private INoder GetNoder(PrecisionModel precisionModel)
+        private INoder GetNoder(PrecisionModel precisionModel, ElevationModel em)
         {
             if (_workingNoder != null) return _workingNoder;
 
             // otherwise use a fast (but non-robust) noder
-            var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
+            var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector(em) { PrecisionModel = precisionModel}));
 
             //var li = new RobustLineIntersector();
             //li.PrecisionModel = precisionModel;
@@ -149,9 +160,9 @@ namespace NetTopologySuite.Operation.Buffer
             //                                  precisionModel.getScale());
         }
 
-        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, PrecisionModel precisionModel, bool isNodingValidated)
+        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, PrecisionModel precisionModel, ElevationModel em, bool isNodingValidated)
         {
-            var noder = GetNoder(precisionModel);
+            var noder = GetNoder(precisionModel, em);
             noder.ComputeNodes(bufferSegStrList);
             var nodedSegStrings = noder.GetNodedSubstrings();
 

@@ -87,13 +87,18 @@ namespace NetTopologySuite.Operation.Buffer
 
         public OffsetSegmentGenerator(PrecisionModel precisionModel,
             BufferParameters bufParams, double distance)
+            : this(precisionModel, null, bufParams, distance)
+        { }
+
+        public OffsetSegmentGenerator(PrecisionModel precisionModel,
+            ElevationModel em, BufferParameters bufParams, double distance)
         {
             _precisionModel = precisionModel;
             _bufParams = bufParams;
 
             // compute intersections in full precision, to provide accuracy
             // the points are rounded as they are inserted into the curve line
-            _li = new RobustLineIntersector();
+            _li = new RobustLineIntersector(em);
 
             int quadSegs = bufParams.QuadrantSegments;
             if (quadSegs < 1) quadSegs = 1;

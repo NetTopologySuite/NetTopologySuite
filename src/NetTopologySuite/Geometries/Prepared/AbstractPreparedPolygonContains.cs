@@ -210,7 +210,7 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
 
-            var intDetector = new SegmentIntersectionDetector();
+            var intDetector = new SegmentIntersectionDetector(geom.Factory.ElevationModel);
             intDetector.FindAllIntersectionTypes = true;
             prepPoly.IntersectionFinder.Intersects(lineSegStr, intDetector);
 

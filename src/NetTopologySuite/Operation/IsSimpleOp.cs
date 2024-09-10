@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation
                 return true;
 
             var graph = new GeometryGraph(0, geom);
-            var li = new RobustLineIntersector();
+            var li = new RobustLineIntersector(geom.Factory.ElevationModel);
             var si = graph.ComputeSelfNodes(li, true);
             // if no self-intersection, must be simple
             if (!si.HasIntersection) return true;

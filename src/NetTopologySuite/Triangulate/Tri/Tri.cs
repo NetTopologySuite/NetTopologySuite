@@ -408,7 +408,7 @@ namespace NetTopologySuite.Triangulate.Tri
             Assert.IsTrue(e1.Equals2D(n0), "Edge coord not equal");
 
             //--- check that no edges cross
-            var li = new RobustLineIntersector();
+            var li = new RobustLineIntersector(ElevationModel.NoZ);
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)

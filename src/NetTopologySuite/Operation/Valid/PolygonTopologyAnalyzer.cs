@@ -309,7 +309,7 @@ namespace NetTopologySuite.Operation.Valid
                 return;
             var segStrings = CreateSegmentStrings(geom, _isInvertedRingValid);
             _polyRings = GetPolygonRings(segStrings);
-            _intFinder = AnalyzeIntersections(segStrings);
+            _intFinder = AnalyzeIntersections(geom.Factory.ElevationModel, segStrings);
 
             if (_intFinder.HasDoubleTouch)
             {
@@ -318,9 +318,9 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        private PolygonIntersectionAnalyzer AnalyzeIntersections(IList<ISegmentString> segStrings)
+        private PolygonIntersectionAnalyzer AnalyzeIntersections(ElevationModel em, IList<ISegmentString> segStrings)
         {
-            var segInt = new PolygonIntersectionAnalyzer(_isInvertedRingValid);
+            var segInt = new PolygonIntersectionAnalyzer(_isInvertedRingValid, em);
             var noder = new MCIndexNoder();
             noder.SegmentIntersector = segInt;
             noder.ComputeNodes(segStrings);

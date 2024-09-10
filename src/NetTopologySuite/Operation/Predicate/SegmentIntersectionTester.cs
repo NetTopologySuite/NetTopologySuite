@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Predicate
     public class SegmentIntersectionTester
     {
         // for purposes of intersection testing, don't need to set precision model
-        private readonly LineIntersector li = new RobustLineIntersector();
+        private readonly LineIntersector _li = new RobustLineIntersector(ElevationModel.NoZ);
 
         private bool _hasIntersection;
         private readonly Coordinate pt00 = new Coordinate();
@@ -53,8 +53,8 @@ namespace NetTopologySuite.Operation.Predicate
                 {
                     seq1.GetCoordinate(j - 1, pt10);
                     seq1.GetCoordinate(j, pt11);
-                    li.ComputeIntersection(pt00, pt01, pt10, pt11);
-                    if (li.HasIntersection)
+                    _li.ComputeIntersection(pt00, pt01, pt10, pt11);
+                    if (_li.HasIntersection)
                         _hasIntersection = true;
                 }
             }
