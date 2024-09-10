@@ -63,8 +63,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             Assert.That(c1.X, Is.EqualTo(c0.X));
             Assert.That(c1.Y, Is.EqualTo(c0.Y));
-            Assert.That(c1.X, Is.EqualTo(c0.X));
-            Assert.That(c1.Y, Is.EqualTo(c0.Y));
 
             int numSpatial0 = c0.Dimension - c0.Measures;
             int numSpatial1 = c1.Dimension - c1.Measures;
