@@ -1,4 +1,6 @@
+using NetTopologySuite.Algorithm;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetTopologySuite.Noding
 {
@@ -15,6 +17,7 @@ namespace NetTopologySuite.Noding
     public class FastSegmentSetIntersectionFinder
     {
         private readonly ISegmentSetMutualIntersector _segSetMutInt;
+        private readonly ElevationModel _em;
 
         //for testing purposes
         //private SimpleSegmentSetMutualIntersector mci;
@@ -24,8 +27,18 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="baseSegStrings">The segment strings to search for intersections</param>
         public FastSegmentSetIntersectionFinder(IEnumerable<ISegmentString> baseSegStrings)
+            :this(baseSegStrings, null)
+        { }
+
+        /// <summary>
+        /// Creates an intersection finder against a given set of segment strings.
+        /// </summary>
+        /// <param name="baseSegStrings">The segment strings to search for intersections</param>
+        /// <param name="em">An elevation model, may be <c>null</c></param>
+        public FastSegmentSetIntersectionFinder(IEnumerable<ISegmentString> baseSegStrings, ElevationModel em)
         {
             _segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
+            _em = em;
         }
 
         /// <summary>Gets the segment set intersector used by this class.</summary>
@@ -39,7 +52,7 @@ namespace NetTopologySuite.Noding
         /// <returns><c>true</c> if an intersection was found</returns>
         public bool Intersects(IList<ISegmentString> segStrings)
         {
-            var intFinder = new SegmentIntersectionDetector();
+            var intFinder = new SegmentIntersectionDetector(_em);
             return Intersects(segStrings, intFinder);
         }
 

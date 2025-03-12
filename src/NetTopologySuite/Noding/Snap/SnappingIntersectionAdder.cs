@@ -11,7 +11,7 @@ namespace NetTopologySuite.Noding.Snap
     /// <version>1.17</version>
     public sealed class SnappingIntersectionAdder : ISegmentIntersector
     {
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li;
         private readonly double _snapTolerance;
         private readonly SnappingPointIndex _snapPointIndex;
 
@@ -22,9 +22,22 @@ namespace NetTopologySuite.Noding.Snap
         /// <param name="snapTolerance">The snapping tolerance distance</param>
         /// <param name="snapPointIndex">A snap index to use</param>
         public SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapPointIndex)
+            : this(snapTolerance, snapPointIndex, null)
+        {
+        }
+
+        /// <summary>
+        /// Creates an intersector which finds all snapped intersections,
+        /// and adds them as nodes.
+        /// </summary>
+        /// <param name="snapTolerance">The snapping tolerance distance</param>
+        /// <param name="snapPointIndex">A snap index to use</param>
+        /// <param name="em">An elevation model. May be <c>null</c></param>
+        public SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapPointIndex, ElevationModel em)
         {
             _snapPointIndex = snapPointIndex;
             _snapTolerance = snapTolerance;
+            _li = new RobustLineIntersector(em);
         }
 
         /// <summary>

@@ -52,7 +52,7 @@ namespace NetTopologySuite.Operation.OverlayArea
             return geom0.EnvelopeInternal.Intersects(geom1.EnvelopeInternal);
         }
 
-        private static readonly LineIntersector li = new RobustLineIntersector();
+        private readonly LineIntersector _li;
 
         private readonly Geometry _geom0;
         private readonly Envelope _geomEnv0;
@@ -62,6 +62,7 @@ namespace NetTopologySuite.Operation.OverlayArea
 
         public OverlayArea(Geometry geom)
         {
+            _li = new RobustLineIntersector(geom.Factory.ElevationModel);
             _geom0 = geom;
 
             //TODO: handle holes and multipolygons
@@ -221,7 +222,7 @@ namespace NetTopologySuite.Operation.OverlayArea
                 }
 
                 var env = new Envelope(b0, b1);
-                var intVisitor = new IntersectionVisitor(b0, b1);
+                var intVisitor = new IntersectionVisitor(_li, b0, b1);
                 _indexSegs.Query(env, intVisitor);
                 area += intVisitor.Area;
             }
@@ -231,11 +232,13 @@ namespace NetTopologySuite.Operation.OverlayArea
         private class IntersectionVisitor : IItemVisitor<LineSegment>
         {
             double _area = 0.0;
+            private readonly LineIntersector _li;
             private readonly Coordinate _b0;
             private readonly Coordinate _b1;
 
-            public IntersectionVisitor(Coordinate b0, Coordinate b1)
+            public IntersectionVisitor(LineIntersector li, Coordinate b0, Coordinate b1)
             {
+                _li = li;
                 _b0 = b0;
                 _b1 = b1;
             }
@@ -244,11 +247,11 @@ namespace NetTopologySuite.Operation.OverlayArea
 
             public void VisitItem(LineSegment seg)
             {
-                _area += AreaForIntersection(seg.P0, seg.P1, _b0, _b1);
+                _area += AreaForIntersection(_li, seg.P0, seg.P1, _b0, _b1);
             }
         }
 
-        private static double AreaForIntersection(Coordinate a0, Coordinate a1, Coordinate b0, Coordinate b1)
+        private static double AreaForIntersection(LineIntersector li, Coordinate a0, Coordinate a1, Coordinate b0, Coordinate b1)
         {
             // TODO: can the intersection computation be optimized?
             li.ComputeIntersection(a0, a1, b0, b1);

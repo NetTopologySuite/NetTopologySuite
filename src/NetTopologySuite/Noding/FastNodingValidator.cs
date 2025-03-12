@@ -48,7 +48,7 @@ namespace NetTopologySuite.Noding
             return nv.Intersections;
         }
 
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = new RobustLineIntersector(ElevationModel.NoZ);
 
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
         private NodingIntersectionFinder _segInt;

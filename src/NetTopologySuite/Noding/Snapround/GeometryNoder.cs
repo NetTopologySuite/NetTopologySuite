@@ -65,7 +65,7 @@ namespace NetTopologySuite.Noding.Snapround
             }
 
             var segStrings = ToSegmentStrings(lines);
-            var sr = new SnapRoundingNoder(_pm);
+            var sr = new SnapRoundingNoder(_pm, _geomFact.ElevationModel);
             sr.ComputeNodes(segStrings);
             var nodedLines = sr.GetNodedSubstrings();
 

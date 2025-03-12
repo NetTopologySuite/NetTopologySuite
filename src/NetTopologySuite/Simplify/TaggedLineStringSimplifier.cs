@@ -1,8 +1,6 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using System;
-using System.Diagnostics;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Simplify
 {
@@ -13,7 +11,7 @@ namespace NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineStringSimplifier
     {
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = new RobustLineIntersector(ElevationModel.NoZ);
         private readonly LineSegmentIndex _inputIndex;
         private readonly LineSegmentIndex _outputIndex;
         private readonly ComponentJumpChecker _jumpChecker;

@@ -1,10 +1,7 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Noding;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Triangulate.Polygon
 {
@@ -23,17 +20,24 @@ namespace NetTopologySuite.Triangulate.Polygon
     {
 
         private readonly bool[] _isHoleTouching;
+        private readonly ElevationModel _em;
         private readonly IList<ISegmentString> _nodedRings;
 
         public PolygonNoder(Coordinate[] shellRing, Coordinate[][] holeRings)
+            : this(shellRing, holeRings, null)
+        {
+        }
+
+        public PolygonNoder(Coordinate[] shellRing, Coordinate[][] holeRings, ElevationModel em)
         {
             _nodedRings = CreateNodedSegmentStrings(shellRing, holeRings);
             _isHoleTouching = new bool[holeRings.Length];
+            _em = em;
         }
 
         public void Node()
         {
-            var nodeAdder = new NodeAdder(_isHoleTouching);
+            var nodeAdder = new NodeAdder(_isHoleTouching, _em);
             var noder = new MCIndexNoder(nodeAdder);
             noder.ComputeNodes(_nodedRings);
         }
@@ -76,12 +80,13 @@ namespace NetTopologySuite.Triangulate.Polygon
         private class NodeAdder : ISegmentIntersector
         {
 
-            private readonly LineIntersector li = new RobustLineIntersector();
+            private readonly LineIntersector _li;
             private readonly bool[] _isHoleTouching;
 
-            public NodeAdder(bool[] isHoleTouching)
+            public NodeAdder(bool[] isHoleTouching, ElevationModel em)
             {
                 _isHoleTouching = isHoleTouching;
+                _li = new RobustLineIntersector(em);
             }
 
             public void ProcessIntersections(ISegmentString ss0, int segIndex0, ISegmentString ss1, int segIndex1)
@@ -95,21 +100,21 @@ namespace NetTopologySuite.Triangulate.Polygon
                 var p10 = ss1.Coordinates[segIndex1];
                 var p11 = ss1.Coordinates[segIndex1 + 1];
 
-                li.ComputeIntersection(p00, p01, p10, p11);
+                _li.ComputeIntersection(p00, p01, p10, p11);
                 /*
                  * There should never be 2 intersection points, since
                  * that would imply collinear segments, and an invalid polygon
                  */
-                if (li.IntersectionNum == 1)
+                if (_li.IntersectionNum == 1)
                 {
                     AddTouch(ss0);
                     AddTouch(ss1);
-                    var intPt = li.GetIntersection(0);
-                    if (li.IsInteriorIntersection(0))
+                    var intPt = _li.GetIntersection(0);
+                    if (_li.IsInteriorIntersection(0))
                     {
                         ((NodedSegmentString)ss0).AddIntersectionNode(intPt, segIndex0);
                     }
-                    else if (li.IsInteriorIntersection(1))
+                    else if (_li.IsInteriorIntersection(1))
                     {
                         ((NodedSegmentString)ss1).AddIntersectionNode(intPt, segIndex1);
                     }

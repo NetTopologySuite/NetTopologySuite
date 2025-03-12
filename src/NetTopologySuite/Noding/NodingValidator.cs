@@ -13,7 +13,7 @@ namespace NetTopologySuite.Noding
     {
         private static readonly GeometryFactory Factory = new GeometryFactory();
 
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = new RobustLineIntersector(ElevationModel.NoZ);
         private readonly IList<ISegmentString> _segStrings;
 
         /// <summary>

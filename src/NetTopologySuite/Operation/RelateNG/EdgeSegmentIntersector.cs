@@ -11,11 +11,17 @@ namespace NetTopologySuite.Operation.RelateNG
     /// <author>Martin Davis</author>
     internal class EdgeSegmentIntersector : ISegmentIntersector
     {
-        private readonly RobustLineIntersector _li = new RobustLineIntersector();
+        private readonly RobustLineIntersector _li;
         private readonly TopologyComputer _topoComputer;
 
         public EdgeSegmentIntersector(TopologyComputer topoComputer)
+            :this(null, topoComputer)
         {
+        }
+
+        public EdgeSegmentIntersector(ElevationModel em, TopologyComputer topoComputer)
+        {
+            _li = new RobustLineIntersector(em);
             _topoComputer = topoComputer;
         }
 

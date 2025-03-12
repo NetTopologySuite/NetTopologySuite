@@ -510,9 +510,20 @@ namespace NetTopologySuite.Geometries
         /// A pair of Coordinates which are the closest points on the line segments.
         /// </returns>
         public Coordinate[] ClosestPoints(LineSegment line)
+            => ClosestPoints(line, null);
+
+        /// <summary>
+        /// Computes the closest points on a line segment.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns>
+        /// A pair of Coordinates which are the closest points on the line segments.
+        /// </returns>
+        public Coordinate[] ClosestPoints(LineSegment line, ElevationModel em)
+
         {
             // test for intersection
-            var intPt = Intersection(line);
+            var intPt = Intersection(line, em);
             if (intPt != null)
                 return new[] { intPt, intPt };
 
@@ -598,8 +609,23 @@ namespace NetTopologySuite.Geometries
         /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
         /// <see cref="RobustLineIntersector"/>
         public Coordinate Intersection(LineSegment line)
+            => Intersection(line, null);
+
+        /// <summary>
+        /// Computes an intersection point between two segments, if there is one.
+        /// There may be 0, 1 or many intersection points between two segments.
+        /// If there are 0, null is returned. If there is 1 or more, a single one
+        /// is returned (chosen at the discretion of the algorithm).  If
+        /// more information is required about the details of the intersection,
+        /// the <see cref="RobustLineIntersector"/> class should be used.
+        /// </summary>
+        /// <param name="line">A line segment</param>
+        /// <param name="em">An elevation model. May be <c>null</c></param>
+        /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
+        /// <see cref="RobustLineIntersector"/>
+        public Coordinate Intersection(LineSegment line, ElevationModel em)
         {
-            var li = new RobustLineIntersector();
+            var li = new RobustLineIntersector(em);
             li.ComputeIntersection(_p0, _p1, line.P0, line.P1);
             if (li.HasIntersection)
                 return li.GetIntersection(0);

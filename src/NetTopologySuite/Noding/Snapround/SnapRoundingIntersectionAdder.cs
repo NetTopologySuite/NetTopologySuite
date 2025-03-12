@@ -35,7 +35,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="pm">The precision model to use</param>
         [Obsolete]
         public SnapRoundingIntersectionAdder(PrecisionModel pm)
-            :this(CalculateNearnessTol(pm))
+            : this(CalculateNearnessTol(pm), null)
         {
         }
 
@@ -45,6 +45,16 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="nearnessTol">the intersection distance tolerance</param>
         public SnapRoundingIntersectionAdder(double nearnessTol)
+            : this(nearnessTol, null)
+        { }
+
+        /// <summary>
+        /// Creates an intersector which finds all snapped interior intersections,
+        /// and adds them as nodes.
+        /// </summary>
+        /// <param name="nearnessTol">the intersection distance tolerance</param>
+        /// <param name="em">An elevation model. May be <c>null</c></param>
+        public SnapRoundingIntersectionAdder(double nearnessTol, ElevationModel em)
         {
             _nearnessTol = nearnessTol;
 
@@ -52,7 +62,7 @@ namespace NetTopologySuite.Noding.Snapround
              * Intersections are detected and computed using full precision.
              * They are snapped in a subsequent phase.
              */
-            _li = new RobustLineIntersector();
+            _li = new RobustLineIntersector(em);
             Intersections = new Collection<Coordinate>();
         }
 

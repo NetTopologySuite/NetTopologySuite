@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.Relate
     /// </summary>
     public class RelateComputer
     {
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li;
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly GeometryGraph[] _arg;     // the arg(s) of the operation
         private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());
@@ -32,7 +32,11 @@ namespace NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="arg"></param>
         public RelateComputer(GeometryGraph[] arg)
+            : this(null, arg) { }
+
+        public RelateComputer(ElevationModel em, GeometryGraph[] arg)
         {
+            _li = new RobustLineIntersector(em);
             _arg = arg;
         }
 

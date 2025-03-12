@@ -36,18 +36,18 @@ namespace NetTopologySuite.Operation.OverlayNG
          */
         private const bool IsNodingValidated = true;
   
-        private static INoder CreateFixedPrecisionNoder(PrecisionModel pm)
+        private static INoder CreateFixedPrecisionNoder(PrecisionModel pm, Algorithm.ElevationModel em)
         {
             //Noder noder = new MCIndexSnapRounder(pm);
             //Noder noder = new SimpleSnapRounder(pm);
-            var noder = new SnapRoundingNoder(pm);
+            var noder = new SnapRoundingNoder(pm, em);
             return noder;
         }
 
-        private static INoder CreateFloatingPrecisionNoder(bool doValidation)
+        private static INoder CreateFloatingPrecisionNoder(bool doValidation, Algorithm.ElevationModel em)
         {
             var mcNoder = new MCIndexNoder();
-            var li = new RobustLineIntersector();
+            var li = new RobustLineIntersector(em);
             mcNoder.SegmentIntersector = new IntersectionAdder(li);
 
             INoder noder = mcNoder;
@@ -59,6 +59,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         }
 
         private readonly PrecisionModel _pm;
+        private readonly Algorithm.ElevationModel _em;
         private readonly List<ISegmentString> _inputEdges = new List<ISegmentString>();
         private INoder _customNoder;
 
@@ -76,8 +77,21 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="pm">The precision model to use</param>
         /// <param name="noder">An optional noder to use (may be null)</param>
         public EdgeNodingBuilder(PrecisionModel pm, INoder noder)
+            :this(pm, null, noder)
+        { }
+
+        /// <summary>
+        /// Creates a new builder, with an optional custom noder.
+        /// If the noder is not provided, a suitable one will
+        /// be used based on the supplied precision model.
+        /// </summary>
+        /// <param name="pm">The precision model to use</param>
+        /// <param name="em">The elevation model to use. May be <c>null</c></param>
+        /// <param name="noder">An optional noder to use (may be null)</param>
+        public EdgeNodingBuilder(PrecisionModel pm, Algorithm.ElevationModel em, INoder noder)
         {
             _pm = pm;
+            _em = em;
             _customNoder = noder;
         }
 
@@ -96,8 +110,8 @@ namespace NetTopologySuite.Operation.OverlayNG
             {
                 if (_customNoder != null) return _customNoder;
                 if (OverlayUtility.IsFloating(_pm))
-                    return CreateFloatingPrecisionNoder(IsNodingValidated);
-                return CreateFixedPrecisionNoder(_pm);
+                    return CreateFloatingPrecisionNoder(IsNodingValidated, _em);
+                return CreateFixedPrecisionNoder(_pm, _em);
             }
             set => _customNoder = value;
         }
