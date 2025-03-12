@@ -48,10 +48,10 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
 
     steps:
-    - name: Setup .NET 6
+    - name: Setup .NET 9
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6
+        dotnet-version: 9
 
     - name: Download Package Files
       uses: actions/download-artifact@v4.1.7
@@ -73,10 +73,10 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-    - name: Setup .NET 6
+    - name: Setup .NET 9
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6
+        dotnet-version: 9
 
     - name: Download Package Files
       uses: actions/download-artifact@v4.1.7
