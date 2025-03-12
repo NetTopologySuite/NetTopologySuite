@@ -15,10 +15,10 @@ jobs:
     - name: Get source
       uses: actions/checkout@v2
 
-    - name: Setup .NET 6
+    - name: Setup .NET 9
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6
+        dotnet-version: 9
 
     - name: Build
       run: dotnet build -c Release -v minimal -p:WarningLevel=3
