@@ -196,13 +196,13 @@ namespace NetTopologySuite
         }
 
         /// <summary>
-        /// Gets a value indicating the operations to use for geometry overlay.
+        /// Gets a value indicating the operations to use for geometry overlay.  
         /// </summary>
         /// <returns>A set of geometry overlay functions.</returns>
         public GeometryOverlay GeometryOverlay { get; }
 
         /// <summary>
-        /// Gets a value indicating the operations to use for geometry relation determination.
+        /// Gets a value indicating the operations to use for geometry relation determination.  
         /// </summary>
         /// <returns>A set of geometry relation functions.</returns>
         public GeometryRelate GeometryRelate { get; }

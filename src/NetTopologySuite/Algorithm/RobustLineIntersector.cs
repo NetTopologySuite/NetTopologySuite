@@ -284,7 +284,7 @@ namespace NetTopologySuite.Algorithm
                 intPt = NearestEndpoint(p1, p2, q1, q2);
                 //Console.WriteLine($"Snapped to {intPt}");
             }
-
+            
             return intPt;
         }
 
