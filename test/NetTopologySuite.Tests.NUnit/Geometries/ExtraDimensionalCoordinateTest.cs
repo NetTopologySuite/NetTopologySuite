@@ -8,23 +8,27 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestCreate4DM2()
         {
-            var edc = new ExtraDimensionalCoordinate(4, 2);
+            var edc = Coordinates.Create(4, 2);
             Assert.That(edc, Is.Not.Null);
-            Assert.That(edc.Dimension == 4);
-            Assert.That(edc.Measures == 2);
+            Assert.That(Coordinates.Dimension(edc) == 4);
+            Assert.That(Coordinates.Measures(edc) == 2);
             Assert.That(edc.Z, Is.EqualTo(double.NaN));
         }
 
         [Test]
         public void TestIncreaseDimension()
         {
-            var edc0 = new ExtraDimensionalCoordinate(4, 2) { X = 10, Y = 11 };
+            var edc0 = Coordinates.Create(4, 2);
+            edc0.X = 10;
+            edc0.Y = 11;
             edc0[Ordinate.Measure1] = 20;
             edc0[Ordinate.Measure2] = 21;
 
-            var edc1 = new ExtraDimensionalCoordinate(edc0.Dimension + 1, edc0.Measures) { CoordinateValue = edc0, Z = 1 };
-            Assert.That(edc1.Dimension == 5);
-            Assert.That(edc1.Measures == 2);
+            var edc1 = Coordinates.Create(Coordinates.Dimension(edc0) + 1, Coordinates.Measures(edc0));
+            edc1.CoordinateValue = edc0;
+            edc1.Z = 1;
+            Assert.That(Coordinates.Dimension(edc1) == 5);
+            Assert.That(Coordinates.Measures(edc1) == 2);
             Assert.That(edc1.X, Is.EqualTo(10d));
             Assert.That(edc1.Y, Is.EqualTo(11d));
             Assert.That(edc1.Z, Is.EqualTo(1d));
@@ -53,19 +57,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckEqual(fromCoord, toCoord, numSpatialFrom == numSpatialTo && numMeasuresFrom == numMeasuresTo);
         }
 
-        private void CheckEqual(ExtraDimensionalCoordinate c0, ExtraDimensionalCoordinate c1, bool everything)
+        private void CheckEqual(Coordinate c0, Coordinate c1, bool everything)
         {
             if (everything)
             {
-                Assert.That(c1.Dimension, Is.EqualTo(c0.Dimension));
-                Assert.That(c1.Measures, Is.EqualTo(c0.Measures));
+                Assert.That(Coordinates.Dimension(c1), Is.EqualTo(Coordinates.Dimension(c0)));
+                Assert.That(Coordinates.Measures(c1), Is.EqualTo(Coordinates.Measures(c0)));
             }
 
             Assert.That(c1.X, Is.EqualTo(c0.X));
             Assert.That(c1.Y, Is.EqualTo(c0.Y));
 
-            int numSpatial0 = c0.Dimension - c0.Measures;
-            int numSpatial1 = c1.Dimension - c1.Measures;
+            int numSpatial0 = Coordinates.Dimension(c0) - Coordinates.Measures(c0);
+            int numSpatial1 = Coordinates.Dimension(c1) - Coordinates.Measures(c1);
 
             if (numSpatial0 > 2 && numSpatial1 > 2)
                 Assert.That(c0.Z, Is.EqualTo(c1.Z));
@@ -77,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             for (; i < numSpatialToTest; i++)
                 Assert.That(c1[i], Is.EqualTo(c0[i]), $"this[{i}] values differ: {c0[i]} != {c1[i]}");
 
-            int numMeasuresToTest = System.Math.Min(c0.Measures, c1.Measures);
+            int numMeasuresToTest = System.Math.Min(Coordinates.Measures(c0), Coordinates.Measures(c1));
             int j0 = numSpatial0;
             int j1 = numSpatial1;
             for (i = 0; i < numMeasuresToTest; i++, j0++, j1++)
@@ -86,20 +90,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        private static ExtraDimensionalCoordinate Create(int numSpatial, int numMeasures, bool initValues = true)
+        private static Coordinate Create(int numSpatial, int numMeasures, bool initValues = true)
         {
             if (numSpatial < 2 || numSpatial > 16)
                 Assert.Ignore($"Number of spatial dimensions ({numSpatial}) is out of range \u2115[2..16]");
             if (numMeasures < 0 || numMeasures > 16)
                 Assert.Ignore($"Number of measure dimensions ({numMeasures}) is out of range \u2115[0..16]");
 
-            var res = new ExtraDimensionalCoordinate(numSpatial + numMeasures, numMeasures);
+            var res = Coordinates.Create(numSpatial + numMeasures, numMeasures);
             if (initValues)
             {
                 int i = 0;
                 for (; i < numSpatial; i++)
                     res[i] = 10 + i;
-                for (; i < res.Dimension; i++)
+                for (; i < Coordinates.Dimension(res); i++)
                     res[i] = 50 + i;
             }
             return res;

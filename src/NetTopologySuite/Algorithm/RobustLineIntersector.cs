@@ -227,7 +227,8 @@ namespace NetTopologySuite.Algorithm
             return NoIntersection;
         }
 
-
+        // JTS deviation: we use our ElevationModel invention instead of this CopyWithZ.
+#if false
         private static Coordinate CopyWithZ(Coordinate p, double z)
         {
             // If there is not z-ordinate to apply just return the copy
@@ -236,25 +237,14 @@ namespace NetTopologySuite.Algorithm
 
             // If there is a z-ordinate value we need to make sure it
             // can be assigned.
-            Coordinate res;
-            var ptype = p.GetType();
-            if (ptype == typeof(CoordinateZ)) // this includes CoordinateZM
-                res = p.Copy();
-            else if (ptype == typeof(CoordinateM))
-                res = new CoordinateZM { CoordinateValue = p };
-            else if (ptype == typeof(ExtraDimensionalCoordinate))
-            {
-                var edc = (ExtraDimensionalCoordinate)p;
-                res = (edc.Dimension - edc.Measures > 2)
-                    ? edc.Copy()
-                    : new ExtraDimensionalCoordinate(edc.Dimension + 1, edc.Measures) { CoordinateValue = p };
-            }
-            else
-                res = new CoordinateZ(p);
-
+            int spatial = Math.Max(3, Coordinates.SpatialDimension(p));
+            int measures = Coordinates.Measures(p);
+            var res = Coordinates.Create(spatial + measures, measures);
+            res.CoordinateValue = p;
             res.Z = z;
             return res;
         }
+#endif
 
         /// <summary>
         /// This method computes the actual value of the intersection point.
@@ -294,7 +284,7 @@ namespace NetTopologySuite.Algorithm
                 intPt = NearestEndpoint(p1, p2, q1, q2);
                 //Console.WriteLine($"Snapped to {intPt}");
             }
-            
+
             return intPt;
         }
 

@@ -196,13 +196,13 @@ namespace NetTopologySuite
         }
 
         /// <summary>
-        /// Gets a value indicating the operations to use for geometry overlay.  
+        /// Gets a value indicating the operations to use for geometry overlay.
         /// </summary>
         /// <returns>A set of geometry overlay functions.</returns>
         public GeometryOverlay GeometryOverlay { get; }
 
         /// <summary>
-        /// Gets a value indicating the operations to use for geometry relation determination.  
+        /// Gets a value indicating the operations to use for geometry relation determination.
         /// </summary>
         /// <returns>A set of geometry relation functions.</returns>
         public GeometryRelate GeometryRelate { get; }
@@ -424,26 +424,16 @@ namespace NetTopologySuite
 
             public int SRID { get; }
 
-            public override int GetHashCode()
-            {
-                int res = (PrecisionModel, CoordinateSequenceFactory, SRID).GetHashCode();
-                if (ElevationModel != null) res ^= ElevationModel.GetHashCode();
-
-                return res;
-            }
+            public override int GetHashCode() => (PrecisionModel, CoordinateSequenceFactory, SRID, ElevationModel).GetHashCode();
 
             public override bool Equals(object obj) => obj is GeometryFactoryKey other && Equals(other);
 
             public bool Equals(GeometryFactoryKey other)
             {
-                if (SRID != other.SRID) return false;
-                if (!Equals(CoordinateSequenceFactory, other.CoordinateSequenceFactory)) return false;
-                if (!Equals(PrecisionModel, other.PrecisionModel)) return false;
-
-                if ((ElevationModel != null || other.ElevationModel != null) &&
-                    Equals(ElevationModel, other.ElevationModel)) return false;
-
-                return true;
+                return SRID == other.SRID &&
+                       Equals(CoordinateSequenceFactory, other.CoordinateSequenceFactory) &&
+                       Equals(PrecisionModel, other.PrecisionModel) &&
+                       Equals(ElevationModel, other.ElevationModel);
             }
         }
     }

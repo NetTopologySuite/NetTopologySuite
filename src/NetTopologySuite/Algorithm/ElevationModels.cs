@@ -110,27 +110,25 @@ namespace NetTopologySuite.Algorithm
                 if (!seq.HasZ)
                     return;
 
-                // Get buffers for ordinate values
-                double[] xy = ArrayPool<double>.Shared.Rent(2 * seq.Count);
-                var xys = new Span<double>(xy, 0, 2 * seq.Count);
-                double[] z = ArrayPool<double>.Shared.Rent(seq.Count);
-                var zs = new Span<double>(z, 0, seq.Count);
-
-                // Perform conversion to arrays
-                _seqToXYAndZ(seq, xys, zs);
-
-                // Get z-ordinate values
-                _elevationModel.GetZ(xys, zs);
-
-                // Return first buffer
-                ArrayPool<double>.Shared.Return(xy);
-
-                // Assign z-ordinate values
-                for (int i = 0; i < seq.Count; i++)
-                    seq.SetZ(i, zs[i]);
-
-                // Return 2nd buffer
-                ArrayPool<double>.Shared.Return(z);
+                // Get buffer for ordinate values
+                double[] xyz = ArrayPool<double>.Shared.Rent(3 * seq.Count);
+                try
+                {
+                    var xys = new Span<double>(xyz, 0, 2 * seq.Count);
+                    var zs = new Span<double>(xyz, 2 * seq.Count, seq.Count);
+                    // Perform conversion to arrays
+                    _seqToXYAndZ(seq, xys, zs);
+                    // Get z-ordinate values
+                    _elevationModel.GetZ(xys, zs);
+                    // Assign z-ordinate values
+                    for (int i = 0; i < zs.Length; i++)
+                        seq.SetZ(i, zs[i]);
+                }
+                finally
+                {
+                    // Return buffer
+                    ArrayPool<double>.Shared.Return(xyz);
+                }
             }
         }
 
