@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
 
@@ -31,54 +33,22 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="erList"></param>
         /// <param name="testEr"></param>
-        /// <returns>Containing EdgeRing, if there is one <br/>
-        /// or <c>null</c> if no containing EdgeRing is found.</returns>
+        /// <returns>Containing EdgeRing or <c>null</c> if no containing EdgeRing is found.</returns>
         public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> erList)
         {
-            var testRing = testEr.Ring;
-            var testEnv = testRing.EnvelopeInternal;
-            //var testPt = testRing.GetCoordinateN(0);
-
-            EdgeRing minRing = null;
-            Envelope minRingEnv = null;
-            foreach (var tryEdgeRing in erList)
+            EdgeRing minContainingRing = null;
+            foreach (var edgeRing in erList)
             {
-                var tryRing = tryEdgeRing.Ring;
-                var tryRingEnv = tryRing.EnvelopeInternal;
-                if (minRing != null)
-                    minRingEnv = minRing.Ring.EnvelopeInternal;
-
-                // the hole envelope cannot equal the shell envelope
-                // (also guards against testing rings against themselves)
-                if (tryRingEnv.Equals(testEnv)) continue;
-
-                // hole must be contained in shell
-                if (!tryRingEnv.Contains(testEnv)) continue;
-
-                var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryEdgeRing.Coordinates);
-
-                /*
-                 * If testPt is null it indicates that the hole is exactly surrounded by the tryShell.
-                 * This should not happen for fully noded/dissolved linework.
-                 * For now just ignore this hole and continue - this should produce
-                 * "best effort" output.
-                 * In further could flag this as an error (invalid ring).
-                 */
-                if (testPt == null) continue;
-
-                bool isContained = tryEdgeRing.IsInRing(testPt);
-
-                // check if this new containing ring is smaller than the current minimum ring
-                if (isContained)
+                if (edgeRing.Contains(testEr))
                 {
-                    if (minRing == null || minRingEnv.Contains(tryRingEnv))
+                    if (minContainingRing == null
+                        || minContainingRing.Envelope.Contains(edgeRing.Envelope))
                     {
-                        minRing = tryEdgeRing;
-                        minRingEnv = minRing.Ring.EnvelopeInternal;
+                        minContainingRing = edgeRing;
                     }
                 }
             }
-            return minRing;
+            return minContainingRing;
         }
 
         /// <summary>
@@ -86,8 +56,12 @@ namespace NetTopologySuite.Operation.Polygonize
         /// This assumes that all dangling directed edges have been removed
         /// from the graph, so that there is always a next dirEdge.
         /// </summary>
+        /// <remarks>This function has a different return type than its counterpart
+        /// in JTS. Use <see cref="FindPolyDirEdgesInRing(PolygonizeDirectedEdge)"/>
+        /// instead.</remarks>
         /// <param name="startDE">The DirectedEdge to start traversing at</param>
         /// <returns>A list of DirectedEdges that form a ring</returns>
+        [Obsolete]
         public static List<DirectedEdge> FindDirEdgesInRing(PolygonizeDirectedEdge startDE)
         {
             var de = startDE;
@@ -102,9 +76,31 @@ namespace NetTopologySuite.Operation.Polygonize
             return edges;
         }
 
+        /// <summary>
+        /// Traverses a ring of DirectedEdges, accumulating them into a list.
+        /// This assumes that all dangling directed edges have been removed
+        /// from the graph, so that there is always a next dirEdge.
+        /// </summary>
+        /// <remarks>This function is called <c>FindDirEdgesInRing</c> in JTS.</remarks>
+        /// <param name="startDE">The DirectedEdge to start traversing at</param>
+        /// <returns>A list of DirectedEdges that form a ring</returns>
+        public static IList<PolygonizeDirectedEdge> FindPolyDirEdgesInRing(PolygonizeDirectedEdge startDE)
+        {
+            var de = startDE;
+            var edges = new List<PolygonizeDirectedEdge>();
+            do
+            {
+                edges.Add(de);
+                de = de.Next;
+                Assert.IsTrue(de != null, "found null DE in ring");
+                Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+            } while (de != startDE);
+            return edges;
+        }
+
         private readonly GeometryFactory _factory;
 
-        private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
+        private readonly List<PolygonizeDirectedEdge> _deList = new List<PolygonizeDirectedEdge>();
         //private DirectedEdge lowestEdge = null;
 
         // cache the following data for efficiency
@@ -112,17 +108,14 @@ namespace NetTopologySuite.Operation.Polygonize
         private IndexedPointInAreaLocator locator;
 
         private Coordinate[] _ringPts;
-        private List<LinearRing> _holes;
+        private IList<LinearRing> _holes;
         private EdgeRing _shell;
         private bool _isHole;
+        private bool _isValid;
         private bool _isProcessed;
         private bool _isIncludedSet;
         private bool _isIncluded = false;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="factory"></param>
         public EdgeRing(GeometryFactory factory)
         {
             _factory = factory;
@@ -145,10 +138,12 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
         /// <param name="de">The DirectedEdge to add.</param>
-        private void Add(DirectedEdge de)
+        private void Add(PolygonizeDirectedEdge de)
         {
             _deList.Add(de);
         }
+
+        public IList<PolygonizeDirectedEdge> Edges => _deList;
 
         /// <summary>
         /// Tests whether this ring is a hole.
@@ -214,21 +209,26 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Tests if the <see cref="LinearRing" /> ring formed by this edge ring is topologically valid.
+        /// Gets a value indicating if the <see cref="LinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
+        /// <remarks><see cref="ComputeValid"/> must be called prior to accessing this property.</remarks>
         /// <return>true if the ring is valid.</return>
-        public bool IsValid
+        public bool IsValid => _isValid;
+
+        /// <summary>
+        /// Computes the validity of the ring.
+        /// Must be called prior to calling <see cref="IsValid"/>.
+        /// </summary>
+        public void ComputeValid()
         {
-            get
+            var ringPts = Coordinates;
+            if (ringPts.Length <= 3)
             {
-                var tempcoords = Coordinates;
-                tempcoords = null;
-                if (_ringPts.Length <= 3)
-                    return false;
-                var tempring = Ring;
-                tempring = null;
-                return _ring.IsValid;
+                _isValid = false;
+                return;
             }
+            var ring = Ring;
+            _isValid = ring.IsValid;
         }
 
         public bool IsIncludedSet => _isIncludedSet;
@@ -254,12 +254,54 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
+        public Location Locate(Coordinate pt)
+        {
+            return Locator.Locate(pt);
+        }
+
+        [Obsolete("Will be removed in a future version")]
         public bool IsInRing(Coordinate pt)
         {
             /*
              * Use an indexed point-in-polygon for performance
              */
             return Location.Exterior != Locator.Locate(pt);
+        }
+
+        /// <summary>
+        /// Tests if an edgeRing is properly contained in this ring.
+        /// Relies on property that edgeRings never overlap (although they may
+        /// touch at single vertices).</summary>
+        /// <param name="ring">The ring to test</param>
+        /// <returns><c>true</c> if ring is properly contained</returns>
+        private bool Contains(EdgeRing ring)
+        {
+            // the test envelope must be properly contained
+            // (guards against testing rings against themselves)
+            var env = this.Envelope;
+            var testEnv = ring.Envelope;
+            if (!env.ContainsProperly(testEnv))
+                return false;
+            return IsPointInOrOut(ring);
+        }
+
+        private bool IsPointInOrOut(EdgeRing ring)
+        {
+            // in most cases only one or two points will be checked
+            foreach (var pt in ring.Coordinates)
+            {
+                var loc = Locate(pt);
+                if (loc == Location.Interior)
+                {
+                    return true;
+                }
+                if (loc == Location.Exterior)
+                {
+                    return false;
+                }
+                // pt is on BOUNDARY, so keep checking for a determining location
+            }
+            return false;
         }
 
         /// <summary>
@@ -321,6 +363,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 return _ring;
             }
         }
+
+        private Envelope Envelope => Ring.EnvelopeInternal;
 
         /// <summary>
         ///
@@ -456,6 +500,21 @@ namespace NetTopologySuite.Operation.Polygonize
 
             }
         }
+
+        /// <summary>
+        /// Compares EdgeRings based on the area of their envelopes.
+        /// Smaller envelopes sort before bigger ones.
+        /// This effectively sorts EdgeRings in order of containment.
+        /// </summary>
+        /// <author>mbdavis</author>
+        public class EnvelopeAreaComparator : IComparer<EdgeRing>
+        {
+            public int Compare(EdgeRing r0, EdgeRing r1)
+            {
+                return r0.Ring.Envelope.Area.CompareTo(r1.Ring.Envelope.Area);
+            }
+        }
+
     }
 }
 

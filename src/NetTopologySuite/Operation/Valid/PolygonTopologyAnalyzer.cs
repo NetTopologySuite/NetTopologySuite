@@ -96,7 +96,7 @@ namespace NetTopologySuite.Operation.Valid
                 rPrev = rNext;
                 rNext = temp;
             }
-            return PolygonNode.IsInteriorSegment(p0, rPrev, rNext, p1);
+            return PolygonNodeTopology.IsInteriorSegment(p0, rPrev, rNext, p1);
         }
 
         /// <summary>
@@ -165,11 +165,9 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns>The intersection segment index, or <c>-1</c> if not intersection is found.</returns>
         private static int IntersectingSegIndex(Coordinate[] ringPts, Coordinate pt)
         {
-            LineIntersector li = new RobustLineIntersector();
             for (int i = 0; i < ringPts.Length - 1; i++)
             {
-                li.ComputeIntersection(pt, ringPts[i], ringPts[i + 1]);
-                if (li.HasIntersection)
+                if (PointLocation.IsOnSegment(pt, ringPts[i], ringPts[i + 1]))
                 {
                     //-- check if pt is the start point of the next segment
                     if (pt.Equals2D(ringPts[i + 1]))
@@ -311,7 +309,7 @@ namespace NetTopologySuite.Operation.Valid
                 return;
             var segStrings = CreateSegmentStrings(geom, _isInvertedRingValid);
             _polyRings = GetPolygonRings(segStrings);
-            _intFinder = AnalyzeIntersections(segStrings);
+            _intFinder = AnalyzeIntersections(geom.Factory.ElevationModel, segStrings);
 
             if (_intFinder.HasDoubleTouch)
             {
@@ -320,9 +318,9 @@ namespace NetTopologySuite.Operation.Valid
             }
         }
 
-        private PolygonIntersectionAnalyzer AnalyzeIntersections(IList<ISegmentString> segStrings)
+        private PolygonIntersectionAnalyzer AnalyzeIntersections(ElevationModel em, IList<ISegmentString> segStrings)
         {
-            var segInt = new PolygonIntersectionAnalyzer(_isInvertedRingValid);
+            var segInt = new PolygonIntersectionAnalyzer(_isInvertedRingValid, em);
             var noder = new MCIndexNoder();
             noder.SegmentIntersector = segInt;
             noder.ComputeNodes(segStrings);

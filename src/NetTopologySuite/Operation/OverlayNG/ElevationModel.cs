@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// in an overlay result geometry.
     /// </summary>
     /// <author>Martin Davis</author>
-    class ElevationModel
+    class ElevationModel : Algorithm.ElevationModel
     {
 
         private const int DEFAULT_CELL_NUM = 3;
@@ -71,7 +71,8 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="extent">The XY extent to cover</param>
         /// <param name="numCellX">The number of grid cells in the X dimension</param>
         /// <param name="numCellY">The number of grid cells in the Y dimension</param>
-        public ElevationModel(Envelope extent, int numCellX, int numCellY)
+        public ElevationModel(Envelope extent, int numCellX, int numCellY) :
+            base(double.NaN, extent)
         {
             _extent = extent;
             _numCellX = numCellX;
@@ -147,17 +148,19 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// If the model has no elevation computed (i.e. due
         /// to empty input), the value is returned as <see cref="double.NaN"/>
         /// </summary>
-        /// <param name="x">x-ordinate of the location</param>
-        /// <param name="y">y-ordinate of the location</param>
+        /// <param name="xy">xy-ordinate of the location</param>
+        /// <param name="z">z-ordinate of the location</param>
         /// <returns>The computed Z value</returns>
-        public double GetZ(double x, double y)
+        public override void GetZ(ReadOnlySpan<double> xy, Span<double> z)
         {
             if (!_isInitialized)
                 Init();
-            var cell = GetCell(x, y, false);
-            if (cell == null)
-                return _averageZ;
-            return cell.Z;
+
+            for (int i = 0, j = 0; i < z.Length; i++)
+            {
+                var cell = GetCell(xy[j++], xy[j++], false);
+                z[i] = cell == null ? _averageZ : cell.Z;
+            }
         }
 
         /// <summary>

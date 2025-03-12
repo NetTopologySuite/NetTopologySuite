@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.IO;
 using BitConverter = System.BitConverter;
 
 namespace NetTopologySuite.Geometries
@@ -163,12 +164,12 @@ namespace NetTopologySuite.Geometries
         {
             int orient0 = (int)Orientation.Index(_p0, _p1, seg._p0);
             int orient1 = (int)Orientation.Index(_p0, _p1, seg._p1);
-            // this handles the case where the points are Curve or collinear
+            // this handles the case where the points are L or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
             // this handles the case where the points are R or collinear
             if (orient0 <= 0 && orient1 <= 0)
-                return Math.Max(orient0, orient1);
+                return Math.Min(orient0, orient1);
             // points lie on opposite sides ==> indeterminate orientation
             return 0;
         }
@@ -222,9 +223,19 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return _p0.Create((_p0.X + _p1.X) / 2d, (_p0.Y + _p1.Y) / 2d);
+                return ComputeMidPoint(_p0, _p1);
             }
         }
+
+        /// <summary>
+        /// Computes the midpoint of two coordinates
+        /// </summary>
+        /// <remarks>This method is named <c>midPoint</c> in JTS.</remarks>
+        /// <param name="p0">A coordinate</param>
+        /// <param name="p1">A coordinate</param>
+        /// <returns>The mid point</returns>
+        public static Coordinate ComputeMidPoint(Coordinate p0, Coordinate p1)
+            => p0.Create((p0.X + p1.X) / 2d, (p0.Y + p1.Y) / 2d);
 
         /// <summary>
         /// Computes the distance between this line segment and another one.
@@ -247,12 +258,36 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Computes the perpendicular distance between the (infinite) line defined
         /// by this line segment and a point.
+        /// <para/>
+        /// If the segment has zero length this returns the distance between
+        /// the segment and the point.
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
+        /// <param name="p">The point to compute the distance to</param>
+        /// <returns>The perpendicular distance between the line and point</returns>
         public double DistancePerpendicular(Coordinate p)
         {
+            if (P0.Equals2D(P1))
+                return P0.Distance(p);
             return DistanceComputer.PointToLinePerpendicular(p, _p0, _p1);
+        }
+
+        /// <summary>Computes the oriented perpendicular distance between the (infinite) line
+        /// defined by this line segment and a point.
+        /// The oriented distance is positive if the point on the left of the line,
+        /// and negative if it is on the right.
+        /// If the segment has zero length this returns the distance between
+        /// the segment and the point.
+        /// </summary>
+        /// <param name="p">The point to compute the distance to</param>
+        /// <returns>The oriented perpendicular distance between the line and point</returns>
+        public double DistancePerpendicularOriented(Coordinate p)
+        {
+            if (P0.Equals2D(P1))
+                return P0.Distance(p);
+            double dist = DistancePerpendicular(p);
+            if (OrientationIndex(p) < 0)
+                return -dist;
+            return dist;
         }
 
         /// <summary>
@@ -393,7 +428,15 @@ namespace NetTopologySuite.Geometries
                 return p.Copy();
 
             double r = ProjectionFactor(p);
-            return p.Create(_p0.X + r * (_p1.X - _p0.X), _p0.Y + r * (_p1.Y - _p0.Y));
+            return Project(p, r);
+        }
+
+        private Coordinate Project(Coordinate p, double projectionFactor)
+        {
+            var coord = p.Copy();
+            coord.X = _p0.X + projectionFactor * (_p1.X - _p0.X);
+            coord.Y = _p0.Y + projectionFactor * (_p1.Y - _p0.Y);
+            return coord;
         }
 
         /// <summary>
@@ -414,11 +457,11 @@ namespace NetTopologySuite.Geometries
             if (pf0 >= 1.0 && pf1 >= 1.0) return null;
             if (pf0 <= 0.0 && pf1 <= 0.0) return null;
 
-            var newp0 = Project(seg._p0);
+            var newp0 = Project(seg._p0, pf0);
             if (pf0 < 0.0) newp0 = _p0;
             if (pf0 > 1.0) newp0 = _p1;
 
-            var newp1 = Project(seg._p1);
+            var newp1 = Project(seg._p1, pf1);
             if (pf1 < 0.0) newp1 = _p0;
             if (pf1 > 1.0) newp1 = _p1;
 
@@ -453,7 +496,7 @@ namespace NetTopologySuite.Geometries
         {
             double factor = ProjectionFactor(p);
             if (factor > 0 && factor < 1)
-                return Project(p);
+                return Project(p, factor);
             double dist0 = _p0.Distance(p);
             double dist1 = _p1.Distance(p);
             return dist0 < dist1 ? _p0 : _p1;
@@ -467,9 +510,20 @@ namespace NetTopologySuite.Geometries
         /// A pair of Coordinates which are the closest points on the line segments.
         /// </returns>
         public Coordinate[] ClosestPoints(LineSegment line)
+            => ClosestPoints(line, null);
+
+        /// <summary>
+        /// Computes the closest points on a line segment.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns>
+        /// A pair of Coordinates which are the closest points on the line segments.
+        /// </returns>
+        public Coordinate[] ClosestPoints(LineSegment line, ElevationModel em)
+
         {
             // test for intersection
-            var intPt = Intersection(line);
+            var intPt = Intersection(line, em);
             if (intPt != null)
                 return new[] { intPt, intPt };
 
@@ -555,8 +609,23 @@ namespace NetTopologySuite.Geometries
         /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
         /// <see cref="RobustLineIntersector"/>
         public Coordinate Intersection(LineSegment line)
+            => Intersection(line, null);
+
+        /// <summary>
+        /// Computes an intersection point between two segments, if there is one.
+        /// There may be 0, 1 or many intersection points between two segments.
+        /// If there are 0, null is returned. If there is 1 or more, a single one
+        /// is returned (chosen at the discretion of the algorithm).  If
+        /// more information is required about the details of the intersection,
+        /// the <see cref="RobustLineIntersector"/> class should be used.
+        /// </summary>
+        /// <param name="line">A line segment</param>
+        /// <param name="em">An elevation model. May be <c>null</c></param>
+        /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
+        /// <see cref="RobustLineIntersector"/>
+        public Coordinate Intersection(LineSegment line, ElevationModel em)
         {
-            var li = new RobustLineIntersector();
+            var li = new RobustLineIntersector(em);
             li.ComputeIntersection(_p0, _p1, line.P0, line.P1);
             if (li.HasIntersection)
                 return li.GetIntersection(0);
@@ -677,21 +746,17 @@ namespace NetTopologySuite.Geometries
                    _p0.Equals(other._p1) && _p1.Equals(other._p0);
         }
 
-        private static readonly System.Globalization.CultureInfo _cultureInfo =
-            System.Globalization.CultureInfo.InvariantCulture;
-
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <returns></returns>
-        ///
         public override string ToString()
         {
-            var sb = new StringBuilder("LINESTRING( ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p0.X).Append(" ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p0.Y).Append(", ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p1.X).Append(" ");
-            sb.AppendFormat(_cultureInfo, "{0}", _p1.Y).Append(")");
+            var sb = new StringBuilder($"{WKTConstants.LINESTRING} (");
+            sb.Append(OrdinateFormat.Default.Format(_p0.X)).Append(" ");
+            sb.Append(OrdinateFormat.Default.Format(_p0.Y)).Append(", ");
+            sb.Append(OrdinateFormat.Default.Format(_p1.X)).Append(" ");
+            sb.Append(OrdinateFormat.Default.Format(_p1.Y)).Append(")");
             return sb.ToString();
         }
 

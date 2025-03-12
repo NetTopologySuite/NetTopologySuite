@@ -9,7 +9,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class NodeMap
     {
-        private readonly IDictionary<Coordinate, Node > _nodeMap = new SortedDictionary<Coordinate, Node>();
+        private readonly SortedDictionary<Coordinate, Node> _nodeMap = new SortedDictionary<Coordinate, Node>();
         private readonly NodeFactory _nodeFact;
 
         /// <summary>
@@ -28,8 +28,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>The <c>Node</c> for the provided <c>Coordinate</c> <paramref name="coord"/></returns>
         public Node AddNode(Coordinate coord)
         {
-            Node node;
-            if (!_nodeMap.TryGetValue(coord, out node))
+            if (!_nodeMap.TryGetValue(coord, out var node))
             {
                 node = _nodeFact.CreateNode(coord);
                 _nodeMap.Add(coord, node);
@@ -47,8 +46,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>Either <paramref name="n"/> or a <c>Node</c> with merged <c>Label</c>s</returns>
         public Node AddNode(Node n)
         {
-            var node = _nodeMap[n.Coordinate];
-            if (node == null)
+            if (!_nodeMap.TryGetValue(n.Coordinate, out var node))
             {
                 _nodeMap.Add(n.Coordinate, n);
                 return n;
@@ -79,8 +77,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public Node Find(Coordinate coord)
         {
-            Node res;
-            if (!_nodeMap.TryGetValue(coord, out res))
+            if (!_nodeMap.TryGetValue(coord, out var res))
                 return null;
             return res;
         }

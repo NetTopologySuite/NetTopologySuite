@@ -48,14 +48,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         public void DoPredicates(Geometry a, Geometry b)
         {
-            Assert.IsTrue(a.Contains(b) == a.Relate(b).IsContains());
-            Assert.IsTrue(a.Crosses(b) == a.Relate(b).IsCrosses(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Disjoint(b) == a.Relate(b).IsDisjoint());
-            Assert.IsTrue(a.Equals(b) == a.Relate(b).IsEquals(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Intersects(b) == a.Relate(b).IsIntersects());
-            Assert.IsTrue(a.Overlaps(b) == a.Relate(b).IsOverlaps(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Touches(b) == a.Relate(b).IsTouches(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Within(b) == a.Relate(b).IsWithin());
+            var im = a.Relate(b);
+            Assert.IsTrue(a.Contains(b) == im.IsContains());
+            Assert.IsTrue(a.Crosses(b) == im.IsCrosses(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Disjoint(b) == im.IsDisjoint());
+            Assert.IsTrue(a.Equals(b) == im.IsEquals(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Intersects(b) == im.IsIntersects());
+            Assert.IsTrue(a.Overlaps(b) == im.IsOverlaps(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Touches(b) == im.IsTouches(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Within(b) == im.IsWithin());
         }
     }
 }

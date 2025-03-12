@@ -45,6 +45,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="geom">The point to add.</param>
         private void Add(Geometry geom)
         {
+            if (geom.IsEmpty)
+                return;
+
             if (geom is Point)
                 Add(geom.Coordinate);
             else if (geom is GeometryCollection)

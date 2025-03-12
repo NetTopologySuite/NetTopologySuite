@@ -27,17 +27,26 @@ namespace NetTopologySuite.Noding
         public BasicSegmentString(Coordinate[] pts, object data)
         {
             _pts = pts;
-            this.Context = data;
+            Context = data;
         }
 
         /// <summary>Gets the user-defined data for this segment string.
         /// </summary>
         public object Context { get; set; }
 
+        /// <inheritdoc/>
+        public Coordinate GetCoordinate(int idx)
+        {
+            return _pts[idx];
+        }
+
+        /// <inheritdoc/>
         public Coordinate[] Coordinates => _pts;
 
+        /// <inheritdoc/>
         public bool IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
 
+        /// <inheritdoc/>
         public int Count => _pts.Length;
 
         /// <summary>

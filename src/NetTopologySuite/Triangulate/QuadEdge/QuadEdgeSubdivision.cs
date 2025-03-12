@@ -50,7 +50,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 throw new ArgumentException("Edges do not form a triangle");
         }
 
-        private const double EdgeCoincidenceToleranceFactor = 1000;
+        private const double EdgeCoincidenceToleranceFactor = 1000.0;
+        private const double FrameSizeFactor = 10.0;
 
         // debugging only - preserve current subdiv statically
         // private static QuadEdgeSubdivision currentSubdiv;
@@ -85,24 +86,28 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             _locator = new LastFoundQuadEdgeLocator(this);
         }
 
+        /// <summary>
+        /// Creates a triangular frame which contains the vertices to be triangulated.
+        /// <para/>
+        /// The frame must be large enough so that its vertices are not in the circumcircle
+        /// of any constructed triangle.
+        /// This ensures that the vertices of the frame do not prevent the convex hull
+        /// of the input vertices from forming edges of the triangulation.
+        /// This is done by using a heuristic size
+        /// of the frame.  However, it may be that this is not fully robust,
+        /// for input points which contain very narry triangles.
+        /// </summary>
+        /// <param name="env">The envelope of the input points</param>
         private void CreateFrame(Envelope env)
         {
             double deltaX = env.Width;
             double deltaY = env.Height;
-            double offset;
-            if (deltaX > deltaY)
-            {
-                offset = deltaX * 10.0;
-            }
-            else
-            {
-                offset = deltaY * 10.0;
-            }
+            double frameSize = Math.Max(deltaX, deltaY) * FrameSizeFactor;
 
-            _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0, env.MaxY + offset);
-            _frameVertex[1] = new Vertex(env.MinX - offset, env.MinY - offset);
-            _frameVertex[2] = new Vertex(env.MaxX + offset, env.MinY - offset);
-
+            _frameVertex[0] = new Vertex((env.MaxX + env.MinX) / 2.0,
+                                          env.MaxY + frameSize);
+            _frameVertex[1] = new Vertex(env.MinX - frameSize, env.MinY - frameSize);
+            _frameVertex[2] = new Vertex(env.MaxX + frameSize, env.MinY - frameSize);
             _frameEnv = new Envelope(_frameVertex[0].Coordinate, _frameVertex[1].Coordinate);
             _frameEnv.ExpandToInclude(_frameVertex[2].Coordinate);
         }
@@ -594,6 +599,26 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
+        /// Gets the edges which touch frame vertices. The returned edges are oriented so
+        /// that their origin is a frame vertex.
+        /// </summary>
+        /// <returns>The edges which touch the frame</returns>
+        public IList<QuadEdge> GetFrameEdges()
+        {
+            var edges = GetPrimaryEdges(true);
+            var frameEdges = new List<QuadEdge>();
+            foreach (var e in edges)
+            {
+                if (IsFrameEdge(e))
+                {
+                    var fe = IsFrameVertex(e.Orig) ? e : e.Sym;
+                    frameEdges.Add(fe);
+                }
+            }
+            return frameEdges;
+        }
+
+        /// <summary>
         /// A TriangleVisitor which computes and sets the
         /// circumcentre as the origin of the dual
         /// edges originating in each triangle.
@@ -716,7 +741,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             public void Visit(QuadEdge[] triEdges)
             {
-                _triList.Add(triEdges);
+                _triList.Add(new[] { triEdges[0], triEdges[1], triEdges[2] });
             }
 
             public IList<QuadEdge[]> GetTriangleEdges()
@@ -841,13 +866,24 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>a GeometryCollection of triangular Polygons</returns>
         public GeometryCollection GetTriangles(GeometryFactory geomFact)
         {
-            var triPtsList = GetTriangleCoordinates(false);
+            return GetTriangles(false, geomFact);
+        }
+
+        /// <summary>
+        /// Gets the geometry for the triangles in a triangulated subdivision as a <see cref="GeometryCollection"/>
+        /// of triangular <see cref="Geometries.Polygon"/>s, optionally including the frame triangles.
+        /// </summary>
+        /// <param name="includeFrame">A flag indicating if the frame triangles should be included</param>
+        /// <param name="geomFact">The <c>GeometryFactory</c> to use</param>
+        /// <returns>A <c>GeometryCollection</c> of triangular polygons</returns>
+        public GeometryCollection GetTriangles(bool includeFrame, GeometryFactory geomFact)
+        {
+            var triPtsList = GetTriangleCoordinates(includeFrame);
             var tris = new Geometries.Polygon[triPtsList.Count];
             int i = 0;
             foreach (var triPt in triPtsList)
             {
-                tris[i++] = geomFact
-                            .CreatePolygon(geomFact.CreateLinearRing(triPt));
+                tris[i++] = geomFact.CreatePolygon(geomFact.CreateLinearRing(triPt));
             }
             return geomFact.CreateGeometryCollection(tris);
         }
@@ -944,5 +980,64 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             cellPoly.UserData = v.Coordinate;
             return cellPoly;
         }
+
+        /// <summary>
+        /// Tests whether a subdivision is a valid Delaunay Triangulation.
+        /// This is the case iff every edge is locally Delaunay, meaning that
+        /// the apex of one adjacent triangle is not inside the circumcircle
+        /// of the other adjacent triangle.
+        /// </summary>
+        public bool IsDelaunay()
+        {
+            var edges = GetPrimaryEdges(true);
+            foreach (var e in edges)
+            {
+                var a0 = e.OPrev.Dest;
+                var a1 = e.ONext.Dest;
+                bool isDelaunay = !a1.IsInCircle(e.Orig, a0, e.Dest);
+                if (!isDelaunay)
+                {
+                    /*
+                    Console.WriteLine(WKTWriter.ToLineString(new Coordinate[] {
+                        e.Orig.Coordinate, a0.Coordinate, e.Dest.Coordinate
+                    }));
+                    */
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        ///// <summary>
+        ///// Tests whether the frame edges are Delaunay
+        ///// </summary>
+        ///// <returns>true if the frame edges are Delaunay</returns>
+        //public bool IsFrameDelaunay()
+        //{
+        //  var edges = GetFrameEdges();
+        //  foreach (var e in edges) {
+        //    var a0 = e.OPrev.Dest;
+        //    var a1 = e.ONext.Dest;
+        //    bool isDelaunay = ! a1.IsInCircle(e.Orig, a0, e.Dest);
+        //    if (! isDelaunay) {
+
+        //      return false;
+        //    }
+        //  }
+        //  return true;
+        //}
+
+        //public void MakeFrameDelaunay()
+        //{
+        //    var edges = GetFrameEdges();
+        //    foreach (var e in edges)
+        //    {
+        //        var a0 = e.OPrev.Dest;
+        //        var a1 = e.ONext.Dest;
+        //        bool isDelaunay = !a1.IsInCircle(e.Orig, a0, e.Dest);
+        //        if (!isDelaunay)
+        //            QuadEdge.Swap(e);
+        //    }
+        //}
     }
 }

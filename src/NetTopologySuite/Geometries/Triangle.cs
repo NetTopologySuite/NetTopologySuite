@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.ConstrainedExecution;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Mathematics;
 
@@ -106,6 +107,27 @@ namespace NetTopologySuite.Geometries
             var l2 = new HCoordinate(a.X - dy + dx / 2.0, a.Y + dx + dy / 2.0, 1.0);
             return new HCoordinate(l1, l2);
         }
+
+        /// <summary>
+        /// Computes the radius of the circumcircle of a triangle.
+        /// <para/>
+        /// Formula is as per <a href="https://math.stackexchange.com/a/3610959"/>
+        /// </summary>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns>The circumradius of the triangle</returns>
+        public static double Circumradius(Coordinate a, Coordinate b, Coordinate c)
+        {
+            double A = a.Distance(b);
+            double B = b.Distance(c);
+            double C = c.Distance(a);
+            double area = Area(a, b, c);
+            if (area == 0.0)
+                return double.PositiveInfinity;
+            return (A * B * C) / (4 * area);
+        }
+
 
         /// <summary>Computes the circumcentre of a triangle.</summary>
         /// <remarks>
@@ -307,7 +329,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>The area of the triangle</returns>
-        /// <seealso cref="SignedArea"/>
+        /// <seealso cref="SignedArea(Coordinate,Coordinate,Coordinate)"/>
         public static double Area(Coordinate a, Coordinate b, Coordinate c)
         {
             return Math.Abs(
@@ -478,8 +500,8 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Computes the circumcentre of this triangle. The circumcentre is the centre
-        /// of the circumcircle, the smallest circle which encloses the triangle. It is
-        /// also the common intersection point of the perpendicular bisectors of the
+        /// of the circumcircle, the smallest circle which passes through all the triangle vertices.
+        /// It is also the common intersection point of the perpendicular bisectors of the
         /// sides of the triangle, and is the only point which has equal distance to
         /// all three vertices of the triangle.
         /// <para/>
@@ -494,6 +516,16 @@ namespace NetTopologySuite.Geometries
         {
             return Circumcentre(_p0, _p1, _p2);
         }
+
+        /// <summary>
+        /// Computes the radius of the circumcircle of a triangle.
+        /// </summary>
+        /// <returns>The triangle circumradius</returns>
+        public double Circumradius()
+        {
+            return Circumradius(_p0, _p1, _p2);
+        }
+
 
         /// <summary>
         /// Computes the centroid (centre of mass) of this triangle. This is also the

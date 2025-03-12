@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 
@@ -73,7 +74,7 @@ namespace NetTopologySuite.Operation.Polygonize
         private ICollection<LineString> _dangles = new List<LineString>();
         private ICollection<LineString> _cutEdges = new List<LineString>();
         private IList<Geometry> _invalidRingLines = new List<Geometry>();
-        private List<EdgeRing> _holeList;
+        private IList<EdgeRing> _holeList;
         private List<EdgeRing> _shellList;
         private ICollection<Geometry> _polyList;
 
@@ -228,9 +229,12 @@ namespace NetTopologySuite.Operation.Polygonize
             var edgeRingList = _graph.GetEdgeRings();
 
             var validEdgeRingList = new List<EdgeRing>();
-            _invalidRingLines = new List<Geometry>();
+            var invalidRings = new List<EdgeRing>();
             if (IsCheckingRingsValid)
-                 FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
+            {
+                FindValidRings(edgeRingList, validEdgeRingList, invalidRings);
+                _invalidRingLines = ExtractInvalidLines(invalidRings);
+            }
             else validEdgeRingList = (List<EdgeRing>)edgeRingList;
 
             FindShellsAndHoles(validEdgeRingList);
@@ -249,13 +253,15 @@ namespace NetTopologySuite.Operation.Polygonize
 
         }
 
-        private static void FindValidRings(IEnumerable<EdgeRing> edgeRingList, ICollection<EdgeRing> validEdgeRingList, ICollection<Geometry> invalidRingList)
+        private static void FindValidRings(IEnumerable<EdgeRing> edgeRingList, ICollection<EdgeRing> validEdgeRingList, ICollection<EdgeRing> invalidRingList)
         {
             foreach (var er in edgeRingList)
             {
+                er.ComputeValid();
                 if (er.IsValid)
-                     validEdgeRingList.Add(er);
-                else invalidRingList.Add(er.LineString);
+                    validEdgeRingList.Add(er);
+                else
+                    invalidRingList.Add(er);
             }
         }
 
@@ -311,6 +317,68 @@ namespace NetTopologySuite.Operation.Polygonize
                     outerHoleER.IsProcessed = true;
                 }
             }
+        }
+
+        /// <summary>Extracts unique lines for invalid rings,
+        /// discarding rings which correspond to outer rings and hence contain
+        /// duplicate linework.
+        /// </summary>
+        /// <param name="invalidRings">A list of edge rings</param>
+        /// <returns>The list of invalid LineString geometries</returns>
+        private IList<Geometry> ExtractInvalidLines(List<EdgeRing> invalidRings)
+        {
+            /*
+             * Sort rings by increasing envelope area.
+             * This causes inner rings to be processed before the outer rings
+             * containing them, which allows outer invalid rings to be discarded
+             * since their linework is already reported in the inner rings.
+             */
+            invalidRings.Sort(new EdgeRing.EnvelopeAreaComparator());
+            /*
+             * Scan through rings.  Keep only rings which have an adjacent EdgeRing
+             * which is either valid or marked as not processed.  
+             * This avoids including outer rings which have linework which is duplicated.
+             */
+            var invalidLines = new List<Geometry>();
+            foreach (var er in invalidRings)
+            {
+                if (IsIncludedInvalid(er))
+                {
+                    invalidLines.Add(er.LineString);
+                }
+                er.IsProcessed = true;
+            }
+            return invalidLines;
+        }
+
+        /// <summary>
+        /// Tests if a invalid ring should be included in
+        /// the list of reported invalid rings.
+        /// <para/>
+        /// Rings are included only if they contain
+        /// linework which is not already in a valid ring,
+        /// or in an already-included ring.
+        /// <para/>
+        /// Because the invalid rings list is sorted by extent area,
+        /// this results in outer rings being discarded,
+        /// since all their linework is reported in the rings they contain.
+        /// </summary>
+        /// <param name="invalidRing">The ring to test</param>
+        /// <returns><c>true</c> if the ring should be included</returns>
+        private bool IsIncludedInvalid(EdgeRing invalidRing)
+        {
+            foreach (var de in invalidRing.Edges)
+            {
+                var deAdj = (PolygonizeDirectedEdge)de.Sym;
+                var erAdj = deAdj.Ring;
+                /**
+                 * 
+                 */
+                bool isEdgeIncluded = erAdj.IsValid || erAdj.IsProcessed;
+                if (!isEdgeIncluded)
+                    return true;
+            }
+            return false;
         }
 
         private static List<Geometry> ExtractPolygons(List<EdgeRing> shellList, bool includeAll)

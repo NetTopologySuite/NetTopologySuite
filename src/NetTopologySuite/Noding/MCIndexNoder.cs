@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
-using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Index.HPRtree;
 
 namespace NetTopologySuite.Noding
 {
@@ -12,7 +12,7 @@ namespace NetTopologySuite.Noding
     /// on <see cref="MonotoneChain" />s and a <see cref="ISpatialIndex{T}" />.
     /// The <see cref="ISpatialIndex{T}" /> used should be something that supports
     /// envelope (range) queries efficiently (such as a <c>Quadtree</c>"
-    /// or <see cref="STRtree{MonotoneChain}" />.
+    /// or <see cref="HPRtree{MonotoneChain}" />.
     /// <para/>
     /// The noder supports using an overlap tolerance distance.
     /// This allows determining segment intersection using a buffer for uses
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Noding
     public class MCIndexNoder : SinglePassNoder
     {
         private readonly List<MonotoneChain> _monoChains = new List<MonotoneChain>();
-        private readonly ISpatialIndex<MonotoneChain> _index = new STRtree<MonotoneChain>();
+        private readonly ISpatialIndex<MonotoneChain> _index = new HPRtree<MonotoneChain>();
         private int _idCounter;
         private IList<ISegmentString> _nodedSegStrings;
         private int _nOverlaps; // statistics

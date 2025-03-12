@@ -46,33 +46,61 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     public class DepthSegmentTest
     {
         [Test]
-        public void TestContractTipToTail()
+        public void TestCompareTipToTail()
         {
-            var ds0 = depthSeg(0.7, 0.2, 1.4, 0.9);
-            var ds1 = depthSeg(0.3, 1.1, 0.7, 0.2);
-            checkContract(ds0, ds1);
+            var ds0 = DepthSeg(0.7, 0.2, 1.4, 0.9);
+            var ds1 = DepthSeg(0.7, 0.2, 0.3, 1.1);
+            CheckCompare(ds0, ds1, 1);
         }
 
         [Test]
-        public void TestContract2()
+        public void TestCompare2()
         {
-            var ds0 = depthSeg(0.1, 1.9, 0.5, 1.0);
-            var ds1 = depthSeg(1.0, 0.9, 1.9, 1.4);
-            checkContract(ds0, ds1);
+            var ds0 = DepthSeg(0.1, 1.9, 0.5, 1.0);
+            var ds1 = DepthSeg(1.0, 0.9, 1.9, 1.4);
+            CheckCompare(ds0, ds1, -1);
         }
 
-        private void checkContract(
-            SubgraphDepthLocater.DepthSegment ds0,
-            SubgraphDepthLocater.DepthSegment ds1)
+        [Test]
+        public void TestCompareVertical()
         {
-            // should never have ds1 < ds2 && ds2 < ds1
-            int cmp0 = ds0.CompareTo(ds1);
-            int cmp1 = ds1.CompareTo(ds0);
-            bool isFail = cmp0 != 0 && cmp0 == cmp1;
-            Assert.IsTrue(!isFail);
+            var ds0 = DepthSeg(1, 1, 1, 2);
+            var ds1 = DepthSeg(1, 0, 1, 1);
+            CheckCompare(ds0, ds1, 1);
         }
 
-        private SubgraphDepthLocater.DepthSegment depthSeg(double x0, double y0, double x1, double y1)
+        [Test]
+        public void TestCompareOrientBug()
+        {
+            var ds0 = DepthSeg(146.268, -8.42361, 146.263, -8.3875);
+            var ds1 = DepthSeg(146.269, -8.42889, 146.268, -8.42361);
+            CheckCompare(ds0, ds1, -1);
+        }
+
+        [Test]
+        public void TestCompareEqual()
+        {
+            var ds0 = DepthSeg(1, 1, 2, 2);
+            CheckCompare(ds0, ds0, 0);
+        }
+
+        private void CheckCompare(
+           SubgraphDepthLocater.DepthSegment ds0,
+           SubgraphDepthLocater.DepthSegment ds1,
+           int expectedComp)
+        {
+            Assert.That(ds0.IsUpward);
+            Assert.That(ds1.IsUpward);
+
+            // check compareTo contract - should never have ds1 < ds2 && ds2 < ds1
+            int comp0 = ds0.CompareTo(ds1);
+            int comp1 = ds1.CompareTo(ds0);
+            Assert.That(comp0, Is.EqualTo(expectedComp));
+            Assert.That(comp0, Is.EqualTo(-comp1));
+        }
+
+
+        private SubgraphDepthLocater.DepthSegment DepthSeg(double x0, double y0, double x1, double y1)
         {
             var seg = new LineSegment(x0, y0, x1, y1);
             if (seg.P0.Y > seg.P1.Y)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Noding.Snap;
@@ -45,13 +46,19 @@ namespace NetTopologySuite.Noding.Snapround
 
 
         private readonly PrecisionModel _pm;
+        private readonly ElevationModel _em;
         private readonly HotPixelIndex _pixelIndex;
 
         private List<NodedSegmentString> _snappedResult;
 
         public SnapRoundingNoder(PrecisionModel pm)
+            : this(pm, null)
+        { }
+
+        public SnapRoundingNoder(PrecisionModel pm, ElevationModel em)
         {
             _pm = pm;
+            _em = em;
             _pixelIndex = new HotPixelIndex(pm);
         }
 
@@ -103,7 +110,7 @@ namespace NetTopologySuite.Noding.Snapround
             double snapGridSize = 1.0 / _pm.Scale;
             double nearnessTol = snapGridSize / NEARNESS_FACTOR;
 
-            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol);
+            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol, _em);
             var noder = new MCIndexNoder(intAdder, nearnessTol);
             noder.ComputeNodes(segStrings);
             var intPts = intAdder.Intersections;

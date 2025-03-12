@@ -112,6 +112,35 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Implicit conversion of a <c>Tuple</c> to a <c>CoordinateZ</c>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator CoordinateZ((double x, double y) value)
+            => new CoordinateZ(value.x, value.y);
+
+        /// <summary>
+        /// Implicit conversion of a <c>Tuple</c> to a <c>CoordinateZ</c>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator CoordinateZ((double x, double y, double z) value)
+            => new CoordinateZ(value.x, value.y, value.z);
+        
+        /// <summary>
+        /// Deconstructs this <c>CoordinateZ</c> into its x, y and z values.
+        /// </summary>
+        /// <param name="x">The x-ordinate value</param>
+        /// <param name="y">The y-ordinate value</param>
+        /// <param name="z">The z-ordinate value</param>
+        public void Deconstruct(out double x, out double y, out double z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+
+        /// <summary>
         /// Gets/Sets <c>CoordinateZ</c>s (x,y,z) values.
         /// </summary>
         public override Coordinate CoordinateValue

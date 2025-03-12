@@ -23,6 +23,11 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
+        /// Gets a value indicating the number of nodes in the list.
+        /// </summary>
+        public int Count => _nodeMap.Count;
+
+        /// <summary>
         ///
         /// </summary>
         /// <value></value>

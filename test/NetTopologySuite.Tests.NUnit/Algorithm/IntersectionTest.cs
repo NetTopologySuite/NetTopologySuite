@@ -1,5 +1,6 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
@@ -82,6 +83,25 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             checkIntersectionLineSegmentNull(0, 0, 0, 1, 2, 9, 1, 9);
             checkIntersectionLineSegmentNull(0, 0, 0, 1, -2, 9, -1, 9);
             checkIntersectionLineSegmentNull(0, 0, 0, 1, 2, 9, 1, 9);
+        }
+
+
+        [Test]
+        public void TestIntersectionXY()
+        {
+            // intersection with dim3 x dim2
+            var reader = new WKTReader();
+            var poly1 = reader.Read("POLYGON Z((0 0 0, 0 10000 2, 10000 10000 2, 10000 0 0, 0 0 0))");
+            var clipArea = reader.Read("POLYGON Z((0 0 0, 0 2500 0, 2500 2500 0, 2500 0 0, 0 0 0))");
+            var clipped1 = poly1.Intersection(clipArea);
+
+            // intersection with dim3 x dim2
+            clipArea = reader.Read("POLYGON ((0 0, 0 2500, 2500 2500, 2500 0, 0 0))");
+            var clipped2 = poly1.Intersection(clipArea);
+
+            Assert.That(clipped1, Is.EqualTo(clipped2));
+            Assert.That(Coordinates.SpatialDimension(clipped1.Coordinate),
+                Is.EqualTo(Coordinates.SpatialDimension(clipped2.Coordinate)));
         }
 
         //==================================================

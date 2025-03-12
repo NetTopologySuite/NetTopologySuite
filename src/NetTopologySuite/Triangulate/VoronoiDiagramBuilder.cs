@@ -81,7 +81,6 @@ namespace NetTopologySuite.Triangulate
         {
             if (_subdiv != null) return;
 
-            var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
             _diagramEnv = _clipEnv;
             if (_diagramEnv == null)
             {
@@ -99,6 +98,11 @@ namespace NetTopologySuite.Triangulate
             var vertices = DelaunayTriangulationBuilder.ToVertices(_siteCoords);
             _subdiv = new QuadEdgeSubdivision(_diagramEnv, _tolerance);
             var triangulator = new IncrementalDelaunayTriangulator(_subdiv);
+            /*
+             * Avoid creating very narrow triangles along triangulation boundary.
+             * These otherwise can cause malformed Voronoi cells.
+             */
+            triangulator.ForceConvex = false;
             triangulator.InsertSites(vertices);
         }
 

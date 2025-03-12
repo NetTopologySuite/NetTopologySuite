@@ -19,13 +19,16 @@ namespace NetTopologySuite.Operation.Buffer
     internal class OffsetSegmentGenerator
     {
         /// <summary>
-        /// Factor which controls how close offset segments can be to
-        /// skip adding a filler or mitre.
+        /// Factor controlling how close offset segments can be to
+        /// skip adding a fillet or mitre.
+        /// This eliminates very short fillet segments,
+        /// reduces the number of offset curve vertices.
+        /// and improves the robustness of mitre construction.
         /// </summary>
-        private const double OffsetSegmentSeparationFactor = 1.0E-3;
+        private const double OffsetSegmentSeparationFactor = 0.05;
 
         /// <summary>
-        /// Factor which controls how close curve vertices on inside turns can be to be snapped
+        /// Factor controlling how close curve vertices on inside turns can be to be snapped
         /// </summary>
         private const double InsideTurnVertexSnapDistanceFactor = 1.0E-3;
 
@@ -84,17 +87,22 @@ namespace NetTopologySuite.Operation.Buffer
 
         public OffsetSegmentGenerator(PrecisionModel precisionModel,
             BufferParameters bufParams, double distance)
+            : this(precisionModel, null, bufParams, distance)
+        { }
+
+        public OffsetSegmentGenerator(PrecisionModel precisionModel,
+            ElevationModel em, BufferParameters bufParams, double distance)
         {
             _precisionModel = precisionModel;
             _bufParams = bufParams;
 
             // compute intersections in full precision, to provide accuracy
             // the points are rounded as they are inserted into the curve line
-            _li = new RobustLineIntersector();
+            _li = new RobustLineIntersector(em);
 
             int quadSegs = bufParams.QuadrantSegments;
             if (quadSegs < 1) quadSegs = 1;
-            _filletAngleQuantum = Math.PI / 2.0 / quadSegs;
+            _filletAngleQuantum = AngleUtility.PiOver2 / quadSegs;
 
             /*
              * Non-round joins cause issues with short closing segments, so don't use
@@ -121,14 +129,13 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void Init(double distance)
         {
-            _distance = distance;
-            _maxCurveSegmentError = distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
-            _segList = new OffsetSegmentString();
-            _segList.PrecisionModel = _precisionModel;
-            /*
-             * Choose the min vertex separation as a small fraction of the offset distance.
-             */
-            _segList.MinimumVertexDistance = distance * CurveVertexSnapDistanceFactor;
+            _distance = Math.Abs(distance);
+            _maxCurveSegmentError = _distance * (1 - Math.Cos(_filletAngleQuantum / 2.0));
+            _segList = new OffsetSegmentString {
+                PrecisionModel = _precisionModel,
+                // Choose the min vertex separation as a small fraction of the offset distance.
+                MinimumVertexDistance = _distance * CurveVertexSnapDistanceFactor
+            };
         }
 
         [Obsolete("Use InitSideSegments(Coordinate, Coordinate, Geometries.Position)")]
@@ -252,14 +259,20 @@ namespace NetTopologySuite.Operation.Buffer
         {
             /*
              * Heuristic: If offset endpoints are very close together,
-             * just use one of them as the corner vertex.
-             * This avoids problems with computing mitre corners in the case
-             * where the two segments are almost parallel
-             * (which is hard to compute a robust intersection for).
+             * (which happens for nearly-parallel segments),
+             * use an endpoint as the single offset corner vertex.
+             * This eliminates very short single-segment joins
+             * and reduces the number of offset curve vertices.
+             * This also avoids robustness problems with computing mitre corners 
+             * for nearly-parallel segments.
              */
             if (_offset0.P1.Distance(_offset1.P0) < _distance * OffsetSegmentSeparationFactor)
             {
-                _segList.AddPt(_offset0.P1);
+                //-- use endpoint of longest segment, to reduce change in area
+                double segLen0 = _s0.Distance(_s1);
+                double segLen1 = _s1.Distance(_s2);
+                var offsetPt = (segLen0 > segLen1) ? _offset0.P1 : _offset1.P0;
+                _segList.AddPt(offsetPt);
                 return;
             }
 
@@ -274,8 +287,10 @@ namespace NetTopologySuite.Operation.Buffer
             else
             {
                 // add a circular fillet connecting the endpoints of the offset segments
-                if (addStartPoint) _segList.AddPt(_offset0.P1);
-                // TESTING - comment out to produce beveled joins
+                if (addStartPoint)
+                {
+                    _segList.AddPt(_offset0.P1);
+                }
                 AddCornerFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
                 _segList.AddPt(_offset1.P0);
             }
@@ -413,7 +428,7 @@ namespace NetTopologySuite.Operation.Buffer
                 case EndCapStyle.Round:
                     // add offset seg points with a fillet between them
                     _segList.AddPt(offsetL.P1);
-                    AddDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, OrientationIndex.Clockwise, _distance);
+                    AddDirectedFillet(p1, angle + AngleUtility.PiOver2, angle - AngleUtility.PiOver2, OrientationIndex.Clockwise, _distance);
                     _segList.AddPt(offsetR.P1);
                     break;
                 case EndCapStyle.Flat:
@@ -520,7 +535,7 @@ namespace NetTopologySuite.Operation.Buffer
             var bevelMidPt = Project(cornerPt, -mitreLimitDistance, dirBisector);
 
             // direction of bevel segment (at right angle to corner bisector)
-            double dirBevel = AngleUtility.Normalize(dirBisector + Math.PI / 2.0);
+            double dirBevel = AngleUtility.Normalize(dirBisector + AngleUtility.PiOver2);
 
             // compute the candidate bevel segment by projecting both sides of the midpoint
             var bevel0 = Project(bevelMidPt, distance, dirBevel);
@@ -554,8 +569,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The projected point</returns>
         private static Coordinate Project(Coordinate pt, double d, double dir)
         {
-            double x = pt.X + d * Math.Cos(dir);
-            double y = pt.Y + d * Math.Sin(dir);
+            double x = pt.X + d * AngleUtility.CosSnap(dir);
+            double y = pt.Y + d * AngleUtility.SinSnap(dir);
             return new Coordinate(x, y);
         }
 
@@ -593,11 +608,11 @@ namespace NetTopologySuite.Operation.Buffer
 
             if (direction == OrientationIndex.Clockwise)
             {
-                if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
+                if (startAngle <= endAngle) startAngle += AngleUtility.PiTimes2;
             }
             else
             {    // direction == COUNTERCLOCKWISE
-                if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI;
+                if (startAngle >= endAngle) startAngle -= AngleUtility.PiTimes2;
             }
             _segList.AddPt(p0);
             AddDirectedFillet(p, startAngle, endAngle, direction, radius);
@@ -630,8 +645,8 @@ namespace NetTopologySuite.Operation.Buffer
             for (int i = 0; i < nSegs; i++)
             {
                 double angle = startAngle + directionFactor * i * angleInc;
-                pt.X = p.X + radius * Math.Cos(angle);
-                pt.Y = p.Y + radius * Math.Sin(angle);
+                pt.X = p.X + radius * AngleUtility.CosSnap(angle);
+                pt.Y = p.Y + radius * AngleUtility.SinSnap(angle);
                 _segList.AddPt(pt);
             }
         }
@@ -644,7 +659,7 @@ namespace NetTopologySuite.Operation.Buffer
             // add start point
             var pt = new Coordinate(p.X + _distance, p.Y);
             _segList.AddPt(pt);
-            AddDirectedFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, _distance);
+            AddDirectedFillet(p, 0.0, AngleUtility.PiTimes2, OrientationIndex.Clockwise, _distance);
             _segList.CloseRing();
         }
 

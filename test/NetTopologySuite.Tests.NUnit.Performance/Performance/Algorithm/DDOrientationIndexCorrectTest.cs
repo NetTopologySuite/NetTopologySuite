@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// Tests the correctness of Orientation Index computed with DD arithmetic.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class DDOrientationIndexCorrectTest : GeometryTestCase
+    public class DDOrientationIndexCorrectTest
     {
         /// <summary>
         /// This test captures a situation where

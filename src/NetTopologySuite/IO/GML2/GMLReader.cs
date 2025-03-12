@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
@@ -95,6 +96,12 @@ namespace NetTopologySuite.IO.GML2
             return Read(reader);
         }
 
+        protected static int ReadSrsDimension(XmlReader reader, int srsDimension)
+        {
+            string tmp = reader.GetAttribute("srsDimension");
+            return tmp == null ? srsDimension : XmlConvert.ToInt32(tmp);
+        }
+
         /// <summary>
         /// Reads the coordinate.
         /// </summary>
@@ -144,8 +151,8 @@ namespace NetTopologySuite.IO.GML2
         /// <summary>
         /// Extract a <see cref="Coordinate" /> from a pos entity string value.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">An array of string ordinate values</param>
+        /// <returns>A coordinate</returns>
         protected Coordinate ReadPosAsCoordinate(string[] value)
         {
             double[] ordinates = new double[Math.Min(3, value.Length)];
@@ -159,22 +166,80 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// Extract a <see cref="Coordinate" /> from a x,y string value.
+        /// Extract an enumeration of <see cref="Coordinate"/>s from a x-,y-[, z-]ordinate string values.
         /// </summary>
+        /// <param name="numOrdinates">The number of ordinates</param>
+        /// <param name="value">An array of string ordinate values</param>
+        /// <returns>An enumeration of coordinates</returns>
+        [Obsolete("Use ReadPosList(xmlReader, int, CoordinateSequenceFactory)")]
         protected IEnumerable<Coordinate> ReadPosListAsCoordinates(int numOrdinates, string[] value)
         {
             Assert.IsTrue(value.Length % numOrdinates == 0);
             var coordinates = new Coordinate[value.Length / numOrdinates];
             int offset = 0;
+            string[] ords = new string[numOrdinates];
             for (int i = 0; i < coordinates.Length; i++)
             {
-                string[] ords = new string[numOrdinates];
                 Array.Copy(value, offset, ords, 0, numOrdinates);
                 offset += numOrdinates;
                 coordinates[i] = ReadPosAsCoordinate(ords);
             }
 
             return coordinates;
+        }
+
+        /// <summary>
+        /// Extract a <see cref="CoordinateSequence" /> from a series of x-, y-[, z-]ordinate string values.
+        /// </summary>
+        /// <param name="reader">A xml-reader</param>
+        /// <param name="srsDimension">The number of ordinates to read per coordinate</param>
+        /// <param name="csFactory">The factory to use in order to create the result</param>
+        /// <returns>A coordinate sequence</returns>
+        protected CoordinateSequence ReadPosList(XmlReader reader, int srsDimension, CoordinateSequenceFactory csFactory)
+        {
+            Assert.IsTrue(IsStartElement(reader, "posList"));
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+            reader.Read();
+
+            var coordinatesSpan = reader.ReadContentAsString().AsSpan().Trim();
+            var coordinates = new List<double>();
+
+            while (!coordinatesSpan.IsEmpty)
+            {
+                int seperatorIndex = coordinatesSpan.IndexOf(' ');
+                if (seperatorIndex == -1)
+                    seperatorIndex = coordinatesSpan.Length;
+
+                var ordinateSpan = coordinatesSpan.Slice(0, seperatorIndex);
+                if (!ordinateSpan.IsEmpty)
+                {
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+                    if (double.TryParse(ordinateSpan, System.Globalization.NumberStyles.Number,
+                        System.Globalization.NumberFormatInfo.InvariantInfo, out double ordinate))
+#else
+                    if (double.TryParse(ordinateSpan.ToString(), System.Globalization.NumberStyles.Number,
+                        System.Globalization.NumberFormatInfo.InvariantInfo, out double ordinate))
+#endif
+                        coordinates.Add(ordinate);
+                }
+
+                if (seperatorIndex < coordinatesSpan.Length - 1) seperatorIndex++;
+                coordinatesSpan = coordinatesSpan.Slice(seperatorIndex);
+            }
+
+            Assert.IsTrue(coordinates.Count % srsDimension == 0);
+
+            reader.ReadEndElement();
+
+            var res = csFactory.Create(coordinates.Count / srsDimension, srsDimension, 0);
+            for (int i = 0, k = 0; i < res.Count; i++) {
+                for (int j = 0; j < srsDimension; j++)
+                    res.SetOrdinate(i, j, coordinates[k++]);
+            }
+
+            return res;
         }
 
         protected Point ReadPoint(XmlReader reader)
@@ -184,7 +249,14 @@ namespace NetTopologySuite.IO.GML2
 
         protected Point ReadPoint(XmlReader reader, GeometryFactory gf)
         {
+            return ReadPoint(reader, gf, 2);
+        }
+
+        protected Point ReadPoint(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             string numOrdinatesText = reader.GetAttribute("srsDimension");
+            if (numOrdinatesText != null) srsDimension = XmlConvert.ToInt32(numOrdinatesText);
+            
             gf = GetFactory(reader.GetAttribute("srsName"), gf);
             while (reader.Read())
             {
@@ -197,11 +269,10 @@ namespace NetTopologySuite.IO.GML2
                         {
                             reader.Read(); // Jump to values
                             string[] coords = RemoveUnneccessaryWhitespace(reader.Value).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (!string.IsNullOrEmpty(numOrdinatesText))
-                            {
-                                int numOrdinates = XmlConvert.ToInt32(numOrdinatesText);
-                                Assert.IsTrue(coords.Length == numOrdinates, "srsDimension doen't match number of provided ordinates");
-                            }
+
+                            // Test srsDimension
+                            Assert.IsTrue(coords.Length == srsDimension, "srsDimension doen't match number of provided ordinates");
+
                             return gf.CreatePoint(ReadPosAsCoordinate(coords));
                         }
                         if (IsStartElement(reader, "coordinates"))
@@ -227,6 +298,11 @@ namespace NetTopologySuite.IO.GML2
         }
 
         protected LineString ReadLineString(XmlReader reader, GeometryFactory gf)
+        {
+            return ReadLineString(reader, gf, 2);
+        }
+
+        protected LineString ReadLineString(XmlReader reader, GeometryFactory gf, int srsDimension)
         {
             var coordinates = new List<Coordinate>();
             gf = GetFactory(reader.GetAttribute("srsName"), gf);
@@ -266,12 +342,8 @@ namespace NetTopologySuite.IO.GML2
                         }
                         else if (IsStartElement(reader, "posList"))
                         {
-                            string tmp = reader.GetAttribute("srsDimension");
-                            if (string.IsNullOrEmpty(tmp)) tmp = "2";
-                            reader.Read();
-                            coordinates.AddRange(ReadPosListAsCoordinates(XmlConvert.ToInt32(tmp), reader.ReadContentAsString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
-                            reader.ReadEndElement();
-                            return gf.CreateLineString(coordinates.ToArray());
+                            var cs = ReadPosList(reader, srsDimension, gf.CoordinateSequenceFactory);
+                            return gf.CreateLineString(cs);
                         }
                         break;
 
@@ -289,7 +361,13 @@ namespace NetTopologySuite.IO.GML2
 
         protected LinearRing ReadLinearRing(XmlReader reader, GeometryFactory gf)
         {
-            return (gf ?? Factory).CreateLinearRing(ReadLineString(reader, gf).CoordinateSequence);
+            return ReadLinearRing(reader, gf, 2);
+        }
+
+        protected LinearRing ReadLinearRing(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
+            var ls = ReadLineString(reader, gf, srsDimension);
+            return ls.Factory.CreateLinearRing(ls.CoordinateSequence);
         }
 
         protected Polygon ReadPolygon(XmlReader reader)
@@ -299,8 +377,17 @@ namespace NetTopologySuite.IO.GML2
 
         protected Polygon ReadPolygon(XmlReader reader, GeometryFactory gf)
         {
+            return ReadPolygon(reader, gf, 2);
+        }
+
+        protected Polygon ReadPolygon(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             LinearRing exterior = null;
             var interiors = new List<LinearRing>();
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+
             gf = GetFactory(reader.GetAttribute("srsName"), gf);
             while (reader.Read())
             {
@@ -309,10 +396,10 @@ namespace NetTopologySuite.IO.GML2
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "outerBoundaryIs") ||
                             IsStartElement(reader, "exterior"))
-                            exterior = ReadLinearRing(reader);// as LinearRing;
+                            exterior = ReadLinearRing(reader, gf, srsDimension);// as LinearRing;
                         else if (IsStartElement(reader, "innerBoundaryIs") ||
                             IsStartElement(reader, "interior"))
-                            interiors.Add(ReadLinearRing(reader));
+                            interiors.Add(ReadLinearRing(reader, gf, srsDimension));
                         break;
 
                     case XmlNodeType.EndElement:
@@ -328,15 +415,26 @@ namespace NetTopologySuite.IO.GML2
 
         protected MultiPoint ReadMultiPoint(XmlReader reader)
         {
+            return ReadMultiPoint(reader, Factory, 2);
+        }
+
+        protected MultiPoint ReadMultiPoint(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             var points = new List<Point>();
-            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update factory
+            gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "pointMember"))
-                            points.Add(ReadPoint(reader, gf));
+                            points.Add(ReadPoint(reader, gf, srsDimension));
                         break;
 
                     case XmlNodeType.EndElement:
@@ -352,15 +450,26 @@ namespace NetTopologySuite.IO.GML2
 
         protected MultiLineString ReadMultiLineString(XmlReader reader)
         {
+            return ReadMultiLineString(reader, Factory, 2);
+        }
+
+        protected MultiLineString ReadMultiLineString(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             var lines = new List<LineString>();
-            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update factory
+            gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "lineStringMember"))
-                            lines.Add(ReadLineString(reader, gf));
+                            lines.Add(ReadLineString(reader, gf, srsDimension));
                         break;
 
                     case XmlNodeType.EndElement:
@@ -376,15 +485,26 @@ namespace NetTopologySuite.IO.GML2
 
         protected MultiLineString ReadMultiCurve(XmlReader reader)
         {
+            return ReadMultiCurve(reader, Factory, 2);
+        }
+
+        protected MultiLineString ReadMultiCurve(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             var lines = new List<LineString>();
-            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update factory
+            gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "curveMember"))
-                            lines.Add(ReadLineString(reader, gf));
+                            lines.Add(ReadLineString(reader, gf, srsDimension));
                         break;
 
                     case XmlNodeType.EndElement:
@@ -400,15 +520,26 @@ namespace NetTopologySuite.IO.GML2
 
         protected MultiPolygon ReadMultiPolygon(XmlReader reader)
         {
+            return ReadMultiPolygon(reader, Factory, 2);
+        }
+
+        protected MultiPolygon ReadMultiPolygon(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             var polygons = new List<Polygon>();
-            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update factory
+            gf = GetFactory(reader.GetAttribute("srsName"), gf);
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "polygonMember"))
-                            polygons.Add(ReadPolygon(reader, gf));
+                            polygons.Add(ReadPolygon(reader, gf, srsDimension));
                         break;
 
                     case XmlNodeType.EndElement:
@@ -424,15 +555,26 @@ namespace NetTopologySuite.IO.GML2
 
         protected MultiPolygon ReadMultiSurface(XmlReader reader)
         {
+            return ReadMultiSurface(reader, Factory, 2);
+        }
+
+        protected MultiPolygon ReadMultiSurface(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             var polygons = new List<Polygon>();
-            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+
+            // Read, update factory
+            gf = GetFactory(reader.GetAttribute("srsName"), gf);
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "surfaceMember"))
-                            polygons.Add(ReadPolygon(reader, gf));
+                            polygons.Add(ReadPolygon(reader, gf, srsDimension));
                         break;
 
                     case XmlNodeType.EndElement:
@@ -448,18 +590,28 @@ namespace NetTopologySuite.IO.GML2
 
         protected GeometryCollection ReadGeometryCollection(XmlReader reader)
         {
+            var gf = GetFactory(reader.GetAttribute("srsName"), Factory);
+            return ReadGeometryCollection(reader, gf, 2);
+        }
+
+        protected GeometryCollection ReadGeometryCollection(XmlReader reader, GeometryFactory gf, int srsDimension)
+        {
             var collection = new List<Geometry>();
+
+            // Read, update srsDimension
+            srsDimension = ReadSrsDimension(reader, srsDimension);
+
             while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         if (IsStartElement(reader, "Point"))
-                            collection.Add(ReadPoint(reader));
+                            collection.Add(ReadPoint(reader, gf, srsDimension));
                         else if (IsStartElement(reader, "LineString"))
-                            collection.Add(ReadLineString(reader));
+                            collection.Add(ReadLineString(reader, gf, srsDimension));
                         else if (IsStartElement(reader, "Polygon"))
-                            collection.Add(ReadPolygon(reader));
+                            collection.Add(ReadPolygon(reader, gf, srsDimension));
                         else if (IsStartElement(reader, "MultiPoint"))
                             collection.Add(ReadMultiPoint(reader));
                         else if (IsStartElement(reader, "MultiLineString"))

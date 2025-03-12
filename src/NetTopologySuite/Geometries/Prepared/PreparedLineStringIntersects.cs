@@ -60,12 +60,6 @@ namespace NetTopologySuite.Geometries.Prepared
             }
 
             /*
-             * For L/L case we are done
-             */
-            if (geom.Dimension == Dimension.Curve)
-                return false;
-
-            /*
              * For L/A case, need to check for proper inclusion of the target in the test
              */
             if (geom.Dimension == Dimension.Surface
@@ -75,7 +69,7 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * For L/P case, need to check if any points lie on line(s)
              */
-            if (geom.Dimension == Dimension.Point)
+            if (geom.HasDimension(Dimension.Point))
                 return IsAnyTestPointInTarget(geom);
 
             return false;

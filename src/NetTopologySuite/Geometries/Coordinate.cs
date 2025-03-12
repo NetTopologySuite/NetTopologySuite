@@ -204,6 +204,25 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Implicitly cast a tuple to a new <see cref="Coordinate"/> as a copy of this instance.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator Coordinate((double x, double y) value)
+            => new Coordinate(value.x, value.y);
+        
+        /// <summary>
+        /// Deconstructs this <see cref="Coordinate"/> into its components.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void Deconstruct(out double x, out double y)
+        {
+            x = X;
+            y = Y;
+        }
+
+        /// <summary>
         /// Gets/Sets <c>Coordinate</c>s (x,y,z) values.
         /// </summary>
         public virtual Coordinate CoordinateValue

@@ -47,6 +47,9 @@ namespace NetTopologySuite.Index.Chain
         public static ReadOnlyCollection<MonotoneChain> GetChains(Coordinate[] pts, object context)
         {
             var mcList = new List<MonotoneChain>();
+            if (pts.Length == 0)
+                mcList.AsReadOnly();
+
             int chainStart = 0;
             do
             {

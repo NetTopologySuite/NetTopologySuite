@@ -2,12 +2,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <NoWarn>659,168,1587</NoWarn>
     <EnableApiCompat>true</EnableApiCompat>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ApiCompatExcludeAttributeList>ApiCompatExcludeAttributes.txt</ApiCompatExcludeAttributeList>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>2.5.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Assembly Info">
@@ -26,19 +27,8 @@
     <PackageTags>NTS;Topology;OGC;SFS</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.4" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(EnableApiCompat)' == 'true' ">
-    <PackageReference Include="Microsoft.DotNet.ApiCompat" Version="6.0.0-beta.21159.11" PrivateAssets="All" />
-    <PackageDownload Include="NetTopologySuite" Version="[2.4.0]" PrivateAssets="All" />
-
-    <ResolvedMatchingContract Include="$(NugetPackageRoot)nettopologysuite\2.4.0\lib\netstandard2.0\NetTopologySuite.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Memory" Version="4.6.0" />
   </ItemGroup>
 
 </Project>

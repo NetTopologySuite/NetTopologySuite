@@ -66,7 +66,7 @@ namespace NetTopologySuite.Algorithm
 
             Coordinate interiorPt;
             //var dim = geom.Dimension;
-            var dim = EffectiveDimension(geom);
+            var dim = DimensionNonEmpty(geom);
             switch (dim)
             {
                 case Dimension.False:
@@ -88,14 +88,15 @@ namespace NetTopologySuite.Algorithm
 
             return interiorPt;
         }
-        private static Dimension EffectiveDimension(Geometry geom)
+
+        private static Dimension DimensionNonEmpty(Geometry geom)
         {
-            var dimFilter = new EffectiveDimensionFilter();
+            var dimFilter = new DimensionNonEmptyFilter();
             geom.Apply(dimFilter);
             return dimFilter.Dimension;
         }
 
-        private class EffectiveDimensionFilter : IGeometryFilter
+        private class DimensionNonEmptyFilter : IGeometryFilter
         {
             private Dimension _dim = Geometries.Dimension.False;
 

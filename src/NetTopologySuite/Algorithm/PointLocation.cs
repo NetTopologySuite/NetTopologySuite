@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using System;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -9,6 +10,25 @@ namespace NetTopologySuite.Algorithm
      /// <author>Martin Davis</author>
     public static class PointLocation
     {
+        /// <summary>
+        /// Tests whether a point lies on a line segment.
+        /// </summary>
+        /// <param name="p">The point to test</param>
+        /// <param name="p0">A point of the line segment</param>
+        /// <param name="p1">A point of the line segment</param>
+        /// <returns><c>true</c> if the point lies on the line segment</returns>
+        public static bool IsOnSegment(Coordinate p, Coordinate p0, Coordinate p1)
+        {
+            //-- test envelope first since it's faster
+            if (!Envelope.Intersects(p0, p1, p))
+                return false;
+            //-- handle zero-length segments
+            if (p.Equals2D(p0))
+                return true;
+            bool isOnLine = OrientationIndex.Collinear == Orientation.Index(p0, p1, p);
+            return isOnLine;
+        }
+
         /// <summary>
         /// Tests whether a point lies on the line defined by a list of
         /// coordinates.
@@ -21,13 +41,11 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static bool IsOnLine(Coordinate p, Coordinate[] line)
         {
-            var lineIntersector = new RobustLineIntersector();
             for (int i = 1; i < line.Length; i++)
             {
                 var p0 = line[i - 1];
                 var p1 = line[i];
-                lineIntersector.ComputeIntersection(p, p0, p1);
-                if (lineIntersector.HasIntersection)
+                if (IsOnSegment(p, p0, p1))
                 {
                     return true;
                 }
@@ -47,7 +65,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static bool IsOnLine(Coordinate p, CoordinateSequence line)
         {
-            var lineIntersector = new RobustLineIntersector();
+            var lineIntersector = new RobustLineIntersector(ElevationModel.NoZ);
             var p0 = line.CreateCoordinate();
             var p1 = p0.Copy();
             int n = line.Count;

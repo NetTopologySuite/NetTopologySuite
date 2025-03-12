@@ -123,10 +123,11 @@ namespace NetTopologySuite.Simplify
             /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(CoordinateSequence, Geometry)"/>
             protected override CoordinateSequence TransformCoordinates(CoordinateSequence coords, Geometry parent)
             {
+                bool isPreserveEndpoints = !(parent is LinearRing);
                 var inputPts = coords.ToCoordinateArray();
                 var newPts = inputPts.Length == 0
-                    ? new Coordinate[0]
-                    : DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
+                    ? Array.Empty<Coordinate>()
+                    : DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance, isPreserveEndpoints);
 
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }

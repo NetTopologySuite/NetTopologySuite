@@ -6,7 +6,9 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <summary>
     /// Extracts all the <see cref="LineString"/> elements from a <see cref="Geometry"/>.
     /// </summary>
-    /// <see cref="GeometryExtracter"/>
+    /// <seealso cref="GeometryExtracter"/>
+    /// <seealso cref="Extracter"/>
+    /// <seealso cref="Extracter{T}"/>
     public class LineStringExtracter : IGeometryFilter
     {
         /// <summary>

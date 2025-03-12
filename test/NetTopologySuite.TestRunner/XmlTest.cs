@@ -235,11 +235,11 @@ namespace Open.Topology.TestRunner
 
                     Console.WriteLine("Encountered failing test!");
                     Console.WriteLine("Description: '{0}'", Description);
-                    Console.WriteLine("A: {}", A?.AsText() ?? "null");
-                    Console.WriteLine("B: {}", B?.AsText() ?? "null");
-                    Console.WriteLine("Test method: '{0}'" + TestType);
-                    Console.WriteLine($"arg1 {0}", Argument1);
-                    Console.WriteLine($"arg2 {0}", Argument1);
+                    Console.WriteLine("A: {0}", A?.AsText() ?? "null");
+                    Console.WriteLine("B: {0}", B?.AsText() ?? "null");
+                    Console.WriteLine("Test method: '{0}'", TestType);
+                    Console.WriteLine("arg1 {0}", Argument1);
+                    Console.WriteLine("arg2 {0}", Argument1);
 
                     Console.WriteLine("Result expected is {0}, but was {1}", true, _bSuccess);
                     Console.WriteLine("*********************************************\n");

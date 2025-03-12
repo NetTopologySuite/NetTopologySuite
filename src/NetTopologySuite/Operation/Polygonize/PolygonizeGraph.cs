@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
@@ -134,9 +136,9 @@ namespace NetTopologySuite.Operation.Polygonize
         /// into the minimal edge rings required by NTS polygon topology rules.
         /// </summary>
         /// <param name="ringEdges">The list of start edges for the edgeRings to convert.</param>
-        private static void ConvertMaximalToMinimalEdgeRings(IEnumerable<DirectedEdge> ringEdges)
+        private static void ConvertMaximalToMinimalEdgeRings(IEnumerable<PolygonizeDirectedEdge> ringEdges)
         {
-            foreach (PolygonizeDirectedEdge de in ringEdges)
+            foreach (var de in ringEdges)
             {
                 long label = de.Label;
                 var intNodes = FindIntersectionNodes(de, label);
@@ -216,9 +218,9 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="dirEdges">A List of the DirectedEdges in the graph.</param>
         /// <returns>A List of DirectedEdges, one for each edge ring found.</returns>
-        private static IList<DirectedEdge> FindLabeledEdgeRings(IEnumerable<DirectedEdge> dirEdges)
+        private static IList<PolygonizeDirectedEdge> FindLabeledEdgeRings(IEnumerable<DirectedEdge> dirEdges)
         {
-            var edgeRingStarts = new List<DirectedEdge>();
+            var edgeRingStarts = new List<PolygonizeDirectedEdge>();
             // label the edge rings formed
             long currLabel = 1;
             foreach (PolygonizeDirectedEdge de in dirEdges)
@@ -227,7 +229,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 if (de.Label >= 0) continue;
 
                 edgeRingStarts.Add(de);
-                var edges = EdgeRing.FindDirEdgesInRing(de);
+                var edges = EdgeRing.FindPolyDirEdgesInRing(de);
 
                 Label(edges, currLabel);
                 currLabel++;
@@ -385,7 +387,7 @@ namespace NetTopologySuite.Operation.Polygonize
         public ICollection<LineString> DeleteDangles()
         {
             var nodesToRemove = FindNodesOfDegree(1);
-            var dangleLines = new HashSet<LineString>();
+            var dangleLines = new List<LineString>();
             var nodeStack = new Stack<Node>();
             foreach (var node in nodesToRemove)
                 nodeStack.Push(node);
@@ -396,7 +398,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
                 DeleteAllEdges(node);
                 var nodeOutEdges = node.OutEdges.Edges;
-                foreach (PolygonizeDirectedEdge de in nodeOutEdges)
+                foreach (var de in nodeOutEdges.Cast<PolygonizeDirectedEdge>())
                 {
                     // delete this edge and its sym
                     de.Marked = true;
@@ -428,25 +430,11 @@ namespace NetTopologySuite.Operation.Polygonize
         /// If the client has requested that the output
         /// be polygonally valid, only odd polygons will be constructed.
         /// </summary>
+        /// <exception cref="NotSupportedException"/>
+        [Obsolete]
         public void ComputeDepthParity()
         {
-            while (true)
-            {
-                PolygonizeDirectedEdge de = null; //findLowestDirEdge();
-                if (de == null)
-                    return;
-                ComputeDepthParity(de);
-            }
+            throw new NotSupportedException();
         }
-
-        /// <summary>
-        /// Traverses all connected edges, computing the depth parity of the associated polygons.
-        /// </summary>
-        /// <param name="de"></param>
-        private void ComputeDepthParity(PolygonizeDirectedEdge de)
-        {
-
-        }
-
     }
 }

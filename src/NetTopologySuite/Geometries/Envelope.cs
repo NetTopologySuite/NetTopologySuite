@@ -563,6 +563,8 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Check if the region defined by <c>other</c>
         /// intersects the region of this <c>Envelope</c>.
+        /// <para/>
+        /// A null envelope never intersects.
         /// </summary>
         /// <param name="other">The <c>Envelope</c> which this <c>Envelope</c> is
         /// being checked for intersecting.
@@ -633,11 +635,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Intersects(NetTopologySuite.Geometries.Envelope)"/>
         public bool Disjoint(Envelope other)
         {
-            if (IsNull || other.IsNull) { return true; }
-            return other.MinX > MaxX ||
-                   other.MaxX < MinX ||
-                   other.MinY > MaxY ||
-                   other.MaxY < MinY;
+            return !Intersects(other);
         }
 
         ///<summary>
@@ -685,6 +683,20 @@ namespace NetTopologySuite.Geometries
         public bool Contains(double x, double y)
         {
             return Covers(x, y);
+        }
+
+        /// <summary>
+        /// Tests if an envelope is properly contained in this one.
+        /// The envelope is properly contained if it is contained
+        /// by this one but not equal to it.
+        /// </summary>
+        /// <param name="other">The envelope to test</param>
+        /// <returns><c>true</c> if the envelope is properly contained</returns>
+        public bool ContainsProperly(Envelope other)
+        {
+            if (Equals(other))
+                return false;
+            return Covers(other);
         }
 
         ///<summary>

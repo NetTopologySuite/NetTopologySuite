@@ -8,13 +8,16 @@ namespace NetTopologySuite.Operation.Buffer
     /// <summary>
     /// Creates a buffer polygon with a varying buffer distance
     /// at each vertex along a line.
+    /// Vertex distances may be zero.
     /// <para/>
-    /// Only single lines are supported as input, since buffer widths
+    /// Only single linestring is supported as input, since buffer widths
     /// generally need to be specified individually for each line.
     /// </summary>
     /// <author>Martin Davis</author>
     public class VariableBuffer
     {
+        private const int MIN_CAP_SEG_LEN_FACTOR = 4;
+
         /// <summary>
         /// Creates a buffer polygon along a line with the buffer distance interpolated
         /// between a start distance and an end distance.
@@ -206,7 +209,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Computes the buffer polygon.
+        /// Computes the variable buffer polygon.
         /// </summary>
         /// <returns>A buffer polygon</returns>
         public Geometry GetResult()
@@ -243,27 +246,44 @@ namespace NetTopologySuite.Operation.Buffer
         /// with the given endpoints and buffer distances.
         /// The individual segment buffers are unioned
         /// to form the final buffer.
+        /// If one distance is zero, the end cap at that 
+        /// segment end is the endpoint of the segment.
+        /// If both distances are zero, no polygon is returned.
         /// </summary>
         /// <param name="p0">The segment start point</param>
         /// <param name="p1">The segment end point</param>
         /// <param name="dist0">The buffer distance at the start point</param>
         /// <param name="dist1">The buffer distance at the end point</param>
-        /// <returns>The segment buffer</returns>
+        /// <returns>The segment buffer, or null if void</returns>
         private Polygon SegmentBuffer(Coordinate p0, Coordinate p1,
             double dist0, double dist1)
         {
             /*
-             * Compute for increasing distance only, so flip if needed
+             * Skip buffer polygon if both distances are zero
+             */
+            if (dist0 <= 0 && dist1 <= 0)
+                return null;
+
+            /*
+             * Generation algorithm requires increasing distance only, so flip if needed
              */
             if (dist0 > dist1)
             {
-                return SegmentBuffer(p1, p0, dist1, dist0);
+                return SegmentBufferOriented(p1, p0, dist1, dist0);
             }
+            return SegmentBufferOriented(p0, p1, dist0, dist1);
+        }
+
+        private Polygon SegmentBufferOriented(Coordinate p0, Coordinate p1,
+            double dist0, double dist1)
+        {
+            //-- Assert: dist0 <= dist1
+
 
             // forward tangent line
             var tangent = OuterTangent(p0, dist0, p1, dist1);
 
-            // if tangent is null then compute a buffer for largest circle
+            //-- if tangent is null then compute a buffer for largest circle
             if (tangent == null)
             {
                 var center = p0;
@@ -276,33 +296,31 @@ namespace NetTopologySuite.Operation.Buffer
                 return Circle(center, dist);
             }
 
-            var t0 = tangent.GetCoordinate(0);
-            var t1 = tangent.GetCoordinate(1);
-
-            // reverse tangent line on other side of segment
-            var seg = new LineSegment(p0, p1);
-            var tr0 = seg.Reflect(t0);
-            var tr1 = seg.Reflect(t1);
+            //-- reverse tangent line on other side of segment
+            var tangentReflect = Reflect(tangent, p0, p1, dist0);
 
             var coords = new CoordinateList();
-            coords.Add(t0);
-            coords.Add(t1);
-
-            // end cap
-            AddCap(p1, dist1, t1, tr1, coords);
-
-            coords.Add(tr1);
-            coords.Add(tr0);
-
-            // start cap
-            AddCap(p0, dist0, tr0, t0, coords);
-
+            //-- end cap
+            AddCap(p1, dist1, tangent.P1, tangentReflect.P1, coords);
+            //-- start cap
+            AddCap(p0, dist0, tangentReflect.P0, tangent.P0, coords);
             // close
-            coords.Add(t0);
+            coords.CloseRing();
 
             var pts = coords.ToCoordinateArray();
             var polygon = _geomFactory.CreatePolygon(pts);
             return polygon;
+        }
+
+        private LineSegment Reflect(LineSegment seg, Coordinate p0, Coordinate p1, double dist0)
+        {
+            var line = new LineSegment(p0, p1);
+            var r0 = line.Reflect(seg.P0);
+            var r1 = line.Reflect(seg.P1);
+            //-- avoid numeric jitter if first distance is zero (second dist must be > 0)
+            if (dist0 == 0)
+                r0 = p0.Copy();
+            return new LineSegment(r0, r1);
         }
 
         /// <summary>
@@ -328,6 +346,10 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Adds a semi-circular cap CCW around the point <paramref name="p"/>.
+        /// <para/>
+        /// The vertices in caps are generated at fixed angles around a point.
+        /// This allows caps at the same point to share vertices,
+        /// which reduces artifacts when the segment buffers are merged.
         /// </summary>
         /// <param name="p">The centre point of the cap</param>
         /// <param name="r">The cap radius</param>
@@ -336,6 +358,14 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="coords">The coordinate list to add to</param>
         private void AddCap(Coordinate p, double r, Coordinate t1, Coordinate t2, CoordinateList coords)
         {
+            //-- if radius is zero just copy the vertex
+            if (r == 0)
+            {
+                coords.Add(p.Copy(), false);
+                return;
+            }
+
+            coords.Add(t1, false);
 
             double angStart = AngleUtility.Angle(p, t1);
             double angEnd = AngleUtility.Angle(p, t2);
@@ -345,18 +375,61 @@ namespace NetTopologySuite.Operation.Buffer
             int indexStart = CapAngleIndex(angStart);
             int indexEnd = CapAngleIndex(angEnd);
 
-            for (int i = indexStart; i > indexEnd; i--)
+            double capSegLen = r * 2 * Math.Sin(Math.PI / 4 / _quadrantSegs);
+            double minSegLen = capSegLen / MIN_CAP_SEG_LEN_FACTOR;
+
+            for (int i = indexStart; i >= indexEnd; i--)
             {
-                // use negative increment to create points CW
+                //-- use negative increment to create points CW
                 double ang = CapAngle(i);
-                coords.Add(ProjectPolar(p, r, ang));
+                var capPt = ProjectPolar(p, r, ang);
+
+                bool isCapPointHighQuality = true;
+                /*
+                 * Due to the fixed locations of the cap points, 
+                 * a start or end cap point might create
+                 * a "reversed" segment to the next tangent point.
+                 * This causes an unwanted narrow spike in the buffer curve,
+                 * which can cause holes in the final buffer polygon.
+                 * These checks remove these points.
+                 */
+                if (i == indexStart
+                    && OrientationIndex.Clockwise != Orientation.Index(p, t1, capPt))
+                {
+                    isCapPointHighQuality = false;
+                }
+                else if (i == indexEnd
+                    && OrientationIndex.CounterClockwise != Orientation.Index(p, t2, capPt))
+                {
+                    isCapPointHighQuality = false;
+                }
+
+                /*
+                 * Remove short segments between the cap and the tangent segments.
+                 */
+                if (capPt.Distance(t1) < minSegLen)
+                {
+                    isCapPointHighQuality = false;
+                }
+                else if (capPt.Distance(t2) < minSegLen)
+                {
+                    isCapPointHighQuality = false;
+                }
+
+                if (isCapPointHighQuality)
+                {
+                    coords.Add(capPt, false);
+                }
             }
+
+            coords.Add(t2, false);
         }
 
         /// <summary>
-        /// Computes the angle for the given cap point index.
+        /// Computes the actual angle for a given cap point index.
         /// </summary>
-        /// <param name="index">The fillet angle index</param>
+        /// <param name="index">The cap angle index</param>
+        /// <returns>The angle</returns>
         private double CapAngle(int index)
         {
             double capSegAng = Math.PI / 2 / _quadrantSegs;
@@ -365,15 +438,13 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Computes the canonical cap point index for a given angle.
-        /// The angle is rounded down to the next lower
-        /// index.
+        /// The angle is rounded down to the next lower index.
         /// <para/>
         /// In order to reduce the number of points created by overlapping end caps,
         /// cap points are generated at the same locations around a circle.
         /// The index is the index of the points around the circle, 
         /// with 0 being the point at (1,0).
-        /// The total number of points around the circle is 
-        /// <c>4 * <see cref="_quadrantSegs"/></c>.
+        /// The total number of points around the circle is <c>4 * <see cref="_quadrantSegs"/></c>.
         /// </summary>
         /// <param name="ang">The angle</param>
         /// <returns>The index for the angle.</returns>
@@ -386,7 +457,8 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Computes the two circumference points defining the outer tangent line
-        /// between two circles.
+        /// between two circles.<br/>
+        /// The tangent line may be null if one circle mostly overlaps the other.
         /// <para/>
         /// For the algorithm see <a href='https://en.wikipedia.org/wiki/Tangent_lines_to_circles#Outer_tangent'>Wikipedia</a>.
         /// </summary>

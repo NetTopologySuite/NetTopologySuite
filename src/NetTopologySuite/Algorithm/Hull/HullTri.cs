@@ -2,6 +2,7 @@
 using NetTopologySuite.Triangulate.Tri;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace NetTopologySuite.Algorithm.Hull
 {
@@ -18,7 +19,7 @@ namespace NetTopologySuite.Algorithm.Hull
     class HullTri : Tri, IComparable<HullTri>, IComparable
     {
         public HullTri(Coordinate p0, Coordinate p1, Coordinate p2)
-                : base(p0, p1, p2)
+            : base(p0, p1, p2)
         {
             Size = LengthOfLongestEdge;
         }
@@ -33,6 +34,16 @@ namespace NetTopologySuite.Algorithm.Hull
         public void SetSizeToBoundary()
         {
             Size = LengthOfBoundary;
+        }
+
+        public void SetSizeToLongestEdge()
+        {
+            Size = LengthOfLongestEdge;
+        }
+
+        public void SetSizeToCircumradius()
+        {
+            Size = Triangle.Circumradius(P2, P1, P0);
         }
 
         public bool IsMarked { get; set; }
@@ -160,14 +171,15 @@ namespace NetTopologySuite.Algorithm.Hull
         }
 
         /// <summary>
-        /// PriorityQueues sort in ascending order.
-        /// To sort with the largest at the head,
+        /// Sorts tris in decreasing order.
+        /// Since PriorityQueues sort in <i>ascending</i> order,
+        /// to sort with the largest at the head,
         /// smaller sizes must compare as greater than larger sizes.
         /// (i.e. the normal numeric comparison is reversed).
         /// If the sizes are identical (which should be an infrequent case),
         /// the areas are compared, with larger areas sorting before smaller.
         /// (The rationale is that larger areas indicate an area of lower point density,
-        /// which is more likely to be in the exterior of the computed shape.)
+        /// which is more likely to be in the exterior of the computed hull.)
         /// This improves the determinism of the queue ordering. 
         /// </summary>
         public int CompareTo(HullTri o)

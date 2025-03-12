@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -82,6 +83,9 @@ namespace NetTopologySuite.Algorithm
 
         private void ComputeLocation(Coordinate p, Geometry geom)
         {
+            if (geom.IsEmpty)
+                return;
+
             if (geom is Point)
                 UpdateLocationInfo(LocateOnPoint(p, (Point) geom));
             if (geom is LineString)
@@ -130,18 +134,23 @@ namespace NetTopologySuite.Algorithm
             return Location.Exterior;
         }
 
-        private static Location LocateOnLineString(Coordinate p, LineString l)
+        private Location LocateOnLineString(Coordinate p, LineString l)
         {
             // bounding-box check
             if (!l.EnvelopeInternal.Intersects(p))
                 return Location.Exterior;
 
-            var pt = l.Coordinates;
-            if(!l.IsClosed)
-                if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
-                    return Location.Boundary;
-            if (PointLocation.IsOnLine(p, pt))
+            var seq = l.CoordinateSequence;
+            if (p.Equals(seq.First) || p.Equals(seq.Last))
+            {
+                int boundaryCount = l.IsClosed ? 2 : 1;
+                var loc = _boundaryRule.IsInBoundary(boundaryCount) ? Location.Boundary : Location.Interior;
+                return loc;
+            }
+
+            if (PointLocation.IsOnLine(p, seq))
                 return Location.Interior;
+
             return Location.Exterior;
         }
 

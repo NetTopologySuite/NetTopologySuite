@@ -5,12 +5,15 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <summary>
     /// Extracts the components of a given type from a <see cref="Geometry"/>.
     /// </summary>
+    /// <seealso cref="PointExtracter"/>
+    /// <seealso cref="LineStringExtracter"/>
+    /// <seealso cref="PolygonExtracter"/>
+    /// <seealso cref="Extracter"/>
+    /// <seealso cref="Extracter{T}"/>
     public static class GeometryExtracter
     {
-
-
         /// <summary>
-        /// Extracts the <c>T</c> components from an <see cref="Geometry"/> and adds them to the provided <see cref="List{T}"/>.
+        /// Extracts the <c>T</c> components from an <see cref="Geometry"/> and adds them to the provided <see cref="IList{T}"/>.
         /// </summary>
         /// <param name="geom">the geometry from which to extract</param>
         /// <param name="list">the list to add the extracted elements to</param>
@@ -30,7 +33,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Extracts the <c>T</c> elements from a single <see cref="Geometry"/> and returns them in a <see cref="List{T}"/>.
+        /// Extracts the <c>T</c> elements from a single <see cref="Geometry"/> and returns them in a <see cref="IList{T}"/>.
         /// </summary>
         /// <param name="geom">the geometry from which to extract</param>
         public static IList<Geometry> Extract<T>(Geometry geom) where T : Geometry

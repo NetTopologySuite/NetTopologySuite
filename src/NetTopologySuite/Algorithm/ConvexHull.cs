@@ -1,9 +1,9 @@
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
+using System.Runtime.CompilerServices;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -11,7 +11,11 @@ namespace NetTopologySuite.Algorithm
     /// Computes the convex hull of a <see cref="Geometry" />.
     /// The convex hull is the smallest convex Geometry that contains all the
     /// points in the input Geometry.
+    /// <para/>
     /// Uses the Graham Scan algorithm.
+    /// <para/>
+    /// Incorporates heuristics to optimize checking for degenerate results,
+    /// and to reduce the number of points processed for large inputs.
     /// </summary>
     public class ConvexHull
     {
@@ -43,8 +47,10 @@ namespace NetTopologySuite.Algorithm
                 geom.Apply(filter);
             }
 
-            return new ConvexHull(filter.Coordinates, factory).GetConvexHull();
+            return new ConvexHull(filter.Coordinates.ToArray(), factory).GetConvexHull();
         }
+
+        private const int TUNING_REDUCE_SIZE = 50;
 
         private readonly GeometryFactory _geomFactory;
         private readonly Coordinate[] _inputPts;
@@ -54,43 +60,41 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="geometry"></param>
         public ConvexHull(Geometry geometry)
-            : this(ExtractCoordinates(geometry), geometry?.Factory) { }
+            : this(geometry?.Coordinates, geometry?.Factory) { }
 
         /// <summary>
         /// Create a new convex hull construction for the input <see cref="Coordinate" /> array.
         /// </summary>
         /// <param name="pts"></param>
-        /// <param name="geomFactory"></param>
+        /// <param name="geomFactory">The factory to create the convex hull geometry</param>
         public ConvexHull(IEnumerable<Coordinate> pts, GeometryFactory geomFactory)
+            : this((pts ?? Array.Empty<Coordinate>()).ToArray(), geomFactory)
         {
-            switch (pts)
-            {
-                case null:
-                    _inputPts = Array.Empty<Coordinate>();
-                    break;
+        }
 
-                case ISet<Coordinate> set:
-                    _inputPts = new Coordinate[set.Count];
-                    set.CopyTo(_inputPts, 0);
-                    break;
+        /// <summary>
+        /// Create a new convex hull construction for the input <see cref="Coordinate"/> array.
+        /// </summary>
+        /// <param name="pts">The coordinate array</param>
+        /// <param name="geomFactory">The factory to create the convex hull geometry</param>
+        public ConvexHull(Coordinate[] pts, GeometryFactory geomFactory)
+        {
+            //-- suboptimal early uniquing - for performance testing only
+            //inputPts = ExtractCoordinates(pts);
 
-                default:
-                    _inputPts = pts.Distinct().ToArray();
-                    break;
-            }
-
+            _inputPts = pts ?? Array.Empty<Coordinate>();
             _geomFactory = geomFactory ?? NtsGeometryServices.Instance.CreateGeometryFactory();
         }
 
-        private static HashSet<Coordinate> ExtractCoordinates(Geometry geom)
-        {
-            // DEVIATION: UniqueCoordinateArrayFilter is expensive (until we port 5e01aea, anyway).
-            // Nobody actually needs the original input to be Coordinate[], and the original array
-            // could never be used as-is because we could never assume that it's unique.
-            var filter = new CustomUniqueCoordinateFilter();
-            geom?.Apply(filter);
-            return filter.Coordinates;
-        }
+        //private static HashSet<Coordinate> ExtractCoordinates(Geometry geom)
+        //{
+        //    // DEVIATION: UniqueCoordinateArrayFilter is expensive (until we port 5e01aea, anyway).
+        //    // Nobody actually needs the original input to be Coordinate[], and the original array
+        //    // could never be used as-is because we could never assume that it's unique.
+        //    var filter = new CustomUniqueCoordinateFilter();
+        //    geom?.Apply(filter);
+        //    return filter.Coordinates;
+        //}
 
         /// <summary>
         /// Returns a <c>Geometry</c> that represents the convex hull of the input point.
@@ -106,31 +110,85 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public Geometry GetConvexHull()
         {
-            if (_inputPts.Length == 0)
-                return _geomFactory.CreateGeometryCollection();
-
-            if (_inputPts.Length == 1)
-                return _geomFactory.CreatePoint(_inputPts[0]);
-
-            if (_inputPts.Length == 2)
-                return _geomFactory.CreateLineString(_inputPts);
+            var fewPointsGeom = CreateFewPointsResult();
+            if (fewPointsGeom != null)
+                return fewPointsGeom;
 
             var reducedPts = _inputPts;
-            // use heuristic to reduce points, if large
-            if (_inputPts.Length > 50)
+            //-- use heuristic to reduce points, if large
+            if (_inputPts.Length > TUNING_REDUCE_SIZE)
                 reducedPts = Reduce(_inputPts);
+            else
+                //-- the points must be made unique
+                reducedPts = ExtractUnique(_inputPts);
 
             // sort points for Graham scan.
             var sortedPts = PreSort(reducedPts);
 
             // Use Graham scan to find convex hull.
-            var convexHullStack = GrahamScan(sortedPts);
-
-            // Convert stack to an array.
-            var convexHull = convexHullStack.ToArray();
+            var convexHull = GrahamScan(sortedPts);
 
             // Convert array to appropriate output geometry.
+            // (an empty or point result will be detected earlier)
             return LineOrPolygon(convexHull);
+        }
+
+        /// <summary>
+        /// Checks if there are &#8804;2 unique points,
+        /// which produce an obviously degenerate result.
+        /// If there are more points, returns null to indicate this.
+        /// <para/>
+        /// This is a fast check for an obviously degenerate result.
+        /// If the result is not obviously degenerate (at least 3 unique points found)
+        /// the full uniquing of the entire point set is
+        /// done only once during the reduce phase.
+        /// </summary>
+        /// <returns>A degenerate hull geometry, or null if the number of input points is large</returns>
+        private Geometry CreateFewPointsResult()
+        {
+            var uniquePts = ExtractUnique(_inputPts, 2);
+            if (uniquePts == null)
+            {
+                return null;
+            }
+            else if (uniquePts.Length == 0)
+            {
+                return _geomFactory.CreateGeometryCollection();
+            }
+            else if (uniquePts.Length == 1)
+            {
+                return _geomFactory.CreatePoint(uniquePts[0]);
+            }
+            else
+            {
+                return _geomFactory.CreateLineString(uniquePts);
+            }
+        }
+
+        private static Coordinate[] ExtractUnique(Coordinate[] pts)
+        {
+            return ExtractUnique(pts, -1);
+        }
+
+        /// <summary>
+        /// Extracts unique coordinates from an array of coordinates,
+        /// up to a maximum count of values.
+        /// If more than the given maximum of unique values are found,
+        /// this is reported by returning <c>null</c>.
+        /// (the expectation is that the original array can then be used).
+        /// </summary>
+        /// <param name="pts">An array of coordinates</param>
+        /// <param name="maxPts">The maximum number of unique points</param>
+        /// <returns>An array of unique values, or null</returns>
+        private static Coordinate[] ExtractUnique(Coordinate[] pts, int maxPts)
+        {
+            var uniquePts = new HashSet<Coordinate>();
+            foreach (var pt in pts)
+            {
+                uniquePts.Add(pt);
+                if (maxPts >= 0 && uniquePts.Count > maxPts) return null;
+            }
+            return CoordinateArrays.ToCoordinateArray(uniquePts);
         }
 
         /// <summary>
@@ -143,34 +201,36 @@ namespace NetTopologySuite.Algorithm
         /// to use an octilateral defined by the points in the 8 cardinal directions.
         /// Note that even if the method used to determine the polygon vertices
         /// is not 100% robust, this does not affect the robustness of the convex hull.
-        /// <para>
+        /// <para/>
         /// To satisfy the requirements of the Graham Scan algorithm,
         /// the returned array has at least 3 entries.
-        /// </para>
+        /// <para/>
+        /// This has the side effect of making the reduced points unique,
+        /// as required by the convex hull algorithm used.
         /// </summary>
         /// <param name="pts">The coordinates to reduce</param>
         /// <returns>The reduced array of coordinates</returns>
         private static Coordinate[] Reduce(Coordinate[] pts)
         {
-            var polyPts = ComputeOctRing(pts/*_inputPts*/);
+            var innerPolyPts = ComputeInnerOctolateralRing(pts/*_inputPts*/);
 
             // unable to compute interior polygon for some reason
-            if(polyPts == null)
+            if(innerPolyPts == null)
                 return pts;
 
             // add points defining polygon
             var reducedSet = new HashSet<Coordinate>();
-            for (int i = 0; i < polyPts.Length; i++)
-                reducedSet.Add(polyPts[i]);
+            for (int i = 0; i < innerPolyPts.Length; i++)
+                reducedSet.Add(innerPolyPts[i]);
 
             /*
              * Add all unique points not in the interior poly.
-             * PointLocation.IsInRing is not defined for points actually on the ring,
+             * PointLocation.IsInRing is not defined for points exactly on the ring,
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
             for (int i = 0; i < pts.Length; i++)
-                if (!PointLocation.IsInRing(pts[i], polyPts))
+                if (!PointLocation.IsInRing(pts[i], innerPolyPts))
                     reducedSet.Add(pts[i]);
 
             var reducedPts = CoordinateArrays.ToCoordinateArray(reducedSet);// new Coordinate[reducedSet.Count];
@@ -199,15 +259,17 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Pre sorts the coordinates
+        /// Sorts the points radially CW around the point with minimum Y and then X.
         /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
+        /// <param name="pts">The points to sort</param>
+        /// <returns>The sorted points</returns>
         private static Coordinate[] PreSort(Coordinate[] pts)
         {
-            // find the lowest point in the set. If two or more points have
-            // the same minimum y coordinate choose the one with the minimu x.
-            // This focal point is put in array location pts[0].
+            /*
+             * find the lowest point in the set. If two or more points have
+             * the same minimum Y coordinate choose the one with the minimum X.
+             * This focal point is put in array location pts[0].
+             */
             for (int i = 1; i < pts.Length; i++)
             {
                 if ((pts[i].Y < pts[0].Y) || ((pts[i].Y == pts[0].Y)
@@ -229,47 +291,36 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        private static Stack<Coordinate> GrahamScan(Coordinate[] c)
+        private static Coordinate[] GrahamScan(Coordinate[] c)
         {
-            var ps = new Stack<Coordinate>(c.Length);
-            ps.Push(c[0]);
-            ps.Push(c[1]);
-            ps.Push(c[2]);
+            // NOTE: Original implementation uses a Stack<Coordinate>
+            // Unlike java's Stack implementation .NET's implementation
+            // of ToArray() has the LIFO order.
+            var ps = new List<Coordinate>(new []{ c[0], c[1], c[2] });
             for (int i = 3; i < c.Length; i++)
             {
-                var p = ps.Pop();
+                var cp = c[i];
+                var p = RemoveLast(ps);
 
                 // check for empty stack to guard against robustness problems
                 while (
                     ps.Count > 0 /*(IsEmpty Hack)*/ &&
-                    Orientation.Index(ps.Peek(), p, c[i]) > 0)
-                    p = ps.Pop();
-                ps.Push(p);
-                ps.Push(c[i]);
+                    Orientation.Index(Enumerable.Last(ps), p, cp) > 0)
+                    p = RemoveLast(ps);
+                ps.Add(p);
+                ps.Add(cp);
             }
-            ps.Push(c[0]);
-            return ps;
+            ps.Add(c[0]);
+            return ps.ToArray();
         }
 
-        /*
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ps"></param>
-        /// <returns></returns>
-        private Stack<Coordinate> ReverseStack(Stack<Coordinate> ps)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Coordinate RemoveLast(List<Coordinate> list)
         {
-            // Do a manual reverse of the stack
-            int size = ps.Count;
-            var tempArray = new Coordinate[size];
-            for (int i = 0; i < size; i++)
-                tempArray[i] = ps.Pop();
-            var returnStack = new Stack<Coordinate>(size);
-            foreach (Coordinate obj in tempArray)
-                returnStack.Push(obj);
-            return returnStack;
+            var res = list[list.Count-1];
+            list.RemoveAt(list.Count-1);
+            return res;
         }
-        */
 
         /// <summary>
         ///
@@ -307,9 +358,9 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="inputPts"></param>
         /// <returns></returns>
-        private static Coordinate[] ComputeOctRing(Coordinate[] inputPts)
+        private static Coordinate[] ComputeInnerOctolateralRing(Coordinate[] inputPts)
         {
-            var octPts = ComputeOctPts(inputPts);
+            var octPts = ComputeInnerOctolateralPts(inputPts);
             var coordList = new CoordinateList(octPts.Length + 1);
             coordList.Add(octPts, false);
 
@@ -322,11 +373,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        ///
+        /// Computes the extremal points of an inner octolateral.
+        /// Some points may be duplicates - these are collapsed later.
         /// </summary>
-        /// <param name="inputPts"></param>
-        /// <returns></returns>
-        private static Coordinate[] ComputeOctPts(Coordinate[] inputPts)
+        /// <param name="inputPts">The points to compute the octolateral for</param>
+        /// <returns>The extremal points of the octolateral</returns>
+        private static Coordinate[] ComputeInnerOctolateralPts(Coordinate[] inputPts)
         {
             var pts = new Coordinate[8];
             for (int j = 0; j < pts.Length; j++)
@@ -406,15 +458,22 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Compares <see cref="Coordinate" />s for their angle and distance
         /// relative to an origin.
+        /// <para/>
+        /// The origin is assumed to be lower in Y and then X than
+        /// all other point inputs.
+        /// The points are ordered CCW around the origin
         /// </summary>
         private class RadialComparator : IComparer<Coordinate>
         {
             private readonly Coordinate _origin;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="RadialComparator"/> class.
+            /// Creates a new comparator using a given origin.
+            /// The origin must be lower in Y and then X to all
+            /// compared points,
+            /// using <see cref="Coordinate.CompareTo(Coordinate)"/>.
             /// </summary>
-            /// <param name="origin"></param>
+            /// <param name="origin">The origin of the radial comparison</param>
             public RadialComparator(Coordinate origin)
             {
                 _origin = origin;
@@ -428,38 +487,58 @@ namespace NetTopologySuite.Algorithm
             /// <returns></returns>
             public int Compare(Coordinate p1, Coordinate p2)
             {
-                return PolarCompare(_origin, p1, p2);
+                int comp = PolarCompare(_origin, p1, p2);
+                return comp;
             }
 
             /// <summary>
-            ///
+            /// Given two points p and q compare them with respect to their radial
+            /// ordering about point o.<br/>
+            /// First checks radial ordering using a CCW orientation.
+            /// If the points are collinear, the comparison is based
+            /// on their distance to the origin.
+            /// <para/>
+            /// p &lt; q iff
+            /// <list type="bullet">
+            /// <item><description><c>ang(o-p) &lt; ang(o-q)</c> (e.g.o-p-q is CCW)</description></item>
+            /// <item><description><c>or ang(o-p) == ang(o-q) &amp;&amp; dist(o, p) &lt; dist(o, q)</c></description></item>
+            /// </list>
             /// </summary>
-            /// <param name="o"></param>
-            /// <param name="p"></param>
-            /// <param name="q"></param>
-            /// <returns></returns>
+            /// <param name="o">The origin</param>
+            /// <param name="p">A point</param>
+            /// <param name="q">Another point</param>
+            /// <returns>-1, 0 or 1 depending on whether p is less than,
+            /// equal to or greater than q</returns>
             private static int PolarCompare(Coordinate o, Coordinate p, Coordinate q)
             {
-                double dxp = p.X - o.X;
-                double dyp = p.Y - o.Y;
-                double dxq = q.X - o.X;
-                double dyq = q.Y - o.Y;
-
                 var orient = Orientation.Index(o, p, q);
+                if (orient == OrientationIndex.CounterClockwise) return 1;
+                if (orient == OrientationIndex.Clockwise) return -1;
 
-                if(orient == OrientationIndex.CounterClockwise)
-                    return 1;
-                if(orient == OrientationIndex.Clockwise)
-                    return -1;
+                /*
+                 * The points are collinear,
+                 * so compare based on distance from the origin.  
+                 * The points p and q are >= to the origin,
+                 * so they lie in the closed half-plane above the origin.
+                 * If they are not in a horizontal line, 
+                 * the Y ordinate can be tested to determine distance.
+                 * This is more robust than computing the distance explicitly.
+                 */
+                if (p.Y > q.Y) return 1;
+                if (p.Y < q.Y) return -1;
 
-                // points are collinear - check distance
-                double op = dxp * dxp + dyp * dyp;
-                double oq = dxq * dxq + dyq * dyq;
-                if (op < oq)
-                    return -1;
-                if (op > oq)
-                    return 1;
+                /*
+                 * The points lie in a horizontal line, which should also contain the origin
+                 * (since they are collinear).
+                 * Also, they must be above the origin.
+                 * Use the X ordinate to determine distance. 
+                 */
+                if (p.X > q.X) return 1;
+                if (p.X < q.X) return -1;
+
+                // Assert: p = q
                 return 0;
+
             }
         }
 

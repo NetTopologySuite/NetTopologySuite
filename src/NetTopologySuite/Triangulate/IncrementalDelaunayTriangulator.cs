@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Triangulate.QuadEdge;
+using System.Collections.Generic;
 
 namespace NetTopologySuite.Triangulate
 {
@@ -13,6 +14,7 @@ namespace NetTopologySuite.Triangulate
     {
         private readonly QuadEdgeSubdivision _subdiv;
         private bool _isUsingTolerance;
+        private bool _isForceConvex = true;
 
         /// <summary>
         /// Creates a new triangulator using the given <see cref="QuadEdgeSubdivision"/>.
@@ -23,6 +25,21 @@ namespace NetTopologySuite.Triangulate
         {
             _subdiv = subdiv;
             _isUsingTolerance = subdiv.Tolerance > 0.0;
+        }
+
+        /// <summary>
+        /// Gets or sets whether the triangulation is forced to have a convex boundary. Because
+        /// of the use of a finite-size frame, this condition requires special logic to
+        /// enforce.The default is true, since this is a requirement for some uses of
+        /// Delaunay Triangulations (such as Concave Hull generation). However, forcing
+        /// the triangulation boundary to be convex may cause the overall frame
+        /// triangulation to be non-Delaunay.This can cause a problem for Voronoi
+        /// generation, so the logic can be disabled via this method.
+        /// </summary>
+        public bool ForceConvex
+        {
+            get => _isForceConvex;
+            set => _isForceConvex = value;
         }
 
         /// <summary>
@@ -58,7 +75,8 @@ namespace NetTopologySuite.Triangulate
              */
             var e = _subdiv.Locate(v);
 
-            if (_subdiv.IsVertexOfEdge(e, v)) {
+            if (_subdiv.IsVertexOfEdge(e, v))
+            {
                 // point is already in subdivision.
                 return e;
             }
@@ -77,24 +95,105 @@ namespace NetTopologySuite.Triangulate
             var baseQuadEdge = _subdiv.MakeEdge(e.Orig, v);
             QuadEdge.QuadEdge.Splice(baseQuadEdge, e);
             var startEdge = baseQuadEdge;
-            do {
+            do
+            {
                 baseQuadEdge = _subdiv.Connect(e, baseQuadEdge.Sym);
                 e = baseQuadEdge.OPrev;
             } while (e.LNext != startEdge);
 
-            // Examine suspect edges to ensure that the Delaunay condition
-            // is satisfied.
-            do {
+            /*
+             * Examine suspect edges to ensure that the Delaunay condition is satisfied.
+             * If it is not, flip the edge and continue scanning.
+             * 
+             * Since the frame is not infinitely far away,
+             * edges which touch the frame or are adjacent to it require special logic
+             * to ensure the inner triangulation maintains a convex boundary.
+             */
+            do
+            {
+                //-- general case - flip if vertex is in circumcircle
                 var t = e.OPrev;
-                if (t.Dest.RightOf(e) && v.IsInCircle(e.Orig, t.Dest, e.Dest)) {
+                bool doFlip = t.Dest.RightOf(e) && v.IsInCircle(e.Orig, t.Dest, e.Dest);
+
+                if (_isForceConvex)
+                {
+                    //-- special cases to ensure triangulation boundary is convex
+                    if (IsConcaveBoundary(e))
+                    {
+                        //-- flip if the triangulation boundary is concave
+                        doFlip = true;
+                    }
+                    else if (IsBetweenFrameAndInserted(e, v))
+                    {
+                        //-- don't flip if edge lies between the inserted vertex and a frame vertex
+                        doFlip = false;
+                    }
+                }
+
+                if (doFlip)
+                {
+                    //-- flip the edge within its quadrilateral
                     QuadEdge.QuadEdge.Swap(e);
                     e = e.OPrev;
-                } else if (e.ONext == startEdge) {
-                    return baseQuadEdge; // no more suspect edges.
-                } else {
-                    e = e.ONext.LPrev;
+                    continue;
                 }
+
+                if (e.ONext == startEdge)
+                {
+                    return baseQuadEdge; // no more suspect edges.
+                }
+                //-- check next edge
+                e = e.ONext.LPrev;
             } while (true);
+        }
+
+        /// <summary>
+        /// Tests if a edge touching a frame vertex
+        /// creates a concavity in the triangulation boundary.
+        /// </summary>
+        /// <param name="e">The edge to test</param>
+        /// <returns><c>true</c> if the triangulation boundary is concave at the edge</returns>
+        private bool IsConcaveBoundary(QuadEdge.QuadEdge e)
+        {
+            if (_subdiv.IsFrameVertex(e.Dest))
+            {
+                return IsConcaveAtOrigin(e);
+            }
+            if (_subdiv.IsFrameVertex(e.Orig))
+            {
+                return IsConcaveAtOrigin(e.Sym);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Tests if the quadrilateral surrounding an edge is concave at the edge origin.
+        /// Used to determine if the triangulation boundary has a concavity.
+        /// </summary>
+        /// <param name="e">The edge to test</param>
+        /// <returns><c>true</c> if the quadrilateral surrounding an edge is concave at the edge origin</returns>
+        private static bool IsConcaveAtOrigin(QuadEdge.QuadEdge e)
+        {
+            var p = e.Orig.Coordinate;
+            var pp = e.OPrev.Dest.Coordinate;
+            var pn = e.ONext.Dest.Coordinate;
+            bool isConcave = OrientationIndex.CounterClockwise == Orientation.Index(pp, pn, p);
+            return isConcave;
+        }
+
+        /// <summary>
+        /// Edges whose adjacent triangles contain
+        /// a frame vertex and the inserted vertex must not be flipped.
+        /// </summary>
+        /// <param name="e">The edge to test</param>
+        /// <param name="vInsert">The inserted vertex</param>
+        /// <returns><c>true</c> if the edge is between the frame and inserted vertex</returns>
+        private bool IsBetweenFrameAndInserted(QuadEdge.QuadEdge e, Vertex vInsert)
+        {
+            var v1 = e.ONext.Dest;
+            var v2 = e.OPrev.Dest;
+            return (v1 == vInsert && _subdiv.IsFrameVertex(v2))
+                || (v2 == vInsert && _subdiv.IsFrameVertex(v1));
         }
     }
 }

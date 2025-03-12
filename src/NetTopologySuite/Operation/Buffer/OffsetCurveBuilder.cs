@@ -1,4 +1,5 @@
 ﻿using System;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using Position = NetTopologySuite.Geometries.Position;
@@ -14,19 +15,34 @@ namespace NetTopologySuite.Operation.Buffer
     /// of all the noded raw curves and tracing outside contours.
     /// The points in the raw curve are rounded
     /// to a given <see cref="PrecisionModel"/>.
+    /// <para/>
+    /// Note: this may not produce correct results if the input
+    /// contains repeated or invalid points.
+    /// Repeated points should be removed before calling.
+    /// <see cref="CoordinateArrays.RemoveRepeatedOrInvalidPoints(Coordinate[])"/>.
     /// </summary>
     public class OffsetCurveBuilder
     {
         private double _distance;
         private readonly PrecisionModel _precisionModel;
+        private readonly ElevationModel _em;
         private readonly BufferParameters _bufParams;
 
         public OffsetCurveBuilder(
             PrecisionModel precisionModel,
             BufferParameters bufParams
             )
+            : this(precisionModel, null, bufParams)
+        { }
+
+        public OffsetCurveBuilder(
+            PrecisionModel precisionModel,
+            ElevationModel em,
+            BufferParameters bufParams
+            )
         {
             _precisionModel = precisionModel;
+            _em = em;
             _bufParams = bufParams;
         }
 
@@ -162,7 +178,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private OffsetSegmentGenerator GetSegmentGenerator(double distance)
         {
-            return new OffsetSegmentGenerator(_precisionModel, _bufParams, distance);
+            return new OffsetSegmentGenerator(_precisionModel, _em, _bufParams, distance);
         }
 
         /// <summary>

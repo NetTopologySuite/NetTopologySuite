@@ -338,14 +338,29 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// Note: return value is only copied if rounding is performed.
         /// </summary>
         /// <param name="pt">The point to round</param>
-        /// <param name="pm">The precision model to use</param>
+        /// <param name="pm">The precision model to use for rounding</param>
         /// <returns>The rounded point coordinate, or null if empty</returns>
         public static Coordinate Round(Point pt, PrecisionModel pm)
         {
             if (pt.IsEmpty) return null;
-            var p = pt.Coordinate.Copy();
-            if (!pm.IsFloating)
-                pm.MakePrecise(p);
+            return Round(pt.Coordinate, pm);
+        }
+
+        /// <summary>
+        /// Rounds a coordinate if precision model is fixed.<br/>
+        /// <b>Note:</b> return value is only copied if rounding is performed.
+        /// </summary>
+        /// <param name="p">The coordinate to round</param>
+        /// <param name="pm">The precision model to use for rounding</param>
+        /// <returns>The rounded coordinate</returns>
+        public static Coordinate Round(Coordinate p, PrecisionModel pm)
+        {
+            if (!IsFloating(pm))
+            {
+                var pRound = p.Copy();
+                pm.MakePrecise(pRound);
+                return pRound;
+            }
             return p;
         }
 
@@ -371,6 +386,8 @@ namespace NetTopologySuite.Operation.OverlayNG
             if (geom0 == null || geom1 == null)
                 return true;
 
+            if (result.Dimension < Dimension.Surface) return true;
+
             double areaResult = result.Area;
             double areaA = geom0.Area;
             double areaB = geom1.Area;
@@ -383,8 +400,7 @@ namespace NetTopologySuite.Operation.OverlayNG
                                 && IsLess(areaResult, areaB, AreaHeuristicTolerance);
                     break;
                 case OverlayNG.DIFFERENCE:
-                    isConsistent = IsLess(areaResult, areaA, AreaHeuristicTolerance)
-                                && IsGreater(areaResult, areaA - areaB, AreaHeuristicTolerance);
+                    isConsistent = IsDifferenceAreaConsistent(areaA, areaB, areaResult, AreaHeuristicTolerance);
                     break;
                 case OverlayNG.SYMDIFFERENCE:
                     isConsistent = IsLess(areaResult, areaA + areaB, AreaHeuristicTolerance);
@@ -396,6 +412,23 @@ namespace NetTopologySuite.Operation.OverlayNG
                     break;
             }
             return isConsistent;
+        }
+
+        /// <summary>
+        /// Tests if the area of a difference is greater than the minimum possible difference area.
+        /// This is a heuristic which will only detect gross overlay errors.
+        /// </summary>
+        /// <param name="areaA">The area of A</param>
+        /// <param name="areaB">The area of B</param>
+        /// <param name="areaResult">The result area</param>
+        /// <param name="tolFrac">The area tolerance fraction</param>
+        /// <returns><c>true</c> if the difference area is consistent.</returns>
+        private static bool IsDifferenceAreaConsistent(double areaA, double areaB, double areaResult, double tolFrac)
+        {
+            if (!IsLess(areaResult, areaA, tolFrac))
+                return false;
+            double areaDiffMin = areaA - areaB - tolFrac * areaA;
+            return areaResult > areaDiffMin;
         }
 
         private static bool IsLess(double v1, double v2, double tol)

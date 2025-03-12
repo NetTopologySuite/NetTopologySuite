@@ -8,12 +8,13 @@ namespace NetTopologySuite.Operation.Buffer
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The most important benefit of doing this
+    /// The major benefit of doing this
     /// is to reduce the number of points and the complexity of
     /// shape which will be buffered.
+    /// This improves performance and robustness.
     /// It also reduces the risk of gores created by
     /// the quantized fillet arcs (although this issue
-    /// should be eliminated in any case by the
+    /// should be eliminated by the
     /// offset curve generation logic).
     /// </para>
     /// <para>
@@ -25,8 +26,9 @@ namespace NetTopologySuite.Operation.Buffer
     /// </para>
     /// <para>
     /// Another important heuristic used is that the end segments
-    /// of the input are never simplified.  This ensures that
+    /// of linear inputs are never simplified. This ensures that
     /// the client buffer code is able to generate end caps faithfully.
+    /// Ring inputs can have end segments removed by simplification.
     /// </para>
     /// <para>
     /// No attempt is made to avoid self-intersections in the output.
@@ -58,18 +60,18 @@ namespace NetTopologySuite.Operation.Buffer
 
         private const int NumPtsToCheck = 10;
 
-        // private const int Init = 0;
         private const int Delete = 1;
-        // private const int Keep = 2;
 
         private readonly Coordinate[] _inputLine;
         private double _distanceTol;
-        private byte[] _isDeleted;
+        private readonly bool _isRing;
+        private bool[] _isDeleted;
         private OrientationIndex _angleOrientation = OrientationIndex.CounterClockwise;
 
         public BufferInputLineSimplifier(Coordinate[] inputLine)
         {
             _inputLine = inputLine;
+            _isRing = CoordinateArrays.IsRing(inputLine);
         }
 
         /// <summary>
@@ -86,11 +88,12 @@ namespace NetTopologySuite.Operation.Buffer
         public Coordinate[] Simplify(double distanceTol)
         {
             _distanceTol = System.Math.Abs(distanceTol);
+            _angleOrientation = OrientationIndex.CounterClockwise;
             if (distanceTol < 0)
                 _angleOrientation = OrientationIndex.Clockwise;
 
-            // rely on fact that boolean array is filled with false value
-            _isDeleted = new byte[_inputLine.Length];
+            // rely on fact that boolean array is filled with false values
+            _isDeleted = new bool[_inputLine.Length];
 
             bool isChanged;
             do
@@ -106,17 +109,17 @@ namespace NetTopologySuite.Operation.Buffer
         /// in which the middle vertex can be deleted, since it does not
         /// affect the shape of the resulting buffer in a significant way.
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> if any vertices were deleted</returns>
         private bool DeleteShallowConcavities()
         {
             /*
              * Do not simplify end line segments of the line string.
              * This ensures that end caps are generated consistently.
              */
-            int index = 1;
+            int index = _isRing ? 0 : 1;
 
-            int midIndex = FindNextNonDeletedIndex(index);
-            int lastIndex = FindNextNonDeletedIndex(midIndex);
+            int midIndex = NextIndex(index);
+            int lastIndex = NextIndex(midIndex);
 
             bool isChanged = false;
             while (lastIndex < _inputLine.Length)
@@ -125,7 +128,7 @@ namespace NetTopologySuite.Operation.Buffer
                 bool isMiddleVertexDeleted = false;
                 if (IsDeletable(index, midIndex, lastIndex, _distanceTol))
                 {
-                    _isDeleted[midIndex] = Delete;
+                    _isDeleted[midIndex] = true;
                     isMiddleVertexDeleted = true;
                     isChanged = true;
                 }
@@ -136,8 +139,8 @@ namespace NetTopologySuite.Operation.Buffer
                 else
                     index = midIndex;
 
-                midIndex = FindNextNonDeletedIndex(index);
-                lastIndex = FindNextNonDeletedIndex(midIndex);
+                midIndex = NextIndex(index);
+                lastIndex = NextIndex(midIndex);
             }
             return isChanged;
         }
@@ -149,10 +152,10 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The next non-deleted index, if any <br/>
         /// or <c>_inputLine.Length</c> if there are no more non-deleted indices
         /// </returns>
-        private int FindNextNonDeletedIndex(int index)
+        private int NextIndex(int index)
         {
             int next = index + 1;
-            while (next < _inputLine.Length - 1 && _isDeleted[next] == Delete)
+            while (next < _inputLine.Length - 1 && _isDeleted[next])
                 next++;
             return next;
         }
@@ -162,10 +165,9 @@ namespace NetTopologySuite.Operation.Buffer
             var coordList = new CoordinateList(_inputLine.Length);
             for (int i = 0; i < _inputLine.Length; i++)
             {
-                if (_isDeleted[i] != Delete)
+                if (!_isDeleted[i])
                     coordList.Add(_inputLine[i]);
             }
-            // if (coordList.size() < inputLine.length)      System.out.println("Simplified " + (inputLine.length - coordList.size()) + " pts");
             return coordList.ToCoordinateArray();
         }
 
@@ -178,24 +180,8 @@ namespace NetTopologySuite.Operation.Buffer
             if (!IsConcave(p0, p1, p2)) return false;
             if (!IsShallow(p0, p1, p2, distanceTol)) return false;
 
-            // MD - don't use this heuristic - it's too restricting
-            // if (p0.distance(p2) > distanceTol) return false;
-
             return IsShallowSampled(p0, p1, i0, i2, distanceTol);
         }
-
-        /*
-        private bool IsShallowConcavity(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
-        {
-            int orientation = CGAlgorithms.ComputeOrientation(p0, p1, p2);
-            bool isAngleToSimplify = (orientation == _angleOrientation);
-            if (!isAngleToSimplify)
-                return false;
-
-            double dist = CGAlgorithms.DistancePointLine(p1, p0, p2);
-            return dist < distanceTol;
-        }
-         */
 
         /// <summary>
         /// Checks for shallowness over a sample of points in the given section.
@@ -215,7 +201,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             for (int i = i0; i < i2; i += inc)
             {
-                if (!IsShallow(p0, p2, _inputLine[i], distanceTol)) return false;
+                if (!IsShallow(p0, _inputLine[i], p2, distanceTol)) return false;
             }
             return true;
         }

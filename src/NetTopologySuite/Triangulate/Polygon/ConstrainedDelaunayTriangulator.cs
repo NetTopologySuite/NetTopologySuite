@@ -83,13 +83,7 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// <returns>A list of <c>Tri</c>s forming the triangulation</returns>
         private IList<Tri.Tri> TriangulatePolygon(Geometries.Polygon poly)
         {
-            /*
-             * Normalize to ensure that shell and holes have canonical orientation.
-             * 
-             * TODO: perhaps better to just correct orientation of rings?
-             */
-            var polyNorm = (Geometries.Polygon)poly.Normalized();
-            var polyShell = PolygonHoleJoiner.Join(polyNorm);
+            var polyShell = PolygonHoleJoiner.Join(poly);
             var triList = PolygonEarClipper.Triangulate(polyShell);
 
             //long start = System.currentTimeMillis();

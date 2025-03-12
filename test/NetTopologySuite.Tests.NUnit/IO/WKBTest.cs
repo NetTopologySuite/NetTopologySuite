@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -97,6 +98,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void TestGeometryCollectionContainingEmptyGeometries()
+        {
+            RunWKBTest("GEOMETRYCOLLECTION (LINESTRING EMPTY, MULTIPOINT EMPTY)");
+        }
+
+        [Test]
         public void TestLineStringEmpty()
         {
             RunWKBTest("LINESTRING EMPTY");
@@ -141,6 +148,56 @@ namespace NetTopologySuite.Tests.NUnit.IO
         public void TestGeometryCollectionEmpty()
         {
             RunWKBTest("GEOMETRYCOLLECTION EMPTY");
+        }
+
+        /**
+         * Tests if a previously written WKB with M-coordinates can be read as expected.
+         */
+        [Test]
+        public void TestWriteAndReadM()
+        {
+            const string wkt = "MULTILINESTRING M((1 1 1, 2 2 2))";
+            var wktReader = new WKTReader { IsOldNtsCoordinateSyntaxAllowed = false };
+            var geometryBefore = wktReader.Read(wkt);
+            Assert.That(geometryBefore.Coordinate, Is.TypeOf<CoordinateM>());
+
+            var wkbWriter = new WKBWriter() { HandleOrdinates = Ordinates.XYM };
+            byte[] wkb = wkbWriter.Write(geometryBefore);
+
+            var wkbReader = new WKBReader() { HandleOrdinates = Ordinates.XYZM };
+            var geometryAfter = wkbReader.Read(wkb);
+            var coord = geometryAfter.Coordinate;
+            Assert.That(coord, Is.TypeOf<CoordinateM>());
+
+            Assert.That(coord.X, Is.EqualTo(1));
+            Assert.That(coord.Y, Is.EqualTo(1));
+            Assert.That(coord.Z, Is.EqualTo(double.NaN));
+            Assert.That(coord.M, Is.EqualTo(1));
+        }
+
+        /**
+         * Tests if a previously written WKB with Z-coordinates can be read as expected.
+         */
+        [Test]
+        public void TestWriteAndReadZ()
+        {
+            const string wkt = "MULTILINESTRING Z((1 1 1, 2 2 2))";
+            var wktReader = new WKTReader { IsOldNtsCoordinateSyntaxAllowed = false };
+            var geometryBefore = wktReader.Read(wkt);
+            Assert.That(geometryBefore.Coordinate, Is.TypeOf<CoordinateZ>());
+
+            var wkbWriter = new WKBWriter() { HandleOrdinates = Ordinates.XYZ };
+            byte[] wkb = wkbWriter.Write(geometryBefore);
+
+            var wkbReader = new WKBReader() { HandleOrdinates = Ordinates.XYZM };
+            var geometryAfter = wkbReader.Read(wkb);
+            var coord = geometryAfter.Coordinate;
+            Assert.That(coord, Is.TypeOf<CoordinateZ>());
+
+            Assert.That(coord.X, Is.EqualTo(1));
+            Assert.That(coord.Y, Is.EqualTo(1));
+            Assert.That(coord.Z, Is.EqualTo(1));
+            Assert.That(coord.M, Is.EqualTo(double.NaN));
         }
 
         private void RunWKBTest(string wkt)

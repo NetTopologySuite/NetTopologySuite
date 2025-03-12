@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixture]
-    public class GeometryCollectionImplTest
+    public class GeometryCollectionImplTest : GeometryTestCase
     {
         private readonly NtsGeometryServices gs;
         private readonly WKTReader reader;
@@ -22,6 +22,32 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
             Assert.AreEqual(1, (int)g.Dimension);
+        }
+
+        [Test]
+
+        public void TestHasDimension()
+        {
+            var mixedGC = Read("GEOMETRYCOLLECTION (POINT (10 10), LINESTRING (15 15, 20 20), POLYGON ((10 20, 20 20, 20 10, 10 10, 10 20)))");
+            Assert.That(mixedGC.HasDimension(Dimension.Point), Is.True);
+            Assert.That(mixedGC.HasDimension(Dimension.Curve), Is.True);
+            Assert.That(mixedGC.HasDimension(Dimension.Surface), Is.True);
+
+            var mA = Read("MULTIPOLYGON (((10 20, 20 20, 20 10, 10 10, 10 20)), ((30 30, 30 20, 20 20, 20 30, 30 30)))");
+            Assert.That(mA.HasDimension(Dimension.Point), Is.False);
+            Assert.That(mA.HasDimension(Dimension.Curve), Is.False);
+            Assert.That(mA.HasDimension(Dimension.Surface), Is.True);
+
+            var mL = Read("MULTILINESTRING ((5 5, 10 5), (15 5, 20 5))");
+            Assert.That(mL.HasDimension(Dimension.Point), Is.False);
+            Assert.That(mL.HasDimension(Dimension.Curve), Is.True);
+            Assert.That(mL.HasDimension(Dimension.Surface), Is.False);
+
+            var mP = Read("MULTIPOINT ((10 10), (20 20))");
+            Assert.That(mP.HasDimension(Dimension.Point), Is.True);
+            Assert.That(mP.HasDimension(Dimension.Curve), Is.False);
+            Assert.That(mP.HasDimension(Dimension.Surface), Is.False);
+
         }
 
         [Test]

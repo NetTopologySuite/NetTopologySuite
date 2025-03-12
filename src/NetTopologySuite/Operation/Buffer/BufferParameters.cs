@@ -1,3 +1,4 @@
+using NetTopologySuite.Algorithm;
 using System;
 
 namespace NetTopologySuite.Operation.Buffer
@@ -127,7 +128,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The error of approximation</returns>
         public static double BufferDistanceError(int quadSegs)
         {
-            double alpha = Math.PI / 2.0 / quadSegs;
+            double alpha = AngleUtility.PiOver2 / quadSegs;
             return 1 - Math.Cos(alpha / 2.0);
         }
 

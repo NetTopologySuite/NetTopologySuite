@@ -257,7 +257,8 @@ namespace NetTopologySuite.Operation.Valid
         {
             if (geom.IsEmpty) return true;
             var segStrings = ExtractSegmentStrings(geom);
-            var segInt = new NonSimpleIntersectionFinder(_isClosedEndpointsInInterior, FindAllLocations, _nonSimplePts);
+            var segInt = new NonSimpleIntersectionFinder(geom.Factory.ElevationModel,
+                _isClosedEndpointsInInterior, FindAllLocations, _nonSimplePts);
             var noder = new MCIndexNoder();
             noder.SegmentIntersector = segInt;
             noder.ComputeNodes(segStrings);
@@ -323,7 +324,7 @@ namespace NetTopologySuite.Operation.Valid
             private readonly bool _isClosedEndpointsInInterior;
             private readonly bool _isFindAll;
 
-            readonly LineIntersector _li = new RobustLineIntersector();
+            private readonly LineIntersector _li;
             private readonly List<Coordinate> _intersectionPts;
 
             //private bool _hasInteriorInt;
@@ -337,9 +338,10 @@ namespace NetTopologySuite.Operation.Valid
             /// <param name="isClosedEndpointsInInterior">A flag indicating if closed endpoints belong to the interior</param>
             /// <param name="isFindAll">A flag indicating that all non-simple intersection points should be found</param>
             /// <param name="intersectionPts">A list to add the non-simple intersection points to.</param>
-            public NonSimpleIntersectionFinder(bool isClosedEndpointsInInterior, bool isFindAll,
+            public NonSimpleIntersectionFinder(ElevationModel em, bool isClosedEndpointsInInterior, bool isFindAll,
                 List<Coordinate> intersectionPts)
             {
+                _li = new RobustLineIntersector(em);
                 _isClosedEndpointsInInterior = isClosedEndpointsInInterior;
                 _isFindAll = isFindAll;
                 _intersectionPts = intersectionPts;

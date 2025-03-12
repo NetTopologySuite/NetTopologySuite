@@ -24,29 +24,34 @@ namespace NetTopologySuite.Algorithm
     /// <list type="bullet">
     /// <item><description>a line segment representing the minimum diameter</description></item>
     /// <item><description>the <b>supporting line segment</b> of the minimum diameter</description></item>
-    /// <item><description>a <b>minimum enclosing rectangle</b> of the input geometry.
+    /// <item><description>a <b>minimum-width rectangle</b> of the input geometry.
     /// The rectangle has width equal to the minimum diameter, and has one side
     /// parallel to the supporting segment.
-    /// In degenerate cases the minimum enclosing geometry may be a LineString or a Point.
+    /// In degenerate cases the rectangle may be a LineString or a Point.
+    /// (Note that this may not be the enclosing rectangle with minimum area;
+    /// use <see cref="MinimumAreaRectangle"/> to compute this.)
     /// </description></item></list>
     /// </para>
     /// </remarks>
     /// <seealso cref="ConvexHull"/>
+    /// <seealso cref="MinimumAreaRectangle"/>
     public class MinimumDiameter
     {
         /// <summary>
-        /// Gets the minimum rectangular <see cref="Polygon"/> which encloses the input geometry.
+        /// Gets the minimum-width rectangular <see cref="Polygon"/> which encloses the input geometry
+        /// and is based along the supporting segment.
         /// The rectangle has width equal to the minimum diameter,
         /// and a longer length.
         /// If the convex hull of the input is degenerate (a line or point)
         /// a <see cref="LineString"/>
         /// or <see cref="Point"/> is returned.
         /// <para/>
-        /// The minimum rectangle can be used as an extremely generalized representation
-        /// for the given geometry.
+        /// This is not necessarily the rectangle with minimum area.
+        /// Use <see cref="MinimumAreaRectangle"/> to compute this.
         /// </summary>
         /// <param name="geom">The geometry</param>
-        /// <returns>The minimum rectangle enclosing the geometry</returns>
+        /// <returns>The minimum-width rectangle enclosing the geometry</returns>
+        /// <seealso cref="MinimumAreaRectangle"/>
         public static Geometry GetMinimumRectangle(Geometry geom)
         {
             return (new MinimumDiameter(geom)).GetMinimumRectangle();
@@ -219,7 +224,7 @@ namespace NetTopologySuite.Algorithm
             int currMaxIndex = 1;
 
             var seg = new LineSegment();
-            // compute the max distance for all segments in the ring, and pick the minimum
+            // for each segment, find a vertex at max distance, and pick the minimum
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 seg.P0 = pts[i];
@@ -277,7 +282,8 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Gets the minimum rectangular <see cref="Polygon"/> which encloses the input geometry.
+        /// Gets the rectangular <see cref="Polygon"/> which encloses the input geometry
+        /// and is based on the minimum diameter supporting segment.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -285,10 +291,11 @@ namespace NetTopologySuite.Algorithm
         /// If the convex hull of the input is degenerate (a line or point) a <see cref="LineString"/> or <see cref="Point"/> is returned.
         /// </para>
         /// <para>
-        /// The minimum rectangle can be used as an extremely generalized representation for the given geometry.
+        /// This is not necessarily the enclosing rectangle with minimum area.
         /// </para>
         /// </remarks>
-        /// <returns>The minimum rectangle enclosing the input (or a line or point if degenerate)</returns>
+        /// <returns>A rectangle enclosing the input (or a line or point if degenerate)</returns>
+        /// <seealso cref="MinimumAreaRectangle"/>
         public Geometry GetMinimumRectangle()
         {
             ComputeMinimumDiameter();
@@ -299,7 +306,7 @@ namespace NetTopologySuite.Algorithm
                 // -- Min rectangle is a Point
                 if (_minBaseSeg.P0.Equals2D(_minBaseSeg.P1))
                 {
-                    return _inputGeom.Factory.CreatePoint(_minBaseSeg.P0);
+                    return _inputGeom.Factory.CreatePoint(_minBaseSeg.P0.Copy());
                 }
                 // -- Min rectangle is a line
                 return ComputeMaximumLine(_convexHullPts, _inputGeom.Factory);

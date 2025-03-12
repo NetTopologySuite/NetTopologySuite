@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.Strtree;
@@ -19,6 +22,8 @@ namespace NetTopologySuite.Noding
         * (range) queries efficiently (such as a Quadtree or STRtree).
         */
         private readonly STRtree<MonotoneChain> _index = new STRtree<MonotoneChain>();
+        private readonly double _overlapTolerance;
+        private readonly Envelope _envelope;
 
         /// <summary>
         /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
@@ -27,6 +32,28 @@ namespace NetTopologySuite.Noding
         public MCIndexSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings)
         {
             InitBaseSegments(baseSegStrings);
+        }
+
+        /// <summary>
+        /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
+        /// </summary>
+        /// <param name="baseSegStrings">The base segment strings to intersect</param>
+        /// <param name="env">The envelope</param>
+        public MCIndexSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings, Envelope env)
+        {
+            _envelope = env;
+            InitBaseSegments(baseSegStrings);
+        }
+
+        /// <summary>
+        /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
+        /// </summary>
+        /// <param name="baseSegStrings">The base segment strings to intersect</param>
+        /// <param name="overlapTolerance">A tolerance for overlapping segments</param>
+        public MCIndexSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings, double overlapTolerance)
+        {
+            InitBaseSegments(baseSegStrings);
+            _overlapTolerance = overlapTolerance;
         }
 
         /// <summary>
@@ -39,6 +66,9 @@ namespace NetTopologySuite.Noding
         {
             foreach (var segmentString in segStrings)
             {
+                if (segmentString.Count == 0)
+                    continue;
+
                 AddToIndex(segmentString);
             }
             // build index to ensure thread-safety
@@ -51,7 +81,10 @@ namespace NetTopologySuite.Noding
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (var mc in segChains)
             {
-                _index.Insert(mc.Envelope, mc);
+                if (_envelope == null || _envelope.Intersects(mc.Envelope))
+                {
+                    _index.Insert(mc.GetEnvelope(_overlapTolerance), mc);
+                }
             }
         }
 
@@ -74,12 +107,17 @@ namespace NetTopologySuite.Noding
             //    System.out.println("MCIndexBichromaticIntersector: # oct chain overlaps = " + nOctOverlaps);
         }
 
-        private static void AddToMonoChains(ISegmentString segStr, List<MonotoneChain> monotoneChains)
+        private void AddToMonoChains(ISegmentString segStr, List<MonotoneChain> monotoneChains)
         {
+            if (segStr.Count == 0)
+                return;
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (var mc in segChains)
             {
-                monotoneChains.Add(mc);
+                if (_envelope == null || _envelope.Intersects(mc.Envelope))
+                {
+                    monotoneChains.Add(mc);
+                }
             }
         }
 
@@ -89,10 +127,11 @@ namespace NetTopologySuite.Noding
 
             foreach (var queryChain in monoChains)
             {
-                var overlapChains = _index.Query(queryChain.Envelope);
+                var queryEnv = queryChain.GetEnvelope(_overlapTolerance);
+                var overlapChains = _index.Query(queryEnv);
                 foreach (var testChain in overlapChains)
                 {
-                    queryChain.ComputeOverlaps(testChain, overlapAction);
+                    queryChain.ComputeOverlaps(testChain, _overlapTolerance, overlapAction);
                     if (segmentIntersector.IsDone) return;
                 }
             }

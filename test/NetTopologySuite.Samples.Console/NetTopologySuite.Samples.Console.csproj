@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>NetTopologySuite.Samples</RootNamespace>
     <OutputType>Exe</OutputType>
     <StartupObject>NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
@@ -28,6 +28,8 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
+
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.3" />
   </ItemGroup>
 
 </Project>

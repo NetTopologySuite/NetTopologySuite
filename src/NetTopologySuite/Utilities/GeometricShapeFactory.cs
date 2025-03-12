@@ -1,4 +1,5 @@
 using System;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -221,9 +222,9 @@ namespace NetTopologySuite.Utilities
             int iPt = 0;
             for (int i = 0; i < _nPts; i++)
             {
-                double ang = i * (2 * Math.PI / _nPts);
-                double x = xRadius * Math.Cos(ang) + centreX;
-                double y = yRadius * Math.Sin(ang) + centreY;
+                double ang = i * (AngleUtility.PiTimes2 / _nPts);
+                double x = xRadius * AngleUtility.CosSnap(ang) + centreX;
+                double y = yRadius * AngleUtility.SinSnap(ang) + centreY;
                 var pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
@@ -343,8 +344,8 @@ namespace NetTopologySuite.Utilities
             double centreY = env.MinY + yRadius;
 
             double angSize = angExtent;
-            if (angSize <= 0.0 || angSize > 2 * Math.PI)
-                angSize = 2 * Math.PI;
+            if (angSize <= 0.0 || angSize > AngleUtility.PiTimes2)
+                angSize = AngleUtility.PiTimes2;
             double angInc = angSize / (_nPts - 1);
 
             var pts = new Coordinate[_nPts];
@@ -352,8 +353,8 @@ namespace NetTopologySuite.Utilities
             for (int i = 0; i < _nPts; i++)
             {
                 double ang = startAng + i * angInc;
-                double x = xRadius * Math.Cos(ang) + centreX;
-                double y = yRadius * Math.Sin(ang) + centreY;
+                double x = xRadius * AngleUtility.CosSnap(ang) + centreX;
+                double y = yRadius * AngleUtility.SinSnap(ang) + centreY;
                 var pt = CreateCoord(x, y);
                 pts[iPt++] = pt;
             }
@@ -381,8 +382,8 @@ namespace NetTopologySuite.Utilities
             double centreY = env.MinY + yRadius;
 
             double angSize = angExtent;
-            if (angSize <= 0.0 || angSize > 2 * Math.PI)
-                angSize = 2 * Math.PI;
+            if (angSize <= 0.0 || angSize > AngleUtility.PiTimes2)
+                angSize = AngleUtility.PiTimes2;
             double angInc = angSize / (_nPts - 1);
             // var check = angInc * nPts;
             // var checkEndAng = startAng + check;
@@ -395,8 +396,8 @@ namespace NetTopologySuite.Utilities
             {
                 double ang = startAng + angInc * i;
 
-                double x = xRadius * Math.Cos(ang) + centreX;
-                double y = yRadius * Math.Sin(ang) + centreY;
+                double x = xRadius * AngleUtility.CosSnap(ang) + centreX;
+                double y = yRadius * AngleUtility.SinSnap(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
             pts[iPt] = CreateCoord(centreX, centreY);

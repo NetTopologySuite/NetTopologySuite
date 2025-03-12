@@ -327,7 +327,7 @@ namespace NetTopologySuite.Noding.Snapround
             corner[lowerLeft] = new Coordinate(minx, miny);
             corner[lowerRight] = new Coordinate(maxx, miny);
 
-            LineIntersector li = new RobustLineIntersector();
+            LineIntersector li = new RobustLineIntersector(ElevationModel.NoZ);
             li.ComputeIntersection(p0, p1, corner[0], corner[1]);
             if (li.HasIntersection) return true;
             li.ComputeIntersection(p0, p1, corner[1], corner[2]);

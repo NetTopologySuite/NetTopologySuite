@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <!--<TargetFrameworks>netcoreapp3.1;net48</TargetFrameworks>-->
+    <TargetFramework>net9.0</TargetFramework>
+    <!--<TargetFrameworks>net9.0;net48</TargetFrameworks>-->
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)src\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
-    <ProjectReference Include="$(SolutionDir)test\NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj" />
+	<ProjectReference Include="$(SolutionDir)test\NetTopologySuite.Tests.NUnit\NetTopologySuite.Tests.NUnit.csproj" />
   </ItemGroup>
 
 </Project>

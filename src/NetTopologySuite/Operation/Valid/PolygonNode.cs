@@ -1,5 +1,6 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using System;
 
 namespace NetTopologySuite.Operation.Valid
 {
@@ -8,6 +9,7 @@ namespace NetTopologySuite.Operation.Valid
     /// about nodes (ring intersections) in polygonal geometry.
     /// </summary>
     /// <author>Martin Davis</author>
+    [Obsolete("Use PolygonNodeTopology")]
     static class PolygonNode
     {
         /// <summary>

@@ -227,14 +227,11 @@ namespace NetTopologySuite.Operation.OverlayNG
         private static Coordinate[] ExtractCoordinates(Geometry points, PrecisionModel pm)
         {
             var coords = new CoordinateList();
-            int n = points.NumGeometries;
-            for (int i = 0; i < n; i++)
+            points.Apply(new CoordinateFilter(coord =>
             {
-                var point = (Point)points.GetGeometryN(i);
-                if (point.IsEmpty) continue;
-                var coord = OverlayUtility.Round(point, pm);
-                coords.Add(coord, true);
-            }
+                var p = OverlayUtility.Round(coord, pm);
+                coords.Add(p, false);
+            }));
             return coords.ToCoordinateArray();
         }
 

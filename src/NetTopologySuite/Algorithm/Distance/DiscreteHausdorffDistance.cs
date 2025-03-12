@@ -171,8 +171,7 @@ namespace NetTopologySuite.Algorithm.Distance
         public class MaxPointDistanceFilter : ICoordinateFilter
         {
             private readonly PointPairDistance _maxPtDist = new PointPairDistance();
-            //private readonly PointPairDistance _minPtDist = new PointPairDistance();
-            //private EuclideanDistanceToPoint euclideanDist = new EuclideanDistanceToPoint();
+            private readonly PointPairDistance _minPtDist = new PointPairDistance();
             private readonly Geometry _geom;
 
             /// <summary>
@@ -187,9 +186,9 @@ namespace NetTopologySuite.Algorithm.Distance
             /// <inheritdoc cref="ICoordinateFilter.Filter"/>
             public void Filter(Coordinate pt)
             {
-                var minPtDist = new PointPairDistance();
-                DistanceToPoint.ComputeDistance(_geom, pt, minPtDist);
-                _maxPtDist.SetMaximum(minPtDist);
+                _minPtDist.Initialize();
+                DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
+                _maxPtDist.SetMaximum(_minPtDist);
             }
 
             /// <summary>

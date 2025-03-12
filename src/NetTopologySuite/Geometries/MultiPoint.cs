@@ -64,6 +64,13 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override Dimension Dimension => Dimension.Point;
 
+        /// <inheritdoc cref="Geometry.HasDimension(Dimension)"/>
+        /// <returns><c>true</c> if <paramref name="dim"/> == <c><see cref="Dimension.Point"/></c></returns>
+        public override bool HasDimension(Dimension dim)
+        {
+            return dim == Dimension.Point;
+        }
+
         /// <summary>
         ///
         /// </summary>

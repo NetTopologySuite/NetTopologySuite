@@ -25,6 +25,9 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// </list>
     /// Input geometries may have different dimension.
     /// Input collections must be homogeneous (all elements must have the same dimension).
+    /// Inputs may be <b>simple</b> <see cref="GeometryCollection"/>s.
+    /// A GeometryCollection is simple if it can be flattened into a valid Multi-geometry;
+    /// i.e.it is homogeneous and does not contain any overlapping Polygons.
     /// <para/>
     /// The precision model used for the computation can be supplied
     /// independent of the precision model of the input geometry.
@@ -291,6 +294,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         private readonly InputGeometry _inputGeom;
         private readonly GeometryFactory _geomFact;
         private readonly PrecisionModel _pm;
+        private readonly Algorithm.ElevationModel _em;
         private bool _isOutputNodedEdges;
 
         /// <summary>
@@ -302,6 +306,25 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="pm">The precision model to use</param>
         /// <param name="opCode">The overlay opcode</param>
         public OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, SpatialFunction opCode)
+            : this(geom0, geom1, pm, GetElevationModel(geom0, geom1), opCode)
+        { }
+
+        private static Algorithm.ElevationModel GetElevationModel(Geometry geom0, Geometry geom1)
+        {
+            return (geom1 == null || geom0.Factory == geom1.Factory) ? geom0.Factory.ElevationModel : (ElevationModel)null;
+        }
+
+
+        /// <summary>
+        /// Creates an overlay operation on the given geometries,
+        /// with a defined precision model.
+        /// </summary>
+        /// <param name="geom0">The A operand geometry</param>
+        /// <param name="geom1">The B operand geometry (may be <c>null</c>)</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <param name="em">The elevation model to use. May be <c>null</c></param>
+        /// <param name="opCode">The overlay opcode</param>
+        public OverlayNG(Geometry geom0, Geometry geom1, PrecisionModel pm, Algorithm.ElevationModel em, SpatialFunction opCode)
         {
             if (geom0 == null)
             {
@@ -321,6 +344,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             }
 
             _pm = pm;
+            _em = em;
             _opCode = opCode;
             _geomFact = geom0.Factory;
             _inputGeom = new InputGeometry(geom0, geom1);
@@ -496,7 +520,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             /*
              * Node the edges, using whatever noder is being used
              */
-            var nodingBuilder = new EdgeNodingBuilder(_pm, Noder);
+            var nodingBuilder = new EdgeNodingBuilder(_pm, _em, Noder);
 
             /*
              * Optimize Intersection and Difference by clipping to the 

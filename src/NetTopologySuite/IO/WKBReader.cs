@@ -88,6 +88,11 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("Invalid hex digit: " + hex);
         }
 
+        private const string FieldNumCoords = "numCoords";
+        private const string FieldNumRings = "numRings";
+        private const string FieldNumElements = "numElements";
+
+
         private readonly CoordinateSequenceFactory _sequenceFactory;
         private readonly PrecisionModel _precisionModel;
 
@@ -281,7 +286,15 @@ namespace NetTopologySuite.IO
             return (WKBGeometryTypes)((type & 0xffff) % 1000);
         }
 
-        private int ReasonableNumPoints(Stream stream, CoordinateSystem cs)
+        private static int ReasonableNumElements(Stream stream)
+        {
+            int remainingBytes = (int)(stream.Length - stream.Position) - 4;
+            if (remainingBytes < 0) return int.MaxValue;
+
+            return remainingBytes / 8;
+        }
+
+        private static int ReasonableNumCoordinates(Stream stream, CoordinateSystem cs)
         {
             int remainingBytes = (int)(stream.Length - stream.Position) - 4;
             if (remainingBytes < 0) return int.MaxValue;
@@ -438,7 +451,7 @@ namespace NetTopologySuite.IO
         protected Geometry ReadLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numPoints = ReadNumField(reader, "numPoints", ReasonableNumPoints(reader.BaseStream, cs));
+            int numPoints = ReadNumField(reader, FieldNumCoords, ReasonableNumCoordinates(reader.BaseStream, cs));
             var sequence = ReadCoordinateSequenceLineString(reader, numPoints, cs);
             return factory.CreateLineString(sequence);
         }
@@ -454,7 +467,7 @@ namespace NetTopologySuite.IO
         protected LinearRing ReadLinearRing(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numPoints = ReadNumField(reader, "numPoints", ReasonableNumPoints(reader.BaseStream, cs));
+            int numPoints = ReadNumField(reader, FieldNumCoords, ReasonableNumCoordinates(reader.BaseStream, cs));
             var sequence = ReadCoordinateSequenceRing(reader, numPoints, cs);
             return factory.CreateLinearRing(sequence);
         }
@@ -468,9 +481,9 @@ namespace NetTopologySuite.IO
         protected Geometry ReadPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int reasonable = ReasonableNumPoints(reader.BaseStream, cs);
-            if (_isStrict) reasonable /= 4;
-            int numRings = ReadNumField(reader, "numRings", reasonable);
+            int reasonable = ReasonableNumElements(reader.BaseStream);
+            if (_isStrict) reasonable /= 2;
+            int numRings = ReadNumField(reader, FieldNumRings, reasonable);
             if (numRings == 0)
                 return factory.CreatePolygon();
             
@@ -492,7 +505,7 @@ namespace NetTopologySuite.IO
         protected Geometry ReadMultiPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs));
+            int numGeometries = ReadNumField(reader, FieldNumElements, ReasonableNumCoordinates(reader.BaseStream, cs));
             var points = new Point[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
@@ -517,7 +530,7 @@ namespace NetTopologySuite.IO
         protected Geometry ReadMultiLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs) / 2);
+            int numGeometries = ReadNumField(reader, FieldNumElements, ReasonableNumElements(reader.BaseStream));
             var strings = new LineString[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
@@ -543,7 +556,7 @@ namespace NetTopologySuite.IO
         protected Geometry ReadMultiPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
-            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs));
+            int numGeometries = ReadNumField(reader, FieldNumElements, ReasonableNumElements(reader.BaseStream));
             var polygons = new Polygon[numGeometries];
             for (int i = 0; i < numGeometries; i++)
             {
@@ -569,7 +582,7 @@ namespace NetTopologySuite.IO
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
 
-            int numGeometries = ReadNumField(reader, "numElems", ReasonableNumPoints(reader.BaseStream, cs));
+            int numGeometries = ReadNumField(reader, FieldNumElements, ReasonableNumElements(reader.BaseStream));
             var geometries = new Geometry[numGeometries];
 
             for (int i = 0; i < numGeometries; i++)

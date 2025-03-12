@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
     [Serializable]
-    public class GeometryCollection : Geometry, IEnumerable<Geometry>
+    public class GeometryCollection : Geometry, IReadOnlyList<Geometry>
     {
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
@@ -64,16 +64,19 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         protected override SortIndexValue SortIndex => SortIndexValue.GeometryCollection;
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc/>
         public override Coordinate Coordinate
         {
             get
             {
-                if (IsEmpty)
-                    return null;
-                return _geometries[0].Coordinate;
+                for (int i = 0; i < _geometries.Length; i++)
+                {
+                    if (!_geometries[i].IsEmpty)
+                    {
+                        return _geometries[i].Coordinate;
+                    }
+                }
+                return null;
             }
         }
 
@@ -145,9 +148,18 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc cref="Geometry.HasDimension(Dimension)"/>
+        public override bool HasDimension(Dimension dim)
+        {
+            for (int i = 0; i < _geometries.Length; i++)
+            {
+                if (_geometries[i].HasDimension(dim))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <inheritdoc cref="Geometry.BoundaryDimension"/>
         public override Dimension BoundaryDimension
         {
             get
@@ -159,16 +171,10 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc cref="Geometry.NumGeometries"/>
         public override int NumGeometries => _geometries.Length;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
+        /// <inheritdoc cref="Geometry.GetGeometryN(int)"/>
         public override Geometry GetGeometryN(int n)
         {
             return _geometries[n];
@@ -183,9 +189,7 @@ namespace NetTopologySuite.Geometries
             protected set => _geometries = value;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc cref="Geometry.NumPoints"/>
         public override int NumPoints
         {
             get
@@ -221,9 +225,7 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc cref="Geometry.Boundary"/>
         public override Geometry Boundary
         {
             get

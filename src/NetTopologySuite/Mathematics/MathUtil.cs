@@ -216,5 +216,30 @@
             return next - System.Math.Floor(next);
         }
 
+        /// <summary>
+        /// Generates a randomly-shuffled list of the integers from [0..n-1].
+        /// <para/>
+        /// One use is to randomize points inserted into a <see cref="Index.KdTree.KdTree{T}"/>.
+        /// </summary>
+        /// <param name="n">The number of integers to shuffle</param>
+        /// <returns>The shuffled array</returns>
+        public static int[] Shuffle(int n)
+        {
+            var rnd = new System.Random(13);
+            int[] ints = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                ints[i] = i;
+            }
+            for (int i = n - 1; i >= 1; i--)
+            {
+                int j = rnd.Next(i + 1);
+                int last = ints[i];
+                ints[i] = ints[j];
+                ints[j] = last;
+            }
+            return ints;
+        }
+
     }
 }

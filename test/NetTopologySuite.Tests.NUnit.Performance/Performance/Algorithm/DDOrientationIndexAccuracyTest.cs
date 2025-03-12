@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// conversion approach with better decimal accuracy.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class DDOrientationIndexAccuracyTest : GeometryTestCase
+    public class DDOrientationIndexAccuracyTest
     {
 
         [Test]

@@ -1,4 +1,5 @@
 using System;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 
@@ -151,6 +152,27 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
                     "MULTILINESTRING ((10 90, 30 90, 30 30, 70 30, 70 90, 90 90, 90 10, 10 10, 10 90), (30 90, 70 90, 70 30, 30 30, 30 90))"
                 });
         }
+
+        [Test]
+        public void TestUniqueInvalidRings()
+        {
+            CheckPolygonizeInvalidRings(
+                "MULTILINESTRING ((0 0, 2 0, 2 2, 0 2, 0 0), (0 0, 1 1), (2 2, 4 4, 2 4, 4 2, 2 2))",
+                "LINESTRING (2 2, 4 2, 2 4, 4 4, 2 2)"
+                );
+        }
+
+        [Test]
+        public void TestUniqueInvalidRings2()
+        {
+            CheckPolygonizeInvalidRings(
+                "MULTILINESTRING ((3 8, 7 8), (7 8, 7 3), (7 3, 3 3), (3 3, 3 8), (7 3, 9 6, 9 5, 7 8), (3 8, 1 5), (1 5, 1 6), (1 6, 3 3))",
+                "MULTILINESTRING ((3 8, 3 3, 1 6, 1 5, 3 8), (7 3, 7 8, 9 5, 9 6, 7 3))"
+                );
+        }
+
+
+
         private void CheckPolygonize(string[] inputWKT, string[] expectedOutputWKT)
         {
             CheckPolygonize(false, inputWKT, expectedOutputWKT);
@@ -179,6 +201,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
                 TestContext.WriteLine(ex.StackTrace);
                 Assert.Fail("Polygonizer threw an unexpected error");
             }
+        }
+        private void CheckPolygonizeInvalidRings(string inputWKT, string expectedWKT)
+        {
+            var polygonizer = new Polygonizer();
+            polygonizer.Add(Read(inputWKT));
+            var actualList = polygonizer.GetInvalidRingLines();
+            var expected = Read(expectedWKT);
+            var actual = expected.Factory.BuildGeometry(actualList);
+            /*
+             * Use topological equality to handle differences in ring orientation and order
+             */
+            bool isSameLinework = expected.EqualsTopologically(actual);
+            Assert.That(isSameLinework, Is.True);
         }
     }
 }

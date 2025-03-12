@@ -89,5 +89,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var p2 = (Point)_reader.Read("POINT EMPTY");
             Assert.IsTrue(p2.IsSimple);
         }
+
+        [Test]
+        public void TestEmptyPointOrdinatePropertyDoesNotThrow()
+        {
+            var pt = NtsGeometryServices.Instance.CreateGeometryFactory().CreatePoint();
+            double? x = null;
+            Assert.That(() => x = pt.X, Throws.Nothing);
+            Assert.That(x.HasValue, Is.True);
+            Assert.That(x.Value, Is.EqualTo(double.NaN));
+
+            double? y = null;
+            Assert.That(() => y = pt.Y, Throws.Nothing);
+            Assert.That(x.HasValue, Is.True);
+            Assert.That(x.Value, Is.EqualTo(double.NaN));
+        }
     }
 }
