@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <!--<TargetFrameworks>net6.0;net48</TargetFrameworks>-->
+    <TargetFramework>net9.0</TargetFramework>
+    <!--<TargetFrameworks>net9.0;net48</TargetFrameworks>-->
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
