@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.Operation.RelateNG | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.Operation.RelateNG | NetTopologySuite ">
+    
+    <meta name="description" content="Provides classes to implement the RelateNG algorithm computes topological relationships of Geometrys. Topology is evaluated based on the Dimensionally-Extended 9-Intersection Model (DE-9IM). The RelateNG class supports computing the value of boolean topological predicates Standard OGC named predicates are provided by the RelatePredicate functions. Custom relationships can be specified via testing against DE-9IM matrix patterns (see IntersectionMatrixPattern for examples). The full DE-9IM IntersectionMatrix can also be computed. The algorithm has the following capabilities:  Efficient short-circuited evaluation of topological predicates (including matching custom DE-9IM patterns) Optimized repeated evaluation of predicates against a single geometry via cached spatial indexes (AKA &amp;quot;prepared mode&amp;quot;) Robust computation (since only point-local topology is required, so that invalid geometry topology cannot cause failures) Support for mixed-type and overlapping { GeometryCollection} inputs (using union semantics) Support for IBoundaryNodeRule  RelateNG operates in 2D only; it ignores any Z ordinates. Optimized Short-Circuited Evaluation The RelateNG algorithm uses strategies to optimize the evaluation of topological predicates, including matching DE-9IM matrix patterns. These include fast tests of dimensions and envelopes, and short-circuited evaluation once the predicate value is known (either satisfied or failed) based on the value of matrix entries. Named predicates used explicit strategy code. DE-9IM matrix pattern matching are short-circuited where possible based on analysis of the pattern matrix entries. Spatial indexes are used to optimize topological computations (such as locating points in geometry elements, and analyzing the topological relationship between geometry edges). Execution Modes RelateNG provides two execution modes for evaluating predicates:  Single-shot mode evaluates a predicate for a single case of two geometries. It is provided by the RelateNG static functions which take two input geometries. Prepared mode optimizes repeated evaluation of predicates against a fixed geometry. It is used by creating an instance of RelateNG on the required geometry with the Prepare functions, and then using the Evaluate methods. It provides much faster performance for repeated operations against a single geometry.  Robustness RelateNG provides robust evaluation of topological relationships, up to the precision of double-precision computation. It computes topological relationships in the locality of discrete points, without constructing a full topology graph of the inputs. This means that invalid input geometries or numerical round-off do not cause exceptions (although they may return incorrect answers). However, it is necessary to node some inputs together (in particular, linear elements) in order to provide consistent evaluation of the topological structure. GeometryCollection Handling GeometryCollections may contain geometries of different dimensions, nested to any level. The element geometries may overlap in any combination. The OGC specification did not provide a definition for the topology of GeometryCollections, or how they behave under the DE-9IM model. RelateNG defines the topology for arbitrary collections of geometries using &amp;quot;union semantics&amp;quot;. This is specified as:  GeometryCollections are evaluated as if they were replaced by the topological union of their elements. The topological location at a point is equal to its location in the geometry of highest dimension which contains it.  For example, a point located in the interior of a Polygon and the boundary of a LineString has location Interior.  Zero-length LineString Handling Zero-length LineStrings are handled as topologically identical to a Point at the same coordinate. Package Specification  OpenGIS Simple Features Specification for SQL">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.RelateNG">
+
+  <h1 id="NetTopologySuite_Operation_RelateNG" data-uid="NetTopologySuite.Operation.RelateNG" class="text-break">Namespace NetTopologySuite.Operation.RelateNG</h1>
+  <div class="markdown level0 summary">
+<p>Provides classes to implement the RelateNG algorithm
+computes topological relationships of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s.<br>
+Topology is evaluated based on the
+<a href="https://en.wikipedia.org/wiki/DE-9IM">Dimensionally-Extended 9-Intersection Model</a> (DE-9IM).<br>
+The <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html">RelateNG</a> class supports computing the value of boolean topological predicates
+Standard OGC named predicates are provided by the <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelatePredicate.html">RelatePredicate</a> functions.
+Custom relationships can be specified via testing against DE-9IM matrix patterns
+(see <a class="xref" href="NetTopologySuite.Operation.RelateNG.IntersectionMatrixPattern.html">IntersectionMatrixPattern</a> for examples).
+The full DE-9IM <span class="xref">IntersectionMatrix</span> can also be computed.</p>
+<p>The algorithm has the following capabilities:</p>
+<ul>
+<li>Efficient short-circuited evaluation of topological predicates
+(including matching custom DE-9IM patterns)</li>
+<li>Optimized repeated evaluation of predicates against a single geometry
+via cached spatial indexes (AKA &quot;prepared mode&quot;)</li>
+<li>Robust computation (since only point-local topology is required,
+so that invalid geometry topology cannot cause failures)</li>
+<li>Support for mixed-type and overlapping {@link GeometryCollection} inputs
+(using <em>union semantics</em>)</li>
+<li>Support for <a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a></li>
+</ul>
+<p>RelateNG operates in 2D only; it ignores any Z ordinates.</p>
+<h3 id="optimized-short-circuited-evaluation">Optimized Short-Circuited Evaluation</h3>
+<p>The RelateNG algorithm uses strategies to optimize the evaluation of
+topological predicates, including matching DE-9IM matrix patterns.
+These include fast tests of dimensions and envelopes, and short-circuited evaluation
+once the predicate value is known
+(either satisfied or failed) based on the value of matrix entries.
+Named predicates used explicit strategy code.
+DE-9IM matrix pattern matching are short-circuited where possible
+based on analysis of the pattern matrix entries.
+Spatial indexes are used to optimize topological computations
+(such as locating points in geometry elements,
+and analyzing the topological relationship between geometry edges).</p>
+<h3 id="execution-modes">Execution Modes</h3>
+<p>RelateNG provides two execution modes for evaluating predicates:</p>
+<ul>
+<li><strong>Single-shot</strong> mode evaluates a predicate for a single case of two geometries.
+It is provided by the <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html">RelateNG</a> static functions which take two input geometries.</li>
+<li><strong>Prepared</strong> mode optimizes repeated evaluation of predicates
+against a fixed geometry.
+It is used by creating an instance of <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html">RelateNG</a>
+on the required geometry with the <code>Prepare</code> functions,
+and then using the <code>Evaluate</code> methods.
+It provides much faster performance for repeated operations against a single geometry.</li>
+</ul>
+<h3 id="robustness">Robustness</h3>
+<p>RelateNG provides robust evaluation of topological relationships,
+up to the precision of double-precision computation.
+It computes topological relationships in the locality of discrete points,
+without constructing a full topology graph of the inputs.
+This means that invalid input geometries or numerical round-off do not cause exceptions
+(although they may return incorrect answers).
+However, it is necessary to node some inputs together (in particular, linear elements)
+in order to provide consistent evaluation of the topological structure.</p>
+<h3 id="geometrycollection-handling">GeometryCollection Handling</h3>
+<p><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>s may contain geometries of different dimensions, nested to any level.
+The element geometries may overlap in any combination.
+The OGC specification did not provide a definition for the topology
+of GeometryCollections, or how they behave under the DE-9IM model.
+RelateNG defines the topology for arbitrary collections of geometries
+using &quot;union semantics&quot;.
+This is specified as:</p>
+<ul>
+<li>GeometryCollections are evaluated as if they were replaced by the topological union
+of their elements.</li>
+<li>The topological location at a point is equal to its location in the geometry of highest
+dimension which contains it.  For example, a point located in the interior of a Polygon
+and the boundary of a LineString has location <code>Interior</code>.</li>
+</ul>
+<h3 id="zero-length-linestring-handling">Zero-length LineString Handling</h3>
+<p>Zero-length LineStrings are handled as topologically identical to a Point at the same coordinate.</p>
+<h2 id="package-specification">Package Specification</h2>
+<ul>
+<li><a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features Specification for SQL</a></li>
+</ul>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">
+Classes
+</h3>
+      <h4><a class="xref" href="NetTopologySuite.Operation.RelateNG.IntersectionMatrixPattern.html">IntersectionMatrixPattern</a></h4>
+      <section><p>String constants for DE-9IM matrix patterns for topological relationships.
+These can be used with <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html#NetTopologySuite_Operation_RelateNG_RelateNG_Evaluate_NetTopologySuite_Geometries_Geometry_System_String_">Evaluate(Geometry, string)</a>
+and <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html#NetTopologySuite_Operation_RelateNG_RelateNG_Relate_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_System_String_">Relate(Geometry, Geometry, string)</a>.</p>
+<p></p>
+<h3> DE - 9IM Pattern Matching </h3>
+Matrix patterns are specified as a 9 - character string
+containing the pattern symbols for the DE-9IM 3x3 matrix entries,
+listed row - wise.
+The pattern symbols are:
+<table><thead><tr><th class="term">Code</th><th class="description">Description</th></tr></thead><tbody><tr><td class="term">0</td><td class="description">topological interaction has dimension 0</td></tr><tr><td class="term">1</td><td class="description">topological interaction has dimension 1</td></tr><tr><td class="term">2</td><td class="description">topological interaction has dimension 2</td></tr><tr><td class="term">F</td><td class="description">no topological interaction</td></tr><tr><td class="term">T</td><td class="description">topological interaction of any dimension</td></tr><tr><td class="term">*</td><td class="description">any topological interaction is allowed, including none</td></tr></tbody></table>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html">RelateNG</a></h4>
+      <section><p>Computes the value of topological predicates between two geometries based on the
+<a href="https://en.wikipedia.org/wiki/DE-9IM"> Dimensionally - Extended 9-Intersection Model</a>(DE-9IM).
+Standard and custom topological predicates are provided by <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelatePredicate.html">RelatePredicate</a>.</p>
+<p></p>
+The RelateNG algorithm has the following capabilities:
+<ol><li>Efficient short-circuited evaluation of topological predicates
+(including matching custom DE-9IM matrix patterns)</li><li>Optimized repeated evaluation of predicates against a single geometry
+via cached spatial indexes (AKA "prepared mode")</li><li>Robust computation (only point-local topology is required,
+so invalid geometry topology does not cause failures)</li><li><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> inputs containing mixed types and overlapping polygons
+are supported, using <i>union semantics</i>.</li><li>Zero - length LineStrings are treated as being topologically identical to Points.</li><li>Support for <a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a>s.</li></ol>
+<p>See <a class="xref" href="NetTopologySuite.Operation.RelateNG.IntersectionMatrixPattern.html">IntersectionMatrixPattern</a>
+for a description of DE - 9IM patterns.</p>
+<p>If not specified, the standard <a class="xref" href="NetTopologySuite.Algorithm.BoundaryNodeRules.html">BoundaryNodeRules.Mod2BoundaryNodeRule</a> is used.
+RelateNG operates in 2D only; it ignores any Z ordinates.</p>
+<p>This implementation replaces <a class="xref" href="NetTopologySuite.Operation.Relate.RelateOp.html">RelateOp</a>
+and <a class="xref" href="NetTopologySuite.Geometries.Prepared.IPreparedGeometry.html">IPreparedGeometry</a>.</p>
+<h3>FUTURE WORK</h3>
+<ul><li>Support for a distance tolerance to provide "approximate" predicate evaluation</li></ul>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.RelateNG.RelatePredicate.html">RelatePredicate</a></h4>
+      <section><p>Creates predicate instances for evaluating OGC-standard named topological relationships.
+Predicates can be evaluated for geometries using <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html">RelateNG</a>.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.RelateNG.TopologyPredicate.html">TopologyPredicate</a></h4>
+      <section><p>The API for strategy classes implementing
+spatial predicates based on the DE-9IM topology model.
+Predicate values for specific geometry pairs can be evaluated by <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html">RelateNG</a>.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.RelateNG.TopologyPredicateTracer.html">TopologyPredicateTracer</a></h4>
+      <section><p>Traces the evaluation of a <a class="xref" href="NetTopologySuite.Operation.RelateNG.TopologyPredicate.html">TopologyPredicate</a>.</p>
+</section>
+
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Operation.RelateNG.md/#L2" class="contribution-link">Edit this page</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

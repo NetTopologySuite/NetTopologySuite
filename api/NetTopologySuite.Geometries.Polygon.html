@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Polygon
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Polygon
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class Polygon | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class Polygon | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Represents a polygon with linear edges, which may include holes. The outer boundary (shell) and inner boundaries (holes) of the polygon are represented by { LinearRing}s. The boundary rings of the polygon may have any orientation. Polygons are closed, simple geometries by definition.  The polygon model conforms to the assertions specified in the OpenGIS Simple Features Specification for SQL.  A Polygon is topologically valid if and only if: the coordinates which define it are valid coordinatesthe linear rings for the shell and holes are valid (i.e. are closed and do not self-intersect)holes touch the shell or another hole at at most one point (which implies that the rings of the shell and holes must not cross)the interior of the polygon is connected, or equivalently no sequence of touching holes makes the interior of the polygon disconnected (i.e. effectively split the polygon into two pieces).">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,20 +77,20 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.Polygon">
-  
-  
-  <h1 id="NetTopologySuite_Geometries_Polygon" data-uid="NetTopologySuite.Geometries.Polygon" class="text-break">Class Polygon
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Geometries_Polygon" data-uid="NetTopologySuite.Geometries.Polygon" class="text-break">Class Polygon</h1>
   <div class="markdown level0 summary"><p>Represents a polygon with linear edges, which may include holes.
 The outer boundary (shell)
 and inner boundaries (holes) of the polygon are represented by {@link LinearRing}s.
 The boundary rings of the polygon may have any orientation.
 Polygons are closed, simple geometries by definition.</p>
-<p>
+<p></p>
 The polygon model conforms to the assertions specified in the
 <a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
 Specification for SQL</a>.
-<p>
+<p></p>
 A <code>Polygon</code> is topologically valid if and only if:
 <ul><li>the coordinates which define it are valid coordinates</li><li>the linear rings for the shell and holes are valid
 (i.e. are closed and do not self-intersect)</li><li>holes touch the shell or another hole at at most one point
@@ -104,14 +102,14 @@ makes the interior of the polygon disconnected
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></div>
     <div class="level2"><span class="xref">Polygon</span></div>
   </div>
-  <div classs="implements">
+  <div class="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
     <div><a class="xref" href="NetTopologySuite.Geometries.IPolygonal.html">IPolygonal</a></div>
   </div>
   <div class="inheritedMembers">
@@ -153,7 +151,7 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNonEmptyElements_NetTopologySuite_Geometries_Geometry___">Geometry.HasNonEmptyElements(Geometry[])</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements_System_Object___">Geometry.HasNullElements(Object[])</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements_System_Object___">Geometry.HasNullElements(object[])</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements__1_System_Collections_Generic_IEnumerable___0__">Geometry.HasNullElements&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
@@ -165,7 +163,7 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_NumGeometries">Geometry.NumGeometries</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GetGeometryN_System_Int32_">Geometry.GetGeometryN(Int32)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GetGeometryN_System_Int32_">Geometry.GetGeometryN(int)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsSimple">Geometry.IsSimple</a>
@@ -177,7 +175,7 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Distance_NetTopologySuite_Geometries_Geometry_">Geometry.Distance(Geometry)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsWithinDistance_NetTopologySuite_Geometries_Geometry_System_Double_">Geometry.IsWithinDistance(Geometry, Double)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsWithinDistance_NetTopologySuite_Geometries_Geometry_System_Double_">Geometry.IsWithinDistance(Geometry, double)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Centroid">Geometry.Centroid</a>
@@ -187,6 +185,9 @@ makes the interior of the polygon disconnected
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_PointOnSurface">Geometry.PointOnSurface</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasDimension_NetTopologySuite_Geometries_Dimension_">Geometry.HasDimension(Dimension)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Envelope">Geometry.Envelope</a>
@@ -228,7 +229,7 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CoveredBy_NetTopologySuite_Geometries_Geometry_">Geometry.CoveredBy(Geometry)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Relate_NetTopologySuite_Geometries_Geometry_System_String_">Geometry.Relate(Geometry, String)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Relate_NetTopologySuite_Geometries_Geometry_System_String_">Geometry.Relate(Geometry, string)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Relate_NetTopologySuite_Geometries_Geometry_">Geometry.Relate(Geometry)</a>
@@ -240,7 +241,7 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_EqualsTopologically_NetTopologySuite_Geometries_Geometry_">Geometry.EqualsTopologically(Geometry)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equals_System_Object_">Geometry.Equals(Object)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equals_System_Object_">Geometry.Equals(object)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GetHashCode">Geometry.GetHashCode()</a>
@@ -264,19 +265,19 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ToGMLFeature">Geometry.ToGMLFeature()</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_">Geometry.Buffer(Double)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_">Geometry.Buffer(double)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_NetTopologySuite_Operation_Buffer_EndCapStyle_">Geometry.Buffer(Double, EndCapStyle)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_NetTopologySuite_Operation_Buffer_EndCapStyle_">Geometry.Buffer(double, EndCapStyle)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_System_Int32_">Geometry.Buffer(Double, Int32)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_System_Int32_">Geometry.Buffer(double, int)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_System_Int32_NetTopologySuite_Operation_Buffer_EndCapStyle_">Geometry.Buffer(Double, Int32, EndCapStyle)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_System_Int32_NetTopologySuite_Operation_Buffer_EndCapStyle_">Geometry.Buffer(double, int, EndCapStyle)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_">Geometry.Buffer(Double, BufferParameters)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Buffer_System_Double_NetTopologySuite_Operation_Buffer_BufferParameters_">Geometry.Buffer(double, BufferParameters)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Intersection_NetTopologySuite_Geometries_Geometry_">Geometry.Intersection(Geometry)</a>
@@ -306,13 +307,13 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Normalized">Geometry.Normalized()</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_">Geometry.CompareTo(Object)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_">Geometry.CompareTo(object)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_NetTopologySuite_Geometries_Geometry_">Geometry.CompareTo(Geometry)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareTo(object, IComparer&lt;CoordinateSequence&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsEquivalentClass_NetTopologySuite_Geometries_Geometry_">Geometry.IsEquivalentClass(Geometry)</a>
@@ -327,31 +328,31 @@ makes the interior of the polygon disconnected
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Compare_System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__">Geometry.Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equal_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_System_Double_">Geometry.Equal(Coordinate, Coordinate, Double)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equal_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_System_Double_">Geometry.Equal(Coordinate, Coordinate, double)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_DefaultFactory">Geometry.DefaultFactory</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CreateArray_System_Int32_System_Double_">Geometry.CreateArray(Int32, Double)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CreateArray_System_Int32_System_Double_">Geometry.CreateArray(int, double)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CreateArray_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_Ordinate_">Geometry.CreateArray(CoordinateSequence, Ordinate)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Geometries.html">Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Polygon_syntax">Syntax</h5>
   <div class="codewrapper">
@@ -359,10 +360,10 @@ makes the interior of the polygon disconnected
 public class Polygon : Geometry, IComparable, IComparable&lt;Geometry&gt;, IPolygonal</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L642">View Source</a>
@@ -372,12 +373,12 @@ public class Polygon : Geometry, IComparable, IComparable&lt;Geometry&gt;, IPoly
   <div class="markdown level1 summary"><p>Constructs a <code>Polygon</code> with the given exterior boundary.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Polygon(LinearRing shell)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -398,7 +399,7 @@ polygon is to be created.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L632">View Source</a>
@@ -408,12 +409,12 @@ polygon is to be created.</p>
   <div class="markdown level1 summary"><p>Constructs a <code>Polygon</code> with the given exterior boundary.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Polygon(LinearRing shell, GeometryFactory factory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -439,7 +440,7 @@ polygon is to be created.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.LinearRing%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.LinearRing%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L68">View Source</a>
@@ -449,12 +450,12 @@ polygon is to be created.</p>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Polygon(LinearRing shell, LinearRing[] holes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -487,7 +488,7 @@ with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">Prec
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.LinearRing%5B%5D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon__ctor_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.%23ctor(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.LinearRing%5B%5D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L85">View Source</a>
@@ -498,12 +499,12 @@ with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">Prec
 interior boundaries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -536,10 +537,10 @@ point is to be created.</p>
     </tbody>
   </table>
   <h3 id="fields">Fields
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Empty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Empty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Empty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Empty%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L38">View Source</a>
@@ -548,12 +549,12 @@ point is to be created.</p>
   <div class="markdown level1 summary"><p>Represents an empty <code>Polygon</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static readonly Polygon Empty</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -568,10 +569,10 @@ point is to be created.</p>
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Area.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Area%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Area.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Area%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L289">View Source</a>
@@ -581,12 +582,12 @@ point is to be created.</p>
   <div class="markdown level1 summary"><p>Returns the area of this <code>Polygon</code></p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override double Area { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -595,7 +596,7 @@ point is to be created.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -604,7 +605,7 @@ point is to be created.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Area">Geometry.Area</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Boundary.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Boundary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Boundary.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Boundary%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L320">View Source</a>
@@ -613,12 +614,12 @@ point is to be created.</p>
   <h4 id="NetTopologySuite_Geometries_Polygon_Boundary" data-uid="NetTopologySuite.Geometries.Polygon.Boundary">Boundary</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override Geometry Boundary { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -636,7 +637,7 @@ point is to be created.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Boundary">Geometry.Boundary</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_BoundaryDimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.BoundaryDimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_BoundaryDimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.BoundaryDimension%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L244">View Source</a>
@@ -646,12 +647,12 @@ point is to be created.</p>
   <div class="markdown level1 summary"><p>Returns the dimension of this <code>Geometry</code>s inherent boundary.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override Dimension BoundaryDimension { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -672,7 +673,7 @@ interface, whether or not this object is the empty point. Returns
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_BoundaryDimension">Geometry.BoundaryDimension</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Coordinate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Coordinate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Coordinate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Coordinate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L120">View Source</a>
@@ -683,12 +684,12 @@ interface, whether or not this object is the empty point. Returns
 (usually, but not necessarily, the first one).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override Coordinate Coordinate { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -710,7 +711,7 @@ interface, whether or not this object is the empty point. Returns
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Coordinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Coordinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Coordinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Coordinates%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L143">View Source</a>
@@ -721,12 +722,12 @@ interface, whether or not this object is the empty point. Returns
 this geometry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override Coordinate[] Coordinates { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -750,7 +751,7 @@ for the components, in the order in which the components occur in the geometry.<
 In general, the array cannot be assumed to be the actual internal
 storage for the vertices.  Thus modifying the array
 may not modify the geometry itself.
-Use the <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_System_Int32_System_Double_">SetOrdinate(Int32, Int32, Double)</a> method
+Use the <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_System_Int32_System_Double_">SetOrdinate(int, int, double)</a> method
 (possibly on the components) to modify the underlying data.
 If the coordinates are modified,
 <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChanged">GeometryChanged()</a> must be called afterwards.
@@ -759,12 +760,12 @@ If the coordinates are modified,
   <h5 id="NetTopologySuite_Geometries_Polygon_Coordinates_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChanged">GeometryChanged</a>()</div>
-      <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_System_Int32_System_Double_">SetOrdinate</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>)</div>
-      <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_System_Double_">SetOrdinate</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="NetTopologySuite.Geometries.Ordinate.html">Ordinate</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>)</div>
+      <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_System_Int32_System_Double_">SetOrdinate</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>)</div>
+      <div><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html#NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_System_Double_">SetOrdinate</a>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="NetTopologySuite.Geometries.Ordinate.html">Ordinate</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>)</div>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Dimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Dimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Dimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Dimension%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L233">View Source</a>
@@ -774,12 +775,12 @@ If the coordinates are modified,
   <div class="markdown level1 summary"><p>Returns the dimension of this geometry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override Dimension Dimension { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -810,7 +811,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ExteriorRing.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ExteriorRing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ExteriorRing.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ExteriorRing%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L254">View Source</a>
@@ -819,12 +820,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <h4 id="NetTopologySuite_Geometries_Polygon_ExteriorRing" data-uid="NetTopologySuite.Geometries.Polygon.ExteriorRing">ExteriorRing</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public LineString ExteriorRing { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -840,7 +841,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_GeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.GeometryType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_GeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.GeometryType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L280">View Source</a>
@@ -850,12 +851,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <div class="markdown level1 summary"><p>Returns the name of this object's interface.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override string GeometryType { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -864,7 +865,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><p>&quot;Polygon&quot;</p>
 </td>
       </tr>
@@ -874,7 +875,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryType">Geometry.GeometryType</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Holes.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Holes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Holes.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Holes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L656">View Source</a>
@@ -883,12 +884,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <h4 id="NetTopologySuite_Geometries_Polygon_Holes" data-uid="NetTopologySuite.Geometries.Polygon.Holes">Holes</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public LinearRing[] Holes { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -904,7 +905,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_InteriorRings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.InteriorRings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_InteriorRings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.InteriorRings%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L264">View Source</a>
@@ -913,12 +914,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <h4 id="NetTopologySuite_Geometries_Polygon_InteriorRings" data-uid="NetTopologySuite.Geometries.Polygon.InteriorRings">InteriorRings</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public LineString[] InteriorRings { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -934,7 +935,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_IsEmpty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.IsEmpty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_IsEmpty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.IsEmpty%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L249">View Source</a>
@@ -943,12 +944,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <h4 id="NetTopologySuite_Geometries_Polygon_IsEmpty" data-uid="NetTopologySuite.Geometries.Polygon.IsEmpty">IsEmpty</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override bool IsEmpty { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -957,7 +958,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -966,7 +967,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsEmpty">Geometry.IsEmpty</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_IsRectangle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.IsRectangle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_IsRectangle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.IsRectangle%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L553">View Source</a>
@@ -976,12 +977,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <div class="markdown level1 summary"><p>Tests whether this is a rectangular <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override bool IsRectangle { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -990,7 +991,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><p><code>true</code> if the geometry is a rectangle.</p>
 </td>
       </tr>
@@ -1000,7 +1001,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsRectangle">Geometry.IsRectangle</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Length.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Length.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Length%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L305">View Source</a>
@@ -1010,12 +1011,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <div class="markdown level1 summary"><p>Returns the perimeter of this <code>Polygon</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override double Length { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1024,7 +1025,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -1033,7 +1034,7 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Length">Geometry.Length</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_NumInteriorRings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.NumInteriorRings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_NumInteriorRings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.NumInteriorRings%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L259">View Source</a>
@@ -1042,12 +1043,12 @@ may have a coordinate dimension of 3 (X,Y,Z).
   <h4 id="NetTopologySuite_Geometries_Polygon_NumInteriorRings" data-uid="NetTopologySuite.Geometries.Polygon.NumInteriorRings">NumInteriorRings</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public int NumInteriorRings { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1056,14 +1057,14 @@ may have a coordinate dimension of 3 (X,Y,Z).
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_NumPoints.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.NumPoints%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_NumPoints.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.NumPoints%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L204">View Source</a>
@@ -1075,12 +1076,12 @@ s contained by composite <code>Geometry</code>s must be
 Geometry's; that is, they must implement <code>NumPoints</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override int NumPoints { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1089,7 +1090,7 @@ Geometry's; that is, they must implement <code>NumPoints</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td><p>The number of vertices in this <code>Geometry</code>.</p>
 </td>
       </tr>
@@ -1099,21 +1100,22 @@ Geometry's; that is, they must implement <code>NumPoints</code>.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_NumPoints">Geometry.NumPoints</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_OgcGeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.OgcGeometryType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_OgcGeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.OgcGeometryType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L283">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_OgcGeometryType_" data-uid="NetTopologySuite.Geometries.Polygon.OgcGeometryType*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_OgcGeometryType" data-uid="NetTopologySuite.Geometries.Polygon.OgcGeometryType">OgcGeometryType</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the OGC geometry type</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override OgcGeometryType OgcGeometryType { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1131,7 +1133,7 @@ Geometry's; that is, they must implement <code>NumPoints</code>.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_OgcGeometryType">Geometry.OgcGeometryType</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Shell.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Shell%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Shell.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Shell%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L647">View Source</a>
@@ -1140,12 +1142,12 @@ Geometry's; that is, they must implement <code>NumPoints</code>.</p>
   <h4 id="NetTopologySuite_Geometries_Polygon_Shell" data-uid="NetTopologySuite.Geometries.Polygon.Shell">Shell</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public LinearRing Shell { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1161,7 +1163,7 @@ Geometry's; that is, they must implement <code>NumPoints</code>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_SortIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.SortIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_SortIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.SortIndex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L108">View Source</a>
@@ -1171,12 +1173,12 @@ Geometry's; that is, they must implement <code>NumPoints</code>.</p>
   <div class="markdown level1 summary"><p>Gets a value to sort the geometry</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override Geometry.SortIndexValue SortIndex { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1185,7 +1187,7 @@ Geometry's; that is, they must implement <code>NumPoints</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.SortIndexValue.html">Geometry.SortIndexValue</a></td>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.<a class="xref" href="NetTopologySuite.Geometries.Geometry.SortIndexValue.html">SortIndexValue</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -1198,24 +1200,25 @@ For JTS v1.17 this property's getter has been renamed to <code>getTypeCode()</co
 In order not to break binary compatibility we did not follow.</p>
 </div>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.ICoordinateFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.ICoordinateFilter)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L372">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_Apply_" data-uid="NetTopologySuite.Geometries.Polygon.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateFilter_" data-uid="NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.ICoordinateFilter)">Apply(ICoordinateFilter)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs an operation with or on this <code>Geometry</code>'s coordinates.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Apply(ICoordinateFilter filter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1227,29 +1230,39 @@ In order not to break binary compatibility we did not follow.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.ICoordinateFilter.html">ICoordinateFilter</a></td>
         <td><span class="parametername">filter</span></td>
-        <td></td>
+        <td><p>The filter to apply to this <code>Geometry</code>'s coordinates</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Apply_NetTopologySuite_Geometries_ICoordinateFilter_">Geometry.Apply(ICoordinateFilter)</a></div>
+  <h5 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateFilter__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If this method modifies any coordinate values,
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChanged">GeometryChanged()</a> must be called to update the geometry state.
+Note that you cannot use this method to
+modify this Geometry if its underlying CoordinateSequence's #get method
+returns a copy of the Coordinate, rather than the actual Coordinate stored
+(if it even stores Coordinate objects at all).</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.ICoordinateSequenceFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.ICoordinateSequenceFilter)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L380">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_Apply_" data-uid="NetTopologySuite.Geometries.Polygon.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_" data-uid="NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.ICoordinateSequenceFilter)">Apply(ICoordinateSequenceFilter)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs an operation on the coordinates in this <code>Geometry</code>'s <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>s.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Apply(ICoordinateSequenceFilter filter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1261,29 +1274,35 @@ In order not to break binary compatibility we did not follow.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.ICoordinateSequenceFilter.html">ICoordinateSequenceFilter</a></td>
         <td><span class="parametername">filter</span></td>
-        <td></td>
+        <td><p>The filter to apply</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_">Geometry.Apply(ICoordinateSequenceFilter)</a></div>
+  <h5 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the filter reports that a coordinate value has been changed,
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChanged">GeometryChanged()</a> will be called automatically.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L397">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_Apply_" data-uid="NetTopologySuite.Geometries.Polygon.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_" data-uid="NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter)">Apply(IEntireCoordinateSequenceFilter)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs an operation on this <code>Geometry</code>'s <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>s.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Apply(IEntireCoordinateSequenceFilter filter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1295,29 +1314,38 @@ In order not to break binary compatibility we did not follow.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter.html">IEntireCoordinateSequenceFilter</a></td>
         <td><span class="parametername">filter</span></td>
-        <td></td>
+        <td><p>The filter to apply</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_">Geometry.Apply(IEntireCoordinateSequenceFilter)</a></div>
+  <h5 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the filter reports that a coordinate value has been changed,
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChanged">GeometryChanged()</a> will be called automatically.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IGeometryComponentFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IGeometryComponentFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IGeometryComponentFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IGeometryComponentFilter)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L430">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_Apply_" data-uid="NetTopologySuite.Geometries.Polygon.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IGeometryComponentFilter_" data-uid="NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IGeometryComponentFilter)">Apply(IGeometryComponentFilter)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs an operation with or on this Geometry and its
+component Geometry's. Only GeometryCollections and
+Polygons have component Geometry's; for Polygons they are the LinearRings
+of the shell and holes.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Apply(IGeometryComponentFilter filter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1329,7 +1357,8 @@ In order not to break binary compatibility we did not follow.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.IGeometryComponentFilter.html">IGeometryComponentFilter</a></td>
         <td><span class="parametername">filter</span></td>
-        <td></td>
+        <td><p>The filter to apply to this <code>Geometry</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1337,21 +1366,25 @@ In order not to break binary compatibility we did not follow.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Apply_NetTopologySuite_Geometries_IGeometryComponentFilter_">Geometry.Apply(IGeometryComponentFilter)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IGeometryFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IGeometryFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IGeometryFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IGeometryFilter)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L424">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_Apply_" data-uid="NetTopologySuite.Geometries.Polygon.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_Apply_NetTopologySuite_Geometries_IGeometryFilter_" data-uid="NetTopologySuite.Geometries.Polygon.Apply(NetTopologySuite.Geometries.IGeometryFilter)">Apply(IGeometryFilter)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Performs an operation with or on this <code>Geometry</code> and its
+subelement <code>Geometry</code>s (if any).
+Only GeometryCollections and subclasses
+have subelement Geometry's.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Apply(IGeometryFilter filter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1363,7 +1396,9 @@ In order not to break binary compatibility we did not follow.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.IGeometryFilter.html">IGeometryFilter</a></td>
         <td><span class="parametername">filter</span></td>
-        <td></td>
+        <td><p>The filter to apply to this <code>Geometry</code> (and
+its children, if it is a <code>GeometryCollection</code>).</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1371,21 +1406,21 @@ In order not to break binary compatibility we did not follow.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Apply_NetTopologySuite_Geometries_IGeometryFilter_">Geometry.Apply(IGeometryFilter)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L473">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_CompareToSameClass_" data-uid="NetTopologySuite.Geometries.Polygon.CompareToSameClass*"></a>
-  <h4 id="NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_" data-uid="NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object)">CompareToSameClass(Object)</h4>
+  <h4 id="NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_" data-uid="NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object)">CompareToSameClass(object)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override int CompareToSameClass(object o)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1395,14 +1430,14 @@ In order not to break binary compatibility we did not follow.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">o</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1411,30 +1446,30 @@ In order not to break binary compatibility we did not follow.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_">Geometry.CompareToSameClass(Object)</a></div>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_">Geometry.CompareToSameClass(object)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object%2CSystem.Collections.Generic.IComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object%2CSystem.Collections.Generic.IComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L505">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_CompareToSameClass_" data-uid="NetTopologySuite.Geometries.Polygon.CompareToSameClass*"></a>
-  <h4 id="NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object,System.Collections.Generic.IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Polygon_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Polygon.CompareToSameClass(System.Object,System.Collections.Generic.IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareToSameClass(object, IComparer&lt;CoordinateSequence&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override int CompareToSameClass(object other, IComparer&lt;CoordinateSequence&gt; comparer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1444,19 +1479,19 @@ In order not to break binary compatibility we did not follow.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">other</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
         <td><span class="parametername">comparer</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1465,16 +1500,16 @@ In order not to break binary compatibility we did not follow.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</a></div>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareToSameClass(object, IComparer&lt;CoordinateSequence&gt;)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ComputeEnvelopeInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ComputeEnvelopeInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ComputeEnvelopeInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ComputeEnvelopeInternal%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L342">View Source</a>
@@ -1483,12 +1518,12 @@ In order not to break binary compatibility we did not follow.</p>
   <h4 id="NetTopologySuite_Geometries_Polygon_ComputeEnvelopeInternal" data-uid="NetTopologySuite.Geometries.Polygon.ComputeEnvelopeInternal">ComputeEnvelopeInternal()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override Envelope ComputeEnvelopeInternal()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1506,7 +1541,7 @@ In order not to break binary compatibility we did not follow.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ComputeEnvelopeInternal">Geometry.ComputeEnvelopeInternal()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ConvexHull.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ConvexHull%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ConvexHull.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ConvexHull%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L452">View Source</a>
@@ -1515,12 +1550,12 @@ In order not to break binary compatibility we did not follow.</p>
   <h4 id="NetTopologySuite_Geometries_Polygon_ConvexHull" data-uid="NetTopologySuite.Geometries.Polygon.ConvexHull">ConvexHull()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override Geometry ConvexHull()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1538,21 +1573,22 @@ In order not to break binary compatibility we did not follow.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ConvexHull">Geometry.ConvexHull()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_CopyInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.CopyInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_CopyInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.CopyInternal%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L439">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_CopyInternal_" data-uid="NetTopologySuite.Geometries.Polygon.CopyInternal*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_CopyInternal" data-uid="NetTopologySuite.Geometries.Polygon.CopyInternal">CopyInternal()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>An internal method to copy subclass-specific geometry data.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override Geometry CopyInternal()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1562,7 +1598,8 @@ In order not to break binary compatibility we did not follow.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td></td>
+        <td><p>A copy of the target geometry object.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1570,21 +1607,21 @@ In order not to break binary compatibility we did not follow.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CopyInternal">Geometry.CopyInternal()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.EqualsExact(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.EqualsExact(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L353">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_EqualsExact_" data-uid="NetTopologySuite.Geometries.Polygon.EqualsExact*"></a>
-  <h4 id="NetTopologySuite_Geometries_Polygon_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Geometries.Polygon.EqualsExact(NetTopologySuite.Geometries.Geometry,System.Double)">EqualsExact(Geometry, Double)</h4>
+  <h4 id="NetTopologySuite_Geometries_Polygon_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Geometries.Polygon.EqualsExact(NetTopologySuite.Geometries.Geometry,System.Double)">EqualsExact(Geometry, double)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override bool EqualsExact(Geometry other, double tolerance)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1599,14 +1636,14 @@ In order not to break binary compatibility we did not follow.</p>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">tolerance</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1615,30 +1652,30 @@ In order not to break binary compatibility we did not follow.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_">Geometry.EqualsExact(Geometry, Double)</a></div>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_">Geometry.EqualsExact(Geometry, double)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_GetInteriorRingN_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.GetInteriorRingN(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_GetInteriorRingN_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.GetInteriorRingN(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L271">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_GetInteriorRingN_" data-uid="NetTopologySuite.Geometries.Polygon.GetInteriorRingN*"></a>
-  <h4 id="NetTopologySuite_Geometries_Polygon_GetInteriorRingN_System_Int32_" data-uid="NetTopologySuite.Geometries.Polygon.GetInteriorRingN(System.Int32)">GetInteriorRingN(Int32)</h4>
+  <h4 id="NetTopologySuite_Geometries_Polygon_GetInteriorRingN_System_Int32_" data-uid="NetTopologySuite.Geometries.Polygon.GetInteriorRingN(System.Int32)">GetInteriorRingN(int)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public LineString GetInteriorRingN(int n)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1648,14 +1685,14 @@ In order not to break binary compatibility we did not follow.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td><span class="parametername">n</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1671,22 +1708,22 @@ In order not to break binary compatibility we did not follow.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_GetOrdinates_NetTopologySuite_Geometries_Ordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.GetOrdinates(NetTopologySuite.Geometries.Ordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_GetOrdinates_NetTopologySuite_Geometries_Ordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.GetOrdinates(NetTopologySuite.Geometries.Ordinate)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L175">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_GetOrdinates_" data-uid="NetTopologySuite.Geometries.Polygon.GetOrdinates*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_GetOrdinates_NetTopologySuite_Geometries_Ordinate_" data-uid="NetTopologySuite.Geometries.Polygon.GetOrdinates(NetTopologySuite.Geometries.Ordinate)">GetOrdinates(Ordinate)</h4>
-  <div class="markdown level1 summary"><p>Gets an array of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a> ordinate values</p>
+  <div class="markdown level1 summary"><p>Gets an array of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> ordinate values</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override double[] GetOrdinates(Ordinate ordinate)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1704,7 +1741,7 @@ In order not to break binary compatibility we did not follow.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1713,7 +1750,7 @@ In order not to break binary compatibility we did not follow.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a>[]</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>[]</td>
         <td><p>An array of ordinate values</p>
 </td>
       </tr>
@@ -1723,7 +1760,7 @@ In order not to break binary compatibility we did not follow.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GetOrdinates_NetTopologySuite_Geometries_Ordinate_">Geometry.GetOrdinates(Ordinate)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Normalize.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Normalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Normalize.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Normalize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L460">View Source</a>
@@ -1732,7 +1769,7 @@ In order not to break binary compatibility we did not follow.</p>
   <h4 id="NetTopologySuite_Geometries_Polygon_Normalize" data-uid="NetTopologySuite.Geometries.Polygon.Normalize">Normalize()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Normalize()</code></pre>
   </div>
@@ -1740,22 +1777,24 @@ In order not to break binary compatibility we did not follow.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Normalize">Geometry.Normalize()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Reverse.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Reverse%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_Reverse.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.Reverse%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L597">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Polygon_Reverse_" data-uid="NetTopologySuite.Geometries.Polygon.Reverse*"></a>
   <h4 id="NetTopologySuite_Geometries_Polygon_Reverse" data-uid="NetTopologySuite.Geometries.Polygon.Reverse">Reverse()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Computes a new geometry which has all component coordinate sequences
+in reverse order (opposite orientation) to this one.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Obsolete(&quot;Call Geometry.Reverse()&quot;)]
 public override Geometry Reverse()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1765,15 +1804,19 @@ public override Geometry Reverse()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td></td>
+        <td><p>A reversed geometry</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Reverse">Geometry.Reverse()</a></div>
+  <h5 id="NetTopologySuite_Geometries_Polygon_Reverse_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Don't override this function, implement <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ReverseInternal">ReverseInternal()</a>.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ReverseInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ReverseInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon_ReverseInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon.ReverseInternal%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L609">View Source</a>
@@ -1783,12 +1826,12 @@ public override Geometry Reverse()</code></pre>
   <div class="markdown level1 summary"><p>The actual implementation of the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Reverse">Reverse()</a> function for <code>POLYGON</code>s</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override Geometry ReverseInternal()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -1807,23 +1850,31 @@ public override Geometry Reverse()</code></pre>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ReverseInternal">Geometry.ReverseInternal()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable&lt;T&gt;</a>
   </div>
   <div>
       <a class="xref" href="NetTopologySuite.Geometries.IPolygonal.html">IPolygonal</a>
   </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Utilities.PolygonalExtracter.html#NetTopologySuite_Geometries_Utilities_PolygonalExtracter_GetPolygonals__1_NetTopologySuite_Geometries_Geometry_">PolygonalExtracter.GetPolygonals&lt;TCollection&gt;(Geometry)</a>
+  </div>
+  <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Utilities.PolygonalExtracter.html#NetTopologySuite_Geometries_Utilities_PolygonalExtracter_GetPolygonals__1_NetTopologySuite_Geometries_Geometry___0_">PolygonalExtracter.GetPolygonals&lt;TCollection&gt;(Geometry, TCollection)</a>
+  </div>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Polygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Polygon%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Polygon.cs/#L32" class="contribution-link">View Source</a>
@@ -1831,14 +1882,14 @@ public override Geometry Reverse()</code></pre>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -1846,14 +1897,14 @@ public override Geometry Reverse()</code></pre>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

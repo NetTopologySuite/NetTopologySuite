@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace NetTopologySuite.Index
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace NetTopologySuite.Index
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.Index | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.Index | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Provides classes for various kinds of spatial indexes.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,16 +77,16 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Index">
-  
-  <h1 id="NetTopologySuite_Index" data-uid="NetTopologySuite.Index" class="text-break">Namespace NetTopologySuite.Index
-  </h1>
+
+  <h1 id="NetTopologySuite_Index" data-uid="NetTopologySuite.Index" class="text-break">Namespace NetTopologySuite.Index</h1>
   <div class="markdown level0 summary">
 <p>Provides classes for various kinds of spatial indexes.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
+    <h3 id="classes">
+Classes
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Index.ArrayListVisitor.html">ArrayListVisitor</a></h4>
       <section><p>Builds an array of all visited items.</p>
 </section>
@@ -100,19 +98,20 @@
 in a spatially-coherent sequence.
 In particular, this is suitable for indexing the vertices
 of a {@link LineString} or {@link Polygon} ring.</p>
-<p>
+<p></p>
 The index is constructed in a batch fashion on a given sequence of coordinates.
 Coordinates can be removed via the {@link #remove(int)} method.
-<p>
+<p></p>
 Note that this index queries only the individual points
 of the input coordinate sequence,
-<strong>not</strong> any line segments which might be lie between them.
-<p>
+<b>not</b> any line segments which might be lie between them.
+<p></p>
 The input coordinate array is read-only,
 and is not changed when vertices are removed.
 </section>
-    <h3 id="interfaces">Interfaces
-  </h3>
+    <h3 id="interfaces">
+Interfaces
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Index.IIndexVisitor.html">IIndexVisitor</a></h4>
       <section><p>A visitor for nodes and items in an index.</p>
 </section>
@@ -121,8 +120,10 @@ and is not changed when vertices are removed.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Index.ILimitingItemVisitor-1.html">ILimitingItemVisitor&lt;T&gt;</a></h4>
       <section><p>A visitor for items in a <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a></p>
-<p><strong>Not used, commited by accident!</strong></p>
+<p><b>Not used, commited by accident!</b></p>
 </section>
+      <h4><a class="xref" href="NetTopologySuite.Index.ISpatialIndexEx-1.html">ISpatialIndexEx&lt;T&gt;</a></h4>
+      <section></section>
       <h4><a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a></h4>
       <section><p>The basic insertion and query operations supported by classes
 implementing spatial index algorithms.
@@ -131,29 +132,29 @@ secondary filter is required to test for exact intersection. Of course, this
 secondary filter may consist of other tests besides intersection, such as
 testing other kinds of spatial relationships.</p>
 </section>
-      <h4><a class="xref" href="NetTopologySuite.Index.ISpatialIndexEx-1.html">ISpatialIndexEx&lt;T&gt;</a></h4>
-      <section></section>
+
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Index.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Index.md/#L2" class="contribution-link">Edit this page</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -161,14 +162,14 @@ testing other kinds of spatial relationships.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

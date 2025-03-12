@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class GeometryFixer
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class GeometryFixer
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class GeometryFixer | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class GeometryFixer | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Fixes a geometry to be a valid geometry, while preserving as much as possible of the shape and location of the input. Validity is determined according to .  Input geometries are always processed, so even valid inputs may have some minor alterations.The output is always a new geometry object. Semantic Rules Vertices with non-finite X or Y ordinates are removed (as per )Repeated points are reduced to a single pointEmpty atomic geometries are valid and are returned unchangedEmpty elements are removed from collectionsPoint: keep valid coordinate, or EMPTYLineString: coordinates are fixedLinearRing: coordinates are feixed, keep valid ring or else convert into LineStringPolygon: transform into a valid polygon or multipolygon,  preserving as much of the extent and vertices as possible. Rings are fixed to ensure they are validHoles intersection the shell are subtracted from the shellHoles outside the shell are converted into polygonsMultiPolygon: each polygon is fixed,  then result made non - overlapping (via union)GeometryCollection: each element is fixedCollapsed lines and polygons are handled as follows, depending on the keepCollapsed setting: false: (default) collapses are converted to empty geometries (and removed if they are elements of collections)true: collapses are converted to a valid geometry of lower dimension">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,18 +77,18 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.Utilities.GeometryFixer">
-  
-  
-  <h1 id="NetTopologySuite_Geometries_Utilities_GeometryFixer" data-uid="NetTopologySuite.Geometries.Utilities.GeometryFixer" class="text-break">Class GeometryFixer
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Geometries_Utilities_GeometryFixer" data-uid="NetTopologySuite.Geometries.Utilities.GeometryFixer" class="text-break">Class GeometryFixer</h1>
   <div class="markdown level0 summary"><p>Fixes a geometry to be a valid geometry, while preserving as much as
 possible of the shape and location of the input.
 Validity is determined according to <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a>.</p>
-<p>
+<p></p>
 Input geometries are always processed, so even valid inputs may
 have some minor alterations.The output is always a new geometry object.
 <h2>Semantic Rules</h2>
-<ol><li>Vertices with non-finite X or Y ordinates are removed (as per <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_IsValid">IsValid</a>)</li><li>Repeated points are reduced to a single point</li><li>Empty atomic geometries are valid and are returned unchanged</li><li>Empty elements are removed from collections</li><li><code>Point</code>: keep valid coordinate, or EMPTY</li><li><code>LineString</code>: coordinates are fixed</li><li><code>LinearRing</code>: coordinates are feixed, keep valid ring or else convert into <code>LineString</code></li><li><code>Polygon</code>: transform into a valid polygon, 
+<ol><li>Vertices with non-finite X or Y ordinates are removed (as per <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_IsValid">IsValid</a>)</li><li>Repeated points are reduced to a single point</li><li>Empty atomic geometries are valid and are returned unchanged</li><li>Empty elements are removed from collections</li><li><code>Point</code>: keep valid coordinate, or EMPTY</li><li><code>LineString</code>: coordinates are fixed</li><li><code>LinearRing</code>: coordinates are feixed, keep valid ring or else convert into <code>LineString</code></li><li><code>Polygon</code>: transform into a valid polygon or multipolygon, 
 preserving as much of the extent and vertices as possible.
 <ul><li>Rings are fixed to ensure they are valid</li><li>Holes intersection the shell are subtracted from the shell</li><li>Holes outside the shell are converted into polygons</li></ul></li><li><code>MultiPolygon</code>: each polygon is fixed, 
 then result made non - overlapping (via union)</li><li><code>GeometryCollection</code>: each element is fixed</li><li>Collapsed lines and polygons are handled as follows,
@@ -101,44 +99,44 @@ depending on the <code>keepCollapsed</code> setting:
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">GeometryFixer</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Utilities.html">NetTopologySuite.Geometries.Utilities</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Geometries.html">Geometries</a>.<a class="xref" href="NetTopologySuite.Geometries.Utilities.html">Utilities</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Utilities_GeometryFixer_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class GeometryFixer</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Utilities/GeometryFixer.cs/#L82">View Source</a>
@@ -148,12 +146,12 @@ depending on the <code>keepCollapsed</code> setting:
   <div class="markdown level1 summary"><p>Creates a new instance to fix a given geometry</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public GeometryFixer(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -171,10 +169,10 @@ depending on the <code>keepCollapsed</code> setting:
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_KeepCollapsed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_KeepCollapsed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepCollapsed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Utilities/GeometryFixer.cs/#L95">View Source</a>
@@ -188,12 +186,12 @@ or to a valid geometry of lower dimension.
 The default is to convert collapses to empty geometries (<code>false</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool KeepCollapsed { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -202,14 +200,14 @@ The default is to convert collapses to empty geometries (<code>false</code>).</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_KeepMulti.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepMulti%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_KeepMulti.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.KeepMulti%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Utilities/GeometryFixer.cs/#L104">View Source</a>
@@ -223,12 +221,12 @@ or to a valid geometry of lower dimension.
 The default is to convert collapses to empty geometries (<code>false</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool KeepMulti { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -237,16 +235,16 @@ The default is to convert collapses to empty geometries (<code>false</code>).</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Utilities/GeometryFixer.cs/#L55">View Source</a>
@@ -256,12 +254,12 @@ The default is to convert collapses to empty geometries (<code>false</code>).</p
   <div class="markdown level1 summary"><p>Fixes a geometry to be valid.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry Fix(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -279,7 +277,7 @@ The default is to convert collapses to empty geometries (<code>false</code>).</p
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -296,24 +294,24 @@ The default is to convert collapses to empty geometries (<code>false</code>).</p
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_NetTopologySuite_Geometries_Geometry_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_NetTopologySuite_Geometries_Geometry_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Utilities/GeometryFixer.cs/#L69">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix*"></a>
-  <h4 id="NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_NetTopologySuite_Geometries_Geometry_System_Boolean_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry,System.Boolean)">Fix(Geometry, Boolean)</h4>
+  <h4 id="NetTopologySuite_Geometries_Utilities_GeometryFixer_Fix_NetTopologySuite_Geometries_Geometry_System_Boolean_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryFixer.Fix(NetTopologySuite.Geometries.Geometry,System.Boolean)">Fix(Geometry, bool)</h4>
   <div class="markdown level1 summary"><p>Fixes a geometry to be valid, allowing to set a flag controlling how
 single item results from fixed <code>MULTI</code> geometries should be
 returned.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry Fix(Geometry geom, bool isKeepMulti)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -329,7 +327,7 @@ returned.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">isKeepMulti</span></td>
         <td><p>A flag indicating if <code>MULTI</code> geometries should not
 be converted to single instance types if they consist of only one item.</p>
@@ -338,7 +336,7 @@ be converted to single instance types if they consist of only one item.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -355,7 +353,7 @@ be converted to single instance types if they consist of only one item.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_GetResult.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer_GetResult.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer.GetResult%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Utilities/GeometryFixer.cs/#L110">View Source</a>
@@ -365,12 +363,12 @@ be converted to single instance types if they consist of only one item.</p>
   <div class="markdown level1 summary"><p>Gets the fixed geometry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry GetResult()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -389,15 +387,16 @@ be converted to single instance types if they consist of only one item.</p>
   <div class="seealso">
       <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a></div>
   </div>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryFixer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryFixer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Geometries/Utilities/GeometryFixer.cs/#L46" class="contribution-link">View Source</a>
@@ -405,14 +404,14 @@ be converted to single instance types if they consist of only one item.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -420,14 +419,14 @@ be converted to single instance types if they consist of only one item.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

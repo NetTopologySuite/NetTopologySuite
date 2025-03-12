@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class CoverageSimplifier | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class CoverageSimplifier | NetTopologySuite ">
+    
+    <meta name="description" content="Simplifies the boundaries of the polygons in a polygonal coverage while preserving the original coverage topology. An area-based simplification algorithm (similar to Visvalingam-Whyatt simplification) is used to provide high-quality results. Also supports simplifying just the inner edges in a coverage, which allows simplifying &amp;quot;patches&amp;quot; without affecting their boundary.  The amount of simplification is determined by a tolerance value, which is a non-negative quantity. It equates roughly to the maximum distance by which a simplified line can change from the original. (In fact, it is the square root of the area tolerance used in the Visvalingam-Whyatt algorithm.)  The simplified result coverage has the following characteristics: It has the same number of polygonal geometries as the inputIf the input is a valid coverage, then so is the resultNode points (inner vertices shared by three or more polygons, or boundary vertices shared by two or more) are not changedPolygons maintain their line-adjacency (edges are never removed)Rings are simplified to a minimum of 4 vertices, to better preserve their shapeRings smaller than the area tolerance are removed where possible. This applies to both holes and &quot;islands&quot; (multipolygon elements which are disjoint or touch another polygon at a single vertex). At least one polygon is retained for each input geometry (the one with largest area).  This class supports simplification using different distance tolerances for inner and outer edges of the coverage(including no simplfication using a tolerance of 0.0). This allows, for example, inner simplification, which simplifies only edges of the coverage which are adjacent to two polygons. This allows partial simplification of a coverage, since a simplified subset of a coverage still matches the remainder of the coverage.  The class allows specifying a separate tolerance for each element of the input coverage.  The input coverage should be valid according to . Invalid coverages may still be simplified, but the result will likely still be invalid.  NOTE:Due to different implementations of the PriorityQueue classes used in JTS and NTS the results of the CoverageSimplifier&#39;s simplification methods are not guaranteed to be the same. Nonetheless both results are valid.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Coverage.CoverageSimplifier">
+
+
+
+  <h1 id="NetTopologySuite_Coverage_CoverageSimplifier" data-uid="NetTopologySuite.Coverage.CoverageSimplifier" class="text-break">Class CoverageSimplifier</h1>
+  <div class="markdown level0 summary"><p>Simplifies the boundaries of the polygons in a polygonal coverage
+while preserving the original coverage topology.
+An area-based simplification algorithm
+(similar to Visvalingam-Whyatt simplification)
+is used to provide high-quality results.
+Also supports simplifying just the inner edges in a coverage,
+which allows simplifying &quot;patches&quot; without affecting their boundary.</p>
+<p></p>
+The amount of simplification is determined by a tolerance value,
+which is a non-negative quantity. It equates roughly to the maximum
+distance by which a simplified line can change from the original.
+(In fact, it is the square root of the area tolerance used
+in the Visvalingam-Whyatt algorithm.)
+<p></p>
+The simplified result coverage has the following characteristics:
+<ul><li>It has the same number of polygonal geometries as the input</li><li>If the input is a valid coverage, then so is the result</li><li>Node points (inner vertices shared by three or more polygons,
+or boundary vertices shared by two or more) are not changed</li><li>Polygons maintain their line-adjacency (edges are never removed)</li><li>Rings are simplified to a minimum of 4 vertices, to better preserve their shape</li><li>Rings smaller than the area tolerance are removed where possible.
+This applies to both holes and "islands" (multipolygon elements
+which are disjoint or touch another polygon at a single vertex).
+At least one polygon is retained for each input geometry
+(the one with largest area).</li></ul>
+<p></p>
+This class supports simplification using different distance tolerances
+for inner and outer edges of the coverage(including no simplfication
+using a tolerance of 0.0).
+This allows, for example, inner simplification, which simplifies
+only edges of the coverage which are adjacent to two polygons.
+This allows partial simplification of a coverage, since a simplified
+subset of a coverage still matches the remainder of the coverage.
+<p></p>
+The class allows specifying a separate tolerance for each element of the input coverage.
+<p></p>
+The input coverage should be valid according to <a class="xref" href="NetTopologySuite.Coverage.CoverageValidator.html">CoverageValidator</a>.
+Invalid coverages may still be simplified, but the result will likely still be invalid.
+<p></p>
+<b>NOTE:</b><br>Due to different implementations of the <code>PriorityQueue</code> classes used in JTS and NTS
+the results of the <code>CoverageSimplifier</code>'s simplification methods are not guaranteed
+to be the same. Nonetheless both results are valid.
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">CoverageSimplifier</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Coverage.html">Coverage</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Coverage_CoverageSimplifier_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class CoverageSimplifier</code></pre>
+  </div>
+  <h5 id="NetTopologySuite_Coverage_CoverageSimplifier_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><h3>FUTURE WORK</h3>
+<ul></ul>
+</div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier__ctor_NetTopologySuite_Geometries_Geometry___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.%23ctor(NetTopologySuite.Geometries.Geometry%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L133">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier__ctor_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.#ctor*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier__ctor_NetTopologySuite_Geometries_Geometry___" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.#ctor(NetTopologySuite.Geometries.Geometry[])">CoverageSimplifier(Geometry[])</h4>
+  <div class="markdown level1 summary"><p>Create a new coverage simplifier instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoverageSimplifier(Geometry[] coverage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">coverage</span></td>
+        <td><p>A set of polygonal geometries forming a coverage</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_RemovableRingSizeFactor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.RemovableRingSizeFactor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L145">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_RemovableRingSizeFactor_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.RemovableRingSizeFactor*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_RemovableRingSizeFactor" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.RemovableRingSizeFactor">RemovableRingSizeFactor</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating the factor
+applied to the area tolerance to determine
+if small rings should be removed.
+Larger values cause more rings to be removed.
+A value of <code>0</code> prevents rings from being removed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double RemovableRingSizeFactor { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_SmoothWeight.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.SmoothWeight%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L161">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_SmoothWeight_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.SmoothWeight*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_SmoothWeight" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.SmoothWeight">SmoothWeight</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value inidcating the weight influencing
+how smooth the simplification should be.
+The weight must be between 0 and 1.
+Larger values increase the smoothness of the simplified edges.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double SmoothWeight { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_Simplify_NetTopologySuite_Geometries_Geometry___System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.Simplify(NetTopologySuite.Geometries.Geometry%5B%5D%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L76">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_NetTopologySuite_Geometries_Geometry___System_Double_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify(NetTopologySuite.Geometries.Geometry[],System.Double)">Simplify(Geometry[], double)</h4>
+  <div class="markdown level1 summary"><p>Simplifies the boundaries of a set of polygonal geometries forming a coverage,
+preserving the coverage topology.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry[] Simplify(Geometry[] coverage, double tolerance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">coverage</span></td>
+        <td><p>A set of polygonal geometries forming a coverage</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">tolerance</span></td>
+        <td><p>The simplification tolerance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The simplified coverage polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_Simplify_NetTopologySuite_Geometries_Geometry___System_Double___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.Simplify(NetTopologySuite.Geometries.Geometry%5B%5D%2CSystem.Double%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L92">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_NetTopologySuite_Geometries_Geometry___System_Double___" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify(NetTopologySuite.Geometries.Geometry[],System.Double[])">Simplify(Geometry[], double[])</h4>
+  <div class="markdown level1 summary"><p>Simplifies the boundaries of a set of polygonal geometries forming a coverage,
+preserving the coverage topology, using a separate tolerance
+for each element of the coverage.
+Coverage edges are simplified using the lowest tolerance of each adjacent
+element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry[] Simplify(Geometry[] coverage, double[] tolerances)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">coverage</span></td>
+        <td><p>A set of polygonal geometries forming a coverage</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>[]</td>
+        <td><span class="parametername">tolerances</span></td>
+        <td><p>The simplification tolerances (one per input element)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The simplified coverage polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_Simplify_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.Simplify(System.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L177">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_System_Double_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify(System.Double)">Simplify(double)</h4>
+  <div class="markdown level1 summary"><p>Computes the simplified coverage using a single distance tolerance,
+preserving the coverage topology.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry[] Simplify(double tolerance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">tolerance</span></td>
+        <td><p>The simplification distance tolerance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The simplified coverage polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_Simplify_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.Simplify(System.Double%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L189">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_System_Double_System_Double_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify(System.Double,System.Double)">Simplify(double, double)</h4>
+  <div class="markdown level1 summary"><p>Computes the simplified coverage using separate distance tolerances
+for inner and outer edges, preserving the coverage topology.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry[] Simplify(double toleranceInner, double toleranceOuter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">toleranceInner</span></td>
+        <td><p>The distance tolerance for inner edges</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">toleranceOuter</span></td>
+        <td><p>The distance tolerance for outer edges</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The simplified coverage polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_Simplify_System_Double___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.Simplify(System.Double%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L200">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_Simplify_System_Double___" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.Simplify(System.Double[])">Simplify(double[])</h4>
+  <div class="markdown level1 summary"><p>Computes the simplified coverage using separate distance tolerances
+for each coverage element, preserving the coverage topology.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry[] Simplify(double[] tolerances)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>[]</td>
+        <td><span class="parametername">tolerances</span></td>
+        <td><p>the distance tolerances for the coverage elements</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The simplified coverage polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_SimplifyInner_NetTopologySuite_Geometries_Geometry___System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.SimplifyInner(NetTopologySuite.Geometries.Geometry%5B%5D%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L105">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_SimplifyInner_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.SimplifyInner*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_SimplifyInner_NetTopologySuite_Geometries_Geometry___System_Double_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.SimplifyInner(NetTopologySuite.Geometries.Geometry[],System.Double)">SimplifyInner(Geometry[], double)</h4>
+  <div class="markdown level1 summary"><p>Simplifies the inner boundaries of a set of polygonal geometries forming a coverage,
+preserving the coverage topology.
+Edges which form the exterior boundary of the coverage are left unchanged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry[] SimplifyInner(Geometry[] coverage, double tolerance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">coverage</span></td>
+        <td><p>A set of polygonal geometries forming a coverage</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">tolerance</span></td>
+        <td><p>The simplification tolerance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The simplified coverage polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier_SimplifyOuter_NetTopologySuite_Geometries_Geometry___System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier.SimplifyOuter(NetTopologySuite.Geometries.Geometry%5B%5D%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L119">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoverageSimplifier_SimplifyOuter_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.SimplifyOuter*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoverageSimplifier_SimplifyOuter_NetTopologySuite_Geometries_Geometry___System_Double_" data-uid="NetTopologySuite.Coverage.CoverageSimplifier.SimplifyOuter(NetTopologySuite.Geometries.Geometry[],System.Double)">SimplifyOuter(Geometry[], double)</h4>
+  <div class="markdown level1 summary"><p>Simplifies the outer boundaries of a set of polygonal geometries forming a coverage,
+preserving the coverage topology.
+Edges in the interior of the coverage are left unchanged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry[] SimplifyOuter(Geometry[] coverage, double tolerance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">coverage</span></td>
+        <td><p>A set of polygonal geometries forming a coverage</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">tolerance</span></td>
+        <td><p>The simplification tolerance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><p>The simplified coverage polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoverageSimplifier.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoverageSimplifier%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoverageSimplifier.cs/#L67" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

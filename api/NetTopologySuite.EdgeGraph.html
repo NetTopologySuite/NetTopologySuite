@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace NetTopologySuite.EdgeGraph
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace NetTopologySuite.EdgeGraph
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.EdgeGraph | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.EdgeGraph | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,14 +77,14 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.EdgeGraph">
-  
-  <h1 id="NetTopologySuite_EdgeGraph" data-uid="NetTopologySuite.EdgeGraph" class="text-break">Namespace NetTopologySuite.EdgeGraph
-  </h1>
+
+  <h1 id="NetTopologySuite_EdgeGraph" data-uid="NetTopologySuite.EdgeGraph" class="text-break">Namespace NetTopologySuite.EdgeGraph</h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
+    <h3 id="classes">
+Classes
+</h3>
       <h4><a class="xref" href="NetTopologySuite.EdgeGraph.EdgeGraph.html">EdgeGraph</a></h4>
       <section><p>A graph comprised of <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a>s.
 It supports tracking the vertices in the graph
@@ -99,25 +97,25 @@ to allow efficient lookup of edges and vertices.</p>
       <h4><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></h4>
       <section><p>Represents a directed component of an edge in an <a class="xref" href="NetTopologySuite.EdgeGraph.EdgeGraph.html">EdgeGraph</a>.
 HalfEdges link vertices whose locations are defined by <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.
-HalfEdges start at an <strong>origin</strong> vertex,
-and terminate at a <strong>destination</strong> vertex.
+HalfEdges start at an <b>origin</b> vertex,
+and terminate at a <b>destination</b> vertex.
 HalfEdges always occur in symmetric pairs, with the <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Sym">Sym</a> method
 giving access to the oppositely-oriented component.
 HalfEdges and the methods on them form an edge algebra,
 which can be used to traverse and query the topology
 of the graph formed by the edges.</p>
-<p>
+<p></p>
 To support graphs where the edges are sequences of coordinates
 each edge may also have a direction point supplied.
 This is used to determine the ordering
 of the edges around the origin.
 HalfEdges with the same origin are ordered
 so that the ring of edges formed by them is oriented CCW.
-<p>
+<p></p>
 By design HalfEdges carry minimal information
 about the actual usage of the graph they represent.
 They can be subclassed to carry more information if required.
-<p>
+<p></p>
 HalfEdges form a complete and consistent data structure by themselves,
 but an <a class="xref" href="NetTopologySuite.EdgeGraph.EdgeGraph.html">EdgeGraph</a> is useful to allow retrieving edges
 by vertex and edge location, as well as ensuring
@@ -128,9 +126,11 @@ edges are created and linked appropriately.
 marking edges with a boolean flag.
 Useful for algorithms which perform graph traversals.</p>
 </section>
+
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
@@ -138,14 +138,14 @@ Useful for algorithms which perform graph traversals.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -153,14 +153,14 @@ Useful for algorithms which perform graph traversals.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

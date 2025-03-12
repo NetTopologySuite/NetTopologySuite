@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class GeometryPrecisionReducer
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class GeometryPrecisionReducer
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class GeometryPrecisionReducer | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class GeometryPrecisionReducer | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Reduces the precision of a  according to the supplied , ensuring that the result is valid (unless specified otherwise).  By default the geometry precision model is not changed. This can be overridden by using . Topological Precision Reduction The default mode of operation ensures the reduced result is topologically valid (i.e.  is true). To ensure this polygonal geometry is reduced in a topologically valid fashion (technically, by using snap-rounding). Note that this may change polygonal geometry structure (e.g.two polygons separated by a distance below the specified precision will be merged into a single polygon). Duplicate vertices are removed. This mode is invoked by the static method .  Normally, collapsed linear components(e.g.lines collapsing to a point) are not included in the result. This behavior can be changed by setting  to false, or by using the static method .  In general input must be valid geometry, or an  will be thrown. However if the invalidity is &quot;mild&quot; or very small then it may be eliminated by precision reduction.  Pointwise Precision Reduction Alternatively, geometry can be reduced pointwise by using {@link #setPointwise(boolean)}. Linear and point geometry are always reduced pointwise(i.e.without further change to topology or structure), since this does not change validity. Invalid inputs are allowed. Duplicate vertices are preserved. Collapsed components are always included in the result. The result geometry may be invalid.  This mode is invoked by the static method .">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,14 +77,14 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer">
-  
-  
-  <h1 id="NetTopologySuite_Precision_GeometryPrecisionReducer" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer" class="text-break">Class GeometryPrecisionReducer
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Precision_GeometryPrecisionReducer" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer" class="text-break">Class GeometryPrecisionReducer</h1>
   <div class="markdown level0 summary"><p>Reduces the precision of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>
 according to the supplied <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>,
 ensuring that the result is valid (unless specified otherwise).</p>
-<p>
+<p></p>
 By default the geometry precision model is not changed.
 This can be overridden by using <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_ChangePrecisionModel">ChangePrecisionModel</a>.
 <h4>Topological Precision Reduction</h4>
@@ -99,15 +97,15 @@ Note that this may change polygonal geometry structure
 will be merged into a single polygon).
 Duplicate vertices are removed.
 This mode is invoked by the static method <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_">Reduce(Geometry, PrecisionModel)</a>.
-<p>
+<p></p>
 Normally, collapsed linear components(e.g.lines collapsing to a point)
 are not included in the result.
 This behavior can be changed
 by setting <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_RemoveCollapsedComponents">RemoveCollapsedComponents</a> to <code>false</code>,
 or by using the static method <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_ReduceKeepCollapsed_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_">ReduceKeepCollapsed(Geometry, PrecisionModel)</a>.
-<p>
-In general input must be valid geometry, or an <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a>
-will be thrown. However if the invalidity is &quot;mild&quot; or very small then it
+<p></p>
+In general input must be valid geometry, or an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a>
+will be thrown. However if the invalidity is "mild" or very small then it
 may be eliminated by precision reduction.
 <h4> Pointwise Precision Reduction</h4>
 Alternatively, geometry can be reduced pointwise by using {@link #setPointwise(boolean)}.
@@ -117,50 +115,50 @@ Invalid inputs are allowed.
 Duplicate vertices are preserved.
 Collapsed components are always included in the result.
 The result geometry may be invalid.
-<p>
+<p></p>
 This mode is invoked by the static method <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html#NetTopologySuite_Precision_GeometryPrecisionReducer_ReducePointwise_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_">ReducePointwise(Geometry, PrecisionModel)</a>.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">GeometryPrecisionReducer</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Precision.html">NetTopologySuite.Precision</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Precision.html">Precision</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Precision_GeometryPrecisionReducer_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class GeometryPrecisionReducer</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L106">View Source</a>
@@ -169,12 +167,12 @@ This mode is invoked by the static method <a class="xref" href="NetTopologySuite
   <h4 id="NetTopologySuite_Precision_GeometryPrecisionReducer__ctor_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Precision.GeometryPrecisionReducer.#ctor(NetTopologySuite.Geometries.PrecisionModel)">GeometryPrecisionReducer(PrecisionModel)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public GeometryPrecisionReducer(PrecisionModel pm)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -191,10 +189,10 @@ This mode is invoked by the static method <a class="xref" href="NetTopologySuite
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ChangePrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ChangePrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ChangePrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ChangePrecisionModel%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L129">View Source</a>
@@ -204,16 +202,16 @@ This mode is invoked by the static method <a class="xref" href="NetTopologySuite
   <div class="markdown level1 summary"><p>Gets or sets whether the <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a> of the new reduced Geometry
 will be changed to be the <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a> supplied to
 specify the precision reduction.</p>
-<p>
-The default is to <strong>not</strong> change the precision model
+<p></p>
+The default is to <b>not</b> change the precision model
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool ChangePrecisionModel { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -222,14 +220,14 @@ The default is to <strong>not</strong> change the precision model
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Pointwise.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Pointwise%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Pointwise.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Pointwise%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L143">View Source</a>
@@ -244,12 +242,12 @@ not attempt to recreate valid topology.
 This is only relevant for geometries containing polygonal components.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Pointwise { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -258,14 +256,14 @@ This is only relevant for geometries containing polygonal components.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_RemoveCollapsedComponents.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.RemoveCollapsedComponents%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_RemoveCollapsedComponents.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.RemoveCollapsedComponents%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L116">View Source</a>
@@ -278,12 +276,12 @@ Geometry of the same type.
 The default is to remove collapsed components.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool RemoveCollapsedComponents { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -292,16 +290,16 @@ The default is to remove collapsed components.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L157">View Source</a>
@@ -312,12 +310,12 @@ The default is to remove collapsed components.</p>
 according to the specified strategy of this reducer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry Reduce(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -335,7 +333,7 @@ according to the specified strategy of this reducer.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -351,7 +349,7 @@ according to the specified strategy of this reducer.</p>
     </tbody>
   </table>
   <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -360,7 +358,7 @@ according to the specified strategy of this reducer.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>if the reduction fails
 due to input geometry is invalid.</p>
 </td>
@@ -369,7 +367,7 @@ due to input geometry is invalid.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_Reduce_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.Reduce(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L58">View Source</a>
@@ -383,12 +381,12 @@ Invalid input geometry may cause an error,
 unless the invalidity is below the scale of the precision reduction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry Reduce(Geometry g, PrecisionModel precModel)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -412,7 +410,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -428,7 +426,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
     </tbody>
   </table>
   <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -437,7 +435,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrwon if the reduction fails due to invalid input geometry</p>
 </td>
       </tr>
@@ -445,7 +443,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ReduceKeepCollapsed_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ReduceKeepCollapsed(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ReduceKeepCollapsed_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ReduceKeepCollapsed(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L75">View Source</a>
@@ -459,12 +457,12 @@ Invalid input geometry may cause an error,
 unless the invalidity is below the scale of the precision reduction.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry ReduceKeepCollapsed(Geometry geom, PrecisionModel pm)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -486,7 +484,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -502,7 +500,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
     </tbody>
   </table>
   <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -511,7 +509,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>Thrwon if the reduction fails due to invalid input geometry</p>
 </td>
       </tr>
@@ -519,7 +517,7 @@ unless the invalidity is below the scale of the precision reduction.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ReducePointwise_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ReducePointwise(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer_ReducePointwise_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer.ReducePointwise(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L94">View Source</a>
@@ -534,12 +532,12 @@ The geometry precision model is not changed.
 Invalid input geometry is allowed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry ReducePointwise(Geometry g, PrecisionModel precModel)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -563,7 +561,7 @@ Invalid input geometry is allowed.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -578,15 +576,16 @@ Invalid input geometry is allowed.</p>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Precision_GeometryPrecisionReducer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.GeometryPrecisionReducer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Precision/GeometryPrecisionReducer.cs/#L45" class="contribution-link">View Source</a>
@@ -594,14 +593,14 @@ Invalid input geometry is allowed.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -609,14 +608,14 @@ Invalid input geometry is allowed.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

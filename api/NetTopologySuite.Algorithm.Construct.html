@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace NetTopologySuite.Algorithm.Construct
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace NetTopologySuite.Algorithm.Construct
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.Algorithm.Construct | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.Algorithm.Construct | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Provides classes that implement various kinds of geometric constructions.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,37 +77,42 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Algorithm.Construct">
-  
-  <h1 id="NetTopologySuite_Algorithm_Construct" data-uid="NetTopologySuite.Algorithm.Construct" class="text-break">Namespace NetTopologySuite.Algorithm.Construct
-  </h1>
+
+  <h1 id="NetTopologySuite_Algorithm_Construct" data-uid="NetTopologySuite.Algorithm.Construct" class="text-break">Namespace NetTopologySuite.Algorithm.Construct</h1>
   <div class="markdown level0 summary">
 <p>Provides classes that implement various kinds of geometric constructions.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
+    <h3 id="classes">
+Classes
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Algorithm.Construct.LargestEmptyCircle.html">LargestEmptyCircle</a></h4>
       <section><p>Constructs the Largest Empty Circle for a set
-of obstacle geometries, up to a specified tolerance.
-The obstacles are point and line geometries.</p>
-<p>
-The Largest Empty Circle is the largest circle which
-has its center in the convex hull of the obstacles (the <em>boundary</em>),
-and whose interior does not intersect with any obstacle.
+of obstacle geometries, up to a given accuracy distance tolerance.
+The obstacles may be any combination of point, linear and polygonal geometries.</p>
+<p></p>
+The Largest Empty Circle (LEC) is the largest circle
+whose interior does not intersect with any obstacle
+and whose center lies within a polygonal boundary.
 The circle center is the point in the interior of the boundary
-which has the farthest distance from the obstacles (up to tolerance).
-The circle is determined by the center point
-and a point lying on an obstacle indicating the circle radius.
-<p>
+which has the farthest distance from the obstacles
+(up to the accuracy of the distance tolerance).
+The circle itself is determined by the center point
+and a point lying on an obstacle determining the circle radius.
+<p></p>
+The polygonal boundary may be supplied explicitly.
+If it is not specified the convex hull of the obstacles is used as the boundary.
+<p></p>
+To compute an LEC which lies <i>wholly</i> within
+a polygonal boundary, include the boundary of the polygon(s) as a linear obstacle.
+<p></p>
 The implementation uses a successive-approximation technique
 over a grid of square cells covering the obstacles and boundary.
 The grid is refined using a branch-and-bound algorithm.
 Point containment and distance are computed in a performant
 way by using spatial indexes.
-<p>
-<h3>Future Enhancements</h3>
-<ul><li>Support polygons as obstacles</li><li>Support a client-defined boundary polygon</li></ul>
+<p></p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Algorithm.Construct.MaximumInscribedCircle.html">MaximumInscribedCircle</a></h4>
       <section><p>Constructs the Maximum Inscribed Circle for a
@@ -117,18 +120,18 @@ polygonal <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geome
 The Maximum Inscribed Circle is determined by a point in the interior of the area
 which has the farthest distance from the area boundary,
 along with a boundary point at that distance.</p>
-<p>
+<p></p>
 In the context of geography the center of the Maximum Inscribed Circle
-is known as the <strong>Pole of Inaccessibility</strong>.
+is known as the <b>Pole of Inaccessibility</b>.
 A cartographic use case is to determine a suitable point
 to place a map label within a polygon.
-<p>
+<p></p>
 The radius length of the Maximum Inscribed Circle is a
-measure of how &quot;narrow&quot; a polygon is. It is the
+measure of how "narrow" a polygon is. It is the
 distance at which the negative buffer becomes empty.
-<p>
+<p></p>
 The class supports polygons with holes and multipolygons.
-<p>
+<p></p>
 The implementation uses a successive-approximation technique
 over a grid of square cells covering the area geometry.
 The grid is refined using a branch-and-bound algorithm.
@@ -137,27 +140,29 @@ way by using spatial indexes.
 <h3>Future Enhancements</h3>
 <ul><li>Support a polygonal constraint on placement of center</li></ul>
 </section>
+
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Algorithm.Construct.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Algorithm.Construct.md/#L2" class="contribution-link">Edit this page</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -165,14 +170,14 @@ way by using spatial indexes.
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

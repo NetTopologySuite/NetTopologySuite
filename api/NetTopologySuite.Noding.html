@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace NetTopologySuite.Noding
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace NetTopologySuite.Noding
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.Noding | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.Noding | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Classes to compute nodings for arrangements of line segments and line segment sequences.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,39 +77,35 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Noding">
-  
-  <h1 id="NetTopologySuite_Noding" data-uid="NetTopologySuite.Noding" class="text-break">Namespace NetTopologySuite.Noding
-  </h1>
+
+  <h1 id="NetTopologySuite_Noding" data-uid="NetTopologySuite.Noding" class="text-break">Namespace NetTopologySuite.Noding</h1>
   <div class="markdown level0 summary">
 <p>Classes to compute nodings for arrangements of line segments and line segment sequences.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
+    <h3 id="classes">
+Classes
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Noding.BasicSegmentString.html">BasicSegmentString</a></h4>
       <section><p>Represents a read-only list of contiguous line segments.
 This can be used for detection of intersections or nodes.
 <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s can carry a context object, which is useful
 for preserving topological or parentage information.</p>
-<p>
+<p></p>
 If adding nodes is required use <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html">NodedSegmentString</a>.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.BoundaryChainNoder.html">BoundaryChainNoder</a></h4>
       <section><p>A noder which extracts chains of boundary segments
-as {@link SegmentString}s.
-Boundary segments are those which are not duplicated in the input.
-The segment strings are extracted in a way that maximises their length,
-and minimizes the total number of edges.
-This produces the most efficient topological graph structure.</p>
-<p>
-Segments which are not on the boundary are those which
-have an identical segment in another polygon ring.
-<p>
-This enables fast overlay of polygonal coverages in {@link CoverageUnion}.
-This noder is faster than {@link SegmentExtractingNoder}
-and {@link BoundarySegmentNoder}.
-<p>
+as {@link SegmentString}s from a polygonal coverage.
+Boundary segments are those which are not duplicated in the input polygonal coverage.
+Extracting chains of segments minimize the number of segment strings created,
+which produces a more efficient topological graph structure.</p>
+<p></p>
+This enables fast overlay of polygonal coverages in <a class="xref" href="NetTopologySuite.Coverage.CoverageUnion.html">CoverageUnion</a>.
+Using this noder is faster than <a class="xref" href="NetTopologySuite.Noding.SegmentExtractingNoder.html">SegmentExtractingNoder</a>
+and <a class="xref" href="NetTopologySuite.Noding.BoundarySegmentNoder.html">BoundarySegmentNoder</a>.
+<p></p>
 No precision reduction is carried out.
 If that is required, another noder must be used (such as a snap-rounding noder),
 or the input must be precision-reduced beforehand.
@@ -121,7 +115,7 @@ or the input must be precision-reduced beforehand.
 as <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>.
 Boundary segments are those which are not duplicated in the input.
 It is appropriate for use with valid polygonal coverages.</p>
-<p>
+<p></p>
 No precision reduction is carried out.
 If that is required, another noder must be used (such as a snap-rounding noder),
 or the input must be precision-reduced beforehand.
@@ -134,17 +128,17 @@ Indexing is used to improve performance.</p>
       <section><p>Finds if two sets of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s intersect.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.html">InteriorIntersectionFinderAdder</a></h4>
-      <section><p>Finds <strong>interior</strong> intersections
+      <section><p>Finds <b>interior</b> intersections
 between line segments in <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html">NodedSegmentString</a>s,
 and adds them as nodes
-using <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html#NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_System_Int32_">AddIntersection(LineIntersector, Int32, Int32, Int32)</a>.
+using <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html#NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_System_Int32_">AddIntersection(LineIntersector, int, int, int)</a>.
 This class is used primarily for Snap-Rounding.
 For general-purpose noding, use <a class="xref" href="NetTopologySuite.Noding.IntersectionAdder.html">IntersectionAdder</a>.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.IntersectionAdder.html">IntersectionAdder</a></h4>
       <section><p>Computes the possible intersections between two line segments in <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s
 and adds them to each string
-using <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html#NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_System_Int32_">AddIntersection(LineIntersector, Int32, Int32, Int32)</a>.</p>
+using <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html#NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_System_Int32_">AddIntersection(LineIntersector, int, int, int)</a>.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.IteratedNoder.html">IteratedNoder</a></h4>
       <section><p>Nodes a set of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s completely.
@@ -161,8 +155,8 @@ Clients can choose to rerun the noding using a lower precision model.
 on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a>.
 The <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a> used should be something that supports
 envelope (range) queries efficiently (such as a <code>Quadtree</code>&quot;
-or <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a>.</p>
-<p>
+or <a class="xref" href="NetTopologySuite.Index.HPRtree.HPRtree-1.html">HPRtree&lt;T&gt;</a>.</p>
+<p></p>
 The noder supports using an overlap tolerance distance.
 This allows determining segment intersection using a buffer for uses
 involving snapping with a distance tolerance.
@@ -172,7 +166,7 @@ involving snapping with a distance tolerance.
       <h4><a class="xref" href="NetTopologySuite.Noding.MCIndexSegmentSetMutualIntersector.html">MCIndexSegmentSetMutualIntersector</a></h4>
       <section><p>Intersects two sets of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s using a index based
 on <a class="xref" href="NetTopologySuite.Index.Chain.MonotoneChain.html">MonotoneChain</a>s and a <a class="xref" href="NetTopologySuite.Index.ISpatialIndex-1.html">ISpatialIndex&lt;T&gt;</a>.</p>
-<p>
+<p></p>
 Thread-safe and immutable.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.MCIndexSegmentSetMutualIntersector.SegmentOverlapAction.html">MCIndexSegmentSetMutualIntersector.SegmentOverlapAction</a></h4>
@@ -186,18 +180,18 @@ reducing the number of allocated objects.
 <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s can carry a context object, which is useful
 for preserving topological or parentage information.
 All noded substrings are initialized with the same context object.</p>
-<p>
+<p></p>
 For read-only applications use <a class="xref" href="NetTopologySuite.Noding.BasicSegmentString.html">BasicSegmentString</a>,
 which is (slightly)more lightweight.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html">NodingIntersectionFinder</a></h4>
       <section><p>Finds non-noded intersections in a set of {@link SegmentString}s,
 if any exist.</p>
-<p>
+<p></p>
 Non-noded intersections include:
 <p>The finder can be limited to finding only interior intersections
 by setting <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_InteriorIntersectionsOnly">InteriorIntersectionsOnly</a>.</p>
-<p>
+<p></p>
 By default only the first intersection is found,
 but all can be found by setting <a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html#NetTopologySuite_Noding_NodingIntersectionFinder_FindAllIntersections">FindAllIntersections</a>.
 </section>
@@ -229,7 +223,7 @@ This enables fast overlay of geometries which are known to be already fully node
 In particular, it provides fast union of polygonal and linear coverages.
 Unioning a noded set of lines is an effective way
 to perform line merging and line dissolving.</p>
-<p>
+<p></p>
 No precision reduction is carried out. 
 If that is required, another noder must be used (such as a snap-rounding noder),
 or the input must be precision-reduced beforehand.
@@ -254,6 +248,9 @@ of exact coordinates lying on the segment.</p>
       <h4><a class="xref" href="NetTopologySuite.Noding.SegmentStringDissolver.html">SegmentStringDissolver</a></h4>
       <section><p>Dissolves a noded collection of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s to produce
 a set of merged linework with unique segments.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Noding.SegmentStringEx.html">SegmentStringEx</a></h4>
+      <section><p>Extension methods to mimic JTS' default methods on SegmentString interface</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.SegmentStringUtil.html">SegmentStringUtil</a></h4>
       <section><p>Utility methods for processing <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s</p>
@@ -281,8 +278,9 @@ which has another segment intersecting its interior.
 If the noding is not correct, a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown
 with details of the first invalid location found.</p>
 </section>
-    <h3 id="interfaces">Interfaces
-  </h3>
+    <h3 id="interfaces">
+Interfaces
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Noding.INodableSegmentString.html">INodableSegmentString</a></h4>
       <section><p>An interface for classes which support adding nodes to a segment string.</p>
 </section>
@@ -299,12 +297,12 @@ As a final step in the noding a new set of segment strings split at the nodes ma
       <section><p>An intersector for the red-blue intersection problem.
 In this class of line arrangement problem,
 two disjoint sets of linestrings are intersected.</p>
-<p>
+<p></p>
 Implementing classes must provide a way
 of supplying the base set of segment strings to
 test against (e.g. in the constructor,
 for straightforward thread-safety).
-<p>
+<p></p>
 In order to allow optimizing processing,
 the following condition is assumed to hold for each set:
 <p>Implementations can take advantage of this fact to optimize processing
@@ -320,41 +318,44 @@ for preserving topological or parentage information.</p>
       <section><p>A merging strategy which can be used to update the context data of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s
 which are merged during the dissolve process.</p>
 </section>
-    <h3 id="enums">Enums
-  </h3>
+    <h3 id="enums">
+Enums
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Noding.Octants.html">Octants</a></h4>
       <section><p>Octants in the Cartesian plane.
 Octants are numbered as follows:</p>
-<p>
- \2|1/
-3 \|/ 0
----+--
-4 /|\ 7
- /5|6\
+ <p>
+  \2|1/
+ 3 \|/ 0
+ ---+--
+ 4 /|\ 7
+  /5|6\
 </p>
  If line segments lie along a coordinate axis, the octant is the lower of the two possible values.
 </section>
+
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Noding.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Noding.md/#L2" class="contribution-link">Edit this page</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -362,14 +363,14 @@ Octants are numbered as follows:</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

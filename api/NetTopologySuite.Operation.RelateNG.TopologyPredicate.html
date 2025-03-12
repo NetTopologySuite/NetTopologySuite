@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class TopologyPredicate | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class TopologyPredicate | NetTopologySuite ">
+    
+    <meta name="description" content="The API for strategy classes implementing spatial predicates based on the DE-9IM topology model. Predicate values for specific geometry pairs can be evaluated by .">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate">
+
+
+
+  <h1 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate" class="text-break">Class TopologyPredicate</h1>
+  <div class="markdown level0 summary"><p>The API for strategy classes implementing
+spatial predicates based on the DE-9IM topology model.
+Predicate values for specific geometry pairs can be evaluated by <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelateNG.html">RelateNG</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">TopologyPredicate</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Operation.html">Operation</a>.<a class="xref" href="NetTopologySuite.Operation.RelateNG.html">RelateNG</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class TopologyPredicate</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate__ctor_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L17">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate__ctor_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate__ctor_System_String_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.#ctor(System.String)">TopologyPredicate(string)</h4>
+  <div class="markdown level1 summary"><p>Creates an instance of this class</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected TopologyPredicate(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the predicate</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_IsKnown.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.IsKnown%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L142">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_IsKnown_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.IsKnown*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_IsKnown" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.IsKnown">IsKnown</h4>
+  <div class="markdown level1 summary"><p>Tests if the predicate value is known.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract bool IsKnown { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_Name.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.Name%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L25">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Name_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Name*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Name" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the predicate</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_Value.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.Value%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L148">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Value_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Value*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Value" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Value">Value</h4>
+  <div class="markdown level1 summary"><p>Gets the current value of the predicate result.
+The value is only valid if <a class="xref" href="NetTopologySuite.Operation.RelateNG.TopologyPredicate.html#NetTopologySuite_Operation_RelateNG_TopologyPredicate_IsKnown">IsKnown</a> is <code>true</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract bool Value { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_Finish.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.Finish%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L137">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Finish_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Finish*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Finish" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Finish">Finish()</h4>
+  <div class="markdown level1 summary"><p>Indicates that the value of the predicate can be finalized
+based on its current state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void Finish()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_Init_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.Init(NetTopologySuite.Geometries.Dimension%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L100">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Init_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Init*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Init_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Init(NetTopologySuite.Geometries.Dimension,NetTopologySuite.Geometries.Dimension)">Init(Dimension, Dimension)</h4>
+  <div class="markdown level1 summary"><p>Initializes the predicate for a specific geometric case.
+This may allow the predicate result to become known
+if it can be inferred from the dimensions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Init(Dimension dimA, Dimension dimB)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></td>
+        <td><span class="parametername">dimA</span></td>
+        <td><p>The dimension of geometry A</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></td>
+        <td><span class="parametername">dimB</span></td>
+        <td><p>The dimension of geometry B</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Init_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_Init_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.Init(NetTopologySuite.Geometries.Envelope%2CNetTopologySuite.Geometries.Envelope)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L112">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Init_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Init*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_Init_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.Init(NetTopologySuite.Geometries.Envelope,NetTopologySuite.Geometries.Envelope)">Init(Envelope, Envelope)</h4>
+  <div class="markdown level1 summary"><p>Initializes the predicate for a specific geometric case.
+This may allow the predicate result to become known
+if it can be inferred from the envelopes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Init(Envelope envA, Envelope envB)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a></td>
+        <td><span class="parametername">envA</span></td>
+        <td><p>The envelope of geometry A</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a></td>
+        <td><span class="parametername">envB</span></td>
+        <td><p>The envelope of geometry B</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireCovers_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireCovers(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L71">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireCovers_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireCovers*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireCovers_System_Boolean_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireCovers(System.Boolean)">RequireCovers(bool)</h4>
+  <div class="markdown level1 summary"><p>Reports whether this predicate requires that the source
+cover the target.
+This is the case if</p>
+<pre><code class="lang-csharp">IM[Ext(Src), Int(Tgt)] = F and IM[Ext(Src), Bdy(Tgt)] = F</code></pre>
+<p>If <code>true</code>, this allows a fast result if
+the source envelope does not cover the target envelope.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool RequireCovers(bool isSourceA)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">isSourceA</span></td>
+        <td><p>A flag indicating the source input geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><code>true</code> if the predicate requires checking whether the source covers the target</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireExteriorCheck_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireExteriorCheck(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L87">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireExteriorCheck_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireExteriorCheck*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireExteriorCheck_System_Boolean_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireExteriorCheck(System.Boolean)">RequireExteriorCheck(bool)</h4>
+  <div class="markdown level1 summary"><p>Reports whether this predicate requires checking if the source input intersects
+the Exterior of the target input.
+This is the case if:</p>
+<pre><code class="lang-csharp">IM[Int(Src), Ext(Tgt)] &gt;= 0 or IM[Bdy(Src), Ext(Tgt)] &gt;= 0</code></pre>
+<p>If <code>false</code>, this may permit a faster result in some geometric situations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool RequireExteriorCheck(bool isSourceA)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">isSourceA</span></td>
+        <td><p>A flag indicating the source input geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><code>true</code> if the predicate requires checking whether the source intersects the target exterior</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireInteraction.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireInteraction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L54">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireInteraction_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireInteraction*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireInteraction" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireInteraction">RequireInteraction()</h4>
+  <div class="markdown level1 summary"><p>Reports whether this predicate requires interaction between
+the input geometries.
+This is the case if</p>
+<pre><code class="lang-csharp">IM[I, I] &gt;= 0 or IM[I, B] &gt;= 0 or IM[B, I] &gt;= 0 or IM[B, B] &gt;= 0</code></pre>
+<p>This allows a fast result if
+the envelopes of the geometries are disjoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool RequireInteraction()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><code>true</code> if the geometries must interact</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireSelfNoding.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireSelfNoding%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L41">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireSelfNoding_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireSelfNoding*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_RequireSelfNoding" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.RequireSelfNoding">RequireSelfNoding()</h4>
+  <div class="markdown level1 summary"><p>Reports whether this predicate requires self-noding for
+geometries which contain crossing edges
+(for example, <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s, or <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>s
+containing lines or polygons which may self-intersect).
+Self-noding ensures that intersections are computed consistently
+in cases which contain self-crossings and mutual crossings.</p>
+<p></p>
+Most predicates require this, but it can
+be avoided for simple intersection detection
+(such as in <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelatePredicate.html#NetTopologySuite_Operation_RelateNG_RelatePredicate_Intersects">Intersects()</a>
+and <a class="xref" href="NetTopologySuite.Operation.RelateNG.RelatePredicate.html#NetTopologySuite_Operation_RelateNG_RelatePredicate_Disjoint">Disjoint()</a>.
+Avoiding self-noding improves performance for polygonal inputs.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool RequireSelfNoding()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate_UpdateDimension_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate.UpdateDimension(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L131">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_UpdateDimension_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.UpdateDimension*"></a>
+  <h4 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_UpdateDimension_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Operation.RelateNG.TopologyPredicate.UpdateDimension(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Dimension)">UpdateDimension(Location, Location, Dimension)</h4>
+  <div class="markdown level1 summary"><p>Updates the entry in the DE-9IM intersection matrix
+for given {@link Location}s in the input geometries.</p>
+<p></p>
+If this method is called with a {@link Dimension} value
+which is less than the current value for the matrix entry,
+the implementing class should avoid changing the entry
+if this would cause information loss.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void UpdateDimension(Location locA, Location locB, Dimension dimension)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a></td>
+        <td><span class="parametername">locA</span></td>
+        <td><p>The location on the A axis of the matrix</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a></td>
+        <td><span class="parametername">locB</span></td>
+        <td><p>The location on the B axis of the matrix</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The dimension value for the entry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Operation_RelateNG_TopologyPredicate_UpdateDimension_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a></div>
+      <div><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></div>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_RelateNG_TopologyPredicate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.RelateNG.TopologyPredicate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/RelateNG/TopologyPredicate.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PolygonHullSimplifier
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PolygonHullSimplifier
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class PolygonHullSimplifier | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class PolygonHullSimplifier | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Computes topology-preserving simplified hulls of polygonal geometry. Both outer and inner hulls can be computed. Outer hulls contain the input geometry and are larger in area. Inner hulls are contained by the input geometry and are smaller in area. In both the hull vertices are a subset of the input vertices. The hull construction attempts to minimize the area difference with the input geometry.  Hulls are generally concave if the input is. Computed hulls are topology-preserving:  they do not contain any self-intersections or overlaps,  so the result polygonal geometry is valid.  Polygons with holes and MultiPolygons are supported. The result has the same geometric type and structure as the input.  The number of vertices in the computed hull is determined by a target parameter. Two parameters are supported: Vertex Number fractionthe fraction of the input vertices retained in the result. Value 1 produces the original geometry. Smaller values produce less concave results. For outer hulls, value 0 produces the convex hull (with triangles for any holes). For inner hulls, value 0 produces a triangle (if no holes are present).Area Delta ratio the ratio of the change in area to the input area.Value 0 produces the original geometry. Larger values produce less concave results. The algorithm ensures that the result does not cause the target parameter to be exceeded. This allows computing outer or inner hulls with a small area delta ratio as an effective way of removing narrow gores and spikes.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,10 +77,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier">
-  
-  
-  <h1 id="NetTopologySuite_Simplify_PolygonHullSimplifier" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier" class="text-break">Class PolygonHullSimplifier
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Simplify_PolygonHullSimplifier" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier" class="text-break">Class PolygonHullSimplifier</h1>
   <div class="markdown level0 summary"><p>Computes topology-preserving simplified hulls of polygonal geometry.
 Both outer and inner hulls can be computed.
 Outer hulls contain the input geometry and are larger in area.
@@ -90,22 +88,22 @@ Inner hulls are contained by the input geometry and are smaller in area.
 In both the hull vertices are a subset of the input vertices.
 The hull construction attempts to minimize the area difference
 with the input geometry.</p>
-<p>
+<p></p>
 Hulls are generally concave if the input is.
 Computed hulls are topology-preserving: 
 they do not contain any self-intersections or overlaps, 
 so the result polygonal geometry is valid.
-<p>
+<p></p>
 Polygons with holes and MultiPolygons are supported.
 The result has the same geometric type and structure as the input.
-<p>
+<p></p>
 The number of vertices in the computed hull is determined by a target parameter.
 Two parameters are supported:
-<ul><li>Vertex Number fractionthe fraction of the input vertices retained in the result.
+<ul><li><span class="term">Vertex Number fraction</span>the fraction of the input vertices retained in the result.
 Value 1 produces the original geometry.
 Smaller values produce less concave results.
 For outer hulls, value 0 produces the convex hull (with triangles for any holes).
-For inner hulls, value 0 produces a triangle (if no holes are present).</li><li>Area Delta ratio
+For inner hulls, value 0 produces a triangle (if no holes are present).</li><li><span class="term">Area Delta ratio</span>
 the ratio of the change in area to the input area.Value 0 produces the original geometry.
 Larger values produce less concave results.</li></ul>
 The algorithm ensures that the result does not cause the target parameter
@@ -116,62 +114,62 @@ narrow gores and spikes.
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">PolygonHullSimplifier</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Simplify.html">NetTopologySuite.Simplify</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Simplify.html">Simplify</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Simplify_PolygonHullSimplifier_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class PolygonHullSimplifier</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier__ctor_NetTopologySuite_Geometries_Geometry_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.%23ctor(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier__ctor_NetTopologySuite_Geometries_Geometry_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.%23ctor(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Simplify/PolygonHullSimplifier.cs/#L97">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_PolygonHullSimplifier__ctor_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.#ctor*"></a>
-  <h4 id="NetTopologySuite_Simplify_PolygonHullSimplifier__ctor_NetTopologySuite_Geometries_Geometry_System_Boolean_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.#ctor(NetTopologySuite.Geometries.Geometry,System.Boolean)">PolygonHullSimplifier(Geometry, Boolean)</h4>
+  <h4 id="NetTopologySuite_Simplify_PolygonHullSimplifier__ctor_NetTopologySuite_Geometries_Geometry_System_Boolean_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.#ctor(NetTopologySuite.Geometries.Geometry,System.Boolean)">PolygonHullSimplifier(Geometry, bool)</h4>
   <div class="markdown level1 summary"><p>Creates a new instance
 to compute a simplified hull of a polygonal geometry.
 An outer or inner hull is computed
-depending on the value of <code data-dev-comment-type="paramref" class="paramref">isOuter</code>.</p>
+depending on the value of <code class="paramref">isOuter</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public PolygonHullSimplifier(Geometry inputGeom, bool isOuter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -187,7 +185,7 @@ depending on the value of <code data-dev-comment-type="paramref" class="paramref
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">isOuter</span></td>
         <td><p>Indicates whether to compute an outer or inner hull</p>
 </td>
@@ -195,10 +193,10 @@ depending on the value of <code data-dev-comment-type="paramref" class="paramref
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_AreaDeltaRatio.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.AreaDeltaRatio%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_AreaDeltaRatio.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.AreaDeltaRatio%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Simplify/PolygonHullSimplifier.cs/#L122">View Source</a>
@@ -209,12 +207,12 @@ depending on the value of <code data-dev-comment-type="paramref" class="paramref
 The value must be 0 or greater.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public double AreaDeltaRatio { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -223,14 +221,14 @@ The value must be 0 or greater.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_VertexNumFraction.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.VertexNumFraction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_VertexNumFraction.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.VertexNumFraction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Simplify/PolygonHullSimplifier.cs/#L112">View Source</a>
@@ -242,12 +240,12 @@ which are retained in the result.
 The value should be in the range [0,1].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public double VertexNumFraction { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -256,16 +254,16 @@ The value should be in the range [0,1].</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_GetResult.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.GetResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_GetResult.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.GetResult%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Simplify/PolygonHullSimplifier.cs/#L132">View Source</a>
@@ -275,12 +273,12 @@ The value should be in the range [0,1].</p>
   <div class="markdown level1 summary"><p>Gets the result polygonal hull geometry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry GetResult()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -297,13 +295,13 @@ The value should be in the range [0,1].</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_Hull_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.Hull(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_Hull_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.Hull(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Simplify/PolygonHullSimplifier.cs/#L58">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_PolygonHullSimplifier_Hull_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.Hull*"></a>
-  <h4 id="NetTopologySuite_Simplify_PolygonHullSimplifier_Hull_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.Hull(NetTopologySuite.Geometries.Geometry,System.Boolean,System.Double)">Hull(Geometry, Boolean, Double)</h4>
+  <h4 id="NetTopologySuite_Simplify_PolygonHullSimplifier_Hull_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.Hull(NetTopologySuite.Geometries.Geometry,System.Boolean,System.Double)">Hull(Geometry, bool, double)</h4>
   <div class="markdown level1 summary"><p>Computes topology-preserving simplified hull of a polygonal geometry,
 with hull shape determined by a target parameter
 specifying the fraction of the input vertices retained in the result.
@@ -312,12 +310,12 @@ A value of 1 produces the convex hull; a value of 0 produces the original geomet
 Either outer or inner hulls can be computed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry Hull(Geometry geom, bool isOuter, double vertexNumFraction)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -333,13 +331,13 @@ Either outer or inner hulls can be computed.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">isOuter</span></td>
         <td><p>A flag indicating whether to compute an outer or inner hull</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">vertexNumFraction</span></td>
         <td><p>The target fraction of number of input vertices in result</p>
 </td>
@@ -347,7 +345,7 @@ Either outer or inner hulls can be computed.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -364,13 +362,13 @@ Either outer or inner hulls can be computed.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_HullByAreaDelta_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.HullByAreaDelta(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier_HullByAreaDelta_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier.HullByAreaDelta(NetTopologySuite.Geometries.Geometry%2CSystem.Boolean%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Simplify/PolygonHullSimplifier.cs/#L76">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_PolygonHullSimplifier_HullByAreaDelta_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.HullByAreaDelta*"></a>
-  <h4 id="NetTopologySuite_Simplify_PolygonHullSimplifier_HullByAreaDelta_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.HullByAreaDelta(NetTopologySuite.Geometries.Geometry,System.Boolean,System.Double)">HullByAreaDelta(Geometry, Boolean, Double)</h4>
+  <h4 id="NetTopologySuite_Simplify_PolygonHullSimplifier_HullByAreaDelta_NetTopologySuite_Geometries_Geometry_System_Boolean_System_Double_" data-uid="NetTopologySuite.Simplify.PolygonHullSimplifier.HullByAreaDelta(NetTopologySuite.Geometries.Geometry,System.Boolean,System.Double)">HullByAreaDelta(Geometry, bool, double)</h4>
   <div class="markdown level1 summary"><p>Computes a boundary-respecting hull of a polygonal geometry,
 with hull shape determined by a target parameter
 specifying the ratio of maximum difference in area to original area.
@@ -379,12 +377,12 @@ A value of 0 produces the original geometry.
 Either outer or inner hulls can be computed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry HullByAreaDelta(Geometry geom, bool isOuter, double areaDeltaRatio)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -400,13 +398,13 @@ Either outer or inner hulls can be computed.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">isOuter</span></td>
         <td><p>A flag indicating whether to compute an outer or inner hull</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">areaDeltaRatio</span></td>
         <td><p>The target ratio of area difference to original area</p>
 </td>
@@ -414,7 +412,7 @@ Either outer or inner hulls can be computed.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -429,15 +427,16 @@ Either outer or inner hulls can be computed.</p>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Simplify_PolygonHullSimplifier.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.PolygonHullSimplifier%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Simplify/PolygonHullSimplifier.cs/#L44" class="contribution-link">View Source</a>
@@ -445,14 +444,14 @@ Either outer or inner hulls can be computed.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -460,14 +459,14 @@ Either outer or inner hulls can be computed.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

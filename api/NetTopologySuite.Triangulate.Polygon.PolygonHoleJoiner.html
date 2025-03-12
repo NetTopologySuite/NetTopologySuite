@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PolygonHoleJoiner
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PolygonHoleJoiner
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class PolygonHoleJoiner | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class PolygonHoleJoiner | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Transforms a polygon with holes into a single self-touching (invalid) ring by joining holes to the exterior shell or to another hole with out-and-back line segments. The holes are added in order of their envelopes (leftmost/lowest first). As the result shell develops, a hole may be added to what was originally another hole.  There is no attempt to optimize the quality of the join lines. In particular, holes may be joined by lines longer than is optimal. However, holes which touch the shell or other holes are joined at the touch point.  The class does not require the input polygon to have normal orientation (shell CW and rings CCW). The output ring is always CW.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,75 +77,81 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner">
-  
-  
-  <h1 id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner" class="text-break">Class PolygonHoleJoiner
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner" class="text-break">Class PolygonHoleJoiner</h1>
   <div class="markdown level0 summary"><p>Transforms a polygon with holes into a single self-touching (invalid) ring
-by joining holes to the exterior shell or to another hole.
-The holes are added from the lowest upwards.
-As the resulting shell develops, a hole might be added to what was
+by joining holes to the exterior shell or to another hole
+with out-and-back line segments.
+The holes are added in order of their envelopes (leftmost/lowest first).
+As the result shell develops, a hole may be added to what was
 originally another hole.</p>
-<p>
+<p></p>
 There is no attempt to optimize the quality of the join lines.
-In particular, a hole which already touches at a vertex may be
-joined at a different vertex.
+In particular, holes may be joined by lines longer than is optimal.
+However, holes which touch the shell or other holes are joined at the touch point.
+<p></p>
+The class does not require the input polygon to have normal
+orientation (shell CW and rings CCW).
+The output ring is always CW.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">PolygonHoleJoiner</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Triangulate.Polygon.html">NetTopologySuite.Triangulate.Polygon</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Triangulate.html">Triangulate</a>.<a class="xref" href="NetTopologySuite.Triangulate.Polygon.html">Polygon</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class PolygonHoleJoiner</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner__ctor_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.%23ctor(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner__ctor_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.%23ctor(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L59">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L80">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner__ctor_" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.#ctor*"></a>
   <h4 id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner__ctor_NetTopologySuite_Geometries_Polygon_" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.#ctor(NetTopologySuite.Geometries.Polygon)">PolygonHoleJoiner(Polygon)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a new hole joiner.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PolygonHoleJoiner(Polygon inputPolygon)</code></pre>
+    <pre><code class="lang-csharp hljs">public PolygonHoleJoiner(Polygon polygon)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -158,31 +162,32 @@ joined at a different vertex.
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
-        <td><span class="parametername">inputPolygon</span></td>
-        <td></td>
+        <td><span class="parametername">polygon</span></td>
+        <td><p>The polygon to join</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Compute.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Compute%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Compute.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Compute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L69">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L89">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Compute_" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Compute*"></a>
   <h4 id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Compute" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Compute">Compute()</h4>
-  <div class="markdown level1 summary"><p>Computes the joined ring.</p>
+  <div class="markdown level1 summary"><p>Computes the joined ring</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Coordinate[] Compute()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -199,21 +204,23 @@ joined at a different vertex.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Join_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Join(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Join_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Join(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L33">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L51">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Join_" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Join*"></a>
   <h4 id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_Join_NetTopologySuite_Geometries_Polygon_" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.Join(NetTopologySuite.Geometries.Polygon)">Join(Polygon)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Joins the shell and holes of a polygon
+and returns the result as sequence of Coordinates.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Coordinate[] Join(Polygon inputPolygon)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Coordinate[] Join(Polygon polygon)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -224,13 +231,14 @@ joined at a different vertex.
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
-        <td><span class="parametername">inputPolygon</span></td>
-        <td></td>
+        <td><span class="parametername">polygon</span></td>
+        <td><p>The polygon to join</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -240,27 +248,30 @@ joined at a different vertex.
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
-        <td></td>
+        <td><p>The result coordinates</p>
+</td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_JoinAsPolygon_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.JoinAsPolygon(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_JoinAsPolygon_NetTopologySuite_Geometries_Polygon_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.JoinAsPolygon(NetTopologySuite.Geometries.Polygon)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L28">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L40">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_JoinAsPolygon_" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.JoinAsPolygon*"></a>
   <h4 id="NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner_JoinAsPolygon_NetTopologySuite_Geometries_Polygon_" data-uid="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.JoinAsPolygon(NetTopologySuite.Geometries.Polygon)">JoinAsPolygon(Polygon)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Joins the shell and holes of a polygon
+and returns the result as an (invalid) Polygon.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Polygon JoinAsPolygon(Polygon inputPolygon)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Polygon JoinAsPolygon(Polygon polygon)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -271,13 +282,14 @@ joined at a different vertex.
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
-        <td><span class="parametername">inputPolygon</span></td>
-        <td></td>
+        <td><span class="parametername">polygon</span></td>
+        <td><p>The polygon to join</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -287,34 +299,36 @@ joined at a different vertex.
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
-        <td></td>
+        <td><p>The result polygon</p>
+</td>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Triangulate_Polygon_PolygonHoleJoiner.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Triangulate/Polygon/PolygonHoleJoiner.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -322,14 +336,14 @@ joined at a different vertex.
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

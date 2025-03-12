@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class InteriorPoint
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class InteriorPoint
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class InteriorPoint | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class InteriorPoint | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Computes an interior point of a . An interior point is guaranteed to lie in the interior of the Geometry, if it possible to calculate such a point exactly. For collections the interior point is computed for the collection of non-empty elements of highest dimension. Otherwise, the point may lie on the boundary of the geometry.  The interior point of an empty geometry is POINT EMPTY. Algorithm The point is chosen to be &quot;close to the center&quot; of the geometry. The location depends on the dimension of the input: Dimension 2the interior point is constructed in the middle of the longest interior segment of a line bisecting the area.Dimension 1the interior point is the interior or boundary vertex closest to the centroid.Dimension 0the point is the point closest to the centroid.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,23 +77,23 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Algorithm.InteriorPoint">
-  
-  
-  <h1 id="NetTopologySuite_Algorithm_InteriorPoint" data-uid="NetTopologySuite.Algorithm.InteriorPoint" class="text-break">Class InteriorPoint
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Algorithm_InteriorPoint" data-uid="NetTopologySuite.Algorithm.InteriorPoint" class="text-break">Class InteriorPoint</h1>
   <div class="markdown level0 summary"><p>Computes an interior point of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
 An interior point is guaranteed to lie in the interior of the Geometry,
 if it possible to calculate such a point exactly.
 For collections the interior point is computed for the collection of
 non-empty elements of highest dimension.
 Otherwise, the point may lie on the boundary of the geometry.</p>
-<p>
+<p></p>
 The interior point of an empty geometry is <code>POINT EMPTY</code>.
 <h2>Algorithm</h2>
-The point is chosen to be &quot;close to the center&quot; of the geometry.
+The point is chosen to be "close to the center" of the geometry.
 The location depends on the dimension of the input:
-<ul><li>Dimension 2the interior point is constructed in the middle of the longest interior segment
-of a line bisecting the area.</li><li>Dimension 1the interior point is the interior or boundary vertex closest to the centroid.</li><li>Dimension 0the point is the point closest to the centroid.</li></ul>
+<ul><li><span class="term">Dimension 2</span>the interior point is constructed in the middle of the longest interior segment
+of a line bisecting the area.</li><li><span class="term">Dimension 1</span>the interior point is the interior or boundary vertex closest to the centroid.</li><li><span class="term">Dimension 0</span>the point is the point closest to the centroid.</li></ul>
 <a class="xref" href="NetTopologySuite.Algorithm.Centroid.html">Centroid</a>
 <a class="xref" href="NetTopologySuite.Algorithm.Construct.MaximumInscribedCircle.html">MaximumInscribedCircle</a>
 <a class="xref" href="NetTopologySuite.Algorithm.Construct.LargestEmptyCircle.html">LargestEmptyCircle</a>
@@ -103,44 +101,44 @@ of a line bisecting the area.</li><li>Dimension 1the interior point is the inter
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">InteriorPoint</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.html">NetTopologySuite.Algorithm</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Algorithm.html">Algorithm</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_InteriorPoint_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class InteriorPoint</code></pre>
   </div>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPoint_GetInteriorCoord_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPoint.GetInteriorCoord(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPoint_GetInteriorCoord_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPoint.GetInteriorCoord(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/InteriorPoint.cs/#L62">View Source</a>
@@ -148,16 +146,16 @@ of a line bisecting the area.</li><li>Dimension 1the interior point is the inter
   <a id="NetTopologySuite_Algorithm_InteriorPoint_GetInteriorCoord_" data-uid="NetTopologySuite.Algorithm.InteriorPoint.GetInteriorCoord*"></a>
   <h4 id="NetTopologySuite_Algorithm_InteriorPoint_GetInteriorCoord_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.InteriorPoint.GetInteriorCoord(NetTopologySuite.Geometries.Geometry)">GetInteriorCoord(Geometry)</h4>
   <div class="markdown level1 summary"><p>Computes a location of an interior point in a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
-<p>
+<p></p>
 Handles all geometry types.
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Coordinate GetInteriorCoord(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -175,7 +173,7 @@ Handles all geometry types.
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -196,7 +194,7 @@ It has been renamed to <code>GetInteriorCoord</code> to prevent a breaking chang
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPoint_GetInteriorPoint_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPoint.GetInteriorPoint(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPoint_GetInteriorPoint_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPoint.GetInteriorPoint(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/InteriorPoint.cs/#L39">View Source</a>
@@ -204,17 +202,17 @@ It has been renamed to <code>GetInteriorCoord</code> to prevent a breaking chang
   <a id="NetTopologySuite_Algorithm_InteriorPoint_GetInteriorPoint_" data-uid="NetTopologySuite.Algorithm.InteriorPoint.GetInteriorPoint*"></a>
   <h4 id="NetTopologySuite_Algorithm_InteriorPoint_GetInteriorPoint_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.InteriorPoint.GetInteriorPoint(NetTopologySuite.Geometries.Geometry)">GetInteriorPoint(Geometry)</h4>
   <div class="markdown level1 summary"><p>Computes a location of an interior point in a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
-<p>
+<p></p>
 Handles all geometry types.
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetInteriorCoord&quot;)]
 public static Point GetInteriorPoint(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -232,7 +230,7 @@ public static Point GetInteriorPoint(Geometry geom)</code></pre>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -247,15 +245,16 @@ public static Point GetInteriorPoint(Geometry geom)</code></pre>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPoint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/InteriorPoint.cs/#L29" class="contribution-link">View Source</a>
@@ -263,14 +262,14 @@ public static Point GetInteriorPoint(Geometry geom)</code></pre>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -278,14 +277,14 @@ public static Point GetInteriorPoint(Geometry geom)</code></pre>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

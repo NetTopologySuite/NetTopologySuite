@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace NetTopologySuite.Triangulate.Polygon
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace NetTopologySuite.Triangulate.Polygon
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.Triangulate.Polygon | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.Triangulate.Polygon | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Classes for triangulating polygons. ConstrainedDelaunayTriangulator can be used to provide high-quality near-Delaunay triangulations of polygonal geometry. The PolygonTriangulator produces lower-quality but faster triangulations.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,9 +77,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Triangulate.Polygon">
-  
-  <h1 id="NetTopologySuite_Triangulate_Polygon" data-uid="NetTopologySuite.Triangulate.Polygon" class="text-break">Namespace NetTopologySuite.Triangulate.Polygon
-  </h1>
+
+  <h1 id="NetTopologySuite_Triangulate_Polygon" data-uid="NetTopologySuite.Triangulate.Polygon" class="text-break">Namespace NetTopologySuite.Triangulate.Polygon</h1>
   <div class="markdown level0 summary">
 <p>Classes for triangulating polygons.
 <a class="xref" href="NetTopologySuite.Triangulate.Polygon.ConstrainedDelaunayTriangulator.html">ConstrainedDelaunayTriangulator</a> can be used to provide high-quality
@@ -90,27 +87,33 @@ The <a class="xref" href="NetTopologySuite.Triangulate.Polygon.PolygonTriangulat
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
+    <h3 id="classes">
+Classes
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Triangulate.Polygon.ConstrainedDelaunayTriangulator.html">ConstrainedDelaunayTriangulator</a></h4>
       <section><p>Computes the Constrained Delaunay Triangulation of polygons.
 The Constrained Delaunay Triangulation of a polygon is a set of triangles
 covering the polygon, with the maximum total interior angle over all
 possible triangulations.  It provides the &quot;best quality&quot; triangulation
 of the polygon.</p>
-<p>
+<p></p>
 Holes are supported.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Triangulate.Polygon.PolygonHoleJoiner.html">PolygonHoleJoiner</a></h4>
       <section><p>Transforms a polygon with holes into a single self-touching (invalid) ring
-by joining holes to the exterior shell or to another hole.
-The holes are added from the lowest upwards.
-As the resulting shell develops, a hole might be added to what was
+by joining holes to the exterior shell or to another hole
+with out-and-back line segments.
+The holes are added in order of their envelopes (leftmost/lowest first).
+As the result shell develops, a hole may be added to what was
 originally another hole.</p>
-<p>
+<p></p>
 There is no attempt to optimize the quality of the join lines.
-In particular, a hole which already touches at a vertex may be
-joined at a different vertex.
+In particular, holes may be joined by lines longer than is optimal.
+However, holes which touch the shell or other holes are joined at the touch point.
+<p></p>
+The class does not require the input polygon to have normal
+orientation (shell CW and rings CCW).
+The output ring is always CW.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Triangulate.Polygon.PolygonTriangulator.html">PolygonTriangulator</a></h4>
       <section><p>Computes a triangulation of each polygon in a {@link Geometry}.
@@ -118,34 +121,36 @@ A polygon triangulation is a non-overlapping set of triangles which
 cover the polygon and have the same vertices as the polygon.
 The priority is on performance rather than triangulation quality,
 so that the output may contain many narrow triangles.</p>
-<p>
+<p></p>
 Holes are handled by joining them to the shell to form a
 (self-touching) polygon shell with no holes.
 Although invalid, this can be triangulated effectively.
-<p>
+<p></p>
 For better-quality triangulation use <a class="xref" href="NetTopologySuite.Triangulate.Polygon.ConstrainedDelaunayTriangulator.html">ConstrainedDelaunayTriangulator</a>.
 </section>
+
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Triangulate.Polygon.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Triangulate.Polygon.md/#L2" class="contribution-link">Edit this page</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -153,14 +158,14 @@ For better-quality triangulation use <a class="xref" href="NetTopologySuite.Tria
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

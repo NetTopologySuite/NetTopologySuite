@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ConcaveHull
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ConcaveHull
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class ConcaveHull | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class ConcaveHull | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Constructs a concave hull of a set of points. A concave hull is a possibly non-convex polygon containing all the input points. A given set of points has a sequence of hulls of increasing concaveness, determined by a numeric target parameter.  The hull is constructed by removing border triangles of the Delaunay Triangulation of the points, as long as their &quot;size&quot; is larger than the target criterion.  The target criteria are: Maximum Edge Lengththe length of the longest edge of the hull is no larger than this value.Maximum Edge Length Factordetermines the Maximum Edge Length by a fraction of the difference between the longest and shortest edge lengths in the Delaunay Triangulation. This normalizes the Maximum Edge Length to be scale-free. A value of 1 produces the convex hull; a value of 0 produces maximum concaveness. Alphaproduces Alpha-shapes, by removing border triangles with a circumradius greater than alpha. Large values produce the convex hull; a value of 0 produces maximum concaveness. The preferred criterion is the Maximum Edge Length Ratio, since it is scale-free and local(so that no assumption needs to be made about the total amount of concaveness present).  Other length criteria can be used by setting the Maximum Edge Length directly. For example, use a length relative to the longest edge length in the Minimum Spanning Tree of the point set. Or, use a length derived from the  value.  The computed hull is always a single connected  (unless it is degenerate, in which case it will be a  or a ). This constraint may cause the concave hull to fail to meet the target criteria.  Optionally the concave hull can be allowed to contain holes by setting .">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,98 +77,100 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull">
-  
-  
-  <h1 id="NetTopologySuite_Algorithm_Hull_ConcaveHull" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull" class="text-break">Class ConcaveHull
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Algorithm_Hull_ConcaveHull" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull" class="text-break">Class ConcaveHull</h1>
   <div class="markdown level0 summary"><p>Constructs a concave hull of a set of points.
 A concave hull is a possibly non-convex polygon containing all the input points.
 A given set of points has a sequence of hulls of increasing concaveness,
 determined by a numeric target parameter.</p>
-<p>
-The concave hull is constructed by removing the longest outer edges
+<p></p>
+The hull is constructed by removing border triangles
 of the Delaunay Triangulation of the points,
-until the target criterion parameter is reached.
-<p>
+as long as their "size" is larger than the target criterion.
+<p></p>
 The target criteria are:
-<table><tbody><tr><td>Maximum Edge Length Ratio</td><td>the length of the longest edge of the hull is no larger
-than this value.</td></tr><tr><td>Maximum Edge Length Factor</td><td>determine the Maximum Edge Length
-as a fraction of the difference between the longest and shortest edge lengths
+<table><tbody><tr><td class="term">Maximum Edge Length</td><td class="description">the length of the longest edge of the hull is no larger
+than this value.</td></tr><tr><td class="term">Maximum Edge Length Factor</td><td class="description">determines the Maximum Edge Length
+by a fraction of the difference between the longest and shortest edge lengths
 in the Delaunay Triangulation.
-This normalizes the <strong>Maximum Edge Length</strong> to be scale-free.
-A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.</td></tr></tbody></table>
-The preferred criterion is the <strong>Maximum Edge Length Ratio</strong>, since it is
+This normalizes the <b>Maximum Edge Length</b> to be scale-free.
+A value of 1 produces the convex hull; a value of 0 produces maximum concaveness.
+</td></tr><tr><td class="term">Alpha</td><td class="description">produces Alpha-shapes,
+by removing border triangles with a circumradius greater than alpha.
+Large values produce the convex hull; a value of 0 produces maximum concaveness.</td></tr></tbody></table>
+The preferred criterion is the <b>Maximum Edge Length Ratio</b>, since it is
 scale-free and local(so that no assumption needs to be made about the
 total amount of concaveness present).
+<p></p>
 Other length criteria can be used by setting the Maximum Edge Length directly.
 For example, use a length relative to the longest edge length
 in the Minimum Spanning Tree of the point set.
 Or, use a length derived from the <a class="xref" href="NetTopologySuite.Algorithm.Hull.ConcaveHull.html#NetTopologySuite_Algorithm_Hull_ConcaveHull_UniformGridEdgeLength_NetTopologySuite_Geometries_Geometry_">UniformGridEdgeLength(Geometry)</a> value.
-<p>
+<p></p>
 The computed hull is always a single connected <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>
 (unless it is degenerate, in which case it will be a <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> or a <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>).
 This constraint may cause the concave hull to fail to meet the target criteria.
-<p>
-Optionally the concave hull can be allowed to contain holes.
-Note that when using the area-based criterion
-this may result in substantially slower computation.
+<p></p>
+Optionally the concave hull can be allowed to contain holes by setting <a class="xref" href="NetTopologySuite.Algorithm.Hull.ConcaveHull.html#NetTopologySuite_Algorithm_Hull_ConcaveHull_HolesAllowed">HolesAllowed</a>.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">ConcaveHull</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.Hull.html">NetTopologySuite.Algorithm.Hull</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Algorithm.html">Algorithm</a>.<a class="xref" href="NetTopologySuite.Algorithm.Hull.html">Hull</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class ConcaveHull</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L145">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L178">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull__ctor_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.#ctor*"></a>
   <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.#ctor(NetTopologySuite.Geometries.Geometry)">ConcaveHull(Geometry)</h4>
   <div class="markdown level1 summary"><p>Creates a new instance for a given geometry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ConcaveHull(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -188,25 +188,27 @@ this may result in substantially slower computation.
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_HolesAllowed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.HolesAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_Alpha.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.Alpha%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L205">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L242">View Source</a>
   </span>
-  <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_HolesAllowed_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.HolesAllowed*"></a>
-  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_HolesAllowed" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.HolesAllowed">HolesAllowed</h4>
-  <div class="markdown level1 summary"><p>Gets or sets whether holes are allowed in the concave hull polygon.</p>
+  <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_Alpha_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.Alpha*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_Alpha" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.Alpha">Alpha</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the alpha parameter to compute an alpha shape of the input.
+Alpha is the radius of the eroding disc.
+Border triangles with circumradius greater than alpha are removed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HolesAllowed { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double Alpha { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -215,22 +217,53 @@ this may result in substantially slower computation.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLength.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLength%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_HolesAllowed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.HolesAllowed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L165">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L256">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_HolesAllowed_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.HolesAllowed*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_HolesAllowed" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.HolesAllowed">HolesAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets whether holes are allowed in the concave hull polygon.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HolesAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLength.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLength%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L198">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLength_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLength*"></a>
   <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLength" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLength">MaximumEdgeLength</h4>
   <div class="markdown level1 summary"><p>Gets or sets the target maximum edge length for the concave hull.
-The length value must be zero or greater.</p>
+The length value must be zero or greater.
 <ul><li>The value 0.0 produces the concave hull of smallest area
 that is still connected.</li><li>Larger values produce less concave results.
 A value equal or greater than the longest Delaunay Triangulation edge length
@@ -239,12 +272,12 @@ The <a class="xref" href="NetTopologySuite.Algorithm.Hull.ConcaveHull.html#NetTo
 the basis for estimating an appropriate target maximum edge length.
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public double MaximumEdgeLength { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -253,7 +286,7 @@ the basis for estimating an appropriate target maximum edge length.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>The target maximum edge length for the concave hull</p>
 </td>
       </tr>
@@ -265,10 +298,10 @@ the basis for estimating an appropriate target maximum edge length.
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLengthRatio.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLengthRatio%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLengthRatio.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLengthRatio%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L190">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L224">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLengthRatio_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLengthRatio*"></a>
   <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_MaximumEdgeLengthRatio" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.MaximumEdgeLengthRatio">MaximumEdgeLengthRatio</h4>
@@ -278,15 +311,15 @@ between the longest and shortest edge lengths
 in the Delaunay Triangulation of the input points.
 It is a value in the range 0 to 1.</p>
 <ul><li>The value 0.0 produces a concave hull of minimum area
-that is still connected.</li><li>The value 1.0 produces the convex hull.</li></ul> 
+that is still connected.</li><li>The value 1.0 produces the convex hull.</li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public double MaximumEdgeLengthRatio { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -295,33 +328,33 @@ that is still connected.</li><li>The value 1.0 produces the convex hull.</li></u
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>The target maximum edge length factor for the concave hull</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_AlphaShape_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.AlphaShape(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L73">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L153">View Source</a>
   </span>
-  <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength*"></a>
-  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry,System.Double)">ConcaveHullByLength(Geometry, Double)</h4>
-  <div class="markdown level1 summary"><p>Computes the concave hull of the vertices in a geometry
-using the target criterion of maximum edge length.</p>
+  <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_AlphaShape_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.AlphaShape*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_AlphaShape_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.AlphaShape(NetTopologySuite.Geometries.Geometry,System.Double,System.Boolean)">AlphaShape(Geometry, double, bool)</h4>
+  <div class="markdown level1 summary"><p>Computes the alpha shape of a geometry as a polygon.
+The alpha parameter is the radius of the eroding disc.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Geometry ConcaveHullByLength(Geometry geom, double maxLength)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Geometry AlphaShape(Geometry geom, double alpha, bool isHolesAllowed)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -337,7 +370,70 @@ using the target criterion of maximum edge length.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">alpha</span></td>
+        <td><p>The radius of the eroding disk</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">isHolesAllowed</span></td>
+        <td><p>A flag indicating if holes are allowed in the result</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The alpha schape polygon</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L84">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength*"></a>
+  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry,System.Double)">ConcaveHullByLength(Geometry, double)</h4>
+  <div class="markdown level1 summary"><p>Computes the concave hull of the vertices in a geometry
+using the target criterion of maximum edge length.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry ConcaveHullByLength(Geometry geom, double maxLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td><p>The input geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">maxLength</span></td>
         <td><p>The target maximum edge length</p>
 </td>
@@ -345,7 +441,7 @@ using the target criterion of maximum edge length.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -362,24 +458,24 @@ using the target criterion of maximum edge length.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L87">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L98">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength*"></a>
-  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry,System.Double,System.Boolean)">ConcaveHullByLength(Geometry, Double, Boolean)</h4>
+  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLength_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLength(NetTopologySuite.Geometries.Geometry,System.Double,System.Boolean)">ConcaveHullByLength(Geometry, double, bool)</h4>
   <div class="markdown level1 summary"><p>Computes the concave hull of the vertices in a geometry
 using the target criterion of maximum edge length,
 and optionally allowing holes.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry ConcaveHullByLength(Geometry geom, double maxLength, bool isHolesAllowed)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -395,13 +491,13 @@ and optionally allowing holes.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">maxLength</span></td>
         <td><p>The target maximum edge length</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">isHolesAllowed</span></td>
         <td><p>A flag whether holes are allowed in the result</p>
 </td>
@@ -409,7 +505,7 @@ and optionally allowing holes.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -426,13 +522,13 @@ and optionally allowing holes.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L107">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L118">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio*"></a>
-  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry,System.Double)">ConcaveHullByLengthRatio(Geometry, Double)</h4>
+  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry,System.Double)">ConcaveHullByLengthRatio(Geometry, double)</h4>
   <div class="markdown level1 summary"><p>Computes the concave hull of the vertices in a geometry
 using the target criterion of maximum edge length ratio.
 The edge length ratio is a fraction of the length difference
@@ -440,12 +536,12 @@ between the longest and shortest edges
 in the Delaunay Triangulation of the input points.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry ConcaveHullByLengthRatio(Geometry geom, double lengthRatio)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -461,7 +557,7 @@ in the Delaunay Triangulation of the input points.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">lengthRatio</span></td>
         <td><p>The target edge length ratio</p>
 </td>
@@ -469,7 +565,7 @@ in the Delaunay Triangulation of the input points.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -486,13 +582,13 @@ in the Delaunay Triangulation of the input points.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry%2CSystem.Double%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L124">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L135">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio*"></a>
-  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry,System.Double,System.Boolean)">ConcaveHullByLengthRatio(Geometry, Double, Boolean)</h4>
+  <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_ConcaveHullByLengthRatio_NetTopologySuite_Geometries_Geometry_System_Double_System_Boolean_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.ConcaveHullByLengthRatio(NetTopologySuite.Geometries.Geometry,System.Double,System.Boolean)">ConcaveHullByLengthRatio(Geometry, double, bool)</h4>
   <div class="markdown level1 summary"><p>Computes the concave hull of the vertices in a geometry
 using the target criterion of maximum edge length ratio,
 and optionally allowing holes.
@@ -501,12 +597,12 @@ between the longest and shortest edges
 in the Delaunay Triangulation of the input points.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry ConcaveHullByLengthRatio(Geometry geom, double lengthRatio, bool isHolesAllowed)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -522,13 +618,13 @@ in the Delaunay Triangulation of the input points.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">lengthRatio</span></td>
         <td><p>The target edge length ratio</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">isHolesAllowed</span></td>
         <td><p>A flag whether holes are allowed in the result</p>
 </td>
@@ -536,7 +632,7 @@ in the Delaunay Triangulation of the input points.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -553,22 +649,22 @@ in the Delaunay Triangulation of the input points.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_GetHull.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.GetHull%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_GetHull.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.GetHull%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L215">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L266">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_GetHull_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.GetHull*"></a>
   <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_GetHull" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.GetHull">GetHull()</h4>
   <div class="markdown level1 summary"><p>Gets the computed concave hull.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry GetHull()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -585,10 +681,10 @@ in the Delaunay Triangulation of the input points.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_UniformGridEdgeLength_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.UniformGridEdgeLength(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull_UniformGridEdgeLength_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull.UniformGridEdgeLength(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L59">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L70">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_Hull_ConcaveHull_UniformGridEdgeLength_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.UniformGridEdgeLength*"></a>
   <h4 id="NetTopologySuite_Algorithm_Hull_ConcaveHull_UniformGridEdgeLength_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.Hull.ConcaveHull.UniformGridEdgeLength(NetTopologySuite.Geometries.Geometry)">UniformGridEdgeLength(Geometry)</h4>
@@ -601,12 +697,12 @@ A value from 2 to 4 times the uniform grid length
 seems to produce reasonable results.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double UniformGridEdgeLength(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -624,7 +720,7 @@ seems to produce reasonable results.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -633,36 +729,37 @@ seems to produce reasonable results.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>The approximate uniform grid length</p>
 </td>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Algorithm_Hull_ConcaveHull.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.Hull.ConcaveHull%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L46" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Algorithm/Hull/ConcaveHull.cs/#L57" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -670,14 +767,14 @@ seems to produce reasonable results.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

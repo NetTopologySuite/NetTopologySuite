@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class CoveragePolygonValidator | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class CoveragePolygonValidator | NetTopologySuite ">
+    
+    <meta name="description" content="Validates that a polygon forms a valid polygonal coverage with the set of polygons adjacent to it. If the polygon is coverage-valid an empty {  LineString} is returned. Otherwise, the result is a linear geometry containing the polygon boundary linework causing the invalidity.  A polygon is coverage-valid if: The polygon interior does not intersect the interior of other polygons.If the polygon boundary intersects another polygon boundary, the vertices and line segments of the intersection match exactly.  The algorithm detects the following coverage errors: the polygon is a duplicate of another onea polygon boundary segment equals an adjacent segment (with same orientation). This determines that the polygons overlapa polygon boundary segment is collinear and overlaps an adjacent segment but is not equal to it a polygon boundary segment touches an adjacent segment at a non-vertex pointa polygon boundary segment crosses into an adjacent polygona polygon boundary segment is in the interior of an adjacent polygon  If any of these errors is present, the target polygon does not form a valid coverage with the adjacent polygons.  The validity rules do not preclude properly noded gaps between coverage polygons. However, this class can detect narrow gaps, by specifying a maximum gap width using {@link #setGapWidth(double)}. Note that this will also identify narrow gaps separating disjoint coverage regions, and narrow gores. In some situations it may also produce false positives (i.e.linework identified as part of a gap which is wider than the given width). To fully identify gaps it maybe necessary to use  and analyze the holes in the result to see if they are acceptable.  A polygon may be coverage-valid with respect to a set of surrounding polygons, but the collection as a whole may not form a clean coverage.For example, the target polygon boundary may be fully matched by adjacent boundary segments, but the adjacent set contains polygons which are not coverage - valid relative to other ones in the set. A coverage is valid only if every polygon in the coverage is coverage - valid. Use  to validate an entire set of polygons.  The adjacent set may contain polygons which do not intersect the target polygon. These are effectively ignored during validation (but may decrease performance).">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator">
+
+
+
+  <h1 id="NetTopologySuite_Coverage_CoveragePolygonValidator" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator" class="text-break">Class CoveragePolygonValidator</h1>
+  <div class="markdown level0 summary"><p>Validates that a polygon forms a valid polygonal coverage
+with the set of polygons adjacent to it.
+If the polygon is coverage-valid an empty { @link LineString} is returned.
+Otherwise, the result is a linear geometry containing
+the polygon boundary linework causing the invalidity.</p>
+<p></p>
+A polygon is coverage-valid if:
+<ol><li>The polygon interior does not intersect the interior of other polygons.</li><li>If the polygon boundary intersects another polygon boundary, the vertices
+and line segments of the intersection match exactly.</li></ol>
+<p></p>
+The algorithm detects the following coverage errors:
+<ol><li>the polygon is a duplicate of another one</li><li>a polygon boundary segment equals an adjacent segment (with same orientation).
+This determines that the polygons overlap</li><li>a polygon boundary segment is collinear and overlaps an adjacent segment
+but is not equal to it
+</li><li>a polygon boundary segment touches an adjacent segment at a non-vertex point</li><li>a polygon boundary segment crosses into an adjacent polygon</li><li>a polygon boundary segment is in the interior of an adjacent polygon</li></ol>
+<p></p>
+<p>If any of these errors is present, the target polygon
+does not form a valid coverage with the adjacent polygons.</p>
+<p></p>
+The validity rules do not preclude properly noded gaps between coverage polygons.
+However, this class can detect narrow gaps,
+by specifying a maximum gap width using {@link #setGapWidth(double)}.
+Note that this will also identify narrow gaps separating disjoint coverage regions,
+and narrow gores.
+In some situations it may also produce false positives
+(i.e.linework identified as part of a gap which is wider than the given width).
+To fully identify gaps it maybe necessary to use <a class="xref" href="NetTopologySuite.Coverage.CoverageUnion.html">CoverageUnion</a> and analyze
+the holes in the result to see if they are acceptable.
+<p></p>
+A polygon may be coverage-valid with respect to
+a set of surrounding polygons, but the collection as a whole may not
+form a clean coverage.For example, the target polygon boundary may be fully matched
+by adjacent boundary segments, but the adjacent set contains polygons
+which are not coverage - valid relative to other ones in the set.
+A coverage is valid only if every polygon in the coverage is coverage - valid.
+Use <a class="xref" href="NetTopologySuite.Coverage.CoverageValidator.html">CoverageValidator</a> to validate an entire set of polygons.
+<p></p>
+The adjacent set may contain polygons which do not intersect the target polygon.
+These are effectively ignored during validation (but may decrease performance).
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">CoveragePolygonValidator</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Coverage.html">Coverage</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Coverage_CoveragePolygonValidator_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CoveragePolygonValidator</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoveragePolygonValidator__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoveragePolygonValidator.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoveragePolygonValidator.cs/#L112">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoveragePolygonValidator__ctor_" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.#ctor*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoveragePolygonValidator__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry___" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry[])">CoveragePolygonValidator(Geometry, Geometry[])</h4>
+  <div class="markdown level1 summary"><p>Create a new validator.</p>
+<p></p>
+If the gap width is specified, the set of surrounding polygons
+should include all polygons which
+are within the gap width distance of the target polygon.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoveragePolygonValidator(Geometry geom, Geometry[] adjGeoms)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">adjGeoms</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoveragePolygonValidator_GapWidth.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoveragePolygonValidator.GapWidth%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoveragePolygonValidator.cs/#L122">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoveragePolygonValidator_GapWidth_" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.GapWidth*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoveragePolygonValidator_GapWidth" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.GapWidth">GapWidth</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the maximum gap width, if narrow gaps are to be detected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GapWidth { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoveragePolygonValidator_Validate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoveragePolygonValidator.Validate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoveragePolygonValidator.cs/#L129">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoveragePolygonValidator_Validate_" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.Validate*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoveragePolygonValidator_Validate" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.Validate">Validate()</h4>
+  <div class="markdown level1 summary"><p>Validates the coverage polygon against the set of adjacent polygons
+in the coverage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry Validate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>A linear geometry containing the segments causing invalidity (if any)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoveragePolygonValidator_Validate_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoveragePolygonValidator.Validate(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoveragePolygonValidator.cs/#L74">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoveragePolygonValidator_Validate_" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.Validate*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoveragePolygonValidator_Validate_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry___" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.Validate(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry[])">Validate(Geometry, Geometry[])</h4>
+  <div class="markdown level1 summary"><p>Validates that a polygon is coverage-valid  against the
+surrounding polygons in a polygonal coverage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Validate(Geometry targetPolygon, Geometry[] adjPolygons)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">targetPolygon</span></td>
+        <td><p>The polygon to validate</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">adjPolygons</span></td>
+        <td><p>The adjacent polygons</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>A linear geometry containing the segments causing invalidity (if any)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoveragePolygonValidator_Validate_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry___System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoveragePolygonValidator.Validate(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%5B%5D%2CSystem.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoveragePolygonValidator.cs/#L92">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Coverage_CoveragePolygonValidator_Validate_" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.Validate*"></a>
+  <h4 id="NetTopologySuite_Coverage_CoveragePolygonValidator_Validate_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry___System_Double_" data-uid="NetTopologySuite.Coverage.CoveragePolygonValidator.Validate(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry[],System.Double)">Validate(Geometry, Geometry[], double)</h4>
+  <div class="markdown level1 summary"><p>Validates that a polygon is coverage-valid against the
+surrounding polygons in a polygonal coverage,
+and forms no gaps narrower than a specified width.</p>
+<p></p>
+The set of surrounding polygons should include all polygons which
+are within the gap width distance of the target polygon.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Validate(Geometry targetPolygon, Geometry[] adjPolygons, double gapWidth)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">targetPolygon</span></td>
+        <td><p>The polygon to validate</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>[]</td>
+        <td><span class="parametername">adjPolygons</span></td>
+        <td><p>The adjacent polygons</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><span class="parametername">gapWidth</span></td>
+        <td><p>The maximum width of invalid gaps</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>A linear geometry containing the segments causing invalidity (if any)///</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Coverage.CoverageValidator.html">CoverageValidator</a></div>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Coverage_CoveragePolygonValidator.md&amp;value=---%0Auid%3A%20NetTopologySuite.Coverage.CoveragePolygonValidator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Coverage/CoveragePolygonValidator.cs/#L65" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

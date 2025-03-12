@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PrecisionUtility
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PrecisionUtility
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class PrecisionUtility | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class PrecisionUtility | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Functions for computing precision model scale factors that ensure robust geometry operations. In particular, these can be used to automatically determine appropriate scale factors for operations using limited-precision noding (such as ).  WARNING: the inherentScale and robustScale  functions can be very slow, due to the method used to determine number of decimal places of a number. These are not recommended for production use.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,16 +77,16 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility">
-  
-  
-  <h1 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility" class="text-break">Class PrecisionUtility
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility" class="text-break">Class PrecisionUtility</h1>
   <div class="markdown level0 summary"><p>Functions for computing precision model scale factors
 that ensure robust geometry operations.
 In particular, these can be used to
 automatically determine appropriate scale factors for operations
 using limited-precision noding (such as <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a>).</p>
-<p>
+<p></p>
 WARNING: the <code>inherentScale</code> and <code>robustScale</code> 
 functions can be very slow, due to the method used to determine
 number of decimal places of a number.
@@ -97,44 +95,44 @@ These are not recommended for production use.
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">PrecisionUtility</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.OverlayNG.html">NetTopologySuite.Operation.OverlayNG</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Operation.html">Operation</a>.<a class="xref" href="NetTopologySuite.Operation.OverlayNG.html">OverlayNG</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class PrecisionUtility</code></pre>
   </div>
   <h3 id="fields">Fields
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_MAX_ROBUST_DP_DIGITS.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.MAX_ROBUST_DP_DIGITS%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_MAX_ROBUST_DP_DIGITS.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.MAX_ROBUST_DP_DIGITS%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L31">View Source</a>
@@ -142,16 +140,16 @@ These are not recommended for production use.
   <h4 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_MAX_ROBUST_DP_DIGITS" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.MAX_ROBUST_DP_DIGITS">MAX_ROBUST_DP_DIGITS</h4>
   <div class="markdown level1 summary"><p>A number of digits of precision which leaves some computational &quot;headroom&quot;
 to ensure robust evaluation of certain double-precision floating point geometric operations.</p>
-<p>
+<p></p>
 This value should be less than the maximum decimal precision of double-precision values (16).
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static int MAX_ROBUST_DP_DIGITS</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -160,16 +158,16 @@ This value should be less than the maximum decimal precision of double-precision
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L177">View Source</a>
@@ -178,22 +176,22 @@ This value should be less than the maximum decimal precision of double-precision
   <h4 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(NetTopologySuite.Geometries.Geometry)">InherentScale(Geometry)</h4>
   <div class="markdown level1 summary"><p>Computes the inherent scale of a geometry.
 The inherent scale is the scale factor for rounding
-which preserves <strong>all</strong> digits of precision
+which preserves <b>all</b> digits of precision
 (significant digits)
 present in the geometry ordinates.</p>
-<p>
+<p></p>
 This is the maximum inherent scale
 of all ordinate values in the geometry.
-<p>
-WARNING: this is <strong>very</strong> slow.
+<p></p>
+WARNING: this is <b>very</b> slow.
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double InherentScale(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -211,7 +209,7 @@ WARNING: this is <strong>very</strong> slow.
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -220,7 +218,7 @@ WARNING: this is <strong>very</strong> slow.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>The inherent scale factor in the geometry's ordinates</p>
 </td>
       </tr>
@@ -228,7 +226,7 @@ WARNING: this is <strong>very</strong> slow.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L202">View Source</a>
@@ -237,20 +235,20 @@ WARNING: this is <strong>very</strong> slow.
   <h4 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry)">InherentScale(Geometry, Geometry)</h4>
   <div class="markdown level1 summary"><p>Computes the inherent scale of two geometries.
 The inherent scale is the scale factor for rounding
-which preserves <strong>all</strong> digits of precision
+which preserves <b>all</b> digits of precision
 (significant digits)
 present in the geometry ordinates.</p>
-<p>
+<p></p>
 This is the maximum inherent scale
 of all ordinate values in the geometries.
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double InherentScale(Geometry a, Geometry b)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -274,7 +272,7 @@ of all ordinate values in the geometries.
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -283,7 +281,7 @@ of all ordinate values in the geometries.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>The inherent scale factor in the geometries' ordinates</p>
 </td>
       </tr>
@@ -291,29 +289,29 @@ of all ordinate values in the geometries.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(System.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L156">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale*"></a>
-  <h4 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_System_Double_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(System.Double)">InherentScale(Double)</h4>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_InherentScale_System_Double_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.InherentScale(System.Double)">InherentScale(double)</h4>
   <div class="markdown level1 summary"><p>Computes the inherent scale of a number.
 The inherent scale is the scale factor for rounding
-which preserves <strong>all</strong> digits of precision
+which preserves <b>all</b> digits of precision
 (significant digits)
 present in the numeric value.
 In other words, it is the scale factor which does not
 change the numeric value when rounded:</p>
-<pre><code>  num = round( num, inherentScale(num) )</code></pre>
+<pre><code class="lang-csharp">num = round( num, inherentScale(num) )</code></pre>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double InherentScale(double value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -323,7 +321,7 @@ change the numeric value when rounded:</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">value</span></td>
         <td><p>A number</p>
 </td>
@@ -331,7 +329,7 @@ change the numeric value when rounded:</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -340,7 +338,7 @@ change the numeric value when rounded:</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>The inherent scale factor of the number</p>
 </td>
       </tr>
@@ -348,7 +346,7 @@ change the numeric value when rounded:</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_RobustPM_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.RobustPM(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_RobustPM_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.RobustPM(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L359">View Source</a>
@@ -359,19 +357,19 @@ change the numeric value when rounded:</p>
 use for robust overlay operations for one geometry.
 The precision scale factor is chosen to maximize
 output precision while avoiding round-off issues.</p>
-<p>
+<p></p>
 NOTE: this is a heuristic determination, so is not guaranteed to
 eliminate precision issues.
-<p>
-WARNING: this is <strong>very</strong> slow.
+<p></p>
+WARNING: this is <b>very</b> slow.
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static PrecisionModel RobustPM(Geometry a)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -389,7 +387,7 @@ WARNING: this is <strong>very</strong> slow.
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -406,7 +404,7 @@ WARNING: this is <strong>very</strong> slow.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_RobustScale_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.RobustScale(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_RobustScale_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.RobustScale(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L403">View Source</a>
@@ -420,12 +418,12 @@ The robust scale is the minimum of the
 inherent scale and the safe scale factors.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double RobustScale(Geometry a)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -443,7 +441,7 @@ inherent scale and the safe scale factors.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -452,7 +450,7 @@ inherent scale and the safe scale factors.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>A scale factor for use in overlay operations</p>
 </td>
       </tr>
@@ -460,7 +458,7 @@ inherent scale and the safe scale factors.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_RobustScale_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.RobustScale(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_RobustScale_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.RobustScale(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L382">View Source</a>
@@ -472,16 +470,16 @@ the digits of precision and is
 safe to use for overlay operations.
 The robust scale is the minimum of the
 inherent scale and the safe scale factors.</p>
-<p>
-WARNING: this is <strong>very</strong> slow.
+<p></p>
+WARNING: this is <b>very</b> slow.
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double RobustScale(Geometry a, Geometry b)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -505,7 +503,7 @@ WARNING: this is <strong>very</strong> slow.
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -514,7 +512,7 @@ WARNING: this is <strong>very</strong> slow.
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>A scale factor for use in overlay operations</p>
 </td>
       </tr>
@@ -522,7 +520,7 @@ WARNING: this is <strong>very</strong> slow.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L54">View Source</a>
@@ -535,12 +533,12 @@ number has no more than <a class="xref" href="NetTopologySuite.Operation.Overlay
 digits of precision.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double SafeScale(Geometry geom)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -558,7 +556,7 @@ digits of precision.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -567,7 +565,7 @@ digits of precision.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>A safe scale factor for the geometry ordinates</p>
 </td>
       </tr>
@@ -575,7 +573,7 @@ digits of precision.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L73">View Source</a>
@@ -588,12 +586,12 @@ number has no more than <a class="xref" href="NetTopologySuite.Operation.Overlay
 digits of precision.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double SafeScale(Geometry a, Geometry b)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -617,7 +615,7 @@ digits of precision.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -626,7 +624,7 @@ digits of precision.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>A safe scale factor for the geometry ordinates</p>
 </td>
       </tr>
@@ -634,25 +632,25 @@ digits of precision.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(System.Double)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L41">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale*"></a>
-  <h4 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_System_Double_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(System.Double)">SafeScale(Double)</h4>
+  <h4 id="NetTopologySuite_Operation_OverlayNG_PrecisionUtility_SafeScale_System_Double_" data-uid="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.SafeScale(System.Double)">SafeScale(double)</h4>
   <div class="markdown level1 summary"><p>Computes a safe scale factor for a numeric value.
 A safe scale factor ensures that rounded
 number has no more than <a class="xref" href="NetTopologySuite.Operation.OverlayNG.PrecisionUtility.html#NetTopologySuite_Operation_OverlayNG_PrecisionUtility_MAX_ROBUST_DP_DIGITS">MAX_ROBUST_DP_DIGITS</a>
 digits of precision.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static double SafeScale(double value)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -662,7 +660,7 @@ digits of precision.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><span class="parametername">value</span></td>
         <td><p>A numeric value.</p>
 </td>
@@ -670,7 +668,7 @@ digits of precision.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -679,21 +677,22 @@ digits of precision.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
         <td><p>A safe scale factor for the value</p>
 </td>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_OverlayNG_PrecisionUtility.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.OverlayNG.PrecisionUtility%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/OverlayNG/PrecisionUtility.cs/#L23" class="contribution-link">View Source</a>
@@ -701,14 +700,14 @@ digits of precision.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -716,14 +715,14 @@ digits of precision.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

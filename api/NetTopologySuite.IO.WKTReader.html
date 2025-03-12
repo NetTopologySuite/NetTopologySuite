@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class WKTReader
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class WKTReader
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class WKTReader | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class WKTReader | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Converts a Well-Known Text string to a Geometry. The WKTReader allows extracting Geometry objects from either input streams or internal strings. This allows it to function as a parser to read Geometry objects from text blocks embedded in other data formats (e.g. XML). The Well-known Text format is defined in the  OpenGIS Simple Features Specification for SQL .  As of version 2.0, NTS can read WKT syntax which specifies coordinate dimension Z, M or ZM as modifiers(e.g.POINT Z) or in the name of the geometry type(e.g.LINESTRINGZM). If the coordinate dimension is specified it will be set in the created geometry. If the coordinate dimension is not specified, the default behaviour is to create XYZ geometry(this is backwards compatible with older JTS versions). This can be altered to create XY geometry by setting  to false.  A reader can be set to ensure the input is structurally valid by setting  to true. This ensures that geometry can be constructed without errors due to missing coordinates. The created geometry may still be topologically invalid.  NOTE:  There is an inconsistency in the SFS. The WKT grammar states that MultiPoints are represented by MULTIPOINT ( ( x y), (x y) ), but the examples show MultiPoints as MULTIPOINT ( x y, x y ). Other implementations follow the latter syntax, so NTS will adopt it as well. A WKTReader is parameterized by a GeometryFactory, to allow it to create Geometry objects of the appropriate implementation. In particular, the GeometryFactory will determine the PrecisionModel and SRID that is used. The WKTReader will convert the input numbers to the precise internal representation.   reads also non-standard  tags.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,10 +77,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.IO.WKTReader">
-  
-  
-  <h1 id="NetTopologySuite_IO_WKTReader" data-uid="NetTopologySuite.IO.WKTReader" class="text-break">Class WKTReader
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_IO_WKTReader" data-uid="NetTopologySuite.IO.WKTReader" class="text-break">Class WKTReader</h1>
   <div class="markdown level0 summary"><p>Converts a Well-Known Text string to a <code>Geometry</code>.</p>
 <p>The <code>WKTReader</code> allows
 extracting <code>Geometry</code> objects from either input streams or
@@ -91,7 +89,7 @@ objects from text blocks embedded in other data formats (e.g. XML).</p>
 <p>The Well-known
 Text format is defined in the <a href="http://www.opengis.org/techno/specs.htm">
 OpenGIS Simple Features Specification for SQL</a> .</p>
-<p>
+<p></p>
 As of version 2.0, NTS can read WKT syntax
 which specifies coordinate dimension Z, M or ZM as modifiers(e.g.POINT Z)
 or in the name of the geometry type(e.g.LINESTRINGZM).
@@ -100,12 +98,12 @@ If the coordinate dimension is not specified, the default behaviour is to
 create XYZ geometry(this is backwards compatible with older JTS versions).
 This can be altered to create XY geometry by
 setting <a class="xref" href="NetTopologySuite.IO.WKTReader.html#NetTopologySuite_IO_WKTReader_IsOldNtsCoordinateSyntaxAllowed">IsOldNtsCoordinateSyntaxAllowed</a> to <code>false</code>.
-<p>
+<p></p>
 A reader can be set to ensure the input is structurally valid
 by setting <a class="xref" href="NetTopologySuite.IO.WKTReader.html#NetTopologySuite_IO_WKTReader_FixStructure">FixStructure</a> to <code>true</code>.
 This ensures that geometry can be constructed without errors due to missing coordinates.
 The created geometry may still be topologically invalid.
-<p>
+<p></p>
 NOTE:  There is an inconsistency in the SFS.
 The WKT grammar states that <code>MultiPoints</code> are represented by
 <code>MULTIPOINT ( ( x y), (x y) )</code>,
@@ -124,44 +122,44 @@ internal representation.
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">WKTReader</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.IO.html">NetTopologySuite.IO</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.IO.html">IO</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_IO_WKTReader_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class WKTReader</code></pre>
   </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L96">View Source</a>
@@ -171,13 +169,13 @@ internal representation.
   <div class="markdown level1 summary"><p>Creates a <code>WKTReader</code> that creates objects using a basic GeometryFactory.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public WKTReader()</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader__ctor_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.%23ctor(NetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader__ctor_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.%23ctor(NetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L111">View Source</a>
@@ -188,13 +186,13 @@ internal representation.
 <code>GeometryFactory</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use a constructor with a configured NtsGeometryServices instance.&quot;)]
 public WKTReader(GeometryFactory factory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -213,7 +211,7 @@ public WKTReader(GeometryFactory factory)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader__ctor_NetTopologySuite_NtsGeometryServices_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.%23ctor(NetTopologySuite.NtsGeometryServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader__ctor_NetTopologySuite_NtsGeometryServices_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.%23ctor(NetTopologySuite.NtsGeometryServices)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L101">View Source</a>
@@ -223,12 +221,12 @@ public WKTReader(GeometryFactory factory)</code></pre>
   <div class="markdown level1 summary"><p>Creates a <code>WKTReader</code> that creates objects using a basic GeometryFactory.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public WKTReader(NtsGeometryServices ntsGeometryServices)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -245,10 +243,10 @@ public WKTReader(GeometryFactory factory)</code></pre>
     </tbody>
   </table>
   <h3 id="properties">Properties
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_DefaultSRID.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.DefaultSRID%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_DefaultSRID.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.DefaultSRID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L167">View Source</a>
@@ -258,13 +256,13 @@ public WKTReader(GeometryFactory factory)</code></pre>
   <div class="markdown level1 summary"><p>Gets or sets the default SRID</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Obsolete(&quot;Supply an appropriate NtsGeometryServices instance to the constructor instead.  The ability to set this value after an instance is created may be removed in a future release.&quot;)]
 public int DefaultSRID { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -273,14 +271,14 @@ public int DefaultSRID { get; set; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Factory.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Factory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Factory.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Factory%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L149">View Source</a>
@@ -290,13 +288,13 @@ public int DefaultSRID { get; set; }</code></pre>
   <div class="markdown level1 summary"><p>Gets or sets the factory to create geometries</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Obsolete(&quot;Supply an appropriate NtsGeometryServices instance to the constructor instead.  The ability to set this value after an instance is created may be removed in a future release.&quot;)]
 public GeometryFactory Factory { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -312,7 +310,7 @@ public GeometryFactory Factory { get; set; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_FixStructure.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.FixStructure%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_FixStructure.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.FixStructure%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L144">View Source</a>
@@ -324,12 +322,12 @@ so that the geometry can be constructed without error.<br>
 This involves adding coordinates if the input coordinate sequence is shorter than required.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool FixStructure { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -338,7 +336,7 @@ This involves adding coordinates if the input coordinate sequence is shorter tha
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -349,7 +347,7 @@ This involves adding coordinates if the input coordinate sequence is shorter tha
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_IsOldNtsCoordinateSyntaxAllowed.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.IsOldNtsCoordinateSyntaxAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_IsOldNtsCoordinateSyntaxAllowed.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.IsOldNtsCoordinateSyntaxAllowed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L122">View Source</a>
@@ -358,15 +356,15 @@ This involves adding coordinates if the input coordinate sequence is shorter tha
   <h4 id="NetTopologySuite_IO_WKTReader_IsOldNtsCoordinateSyntaxAllowed" data-uid="NetTopologySuite.IO.WKTReader.IsOldNtsCoordinateSyntaxAllowed">IsOldNtsCoordinateSyntaxAllowed</h4>
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not coordinates may have 3 ordinate values
 even though no Z or M ordinate indicator is present.  The default value is
-<span class="xref">true</span>.</p>
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsOldNtsCoordinateSyntaxAllowed { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -375,14 +373,14 @@ even though no Z or M ordinate indicator is present.  The default value is
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_IsOldNtsMultiPointSyntaxAllowed.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.IsOldNtsMultiPointSyntaxAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_IsOldNtsMultiPointSyntaxAllowed.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.IsOldNtsMultiPointSyntaxAllowed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L132">View Source</a>
@@ -390,15 +388,15 @@ even though no Z or M ordinate indicator is present.  The default value is
   <a id="NetTopologySuite_IO_WKTReader_IsOldNtsMultiPointSyntaxAllowed_" data-uid="NetTopologySuite.IO.WKTReader.IsOldNtsMultiPointSyntaxAllowed*"></a>
   <h4 id="NetTopologySuite_IO_WKTReader_IsOldNtsMultiPointSyntaxAllowed" data-uid="NetTopologySuite.IO.WKTReader.IsOldNtsMultiPointSyntaxAllowed">IsOldNtsMultiPointSyntaxAllowed</h4>
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not point coordinates in a MultiPoint
-geometry must not be enclosed in paren.  The default value is <span class="xref">true</span>.</p>
+geometry must not be enclosed in paren.  The default value is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsOldNtsMultiPointSyntaxAllowed { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -407,14 +405,14 @@ geometry must not be enclosed in paren.  The default value is <span class="xref"
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_IsStrict.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.IsStrict%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_IsStrict.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.IsStrict%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L182">View Source</a>
@@ -424,12 +422,12 @@ geometry must not be enclosed in paren.  The default value is <span class="xref"
   <div class="markdown level1 summary"><p>Gets or sets a value indicating if the reader should attempt to repair malformed input.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsStrict { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -438,20 +436,20 @@ geometry must not be enclosed in paren.  The default value is <span class="xref"
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="NetTopologySuite_IO_WKTReader_IsStrict_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p><em>Malformed</em> in this case means the ring has too few points (4),
+  <div class="markdown level1 remarks"><p><i>Malformed</i> in this case means the ring has too few points (4),
 or is not closed.</p>
 </div>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Read_System_IO_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Read(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Read_System_IO_Stream_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Read(System.IO.Stream)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L216">View Source</a>
@@ -461,12 +459,12 @@ or is not closed.</p>
   <div class="markdown level1 summary"><p>Converts a Well-known Text representation to a <code>Geometry</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry Read(Stream stream)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -476,7 +474,7 @@ or is not closed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
         <td><span class="parametername">stream</span></td>
         <td><p>one or more Geometry Tagged Text strings (see the OpenGIS
 Simple Features Specification) separated by whitespace.</p>
@@ -485,7 +483,7 @@ Simple Features Specification) separated by whitespace.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -502,7 +500,7 @@ Simple Features Specification) separated by whitespace.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Read_System_IO_TextReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Read(System.IO.TextReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Read_System_IO_TextReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Read(System.IO.TextReader)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L233">View Source</a>
@@ -512,12 +510,12 @@ Simple Features Specification) separated by whitespace.</p>
   <div class="markdown level1 summary"><p>Converts a Well-known Text representation to a <code>Geometry</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry Read(TextReader reader)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -527,7 +525,7 @@ Simple Features Specification) separated by whitespace.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.textreader">TextReader</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.textreader">TextReader</a></td>
         <td><span class="parametername">reader</span></td>
         <td><p>A Reader which will return a &quot;Geometry Tagged Text&quot;
 string (see the OpenGIS Simple Features Specification).</p>
@@ -536,7 +534,7 @@ string (see the OpenGIS Simple Features Specification).</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -553,22 +551,22 @@ string (see the OpenGIS Simple Features Specification).</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Read_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Read(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader_Read_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader.Read(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L198">View Source</a>
   </span>
   <a id="NetTopologySuite_IO_WKTReader_Read_" data-uid="NetTopologySuite.IO.WKTReader.Read*"></a>
-  <h4 id="NetTopologySuite_IO_WKTReader_Read_System_String_" data-uid="NetTopologySuite.IO.WKTReader.Read(System.String)">Read(String)</h4>
+  <h4 id="NetTopologySuite_IO_WKTReader_Read_System_String_" data-uid="NetTopologySuite.IO.WKTReader.Read(System.String)">Read(string)</h4>
   <div class="markdown level1 summary"><p>Converts a Well-known Text representation to a <code>Geometry</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry Read(string wellKnownText)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -578,7 +576,7 @@ string (see the OpenGIS Simple Features Specification).</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">wellKnownText</span></td>
         <td><p>one or more Geometry Tagged Text strings (see the OpenGIS
 Simple Features Specification) separated by whitespace.</p>
@@ -587,7 +585,7 @@ Simple Features Specification) separated by whitespace.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -602,15 +600,16 @@ Simple Features Specification) separated by whitespace.</p>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_IO_WKTReader.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.WKTReader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/IO/WKTReader.cs/#L55" class="contribution-link">View Source</a>
@@ -618,14 +617,14 @@ Simple Features Specification) separated by whitespace.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -633,14 +632,14 @@ Simple Features Specification) separated by whitespace.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

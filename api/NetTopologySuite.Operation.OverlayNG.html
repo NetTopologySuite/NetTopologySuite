@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace NetTopologySuite.Operation.OverlayNG
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace NetTopologySuite.Operation.OverlayNG
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.Operation.OverlayNG | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.Operation.OverlayNG | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Contains classes that perform vector overlay to compute boolean set-theoretic spatial functions. Overlay operations are used in spatial analysis for computing set-theoretic operations (boolean combinations) of input Geometry s. The OverlayNG class provides the standard Simple Features boolean set-theoretic overlay operations. These are:  Intersection - all points which lie in both geometries Union - all points which lie in at least one geometry Difference - all points which lie in the first geometry but not the second Symmetric Difference - all points which lie in one geometry but not both  These operations are supported for all combinations of the basic geometry types and their homogeneous collections. Additional operations include:  UnaryUnion unions collections of geometries in an efficient way CoverageUnion provides enhanced performance for unioning valid polygonal and lineal coverages PrecisionReducer allows reducing the precision of a geometry in a topologically-valid way  Semantics The requirements for overlay input are:  Input geometries may have different dimension. Collections must be homogeneous (all elements must have the same dimension). In general, inputs must be valid geometries. However, polygonal inputs may contain the following two kinds of &amp;quot;mild&amp;quot; invalid topology:  rings which self-touch at discrete points (sometimes called inverted shells and exverted holes). rings which touch along line segments (i.e. topology collapse).    The semantics of overlay output are:  Results are always valid geometries. In particular, result MultiPolygons are valid. Repeated vertices are removed Linear results include all nodes (endpoints) present in the input. In some cases more nodes will be present. (If merged lines are required see LineMerger.) Polygon edges which undergo topology collapse to lines (due to rounding or snapping) are included in the result. This means that all operations may produce a heterogeneous result. Usually this only occurs when using a fixed-precision model, but it can happen due to snapping performed to improve robustness. The intersection operation result includes all components of the intersection for geometries which intersect in components of the same and/or lower dimension. The difference operation produces a homogeneous result if no topology collapses are present. In this case the result dimension is equal to that of the left-hand operand. The union and symmetric difference operations may produce heterogeneous result if the inputs are of mixed dimension. Homogeneous results are output as Multi geometries. Heterogeneous results are output as a GeometryCollection containing a set of atomic geometries. (This provides backwards compatibility with the original NTS overlay implementation. However, it loses the information that the polygonal results have valid MultiPolygon topology.) Empty results are atomic EMPTY geometries of dimension appropriate to the operation. As far as possible, results preserve the order and direction of the inputs. For instance, a MultiLineString intersection with a Polygon will have resultants which are in the same order and have the same direction as the input lines (assuming the input lines are disjoint). If an input line is split into two or more parts, they are ordered in the direction of occurence along their parent line.  Features Functionality  Precision Model - operations are performed using a defined precision model (finite or floating) Robust Computation - provides fully robust computation when an appropriate noder is used Performance optimizations - including:  Short-circuiting for disjoint input envelopes Reduction of input segment count via clipping / limiting to overlap envelope Optimizations can be disabled if required (e.g. for testing or performance evaluation)   Pluggable Noding - allows using different noders to change characteristics of performance and accuracy Precision Reduction - in a topologically correct way. Implemented by unioning a single input with an empty geometry [Topology Correction / Conversion] - handles certain kinds of polygonal inputs which are invalid Fast Coverage Union - of valid polygonal and linear coverages  Pluggable Noding The noding phase of overlay uses a INoder subclass. This is determine automatically based on the precision model of the input. Or it can be provided explicity, which allows changing characteristics of performance and robustness. Examples of relevant noders include:  MCIndexNoder - a fast full-precision noder, which however may not produce a valid noding in some situations. Should be combined with a ValidatingNoder wrapper to detect noding failures. SnappingNoder - a robust full-precision noder SnapRoundingNoder - a noder which enforces a supplied fixed precision model by snapping vertices and intersections to a grid ValidatingNoder - a wrapper which can be used to verify the noding prior to topology building SegmentExtractingNoder - requires node-clean input, and provides very fast noding  Topology Correction / Conversion As noted above, the overlay process can handle polygonal inputs which are invalid according to the OGC topology model in certain limited ways. These invalid conditions are:  rings which self-touch at discrete points (sometimes called inverted shells and exverted holes). rings which touch along line segments (i.e. topology collapse).  These invalidities are corrected during the overlay process. Some of these invalidities are considered as valid in other geometry models. By peforming a self-overlay these inputs can be converted into the JTS OGC topological model. Codebase  Defines a simple, full-featured topology model, with clear semantics. The topology model incorporates handling topology collapse, which is essential for snapping and fixed-precision noding. Uses a simple topology graph data structure (based on the winged edge pattern). Uses a simpler topology graph data structure (based on winged edge pattern). Decouples noding and topology-build phases. This makes the code clearer, and makes it possible to allow supplying alternate implementations and semantics for each phase. All optimizations are implemented internally, so that clients do not have to add checks such as envelope overlap&amp;lt;./li&amp;gt;  Algorithm For non-point inputs the overlay algorithm is:  Check for empty input geometries, and return a result appropriate for the specified operation Extract linework and points from input geometries, with topology location information (If optimization enabled) Apply overlap envelope optimizations:  For Intersection, check if the input envelopes are disjoint (using an envelope expansion adjustment to account for the precision grid). For Intersection and Difference, clip or limit the linework of the input geometries to the overlap envelope. If the optimized linework is empty, return an empty result of appropriate type.   Node the linework. For full robustness snap-rounding noding is used. Other kinds of noder can be used as well (for instance, the full-precision noding algorithm as the original overlay code). Merge noded edges. Coincident edges from the two input geometries are merged, along with their topological labelling. Topology collapses are detected in this step, and are flagged in the labelling so they can be handled appropriately duing result polygon extraction Build a fully-labelled topology graph. This includes:  Create a graph structure on the noded, merged edges Propagate topology locations around nodes in the graph Label edges that have incomplete topology locations. These occur when edges from an input geometry are isolated (disjoint from the edges of the other geometry in the graph).   If result is empty return an empty geometry of appropriate type Generate the result geometry from the labelled graph:  Build result polygons  Mark edges which should be included in the result areas Link maximal rings together Convert maximal rings to minimal (valid) rings Determine nesting of holes Construct result polygons   Build result linework  Mark edges to be included in the result lines Construct node-to-node linework   Build result points  For intersection only, output point occur where the input touch at single points   Collect result elements into the result geometry    Package Specification  OpenGIS Simple Features Specification for SQL">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,9 +77,8 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.OverlayNG">
-  
-  <h1 id="NetTopologySuite_Operation_OverlayNG" data-uid="NetTopologySuite.Operation.OverlayNG" class="text-break">Namespace NetTopologySuite.Operation.OverlayNG
-  </h1>
+
+  <h1 id="NetTopologySuite_Operation_OverlayNG" data-uid="NetTopologySuite.Operation.OverlayNG" class="text-break">Namespace NetTopologySuite.Operation.OverlayNG</h1>
   <div class="markdown level0 summary">
 <p>Contains classes that perform vector overlay to compute boolean set-theoretic spatial functions.
 Overlay operations are used in spatial analysis for computing set-theoretic operations (boolean combinations) of input <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> s.</p>
@@ -260,25 +257,26 @@ essential for snapping and fixed-precision noding.</li>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
+    <h3 id="classes">
+Classes
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Operation.OverlayNG.CoverageUnion.html">CoverageUnion</a></h4>
       <section><p>Unions a valid coverage of polygons or lines
 in an efficient way.</p>
-<p>
-A <strong>polygonal coverage</strong> is a collection of <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>s
+<p></p>
+A <b>polygonal coverage</b> is a collection of <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>s
 which satisfy the following conditions:
-<ol><li>Vector-cleanLine segments within the collection
-must either be identical or intersect only at endpoints.</li><li>Non-overlappingNo two polygons
+<ol><li><span class="term">Vector-clean</span>Line segments within the collection
+must either be identical or intersect only at endpoints.</li><li><span class="term">Non-overlapping</span>No two polygons
 may overlap. Equivalently, polygons must be interior-disjoint.</li></ol>
-<p>
-A <strong>linear coverage</strong> is a collection of <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s
-which satisfies the <strong>Vector-clean</strong> condition.
+<p></p>
+A <b>linear coverage</b> is a collection of <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s
+which satisfies the <b>Vector-clean</b> condition.
 Note that this does not require the LineStrings to be fully noded
 - i.e. they may contain coincident linework.
 Coincident line segments are dissolved by the union.
 Currently linear output is not merged (this may be added in a future release.)
-<p>
+<p></p>
 No checking is done to determine whether the input is a valid coverage.
 This is because coverage validation involves segment intersection detection,
 which is much more expensive than the union phase.
@@ -286,7 +284,7 @@ If the input is not a valid coverage
 then in some cases this will be detected during processing 
 and a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown.
 Otherwise, the computation will produce output, but it will be invalid.
-<p>
+<p></p>
 Unioning a valid coverage implies that no new vertices are created.
 This means that a precision model does not need to be specified.
 The precision of the vertices in the output geometry is not changed.
@@ -301,7 +299,7 @@ line segments enough to alter topology,
 and it happens in the overlay in any case.
 This can substantially reduce the number of vertices which need to be
 processed during overlay.</p>
-<p>
+<p></p>
 This optimization is only applicable to Line geometries,
 since it does not maintain the closed topology of rings.
 Polygonal geometries are optimized using the <a class="xref" href="NetTopologySuite.Operation.OverlayNG.RingClipper.html">RingClipper</a>.
@@ -309,38 +307,41 @@ Polygonal geometries are optimized using the <a class="xref" href="NetTopologySu
       <h4><a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a></h4>
       <section><p>Computes the geometric overlay of two <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s,
 using an explicit precision model to allow robust computation.</p>
-<p>
+<p></p>
 The overlay can be used to determine any of the
 following set-theoretic operations (boolean combinations) of the geometries:
-<ul><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Intersection">Intersection</a>all points which lie in both geometries</li><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Union">Union</a>all points which lie in at least one geometry</li><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Difference">Difference</a>all points which lie in the first geometry but not the second</li><li><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_SymDifference">SymDifference</a>all points which lie in one geometry but not both</li></ul>
+<ul><li><span class="term"><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Intersection">Intersection</a></span>all points which lie in both geometries</li><li><span class="term"><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Union">Union</a></span>all points which lie in at least one geometry</li><li><span class="term"><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_Difference">Difference</a></span>all points which lie in the first geometry but not the second</li><li><span class="term"><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html#NetTopologySuite_Operation_Overlay_SpatialFunction_SymDifference">SymDifference</a></span>all points which lie in one geometry but not both</li></ul>
 Input geometries may have different dimension.
 Input collections must be homogeneous (all elements must have the same dimension).
-<p>
+Inputs may be <b>simple</b> <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>s.
+A GeometryCollection is simple if it can be flattened into a valid Multi-geometry;
+i.e.it is homogeneous and does not contain any overlapping Polygons.
+<p></p>
 The precision model used for the computation can be supplied
 independent of the precision model of the input geometry.
 The main use for this is to allow using a fixed precision
 for geometry with a floating precision model.
 This does two things: ensures robust computation;
 and forces the output to be validly rounded to the precision model.
-<p>
+<p></p>
 For fixed precision models noding is performed using a <a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder.html">SnapRoundingNoder</a>.
 This provides robust computation(as long as precision is limited to
 around 13 decimal digits).
-<p>
+<p></p>
 For floating precision an <a class="xref" href="NetTopologySuite.Noding.MCIndexNoder.html">MCIndexNoder</a> is used.
 This is not fully robust, so can sometimes result in 
 <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a>s being thrown.
 For robust full-precision overlay see <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html">OverlayNGRobust</a>.
-<p>
+<p></p>
 A custom <a class="xref" href="NetTopologySuite.Noding.INoder.html">INoder</a> can be supplied.
 This allows using a more performant noding strategy in specific cases,
 for instance in <a class="xref" href="NetTopologySuite.Operation.OverlayNG.CoverageUnion.html">CoverageUnion</a>.
-<p>
-<strong>Note:</strong> If a <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a> is used
+<p></p>
+<b>Note:</b> If a <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a> is used
 it is best to specify a fairly small snap tolerance,
 since the intersection clipping optimization can
 interact with the snapping to alter the result.
-<p>
+<p></p>
 Optionally the overlay computation can process using strict mode
 (via <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html#NetTopologySuite_Operation_OverlayNG_OverlayNG_StrictMode">StrictMode</a> = <code>true</code>).
 In strict mode result semantics are:
@@ -352,7 +353,7 @@ Strict mode has the following benefits:
 <ul><li>Results are simpler</li><li>Overlay operations are easily chainable
 without needing to remove lower-dimension elements</li></ul>
 The original JTS overlay semantics corresponds to non-strict mode.
-<p>
+<p></p>
 If a robustness error occurs, a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown.
 These are usually caused by numerical rounding causing the noding output
 to not be fully noded.
@@ -363,13 +364,13 @@ can be used.
       <section><p>Performs an overlay operation using <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a>,
 increasing robustness by using a series of
 increasingly robust (but slower) noding strategies.</p>
-<p>
+<p></p>
 The noding strategies used are:
 <ol><li>A simple fast noder using <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a> precision</li><li>A <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a> using an automatically-determined snap tolerance</li><li>First snapping each geometry to itself, and then overlaying them wih a <a class="xref" href="NetTopologySuite.Noding.Snap.SnappingNoder.html">SnappingNoder</a></li><li>The above two strategies are repeated with increasing snap tolerance, up to a limit</li><li>Finally a <a class="xref" href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder.html">SnapRoundingNoder</a> is used with a automatically-determined scale factor.</li></ol>
 If all of the above heuristics fail to compute a valid overlay,
 the original <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> is thrown.
 In practice this should be extremely unlikely to occur.
-<p>
+<p></p>
 This algorithm relies on each overlay operation execution
 throwing a <a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a> if it is unable
 to compute the overlay correctly.
@@ -381,7 +382,7 @@ in order to check the results of using a floating noder.
       <h4><a class="xref" href="NetTopologySuite.Operation.OverlayNG.PrecisionReducer.html">PrecisionReducer</a></h4>
       <section><p>Functions to reduce the precision of a geometry
 by rounding it to a given precision model.</p>
-<p>
+<p></p>
 This class handles only polygonal and linear inputs.
 For full functionality <a class="xref" href="NetTopologySuite.Precision.GeometryPrecisionReducer.html">GeometryPrecisionReducer</a>.
 </section>
@@ -391,7 +392,7 @@ that ensure robust geometry operations.
 In particular, these can be used to
 automatically determine appropriate scale factors for operations
 using limited-precision noding (such as <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a>).</p>
-<p>
+<p></p>
 WARNING: the <code>inherentScale</code> and <code>robustScale</code> 
 functions can be very slow, due to the method used to determine
 number of decimal places of a number.
@@ -400,7 +401,7 @@ These are not recommended for production use.
       <h4><a class="xref" href="NetTopologySuite.Operation.OverlayNG.RingClipper.html">RingClipper</a></h4>
       <section><p>Clips a ring of points to an rectangle.
 Uses a variant of Cohen-Sutherland clipping.</p>
-<p>
+<p></p>
 In general the output is not topologically valid.
 In particular, the output may contain coincident non-noded line segments
 along the clip rectangle sides.
@@ -408,11 +409,11 @@ However, the output is sufficiently well-structured
 that it can be used as input to the <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a> algorithm
 (which is able to process coincident linework due
 to the need to handle topology collapse under precision reduction).
-<p>
+<p></p>
 Because of the likelihood of creating
 extraneous line segments along the clipping rectangle sides,
 this class is not suitable for clipping linestrings.
-<p>
+<p></p>
 The clipping envelope should be generated using <span class="xref">NetTopologySuite.Operation.OverlayNG.RobustClipEnvelopeComputer</span>,
 to ensure that intersecting line segments are not perturbed
 by clipping.
@@ -424,33 +425,35 @@ if clipping was not used).
       <section><p>Unions a collection of geometries in an
 efficient way, using <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNG.html">OverlayNG</a>
 to ensure robust computation.</p>
-<p>
+<p></p>
 This class is most useful for performing UnaryUnion using
 a fixed-precision model.<br>
 For unary union using floating precision,
 <a class="xref" href="NetTopologySuite.Operation.OverlayNG.OverlayNGRobust.html#NetTopologySuite_Operation_OverlayNG_OverlayNGRobust_Union_NetTopologySuite_Geometries_Geometry_">Union(Geometry)</a> should be used.
 </section>
+
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Operation.OverlayNG.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Operation.OverlayNG.md/#L2" class="contribution-link">Edit this page</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -458,14 +461,14 @@ For unary union using floating precision,
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

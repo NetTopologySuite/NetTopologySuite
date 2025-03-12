@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class OverlapUnion
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class OverlapUnion
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class OverlapUnion | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class OverlapUnion | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Unions MultiPolygons efficiently by using full topological union only for polygons which may overlap, and combining with the remaining polygons. Polygons which may overlap are those which intersect the common extent of the inputs. Polygons wholly outside this extent must be disjoint to the computed union. They can thus be simply combined with the union result, which is much more performant. (There is one caveat to this, which is discussed below).  This situation is likely to occur during cascaded polygon union, since the partitioning of polygons is done heuristically and thus may group disjoint polygons which can lie far apart. It may also occur in real world data which contains many disjoint polygons (e.g. polygons representing parcels on different street blocks).">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,10 +77,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Union.OverlapUnion">
-  
-  
-  <h1 id="NetTopologySuite_Operation_Union_OverlapUnion" data-uid="NetTopologySuite.Operation.Union.OverlapUnion" class="text-break">Class OverlapUnion
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Operation_Union_OverlapUnion" data-uid="NetTopologySuite.Operation.Union.OverlapUnion" class="text-break">Class OverlapUnion</h1>
   <div class="markdown level0 summary"><p>Unions MultiPolygons efficiently by
 using full topological union only for polygons which may overlap,
 and combining with the remaining polygons.
@@ -91,7 +89,7 @@ Polygons wholly outside this extent must be disjoint to the computed union.
 They can thus be simply combined with the union result,
 which is much more performant.
 (There is one caveat to this, which is discussed below).</p>
-<p>
+<p></p>
 This situation is likely to occur during cascaded polygon union,
 since the partitioning of polygons is done heuristically
 and thus may group disjoint polygons which can lie far apart.
@@ -101,34 +99,34 @@ It may also occur in real world data which contains many disjoint polygons
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">OverlapUnion</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
     <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Union.html">NetTopologySuite.Operation.Union</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Operation.html">Operation</a>.<a class="xref" href="NetTopologySuite.Operation.Union.html">Union</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_Union_OverlapUnion_syntax">Syntax</h5>
   <div class="codewrapper">
@@ -139,7 +137,7 @@ public class OverlapUnion</code></pre>
   <div class="markdown level0 remarks"><h2>Algorithm</h2>
 The overlap region is determined as the common envelope of intersection.
 The input polygons are partitioned into two sets:
-<ul><li>OverlappingPolygons which intersect the overlap region, and thus potentially overlap each other</li><li>DisjointPolygons which are disjoint from (lie wholly outside) the overlap region</li></ul>
+<ul><li><span class="term">Overlapping</span>Polygons which intersect the overlap region, and thus potentially overlap each other</li><li><span class="term">Disjoint</span>Polygons which are disjoint from (lie wholly outside) the overlap region</li></ul>
 The Overlapping set is fully unioned, and then combined with the Disjoint set.
 Performing a simple combine works because
 the disjoint polygons do not interact with each
@@ -158,19 +156,19 @@ is remedied by falling back to performing a full union of the original inputs.
 Detection is done by a fairly efficient comparison of edge segments which
 extend beyond the overlap region.  If any segments have changed
 then there is a risk of introduced intersections, and full union is performed.
-<p>
+<p></p>
 This situation has not been observed in JTS using floating precision,
 but it could happen due to snapping.  It has been observed
 in other APIs(e.g.GEOS) due to more aggressive snapping.
 It is more likely to happen if a Snap - Rounding overlay is used.
-<p>
-<strong>NOTE: Test has shown that using this heuristic impairs performance.</strong>
+<p></p>
+<b>NOTE: Test has shown that using this heuristic impairs performance.</b>
 </div>
   <h3 id="constructors">Constructors
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Union/OverlapUnion.cs/#L102">View Source</a>
@@ -180,12 +178,12 @@ It is more likely to happen if a Snap - Rounding overlay is used.
   <div class="markdown level1 summary"><p>Creates a new instance for unioning the given geometries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public OverlapUnion(Geometry g0, Geometry g1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -210,7 +208,7 @@ It is more likely to happen if a Snap - Rounding overlay is used.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Union_UnionStrategy_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Union.UnionStrategy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Union_UnionStrategy_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Union.UnionStrategy)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Union/OverlapUnion.cs/#L111">View Source</a>
@@ -220,12 +218,12 @@ It is more likely to happen if a Snap - Rounding overlay is used.
   <div class="markdown level1 summary"><p>Creates a new instance for unioning the given geometries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public OverlapUnion(Geometry g0, Geometry g1, UnionStrategy unionFun)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -255,10 +253,10 @@ It is more likely to happen if a Snap - Rounding overlay is used.
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion_Union.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.Union%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion_Union.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.Union%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Union/OverlapUnion.cs/#L129">View Source</a>
@@ -269,12 +267,12 @@ It is more likely to happen if a Snap - Rounding overlay is used.
 using the more performant overlap union algorithm if possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Geometry Union()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -291,7 +289,7 @@ using the more performant overlap union algorithm if possible.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion_Union_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.Union(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion_Union_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.Union(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Union/OverlapUnion.cs/#L69">View Source</a>
@@ -302,12 +300,12 @@ using the more performant overlap union algorithm if possible.</p>
 using the more performant overlap union algorithm if possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry Union(Geometry g0, Geometry g1)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -331,7 +329,7 @@ using the more performant overlap union algorithm if possible.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -348,7 +346,7 @@ using the more performant overlap union algorithm if possible.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion_Union_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Union_UnionStrategy_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.Union(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Union.UnionStrategy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion_Union_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Union_UnionStrategy_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion.Union(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Union.UnionStrategy)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Union/OverlapUnion.cs/#L83">View Source</a>
@@ -359,12 +357,12 @@ using the more performant overlap union algorithm if possible.</p>
 using the more performant overlap union algorithm if possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Geometry Union(Geometry g0, Geometry g1, UnionStrategy unionFun)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -394,7 +392,7 @@ using the more performant overlap union algorithm if possible.</p>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -409,15 +407,16 @@ using the more performant overlap union algorithm if possible.</p>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_OverlapUnion.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.OverlapUnion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Operation/Union/OverlapUnion.cs/#L59" class="contribution-link">View Source</a>
@@ -425,14 +424,14 @@ using the more performant overlap union algorithm if possible.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -440,14 +439,14 @@ using the more performant overlap union algorithm if possible.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

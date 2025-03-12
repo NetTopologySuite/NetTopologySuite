@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace NetTopologySuite.Operation.Buffer
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace NetTopologySuite.Operation.Buffer
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace NetTopologySuite.Operation.Buffer | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace NetTopologySuite.Operation.Buffer | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="Provides classes for computing buffers of geometries">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,16 +77,16 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Buffer">
-  
-  <h1 id="NetTopologySuite_Operation_Buffer" data-uid="NetTopologySuite.Operation.Buffer" class="text-break">Namespace NetTopologySuite.Operation.Buffer
-  </h1>
+
+  <h1 id="NetTopologySuite_Operation_Buffer" data-uid="NetTopologySuite.Operation.Buffer" class="text-break">Namespace NetTopologySuite.Operation.Buffer</h1>
   <div class="markdown level0 summary">
 <p>Provides classes for computing buffers of geometries</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
+    <h3 id="classes">
+Classes
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.BufferCurveSetBuilder.html">BufferCurveSetBuilder</a></h4>
       <section><p>Creates all the raw offset curves for a buffer of a <code>Geometry</code>.
 Raw curves need to be noded together and polygonized to form the final buffer area.</p>
@@ -102,26 +100,36 @@ Raw curves need to be noded together and polygonized to form the final buffer ar
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html">BufferParameters</a></h4>
       <section><p>A value class containing the parameters which
 specify how a buffer should be constructed.</p>
-<p>
+<p></p>
 The parameters allow control over:
 <ul><li>Quadrant segments (accuracy of approximation for circular arcs)</li><li>End Cap style</li><li>Join style</li><li>Mitre limit</li><li>whether the buffer is single-sided</li></ul>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.OffsetCurve.html">OffsetCurve</a></h4>
       <section><p>Computes an offset curve from a geometry.
-The offset curve is a linear geometry which is offset a specified distance
+An offset curve is a linear geometry which is offset a given distance
 from the input.
 If the offset distance is positive the curve lies on the left side of the input;
-if it is negative the curve is on the right side.</p>
-<ul><li>For a <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> the offset curve is a line.</li><li>For a <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> the offset curve is an empty <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>.</li><li>For a <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> the offset curve is the boundary of the polygon buffer (which
-may be a <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>).</li><li>For a collection the output is a <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a> containing the element offset curves.</li></ul>
-<p>
-The offset curve is computed as a single contiguous section of the geometry buffer boundary.
-In some geometric situations this definition is ill-defined.
-This algorithm provides a &quot;best-effort&quot; interpretation.
-In particular:
-<ul><li>For self-intersecting lines, the buffer boundary includes
-offset lines for both left and right sides of the input line.
-Only a single contiguous portion on the specified side is returned.</li><li>If the offset corresponds to buffer holes, only the largest hole is used.</li></ul>
+if it is negative the curve is on the right side.
+The curve(s) have the same direction as the input line(s).
+The result for a zero offset distance is a copy of the input linework.</p>
+<p></p>
+The offset curve is based on the boundary of the buffer for the geometry
+at the offset distance(see <a class="xref" href="NetTopologySuite.Operation.Buffer.BufferOp.html">BufferOp</a>.
+The normal mode of operation is to return the sections of the buffer boundarywhich lie on the raw offset curve
+(obtained via <a class="xref" href="NetTopologySuite.Operation.Buffer.OffsetCurve.html#NetTopologySuite_Operation_Buffer_OffsetCurve_RawOffset_NetTopologySuite_Geometries_LineString_System_Double_">RawOffset(LineString, double)</a>.
+The offset curve will contain multiple sections
+if the input self-intersects or has close approaches.The computed sections are ordered along the raw offset curve.
+Sections are disjoint.They never self-intersect, but may be rings.
+<ul><li>For a <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> the offset curve is a linear geometry
+(<a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> or <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>).</li><li>For a <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> or <a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a> the offset curve is an empty <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>.</li><li>For a <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> the offset curve is the boundary of the polygon buffer (which
+may be a <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>).</li><li>For a collection the output is a <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a> containing the offset curves of the elements.</li></ul>
+<p></p>
+In "joined" mode (see {@link #setJoined(boolean)}
+the sections computed for each input line are joined into a single offset curve line.
+The joined curve may self-intersect.
+At larger offset distances the curve may contain "flat-line" artifacts
+in places where the input self-intersects.
+<p></p>
 Offset curves support setting the number of quadrant segments,
 the join style, and the mitre limit(if applicable) via
 the <a class="xref" href="NetTopologySuite.Operation.Buffer.BufferParameters.html">BufferParameters</a>.
@@ -135,6 +143,11 @@ The final buffer polygon is computed by forming a topological graph
 of all the noded raw curves and tracing outside contours.
 The points in the raw curve are rounded
 to a given <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>.</p>
+<p></p>
+Note: this may not produce correct results if the input
+contains repeated or invalid points.
+Repeated points should be removed before calling.
+<a class="xref" href="NetTopologySuite.Geometries.CoordinateArrays.html#NetTopologySuite_Geometries_CoordinateArrays_RemoveRepeatedOrInvalidPoints_NetTopologySuite_Geometries_Coordinate___">RemoveRepeatedOrInvalidPoints(Coordinate[])</a>.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.OffsetCurveSetBuilder.html">OffsetCurveSetBuilder</a></h4>
       <section><p>Creates all the raw offset curves for a buffer of a <code>Geometry</code>.
@@ -148,40 +161,44 @@ Raw curves need to be noded together and polygonized to form the final buffer ar
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.VariableBuffer.html">VariableBuffer</a></h4>
       <section><p>Creates a buffer polygon with a varying buffer distance
-at each vertex along a line.</p>
-<p>
-Only single lines are supported as input, since buffer widths
+at each vertex along a line.
+Vertex distances may be zero.</p>
+<p></p>
+Only single linestring is supported as input, since buffer widths
 generally need to be specified individually for each line.
 </section>
-    <h3 id="enums">Enums
-  </h3>
+    <h3 id="enums">
+Enums
+</h3>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.EndCapStyle.html">EndCapStyle</a></h4>
       <section><p>End cap style constants</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.JoinStyle.html">JoinStyle</a></h4>
       <section><p>Join style constants</p>
 </section>
+
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Operation.Buffer.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/doc/overwrite/namespaces/NetTopologySuite.Operation.Buffer.md/#L2" class="contribution-link">Edit this page</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -189,14 +206,14 @@ generally need to be specified individually for each line.
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>

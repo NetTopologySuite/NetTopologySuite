@@ -1,23 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
-  
+
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IItemDistance&lt;T, TItem&gt;
-   | NetTopologySuite </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IItemDistance&lt;T, TItem&gt;
-   | NetTopologySuite ">
-    <meta name="generator" content="docfx 2.59.2.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface IItemDistance&lt;T, TItem&gt; | NetTopologySuite </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface IItemDistance&lt;T, TItem&gt; | NetTopologySuite ">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta name="description" content="A function method which computes the distance between two s in an . Used for Nearest Neighbour searches.  To make a distance function suitable for querying a single index tree via , the function should have a non-zero reflexive distance. That is, if the two arguments are the same object, the distance returned should be non-zero. If it is required that only pairs of distinct items be returned, the distance function must be anti-reflexive, and must return  for identical arguments.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -25,7 +23,7 @@
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -35,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../logo.svg" alt="">
               </a>
@@ -49,7 +47,7 @@
             </div>
           </div>
         </nav>
-        
+
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -59,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
           <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -79,35 +77,33 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="NetTopologySuite.Index.Strtree.IItemDistance`2">
-  
-  
-  <h1 id="NetTopologySuite_Index_Strtree_IItemDistance_2" data-uid="NetTopologySuite.Index.Strtree.IItemDistance`2" class="text-break">Interface IItemDistance&lt;T, TItem&gt;
-  </h1>
+
+
+
+  <h1 id="NetTopologySuite_Index_Strtree_IItemDistance_2" data-uid="NetTopologySuite.Index.Strtree.IItemDistance`2" class="text-break">Interface IItemDistance&lt;T, TItem&gt;</h1>
   <div class="markdown level0 summary"><p>A function method which computes the distance
 between two <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s in an <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a>.
 Used for Nearest Neighbour searches.</p>
-<p>
+<p></p>
 To make a distance function suitable for
 querying a single index tree
 via <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html#NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__">NearestNeighbour(IItemDistance&lt;Envelope, TItem&gt;)</a>,
-the function should have a non-zero <em>reflexive distance</em>.
+the function should have a non-zero <i>reflexive distance</i>.
 That is, if the two arguments are the same object,
 the distance returned should be non-zero.
-If it is required that only pairs of <strong>distinct</strong> items be returned,
-the distance function must be <em>anti-reflexive</em>,
-and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a> for identical arguments.
+If it is required that only pairs of <b>distinct</b> items be returned,
+the distance function must be <i>anti-reflexive</i>,
+and must return <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a> for identical arguments.
 </div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.Strtree.html">NetTopologySuite.Index.Strtree</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.html">NetTopologySuite</a>.<a class="xref" href="NetTopologySuite.Index.html">Index</a>.<a class="xref" href="NetTopologySuite.Index.Strtree.html">Strtree</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Index_Strtree_IItemDistance_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IItemDistance&lt;T, TItem&gt;
-
-    where T : IIntersectable&lt;T&gt;, IExpandable&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IItemDistance&lt;T, TItem&gt; where T : IIntersectable&lt;T&gt;, IExpandable&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Name</th>
@@ -126,10 +122,10 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
     </tbody>
   </table>
   <h3 id="methods">Methods
-  </h3>
+</h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_IItemDistance_2_Distance_NetTopologySuite_Geometries_IBoundable__0__1__NetTopologySuite_Geometries_IBoundable__0__1__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.IItemDistance%602.Distance(NetTopologySuite.Geometries.IBoundable%7B%600%2C%601%7D%2CNetTopologySuite.Geometries.IBoundable%7B%600%2C%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_IItemDistance_2_Distance_NetTopologySuite_Geometries_IBoundable__0__1__NetTopologySuite_Geometries_IBoundable__0__1__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.IItemDistance%602.Distance(NetTopologySuite.Geometries.IBoundable%7B%600%2C%601%7D%2CNetTopologySuite.Geometries.IBoundable%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Index/Strtree/IItemDistance.cs/#L31">View Source</a>
@@ -139,12 +135,12 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
   <div class="markdown level1 summary"><p>Computes the distance between two items.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+  <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">double Distance(IBoundable&lt;T, TItem&gt; item1, IBoundable&lt;T, TItem&gt; item2)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -168,7 +164,7 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -177,14 +173,14 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
-        <td><p>The distance between <code data-dev-comment-type="paramref" class="paramref">item1</code> and <code data-dev-comment-type="paramref" class="paramref">item2</code>.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></td>
+        <td><p>The distance between <code class="paramref">item1</code> and <code class="paramref">item2</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
+  <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
@@ -193,21 +189,22 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
         <td><p>If the metric is not applicable to the arguments</p>
 </td>
       </tr>
     </tbody>
   </table>
+
 </article>
           </div>
-          
+
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_IItemDistance_2.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.IItemDistance%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/main/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_IItemDistance_2.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.IItemDistance%602%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/main/src/NetTopologySuite/Index/Strtree/IItemDistance.cs/#L22" class="contribution-link">View Source</a>
@@ -215,14 +212,14 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -230,14 +227,14 @@ and must return <a class="xref" href="https://docs.microsoft.com/dotnet/api/syst
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
     </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
   </body>
