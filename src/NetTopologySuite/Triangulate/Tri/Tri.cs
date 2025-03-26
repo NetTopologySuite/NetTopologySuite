@@ -563,7 +563,7 @@ namespace NetTopologySuite.Triangulate.Tri
 
         /// <summary>
         /// Computes the number of triangle adjacent to this triangle.
-        /// This is a number in the range [0,2].</summary>
+        /// This is a number in the range [0,3].</summary>
         /// <returns>The number of adjacent triangles</returns>
         public int NumAdjacent
         {
