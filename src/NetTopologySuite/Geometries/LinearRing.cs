@@ -34,6 +34,11 @@ namespace NetTopologySuite.Geometries
         /// Constructs a <c>LinearRing</c> with the vertices specified
         /// by the given <see cref="CoordinateSequence"/>.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="LinearRing"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="points">A sequence points forming a closed and simple linestring,
         /// or <c>null</c> to create the empty geometry.</param>
         /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
@@ -128,14 +133,20 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearRing"/> class.
         /// </summary>
-        /// <param name="points">The points used for create this instance.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// Clients of this library should create <see cref="LinearRing"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="LinearRing"/> a default <see cref="GeometryFactory"/>
+        /// created by the current <see cref="NtsGeometryServices.Instance"/> is used.
         /// </remarks>
+        /// <param name="points">The points used for create this instance.</param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
         public LinearRing(Coordinate[] points) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
+            this(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory.Create(points),
+                 NtsGeometryServices.Instance.CreateGeometryFactory())
+        { }
 
         /* END ADDED BY MPAUL42: monoGIS team */
     }

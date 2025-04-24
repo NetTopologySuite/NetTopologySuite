@@ -20,6 +20,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="MultiLineString"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="lineStrings">
         /// The <c>LineString</c>s for this <c>MultiLineString</c>,
         /// or <c>null</c> or an empty array to create the empty
@@ -40,10 +45,15 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// Clients of this library should create <see cref="MultiLineString"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="MultiLineString"/> a <see cref="GeometryFactory"/>
+        /// is seeked from the passed <c>LineString</c>s. If that fails it is
+        /// created by the current <see cref="NtsGeometryServices.Instance"/>.
         /// </remarks>
-        public MultiLineString(LineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
+        public MultiLineString(LineString[] lineStrings) : this(lineStrings, GetGeometryFactory(lineStrings)) { }
 
         /// <summary>
         /// Gets a value to sort the geometry
@@ -159,7 +169,7 @@ namespace NetTopologySuite.Geometries
             return new MultiLineString(lineStrings, Factory);
         }
 
-        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        /// <inheritdoc cref="Geometry.CopyInternal"/>
         protected override Geometry CopyInternal()
         {
             var lineStrings = new LineString[NumGeometries];

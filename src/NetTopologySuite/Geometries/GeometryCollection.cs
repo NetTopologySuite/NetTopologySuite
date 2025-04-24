@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
@@ -11,9 +12,28 @@ namespace NetTopologySuite.Geometries
     public class GeometryCollection : Geometry, IReadOnlyList<Geometry>
     {
         /// <summary>
+        /// Gets a geometry factory from an array of <paramref name="geometries"/>.
+        /// If the array is <c>null</c> or does not have any valid elements,
+        /// <see cref="NtsGeometryServices.CreateGeometryFactory()"/> is returned.
+        /// </summary>
+        /// <typeparam name="T">The type of the <paramref name="geometries"/></typeparam>
+        /// <param name="geometries">The geometries to get a <see cref="GeometryFactory"/> from</param>
+        /// <returns>A <see cref="GeometryFactory"/></returns>
+        protected static GeometryFactory GetGeometryFactory<T>(T[] geometries) where T : Geometry
+        {
+            if (geometries != null)
+            {
+                var geom = geometries.FirstOrDefault();
+                if (geom?.Factory != null) return geom.Factory;
+            }
+
+            return NtsGeometryServices.Instance.CreateGeometryFactory();
+        }
+
+        /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
         /// </summary>
-        public static readonly GeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
+        public static readonly GeometryCollection Empty = new GeometryFactory().CreateGeometryCollection(null);
 
         /// <summary>
         /// Internal representation of this <c>GeometryCollection</c>.
@@ -21,8 +41,13 @@ namespace NetTopologySuite.Geometries
         private Geometry[] _geometries;
 
         /// <summary>
-        ///
+        /// Initalizes a new instance of the <see cref="GeometryCollection"/> class
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="GeometryCollection"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="geometries">
         /// The <c>Geometry</c>s for this <c>GeometryCollection</c>,
         /// or <c>null</c> or an empty array to create the empty
@@ -33,11 +58,16 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public GeometryCollection(Geometry[] geometries) : this(geometries, DefaultFactory) { }
+        public GeometryCollection(Geometry[] geometries) : this(geometries, GetGeometryFactory(geometries)) { }
 
         /// <summary>
-        ///
+        /// Initalizes a new instance of the <see cref="GeometryCollection"/> class
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="GeometryCollection"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="geometries">
         /// The <c>Geometry</c>s for this <c>GeometryCollection</c>,
         /// or <c>null</c> or an empty array to create the empty

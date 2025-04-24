@@ -2094,10 +2094,12 @@ namespace NetTopologySuite.Geometries
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Fixed" />.
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
+        /// 
         /// <seealso cref="GeometryFactory.Default" />
         /// <seealso cref="GeometryFactory.Fixed"/>
+        [Obsolete("Will be removed in a future version")]
         public static readonly GeometryFactory DefaultFactory = GeometryFactory.Default;
 
         /* END ADDED BY MPAUL42: monoGIS team */

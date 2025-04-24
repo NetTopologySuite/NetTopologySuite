@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-        private CoordinateSequence _coordinates;
+        private readonly CoordinateSequence _coordinates;
 
         /// <summary>
         /// Gets a value to sort the geometry
@@ -46,18 +46,28 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
-        /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// Clients of this library should create <see cref="Point"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="Point"/> a default <see cref="GeometryFactory"/>
+        /// created by the current <see cref="NtsGeometryServices.Instance"/> is used.
         /// </remarks>
+        /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
         public Point(Coordinate coordinate) :
-            this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new Coordinate[] { coordinate } ),
-            GeometryFactory.Default) { }
+            this(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory.Create(new[] {coordinate}),
+                 NtsGeometryServices.Instance.CreateGeometryFactory())
+        { }
 
         /// <summary>
         /// Constructs a <c>Point</c> with the given coordinate.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="Point"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="coordinates">
         /// Contains the single coordinate on which to base this <c>Point</c>,
         /// or <c>null</c> to create the empty point.
@@ -304,28 +314,38 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
+        /// <remarks>
+        /// Clients of this library should create <see cref="Point"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="Point"/> a default <see cref="GeometryFactory"/>
+        /// created by the current <see cref="NtsGeometryServices.Instance"/> is used.
+        /// </remarks>
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
-        /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
         public Point(double x, double y, double z) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new CoordinateZ(x, y, z) }), DefaultFactory) { }
+            this(new CoordinateZ(x, y, z))
+        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="Point"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="Point"/> a default <see cref="GeometryFactory"/>
+        /// created by the current <see cref="NtsGeometryServices.Instance"/> is used.
+        /// </remarks>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
-        /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
         public Point(double x, double y)
-            : this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
+            : this(new Coordinate(x, y))
+        { }
 
         /// <summary>
         ///

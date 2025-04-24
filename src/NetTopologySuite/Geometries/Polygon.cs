@@ -51,6 +51,15 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="Polygon"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="Polygon"/> a <see cref="GeometryFactory"/>
+        /// is seeked from the passed <paramref name="shell"/>. If that fails it is
+        /// created by the current <see cref="NtsGeometryServices.Instance"/>.
+        /// </remarks>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
         /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
@@ -61,16 +70,19 @@ namespace NetTopologySuite.Geometries
         /// , or <c>null</c> or empty <c>LinearRing</c>s if the empty
         /// point is to be created.
         /// </param>
-        /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
-        public Polygon(LinearRing shell, LinearRing[] holes) : this(shell, holes, DefaultFactory) { }
+        public Polygon(LinearRing shell, LinearRing[] holes) :
+            this(shell, holes, shell?.Factory ?? NtsGeometryServices.Instance.CreateGeometryFactory())
+        { }
 
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary and
         /// interior boundaries.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="Polygon"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
         /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
@@ -623,6 +635,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="Polygon"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
         /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
@@ -634,12 +651,21 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="Polygon"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="Polygon"/> a <see cref="GeometryFactory"/>
+        /// is seeked from the passed <paramref name="shell"/>. If that fails it is
+        /// created by the current <see cref="NtsGeometryServices.Instance"/>.
+        /// </remarks>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
         /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
         /// polygon is to be created.
         /// </param>
-        public Polygon(LinearRing shell) : this(shell, null, DefaultFactory) { }
+        public Polygon(LinearRing shell) : this(shell, null, shell?.Factory ?? NtsGeometryServices.Instance.CreateGeometryFactory()) { }
 
         /// <summary>
         ///

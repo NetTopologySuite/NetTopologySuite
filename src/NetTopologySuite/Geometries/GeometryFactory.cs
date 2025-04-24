@@ -23,7 +23,7 @@ namespace NetTopologySuite.Geometries
     public class GeometryFactory
     {
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />c
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         public static readonly GeometryFactory Default = new GeometryFactory();

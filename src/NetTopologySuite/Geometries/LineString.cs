@@ -44,18 +44,28 @@ namespace NetTopologySuite.Geometries
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// Clients of this library should create <see cref="LineString"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="LineString"/> a default <see cref="GeometryFactory"/>
+        /// created by the current <see cref="NtsGeometryServices.Instance"/> is used.
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
         public LineString(Coordinate[] points) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory)
+            this(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory.Create(points),
+                 NtsGeometryServices.Instance.CreateGeometryFactory())
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="LineString"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="points">
         /// The points of the <c>LineString</c>, or <c>null</c>
         /// to create the empty point. Consecutive points may not be equal.

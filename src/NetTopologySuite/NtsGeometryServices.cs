@@ -18,6 +18,7 @@ namespace NetTopologySuite
     /// <item><term><c>int</c></term><description>spatial reference id (srid)</description></item>
     /// <item><term><c>GeometryOverlay</c></term><description>A class that bundles an overlay operation function set</description></item>
     /// <item><term><c>CoordinateEqualityComparer</c></term><description>A class that performs checks <see cref="Coordinate"/>s for equality.</description></item>
+    /// <item><term><c>ElevationModel</c></term><description>A class that is used as is used as the default elevation model. It may be <c>null</c></description></item>
     /// </list>
     /// <see cref="NetTopologySuite.NtsGeometryServices(CoordinateSequenceFactory, PrecisionModel, int, GeometryOverlay, CoordinateEqualityComparer)"/>
     /// </remarks>

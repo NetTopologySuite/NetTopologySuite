@@ -16,6 +16,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="MultiPoint"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="points">
         /// The <c>Point</c>s for this <c>MultiPoint</c>
         /// , or <c>null</c> or an empty array to create the empty point.
@@ -27,18 +32,23 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="MultiPoint"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="MultiPoint"/> a <see cref="GeometryFactory"/>
+        /// is seeked from the passed <c>Point</c>s. If that fails it is
+        /// created by the current <see cref="NtsGeometryServices.Instance"/>.
+        /// </remarks>
         /// <param name="points">
         /// The <c>Point</c>s for this <c>MultiPoint</c>
         /// , or <c>null</c> or an empty array to create the empty point.
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
-        /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
-        public MultiPoint(Point[] points) : this(points, DefaultFactory) { }
+        public MultiPoint(Point[] points) : this(points, GetGeometryFactory(points)) { }
 
-        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        /// <inheritdoc cref="Geometry.CopyInternal"/>
         protected override Geometry CopyInternal()
 
         {

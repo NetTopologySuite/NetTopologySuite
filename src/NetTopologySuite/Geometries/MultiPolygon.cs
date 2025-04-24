@@ -17,6 +17,15 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="MultiPolygon"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// <para/>
+        /// For the creation of this <see cref="MultiPolygon"/> a <see cref="GeometryFactory"/>
+        /// is seeked from the passed <c>Polygon</c>s. If that fails it is
+        /// created by the current <see cref="NtsGeometryServices.Instance"/>.
+        /// </remarks>
         /// <param name="polygons">
         /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
         /// , or <c>null</c> or an empty array to create the empty point.
@@ -25,15 +34,16 @@ namespace NetTopologySuite.Geometries
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
         /// Specification for SQL.
         /// </param>
-        /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
-        public MultiPolygon(Polygon[] polygons) : this(polygons, DefaultFactory) { }
+        public MultiPolygon(Polygon[] polygons) : this(polygons, GetGeometryFactory(polygons)) { }
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
         /// </summary>
+        /// <remarks>
+        /// Clients of this library should create <see cref="MultiPolygon"/>
+        /// geometries using a <see cref="GeometryFactory"/> instead of
+        /// creating them using a constructor.
+        /// </remarks>
         /// <param name="polygons">
         /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
         /// , or <c>null</c> or an empty array to create the empty point.
@@ -45,7 +55,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="factory"></param>
         public MultiPolygon(Polygon[] polygons, GeometryFactory factory) : base(polygons, factory) { }
 
-        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        /// <inheritdoc cref="Geometry.CopyInternal"/>
         protected override Geometry CopyInternal()
         {
             var polygons = new Polygon[NumGeometries];
