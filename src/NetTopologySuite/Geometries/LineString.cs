@@ -113,7 +113,7 @@ namespace NetTopologySuite.Geometries
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
-                return new double[0];
+                return Array.Empty<double>(); //new double[0];
 
             var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_points.Ordinates & ordinateFlag) != ordinateFlag)

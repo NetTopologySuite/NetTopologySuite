@@ -80,7 +80,7 @@ namespace NetTopologySuite.Geometries
         {
 
             if (IsEmpty)
-                return new double[0];
+                return Array.Empty<double>();
 
             var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)

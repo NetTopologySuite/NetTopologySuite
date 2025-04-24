@@ -153,7 +153,7 @@ namespace NetTopologySuite.Geometries.Implementation
             : base(coords?.Length / dimension ?? 0, dimension, measures)
         {
             if (coords == null)
-                coords = new double[0];
+                coords = Array.Empty<double>();
 
             if (coords.Length % dimension != 0)
                 throw new ArgumentException("Packed array does not contain " +
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (coords == null)
             {
-                _coords = new double[0];
+                _coords = Array.Empty<double>();
                 return;
             }
             _coords = new double[coords.Length];

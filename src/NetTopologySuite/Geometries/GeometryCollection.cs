@@ -110,7 +110,7 @@ namespace NetTopologySuite.Geometries
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
-                return new double[0];
+                return Array.Empty<double>();
 
             double[] result = new double[NumPoints];
             int offset = 0;

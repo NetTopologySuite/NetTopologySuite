@@ -175,7 +175,7 @@ namespace NetTopologySuite.Geometries
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
-                return new double[0];
+                return Array.Empty<double>();
 
             var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_shell.CoordinateSequence.Ordinates & ordinateFlag) != ordinateFlag)
