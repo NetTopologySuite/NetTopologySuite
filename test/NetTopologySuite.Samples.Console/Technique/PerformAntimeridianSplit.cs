@@ -369,6 +369,9 @@ namespace NetTopologySuite.Samples.Technique
     [TestFixture]
     public class AntimeridianSplitTests
     {
+        /// <remarks>
+        /// Coordinates reflect patterns from my personal experience
+        /// </remarks>
         [TestCase("SRID=4326;POLYGON ((178 43, 178 41, -176 41, -176 43, 178 43))",
             "MULTIPOLYGON (((180 41, 178 41, 178 43, 180 43, 180 41)), ((-180 43, -176 43, -176 41, -180 41, -180 43)))")]
         [TestCase("SRID=4326;POLYGON ((-178 43, -178 41, 176 41, 176 43, -178 43))",
