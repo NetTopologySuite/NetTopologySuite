@@ -10,6 +10,9 @@ namespace NetTopologySuite.Samples.Technique
     /// <summary>
     /// Shows a technique to split a shape along the antimeridian (180 degree) line
     /// </summary>
+    /// <remarks>
+    /// Also can sometimes be referred to the `Dateline` https://gis.meta.stackexchange.com/questions/4534/using-date-line-and-antimeridian-tags
+    /// </remarks>
     public class PerformAntimeridianSplit
     {
         /// <summary>
@@ -51,6 +54,16 @@ namespace NetTopologySuite.Samples.Technique
                 // Check if the geometry is at least a geographic one!
                 if (!IsGeographic(geometry))
                     throw new ArgumentException(nameof(geometry));
+            }
+
+            // Accounts for the possibility that the shape is not yet shifted out of the geographic coordinate system (GCS)
+            // if the geometry is still within the GCS, then shift to work with the rest of the algorithm.
+            if (geometry.EnvelopeInternal.MinX >= -180d && geometry.EnvelopeInternal.MaxX <= 180d)
+            {
+                // Shifts the coordinates that cross to cross with the same distance
+                // A copy is taken as the antimeridian shift will alter the geometry
+                geometry = geometry.Copy();
+                geometry.Apply(new AntiMeridianShiftXFilter());
             }
 
             // Get number of shifts
@@ -129,24 +142,26 @@ namespace NetTopologySuite.Samples.Technique
             if (geometry is IPuntal)
                 return false;
 
+            // Build filter that tests if we need to perform special dateline handling
+            var cdf = new IsCrossingDatelineFilter();
+            geometry.Apply(cdf);
+
+            if (cdf.IsCrossingDateline)
+                return true;
+
             // if the bounds don't cross the dateline, the geometry doesn't either
             if (!IsEnvelopeCrossingAntimeridian(geometry.EnvelopeInternal))
                 return false;
 
-             //// TODO Code left intact from original discussion but commented out pending further discussion
-
-            // Build filter that tests if we need to perform special dateline handling
-            // var cdf = new IsCrossingDatelineFilter();
-            // geometry.Apply(cdf);
-            //
-            // if (!cdf.IsCrossingDateline && geometry.EnvelopeInternal.MaxX <= 180)
-            //     return false;
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
-
             return true;
         }
 
+        /// <summary>
+        /// Checks if the <see cref="Envelope"/> crosses the antimeridian line.
+        /// </summary>
+        /// <remarks>
+        /// If two points are equally distant across the prime meridian and antimeridian, assume crossing the prime meridian.
+        /// </remarks>
         private static bool IsEnvelopeCrossingAntimeridian(Envelope envelope)
         {
             // if longitudes are same sign then does not cross the antimeridian
@@ -255,8 +270,6 @@ namespace NetTopologySuite.Samples.Technique
         }
     }
 
-    // TODO If we know that the envelope coordinates cross the antimeridian per IsEnvelopeCrossingAntimeridian,
-    // do we need to go through every coordinate?
     public class IsCrossingDatelineFilter : IEntireCoordinateSequenceFilter
     {
         public bool Done => IsCrossingDateline;
@@ -369,37 +382,54 @@ namespace NetTopologySuite.Samples.Technique
     [TestFixture]
     public class AntimeridianSplitTests
     {
+        private static readonly NtsGeometryServices _instance = new(new PrecisionModel(1000));
+
         /// <remarks>
         /// Coordinates reflect patterns from my personal experience
         /// </remarks>
+        [TestCase("SRID=4326;LINESTRING EMPTY", "LINESTRING EMPTY")]
+        [TestCase("SRID=4326;LINESTRING (-179 0, -181 0)", "MULTILINESTRING ((180 0, 179 0), (-179 0, -180 0))")]
+        [TestCase("SRID=4326;LINESTRING (-541 -20, 0 0, 541 20)",
+            "MULTILINESTRING ((179 -20, 180 -19.963), (-180 -19.963, 180 -6.654), (-180 -6.654, 0 0, 180 6.654), (-180 6.654, 180 19.963), (-180 19.963, -179 20))")]
+        [TestCase("SRID=4326;LINESTRING (-179 0, -180 0, -180 2, -179 2)", "LINESTRING(-179 0, -180 0, -180 2, -179 2)")]
+        [TestCase("SRID=4326;LINESTRING (-179 0, 181 0)", "LINESTRING(-180 0, 180 0)")]
+        [TestCase("SRID=4326;LINESTRING (-185 20, -175 15, -185 10, -175 5, -180 2.5, -180 -2.5, -175 -5, -185 -10, -175 -15, -185 -20)",
+            "MULTILINESTRING ((175 20, 180 17.5), (180 12.5, 175 10, 180 7.5), (180 2.5, 180 -2.5), (180 -7.5, 175 -10, 180 -12.5), " +
+            "(180 -17.5, 175 -20), (-180 17.5, -175 15, -180 12.5), (-180 7.5, -175 5, -180 2.5), (-180 -2.5, -175 -5, -180 -7.5), " +
+            "(-180 -12.5, -175 -15, -180 -17.5))")]
+        [TestCase("SRID=4326;POLYGON ((-179 1, -181 1, -181 -1, -179 -1, -179 1))",
+            "MULTIPOLYGON (((-179 1, -179 -1, -180 -1, -180 1, -179 1)), ((179 -1, 179 1, 180 1, 180 -1, 179 -1)))")]
+        [TestCase("SRID=4326;POLYGON ((-185 0, -185 10, -175 10, -175 0, -185 0),   (-182 3, -178 3, -178 7, -182 7, -182 3)))",
+            "MULTIPOLYGON (((-175 10, -175 0, -180 0, -180 3, -178 3, -178 7, -180 7, -180 10, -175 10)), ((175 10, 180 10, 180 7, 178 7, 178 3, 180 3, 180 0, 175 0, 175 10)))")]
+        [TestCase("SRID=4326;LINESTRING (-179 0, -181 0)", "MULTILINESTRING ((180 0, 179 0), (-179 0, -180 0))")]
+
+        // polygons that need to be pre-shifted before unwrapping
         [TestCase("SRID=4326;POLYGON ((178 43, 178 41, -176 41, -176 43, 178 43))",
             "MULTIPOLYGON (((180 41, 178 41, 178 43, 180 43, 180 41)), ((-180 43, -176 43, -176 41, -180 41, -180 43)))")]
         [TestCase("SRID=4326;POLYGON ((-178 43, -178 41, 176 41, 176 43, -178 43))",
             "MULTIPOLYGON (((180 41, 176 41, 176 43, 180 43, 180 41)), ((-178 43, -178 41, -180 41, -180 43, -178 43)))",
             Description = "Covers numberOfFullShifts > 1 in Unwrap method")]
-        public void Test(string wktInput, string wktExpected)
+        public void TestCrossesAntimeridian(string wktInput, string wktExpected)
         {
-            var reader = new WKTReader();
-            var polygon = reader.Read(wktInput);
-
-            Assert.That(PerformAntimeridianSplit.IsCrossingAntimeridian(polygon), Is.True);
-
-            // Shifts the coordinates that cross to cross with the same distance
-            var antimeridianShiftFilter = new AntiMeridianShiftXFilter();
-            // A copy is taken as the antimeridian shift will alter the geometry
-            var shiftedPolygon = polygon.Copy();
-            shiftedPolygon.Apply(antimeridianShiftFilter);
-
-            // TODO I'm having trouble understanding this filter and why this test fails. Respectfully, I'm not sure we need this filter either.
-            // var isCrossingDatelineFilter = new IsCrossingDatelineFilter();
-            // shiftedPolygon.Apply(isCrossingDatelineFilter);
-            // Assert.That(isCrossingDatelineFilter.IsCrossingDateline, Is.True);
-
-            var actual = PerformAntimeridianSplit.UnwrapAtDateline(shiftedPolygon, checkIfCrossing: false, unionResult: false);
+            var reader = new WKTReader(_instance);
+            var input = reader.Read(wktInput);
+            var actual = PerformAntimeridianSplit.UnwrapAtDateline(input);
             var expected = reader.Read(wktExpected);
 
-            Assert.That(actual.Equals(expected), Is.True,
-                $"Expected: {expected}\nActual: {actual}");
+            if (actual.IsEmpty && expected.IsEmpty)
+                Assert.That(actual.OgcGeometryType, Is.EqualTo(expected.OgcGeometryType));
+            else
+                Assert.That(actual.Equals(expected), Is.True,
+                    $"Expected: {expected}\nActual: {actual}");
+        }
+
+        [TestCase("SRID=4326;POLYGON ((-90 45, -90 -45, 90 -45, 90 45, -90 45))", Description = "Crosses Meridian Equally")]
+        public void TestDoesNotCrossAntimeridian(string wktInput)
+        {
+            var reader = new WKTReader(_instance);
+            var polygon = reader.Read(wktInput);
+
+            Assert.That(PerformAntimeridianSplit.IsCrossingAntimeridian(polygon), Is.False);
         }
     }
 }
