@@ -328,7 +328,7 @@ namespace NetTopologySuite.Samples.Technique
             _tolerance = tolerance;
         }
 
-        public bool Done { get; private set; }
+        public bool Done => false;
 
         public bool GeometryChanged { get; private set; }
 
@@ -374,8 +374,6 @@ namespace NetTopologySuite.Samples.Technique
                 xSign = Math.Sign(currX);
                 prevSign = xSign == 0 ? 1 : xSign;
             }
-
-            Done = true;
         }
     }
 
