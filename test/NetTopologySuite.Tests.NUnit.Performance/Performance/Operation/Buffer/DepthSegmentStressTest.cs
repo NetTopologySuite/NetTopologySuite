@@ -110,7 +110,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         private DepthSegment CreateRandomDepthSegment()
         {
-            double scale = 10;
             int max = 10;
             double x0 = Randint(max);
             double y0 = Randint(max);

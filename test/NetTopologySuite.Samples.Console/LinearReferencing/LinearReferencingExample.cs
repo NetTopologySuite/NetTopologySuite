@@ -91,7 +91,6 @@ Geometry InsertPoint(Geometry geom, Coordinate point)
     var newSeq = element.Factory.CoordinateSequenceFactory.Create(
         oldSeq.Count + 1, oldSeq.Dimension, oldSeq.Measures);
 
-            int j = 0;
     if (ll.SegmentIndex == 0 && ll.SegmentFraction == 0)
     {
         if (ll.GetSegment(element).P0.Distance(point) == 0) return geom;

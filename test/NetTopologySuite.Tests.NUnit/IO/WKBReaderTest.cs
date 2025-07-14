@@ -268,7 +268,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             {
                 CheckWkbGeometry(wkbHex, "");
             }
-            catch (ParseException e)
+            catch (ParseException)
             {
                 // all good
                 return;
