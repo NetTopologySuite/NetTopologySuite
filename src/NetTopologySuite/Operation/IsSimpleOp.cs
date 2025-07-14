@@ -115,12 +115,11 @@ namespace NetTopologySuite.Operation
             {
                 var pt = (Point)mp.GetGeometryN(i);
                 var p = pt.Coordinate;
-                if (points.Contains(p))
+                if (!points.Add(p))
                 {
                     _nonSimpleLocation = p;
                     return false;
                 }
-                points.Add(p);
             }
             return true;
         }

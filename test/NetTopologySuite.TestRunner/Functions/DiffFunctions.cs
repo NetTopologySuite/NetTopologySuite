@@ -99,13 +99,9 @@ namespace Open.Topology.TestRunner.Functions
             var segsDup = new List<LineSegment>();
             foreach (var seg in segs)
             {
-                if (segsAll.Contains(seg))
+                if (!segsAll.Add(seg))
                 {
                     segsDup.Add(seg);
-                }
-                else
-                {
-                    segsAll.Add(seg);
                 }
             }
             return ToMultiLineString(segsDup, factory);

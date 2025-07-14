@@ -531,9 +531,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             {
                 var v = qe.Orig;
                 //System.out.println(v);
-                if (!visitedVertices.Contains(v))
+                if (visitedVertices.Add(v))
                 {
-                    visitedVertices.Add(v);
                     if (includeFrame || !IsFrameVertex(v))
                     {
                         edges.Add(qe);
@@ -548,9 +547,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 var qd = qe.Sym;
                 var vd = qd.Orig;
                 //System.out.println(vd);
-                if (!visitedVertices.Contains(vd))
+                if (visitedVertices.Add(vd))
                 {
-                    visitedVertices.Add(vd);
                     if (includeFrame || !IsFrameVertex(vd))
                     {
                         edges.Add(qd);

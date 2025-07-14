@@ -59,10 +59,8 @@ namespace NetTopologySuite.Planargraph
         /// <param name="e">The <see cref="Edge" /> to add.</param>
         public void Add(Edge e)
         {
-            if (edges.Contains(e))
+            if (!edges.Add(e))
                 return;
-
-            edges.Add(e);
 
             dirEdges.Add(e.GetDirEdge(0));
             dirEdges.Add(e.GetDirEdge(1));
