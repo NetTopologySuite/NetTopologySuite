@@ -316,7 +316,8 @@ namespace NetTopologySuite.IO
                 case Ordinates.XY:
                     res = new Coordinate(x, y); break;
                 case Ordinates.XYZ:
-                    res = new CoordinateZ(x, y, z); ; break;
+                    res = new CoordinateZ(x, y, z);
+                    break;
                 case Ordinates.XYM:
                     res = new CoordinateM(x, y, m); break;
                 case Ordinates.XYZM:

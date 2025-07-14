@@ -404,7 +404,7 @@ namespace NetTopologySuite.Index.Quadtree
 
             public IEnumerator<T> GetEnumerator()
             {
-                return new SynchonizedEnumerator(_items, _syncRoot); ;
+                return new SynchonizedEnumerator(_items, _syncRoot);
             }
 
             public int IndexOf(T item)

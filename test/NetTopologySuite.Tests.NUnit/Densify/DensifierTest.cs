@@ -88,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Densify
         [Test]
         public void TestDimension3d()
         {
-            var gf = NtsGeometryServices.Instance.CreateGeometryFactory(); ;
+            var gf = NtsGeometryServices.Instance.CreateGeometryFactory();
             var line = gf.CreateLineString(new[] { new CoordinateZ(1, 2, 3), new CoordinateZ(3, 4, 5) });
             Assert.That(line.CoordinateSequence.Dimension, Is.EqualTo(3));
 

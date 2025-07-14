@@ -188,7 +188,7 @@ namespace NetTopologySuite.Operation.Buffer
                     || _upwardSeg.MaxY <= other._upwardSeg.MinY)
                 {
                     return _upwardSeg.CompareTo(other._upwardSeg);
-                };
+                }
 
                 /*
                  * Otherwise if envelopes overlap, use relative segment orientation.

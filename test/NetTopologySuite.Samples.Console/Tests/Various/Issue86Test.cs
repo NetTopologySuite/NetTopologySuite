@@ -25,8 +25,8 @@ namespace NetTopologySuite.Tests.Various
         {
             double lat1 = x.X * Math.PI / 180;
             double lat2 = y.X * Math.PI / 180;
-            double deltaLat = Math.Abs(lat2 - lat1) * Math.PI / 180; ;
-            double deltaLon = Math.Abs(y.Y - x.Y) * Math.PI / 180; ;
+            double deltaLat = Math.Abs(lat2 - lat1) * Math.PI / 180;
+            double deltaLon = Math.Abs(y.Y - x.Y) * Math.PI / 180;
             double R = 6371000.0;
 
             double a = Math.Pow(Math.Sin(deltaLat / 2), 2.0) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Pow((Math.Sin(deltaLon / 2)), 2.0);
