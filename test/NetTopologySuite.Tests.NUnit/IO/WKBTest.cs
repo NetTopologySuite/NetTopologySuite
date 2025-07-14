@@ -327,7 +327,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 g.SRID = srid;
             }
 
-            var wkbWriter = new WKBWriter(byteOrder, includeSRID, dimension==2 ? false : true);
+            var wkbWriter = new WKBWriter(byteOrder, includeSRID, dimension != 2);
             byte[] wkb = wkbWriter.Write(g);
             string wkbHex = null;
             if (toHex)

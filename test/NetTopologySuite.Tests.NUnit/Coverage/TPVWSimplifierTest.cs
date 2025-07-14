@@ -97,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
             {
                 var line = (LineString)lines.GetGeometryN(i);
                 bool isRemovable = false;
-                bool isFreeRing = freeRings == null ? false : HasIndex(freeRings, i);
+                bool isFreeRing = freeRings != null && HasIndex(freeRings, i);
                 var edge = new TPVWSimplifier.Edge(line.Coordinates, tolerance, isFreeRing, isRemovable);
                 edges.Add(edge);
             }
