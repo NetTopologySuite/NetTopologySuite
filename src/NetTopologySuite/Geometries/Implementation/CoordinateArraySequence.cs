@@ -64,7 +64,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (coordinates == null)
             {
-                Coordinates = new Coordinate[0];
+                Coordinates = Array.Empty<Coordinate>();
             }
             else
             {
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (coordSeq == null)
             {
-                Coordinates = new Coordinate[0];
+                Coordinates = Array.Empty<Coordinate>();
                 return;
             }
 

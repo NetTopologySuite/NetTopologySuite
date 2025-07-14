@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestReverseEmpty()
         {
-            var pts = new Coordinate[0];
+            var pts = Array.Empty<Coordinate>();
             CheckReversed(pts);
         }
 

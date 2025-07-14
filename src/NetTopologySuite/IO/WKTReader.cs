@@ -865,7 +865,7 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals(WKTConstants.EMPTY))
             {
-                return factory.CreateMultiPoint(new Point[0]);
+                return factory.CreateMultiPoint(Array.Empty<Point>());
             }
 
             // check for old-style JTS syntax (no parentheses surrounding Point coordinates) and parse it if present
