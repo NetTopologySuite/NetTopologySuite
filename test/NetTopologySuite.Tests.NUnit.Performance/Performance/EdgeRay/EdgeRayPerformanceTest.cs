@@ -9,7 +9,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.EdgeRay
 {
     public class EdgeRayPerformanceTest : PerformanceTestCase
     {
-        bool verbose = true;
         private Geometry geom1;
         private Geometry geom2;
 

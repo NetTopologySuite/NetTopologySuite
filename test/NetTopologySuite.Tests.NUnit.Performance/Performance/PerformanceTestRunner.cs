@@ -13,7 +13,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     public class PerformanceTestRunner
     {
         private const string RunPrefix = "Run";
-        private const string InitMethod = "Init";
 
         public static void Run(Type clz)
         {

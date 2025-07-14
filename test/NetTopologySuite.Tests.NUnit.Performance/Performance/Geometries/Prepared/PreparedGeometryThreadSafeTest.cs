@@ -15,7 +15,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
     {
         private int nPts = 100000;
         private readonly GeometryFactory _factory = new GeometryFactory(new PrecisionModel(1.0));
-        private int _numberOfTests = 20;
         private IPreparedGeometry _preparedGeometry;
 
         public override void Setup()

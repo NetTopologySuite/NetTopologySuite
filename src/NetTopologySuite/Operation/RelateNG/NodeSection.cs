@@ -54,7 +54,6 @@ namespace NetTopologySuite.Operation.RelateNG
         //private Coordinate nodePt;
         private readonly Coordinate _v0;
         private readonly Coordinate _v1;
-        private readonly Geometry _poly;
 
         public NodeSection(bool isA,
             Dimension dimension, int id, int ringId,

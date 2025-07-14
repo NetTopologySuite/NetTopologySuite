@@ -30,15 +30,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
         }
 
         const bool IsVerbose = false;
-
-        const bool IsSameVoronoi = false;
-
         const int N_PTS = 100;
 
         const int N_TESTS = 1000;
-
-        static double SCALE = 100000000;
-
         static readonly double[] SCALES = new[]
         {
             // 0, // floating PM

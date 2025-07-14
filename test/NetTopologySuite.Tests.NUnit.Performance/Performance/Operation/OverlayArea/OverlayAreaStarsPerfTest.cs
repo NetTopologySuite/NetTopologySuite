@@ -13,7 +13,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayArea
 {
     public class OverlayAreaStarsPerfTest : PerformanceTestCase
     {
-        bool verbose = true;
         private Geometry star1;
         private Geometry star2;
 

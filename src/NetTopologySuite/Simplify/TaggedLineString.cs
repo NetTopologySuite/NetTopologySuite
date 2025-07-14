@@ -16,7 +16,6 @@ namespace NetTopologySuite.Simplify
         private TaggedLineSegment[] _segs;
         private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
         private readonly int _minimumSize;
-        private readonly bool _isRing;
 
         /// <summary>
         /// Creates an instance of this class using the provided <paramref name="parentLine"/>.

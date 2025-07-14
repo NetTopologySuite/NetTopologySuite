@@ -102,7 +102,6 @@ namespace NetTopologySuite.IO
          * true if structurally invalid input should be reported rather than repaired.
          */
         private bool _isStrict;
-        private int maxNumFieldValue;
 
         /// <summary>
         /// Initialize reader with a standard <see cref="NtsGeometryServices"/>.

@@ -11,8 +11,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayArea
 {
     public class OverlayAreaGridsPerfTest : PerformanceTestCase
     {
-
-        bool verbose = true;
         private Geometry geom;
         private Geometry grid;
 
