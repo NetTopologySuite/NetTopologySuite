@@ -13,7 +13,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        private static WKTReader rdr = new WKTReader(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)));
+        private static readonly WKTReader rdr = new WKTReader(new NtsGeometryServices(new PrecisionModel(PrecisionModels.Fixed)));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearReferencingExample"/> class.

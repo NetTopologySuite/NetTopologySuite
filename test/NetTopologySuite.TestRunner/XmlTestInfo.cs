@@ -5,7 +5,7 @@ namespace Open.Topology.TestRunner
     /// <summary>
     /// Summary description for XmlTestInfo.
     /// </summary>
-    public struct XmlTestInfo
+    public readonly struct XmlTestInfo
     {
         private readonly StringDictionary _listParameters;
 

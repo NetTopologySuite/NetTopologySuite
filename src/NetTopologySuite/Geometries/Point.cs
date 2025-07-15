@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-        private CoordinateSequence _coordinates;
+        private readonly CoordinateSequence _coordinates;
 
         /// <summary>
         /// Gets a value to sort the geometry

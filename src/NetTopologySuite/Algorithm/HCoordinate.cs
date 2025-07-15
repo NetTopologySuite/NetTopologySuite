@@ -78,9 +78,9 @@ namespace NetTopologySuite.Algorithm
             return intPt;
         }
 
-        private double _x;
-        private double _y;
-        private double _w;
+        private readonly double _x;
+        private readonly double _y;
+        private readonly double _w;
 
         /// <summary>
         ///

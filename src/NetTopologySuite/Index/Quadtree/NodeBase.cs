@@ -441,8 +441,8 @@ namespace NetTopologySuite.Index.Quadtree
             private class SynchonizedEnumerator : IEnumerator<T>
             {
                 private int _index;
-                private IList<T> _items;
-                private object _syncRoot;
+                private readonly IList<T> _items;
+                private readonly object _syncRoot;
 
                 public SynchonizedEnumerator(IList<T> items, object syncRoot)
                 {

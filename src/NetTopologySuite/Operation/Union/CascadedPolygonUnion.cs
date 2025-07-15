@@ -82,7 +82,7 @@ namespace NetTopologySuite.Operation.Union
         private readonly UnionStrategy _unionStrategy;
 
         private int _countRemainder = 0;
-        private int _countInput = 0;
+        private readonly int _countInput = 0;
 #if UseWorker
         private int _numThreadsStarted = 0;
 #endif

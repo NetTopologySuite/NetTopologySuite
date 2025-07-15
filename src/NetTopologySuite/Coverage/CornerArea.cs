@@ -22,7 +22,7 @@ namespace NetTopologySuite.Coverage
     {
         public const double DEFAULT_SMOOTH_WEIGHT = 0.0;
 
-        private double _smoothWeight;
+        private readonly double _smoothWeight;
 
         /// <summary>
         /// Creates a new corner area computer using the <see cref="DEFAULT_SMOOTH_WEIGHT"/>.

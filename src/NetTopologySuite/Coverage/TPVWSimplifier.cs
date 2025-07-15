@@ -94,7 +94,7 @@ namespace NetTopologySuite.Coverage
             private LinkedLine _linkedLine;
             private readonly bool _isFreeRing;
             private readonly int _nPts;
-            private Coordinate[] _pts;
+            private readonly Coordinate[] _pts;
             private VertexSequencePackedRtree _vertexIndex;
             private readonly Envelope _envelope;
             private bool _isRemoved;

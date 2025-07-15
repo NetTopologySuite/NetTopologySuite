@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         private static readonly int MAX_ITER = 1;
         private static readonly int NUM_TARGET_ITEMS = 4000;
         private static readonly double EXTENT = 1000;
-        private bool verbose = true;
+        private readonly bool verbose = true;
 
         [Test, Category("Stress")]
         public void Test()

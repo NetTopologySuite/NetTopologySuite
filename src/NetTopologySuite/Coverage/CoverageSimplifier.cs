@@ -123,7 +123,7 @@ namespace NetTopologySuite.Coverage
         }
 
         private readonly Geometry[] _coverage;
-        private double _smoothWeight = CornerArea.DEFAULT_SMOOTH_WEIGHT;
+        private readonly double _smoothWeight = CornerArea.DEFAULT_SMOOTH_WEIGHT;
         private double _removableSizeFactor = 1.0;
 
         /// <summary>

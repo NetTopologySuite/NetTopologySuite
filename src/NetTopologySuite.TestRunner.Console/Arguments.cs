@@ -20,7 +20,7 @@ namespace ConsoleTestRunner
     public class Arguments
     {
         // Variables
-        private StringDictionary Parameters;
+        private readonly StringDictionary Parameters;
 
         // Constructor
         public Arguments(string[] Args)

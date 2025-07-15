@@ -34,7 +34,7 @@ namespace NetTopologySuite.Noding.Snapround
         private List<HotPixel> _hotPixels;
 
 #pragma warning disable 649
-        private List<NodedSegmentString> _snappedResult;
+        private readonly List<NodedSegmentString> _snappedResult;
 #pragma warning restore 649
 
         /// <summary>

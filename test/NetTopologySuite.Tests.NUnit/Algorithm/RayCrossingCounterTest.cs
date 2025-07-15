@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     //Tests are exposed by AbstractPointInRingTest type
     public class RayCrossingCounterTest : AbstractPointInRingTest
     {
-        private WKTReader reader = new WKTReader();
+        private readonly WKTReader reader = new WKTReader();
 
         protected override void RunPtInRing(Location expectedLoc, Coordinate pt, string wkt)
         {

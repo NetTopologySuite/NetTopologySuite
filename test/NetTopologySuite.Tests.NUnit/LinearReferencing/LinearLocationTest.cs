@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     [TestFixture]
     public class LinearLocationTest
     {
-        private WKTReader reader = new WKTReader();
+        private readonly WKTReader reader = new WKTReader();
 
         [Test]
         public void TestZeroLengthLineString()

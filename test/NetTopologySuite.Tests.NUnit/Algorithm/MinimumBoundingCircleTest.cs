@@ -86,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             DoMaxDiameterTest("POLYGON ((0 0, 6 0, 5 5, 0 0))", "LINESTRING (5 5, 0 0)");
         }
 
-        static double TOLERANCE = 1.0e-5;
+        static readonly double TOLERANCE = 1.0e-5;
 
         private void DoMaxDiameterTest(string wkt, string expectedWKT)
         {

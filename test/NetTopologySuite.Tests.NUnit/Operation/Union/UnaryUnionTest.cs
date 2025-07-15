@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     [TestFixture]
     public class UnaryUnionTest : GeometryTestCase
     {
-        GeometryFactory geomFact = new GeometryFactory();
+        readonly GeometryFactory geomFact = new GeometryFactory();
 
         [Test]
         public void TestEmptyCollection()

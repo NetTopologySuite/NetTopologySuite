@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
     public abstract class RelateNGTestCase : GeometryTestCase
     {
 
-        private bool _isTrace = false;
+        private readonly bool _isTrace = false;
 
         protected void CheckIntersectsDisjoint(string wkta, string wktb, bool expectedValue)
         {

@@ -16,7 +16,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// <author>Martin Davis</author>
     internal class SegmentMCIndex
     {
-        private STRtree<Index.Chain.MonotoneChain> index;
+        private readonly STRtree<Index.Chain.MonotoneChain> index;
 
         public SegmentMCIndex(Coordinate[] segs)
         {

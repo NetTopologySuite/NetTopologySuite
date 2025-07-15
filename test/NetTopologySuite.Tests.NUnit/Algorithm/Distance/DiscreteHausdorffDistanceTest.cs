@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
             RunTest("LINESTRING (130 0, 0 0, 0 150)", "LINESTRING (10 10, 10 150, 130 10)", 0.5, 70.0);
         }
 
-        private static double TOLERANCE = 0.00001;
+        private static readonly double TOLERANCE = 0.00001;
 
         private void RunTest(string wkt1, string wkt2, double expectedDistance)
         {

@@ -33,7 +33,7 @@ namespace NetTopologySuite.Index
         private int[] _levelOffset;
         private readonly int _nodeCapacity = NodeCapacity;
         private Envelope[] _bounds;
-        private bool[] _isRemoved;
+        private readonly bool[] _isRemoved;
 
         /// <summary>
         /// Creates a new tree over the given sequence of coordinates.

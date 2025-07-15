@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
     public class SegmentStringNodingTest
     {
 
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
 
         [Test]

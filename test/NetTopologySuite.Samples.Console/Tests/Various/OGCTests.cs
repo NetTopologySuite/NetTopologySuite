@@ -11,8 +11,8 @@ namespace NetTopologySuite.Samples.Tests.Various
     //[TestFixture]
     public class OGCTests : BaseSamples
     {
-        private Geometry blueLake = null;
-        private Geometry ashton = null;
+        private readonly Geometry blueLake = null;
+        private readonly Geometry ashton = null;
 
         /// <summary>
         ///

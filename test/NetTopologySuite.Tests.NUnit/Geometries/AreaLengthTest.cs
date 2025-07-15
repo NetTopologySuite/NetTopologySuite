@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             _reader = new WKTReader(gs);
         }
 
-        private static double TOLERANCE = 1E-5;
+        private static readonly double TOLERANCE = 1E-5;
 
         [Test]
         public void TestLength()

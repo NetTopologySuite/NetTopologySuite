@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     [TestFixture]
     public class SimpleRayCrossingStressTest
     {
-        PrecisionModel pmFixed_1 = new PrecisionModel(1.0);
+        readonly PrecisionModel pmFixed_1 = new PrecisionModel(1.0);
 
         [Test]
         [Category("Stress")]
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         class SimpleRayCrossingPointInAreaLocator : IPointOnGeometryLocator
         {
-            private Geometry geom;
+            private readonly Geometry geom;
 
             public SimpleRayCrossingPointInAreaLocator(Geometry geom)
             {
@@ -53,9 +53,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
             class RayCrossingSegmentFilter : ICoordinateSequenceFilter
             {
-                private RayCrossingCounter rcc;
-                private Coordinate p0 = new Coordinate();
-                private Coordinate p1 = new Coordinate();
+                private readonly RayCrossingCounter rcc;
+                private readonly Coordinate p0 = new Coordinate();
+                private readonly Coordinate p1 = new Coordinate();
 
                 public RayCrossingSegmentFilter(RayCrossingCounter rcc)
                 {

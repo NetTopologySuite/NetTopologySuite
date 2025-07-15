@@ -7,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixture]
     public class RobustLineIntersectorTest
     {
-        RobustLineIntersector i = new RobustLineIntersector();
+        readonly RobustLineIntersector i = new RobustLineIntersector();
 
         [Test]
         public void Test2Lines() {

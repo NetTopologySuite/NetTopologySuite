@@ -290,7 +290,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckCS(cs[1], mp.GetGeometryN(1));
         }
 
-        double[][] mLcoords = new double[][]
+        readonly double[][] mLcoords = new double[][]
         {
             new double[] {10, 10, 20, 20},
             new double[] {15, 15, 30, 15}
@@ -350,7 +350,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckCS(cs[1], mp.GetGeometryN(1));
         }
 
-        double[][] mAcoords =
+        readonly double[][] mAcoords =
         {
             new double[] {10, 10, 10, 20, 20, 20, 20, 15, 10, 10},
             new double[] {11, 11, 12, 11, 12, 12, 12, 11, 11, 11},

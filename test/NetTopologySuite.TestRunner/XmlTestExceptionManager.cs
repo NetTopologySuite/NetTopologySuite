@@ -4,7 +4,7 @@ namespace Open.Topology.TestRunner
 {
     public class XmlTestErrorEventArgs : EventArgs
     {
-        private Exception m_objException = null;
+        private readonly Exception m_objException = null;
 
         public XmlTestErrorEventArgs(Exception ex)
         {

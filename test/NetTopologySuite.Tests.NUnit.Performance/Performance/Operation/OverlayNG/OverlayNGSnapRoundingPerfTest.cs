@@ -17,11 +17,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
 
         private const int N_ITER = 1;
 
-        static double ORG_X = 100;
-        static double ORG_Y = 100;
-        static double SIZE = 100;
-        static int N_ARMS = 20;
-        static double ARM_RATIO = 0.3;
+        static readonly double ORG_X = 100;
+        static readonly double ORG_Y = 100;
+        static readonly double SIZE = 100;
+        static readonly int N_ARMS = 20;
+        static readonly double ARM_RATIO = 0.3;
 
 
         private Geometry sineStar;

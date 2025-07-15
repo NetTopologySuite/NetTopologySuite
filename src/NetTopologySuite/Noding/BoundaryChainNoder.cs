@@ -95,8 +95,8 @@ namespace NetTopologySuite.Noding
 
         private class BoundaryChainMap
         {
-            private ISegmentString _segString;
-            private bool[] _isBoundary;
+            private readonly ISegmentString _segString;
+            private readonly bool[] _isBoundary;
 
             public BoundaryChainMap(ISegmentString ss)
             {

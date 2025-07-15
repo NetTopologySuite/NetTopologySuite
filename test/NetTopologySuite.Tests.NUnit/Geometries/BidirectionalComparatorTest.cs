@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class BidirectionalComparatorTest
     {
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
         [Test]
         public void TestLineString1()

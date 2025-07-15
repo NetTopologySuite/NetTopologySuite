@@ -28,7 +28,7 @@ namespace Open.Topology.TestRunner
 
         #region Private Members
 
-        private ArrayList m_listarrTests         = null;
+        private readonly ArrayList m_listarrTests         = null;
 
         private XmlTestCollection m_listCurTests = null;
 

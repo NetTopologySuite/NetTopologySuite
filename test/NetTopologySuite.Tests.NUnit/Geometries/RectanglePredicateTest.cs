@@ -10,8 +10,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class RectanglePredicateTest
     {
-        private WKTReader rdr = new WKTReader();
-        private GeometryFactory fact = new GeometryFactory();
+        private readonly WKTReader rdr = new WKTReader();
+        private readonly GeometryFactory fact = new GeometryFactory();
 
         [Test]
         public void TestShortAngleOnBoundary()

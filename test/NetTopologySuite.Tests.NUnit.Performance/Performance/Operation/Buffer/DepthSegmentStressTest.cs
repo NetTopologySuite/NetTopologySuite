@@ -132,8 +132,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
          */
         private class DepthSegment : IComparable<DepthSegment>
         {
-            private LineSegment upwardSeg;
-            private int leftDepth;
+            private readonly LineSegment upwardSeg;
+            private readonly int leftDepth;
 
             public DepthSegment(LineSegment seg, int depth)
             {

@@ -12,8 +12,8 @@ namespace NetTopologySuite.EdgeRay
             return area.Area;
         }
 
-        private Geometry _geomA;
-        private Geometry _geomB;
+        private readonly Geometry _geomA;
+        private readonly Geometry _geomB;
         double _area;
 
         public EdgeRayIntersectionArea(Geometry geom0, Geometry geom1)

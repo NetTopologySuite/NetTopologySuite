@@ -42,8 +42,8 @@ namespace NetTopologySuite.Algorithm.Axis
         private readonly Polygon _inputPolygon;
         private readonly GeometryFactory _geomFact;
 
-        private IDictionary<Tri, AxisNode> nodeMap = new Dictionary<Tri, AxisNode>();
-        private Stack<AxisNode> nodeQue = new Stack<AxisNode>();
+        private readonly IDictionary<Tri, AxisNode> nodeMap = new Dictionary<Tri, AxisNode>();
+        private readonly Stack<AxisNode> nodeQue = new Stack<AxisNode>();
 
         public ApproximateMedialAxis(Polygon polygon)
         {

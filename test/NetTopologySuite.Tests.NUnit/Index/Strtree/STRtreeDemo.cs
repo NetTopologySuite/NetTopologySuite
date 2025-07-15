@@ -8,12 +8,12 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
     public class STRtreeDemo
     {
-        private static double EXTENT = 100;
-        private static double MAX_ITEM_EXTENT = 15;
-        private static double MIN_ITEM_EXTENT = 3;
-        private static int ITEM_COUNT = 20;
-        private static int NODE_CAPACITY = 4;
-        private static GeometryFactory factory = new GeometryFactory();
+        private static readonly double EXTENT = 100;
+        private static readonly double MAX_ITEM_EXTENT = 15;
+        private static readonly double MIN_ITEM_EXTENT = 3;
+        private static readonly int ITEM_COUNT = 20;
+        private static readonly int NODE_CAPACITY = 4;
+        private static readonly GeometryFactory factory = new GeometryFactory();
 
         public STRtreeDemo()
         {

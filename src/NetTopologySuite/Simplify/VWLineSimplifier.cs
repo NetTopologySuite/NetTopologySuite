@@ -131,10 +131,10 @@ namespace NetTopologySuite.Simplify
             return list.ToArray();
         }
 
-        private struct IndexWithArea : IComparable<IndexWithArea>
+        private readonly struct IndexWithArea : IComparable<IndexWithArea>
         {
-            private int index;
-            private double area;
+            private readonly int index;
+            private readonly double area;
 
             public IndexWithArea(int index, double area)
             {

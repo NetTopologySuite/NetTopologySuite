@@ -13,14 +13,14 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
     {
         private readonly string filepath = string.Empty;
 #pragma warning disable SYSLIB0011 // Type or member is obsolete
-        private IFormatter serializer = null;
+        private readonly IFormatter serializer = null;
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
 
-        private Coordinate[] coordinates = null;
-        private Point point = null;
-        private LineString line = null;
-        private Polygon polygon = null;
-        private MultiPoint multiPoint = null;
+        private readonly Coordinate[] coordinates = null;
+        private readonly Point point = null;
+        private readonly LineString line = null;
+        private readonly Polygon polygon = null;
+        private readonly MultiPoint multiPoint = null;
 
         public SerializationSamples() : base()
         {

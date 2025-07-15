@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
     /// </summary>
     public class SnapRoundingTest
     {
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
         [Test]
         public void TestPolyWithCloseNode()
