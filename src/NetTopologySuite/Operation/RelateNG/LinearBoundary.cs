@@ -39,9 +39,8 @@ namespace NetTopologySuite.Operation.RelateNG
 
         public bool IsBoundary(Coordinate pt)
         {
-            if (!_vertexDegree.ContainsKey(pt))
+            if (!_vertexDegree.TryGetValue(pt, out int degree))
                 return false;
-            int degree = _vertexDegree[pt];
             return _boundaryNodeRule.IsInBoundary(degree);
         }
 

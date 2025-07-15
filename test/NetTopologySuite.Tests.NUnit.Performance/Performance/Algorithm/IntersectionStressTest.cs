@@ -123,9 +123,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private void AddStat(string tag, double dist)
         {
             double distTotal = 0.0;
-            if (_distMap.ContainsKey(tag))
+            if (_distMap.TryGetValue(tag, out double value))
             {
-                distTotal = _distMap[tag];
+                distTotal = value;
             }
             distTotal += dist;
             _distMap[tag] = distTotal;

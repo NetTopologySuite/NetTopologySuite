@@ -113,9 +113,9 @@ namespace Open.Topology.TestRunner.Functions
             foreach (var seg in segs)
             {
                 int count = 1;
-                if (segsAll.ContainsKey(seg))
+                if (segsAll.TryGetValue(seg, out int value))
                 {
-                    count = 1 + segsAll[seg];
+                    count = 1 + value;
                 }
                 segsAll[seg] = count;
             }
