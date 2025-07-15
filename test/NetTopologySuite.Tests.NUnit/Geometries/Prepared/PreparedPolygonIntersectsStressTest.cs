@@ -2,7 +2,6 @@ using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 using NUnit.Framework;
 

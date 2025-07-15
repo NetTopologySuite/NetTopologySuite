@@ -1,9 +1,5 @@
-﻿using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using System;
+﻿using NetTopologySuite.Geometries;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml;
 
 namespace NetTopologySuite.Coverage
 {

@@ -1,6 +1,5 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
-using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union

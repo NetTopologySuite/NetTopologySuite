@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Mime;
 using NetTopologySuite.Geometries;
 using RTools_NTS.Util;
 

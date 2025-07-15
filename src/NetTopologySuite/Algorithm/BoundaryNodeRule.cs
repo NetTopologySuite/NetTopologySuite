@@ -1,7 +1,6 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Relate;
-using System;
 
 namespace NetTopologySuite.Algorithm
 {

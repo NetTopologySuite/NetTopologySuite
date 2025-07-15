@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using NetTopologySuite.Geometries;
-using RTools_NTS.Util;
 
 namespace NetTopologySuite.IO
 {

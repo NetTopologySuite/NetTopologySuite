@@ -1,8 +1,5 @@
 ﻿using Trngl = NetTopologySuite.Triangulate.Tri.Tri;
-
-using System;
 using System.Collections.Generic;
-using System.Text;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.Tri;
 using NUnit.Framework;

@@ -4,12 +4,10 @@ using System.Xml;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;
-using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Operation.Predicate;
-using NetTopologySuite.Operation.Relate;
 using NetTopologySuite.Operation.Valid;
 
 namespace NetTopologySuite.Geometries

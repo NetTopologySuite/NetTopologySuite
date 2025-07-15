@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index
 {

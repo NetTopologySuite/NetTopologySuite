@@ -2,7 +2,6 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;
-using NetTopologySuite.Operation.Overlay.Validate;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Algorithm.Construct

@@ -3,7 +3,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 
 namespace NetTopologySuite.Operation.RelateNG
 {

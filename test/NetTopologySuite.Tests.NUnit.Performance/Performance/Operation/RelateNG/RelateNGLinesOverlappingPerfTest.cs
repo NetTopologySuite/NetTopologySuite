@@ -4,7 +4,6 @@ using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.RelateNG;
 
 using NUnit.Framework;
-using System;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
 {

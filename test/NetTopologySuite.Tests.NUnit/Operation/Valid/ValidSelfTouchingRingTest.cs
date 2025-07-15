@@ -1,6 +1,3 @@
-using System;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Valid;
 using NUnit.Framework;
 

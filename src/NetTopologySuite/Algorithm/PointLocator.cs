@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm

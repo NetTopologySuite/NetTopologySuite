@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http.Headers;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm

@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System;
 using System.Globalization;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;

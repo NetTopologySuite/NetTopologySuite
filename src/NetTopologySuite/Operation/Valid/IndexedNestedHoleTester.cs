@@ -1,5 +1,4 @@
-﻿using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
 

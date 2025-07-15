@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Text.RegularExpressions;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;

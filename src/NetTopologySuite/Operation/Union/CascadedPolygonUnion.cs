@@ -5,7 +5,6 @@ using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 #if UseWorker
 using System.Threading;
 #endif
@@ -13,7 +12,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Operation.Overlay.Snap;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Union
 {

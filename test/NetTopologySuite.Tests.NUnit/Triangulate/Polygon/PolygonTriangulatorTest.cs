@@ -1,5 +1,4 @@
-﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Triangulate.Polygon;
+﻿using NetTopologySuite.Triangulate.Polygon;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Triangulate.Polygon

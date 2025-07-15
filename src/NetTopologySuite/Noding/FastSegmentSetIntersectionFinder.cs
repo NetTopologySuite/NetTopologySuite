@@ -1,6 +1,5 @@
 using NetTopologySuite.Algorithm;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NetTopologySuite.Noding
 {

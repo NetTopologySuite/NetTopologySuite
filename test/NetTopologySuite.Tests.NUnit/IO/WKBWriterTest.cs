@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 

@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Linemerge;
-using NetTopologySuite.Operation.Overlay;
-using NetTopologySuite.Operation.Overlay.Snap;
 
 namespace NetTopologySuite.Operation.Union
 {

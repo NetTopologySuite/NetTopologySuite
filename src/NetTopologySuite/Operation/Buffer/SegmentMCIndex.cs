@@ -1,11 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.Strtree;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Operation.Buffer
 {

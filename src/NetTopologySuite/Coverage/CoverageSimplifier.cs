@@ -1,12 +1,6 @@
-﻿using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation;
+﻿using NetTopologySuite.Geometries;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace NetTopologySuite.Coverage
 {

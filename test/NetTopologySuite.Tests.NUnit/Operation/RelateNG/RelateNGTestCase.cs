@@ -1,6 +1,5 @@
 ﻿using NetTopologySuite.Operation.RelateNG;
 using NUnit.Framework;
-using System;
 using _RelateNG = NetTopologySuite.Operation.RelateNG.RelateNG;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
-using NetTopologySuite.Noding.Snap;
 
 namespace NetTopologySuite.Noding.Snapround
 {

@@ -1,14 +1,9 @@
 ﻿using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using NetTopologySuite.Geometries;
-using System.IO;
 
 namespace NetTopologySuite.Samples.Tests.Various
 {

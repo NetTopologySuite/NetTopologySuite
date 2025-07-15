@@ -4,10 +4,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Mathematics;
-using NetTopologySuite.Operation.OverlayArea;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NetTopologySuite.Index;
 
 namespace NetTopologySuite.Operation.OverlayArea

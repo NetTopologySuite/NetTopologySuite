@@ -3,7 +3,6 @@ using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.RelateNG;
 using NUnit.Framework;
-using System.Xml.Linq;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
 {

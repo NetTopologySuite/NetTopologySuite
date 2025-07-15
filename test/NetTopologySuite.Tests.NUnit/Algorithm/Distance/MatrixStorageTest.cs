@@ -1,5 +1,4 @@
-﻿using System;
-using NetTopologySuite.Algorithm.Distance;
+﻿using NetTopologySuite.Algorithm.Distance;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance

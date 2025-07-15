@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Simplify

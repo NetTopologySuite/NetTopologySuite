@@ -1,6 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using NetTopologySuite.Operation.OverlayNG;
 

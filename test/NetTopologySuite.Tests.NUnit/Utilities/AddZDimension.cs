@@ -1,7 +1,4 @@
 ﻿using NetTopologySuite.Geometries;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {

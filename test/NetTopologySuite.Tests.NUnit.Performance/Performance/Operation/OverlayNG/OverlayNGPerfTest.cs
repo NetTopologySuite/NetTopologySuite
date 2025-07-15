@@ -1,5 +1,4 @@
-﻿using System;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Overlay;

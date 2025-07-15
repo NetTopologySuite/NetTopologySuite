@@ -2,7 +2,6 @@
 using NetTopologySuite.EdgeRay;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.GeometriesGraph;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.EdgeRay

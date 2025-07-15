@@ -1,9 +1,7 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Triangulate.Polygon
 {

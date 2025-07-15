@@ -1,4 +1,3 @@
-using System;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 

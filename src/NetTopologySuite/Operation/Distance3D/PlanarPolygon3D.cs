@@ -2,7 +2,6 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Distance3D
 {

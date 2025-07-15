@@ -1,5 +1,4 @@
-﻿using System;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;

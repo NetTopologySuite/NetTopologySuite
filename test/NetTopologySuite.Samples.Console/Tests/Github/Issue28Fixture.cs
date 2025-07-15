@@ -1,6 +1,5 @@
 using System;
 using NetTopologySuite.Algorithm.Distance;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 

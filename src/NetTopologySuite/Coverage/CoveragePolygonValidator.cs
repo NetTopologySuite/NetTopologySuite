@@ -1,9 +1,7 @@
-﻿using NetTopologySuite.Algorithm.Locate;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Coverage
 {

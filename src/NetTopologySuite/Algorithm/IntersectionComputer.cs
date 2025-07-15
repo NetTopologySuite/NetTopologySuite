@@ -1,5 +1,4 @@
-﻿using System;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {

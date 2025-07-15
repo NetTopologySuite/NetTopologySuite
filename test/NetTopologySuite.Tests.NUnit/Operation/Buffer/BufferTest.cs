@@ -1,7 +1,6 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 using NUnit.Framework;
-using System;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {

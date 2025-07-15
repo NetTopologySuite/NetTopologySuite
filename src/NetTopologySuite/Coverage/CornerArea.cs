@@ -2,8 +2,6 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Coverage
 {
