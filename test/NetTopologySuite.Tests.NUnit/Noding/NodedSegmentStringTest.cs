@@ -1,6 +1,4 @@
-﻿using System;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Noding;
+﻿using NetTopologySuite.Noding;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Noding

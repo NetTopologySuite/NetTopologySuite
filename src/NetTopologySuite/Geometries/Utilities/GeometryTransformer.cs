@@ -61,20 +61,20 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// <c>true</c> if empty geometries should not be included in the result.
         /// </summary>
-        private bool pruneEmptyGeometry = true;
+        private readonly bool pruneEmptyGeometry = true;
 
         /// <summary>
         /// <c>true</c> if a homogenous collection result
         /// from a <c>GeometryCollection</c> should still
         /// be a general GeometryCollection.
         /// </summary>
-        private bool preserveGeometryCollectionType = true;
+        private readonly bool preserveGeometryCollectionType = true;
 
         /// <summary>
         /// <c>true</c> if the type of the input should be preserved.
         /// </summary>
 #pragma warning disable 649
-        private bool _preserveType;
+        private readonly bool _preserveType;
 #pragma warning restore 649
 
         ///// <summary>

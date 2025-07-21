@@ -158,7 +158,6 @@ namespace NetTopologySuite.Algorithm
                 {
                     if (y1 <= y2)
                     {
-                        ;
                     }
                     else
                     {
@@ -218,7 +217,6 @@ namespace NetTopologySuite.Algorithm
                         y1 = -y1;
                         x2 = -x2;
                         y2 = -y2;
-                        ;
                     }
                     else
                     {
@@ -245,7 +243,6 @@ namespace NetTopologySuite.Algorithm
                 {
                     if (x1 <= x2)
                     {
-                        ;
                     }
                     else
                     {
@@ -270,7 +267,6 @@ namespace NetTopologySuite.Algorithm
                         sign = -sign;
                         x1 = -x1;
                         x2 = -x2;
-                        ;
                     }
                     else
                     {

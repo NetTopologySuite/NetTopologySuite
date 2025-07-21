@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 

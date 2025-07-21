@@ -11,9 +11,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
     {
         private CultureInfo overriddenCurrentCulture;
 
-        private Random _rnd = new Random(13);
+        private readonly Random _rnd = new Random(13);
 
-        private WKTReader _reader = new WKTReader() { IsOldNtsCoordinateSyntaxAllowed = false };
+        private readonly WKTReader _reader = new WKTReader() { IsOldNtsCoordinateSyntaxAllowed = false };
 
         [SetUp]
         public void SetCurrentCulture()

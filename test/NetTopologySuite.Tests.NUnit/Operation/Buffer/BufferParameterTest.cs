@@ -1,8 +1,5 @@
 ﻿using NetTopologySuite.Operation.Buffer;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {

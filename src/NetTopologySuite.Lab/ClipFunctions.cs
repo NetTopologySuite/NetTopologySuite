@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NetTopologySuite.Clip;
+﻿using NetTopologySuite.Clip;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite

@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixture]
     public class PointLocatorTest
     {
-        private WKTReader reader = new WKTReader();
+        private readonly WKTReader reader = new WKTReader();
 
         [Test]
         public void TestBox()

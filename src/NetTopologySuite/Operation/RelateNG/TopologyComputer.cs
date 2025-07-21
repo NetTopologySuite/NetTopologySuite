@@ -7,9 +7,6 @@ namespace NetTopologySuite.Operation.RelateNG
 {
     internal class TopologyComputer
     {
-
-        private const string MSG_GEOMETRY_DIMENSION_UNEXPECTED = "Unexpected combination of geometry dimensions";
-
         private readonly TopologyPredicate _predicate;
         private readonly RelateGeometry _geomA;
         private readonly RelateGeometry _geomB;

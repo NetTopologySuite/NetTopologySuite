@@ -11,7 +11,7 @@ namespace Open.Topology.TestRunner
     {
         private StringCollection m_listFileNames = null;
 
-        private XmlTestDocument  m_objCurrentDoc = null;
+        private readonly XmlTestDocument  m_objCurrentDoc = null;
 
         public XmlTestController()
         {

@@ -1,6 +1,5 @@
 ﻿using NetTopologySuite.Operation.RelateNG;
 using NUnit.Framework;
-using System;
 using _RelateNG = NetTopologySuite.Operation.RelateNG.RelateNG;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
@@ -8,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
     public abstract class RelateNGTestCase : GeometryTestCase
     {
 
-        private bool _isTrace = false;
+        private readonly bool _isTrace = false;
 
         protected void CheckIntersectsDisjoint(string wkta, string wktb, bool expectedValue)
         {

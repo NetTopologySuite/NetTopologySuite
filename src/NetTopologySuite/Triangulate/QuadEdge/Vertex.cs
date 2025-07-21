@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 

@@ -159,7 +159,7 @@ namespace NetTopologySuite.Densify
                 // prevent creation of invalid LineStrings
                 if (parent is LineString && newPts.Length == 1)
                 {
-                    newPts = new Coordinate[0];
+                    newPts = Array.Empty<Coordinate>();
                 }
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }

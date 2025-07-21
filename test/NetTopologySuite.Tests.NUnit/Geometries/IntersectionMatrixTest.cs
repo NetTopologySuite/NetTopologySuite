@@ -6,9 +6,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class IntersectionMatrixTest
     {
-        private static Dimension A = Dimension.Surface;
-        private static Dimension L = Dimension.Curve;
-        private static Dimension P = Dimension.Point;
+        private static readonly Dimension A = Dimension.Surface;
+        private static readonly Dimension L = Dimension.Curve;
+        private static readonly Dimension P = Dimension.Point;
 
         [Test]
         public void TestToString()

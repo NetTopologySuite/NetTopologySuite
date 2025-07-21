@@ -1,9 +1,7 @@
-﻿using NetTopologySuite.Algorithm.Locate;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Coverage
 {
@@ -98,7 +96,7 @@ namespace NetTopologySuite.Coverage
 
         private readonly Geometry _targetGeom;
         private double _gapWidth = 0.0;
-        private GeometryFactory _geomFactory;
+        private readonly GeometryFactory _geomFactory;
         private readonly Geometry[] _adjGeoms;
         private List<CoveragePolygon> _adjCovPolygons;
 

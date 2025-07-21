@@ -404,7 +404,7 @@ namespace NetTopologySuite.Index.Quadtree
 
             public IEnumerator<T> GetEnumerator()
             {
-                return new SynchonizedEnumerator(_items, _syncRoot); ;
+                return new SynchonizedEnumerator(_items, _syncRoot);
             }
 
             public int IndexOf(T item)
@@ -441,8 +441,8 @@ namespace NetTopologySuite.Index.Quadtree
             private class SynchonizedEnumerator : IEnumerator<T>
             {
                 private int _index;
-                private IList<T> _items;
-                private object _syncRoot;
+                private readonly IList<T> _items;
+                private readonly object _syncRoot;
 
                 public SynchonizedEnumerator(IList<T> items, object syncRoot)
                 {

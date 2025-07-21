@@ -1,6 +1,4 @@
-﻿using System;
-using NetTopologySuite.Clip;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Clip;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Clip

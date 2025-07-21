@@ -24,9 +24,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
     [Category("Stress")]
     public class OverlayNodingStressTest
     {
-        private static int ITER_LIMIT = 10000;
-        private static int BATCH_SIZE = 20;
-        private static double MAX_DISPLACEMENT = 60;
+        private static readonly int ITER_LIMIT = 10000;
+        private static readonly int BATCH_SIZE = 20;
+        private static readonly double MAX_DISPLACEMENT = 60;
 
         private Geometry _baseAccum;
         private int _geomCount;

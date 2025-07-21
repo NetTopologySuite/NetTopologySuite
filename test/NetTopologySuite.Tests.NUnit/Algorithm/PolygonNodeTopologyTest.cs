@@ -1,7 +1,6 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-using System;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {

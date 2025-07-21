@@ -1,6 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Operation.RelateNG
 {

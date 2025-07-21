@@ -400,7 +400,7 @@ namespace NetTopologySuite.Triangulate.Polygon
         /// <returns><c>true</c> if the corner is flat or collapsed</returns>
         private static bool IsCornerInvalid(Coordinate[] pts)
         {
-            return pts[1].Equals2D(pts[0]) || pts[1].Equals2D(pts[2]) || pts[0].Equals2D(pts[2]); ;
+            return pts[1].Equals2D(pts[0]) || pts[1].Equals2D(pts[2]) || pts[0].Equals2D(pts[2]);
         }
 
         public Geometries.Polygon ToGeometry()

@@ -1,6 +1,5 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
-using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
@@ -8,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     [TestFixture]
     public class UnaryUnionTest : GeometryTestCase
     {
-        GeometryFactory geomFact = new GeometryFactory();
+        readonly GeometryFactory geomFact = new GeometryFactory();
 
         [Test]
         public void TestEmptyCollection()

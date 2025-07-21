@@ -1,9 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Precision;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Tests.NUnit.Precision
 {

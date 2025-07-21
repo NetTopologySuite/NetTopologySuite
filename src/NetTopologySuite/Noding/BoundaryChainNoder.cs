@@ -62,13 +62,9 @@ namespace NetTopologySuite.Noding
                 var p0 = segString.Coordinates[i];
                 var p1 = segString.Coordinates[i + 1];
                 var seg = new Segment(p0, p1, segInclude, i);
-                if (segSet.Contains(seg))
+                if (!segSet.Add(seg))
                 {
                     segSet.Remove(seg);
-                }
-                else
-                {
-                    segSet.Add(seg);
                 }
             }
         }
@@ -99,8 +95,8 @@ namespace NetTopologySuite.Noding
 
         private class BoundaryChainMap
         {
-            private ISegmentString _segString;
-            private bool[] _isBoundary;
+            private readonly ISegmentString _segString;
+            private readonly bool[] _isBoundary;
 
             public BoundaryChainMap(ISegmentString ss)
             {

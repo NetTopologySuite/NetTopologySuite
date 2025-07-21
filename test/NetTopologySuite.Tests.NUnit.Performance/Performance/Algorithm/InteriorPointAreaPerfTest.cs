@@ -16,11 +16,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     {
         private const int NumberOfIterations = 100;
 
-        private static double OriginX = 100;
-        private static double OriginY = 100;
-        private static double Size = 100;
-        private static int NumberOfArms = 20;
-        private static double ArmRatio = 0.3;
+        private static readonly double OriginX = 100;
+        private static readonly double OriginY = 100;
+        private static readonly double Size = 100;
+        private static readonly int NumberOfArms = 20;
+        private static readonly double ArmRatio = 0.3;
 
         private Geometry _sineStar;
         private Geometry _sinePolyCrinkly;

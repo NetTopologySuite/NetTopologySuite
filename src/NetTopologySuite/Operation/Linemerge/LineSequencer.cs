@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
@@ -296,9 +295,8 @@ namespace NetTopologySuite.Operation.Linemerge
         {
             DirectedEdge wellOrientedDE = null;
             DirectedEdge unvisitedDE = null;
-            foreach(object obj in node.OutEdges)
+            foreach(var de in node.OutEdges)
             {
-                var de = (DirectedEdge) obj;
                 if (!de.Edge.IsVisited)
                 {
                     unvisitedDE = de;

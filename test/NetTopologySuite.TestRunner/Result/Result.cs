@@ -16,7 +16,7 @@ namespace Open.Topology.TestRunner.Result
 
     }
 
-    public interface IResult<T> : IResult
+    public interface IResult<out T> : IResult
     {
         T Value { get; }
     }

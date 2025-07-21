@@ -7,8 +7,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayArea
 {
     public class OverlayAreaStarsGridPerfTest : PerformanceTestCase
     {
-
-        bool verbose = true;
         private Geometry geom;
         private Geometry grid;
 

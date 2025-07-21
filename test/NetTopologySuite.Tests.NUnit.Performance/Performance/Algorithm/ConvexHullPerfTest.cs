@@ -1,10 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {

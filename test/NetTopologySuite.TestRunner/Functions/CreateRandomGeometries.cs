@@ -7,7 +7,7 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class CreateRandomGeometryFunctions
     {
-        private static Random RND = new Random();
+        private static readonly Random RND = new Random();
 
         public static Geometry RandomPointsInGrid(Geometry g, int nPts)
         {

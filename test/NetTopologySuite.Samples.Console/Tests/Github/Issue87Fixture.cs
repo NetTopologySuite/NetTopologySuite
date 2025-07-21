@@ -9,7 +9,7 @@ namespace NetTopologySuite.Samples.Tests.Github
     [TestFixture]
     public class Issue87Fixture
     {
-        private string[] _wkts = new[]
+        private readonly string[] _wkts = new[]
         {
             "LINESTRING (564 564, 0 0)", "LINESTRING (596 2427, 0 3024)", "LINESTRING (522 605, 274 1245)",
             "LINESTRING (275 1475, 275 1716)", "LINESTRING (275 1716, 596 2427)", "LINESTRING (274 1245, 275 1475)",

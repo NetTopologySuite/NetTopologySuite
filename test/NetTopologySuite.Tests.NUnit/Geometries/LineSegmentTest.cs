@@ -11,9 +11,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class LineSegmentTest
     {
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
-        private static double ROOT2 = Math.Sqrt(2);
+        private static readonly double ROOT2 = Math.Sqrt(2);
 
         [Test]
         public void HashCollision()

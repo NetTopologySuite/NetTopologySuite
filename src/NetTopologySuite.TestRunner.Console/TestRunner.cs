@@ -17,7 +17,7 @@ namespace ConsoleTestRunner
         private XmlTestType m_enumFilterType = XmlTestType.None;
         private bool m_bVerbose              = true;
 
-        private TestInfoCollection m_listTestInfo = null;
+        private readonly TestInfoCollection m_listTestInfo = null;
         private int m_nTestCount  = 0;
         private int m_nFailures   = 0;
         private int m_nExceptions = 0;

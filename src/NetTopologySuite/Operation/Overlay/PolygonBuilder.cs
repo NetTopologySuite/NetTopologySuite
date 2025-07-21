@@ -250,9 +250,7 @@ namespace NetTopologySuite.Operation.Overlay
                 // hole must be contained in shell
                 if (!tryShellEnv.Contains(testEnv)) continue;
 
-                bool isContained = false;
-                if (PointLocation.IsInRing(testPt, tryShellRing.Coordinates))
-                    isContained = true;
+                bool isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
 
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)

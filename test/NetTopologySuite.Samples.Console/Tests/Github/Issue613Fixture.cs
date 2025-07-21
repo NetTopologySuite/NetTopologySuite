@@ -1,9 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Samples.Tests.Github
 {

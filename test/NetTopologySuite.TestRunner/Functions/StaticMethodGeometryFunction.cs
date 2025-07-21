@@ -52,7 +52,7 @@ namespace Open.Topology.TestRunner.Functions
             return types;
         }
 
-        private MethodInfo method;
+        private readonly MethodInfo method;
 
         public StaticMethodGeometryFunction(
             string category,

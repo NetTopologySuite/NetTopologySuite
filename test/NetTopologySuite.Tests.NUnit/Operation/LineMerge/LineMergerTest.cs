@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
     [TestFixture]
     public class LineMergerTest
     {
-        private static WKTReader reader = new WKTReader();
+        private static readonly WKTReader reader = new WKTReader();
 
         [Test]
         public void Test1()

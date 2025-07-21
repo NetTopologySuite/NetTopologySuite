@@ -1,10 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 {
@@ -46,9 +42,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
         public void RunPoints()
         {
-            foreach(Geometry p1 in _grid)
+            foreach(var p1 in _grid)
             {
-                foreach (Geometry p2 in _grid)
+                foreach (var p2 in _grid)
                 {
                     double dist = p1.Distance(p2);
                 }

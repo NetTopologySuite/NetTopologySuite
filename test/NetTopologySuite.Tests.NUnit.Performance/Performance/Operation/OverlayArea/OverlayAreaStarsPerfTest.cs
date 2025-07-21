@@ -1,19 +1,11 @@
 ﻿using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation.OverlayArea;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayArea
 {
     public class OverlayAreaStarsPerfTest : PerformanceTestCase
     {
-        bool verbose = true;
         private Geometry star1;
         private Geometry star2;
 

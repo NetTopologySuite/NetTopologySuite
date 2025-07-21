@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
         {
             var geom = Read(wkt);
             var lb = new LinearBoundary(ExtractLines(geom), bnr);
-            bool hasBoundaryExpected = wktBdyExpected == null ? false : true;
+            bool hasBoundaryExpected = wktBdyExpected != null;
             Assert.That(lb.HasBoundary, Is.EqualTo(hasBoundaryExpected), "HasBoundary");
 
             CheckBoundaryPoints(lb, geom, wktBdyExpected);

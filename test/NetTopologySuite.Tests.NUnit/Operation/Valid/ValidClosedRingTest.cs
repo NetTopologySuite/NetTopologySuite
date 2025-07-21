@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     [TestFixture]
     public class ValidClosedRingTest
     {
-        private static WKTReader rdr = new WKTReader();
+        private static readonly WKTReader rdr = new WKTReader();
 
         [Test]
         public void TestBadLinearRing()

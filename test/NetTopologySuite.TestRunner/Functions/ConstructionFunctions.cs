@@ -21,7 +21,8 @@ namespace Open.Topology.TestRunner.Functions
         public static Geometry MinimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
         public static double MinimumBoundingCircleDiameterLength(Geometry g) { return 2 * (new MinimumBoundingCircle(g)).GetRadius(); }
 
-        public static Geometry MaximumDiameter(Geometry g) { return new MinimumBoundingCircle(g).GetMaximumDiameter(); ; }
+        public static Geometry MaximumDiameter(Geometry g) { return new MinimumBoundingCircle(g).GetMaximumDiameter();
+        }
         public static double MaximumDiameterLength(Geometry g) { return MaximumDiameter(g).Length; }
 
         public static Geometry Boundary(Geometry g) { return g.Boundary; }

@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     [TestFixture]
     public class BufferResultValidatorTest
     {
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
         [Test]
         public void TestRandomLineStringEnvDistanceFailure()

@@ -115,7 +115,7 @@ namespace NetTopologySuite.Simplify
                 var inputPts = coords.ToCoordinateArray();
                 Coordinate[] newPts;
                 if (inputPts.Length == 0)
-                    newPts = new Coordinate[0];
+                    newPts = Array.Empty<Coordinate>();
                 else newPts = VWLineSimplifier.Simplify(inputPts, _distanceTolerance);
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }

@@ -25,7 +25,7 @@ namespace Open.Topology.TestRunner.Result
     /// The matching may also take into account the original input parameters
     /// to the geometry method.
     /// </summary>
-    public interface IResultMatcher<TResult> : IResultMatcher where TResult : IResult
+    public interface IResultMatcher<in TResult> : IResultMatcher where TResult : IResult
     {
         /// <summary>
         /// Tests whether the actual and expected results match well enough for the test to be considered as passed.

@@ -104,8 +104,8 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         private readonly Coordinate[] _sectionPts;
-        private double _location;
-        private double _locLast;
+        private readonly double _location;
+        private readonly double _locLast;
 
         OffsetCurveSection(Coordinate[] pts, double loc, double locLast)
         {

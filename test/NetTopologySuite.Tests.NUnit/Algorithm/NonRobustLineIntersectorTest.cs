@@ -5,7 +5,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixture]
     public class NonRobustLineIntersectorTest
     {
-        private NonRobustLineIntersector li = new NonRobustLineIntersector();
+        private readonly NonRobustLineIntersector li = new NonRobustLineIntersector();
 
         [Test]
         [Ignore("The JTS testNegativeZero test was being ignored")]

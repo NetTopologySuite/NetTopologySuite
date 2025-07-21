@@ -4,15 +4,12 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 using System;
-using NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared;
 using NetTopologySuite.Tests.NUnit.TestData;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayArea
 {
     public class OverlayAreaGridsPerfTest : PerformanceTestCase
     {
-
-        bool verbose = true;
         private Geometry geom;
         private Geometry grid;
 

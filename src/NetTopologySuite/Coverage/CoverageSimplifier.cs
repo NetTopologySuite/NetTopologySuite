@@ -1,12 +1,6 @@
-﻿using NetTopologySuite.Algorithm;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation;
+﻿using NetTopologySuite.Geometries;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace NetTopologySuite.Coverage
 {
@@ -123,7 +117,7 @@ namespace NetTopologySuite.Coverage
         }
 
         private readonly Geometry[] _coverage;
-        private double _smoothWeight = CornerArea.DEFAULT_SMOOTH_WEIGHT;
+        private readonly double _smoothWeight = CornerArea.DEFAULT_SMOOTH_WEIGHT;
         private double _removableSizeFactor = 1.0;
 
         /// <summary>

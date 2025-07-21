@@ -30,7 +30,7 @@ namespace NetTopologySuite.Operation.Union
         }
 
         private readonly Geometry[] _geoms;
-        private DisjointSets.Subsets _sets;
+        private readonly DisjointSets.Subsets _sets;
 
         public SpatialPartition(Geometry[] geoms, IEquivalenceRelation rel)
         {

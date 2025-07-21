@@ -10,16 +10,16 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class CoversTest : BaseSamples
     {
-        private Polygon polygon1 = null;
-        private Polygon polygon2 = null;
+        private readonly Polygon polygon1 = null;
+        private readonly Polygon polygon2 = null;
 
-        Coordinate[] array1 = new Coordinate[]  {   new Coordinate(10, 10),
+        readonly Coordinate[] array1 = new Coordinate[]  {   new Coordinate(10, 10),
                                                     new Coordinate(50, 10),
                                                     new Coordinate(50, 50),
                                                     new Coordinate(10, 50),
                                                     new Coordinate(10, 10), };
 
-        Coordinate[] array2 = new Coordinate[]  {   new Coordinate(11, 11),
+        readonly Coordinate[] array2 = new Coordinate[]  {   new Coordinate(11, 11),
                                                     new Coordinate(20, 11),
                                                     new Coordinate(20, 20),
                                                     new Coordinate(11, 20),

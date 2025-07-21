@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.HPRtree;

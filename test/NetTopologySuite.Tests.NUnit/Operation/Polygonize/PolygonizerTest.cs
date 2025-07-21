@@ -1,5 +1,4 @@
 using System;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 

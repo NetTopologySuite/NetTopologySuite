@@ -4,9 +4,7 @@ using NetTopologySuite.Index;
 using NetTopologySuite.Simplify;
 using NetTopologySuite.Utilities;
 using System.Collections.Generic;
-using System.Collections;
 using System;
-using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Coverage
 {
@@ -94,7 +92,7 @@ namespace NetTopologySuite.Coverage
             private LinkedLine _linkedLine;
             private readonly bool _isFreeRing;
             private readonly int _nPts;
-            private Coordinate[] _pts;
+            private readonly Coordinate[] _pts;
             private VertexSequencePackedRtree _vertexIndex;
             private readonly Envelope _envelope;
             private bool _isRemoved;

@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class CoordinateArraysTest : BaseSamples
     {
-        Coordinate[] array = new Coordinate[]
+        readonly Coordinate[] array = new Coordinate[]
         {
             new Coordinate(10, 10),
             new Coordinate(20, 20),

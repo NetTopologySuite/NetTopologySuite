@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using NetTopologySuite.Geometries;
@@ -32,8 +31,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
         const double MIN_EXTENT = -1000.0;
         const double MAX_EXTENT = 1000.0;
 
-        EnvelopeList envList = new EnvelopeList();
-        Quadtree<Envelope> q = new Quadtree<Envelope>();
+        readonly EnvelopeList envList = new EnvelopeList();
+        readonly Quadtree<Envelope> q = new Quadtree<Envelope>();
 
         [Test]
         public void Tun()

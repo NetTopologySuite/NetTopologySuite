@@ -40,10 +40,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             RunIterations = N_ITER;
         }
 
-        Coordinate a0 = new Coordinate(0, 0);
-        Coordinate a1 = new Coordinate(10, 0);
-        Coordinate b0 = new Coordinate(20, 10);
-        Coordinate b1 = new Coordinate(20, 20);
+        readonly Coordinate a0 = new Coordinate(0, 0);
+        readonly Coordinate a1 = new Coordinate(10, 0);
+        readonly Coordinate b0 = new Coordinate(20, 10);
+        readonly Coordinate b1 = new Coordinate(20, 20);
 
         Coordinate p0;
         Coordinate p1;

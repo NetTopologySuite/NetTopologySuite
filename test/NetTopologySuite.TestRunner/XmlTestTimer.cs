@@ -7,7 +7,7 @@ namespace Open.Topology.TestRunner
     public class XmlTestTimer
     {
         private long startTime, stopTime;
-        private long freq = Stopwatch.Frequency;
+        private readonly long freq = Stopwatch.Frequency;
 
         // Constructor
         public XmlTestTimer()

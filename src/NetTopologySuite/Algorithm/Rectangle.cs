@@ -1,10 +1,5 @@
-﻿using NetTopologySuite.Coverage;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.Triangulate;
+﻿using NetTopologySuite.Geometries;
 using System;
-using System.Drawing;
-using System.Security.Cryptography;
 
 namespace NetTopologySuite.Algorithm
 {

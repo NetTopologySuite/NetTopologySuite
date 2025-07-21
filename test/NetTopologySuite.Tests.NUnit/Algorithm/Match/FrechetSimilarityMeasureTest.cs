@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Match
                 sm.Measure(g1, g2);
                 Assert.Fail("Different geometry types should fail!");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Assert.True(true);
             }

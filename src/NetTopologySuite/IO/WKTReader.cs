@@ -316,7 +316,8 @@ namespace NetTopologySuite.IO
                 case Ordinates.XY:
                     res = new Coordinate(x, y); break;
                 case Ordinates.XYZ:
-                    res = new CoordinateZ(x, y, z); ; break;
+                    res = new CoordinateZ(x, y, z);
+                    break;
                 case Ordinates.XYM:
                     res = new CoordinateM(x, y, m); break;
                 case Ordinates.XYZM:
@@ -864,7 +865,7 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals(WKTConstants.EMPTY))
             {
-                return factory.CreateMultiPoint(new Point[0]);
+                return factory.CreateMultiPoint(Array.Empty<Point>());
             }
 
             // check for old-style JTS syntax (no parentheses surrounding Point coordinates) and parse it if present

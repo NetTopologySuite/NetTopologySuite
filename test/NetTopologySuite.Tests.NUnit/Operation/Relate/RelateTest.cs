@@ -1,8 +1,5 @@
-﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
-using NetTopologySuite.Operation.Relate;
+﻿using NetTopologySuite.Operation.Relate;
 using NUnit.Framework;
-using System;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 {

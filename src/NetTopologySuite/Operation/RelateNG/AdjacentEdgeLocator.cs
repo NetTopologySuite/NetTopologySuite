@@ -69,7 +69,8 @@ namespace NetTopologySuite.Operation.RelateNG
             if (prev.Distance(p) == 0 || next.Distance(p) == 0)
             {
                 Trace.WriteLine("Found zero-length section segment");
-            };
+            }
+
             var ns = new NodeSection(true, Dimension.A, 1, 0, null, false, prev, p, next);
             return ns;
         }

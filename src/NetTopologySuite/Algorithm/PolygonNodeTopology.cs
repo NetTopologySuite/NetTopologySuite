@@ -1,6 +1,4 @@
 ﻿using NetTopologySuite.Geometries;
-using static System.Collections.Specialized.BitVector32;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Algorithm
 {

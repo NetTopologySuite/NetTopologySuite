@@ -10,21 +10,21 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class PredicateShortCircuitTest
     {
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
-        string[] polyInsidePoly =
+        readonly string[] polyInsidePoly =
         { "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0 ))",
           "POLYGON (( 10 10, 90 10, 90 90, 10 90, 10 10 ))" };
-        string[] polyPartiallyOverlapsPoly =
+        readonly string[] polyPartiallyOverlapsPoly =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 0 0, 90 0, 90 90, 0 90, 0 0 ))" };
-        string[] polyTouchesPolyAtPoint =
+        readonly string[] polyTouchesPolyAtPoint =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 0 0, 10 0, 10 10, 0 10, 0 0 ))" };
-        string[] polyTouchesPolyAtLine =
+        readonly string[] polyTouchesPolyAtLine =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 10 0, 10 10, 20 10, 20 0, 10 0 ))" };
-        string[] polyInsideHoleInPoly =
+        readonly string[] polyInsideHoleInPoly =
         { "POLYGON (( 40 40, 40 60, 60 60, 60 40, 40 40 ))",
           "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0), ( 10 10, 90 10, 90 90, 10 90, 10 10))" };
 

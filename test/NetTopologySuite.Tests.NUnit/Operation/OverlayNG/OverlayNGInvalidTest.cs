@@ -1,6 +1,4 @@
-﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation.Overlay;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {

@@ -475,15 +475,11 @@ namespace NetTopologySuite.Index.KdTree
                 double dist = _p.Distance(node.Coordinate);
                 bool isInTolerance = dist <= _tolerance;
                 if (!isInTolerance) return;
-                bool update = false;
-                if (_matchNode == null
-                    || dist < _matchDist
-                    // if distances are the same, record the lesser coordinate
-                    || (_matchNode != null && dist == _matchDist
-                        && node.Coordinate.CompareTo(_matchNode.Coordinate) < 1))
-                {
-                    update = true;
-                }
+                bool update = _matchNode == null
+                              || dist < _matchDist
+                              // if distances are the same, record the lesser coordinate
+                              || (_matchNode != null && dist == _matchDist
+                                                     && node.Coordinate.CompareTo(_matchNode.Coordinate) < 1);
 
                 if (update)
                 {

@@ -254,7 +254,7 @@ namespace NetTopologySuite.Triangulate.Polygon
         private Coordinate FindJoinableVertex(Coordinate holeJoinCoord)
         {
             if (_joinedPtsOrdered == null)
-                _joinedPtsOrdered = _joinedPts.OrderBy(x => x, _comparer).ToList().ToArray();
+                _joinedPtsOrdered = _joinedPts.OrderBy(x => x, _comparer).ToArray();
 
             //-- find highest shell vertex in half-plane left of hole pt
             var candidate = Above(holeJoinCoord);

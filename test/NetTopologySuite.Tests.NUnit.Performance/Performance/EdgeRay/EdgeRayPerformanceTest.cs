@@ -2,14 +2,12 @@
 using NetTopologySuite.EdgeRay;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-using NetTopologySuite.GeometriesGraph;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.EdgeRay
 {
     public class EdgeRayPerformanceTest : PerformanceTestCase
     {
-        bool verbose = true;
         private Geometry geom1;
         private Geometry geom2;
 

@@ -14,7 +14,7 @@ namespace NetTopologySuite.Simplify
     internal class RingHull
     {
 
-        private LinearRing _inputRing;
+        private readonly LinearRing _inputRing;
         private int _targetVertexNum = -1;
         private double _targetAreaDelta = -1;
 
@@ -259,10 +259,10 @@ namespace NetTopologySuite.Simplify
 
         private class Corner : IComparable<Corner>
         {
-            private int index;
-            private int prev;
-            private int next;
-            private double area;
+            private readonly int index;
+            private readonly int prev;
+            private readonly int next;
+            private readonly double area;
 
             public Corner(int i, int prev, int next, double area)
             {

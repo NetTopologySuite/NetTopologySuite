@@ -3,7 +3,6 @@ using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.RelateNG;
 using NUnit.Framework;
-using System.Xml.Linq;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
 {
@@ -11,15 +10,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.RelateNG
     {
         private const int N_ITER = 1;
 
-        static double ORG_X = 100;
-        static double ORG_Y = ORG_X;
-        static double SIZE = 2 * ORG_X;
-        static int N_ARMS = 6;
-        static double ARM_RATIO = 0.3;
+        static readonly double ORG_X = 100;
+        static readonly double ORG_Y = ORG_X;
+        static readonly double SIZE = 2 * ORG_X;
+        static readonly int N_ARMS = 6;
+        static readonly double ARM_RATIO = 0.3;
 
-        static int GRID_SIZE = 100;
+        static readonly int GRID_SIZE = 100;
 
-        private static GeometryFactory geomFact = NtsGeometryServices.Instance.CreateGeometryFactory();
+        private static readonly GeometryFactory geomFact = NtsGeometryServices.Instance.CreateGeometryFactory();
 
         private Geometry geomA;
         private Geometry[] geomB;

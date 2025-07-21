@@ -40,12 +40,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// <author>Martin Davis</author>
     public class IntersectionStressTest
     {
-
-        /**
-         * 1 is fully parallel
-         */
-        private const double PARALLEL_FACTOR = 0.9999999999;
-
         private const int MAX_ITER = 1000;
         private const double ORDINATE_MAGNITUDE = 1000000;
         private const double SEG_LEN = 100;
@@ -129,9 +123,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private void AddStat(string tag, double dist)
         {
             double distTotal = 0.0;
-            if (_distMap.ContainsKey(tag))
+            if (_distMap.TryGetValue(tag, out double value))
             {
-                distTotal = _distMap[tag];
+                distTotal = value;
             }
             distTotal += dist;
             _distMap[tag] = distTotal;

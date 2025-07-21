@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     public class FileBufferResultValidatorTest
     {
         private const int MAX_FEATURE = 1;
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
         [Test]
         public void TestAfrica()

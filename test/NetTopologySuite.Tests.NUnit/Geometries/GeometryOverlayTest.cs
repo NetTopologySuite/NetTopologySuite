@@ -11,9 +11,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /// </summary>
     public class GeometryOverlayTest : GeometryTestCase
     {
-        private static NtsGeometryServices OverlayLegacy = new NtsGeometryServices(
+        private static readonly NtsGeometryServices OverlayLegacy = new NtsGeometryServices(
             CoordinateArraySequenceFactory.Instance, PrecisionModel.Floating.Value, 0, GeometryOverlay.Legacy, new CoordinateEqualityComparer());
-        private static NtsGeometryServices OverlayNG = new NtsGeometryServices(
+        private static readonly NtsGeometryServices OverlayNG = new NtsGeometryServices(
             CoordinateArraySequenceFactory.Instance, PrecisionModel.Floating.Value, 0, GeometryOverlay.NG, new CoordinateEqualityComparer());
 
         private static (Geometry a, Geometry b) Create()

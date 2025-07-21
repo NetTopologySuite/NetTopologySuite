@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return circle;
         }
 
-        private static double HOLE_SIZE_FACTOR = 0.8;
+        private static readonly double HOLE_SIZE_FACTOR = 0.8;
 
         public static Geometry CreateSquareWithCircleHoles(Coordinate origin, double size, int nHoles, int nPtsHole)
         {

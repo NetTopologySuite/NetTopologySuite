@@ -1,8 +1,6 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
-using System;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Coverage
 {

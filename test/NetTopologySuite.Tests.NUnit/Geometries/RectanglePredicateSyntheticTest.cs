@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -13,18 +12,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class RectanglePredicateSyntheticTest
     {
-        private WKTReader rdr = new WKTReader();
-        private GeometryFactory fact = new GeometryFactory();
+        private readonly WKTReader rdr = new WKTReader();
+        private readonly GeometryFactory fact = new GeometryFactory();
 
-        double baseX = 10;
-        double baseY = 10;
-        double rectSize = 20;
-        double bufSize = 10;
-        double testGeomSize = 10;
-        double bufferWidth = 1.0;
+        readonly double baseX = 10;
+        readonly double baseY = 10;
+        readonly double rectSize = 20;
+        readonly double bufSize = 10;
+        readonly double testGeomSize = 10;
+        readonly double bufferWidth = 1.0;
 
-        Envelope rectEnv;
-        Geometry rect;
+        readonly Envelope rectEnv;
+        readonly Geometry rect;
 
         public RectanglePredicateSyntheticTest()
         {

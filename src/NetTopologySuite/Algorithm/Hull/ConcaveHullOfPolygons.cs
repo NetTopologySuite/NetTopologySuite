@@ -4,7 +4,6 @@ using NetTopologySuite.Triangulate.Polygon;
 using NetTopologySuite.Triangulate.Tri;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Algorithm.Hull
 {

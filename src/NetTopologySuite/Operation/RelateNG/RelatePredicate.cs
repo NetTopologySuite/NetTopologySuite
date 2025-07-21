@@ -1,5 +1,4 @@
 ﻿using NetTopologySuite.Geometries;
-using System;
 
 namespace NetTopologySuite.Operation.RelateNG
 {

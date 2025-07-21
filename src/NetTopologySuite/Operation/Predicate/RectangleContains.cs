@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Predicate
             return rc.Contains(b);
         }
 
-        private Polygon rectangle;
+        private readonly Polygon rectangle;
         private readonly Envelope rectEnv;
 
         /// <summary>

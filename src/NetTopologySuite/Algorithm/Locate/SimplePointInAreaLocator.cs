@@ -1,4 +1,3 @@
-using System;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Locate

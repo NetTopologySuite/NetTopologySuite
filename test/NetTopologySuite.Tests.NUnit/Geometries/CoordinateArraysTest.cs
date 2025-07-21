@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestReverseEmpty()
         {
-            var pts = new Coordinate[0];
+            var pts = Array.Empty<Coordinate>();
             CheckReversed(pts);
         }
 
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var sequence = CreateCircularString(new Coordinate(20, 20), 7d,
               0.1, 22);
             var scrolled = CreateCircularString(new Coordinate(20, 20), 7d,
-              0.1, 22); ;
+              0.1, 22);
 
             // act
             CoordinateArrays.Scroll(scrolled, 12);

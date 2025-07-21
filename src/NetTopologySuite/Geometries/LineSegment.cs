@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.IO;
-using BitConverter = System.BitConverter;
 
 namespace NetTopologySuite.Geometries
 {
