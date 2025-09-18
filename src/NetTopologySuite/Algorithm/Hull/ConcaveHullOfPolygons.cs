@@ -4,6 +4,8 @@ using NetTopologySuite.Triangulate.Polygon;
 using NetTopologySuite.Triangulate.Tri;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace NetTopologySuite.Algorithm.Hull
 {
@@ -37,11 +39,21 @@ namespace NetTopologySuite.Algorithm.Hull
     /// Optionally the concave hull can be allowed to contain holes, via
     /// <see cref="HolesAllowed"/>.
     /// <para/>
-    /// The hull can be specified as being "tight", which means it follows the outer boundaries
-    /// of the input polygons.
+    /// The hull can be specified as being "tight", via <see cref="Tight"/>.
+    /// This causes the result to follow the outer boundaries of the input polygons
+    /// which "face away" from other input polygons.
     /// <para/>
-    /// The input polygons must form a valid MultiPolygon
-    /// (i.e.they must be non - overlapping).
+    /// Instead of the complete hull, the "fill area" between the input polygons
+    /// can be computed using <see cref="GetFill()"/>.
+    /// <para/>
+    /// The input polygons must form a valid <see cref="MultiPolygon"/>
+    /// (i.e.they must be non-overlapping and non-edge-adjacent).
+    /// If needed, a set of possibly-overlapping Polygons
+    /// can be converted to a valid MultiPolygon
+    /// by using <see cref="Geometry.Union()"/>;
+    /// <para/>
+    /// If the input contains holes(possibly containing nested polygon elements,
+    /// these will be preserved in the output.
     /// </summary>
     /// <author>Martin Davis</author>
     public class ConcaveHullOfPolygons
@@ -281,7 +293,7 @@ namespace NetTopologySuite.Algorithm.Hull
 
         private void BuildHullTris()
         {
-            _polygonRings = ExtractShellRings(_inputPolygons);
+            _polygonRings = OuterShellsExtracter.ExtractShells(_inputPolygons);
             var frame = CreateFrame(_inputPolygons.EnvelopeInternal, _polygonRings, _geomFactory);
             var cdt = new ConstrainedDelaunayTriangulator(frame);
             var tris = cdt.GetTriangles();
