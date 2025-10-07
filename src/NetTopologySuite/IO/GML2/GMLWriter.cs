@@ -18,11 +18,12 @@ namespace NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLWriter
     {
+        private const string GmlSrsName = "srsName";
+
         private const int InitValue = 150;
         private const int CoordSize = 200;
         private readonly GMLVersion _gmlVersion;
         private readonly string _gmlNs;
-        private readonly string _gmlSrsName = "srsName";
         private readonly bool _writeSrsNameAttribute;
 
         /// <summary>
@@ -494,27 +495,32 @@ namespace NetTopologySuite.IO.GML2
             return InitValue + CoordSize;
         }
 
+        /// <summary>
+        /// Writes the spatial reference name into the <c>srsName</c> attribute
+        /// </summary>
+        /// <param name="srid">The spatial reference id</param>
+        /// <param name="xmlWriter">The xml writer</param>
         protected virtual void WriteAttributeSrsName(int srid, XmlWriter xmlWriter)
         {
             if(_writeSrsNameAttribute)
-                xmlWriter.WriteAttributeString(_gmlSrsName, GetSrsName(srid));
+                xmlWriter.WriteAttributeString(GmlSrsName, GetSrsName(srid));
         }
 
         /// <summary>
-        /// Provides the srsName exposing the SRID of the geometry
+        /// Provides the srsName expressed by a <see cref="Geometries.Geometry.SRID"/> value.
         /// </summary>
-        /// <param name="srid">The SRID of the geometry</param>
-        /// <returns></returns>
+        /// <param name="srid">An SRID value</param>
+        /// <returns>The <see cref="GetEpsgCode(int)"/></returns>
         protected virtual string GetSrsName(int srid)
         {
             return GetEpsgCode(srid);
         }
 
         /// <summary>
-        /// Provides the EPSG code exposing the SRID of the geometry
+        /// Provides the EPSG code for a  <see cref="Geometries.Geometry.SRID"/> value.
         /// </summary>
-        /// <param name="srid">The SRID of the geometry</param>
-        /// <returns></returns>
+        /// <param name="srid">An SRID value</param>
+        /// <returns>The EPSG code</returns>
         protected virtual string GetEpsgCode(int srid)
         {
             return $"EPSG:{srid}";
