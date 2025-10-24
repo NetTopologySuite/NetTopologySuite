@@ -154,6 +154,7 @@ namespace NetTopologySuite.Operation.Buffer
                 _bufferParams.QuadrantSegments = quadSegs;
                 _bufferParams.JoinStyle = bufParams.JoinStyle;
                 _bufferParams.MitreLimit = bufParams.MitreLimit;
+                _bufferParams.SimplifyFactor = bufParams.SimplifyFactor;
             }
         }
 
