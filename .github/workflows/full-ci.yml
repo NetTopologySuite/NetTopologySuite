@@ -15,10 +15,10 @@ jobs:
     - name: Get source
       uses: actions/checkout@v2
 
-    - name: Setup .NET 9
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9
+        dotnet-version: 8
 
     - name: Build
       run: dotnet build -c Release -v minimal -p:WarningLevel=3
@@ -48,13 +48,13 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
 
     steps:
-    - name: Setup .NET 9
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9
+        dotnet-version: 8
 
     - name: Download Package Files
-      uses: actions/download-artifact@v4.1.7
+      uses: actions/download-artifact@v5
       with:
         name: NuGet Package Files (ubuntu-latest)
         path: artifacts
@@ -73,13 +73,13 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-    - name: Setup .NET 9
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9
+        dotnet-version: 8
 
     - name: Download Package Files
-      uses: actions/download-artifact@v4.1.7
+      uses: actions/download-artifact@v5
       with:
         name: NuGet Package Files (ubuntu-latest)
         path: artifacts
