@@ -36,11 +36,17 @@ namespace NetTopologySuite.Noding
         /// <inheritdoc/>
         public void ComputeNodes(IList<ISegmentString> segStrings)
         {
-            var segSet = new HashSet<Segment>();
+            var boundarySegSet = new HashSet<Segment>();
             var boundaryChains = new BoundaryChainMap[segStrings.Count];
-            AddSegments(segStrings, segSet, boundaryChains);
-            MarkBoundarySegments(segSet);
+            AddSegments(segStrings, boundarySegSet, boundaryChains);
+            MarkBoundarySegments(boundarySegSet);
             _chainList = ExtractChains(boundaryChains);
+
+            // check for self-touching nodes and split chains at those nodes
+        var nodePts = FindNodePts(_chainList);
+            if (nodePts.Count > 0) {
+            _chainList = NodeChains(_chainList, nodePts);
+            }
         }
 
         private static void AddSegments(ICollection<ISegmentString> segStrings, HashSet<Segment> segSet,
@@ -85,6 +91,67 @@ namespace NetTopologySuite.Noding
                 chainMap.CreateChains(sectionList);
             }
             return sectionList;
+        }
+
+        private static HashSet<Coordinate> FindNodePts(ICollection<ISegmentString> segStrings)
+        {
+            var interorVertices = new HashSet<Coordinate>();
+            var nodes = new HashSet<Coordinate>();
+            foreach (var ss in segStrings)
+            {
+                // endpoints are nodes
+                nodes.Add(ss.GetCoordinate(0));
+                nodes.Add(ss.GetCoordinate(ss.Count - 1));
+
+                // check for duplicate interior points
+                for (int i = 1; i < ss.Count - 1; i++)
+                {
+                    var p = ss.GetCoordinate(i);
+                    if (interorVertices.Contains(p))
+                    {
+                        nodes.Add(p);
+                    }
+                    interorVertices.Add(p);
+                }
+            }
+            return nodes;
+        }
+
+        private static List<ISegmentString> NodeChains(List<ISegmentString> chains, HashSet<Coordinate> nodePts)
+        {
+            var nodedChains = new List<ISegmentString>();
+            foreach (var chain in chains)
+            {
+                NodeChain(chain, nodePts, nodedChains);
+            }
+            return nodedChains;
+        }
+
+        private static void NodeChain(ISegmentString chain, HashSet<Coordinate> nodePts, ICollection<ISegmentString> nodedChains)
+        {
+            int start = 0;
+            while (start < chain.Count - 1)
+            {
+                int end = FindNodeIndex(chain, start, nodePts);
+                // if no interior nodes found, keep original chain
+                if (start == 0 && end == chain.Count - 1)
+                {
+                    nodedChains.Add(chain);
+                    return;
+                }
+                nodedChains.Add(BasicSegmentString.Substring(chain, start, end));
+                start = end;
+            }
+        }
+
+        private static int FindNodeIndex(ISegmentString chain, int start, HashSet<Coordinate> nodePts)
+        {
+            for (int i = start + 1; i < chain.Count; i++)
+            {
+                if (nodePts.Contains(chain.GetCoordinate(i)))
+                    return i;
+            }
+            return chain.Count - 1;
         }
 
         /// <inheritdoc/>
