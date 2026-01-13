@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class IsRectangleTest
     {
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
         [Test]
         public void TestValidRectangle()

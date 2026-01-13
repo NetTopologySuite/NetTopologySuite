@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             geom = CreateSlantHoles(npts);
         }
 
-        static int NUM_GEOMS = 100;
+        static readonly int NUM_GEOMS = 100;
 
         private Geometry CreateSlantHoles(int npts)
         {

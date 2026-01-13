@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Axis
 {
-    public class ApproximateMedialAxisTest : GeometryTestCase
+    public class DelaunayMedialAxisTest : GeometryTestCase
     {
         [Test]
         public void TestQuad()
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Axis
         private void CheckTree(string wkt, string wktExpected)
         {
             var geom = Read(wkt);
-            var actual = ApproximateMedialAxis.MedialAxis(geom);
+            var actual = DelaunayMedialAxis.MedialAxis(geom);
             var expected = Read(wktExpected);
             //CheckEqual(expected, actual);
         }

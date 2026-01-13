@@ -17,6 +17,17 @@ namespace NetTopologySuite.Noding
     public class BasicSegmentString : ISegmentString
     {
 
+        public static BasicSegmentString Substring(ISegmentString segString, int start, int end)
+        {
+            var pts = new Coordinate[end - start + 1];
+            int ipts = 0;
+            for (int i = start; i < end + 1; i++)
+            {
+                pts[ipts++] = segString.GetCoordinate(i).Copy();
+            }
+            return new BasicSegmentString(pts, segString.Context);
+        }
+
         private readonly Coordinate[] _pts;
 
         /// <summary>
@@ -27,7 +38,7 @@ namespace NetTopologySuite.Noding
         public BasicSegmentString(Coordinate[] pts, object data)
         {
             _pts = pts;
-            this.Context = data;
+            Context = data;
         }
 
         /// <summary>Gets the user-defined data for this segment string.

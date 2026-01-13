@@ -65,6 +65,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		doc\overwrite\namespaces\NetTopologySuite.Operation.OverlayNG.md = doc\overwrite\namespaces\NetTopologySuite.Operation.OverlayNG.md
 		doc\overwrite\namespaces\NetTopologySuite.Operation.Polygonize.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Polygonize.md
 		doc\overwrite\namespaces\NetTopologySuite.Operation.Relate.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Relate.md
+		doc\overwrite\namespaces\NetTopologySuite.Operation.RelateNG.md = doc\overwrite\namespaces\NetTopologySuite.Operation.RelateNG.md
 		doc\overwrite\namespaces\NetTopologySuite.Operation.Valid.md = doc\overwrite\namespaces\NetTopologySuite.Operation.Valid.md
 		doc\overwrite\namespaces\NetTopologySuite.Planargraph.md = doc\overwrite\namespaces\NetTopologySuite.Planargraph.md
 		doc\overwrite\namespaces\NetTopologySuite.Precision.md = doc\overwrite\namespaces\NetTopologySuite.Precision.md

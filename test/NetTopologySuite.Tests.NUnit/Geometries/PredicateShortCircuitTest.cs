@@ -10,21 +10,21 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class PredicateShortCircuitTest
     {
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
-        string[] polyInsidePoly =
+        readonly string[] polyInsidePoly =
         { "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0 ))",
           "POLYGON (( 10 10, 90 10, 90 90, 10 90, 10 10 ))" };
-        string[] polyPartiallyOverlapsPoly =
+        readonly string[] polyPartiallyOverlapsPoly =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 0 0, 90 0, 90 90, 0 90, 0 0 ))" };
-        string[] polyTouchesPolyAtPoint =
+        readonly string[] polyTouchesPolyAtPoint =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 0 0, 10 0, 10 10, 0 10, 0 0 ))" };
-        string[] polyTouchesPolyAtLine =
+        readonly string[] polyTouchesPolyAtLine =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 10 0, 10 10, 20 10, 20 0, 10 0 ))" };
-        string[] polyInsideHoleInPoly =
+        readonly string[] polyInsideHoleInPoly =
         { "POLYGON (( 40 40, 40 60, 60 60, 60 40, 40 40 ))",
           "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0), ( 10 10, 90 10, 90 90, 10 90, 10 10))" };
 
@@ -48,14 +48,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         public void DoPredicates(Geometry a, Geometry b)
         {
-            Assert.IsTrue(a.Contains(b) == a.Relate(b).IsContains());
-            Assert.IsTrue(a.Crosses(b) == a.Relate(b).IsCrosses(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Disjoint(b) == a.Relate(b).IsDisjoint());
-            Assert.IsTrue(a.Equals(b) == a.Relate(b).IsEquals(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Intersects(b) == a.Relate(b).IsIntersects());
-            Assert.IsTrue(a.Overlaps(b) == a.Relate(b).IsOverlaps(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Touches(b) == a.Relate(b).IsTouches(a.Dimension, b.Dimension));
-            Assert.IsTrue(a.Within(b) == a.Relate(b).IsWithin());
+            var im = a.Relate(b);
+            Assert.IsTrue(a.Contains(b) == im.IsContains());
+            Assert.IsTrue(a.Crosses(b) == im.IsCrosses(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Disjoint(b) == im.IsDisjoint());
+            Assert.IsTrue(a.Equals(b) == im.IsEquals(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Intersects(b) == im.IsIntersects());
+            Assert.IsTrue(a.Overlaps(b) == im.IsOverlaps(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Touches(b) == im.IsTouches(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.Within(b) == im.IsWithin());
         }
     }
 }

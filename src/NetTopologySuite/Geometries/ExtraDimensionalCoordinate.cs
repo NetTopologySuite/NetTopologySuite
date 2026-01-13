@@ -2,6 +2,11 @@
 
 namespace NetTopologySuite.Geometries
 {
+    // Please treat this internal class, ExtraDimensionalCoordinate, as an **implementation detail**
+    // of the various methods on the Coordinates static class. The use cases for this type are hard
+    // to quantify. It was originally created to let Coordinates.Create return a Coordinate that
+    // behaves as requested instead of either silently deciding to give the user something that they
+    // didn't ask for (JTS behavior) or throwing an exception (a perhaps-reasonable alternative).
     [Serializable]
     internal sealed class ExtraDimensionalCoordinate : Coordinate
     {
@@ -233,22 +238,34 @@ namespace NetTopologySuite.Geometries
                 X = value.X;
                 Y = value.Y;
 
-                int maxInputDim = Coordinates.Dimension(value);
-                int maxOutputDim = Dimension;
-                if (maxInputDim > maxOutputDim)
-                {
-                    maxInputDim = maxOutputDim;
-                }
+                // Get number of dimensions and measures for value
+                int valDimension = Coordinates.Dimension(value);
+                int valSpatial = Coordinates.SpatialDimension(value);
 
-                int dim;
-                for (dim = 2; dim < maxInputDim; dim++)
-                {
-                    _extraValues[dim - 2] = value[dim];
-                }
+                // Get number of spatial dimensions
+                int thisSpatial = Dimension - Measures;
 
-                for (; dim < maxOutputDim; dim++)
+                // fill in values for spatial dimensions until we reach the end of either one.
+                int thisI = 2, valI = 2;
+                while (thisI < thisSpatial & valI < valSpatial)
                 {
-                    _extraValues[dim - 2] = NullOrdinate;
+                    this[thisI++] = value[valI++];
+                }
+                // fill in remaining spatial dimensions that weren't present in the source.
+                while (thisI < thisSpatial)
+                {
+                    this[thisI++] = Coordinate.NullOrdinate;
+                }
+                // fill in values for measures until we reach the end of either one.
+                valI = valSpatial;
+                while (thisI < Dimension && valI < valDimension)
+                {
+                    this[thisI++] = value[valI++];
+                }
+                // fill in remaining measures that weren't present in the source.
+                while (thisI < Dimension)
+                {
+                    this[thisI++] = 0;
                 }
             }
         }

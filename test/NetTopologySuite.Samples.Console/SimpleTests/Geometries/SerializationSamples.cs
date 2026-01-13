@@ -12,19 +12,26 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
     public class SerializationSamples : BaseSamples
     {
         private readonly string filepath = string.Empty;
-        private IFormatter serializer = null;
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
+        private readonly IFormatter serializer = null;
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
 
-        private Coordinate[] coordinates = null;
-        private Point point = null;
-        private LineString line = null;
-        private Polygon polygon = null;
-        private MultiPoint multiPoint = null;
+        private readonly Coordinate[] coordinates = null;
+        private readonly Point point = null;
+        private readonly LineString line = null;
+        private readonly Polygon polygon = null;
+        private readonly MultiPoint multiPoint = null;
 
         public SerializationSamples() : base()
         {
             filepath = Path.GetTempPath() + "\\testserialization.bin";
 
+            // don't use BinaryFormatter in production. read this instead:
+            // https://learn.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-migration-guide
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
+            AppContext.SetSwitch("System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization", true);
             serializer = new BinaryFormatter();
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
 
             point = Factory.CreatePoint(new Coordinate(100, 100));
 

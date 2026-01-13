@@ -374,7 +374,7 @@ namespace NetTopologySuite.Operation.OverlayNG
             {
                 label.SetLocationAll(geomIndex, Location.Exterior);
                 return;
-            };
+            }
 
             //Debug.println("\n------  labelDisconnectedEdge - geomIndex= " + geomIndex);
             //Debug.print("BEFORE: " + edge.toStringNode());

@@ -1,4 +1,5 @@
 ﻿using System;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using Position = NetTopologySuite.Geometries.Position;
@@ -24,14 +25,24 @@ namespace NetTopologySuite.Operation.Buffer
     {
         private double _distance;
         private readonly PrecisionModel _precisionModel;
+        private readonly ElevationModel _em;
         private readonly BufferParameters _bufParams;
 
         public OffsetCurveBuilder(
             PrecisionModel precisionModel,
             BufferParameters bufParams
             )
+            : this(precisionModel, null, bufParams)
+        { }
+
+        public OffsetCurveBuilder(
+            PrecisionModel precisionModel,
+            ElevationModel em,
+            BufferParameters bufParams
+            )
         {
             _precisionModel = precisionModel;
+            _em = em;
             _bufParams = bufParams;
         }
 
@@ -167,7 +178,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private OffsetSegmentGenerator GetSegmentGenerator(double distance)
         {
-            return new OffsetSegmentGenerator(_precisionModel, _bufParams, distance);
+            return new OffsetSegmentGenerator(_precisionModel, _em, _bufParams, distance);
         }
 
         /// <summary>

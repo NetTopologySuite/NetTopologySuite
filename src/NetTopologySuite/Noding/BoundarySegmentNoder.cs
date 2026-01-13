@@ -50,13 +50,9 @@ namespace NetTopologySuite.Noding
                 var p0 = segString.Coordinates[i];
                 var p1 = segString.Coordinates[i + 1];
                 var seg = new Segment(p0, p1, segString, i);
-                if (segSet.Contains(seg))
+                if (!segSet.Add(seg))
                 {
                     segSet.Remove(seg);
-                }
-                else
-                {
-                    segSet.Add(seg);
                 }
             }
         }

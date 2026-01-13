@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
@@ -34,7 +35,7 @@ namespace NetTopologySuite.Operation.Union
 
         public PartitionedUnion(ICollection<Geometry> polys)
         {
-            this.inputPolys = polys?.ToArray() ?? new Geometry[0];
+            this.inputPolys = polys?.ToArray() ?? Array.Empty<Geometry>();
         }
 
         public Geometry Union()

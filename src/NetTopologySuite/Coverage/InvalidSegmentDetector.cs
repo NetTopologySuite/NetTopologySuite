@@ -1,8 +1,6 @@
 ﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
-using System;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Coverage
 {
@@ -112,7 +110,7 @@ namespace NetTopologySuite.Coverage
         private bool IsCollinearOrInterior(Coordinate tgt0, Coordinate tgt1,
             Coordinate adj0, Coordinate adj1, CoverageRing adj, int indexAdj)
         {
-            var li = new RobustLineIntersector();
+            var li =  new RobustLineIntersector(ElevationModel.NoZ);
             li.ComputeIntersection(tgt0, tgt1, adj0, adj1);
 
             //-- segments do not interact

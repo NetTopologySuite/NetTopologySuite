@@ -224,8 +224,10 @@ namespace NetTopologySuite.Index.Strtree
         protected int GetSize(AbstractNode<T, TItem> node)
         {
             int size = 0;
-            foreach (var childBoundable in node.ChildBoundables)
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var childBoundable = childBoundables[i];
                 if (childBoundable is AbstractNode<T, TItem>)
                     size += GetSize((AbstractNode<T, TItem>)childBoundable);
                 else if (childBoundable is ItemBoundable<T, TItem>)
@@ -254,8 +256,10 @@ namespace NetTopologySuite.Index.Strtree
         protected int GetDepth(AbstractNode<T, TItem> node)
         {
             int maxChildDepth = 0;
-            foreach (var childBoundable in node.ChildBoundables)
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var childBoundable = childBoundables[i];
                 if (!(childBoundable is AbstractNode<T, TItem>))
                     continue;
                 int childDepth = GetDepth((AbstractNode<T, TItem>)childBoundable);
@@ -314,8 +318,10 @@ namespace NetTopologySuite.Index.Strtree
 
         private void QueryInternal(T searchBounds, AbstractNode<T, TItem> node, IList<TItem> matches)
         {
-            foreach (var childBoundable in node.ChildBoundables)
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var childBoundable = childBoundables[i];
                 if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
                     continue;
 
@@ -329,8 +335,10 @@ namespace NetTopologySuite.Index.Strtree
 
         private void QueryInternal(T searchBounds, AbstractNode<T, TItem> node, IItemVisitor<TItem> visitor)
         {
-            foreach (var childBoundable in node.ChildBoundables)
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var childBoundable = childBoundables[i];
                 if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
                     continue;
                 if (childBoundable is AbstractNode<T, TItem>)
@@ -362,8 +370,10 @@ namespace NetTopologySuite.Index.Strtree
         {
             var valuesTreeForNode = new List<object>();
 
-            foreach (var childBoundable in node.ChildBoundables)
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var childBoundable = childBoundables[i];
                 if (childBoundable is AbstractNode<T, TItem>)
                 {
                     var valuesTreeForChild = ItemsTree((AbstractNode<T, TItem>)childBoundable);
@@ -398,9 +408,10 @@ namespace NetTopologySuite.Index.Strtree
         private static bool RemoveItem(AbstractNode<T, TItem> node, TItem item)
         {
             IBoundable<T, TItem> childToRemove = null;
-            for (var i = node.ChildBoundables.GetEnumerator(); i.MoveNext(); )
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
-                var childBoundable = i.Current as ItemBoundable<T, TItem>;
+                var childBoundable = childBoundables[i];
                 if (childBoundable != null && EqualityComparerForRemoveItem.Equals(childBoundable.Item, item))
                 {
                     childToRemove = childBoundable;
@@ -422,8 +433,10 @@ namespace NetTopologySuite.Index.Strtree
                 return true;
             AbstractNode<T, TItem> childToPrune = null;
             // next try removing item from lower nodes
-            foreach (var childBoundable in node.ChildBoundables)
+            var childBoundables = node.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var childBoundable = childBoundables[i];
                 if (!IntersectsOp.Intersects(childBoundable.Bounds, searchBounds))
                     continue;
                 if (!(childBoundable is AbstractNode<T, TItem>))
@@ -457,8 +470,10 @@ namespace NetTopologySuite.Index.Strtree
                 boundables.Add(top);
                 return;
             }
-            foreach (var boundable in top.ChildBoundables )
+            var childBoundables = top.ChildBoundables;
+            for (int i = 0; i < childBoundables.Count; i++)
             {
+                var boundable = childBoundables[i];
                 if (boundable is AbstractNode<T, TItem>)
                     BoundablesAtLevel(level, (AbstractNode<T, TItem>)boundable, boundables);
                 else

@@ -16,7 +16,7 @@ namespace NetTopologySuite.Samples.Tests.Various
     {
         private const double longDouble = 1.2345678901234567890;
 
-        NumberFormatInfo nfi = null;
+        readonly NumberFormatInfo nfi = null;
 
         /// <summary>
         ///

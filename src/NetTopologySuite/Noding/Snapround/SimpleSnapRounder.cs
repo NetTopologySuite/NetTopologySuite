@@ -34,7 +34,7 @@ namespace NetTopologySuite.Noding.Snapround
         private List<HotPixel> _hotPixels;
 
 #pragma warning disable 649
-        private List<NodedSegmentString> _snappedResult;
+        private readonly List<NodedSegmentString> _snappedResult;
 #pragma warning restore 649
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Noding.Snapround
              */
             double snapGridSize = 1.0 / _pm.Scale;
             double nearnessTol = snapGridSize / NEARNESS_FACTOR;
-            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol);
+            var intAdder = new SnapRoundingIntersectionAdder(nearnessTol, null);
             var noder = new MCIndexNoder(intAdder, nearnessTol);
             noder.ComputeNodes(segStrings);
             return intAdder.Intersections;

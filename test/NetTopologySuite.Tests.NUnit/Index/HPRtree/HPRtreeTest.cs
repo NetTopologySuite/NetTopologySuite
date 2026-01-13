@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;

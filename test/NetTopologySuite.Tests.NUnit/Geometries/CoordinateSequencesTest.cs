@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Reflection.PortableExecutable;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;

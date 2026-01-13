@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Distance;
 using NetTopologySuite.Utilities;
 using Point = NetTopologySuite.Geometries.Point;

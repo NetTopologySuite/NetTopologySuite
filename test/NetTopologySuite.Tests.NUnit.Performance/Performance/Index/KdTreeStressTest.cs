@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Index
     {
 
         // In code with recursive query 50,000 points causes StackOverflowError
-        int NUM_PTS = 50000;
+        readonly int NUM_PTS = 50000;
 
         [Test]
         public void Run()

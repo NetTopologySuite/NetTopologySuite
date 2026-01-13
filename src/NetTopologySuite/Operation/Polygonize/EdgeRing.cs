@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
-using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
 

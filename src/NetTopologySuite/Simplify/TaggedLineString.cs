@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Simplify
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Simplify
         private TaggedLineSegment[] _segs;
         private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
         private readonly int _minimumSize;
-        private readonly bool _isRing;
 
         /// <summary>
         /// Creates an instance of this class using the provided <paramref name="parentLine"/>.
@@ -207,15 +205,21 @@ namespace NetTopologySuite.Simplify
             return pts;
         }
 
+        [Obsolete("Will be removed in a future version")]
         internal void RemoveRingEndpoint()
+        {
+            RemoveRingEndpoint(out _);
+        }
+
+        internal void RemoveRingEndpoint(out LineSegment item)
         {
             var firstSeg = _resultSegs[0];
             var lastSeg = _resultSegs[_resultSegs.Count - 1];
 
             firstSeg.P0 = lastSeg.P0;
             _resultSegs.RemoveAt(_resultSegs.Count - 1);
+
+            item = firstSeg;
         }
-
-
     }
 }

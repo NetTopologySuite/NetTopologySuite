@@ -88,8 +88,8 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             private class ShuffleIndex
             {
-                private static Random Rnd = new Random(13);
-                private int _n;
+                private static readonly Random Rnd = new Random(13);
+                private readonly int _n;
 
                 public ShuffleIndex(int n)
                 {

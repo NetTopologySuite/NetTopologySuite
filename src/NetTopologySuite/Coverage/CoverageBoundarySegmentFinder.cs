@@ -1,5 +1,4 @@
 ﻿using NetTopologySuite.Geometries;
-using System;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Coverage
@@ -50,13 +49,9 @@ namespace NetTopologySuite.Coverage
                  * In a valid coverage each segment can occur only 1 or 2 times.
                  * This does not detect invalid situations, where a segment might occur 3 or more times.
                  */
-                if (_boundarySegs.Contains(seg))
+                if (!_boundarySegs.Add(seg))
                 {
                     _boundarySegs.Remove(seg);
-                }
-                else
-                {
-                    _boundarySegs.Add(seg);
                 }
             }
         }

@@ -59,9 +59,6 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         private const int NumPtsToCheck = 10;
-
-        private const int Delete = 1;
-
         private readonly Coordinate[] _inputLine;
         private double _distanceTol;
         private readonly bool _isRing;

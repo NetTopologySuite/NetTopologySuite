@@ -1,12 +1,6 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Tests.NUnit.Triangulate.Polygon;
 using NetTopologySuite.Triangulate.Polygon;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetTopologySuite.Tests.NUnit.Triangulate.Polygon
 {

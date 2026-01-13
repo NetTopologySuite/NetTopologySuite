@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Index.Quadtree
 {

@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         // TODO: add some synthetic tests
 
-        private static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
+        private static readonly CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
 
         private void RunTest(IList<Geometry> geoms, double minimumMeasure)
         {

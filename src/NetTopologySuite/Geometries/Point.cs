@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-        private CoordinateSequence _coordinates;
+        private readonly CoordinateSequence _coordinates;
 
         /// <summary>
         /// Gets a value to sort the geometry
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Geometries
         {
 
             if (IsEmpty)
-                return new double[0];
+                return Array.Empty<double>();
 
             var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)

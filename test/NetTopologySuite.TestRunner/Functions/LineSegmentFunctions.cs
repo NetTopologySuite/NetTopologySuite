@@ -1,5 +1,4 @@
-﻿using System;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner.Functions

@@ -8,13 +8,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
     [Category("Stress")]
     public class DistanceGeomPairPerfTest : PerformanceTestCase
     {
-
-        const int MAX_ITER = 100;
-
-
-        bool _testFailed = false;
-        bool _verbose = true;
-
         public DistanceGeomPairPerfTest()
             : base(nameof(DistanceGeomPairPerfTest))
         {

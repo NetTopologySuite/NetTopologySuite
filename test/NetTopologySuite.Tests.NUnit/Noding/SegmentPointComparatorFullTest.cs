@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
     [TestFixture]
     public class SegmentPointComparatorFullTest
     {
-        private PrecisionModel pm = new PrecisionModel(1.0);
+        private readonly PrecisionModel pm = new PrecisionModel(1.0);
 
         [Test]
         public void TestQuadrant0()

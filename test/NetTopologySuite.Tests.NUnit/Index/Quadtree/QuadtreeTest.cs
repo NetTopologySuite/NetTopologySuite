@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
                 Thread.Sleep(2000);
                 cts.Cancel();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Assert.IsFalse(true);
             }    

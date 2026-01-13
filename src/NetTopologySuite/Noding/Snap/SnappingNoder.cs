@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
@@ -31,6 +32,7 @@ namespace NetTopologySuite.Noding.Snap
     {
         private readonly SnappingPointIndex snapIndex;
         private readonly double _snapTolerance;
+        private readonly ElevationModel _em;
         private IList<ISegmentString> _nodedResult;
 
         /// <summary>
@@ -38,8 +40,18 @@ namespace NetTopologySuite.Noding.Snap
         /// </summary>
         /// <param name="snapTolerance">Points are snapped if within this distance</param>
         public SnappingNoder(double snapTolerance)
+            : this(snapTolerance, null)
+        { }
+
+        /// <summary>
+        /// Creates a snapping noder using the given snap distance tolerance.
+        /// </summary>
+        /// <param name="snapTolerance">Points are snapped if within this distance</param>
+        /// <param name="em">An elevation model. May be <c>null</c></param>
+        public SnappingNoder(double snapTolerance, ElevationModel em)
         {
             _snapTolerance = snapTolerance;
+            _em = em;
             snapIndex = new SnappingPointIndex(snapTolerance);
         }
 
@@ -123,7 +135,7 @@ namespace NetTopologySuite.Noding.Snap
         /// <returns>A list of noded substrings</returns>
         private IList<ISegmentString> ComputeIntersections(IList<ISegmentString> inputSS)
         {
-            var intAdder = new SnappingIntersectionAdder(_snapTolerance, snapIndex);
+            var intAdder = new SnappingIntersectionAdder(_snapTolerance, snapIndex, _em);
             /*
              * Use an overlap tolerance to ensure all 
              * possible snapped intersections are found

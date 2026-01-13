@@ -25,6 +25,33 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
                 );
         }
 
+        [Test]
+        public void TestHoleTouchingSide()
+        {
+            CheckUnion(
+                "GEOMETRYCOLLECTION (POLYGON ((1 9, 9 9, 9 6, 2 6, 1 9)), POLYGON ((1 1, 1 9, 2 6, 5 3, 9 6, 9 1, 1 1)))",
+                "POLYGON ((9 6, 9 1, 1 1, 1 9, 9 9, 9 6), (9 6, 2 6, 5 3, 9 6))"
+                );
+        }
+
+        [Test]
+        public void TestHolesTouchingSide()
+        {
+            CheckUnion(
+                "GEOMETRYCOLLECTION (POLYGON ((1 9, 9 9, 9 6, 5 7, 2 6, 1 9)), POLYGON ((1 1, 1 9, 2 6, 4 3, 5 7, 7 3, 9 6, 9 1, 1 1)))",
+                "POLYGON ((9 9, 9 6, 9 1, 1 1, 1 9, 9 9), (5 7, 7 3, 9 6, 5 7), (2 6, 4 3, 5 7, 2 6))"
+                );
+        }
+
+        [Test]
+        public void TestHolesTouching() {
+            CheckUnion(
+                "GEOMETRYCOLLECTION (POLYGON ((1 9, 9 9, 9 6, 7 7, 5 7, 2 6, 1 9)), POLYGON ((1 1, 1 9, 2 6, 4 3, 5 7, 7 3, 7 7, 9 6, 9 1, 1 1)))",
+                "POLYGON ((9 9, 9 6, 9 1, 1 1, 1 9, 9 9), (5 7, 7 3, 7 7, 5 7), (2 6, 4 3, 5 7, 2 6))"
+                );
+        }
+
+
         private void CheckUnion(string wktCoverage, string wktExpected)
         {
             var covGeom = Read(wktCoverage);

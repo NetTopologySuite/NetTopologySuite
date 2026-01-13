@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.Strtree;
@@ -20,6 +21,7 @@ namespace NetTopologySuite.Noding
         */
         private readonly STRtree<MonotoneChain> _index = new STRtree<MonotoneChain>();
         private readonly double _overlapTolerance;
+        private readonly Envelope _envelope;
 
         /// <summary>
         /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
@@ -27,6 +29,17 @@ namespace NetTopologySuite.Noding
         /// <param name="baseSegStrings">The base segment strings to intersect</param>
         public MCIndexSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings)
         {
+            InitBaseSegments(baseSegStrings);
+        }
+
+        /// <summary>
+        /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
+        /// </summary>
+        /// <param name="baseSegStrings">The base segment strings to intersect</param>
+        /// <param name="env">The envelope</param>
+        public MCIndexSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings, Envelope env)
+        {
+            _envelope = env;
             InitBaseSegments(baseSegStrings);
         }
 
@@ -66,7 +79,10 @@ namespace NetTopologySuite.Noding
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (var mc in segChains)
             {
-                _index.Insert(mc.GetEnvelope(_overlapTolerance), mc);
+                if (_envelope == null || _envelope.Intersects(mc.Envelope))
+                {
+                    _index.Insert(mc.GetEnvelope(_overlapTolerance), mc);
+                }
             }
         }
 
@@ -89,14 +105,17 @@ namespace NetTopologySuite.Noding
             //    System.out.println("MCIndexBichromaticIntersector: # oct chain overlaps = " + nOctOverlaps);
         }
 
-        private static void AddToMonoChains(ISegmentString segStr, List<MonotoneChain> monotoneChains)
+        private void AddToMonoChains(ISegmentString segStr, List<MonotoneChain> monotoneChains)
         {
             if (segStr.Count == 0)
                 return;
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
             foreach (var mc in segChains)
             {
-                monotoneChains.Add(mc);
+                if (_envelope == null || _envelope.Intersects(mc.Envelope))
+                {
+                    monotoneChains.Add(mc);
+                }
             }
         }
 

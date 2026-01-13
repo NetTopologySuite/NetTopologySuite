@@ -30,9 +30,22 @@ namespace NetTopologySuite.Operation.Buffer
         public BufferCurveSetBuilder(Geometry inputGeom, double distance,
             PrecisionModel precisionModel, BufferParameters parameters)
         {
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="inputGeom">The input geometry</param>
+        /// <param name="distance">The offset distance</param>
+        /// <param name="precisionModel">A precision model</param>
+        /// <param name="em">An elevation model model. May be <c>null</c></param>
+        /// <param name="parameters">The buffer parameters</param>
+        public BufferCurveSetBuilder(Geometry inputGeom, double distance,
+            PrecisionModel precisionModel, ElevationModel em, BufferParameters parameters)
+        {
             _inputGeom = inputGeom;
             _distance = distance;
-            _curveBuilder = new OffsetCurveBuilder(precisionModel, parameters);
+            _curveBuilder = new OffsetCurveBuilder(precisionModel, em, parameters);
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Noding;
@@ -27,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
     public class SegmentStringNodingTest
     {
 
-        WKTReader rdr = new WKTReader();
+        readonly WKTReader rdr = new WKTReader();
 
 
         [Test]

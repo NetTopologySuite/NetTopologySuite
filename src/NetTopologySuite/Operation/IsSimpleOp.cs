@@ -115,12 +115,11 @@ namespace NetTopologySuite.Operation
             {
                 var pt = (Point)mp.GetGeometryN(i);
                 var p = pt.Coordinate;
-                if (points.Contains(p))
+                if (!points.Add(p))
                 {
                     _nonSimpleLocation = p;
                     return false;
                 }
-                points.Add(p);
             }
             return true;
         }
@@ -164,7 +163,7 @@ namespace NetTopologySuite.Operation
                 return true;
 
             var graph = new GeometryGraph(0, geom);
-            var li = new RobustLineIntersector();
+            var li = new RobustLineIntersector(geom.Factory.ElevationModel);
             var si = graph.ComputeSelfNodes(li, true);
             // if no self-intersection, must be simple
             if (!si.HasIntersection) return true;

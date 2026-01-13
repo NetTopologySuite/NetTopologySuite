@@ -5,7 +5,6 @@ using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 #if UseWorker
 using System.Threading;
 #endif
@@ -13,7 +12,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Operation.Overlay.Snap;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Union
 {
@@ -82,7 +80,7 @@ namespace NetTopologySuite.Operation.Union
         private readonly UnionStrategy _unionStrategy;
 
         private int _countRemainder = 0;
-        private int _countInput = 0;
+        private readonly int _countInput = 0;
 #if UseWorker
         private int _numThreadsStarted = 0;
 #endif

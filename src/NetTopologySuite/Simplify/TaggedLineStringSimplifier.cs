@@ -1,8 +1,6 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using System;
-using System.Diagnostics;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Simplify
 {
@@ -13,7 +11,7 @@ namespace NetTopologySuite.Simplify
     /// </summary>
     public class TaggedLineStringSimplifier
     {
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li = new RobustLineIntersector(ElevationModel.NoZ);
         private readonly LineSegmentIndex _inputIndex;
         private readonly LineSegmentIndex _outputIndex;
         private readonly ComponentJumpChecker _jumpChecker;
@@ -23,7 +21,7 @@ namespace NetTopologySuite.Simplify
         [Obsolete]
         private double _distanceTolerance;
 
-        [Obsolete("Using this constructor Will not work and it will be removed in a future version.", true)]
+        [Obsolete("Using this constructor will not work and it will be removed in a future version.", true)]
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
             : this(inputIndex, outputIndex, null)
         {
@@ -151,7 +149,14 @@ namespace NetTopologySuite.Simplify
                 if (simpSeg.Distance(endPt) <= distanceTolerance
                     && IsTopologyValid(_line, firstSeg, lastSeg, simpSeg))
                 {
-                    _line.RemoveRingEndpoint();
+                    //-- don't know if segments are original or new, so remove from all indexes
+                    _inputIndex.Remove(firstSeg);
+                    _inputIndex.Remove(lastSeg);
+                    _outputIndex.Remove(firstSeg);
+                    _outputIndex.Remove(lastSeg);
+
+                    _line.RemoveRingEndpoint(out var flatSeg);
+                    _outputIndex.Add(flatSeg);
                 }
             }
         }

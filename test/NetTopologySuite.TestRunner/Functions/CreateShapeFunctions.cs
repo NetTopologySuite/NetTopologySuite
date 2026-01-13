@@ -8,8 +8,6 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class CreateShapeFunctions
     {
-        private static readonly int DEFAULT_POINTSIZE = 100;
-
         public static Geometry Grid(Geometry g, int nCells)
         {
             var geoms = new List<Geometry>();

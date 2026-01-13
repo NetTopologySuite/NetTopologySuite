@@ -342,8 +342,8 @@ namespace NetTopologySuite.Noding
     /// </summary>
     class NodeVertexIterator : IEnumerator<object>
     {
-        private SegmentNodeList _nodeList;
-        private ISegmentString _edge;
+        private readonly SegmentNodeList _nodeList;
+        private readonly ISegmentString _edge;
         private readonly IEnumerator<object> _nodeIt;
         private SegmentNode _currNode;
         private SegmentNode _nextNode;

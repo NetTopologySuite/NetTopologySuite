@@ -172,8 +172,9 @@ namespace NetTopologySuite.Index.Strtree
                             PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
             var children = ((AbstractNode<Envelope, TItem>)bndComposite).ChildBoundables;
-            foreach (var child in children)
+            for (int i = 0; i < children.Count; i++)
             {
+                var child = children[i];
                 BoundablePair<TItem> bp;
                 if (isFlipped)
                 {

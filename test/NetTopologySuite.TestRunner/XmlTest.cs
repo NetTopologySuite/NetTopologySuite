@@ -114,7 +114,7 @@ namespace Open.Topology.TestRunner
         private Geometry  _objGeometryA;
         private Geometry  _objGeometryB;
 
-        private object[]  _objArguments = new object[3];
+        private readonly object[]  _objArguments = new object[3];
         private object    _objArgument1;
         private object    _objArgument2;
 

@@ -21,7 +21,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Triangulate
     {
         private const int N_PTS = 50;
         private const int RUN_COUNT = 10000;
-        private const double SIDE_LEN = 1000.0;
         private const double BASE_OFFSET = 0;
 
         private static readonly Random Random = new Random();

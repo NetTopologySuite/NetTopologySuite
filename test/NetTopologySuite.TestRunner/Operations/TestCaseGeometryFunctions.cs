@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using NetTopologySuite.Densify;
+﻿using NetTopologySuite.Densify;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Buffer;

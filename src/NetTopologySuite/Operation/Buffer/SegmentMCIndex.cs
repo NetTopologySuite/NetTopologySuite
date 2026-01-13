@@ -1,11 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.Strtree;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -16,7 +12,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// <author>Martin Davis</author>
     internal class SegmentMCIndex
     {
-        private STRtree<Index.Chain.MonotoneChain> index;
+        private readonly STRtree<Index.Chain.MonotoneChain> index;
 
         public SegmentMCIndex(Coordinate[] segs)
         {

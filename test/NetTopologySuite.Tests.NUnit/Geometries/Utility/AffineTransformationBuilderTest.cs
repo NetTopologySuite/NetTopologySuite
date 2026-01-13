@@ -176,9 +176,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             Assert.IsNull(trans);
         }
 
-        private Coordinate ctl0 = new Coordinate(-10, -10);
-        private Coordinate ctl1 = new Coordinate(10, 20);
-        private Coordinate ctl2 = new Coordinate(10, -20);
+        private readonly Coordinate ctl0 = new Coordinate(-10, -10);
+        private readonly Coordinate ctl1 = new Coordinate(10, 20);
+        private readonly Coordinate ctl2 = new Coordinate(10, -20);
 
         [Test]
         public void TestTransform1()

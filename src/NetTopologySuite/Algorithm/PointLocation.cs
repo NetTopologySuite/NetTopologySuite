@@ -1,5 +1,4 @@
 ﻿using NetTopologySuite.Geometries;
-using System;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -65,7 +64,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static bool IsOnLine(Coordinate p, CoordinateSequence line)
         {
-            var lineIntersector = new RobustLineIntersector();
+            var lineIntersector = new RobustLineIntersector(ElevationModel.NoZ);
             var p0 = line.CreateCoordinate();
             var p1 = p0.Copy();
             int n = line.Count;

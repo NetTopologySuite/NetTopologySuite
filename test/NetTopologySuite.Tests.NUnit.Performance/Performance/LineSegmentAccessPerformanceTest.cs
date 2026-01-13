@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries.Prepared;
 using NUnit.Framework;
 
 

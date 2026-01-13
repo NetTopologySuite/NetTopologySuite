@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using NetTopologySuite.Index.Bintree;
 using NUnit.Framework;
 

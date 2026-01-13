@@ -76,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 reader.Read(wkt);
                 Assert.Fail("Input does not have non-closed rings");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ok, do nothing
             }

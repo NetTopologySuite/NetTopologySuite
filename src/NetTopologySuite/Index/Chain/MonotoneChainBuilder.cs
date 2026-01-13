@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Index.Chain
 {

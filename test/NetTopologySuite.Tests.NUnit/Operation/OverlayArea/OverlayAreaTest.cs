@@ -1,12 +1,4 @@
-﻿using NetTopologySuite.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Operation.OverlayArea;
-using NetTopologySuite.Tests.NUnit.Operation.OverlayArea;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayArea
 {

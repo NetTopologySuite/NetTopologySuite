@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     */
     public class SegmentDensifier
     {
-        private LineString inputLine;
+        private readonly LineString inputLine;
         private CoordinateList newCoords;
 
         public SegmentDensifier(LineString line)

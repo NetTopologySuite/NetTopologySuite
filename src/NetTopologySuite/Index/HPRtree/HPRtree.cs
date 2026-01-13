@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace NetTopologySuite.Index.HPRtree
 {

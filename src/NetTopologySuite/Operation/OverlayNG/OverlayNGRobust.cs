@@ -257,7 +257,7 @@ namespace NetTopologySuite.Operation.OverlayNG
         private static Geometry SnapSelf(Geometry geom, double snapTol)
         {
             var ov = new OverlayNG(geom, null);
-            var snapNoder = new SnappingNoder(snapTol);
+            var snapNoder = new SnappingNoder(snapTol, geom.Factory.ElevationModel);
             ov.Noder = snapNoder;
             /*
              * Ensure the result is not mixed-dimension,
@@ -270,7 +270,7 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         private static Geometry OverlaySnapTol(Geometry geom0, Geometry geom1, SpatialFunction opCode, double snapTol)
         {
-            var snapNoder = new SnappingNoder(snapTol);
+            var snapNoder = new SnappingNoder(snapTol, geom0.Factory.ElevationModel);
             return OverlayNG.Overlay(geom0, geom1, opCode, snapNoder);
         }
 

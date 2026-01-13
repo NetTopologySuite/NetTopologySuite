@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.ConstrainedExecution;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Mathematics;
 

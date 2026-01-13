@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using NetTopologySuite.EdgeGraph;
+﻿using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;

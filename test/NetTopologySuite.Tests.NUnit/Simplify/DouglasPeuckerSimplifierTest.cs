@@ -1,8 +1,5 @@
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NUnit.Framework;
-using System;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {

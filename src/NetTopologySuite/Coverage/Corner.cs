@@ -9,17 +9,17 @@ namespace NetTopologySuite.Coverage
 
         private readonly LinkedLine _edge;
         private readonly int _index;
-        private int _prev;
-        private int _next;
-        private double _area;
+        private readonly int _prev;
+        private readonly int _next;
+        private readonly double _area;
 
-        public Corner(LinkedLine edge, int i)
+        public Corner(LinkedLine edge, int i, double area)
         {
             _edge = edge;
             _index = i;
             _prev = edge.Prev(i);
             _next = edge.Next(i);
-            _area = AreaFn(edge, i);
+            _area = area;
         }
 
         public bool IsVertex(int index)
@@ -43,14 +43,6 @@ namespace NetTopologySuite.Coverage
         public Coordinate Next()
         {
             return _edge.GetCoordinate(_next);
-        }
-
-        private static double AreaFn(LinkedLine edge, int index)
-        {
-            var pp = edge.PrevCoordinate(index);
-            var p = edge.GetCoordinate(index);
-            var pn = edge.NextCoordinate(index);
-            return Triangle.Area(pp, p, pn);
         }
 
         /// <summary>

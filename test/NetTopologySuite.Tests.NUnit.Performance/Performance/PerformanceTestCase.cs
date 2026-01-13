@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             TestInternal();
         }
 
-        public abstract void TestInternal();
+        public virtual void TestInternal() => PerformanceTestRunner.Run(this);
 
         public string Name => _name;
 

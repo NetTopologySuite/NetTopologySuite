@@ -13,7 +13,7 @@ namespace NetTopologySuite.Triangulate
     public class IncrementalDelaunayTriangulator
     {
         private readonly QuadEdgeSubdivision _subdiv;
-        private bool _isUsingTolerance;
+        private readonly bool _isUsingTolerance;
         private bool _isForceConvex = true;
 
         /// <summary>

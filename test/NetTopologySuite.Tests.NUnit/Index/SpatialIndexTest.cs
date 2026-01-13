@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
@@ -39,12 +38,12 @@ namespace NetTopologySuite.Tests.NUnit.Index
             }
         }
 
-        private static double CELL_EXTENT = 20.31;
-        private static int CELLS_PER_GRID_SIDE = 10;
-        private static double FEATURE_EXTENT = 10.1;
-        private static double OFFSET = 5.03;
-        private static double QUERY_ENVELOPE_EXTENT_1 = 1.009;
-        private static double QUERY_ENVELOPE_EXTENT_2 = 11.7;
+        private static readonly double CELL_EXTENT = 20.31;
+        private static readonly int CELLS_PER_GRID_SIDE = 10;
+        private static readonly double FEATURE_EXTENT = 10.1;
+        private static readonly double OFFSET = 5.03;
+        private static readonly double QUERY_ENVELOPE_EXTENT_1 = 1.009;
+        private static readonly double QUERY_ENVELOPE_EXTENT_2 = 11.7;
 
         private void AddSourceData(double offset, IList<Envelope> sourceData)
         {

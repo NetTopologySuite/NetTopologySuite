@@ -1,6 +1,4 @@
 ﻿using NetTopologySuite.Geometries;
-using static System.Collections.Specialized.BitVector32;
-using System.Net.NetworkInformation;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -155,6 +153,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Compares the angles of two vectors
         /// relative to the positive X-axis at their origin.
+        /// Angles increase CCW from the X-axis.
         /// </summary>
         /// <param name="origin">The origin of the vectors</param>
         /// <param name="p">The endpoint of the vector P</param>

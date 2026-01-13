@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Valid
         //private const int NoInvalidIntersection = -1;
         private readonly bool _isInvertedRingValid;
 
-        private readonly LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li;
         private TopologyValidationErrors _invalidCode = TopologyValidationErrors.NoInvalidIntersection;
         private Coordinate _invalidLocation;
 
@@ -31,8 +31,17 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="isInvertedRingValid"><c>true</c> if inverted rings are valid.</param>
         public PolygonIntersectionAnalyzer(bool isInvertedRingValid)
+            : this(isInvertedRingValid, null) { }
+
+        /// <summary>
+        /// Creates a new finder, allowing for the mode where inverted rings are valid.
+        /// </summary>
+        /// <param name="isInvertedRingValid"><c>true</c> if inverted rings are valid.</param>
+        /// <param name="em"></param>
+        public PolygonIntersectionAnalyzer(bool isInvertedRingValid, ElevationModel em)
         {
             _isInvertedRingValid = isInvertedRingValid;
+            _li = new RobustLineIntersector(em);
         }
 
         public bool IsDone => IsInvalid || _hasDoubleTouch;

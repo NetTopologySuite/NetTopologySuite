@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation
     public class GeometryGraphOperation
     {
 
-        private LineIntersector _li = new RobustLineIntersector();
+        private readonly LineIntersector _li;
 
         /// <summary>
         ///
@@ -18,7 +18,7 @@ namespace NetTopologySuite.Operation
         protected LineIntersector lineIntersector
         {
             get => _li;
-            set => _li = value;
+            set { throw new System.NotSupportedException(); }
         }
 
         /// <summary>
@@ -42,10 +42,12 @@ namespace NetTopologySuite.Operation
 
         public GeometryGraphOperation(Geometry g0, Geometry g1, IBoundaryNodeRule boundaryNodeRule)
         {
+
+            // Create the line intersector to use
+            _li = new RobustLineIntersector(g0.Factory == g1.Factory ? g0.Factory.ElevationModel : null);
+
             // use the most precise model for the result
-            if (g0.PrecisionModel.CompareTo(g1.PrecisionModel) >= 0)
-                 ComputationPrecision = g0.PrecisionModel;
-            else ComputationPrecision = g1.PrecisionModel;
+            _li.PrecisionModel = PrecisionModel.MostPrecise(g0.PrecisionModel, g1.PrecisionModel);
 
             arg = new GeometryGraph[2];
             arg[0] = new GeometryGraph(0, g0, boundaryNodeRule);
@@ -58,10 +60,11 @@ namespace NetTopologySuite.Operation
         /// <param name="g0"></param>
         public GeometryGraphOperation(Geometry g0)
         {
-            ComputationPrecision = g0.PrecisionModel;
+            _li = new RobustLineIntersector(g0.Factory.ElevationModel);
+            _li.PrecisionModel = g0.PrecisionModel;
 
             arg = new GeometryGraph[1];
-            arg[0] = new GeometryGraph(0, g0);;
+            arg[0] = new GeometryGraph(0, g0);
         }
 
         /// <summary>

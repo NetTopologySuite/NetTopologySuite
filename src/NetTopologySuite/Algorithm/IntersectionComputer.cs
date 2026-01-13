@@ -1,5 +1,4 @@
-﻿using System;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -45,7 +44,6 @@ namespace NetTopologySuite.Algorithm
         /// This is less accurate than {@link CGAlgorithmsDD#intersection(Coordinate, Coordinate, Coordinate, Coordinate)}.
         /// It has caused spatial predicate failures in some cases.
         /// This is kept for testing purposes.
-        /// </summary>
         /// </summary>
         /// <param name="p1">An endpoint of line 1</param>
         /// <param name="p2">An endpoint of line 1</param>

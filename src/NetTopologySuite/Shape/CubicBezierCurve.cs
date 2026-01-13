@@ -86,7 +86,7 @@ namespace NetTopologySuite.Shape
 
         private readonly Geometry _inputGeom;
         private readonly double _alpha = -1;
-        private double _skew;
+        private readonly double _skew;
         private readonly Geometry _controlPoints;
         private readonly GeometryFactory _geomFactory;
         private int _controlPointIndex;

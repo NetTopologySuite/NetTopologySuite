@@ -375,7 +375,7 @@ namespace NetTopologySuite.Operation.Buffer
              * (Note this only works for buffering, because
              * ScaledNoder may invalidate topology.)
              */
-            var snapNoder = new SnapRoundingNoder(new PrecisionModel(1.0));
+            var snapNoder = new SnapRoundingNoder(new PrecisionModel(1.0), _argGeom.Factory.ElevationModel);
             var noder = new ScaledNoder(snapNoder, fixedPM.Scale);
 
             var bufBuilder = CreateBufferBuilder();

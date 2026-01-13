@@ -234,7 +234,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public  int GeometryCount
+        public int GeometryCount
         {
             get
             {

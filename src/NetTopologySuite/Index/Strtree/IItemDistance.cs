@@ -19,7 +19,7 @@ namespace NetTopologySuite.Index.Strtree
     /// and must return <see cref="double.MaxValue"/> for identical arguments.
     /// </summary>
     /// <author>Martin Davis</author>
-    public interface IItemDistance<T, TItem> where T : IIntersectable<T>, IExpandable<T>
+    public interface IItemDistance<in T, in TItem> where T : IIntersectable<T>, IExpandable<T>
     {
         /// <summary>
         /// Computes the distance between two items.

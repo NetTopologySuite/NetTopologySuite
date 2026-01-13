@@ -1,8 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
-using NetTopologySuite.Index.HPRtree;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Operation.OverlayArea
 {

@@ -161,17 +161,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     if (polygon.Shell.IsCCW)
                         Assert.Fail($"Shell ring orientation requested {LinearRingOrientation.CW}, was CCW");
                     if (!polygon.Holes[0].IsCCW)
-                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CCW}, was CW"); ;
+                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CCW}, was CW");
                     if (!polygon.Holes[1].IsCCW)
-                        Assert.Fail($"Hole[1] ring orientation requested {LinearRingOrientation.CCW}, was CW"); ;
+                        Assert.Fail($"Hole[1] ring orientation requested {LinearRingOrientation.CCW}, was CW");
                     break;
                 case LinearRingOrientation.CCW:
                     if (!polygon.Shell.IsCCW)
                         Assert.Fail($"Shell ring orientation requested {LinearRingOrientation.CCW}, was CW");
                     if (polygon.Holes[0].IsCCW)
-                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CW}, was CCW"); ;
+                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CW}, was CCW");
                     if (polygon.Holes[1].IsCCW)
-                        Assert.Fail($"Hole[1] ring orientation requested {LinearRingOrientation.CW}, was CCW"); ;
+                        Assert.Fail($"Hole[1] ring orientation requested {LinearRingOrientation.CW}, was CCW");
                     break;
                 case LinearRingOrientation.DontCare:
                     if (polygon.Shell.IsCCW != Orientation.IsCCW(origShellSequence))

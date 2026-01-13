@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     public class OrientationIndexTest
 {
 
-  private static WKTReader reader = new WKTReader();
+  private static readonly WKTReader reader = new WKTReader();
   //private CGAlgorithms rcga = new CGAlgorithms();
         [Test]
   public void TestCCW()

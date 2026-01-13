@@ -1,5 +1,4 @@
 using System;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Samples.Geometries

@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
     public class TestDataBuilder
 {
-  private GeometryFactory _geomFact = new GeometryFactory();
+    private readonly GeometryFactory _geomFact = new GeometryFactory();
 
     private Coordinate _origin = new Coordinate(0, 0);
     private double _size = 100.0;

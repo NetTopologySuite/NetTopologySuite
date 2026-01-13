@@ -134,7 +134,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Checks if there are &le;2 unique points,
+        /// Checks if there are &#8804;2 unique points,
         /// which produce an obviously degenerate result.
         /// If there are more points, returns null to indicate this.
         /// <para/>

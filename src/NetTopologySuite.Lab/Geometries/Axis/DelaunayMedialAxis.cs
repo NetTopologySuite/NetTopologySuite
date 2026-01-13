@@ -3,16 +3,15 @@ using NetTopologySuite.Triangulate.Polygon;
 using NetTopologySuite.Triangulate.Tri;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NetTopologySuite.Algorithm.Axis
 {
     /// <summary>
-    /// Constructs an approximation to the medial axis of a Polygon,
-    /// as a set of linestrings representing the medial axis graph.
+    /// Constructs an approximation to the medial axis of a <see cref="Polygon"/>,
+    /// based on the Constrained Delaunay triangulation.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class ApproximateMedialAxis
+    public class DelaunayMedialAxis
     {
         /// <summary>
         /// 
@@ -25,7 +24,7 @@ namespace NetTopologySuite.Algorithm.Axis
             if (!(geom is Polygon pg))
                 throw new ArgumentException("Must be a polygon", nameof(geom));
 
-            var tt = new ApproximateMedialAxis(pg);
+            var tt = new DelaunayMedialAxis(pg);
             return tt.Compute();
         }
 
@@ -42,10 +41,10 @@ namespace NetTopologySuite.Algorithm.Axis
         private readonly Polygon _inputPolygon;
         private readonly GeometryFactory _geomFact;
 
-        private IDictionary<Tri, AxisNode> nodeMap = new Dictionary<Tri, AxisNode>();
-        private Stack<AxisNode> nodeQue = new Stack<AxisNode>();
+        private readonly IDictionary<Tri, AxisNode> nodeMap = new Dictionary<Tri, AxisNode>();
+        private readonly Stack<AxisNode> nodeQue = new Stack<AxisNode>();
 
-        public ApproximateMedialAxis(Polygon polygon)
+        public DelaunayMedialAxis(Polygon polygon)
         {
             _inputPolygon = polygon;
             _geomFact = _inputPolygon.Factory;
@@ -63,13 +62,39 @@ namespace NetTopologySuite.Algorithm.Axis
         private List<LineString> ConstructLines(IEnumerable<Tri> tris)
         {
             var lines = new List<LineString>();
+            /*
+             * Construct paths from cap tris
+             * (tris with two outer sides).
+             * These will end at either a node tri
+             * or a previously processed tri (if the triangulation has no nodes).
+             */
+            int numCaps = 0;
             foreach (var tri in tris)
             {
                 if (tri.NumAdjacent == 1)
                 {
-                    lines.Add(ConstructLeafLine(tri));
+                    ConstructCapPaths(tri, lines);
+                    numCaps++;
                 }
             }
+            //TODO: handle case with two caps and no nodes (by rebuilding line connecting midpoints from cap to cap)
+
+            //TODO: if no nodes in queue, search for a node to seed the queue
+
+            /*
+             * If no caps and no nodes exist, triangulation is an O-shape.
+             * Pick any tri to start the path from.
+             * Path building terminates when start tri is encountered again 
+             */
+            if (numCaps == 0 && nodeQue.Count== 0)
+            {
+
+            }
+
+            /*
+             * Construct paths out of node tris
+             * with 1 or 2 entering paths.
+             */
             while (nodeQue.Count > 0)
             {
                 var node = nodeQue.Peek();
@@ -90,15 +115,73 @@ namespace NetTopologySuite.Algorithm.Axis
             return lines;
         }
 
-        private LineString ConstructLeafLine(Tri triStart)
+        private void ConstructCapPaths(Tri cap, List<LineString> lines)
         {
-            int eAdj = IndexOfAdjacent(triStart);
+            //- a cap has only one adjacent tri
+            int eAdj = IndexOfAdjacent(cap);
+            var next = cap.GetAdjacent(eAdj);
+            int nextType = next.NumAdjacent;
+            if (nextType == 3 // next is node tri
+                || nextType <= 1 // next is a cap tri
+                )
+            {
+                //TODO: handle next node and cap tris better (single segment to midpoint)
+                int vOpp = Tri.OppVertex(eAdj);
+                var startPt = cap.GetCoordinate(vOpp);
+                var edgePt = AngleBisector(cap, vOpp);
 
-            int vOpp = Tri.OppVertex(eAdj);
-            var startPt = triStart.GetCoordinate(vOpp);
-            var edgePt = AngleBisector(triStart, vOpp);
+                var path = ConstructPath(cap, eAdj, startPt, edgePt);
+                lines.Add(path);
+                return;
+            }
+            //TODO: handle oblique tris (single segment to midpoint)
 
-            return ConstructPath(triStart, eAdj, startPt, edgePt);
+            //-- next tri has one outer side (numAdj = 2).
+            //-- may be either a wedge or a tube
+            int eNextCap = next.GetIndex(cap);
+            int eNext2 = IndexOfAdjacentOther(next, eNextCap);
+            if (IsTube(next, eNext2))
+            {
+                ConstructCapTubePaths(cap, next, eNext2, lines);
+            }
+            else
+            { //-- wedge tri
+                ConstructCapWedgePaths(cap, next, lines);
+            }
+
+        }
+
+        private void ConstructCapWedgePaths(Tri cap, Tri next, List<LineString> lines)
+        {
+            var capPt = cap.GetCoordinate(Tri.OppVertex(cap.GetIndex(next)));
+            var endPt = next.MidPoint(IndexOfAdjacentOther(next, cap));
+            AddLine(capPt, endPt, lines);
+
+            //TODO: add line for side point of cap
+
+            //-- construct path after wedge
+            int eStart = IndexOfAdjacentOther(next, cap);
+            var startPt = next.MidPoint(eStart);
+            var path = ConstructPath(next, eStart, null, startPt);
+            if (path != null)
+                lines.Add(path);
+        }
+
+        private void ConstructCapTubePaths(Tri cap, Tri next, int eNext2, List<LineString> lines)
+        {
+            var capPt = cap.GetCoordinate(Tri.OppVertex(cap.GetIndex(next)));
+            var next2 = next.GetAdjacent(eNext2);
+            var endPt = next2.MidPoint(IndexOfAdjacentOther(next2, next));
+            AddLine(capPt, endPt, lines);
+
+            //TODO: add lines for side points of cap
+
+            //-- construct path after tube
+            int eStart = IndexOfAdjacentOther(next2, next);
+            var startPt = next2.MidPoint(eStart);
+            var path = ConstructPath(next2, eStart, null, startPt);
+            if (path != null)
+                lines.Add(path);
         }
 
         private LineString ConstructPath(AxisNode node)
@@ -133,6 +216,8 @@ namespace NetTopologySuite.Algorithm.Axis
             int eAdjNext = triNext.GetIndex(triStart);
             ExtendPath(triNext, eAdjNext, pts);
 
+            if(pts.Count < 2)
+                return null;
             return _geomFact.CreateLineString(CoordinateArrays.ToCoordinateArray(pts));
         }
 
@@ -151,13 +236,17 @@ namespace NetTopologySuite.Algorithm.Axis
             }
             if (numAdj < 2)
             {
-                //-- leaf node - should never happen, has already been processed
+                //TODO: found cap tri - handle it
+                //-- add segment for cap, record it is processed to avoid redoing
                 return;
             }
 
             //--- now are only dealing with 2-Adj triangles
             int eAdj = IndexOfAdjacentOther(tri, edgeEntry);
-            if (false && IsTube(tri, eAdj))
+            Tri triN;
+            int ePathNext;
+            if (//false &&
+                IsTube(tri, eAdj))
             {
                 /*
                  * This triangle and the next one form a "tube"
@@ -169,9 +258,9 @@ namespace NetTopologySuite.Algorithm.Axis
 
                 int eAdj2 = tri2.GetIndex(tri);
                 int eOpp2 = IndexOfAdjacentOther(tri2, eAdj2);
-                var triN = tri2.GetAdjacent(eOpp2);
-                int eOppN = triN.GetIndex(tri2);
-                ExtendPath(triN, eOppN, pts);
+                triN = tri2.GetAdjacent(eOpp2);
+                ePathNext = triN.GetIndex(tri2);
+                ExtendPath(triN, ePathNext, pts);
             }
             else
             {
@@ -180,10 +269,13 @@ namespace NetTopologySuite.Algorithm.Axis
                  */
                 var p = ExitPointWedge(tri, eAdj);
                 pts.Add(p);
-                var triN = tri.GetAdjacent(eAdj);
-                int eAdjN = triN.GetIndex(tri);
-                ExtendPath(triN, eAdjN, pts);
+                triN = tri.GetAdjacent(eAdj);
+                ePathNext = triN.GetIndex(tri);
             }
+            //-- path is a loop
+            if (tri == triN)
+                return;
+            ExtendPath(triN, ePathNext, pts);
         }
 
         private void AddNodePathPoint(Tri tri, int edgeEntry, Coordinate pt)
@@ -200,6 +292,12 @@ namespace NetTopologySuite.Algorithm.Axis
 
         private Coordinate ExitPointWedge(Tri tri, int eExit)
         {
+            /*
+             * Midpoint produces a straighter line in nearly-parallel corridors, 
+             * but is more see-sawed elsewhere. 
+             */
+            return tri.MidPoint(eExit);
+            /*
             int eBdy = IndexOfNonAdjacent(tri);
             var pt = tri.GetCoordinate(Tri.OppVertex(eBdy));
             var p0 = tri.GetCoordinate(eBdy);
@@ -209,13 +307,14 @@ namespace NetTopologySuite.Algorithm.Axis
                 p0 = tri.GetCoordinate(Tri.Next(eBdy));
                 p1 = tri.GetCoordinate(eBdy);
             }
+             */
             /*
              * Midpoint produces a straighter line in nearly-parallel corridors, 
              * but is more see-sawed elsewhere. 
              */
 
-            return tri.MidPoint(eExit);
             //return medialAxisPoint(pt, p0, p1);
+            
         }
 
         /// <summary>
@@ -350,6 +449,15 @@ namespace NetTopologySuite.Algorithm.Axis
             return !pOppBdy.Equals2D(pOppBdyN);
         }
 
+        private void AddLine(Coordinate p0, Coordinate p1, List<LineString> lines)
+        {
+            var line = _geomFact.CreateLineString(new Coordinate[] {
+                p0.Copy(), p1.Copy()
+            });
+            lines.Add(line);
+        }
+
+
         private static int IndexOfAdjacent(Tri tri)
         {
             for (int i = 0; i < 3; i++)
@@ -368,6 +476,12 @@ namespace NetTopologySuite.Algorithm.Axis
                     return i;
             }
             return -1;
+        }
+
+        private static int IndexOfAdjacentOther(Tri tri, Tri adj)
+        {
+            int eAdj = tri.GetIndex(adj);
+            return IndexOfAdjacentOther(tri, eAdj);
         }
 
         private static int IndexOfNonAdjacent(Tri tri)

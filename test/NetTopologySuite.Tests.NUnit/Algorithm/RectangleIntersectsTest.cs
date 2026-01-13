@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private const double baseX = 0;
         private const double baseY = 0;
-        private double rectSize = 100;
+        private readonly double rectSize = 100;
         private Envelope _rectEnv;
         private Coordinate[] _pts;
         private bool _isValid = true;

@@ -267,7 +267,7 @@ namespace NetTopologySuite.Algorithm
             // handle degenerate or trivial cases
             if (_input.IsEmpty)
             {
-                _extremalPts = new Coordinate[0];
+                _extremalPts = Array.Empty<Coordinate>();
                 return;
             }
             if (_input.NumPoints == 1)
