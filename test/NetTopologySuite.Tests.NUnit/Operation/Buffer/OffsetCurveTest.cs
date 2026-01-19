@@ -446,7 +446,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         }
 
         //---------------------------------------
-
+        // see https://github.com/locationtech/jts/issues/1147
         [Test]
         public void TestSimplifyFactor()
         {
