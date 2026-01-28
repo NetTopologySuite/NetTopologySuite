@@ -180,7 +180,7 @@ namespace NetTopologySuite.Geometries
         public override int NumPoints => _points.Count;
 
         /// <summary>
-        /// Gets 
+        /// Gets
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
@@ -218,6 +218,17 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating if this <c>LINESTRING</c> is closed.
         /// </summary>
+        /// <remarks>
+        /// A LineString is closed if its first and last coordinates are equal in 2D.
+        /// Empty LineStrings are not considered closed.
+        /// <para>
+        /// Note: This differs from <see cref="LinearRing.IsClosed"/>, which considers empty rings to be closed.
+        /// </para>
+        /// </remarks>
+        /// <returns>
+        /// <c>true</c> if this LineString is non-empty and closed;
+        /// otherwise, <c>false</c>.
+        /// </returns>
         public virtual bool IsClosed => _points.IsClosed;
 
         /// <summary>

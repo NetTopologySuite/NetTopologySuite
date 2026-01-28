@@ -184,7 +184,8 @@ namespace NetTopologySuite.Geometries
         public virtual bool IsCoordinateValidAt(int i) => GetCoordinate(i).IsValid;
 
         /// <summary>
-        /// Returns whether the coordinate sequence is closed
+        /// Returns whether the coordinate sequence is closed.
+        /// A sequence is closed if it is non-empty and its first and last coordinates are equal in 2D.
         /// </summary>
         public virtual bool IsClosed => Count != 0 && First.Equals2D(Last);
 
