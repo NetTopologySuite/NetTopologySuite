@@ -215,8 +215,9 @@ namespace NetTopologySuite.Algorithm
             var innerPolyPts = ComputeInnerOctolateralRing(pts/*_inputPts*/);
 
             // unable to compute interior polygon for some reason
+            // Copy the input array, since it will be sorted later
             if(innerPolyPts == null)
-                return pts;
+                return (Coordinate[])pts.Clone();
 
             // add points defining polygon
             var reducedSet = new HashSet<Coordinate>();
