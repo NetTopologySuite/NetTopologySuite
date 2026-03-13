@@ -518,10 +518,10 @@ namespace NetTopologySuite.Algorithm
 
                 /*
                  * The points are collinear,
-                 * so compare based on distance from the origin.
+                 * so compare based on distance from the origin.  
                  * The points p and q are >= to the origin,
                  * so they lie in the closed half-plane above the origin.
-                 * If they are not in a horizontal line,
+                 * If they are not in a horizontal line, 
                  * the Y ordinate can be tested to determine distance.
                  * This is more robust than computing the distance explicitly.
                  */
@@ -532,7 +532,7 @@ namespace NetTopologySuite.Algorithm
                  * The points lie in a horizontal line, which should also contain the origin
                  * (since they are collinear).
                  * Also, they must be above the origin.
-                 * Use the X ordinate to determine distance.
+                 * Use the X ordinate to determine distance. 
                  */
                 if (p.X > q.X) return 1;
                 if (p.X < q.X) return -1;
