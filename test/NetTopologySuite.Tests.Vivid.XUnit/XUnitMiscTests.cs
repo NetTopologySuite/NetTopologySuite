@@ -43,6 +43,18 @@ namespace NetTopologySuite.Tests.XUnit
     public class TestBufferExternal2 : MiscXUnitRunner
     {
         public TestBufferExternal2() : base("TestBufferExternal2.xml") { }
+
+        [Test, Category("FailureCase")]
+        public override void Test20()
+        {
+            base.Test20();
+        }
+
+        [Test, Category("FailureCase")]
+        public override void TestCountOk()
+        {
+            base.TestCountOk();
+        }
     }
 
     public class TestBufferJagged : MiscXUnitRunner

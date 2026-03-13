@@ -31,6 +31,10 @@ jobs:
       run: dotnet test test/NetTopologySuite.Samples.Console/NetTopologySuite.Samples.Console.csproj -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
       shell: bash # defaults disagree on how to quote the filter string
 
+    - name: Test Vivid XUnit
+      run: dotnet test test/NetTopologySuite.Tests.Vivid.XUnit/NetTopologySuite.Tests.Vivid.XUnit.csproj -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+      shell: bash # defaults disagree on how to quote the filter string
+
     - name: Pack
       run: dotnet pack -c Release --no-build -o artifacts -p:NoWarn=NU5105
 
