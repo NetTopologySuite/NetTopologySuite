@@ -167,8 +167,23 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         }
 
         [Test]
-        public void TestNewResultsIdenticalToOldResults()
+        public void TestNoAlias()
         {
+            var geom = new WKTReader().Read("LINESTRING (1 1, 3 6, 6 5, 8 6, 9 1)");
+            var result = VWSimplifier.Simplify(geom, 2);
+            // Verify result shares no coordinate instances with input
+            var resultCopy = result.Copy();
+            geom.Apply(new ShiftXFilter());
+            Assert.That(result.EqualsExact(resultCopy), Is.True, "Geometries have aliased coordinates");
+        }
+
+        private class ShiftXFilter : ICoordinateFilter
+        {
+            public void Filter(Coordinate coord) => coord.X += 1;
+        }
+
+        [Test]
+        public void TestNewResultsIdenticalToOldResults()        {
             // at 0.02, Simplify deletes about 50% of world.wkt points
             const double DistanceTolerance = 0.02;
 
