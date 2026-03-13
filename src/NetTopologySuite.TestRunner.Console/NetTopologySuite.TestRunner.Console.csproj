@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <OutputType>Exe</OutputType>
     <ApplicationIcon>App.ico</ApplicationIcon>

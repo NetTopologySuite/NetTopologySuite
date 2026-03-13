@@ -15,10 +15,10 @@ jobs:
     - name: Get source
       uses: actions/checkout@v2
 
-    - name: Setup .NET 8
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 8
+        dotnet-version: 10
 
     - name: Build
       run: dotnet build -c Release -v minimal -p:WarningLevel=3
@@ -48,10 +48,10 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
 
     steps:
-    - name: Setup .NET 8
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 8
+        dotnet-version: 10
 
     - name: Download Package Files
       uses: actions/download-artifact@v5
@@ -73,10 +73,10 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-    - name: Setup .NET 8
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 8
+        dotnet-version: 10
 
     - name: Download Package Files
       uses: actions/download-artifact@v5

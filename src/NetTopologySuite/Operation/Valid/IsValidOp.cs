@@ -387,10 +387,9 @@ namespace NetTopologySuite.Operation.Valid
         {
             for (int i = 0; i < sequence.Count; i++)
             {
-                var coord = sequence.GetCoordinate(i);
-                if (!coord.IsValid)
+                if (!sequence.IsCoordinateValidAt(i))
                 {
-                    LogInvalid(TopologyValidationErrors.InvalidCoordinate, coord);
+                    LogInvalid(TopologyValidationErrors.InvalidCoordinate, sequence.GetCoordinate(i));
                     return;
                 }
             }
