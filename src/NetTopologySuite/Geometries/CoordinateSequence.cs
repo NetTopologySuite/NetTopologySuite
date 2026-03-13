@@ -179,6 +179,17 @@ namespace NetTopologySuite.Geometries
         public virtual Coordinate GetCoordinate(int i) => GetCoordinateCopy(i);
 
         /// <summary>
+        /// Returns whether the i'th coordinate is valid
+        /// </summary>
+        public virtual bool IsCoordinateValidAt(int i) => GetCoordinate(i).IsValid;
+
+        /// <summary>
+        /// Returns whether the coordinate sequence is closed.
+        /// A sequence is closed if it is non-empty and its first and last coordinates are equal in 2D.
+        /// </summary>
+        public virtual bool IsClosed => Count != 0 && First.Equals2D(Last);
+
+        /// <summary>
         /// Returns a copy of the i'th coordinate in this sequence.
         /// This method optimizes the situation where the caller is
         /// going to make a copy anyway - if the implementation

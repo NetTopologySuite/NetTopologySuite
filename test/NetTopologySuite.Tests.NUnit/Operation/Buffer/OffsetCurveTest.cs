@@ -445,6 +445,17 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             );
         }
 
+        //---------------------------------------
+        // see https://github.com/locationtech/jts/issues/1147
+        [Test]
+        public void TestSimplifyFactor()
+        {
+            CheckOffsetCurveSimplify(
+                "LINESTRING (-74.10825983114643 205.2512862651522, -61.59032155710979 183.66416102497575, -56.17516937041343 177.39645645603244, -45.87664216572637 163.28009296700202, -32.80606824944878 140.06145723770865)",
+                -70, 0.0001,
+                "LINESTRING (-134.66360133032907 170.13646580544648, -122.14566305629245 148.54934056527003, -114.55900733787851 137.9004382015626, -111.02744383471095 133.81287132602836, -104.85483126202604 125.3519680316891, -93.80502418590495 105.72303306503763)",
+                0.00001);
+        }
 
         //=======================================
 
@@ -499,6 +510,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
             if (wktExpected == null)
                 return;
+
+            var expected = Read(wktExpected);
+            CheckEqual(expected, result, tolerance);
+        }
+
+        private void CheckOffsetCurveSimplify(string wkt,
+            double distance, double simplifyFactor,
+            string wktExpected, double tolerance)
+        {
+            var geom = Read(wkt);
+            var param = new BufferParameters { SimplifyFactor = simplifyFactor };
+            var oc = new OffsetCurve(geom, distance, param);
+            var result = oc.GetCurve();
 
             var expected = Read(wktExpected);
             CheckEqual(expected, result, tolerance);
