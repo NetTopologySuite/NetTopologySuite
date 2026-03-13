@@ -136,11 +136,8 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             var newPolygon = (Polygon)operation.Edit(polygon, _factory);
             // create one if needed
-            if (newPolygon == null)
-                newPolygon = _factory.CreatePolygon();
-            if (newPolygon.IsEmpty)
-                //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
-                return newPolygon;
+            if (newPolygon == null || newPolygon.IsEmpty)
+                return _factory.CreatePolygon();
 
             var shell = (LinearRing)Edit(newPolygon.ExteriorRing, operation);
             if (shell == null || shell.IsEmpty)
