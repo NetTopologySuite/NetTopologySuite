@@ -191,11 +191,21 @@ namespace NetTopologySuite.Operation.Buffer
             public Geometry Map(Geometry geom)
             {
                 if (geom is Point) return null;
-                if (geom is Polygon)
+                if (geom is Polygon poly)
                 {
-                    return ToLineString(geom.Buffer(_parent._distance).Boundary);
+                    return ComputePolygonCurve(poly, _parent._distance, _parent._bufferParams);
                 }
                 return _parent.ComputeCurve((LineString)geom, _parent._distance);
+            }
+
+            private static Geometry ComputePolygonCurve(Polygon poly, double distance, BufferParameters bufferParams)
+            {
+                Geometry buffer;
+                if (bufferParams == null)
+                    buffer = BufferOp.Buffer(poly, distance);
+                else
+                    buffer = BufferOp.Buffer(poly, distance, bufferParams);
+                return ToLineString(buffer.Boundary);
             }
 
             /// <summary>
@@ -203,7 +213,7 @@ namespace NetTopologySuite.Operation.Buffer
             /// </summary>
             /// <param name="geom">A geometry, which may be a <c>LinearRing</c></param>
             /// <returns>A geometry which will be a <c>LineString</c> or <c>MulitLineString</c></returns>
-            private Geometry ToLineString(Geometry geom)
+            private static Geometry ToLineString(Geometry geom)
             {
                 if (geom is LinearRing ring)
                 {
