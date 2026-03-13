@@ -98,6 +98,21 @@
         }
 
         /// <summary>
+        /// Computes the length of the vector (x, y).
+        /// This is the length of the hypotenuse of a right triangle with sides of length x and y.
+        /// </summary>
+        /// <remarks>
+        /// This function is faster than <see cref="Math.Sqrt(double)"/> with explicit squaring.
+        /// </remarks>
+        /// <param name="x">The x ordinate</param>
+        /// <param name="y">The y ordinate</param>
+        /// <returns>The length of vector (x, y)</returns>
+        public static double Hypot(double x, double y)
+        {
+            return System.Math.Sqrt(x * x + y * y);
+        }
+
+        /// <summary>
         /// Computes the average of two numbers.
         /// </summary>
         /// <param name="x1">A number</param>
