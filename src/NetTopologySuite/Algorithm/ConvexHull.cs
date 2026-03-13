@@ -216,7 +216,7 @@ namespace NetTopologySuite.Algorithm
 
             // unable to compute interior polygon for some reason
             if(innerPolyPts == null)
-                return pts;
+                return (Coordinate[])pts.Clone();
 
             // add points defining polygon
             var reducedSet = new HashSet<Coordinate>();
