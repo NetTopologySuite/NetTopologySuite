@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             double xInt = x / w;
             double yInt = y / w;
 
-            if ((double.IsNaN(xInt)) || (double.IsInfinity(xInt) || double.IsNaN(yInt)) || (double.IsInfinity(yInt)))
+            if (!Coordinate.IsValidOrdinateValue(xInt) || !Coordinate.IsValidOrdinateValue(yInt))
             {
                 return null;
             }
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             double xInt = x / w;
             double yInt = y / w;
 
-            if ((double.IsNaN(xInt)) || (double.IsInfinity(xInt) || double.IsNaN(yInt)) || (double.IsInfinity(yInt)))
+            if (!Coordinate.IsValidOrdinateValue(xInt) || !Coordinate.IsValidOrdinateValue(yInt))
             {
                 return null;
             }
