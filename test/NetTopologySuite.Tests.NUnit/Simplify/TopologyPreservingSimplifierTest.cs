@@ -305,8 +305,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             var geom = Read(wkt);
             var actual = TopologyPreservingSimplifier.Simplify(geom, tolerance);
             var expected = Read(wktExpected);
-            //TODO: add this once the "skipping over rings" problem is fixed
-            //CheckValid(actual);
+            CheckValid(actual);
             CheckEqual(expected, actual);
         }
 

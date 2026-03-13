@@ -96,6 +96,8 @@ namespace NetTopologySuite.Simplify
         /// <returns>A <c>Coordinate</c> of the <see cref="Parent"/> line.</returns>
         public Coordinate GetComponentPoint()
         {
+            if (_resultSegs.Count > 0)
+                return _resultSegs[0].P0;
             return ParentCoordinates[1];
         }
         /// <summary>
