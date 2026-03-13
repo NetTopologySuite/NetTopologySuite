@@ -131,11 +131,16 @@ namespace NetTopologySuite.Operation.RelateNG
         {
             get
             {
-                if (_predicate.RequireSelfNoding())
-                {
-                    if (_geomA.IsSelfNodingRequired ||
-                        _geomB.IsSelfNodingRequired) return true;
-                }
+                if (!_predicate.RequireSelfNoding())
+                    return false;
+
+                if (_geomA.IsSelfNodingRequired)
+                    return true;
+
+                //-- if B is a mixed GC with A and L require full noding
+                if (_geomB.HasAreaAndLine)
+                    return true;
+
                 return false;
             }
         }
