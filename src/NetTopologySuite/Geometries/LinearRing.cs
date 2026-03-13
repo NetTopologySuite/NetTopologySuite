@@ -71,8 +71,10 @@ namespace NetTopologySuite.Geometries
         public override Dimension BoundaryDimension => Dimension.False;
 
         /// <summary>
-        ///
+        /// Tests whether this ring is closed.
+        /// Empty rings are closed by definition.
         /// </summary>
+        /// <returns><c>true</c> if this ring is closed</returns>
         public override bool IsClosed
         {
             get

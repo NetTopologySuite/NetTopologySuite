@@ -31,6 +31,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             CheckDim4_M1(factory);
             CheckDim4(factory);
             CheckDimInvalid(factory);
+            CheckClosed(factory);
+            CheckIsValidCoordinate(factory);
         }
 
         private void CheckDim2(int size, CoordinateSequenceFactory factory)
@@ -208,6 +210,53 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             catch (ArgumentException)
             {
             }
+        }
+
+        private void CheckClosed(CoordinateSequenceFactory factory)
+        {
+            // empty is not closed
+            var seq = factory.Create(0, 2, 0);
+            Assert.IsFalse(seq.IsClosed);
+
+            // 1 coordinate is closed
+            seq = factory.Create(1, 2, 0);
+            seq.SetX(0, 1);
+            seq.SetY(0, 1);
+            Assert.IsTrue(seq.IsClosed);
+
+            // 2 different coordinates are not closed
+            seq = factory.Create(2, 2, 0);
+            seq.SetX(0, 1);
+            seq.SetY(0, 1);
+            seq.SetX(1, 2);
+            seq.SetY(1, 2);
+            Assert.IsFalse(seq.IsClosed);
+
+            // last coordinate is the same as the first: closed
+            seq = factory.Create(3, 2, 0);
+            seq.SetX(0, 1);
+            seq.SetY(0, 1);
+            seq.SetX(1, 2);
+            seq.SetY(1, 2);
+            seq.SetX(2, 1);
+            seq.SetY(2, 1);
+            Assert.IsTrue(seq.IsClosed);
+        }
+
+        private void CheckIsValidCoordinate(CoordinateSequenceFactory factory)
+        {
+            var seq = factory.Create(1, 2, 0);
+            seq.SetX(0, 1);
+            seq.SetY(0, 1);
+            Assert.IsTrue(seq.IsCoordinateValidAt(0));
+
+            seq.SetX(0, double.PositiveInfinity);
+            seq.SetY(0, 1);
+            Assert.IsFalse(seq.IsCoordinateValidAt(0));
+
+            seq.SetX(0, 1);
+            seq.SetY(0, double.NaN);
+            Assert.IsFalse(seq.IsCoordinateValidAt(0));
         }
 
         //private static void InitProgression(CoordinateSequence seq)

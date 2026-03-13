@@ -1,0 +1,64 @@
+<Solution>
+  <Folder Name="/Documentation/">
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Algorithm.Construct.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Algorithm.Distance.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Algorithm.Hull.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Algorithm.Locate.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Algorithm.Match.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Algorithm.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Coverage.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Densify.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Geometries.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Geometries.Utilities.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.GeometriesGraph.Index.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.GeometriesGraph.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Index.Bintree.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Index.Chain.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Index.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Index.Quadtree.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Index.Strtree.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Index.Sweepline.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.IO.GML2.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.IO.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.LinearReferencing.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Noding.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Noding.Snapround.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.Buffer.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.Distance.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.Overlay.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.OverlayNG.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.Polygonize.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.Relate.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.RelateNG.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Operation.Valid.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Planargraph.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Precision.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Simplify.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Triangulate.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Triangulate.Polygon.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Triangulate.QuadEdge.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Triangulate.Tri.md" />
+    <File Path="doc/overwrite/namespaces/NetTopologySuite.Utilities.md" />
+  </Folder>
+  <Folder Name="/NetTopologySuite.Tests/">
+    <Project Path="test/NetTopologySuite.Samples.Console/NetTopologySuite.Samples.Console.csproj" />
+    <Project Path="test/NetTopologySuite.TestRunner/NetTopologySuite.TestRunner.csproj" />
+    <Project Path="test/NetTopologySuite.Tests.NUnit.Performance/NetTopologySuite.Tests.NUnit.Performance.csproj" />
+    <Project Path="test/NetTopologySuite.Tests.NUnit/NetTopologySuite.Tests.NUnit.csproj" />
+    <Project Path="test/NetTopologySuite.Tests.Vivid.XUnit/NetTopologySuite.Tests.Vivid.XUnit.csproj" />
+  </Folder>
+  <Folder Name="/NetTopologySuite.Tests/Tests/">
+    <File Path="data/NetTopologySuite.TestRunner.Tests/Default.xml" />
+    <File Path="data/NetTopologySuite.TestRunner.Tests/Other.xml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/full-ci.yml" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE.md" />
+  </Folder>
+  <Project Path="src/NetTopologySuite.Lab/NetTopologySuite.Lab.csproj" />
+  <Project Path="src/NetTopologySuite.TestRunner.Console/NetTopologySuite.TestRunner.Console.csproj" />
+  <Project Path="src/NetTopologySuite/NetTopologySuite.csproj" />
+</Solution>
