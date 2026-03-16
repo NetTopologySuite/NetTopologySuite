@@ -91,11 +91,19 @@ namespace NetTopologySuite.Simplify
         public int Count => _parentLine.NumPoints;
 
         /// <summary>
-        /// Gets a <c>Coordinate</c> of the <see cref="Parent"/> line.
+        /// Returns a vertex of the component, in either simplified or original form.
+        /// Once the component is simplified a vertex of the simplified linework
+        /// must be returned.
+        /// Otherwise the simplified linework could be jumped by a flattened line
+        /// which does not cross an original vertex, and so is reported as valid.
         /// </summary>
-        /// <returns>A <c>Coordinate</c> of the <see cref="Parent"/> line.</returns>
+        /// <returns>A vertex of the component.</returns>
         public Coordinate GetComponentPoint()
         {
+            //-- simplified vertex
+            if (_resultSegs.Count > 0)
+                return _resultSegs[0].P0;
+            //-- original vertex
             return ParentCoordinates[1];
         }
         /// <summary>
