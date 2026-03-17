@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Buffer
@@ -11,7 +10,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// Forms <see cref="Polygon"/>s out of a graph of <see cref="DirectedEdge"/>s.
     /// The edges to use are marked as being in the result Area.
     /// <para/>
-    /// This is a buffer-specific version of <see cref="Overlay.PolygonBuilder"/>
+    /// This is a buffer-specific version of <see cref="NetTopologySuite.Operation.Overlay.PolygonBuilder"/>
     /// that differs in <c>PlaceFreeHoles</c>: holes that do not lie within any
     /// shell are silently discarded (they are eroded elements) rather than
     /// causing a <see cref="TopologyException"/>.
@@ -119,7 +118,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             foreach (var er in edgeRings)
             {
-                er.SetInResult();
+                //er.SetInResult();
                 if (er.IsHole)
                     freeHoleList.Add(er);
                 else shellList.Add(er);
@@ -131,7 +130,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// assigned to a shell.
         /// <para/>
         /// Holes which do not lie within any shell are eroded elements and are
-        /// silently discarded (unlike <see cref="Overlay.PolygonBuilder"/> which
+        /// silently discarded (unlike <see cref="NetTopologySuite.Operation.Overlay.PolygonBuilder"/> which
         /// throws a <see cref="TopologyException"/>).
         /// </summary>
         private static void PlaceFreeHoles(IList<EdgeRing> shellList, IEnumerable<EdgeRing> freeHoleList)
@@ -150,9 +149,8 @@ namespace NetTopologySuite.Operation.Buffer
 
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
-            var teString = testEr.LinearRing;
-            var testEnv = teString.EnvelopeInternal;
-            var testPt = teString.GetCoordinateN(0);
+            var testRing = testEr.LinearRing;
+            var testEnv = testRing.EnvelopeInternal;
 
             EdgeRing minShell = null;
             Envelope minShellEnv = null;
@@ -163,13 +161,14 @@ namespace NetTopologySuite.Operation.Buffer
                 if (tryShellEnv.Equals(testEnv)) continue;
                 if (!tryShellEnv.Contains(testEnv)) continue;
 
+                var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryShellRing.Coordinates);
                 bool isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
                 if (isContained)
                 {
                     if (minShell == null || minShellEnv.Contains(tryShellEnv))
                     {
                         minShell = tryShell;
-                        minShellEnv = tryShellEnv;
+                        minShellEnv = minShell.LinearRing.EnvelopeInternal;
                     }
                 }
             }
