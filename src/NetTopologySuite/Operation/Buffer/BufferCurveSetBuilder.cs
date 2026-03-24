@@ -210,9 +210,9 @@ namespace NetTopologySuite.Operation.Buffer
 
             var shell = p.Shell;
             var shellCoord = Clean(shell.Coordinates);
-            // optimization - don't bother computing buffer
+            // optimization - don't compute buffer
             // if the polygon would be completely eroded
-            if (_distance < 0.0 && IsErodedCompletely(shellCoord, _distance))
+            if (_distance < 0.0 && IsRingFullyEroded(shellCoord, shell.EnvelopeInternal, false, _distance))
                 return;
             // don't attempt to buffer a polygon with too few distinct vertices
             if (_distance <= 0.0 && shellCoord.Length < 3)
@@ -226,9 +226,9 @@ namespace NetTopologySuite.Operation.Buffer
                 var hole = (LinearRing)p.GetInteriorRingN(i);
                 var holeCoord = Clean(hole.Coordinates);
 
-                // optimization - don't bother computing buffer for this hole
+                // optimization - don't compute buffer for this hole
                 // if the hole would be completely covered
-                if (_distance > 0.0 && IsErodedCompletely(holeCoord, -_distance))
+                if (_distance > 0.0 && IsRingFullyEroded(holeCoord, hole.EnvelopeInternal, true, _distance))
                     continue;
 
                 // Holes are topologically labelled opposite to the shell, since
@@ -241,13 +241,29 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void AddRingBothSides(Coordinate[] coord, double distance)
         {
-            AddRingSide(coord, distance,
-                Position.Left,
-                Location.Exterior, Location.Interior);
-            // Add the opposite side of the ring
-            AddRingSide(coord, distance,
-                Position.Right,
-                Location.Interior, Location.Exterior);
+            /*
+             * If the "hole" side will be eroded completely, avoid generating it.
+             * This prevents hole artifacts (e.g. https://github.com/libgeos/geos/issues/1223)
+             */
+            //-- distance is assumed positive, due to previous checks
+            bool isHoleComputed = !IsRingFullyEroded(coord, new Envelope(coord), true, distance);
+
+            bool isCCW = IsRingCCW(coord);
+
+            bool isShellLeft = !isCCW;
+            if (isShellLeft || isHoleComputed)
+            {
+                AddRingSide(coord, distance,
+                    Position.Left,
+                    Location.Exterior, Location.Interior);
+            }
+            bool isShellRight = isCCW;
+            if (isShellRight || isHoleComputed)
+            {
+                AddRingSide(coord, distance,
+                    Position.Right,
+                    Location.Interior, Location.Exterior);
+            }
         }
 
 
@@ -388,34 +404,41 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Tests whether a ring buffer is eroded completely (is empty)
-        /// based on simple heuristics.
-        /// <para/>
-        /// The <paramref name="ringCoord"/> is assumed to contain no repeated points.
-        /// It may be degenerate (i.e. contain only 1, 2, or 3 points).
-        /// In this case it has no area, and hence has a minimum diameter of 0.
+        /// Tests whether a ring would be eroded completely by buffering.
+        /// The ring is eroded if either:
+        /// <list type="number">
+        /// <item><description>it is degenerate (has fewer than 4 distinct points), or</description></item>
+        /// <item><description>the buffer distance is large enough to eliminate the ring
+        /// (determined by the envelope minimum dimension heuristic).</description></item>
+        /// </list>
         /// </summary>
-        /// <param name="ringCoord"></param>
-        /// <param name="bufferDistance"></param>
-        /// <returns></returns>
-        private static bool IsErodedCompletely(Coordinate[] ringCoord, double bufferDistance)
+        /// <param name="ringCoord">The ring coordinates (must not contain repeated points).</param>
+        /// <param name="ringEnv">The envelope of the ring.</param>
+        /// <param name="isHole">Whether the ring is a hole.</param>
+        /// <param name="bufferDistance">The buffer distance.</param>
+        /// <returns><c>true</c> if the ring would be fully eroded.</returns>
+        private static bool IsRingFullyEroded(Coordinate[] ringCoord, Envelope ringEnv, bool isHole, double bufferDistance)
         {
             // degenerate ring has no area
             if (ringCoord.Length < 4)
-                return bufferDistance < 0;
+                return true;
 
             // important test to eliminate inverted triangle bug
             // also optimizes erosion test for triangles
             if (ringCoord.Length == 4)
                 return IsTriangleErodedCompletely(ringCoord, bufferDistance);
 
-            // if envelope is narrower than twice the buffer distance, ring is eroded
-            var env = new Envelope(ringCoord);
-            double envMinDimension = Math.Min(env.Height, env.Width);
-            if (bufferDistance < 0.0
-                && 2 * Math.Abs(bufferDistance) > envMinDimension)
-                return true;
+            bool isErodable =
+                (isHole && bufferDistance > 0) ||
+                (!isHole && bufferDistance < 0);
 
+            if (isErodable)
+            {
+                // if envelope is narrower than twice the buffer distance, ring is eroded
+                double envMinDimension = Math.Min(ringEnv.Height, ringEnv.Width);
+                if (2 * Math.Abs(bufferDistance) > envMinDimension)
+                    return true;
+            }
             return false;
         }
 
