@@ -4,7 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
-using NetTopologySuite.Operation.Overlay;
 using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
@@ -124,7 +123,7 @@ namespace NetTopologySuite.Operation.Buffer
             bool isNodingValidated = distance == 0.0;
             ComputeNodedEdges(bufferSegStrList, precisionModel, em, isNodingValidated);
 
-            _graph = new PlanarGraph(new OverlayNodeFactory());
+            _graph = new PlanarGraph(new BufferNodeFactory());
             _graph.AddEdges(_edgeList.Edges);
 
             var subgraphList = CreateSubgraphs(_graph);

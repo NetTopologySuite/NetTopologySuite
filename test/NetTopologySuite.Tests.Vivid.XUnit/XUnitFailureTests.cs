@@ -23,6 +23,12 @@ namespace NetTopologySuite.Tests.XUnit
     public class TestBufferFailure : FailureXUnitRunner
     {
         public TestBufferFailure() : base("TestBufferFailure.xml") { }
+
+        [Test, Category("FailureCase")]
+        public override void Test01()
+        {
+            base.Test01();
+        }
     }
 
     public class TestBufferInsideNonEmpty : FailureXUnitRunner

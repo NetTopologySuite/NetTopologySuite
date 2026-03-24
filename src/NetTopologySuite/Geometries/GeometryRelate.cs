@@ -325,7 +325,7 @@ namespace NetTopologySuite.Geometries
                 if (!a.EnvelopeInternal.Contains(b.EnvelopeInternal))
                     return false;
 
-                return RelateOpV1.Relate(a, b).IsContains();
+                return GetRelateMatrix(a, b).IsContains();
             }
 
             public override bool Covers(Geometry a, Geometry b)
@@ -350,7 +350,7 @@ namespace NetTopologySuite.Geometries
                     // since we have already tested that the test envelope is covered
                     return true;
                 }
-                return RelateOpV1.Relate(a, b).IsCovers();
+                return GetRelateMatrix(a, b).IsCovers();
             }
 
             public override bool CoveredBy(Geometry a, Geometry b)
@@ -363,7 +363,7 @@ namespace NetTopologySuite.Geometries
                 // short-circuit test
                 if (!a.EnvelopeInternal.Intersects(b.EnvelopeInternal))
                     return false;
-                return RelateOpV1.Relate(a, b).IsCrosses(a.Dimension, b.Dimension);
+                return GetRelateMatrix(a, b).IsCrosses(a.Dimension, b.Dimension);
             }
 
             public override bool Disjoint(Geometry a, Geometry b)
@@ -375,21 +375,21 @@ namespace NetTopologySuite.Geometries
             {
                 if (!a.EnvelopeInternal.Equals(b.EnvelopeInternal))
                     return false;
-                return RelateOpV1.Relate(a, b).IsEquals(a.Dimension, b.Dimension);
+                return GetRelateMatrix(a, b).IsEquals(a.Dimension, b.Dimension);
             }
 
             public override bool Overlaps(Geometry a, Geometry b)
             {
                 if (!a.EnvelopeInternal.Intersects(b.EnvelopeInternal))
                     return false;
-                return RelateOpV1.Relate(a, b).IsOverlaps(a.Dimension, b.Dimension);
+                return GetRelateMatrix(a, b).IsOverlaps(a.Dimension, b.Dimension);
             }
 
             public override bool Touches(Geometry a, Geometry b)
             {
                 if (!a.EnvelopeInternal.Intersects(b.EnvelopeInternal))
                     return false;
-                return RelateOpV1.Relate(a, b).IsTouches(a.Dimension, b.Dimension);
+                return GetRelateMatrix(a, b).IsTouches(a.Dimension, b.Dimension);
             }
 
             public override bool Within(Geometry a, Geometry b)
@@ -400,7 +400,7 @@ namespace NetTopologySuite.Geometries
             public override IntersectionMatrix Relate(Geometry a, Geometry b)
             {
                 CheckNotGeometryCollection(a, b);
-                return RelateOpV1.Relate(a, b);
+                return GetRelateMatrix(a, b);
             }
 
             public override bool Relate(Geometry a, Geometry b, string intersectionPattern)
@@ -412,6 +412,20 @@ namespace NetTopologySuite.Geometries
             {
                 return "Legacy";
             }
+
+            /// <summary>
+            /// Returns the relate matrix, delegating to RelateNG for geometries involving
+            /// zero-length linestrings, which the legacy RelateOp does not handle correctly.
+            /// </summary>
+            private static IntersectionMatrix GetRelateMatrix(Geometry a, Geometry b)
+            {
+                if (IsZeroLengthLine(a) || IsZeroLengthLine(b))
+                    return RelateOpV2.Relate(a, b);
+                return RelateOpV1.Relate(a, b);
+            }
+
+            private static bool IsZeroLengthLine(Geometry geom)
+                => geom.Dimension == Dimension.L && geom.Length == 0.0;
 
             private static void CheckNotGeometryCollection(Geometry a, Geometry b)
             {
