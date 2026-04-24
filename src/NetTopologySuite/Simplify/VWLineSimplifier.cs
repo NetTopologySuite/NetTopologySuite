@@ -109,7 +109,7 @@ namespace NetTopologySuite.Simplify
             // parameter to "Add".
             var list = new CoordinateList(nodes.Length);
 
-            list.Add(_pts[0], false);
+            list.Add(_pts[0].Copy(), false);
             for (int i = 0; i < nodes.Length; i++)
             {
                 if (nodes[i] == null)
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Simplify
                     continue;
                 }
 
-                list.Add(_pts[i], false);
+                list.Add(_pts[i].Copy(), false);
             }
 
             // Special-case: we want to make sure that we don't return a 1-
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Simplify
             // build an LineString.  So if there's just one coordinate, we
             // output it twice, mainly just to ensure equivalence to JTS / old
             // NTS.
-            list.Add(_pts[_pts.Length - 1], list.Count == 1);
+            list.Add(_pts[_pts.Length - 1].Copy(), list.Count == 1);
 
             return list.ToArray();
         }
