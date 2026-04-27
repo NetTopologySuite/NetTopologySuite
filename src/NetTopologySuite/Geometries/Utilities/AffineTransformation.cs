@@ -436,14 +436,14 @@ namespace NetTopologySuite.Geometries.Utilities
         ///                 1
         /// inverse(A)  =  ---   x  adjoint(A)
         ///                det
-        /// 
-        /// 
+        ///
+        ///
         ///             =   1       |  m11  -m01   m01*m12-m02*m11  |
         ///                ---   x  | -m10   m00  -m00*m12+m10*m02  |
         ///                det      |  0     0     m00*m11-m10*m01  |
-        /// 
-        /// 
-        /// 
+        ///
+        ///
+        ///
         ///             = |  m11/det  -m01/det   m01*m12-m02*m11/det |
         ///               | -m10/det   m00/det  -m00*m12+m10*m02/det |
         ///               |   0           0          1               |
@@ -485,7 +485,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = Math.Sqrt(dx * dx + dy * dy);
+            double d = Mathematics.MathUtil.Hypot(dx, dy);
             double sin = dy / d;
             double cos = dx / d;
             double cs2 = 2 * sin * cos;
@@ -515,7 +515,7 @@ namespace NetTopologySuite.Geometries.Utilities
             // rotate vector to positive x axis direction
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = Math.Sqrt(dx * dx + dy * dy);
+            double d = Mathematics.MathUtil.Hypot(dx, dy);
             double sin = dy / d;
             double cos = dx / d;
             Rotate(-sin, cos);
@@ -568,7 +568,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             // rotate vector to positive x axis direction
-            double d = Math.Sqrt(x * x + y * y);
+            double d = Mathematics.MathUtil.Hypot(x, y);
             double sin = y / d;
             double cos = x / d;
             Rotate(-sin, cos);

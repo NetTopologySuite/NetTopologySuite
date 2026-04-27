@@ -125,7 +125,7 @@ namespace NetTopologySuite.Mathematics
         /// Gets the y-ordinate value
         /// </summary>
         public double Y => _y;
-        
+
         /// <summary>
         /// Gets the ordinate values by index
         /// </summary>
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns></returns>
         public double Length()
         {
-            return System.Math.Sqrt(_x * _x + _y * _y);
+            return MathUtil.Hypot(_x, _y);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Mathematics
         {
             double delx = v._x - _x;
             double dely = v._y - _y;
-            return System.Math.Sqrt(delx * delx + dely * dely);
+            return MathUtil.Hypot(delx, dely);
         }
 
         /// <summary>
@@ -436,7 +436,7 @@ namespace NetTopologySuite.Mathematics
             result = 37 * result + _y.GetHashCode();
             return result;
         }
-        
+
         /// <summary>
         /// Adds two vectors.
         /// </summary>
@@ -458,7 +458,7 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector2D(left.X * right.X, left.Y * right.Y);
         }
-        
+
         /// <summary>
         /// Subtracts two vectors.
         /// </summary>

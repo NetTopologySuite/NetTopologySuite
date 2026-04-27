@@ -101,9 +101,6 @@
         /// Computes the length of the vector (x, y).
         /// This is the length of the hypotenuse of a right triangle with sides of length x and y.
         /// </summary>
-        /// <remarks>
-        /// This function is faster than <see cref="Math.Sqrt(double)"/> with explicit squaring.
-        /// </remarks>
         /// <param name="x">The x ordinate</param>
         /// <param name="y">The y ordinate</param>
         /// <returns>The length of vector (x, y)</returns>
