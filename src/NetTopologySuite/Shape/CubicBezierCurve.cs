@@ -82,7 +82,7 @@ namespace NetTopologySuite.Shape
         }
 
         private readonly double _minSegmentLength = 0.0;
-        private readonly int _numVerticesPerSegment = 16;
+        private static readonly int _numVerticesPerSegment = 16;
 
         private readonly Geometry _inputGeom;
         private readonly double _alpha = -1;
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Shape
         private int _controlPointIndex;
   
         private Coordinate[] bezierCurvePts;
-        private double[][] interpolationParam;
+        private static readonly double[,] interpolationParam = ComputeIterpolationParameters(_numVerticesPerSegment);
 
         /// <summary>
         /// Creates a new instance producing a Bezier curve defined by a geometry
@@ -149,7 +149,6 @@ namespace NetTopologySuite.Shape
         public Geometry GetResult()
         {
             bezierCurvePts = new Coordinate[_numVerticesPerSegment];
-            interpolationParam = ComputeIterpolationParameters(_numVerticesPerSegment);
 
             return GeometryMapper.FlatMap(_inputGeom, Dimension.Curve,
                 new GeometryMapper.MapOp( (geom) => {
@@ -408,7 +407,7 @@ namespace NetTopologySuite.Shape
         /// <param name="curve">An array to hold generated points.</param>
         private static void CubicBezier(Coordinate p0,
             Coordinate p1, Coordinate ctrl1,
-            Coordinate ctrl2, double[][] param,
+            Coordinate ctrl2, double[,] param,
             Coordinate[] curve)
         {
 
@@ -419,12 +418,8 @@ namespace NetTopologySuite.Shape
             for (int i = 1; i < n - 1; i++)
             {
                 var c = new Coordinate();
-                double sum = param[i][0] + param[i][1] + param[i][2] + param[i][3];
-                c.X = param[i][0] * p0.X + param[i][1] * ctrl1.X + param[i][2] * ctrl2.X + param[i][3] * p1.X;
-                c.X /= sum;
-                c.Y = param[i][0] * p0.Y + param[i][1] * ctrl1.Y + param[i][2] * ctrl2.Y + param[i][3] * p1.Y;
-                c.Y /= sum;
-
+                c.X = param[i, 0] * p0.X + param[i, 1] * ctrl1.X + param[i, 2] * ctrl2.X + param[i, 3] * p1.X;
+                c.Y = param[i, 0] * p0.Y + param[i, 1] * ctrl1.Y + param[i, 2] * ctrl2.Y + param[i, 3] * p1.Y;
                 curve[i] = c;
             }
         }
@@ -435,22 +430,53 @@ namespace NetTopologySuite.Shape
         /// </summary>
         /// <param name="n">The number of vertices</param>
         /// <returns>An array of double[4] holding the parameter values</returns>
-        private static double[][] ComputeIterpolationParameters(int n)
+        private static double[,] ComputeIterpolationParameters(int n)
         {
-            double[][] param = new double[n][];
-            for (int i = 0; i < n; i++)
+            // if n is number of vertices per original segment
+            // then n-1 is the number of Bezier segments.
+            // we might prefer the last number to be a power of 2
+
+
+            // parameters are mirrored in the middle
+            // we can fill the array from both ends
+            int iterations = (n - 1) / 2 + 1;
+            double[,] param = new double[n, 4];
+            for (int i = 0; i < iterations; i++)
             {
-                param[i] = new double[4];
+                int j = n - 1 - i; // j is the index of the "mirrored" vertex
+
                 double t = (double)i / (n - 1);
                 double tc = 1.0 - t;
+                double remaining = 1;
+                double p;
 
-                param[i][0] = tc * tc * tc;
-                param[i][1] = 3.0 * tc * tc * t;
-                param[i][2] = 3.0 * tc * t * t;
-                param[i][3] = t * t * t;
+                p = tc * tc * tc;
+                param[i, 0] = p;
+                param[j, 3] = p;
+                remaining -= p;
+
+                p = 3.0 * tc * tc * t;
+                param[i, 1] = p;
+                param[j, 2] = p;
+                remaining -= p;
+
+                p = 3.0 * tc * t * t;
+                param[i, 2] = p;
+                param[j, 1] = p;
+                remaining -= p;
+
+                param[i, 3] = remaining;
+                param[j, 0] = remaining;
+
+                // if _numVerticesPerSegment-1 is a reasonably small power of 2 (eg 16 or 32) then fractions have finite representations in binary and diff is actually 0
+                // with _numVerticesPerSegment = 16 there is a slight diff (less than 2E-16) for some params
+                // using subtraction we can be sure that sum of params is 1
+                //double diff = remaining - t * t * t;
+                //Debug.WriteLine(diff.ToString("R"));
             }
             return param;
         }
+
 
 
     }
