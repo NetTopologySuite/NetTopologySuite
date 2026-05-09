@@ -281,8 +281,8 @@ namespace NetTopologySuite.Algorithm
             internal readonly Polygon Triangle;
 
             private readonly Side _sideC;
-            private Side _sideA;
-            private Side _sideB;
+            private readonly Side _sideA;
+            private readonly Side _sideB;
 
             internal TriangleForIndex(MinimumBoundingTriangle outer, int c, int a, int b)
             {
@@ -402,7 +402,7 @@ namespace NetTopologySuite.Algorithm
             }
 
             /// <summary>JTS: <c>private double dist(Coordinate point, Side side)</c>.</summary>
-            private double Dist(Coordinate point, Side side)
+            private static double Dist(Coordinate point, Side side)
             {
                 return side.Distance(point);
             }
