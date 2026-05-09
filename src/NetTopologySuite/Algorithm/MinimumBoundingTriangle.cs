@@ -290,9 +290,7 @@ namespace NetTopologySuite.Algorithm
                 while (Dist(b, _sideC) > Dist(a, _sideC) + _tol)
                 {
                     Debug.Assert(iter++ < _n + 2, "MBT advancement: 'high/critical' loop exceeded n steps");
-                    var ab = IncrementLowHigh(a, b);
-                    a = ab[0];
-                    b = ab[1];
+                    (a, b) = IncrementLowHigh(a, b);
                 }
 
                 // Advance b until tangency.
@@ -469,8 +467,12 @@ namespace NetTopologySuite.Algorithm
                 return dNext >= dCurr - _tol;
             }
 
-            /// <summary>JTS: <c>private int[] incrementLowHigh(int a, int b)</c>.</summary>
-            private int[] IncrementLowHigh(int a, int b)
+            /// <summary>
+            /// JTS: <c>private int[] incrementLowHigh(int a, int b)</c>.
+            /// .Net-ified to return a <see cref="ValueTuple{T1,T2}"/> instead
+            /// of a 2-element array — same semantics, no per-call allocation.
+            /// </summary>
+            private (int a, int b) IncrementLowHigh(int a, int b)
             {
                 var gammaA = Gamma(_points[a], SideAt(a), _sideC);
                 if (High(b, gammaA))
@@ -481,7 +483,7 @@ namespace NetTopologySuite.Algorithm
                 {
                     a = FloorMod(a + 1, _n);
                 }
-                return new[] { a, b };
+                return (a, b);
             }
 
             /// <summary>JTS: <c>private boolean tangency(int a, int b)</c>.</summary>
