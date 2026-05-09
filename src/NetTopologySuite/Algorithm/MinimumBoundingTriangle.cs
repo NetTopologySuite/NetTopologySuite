@@ -109,7 +109,7 @@ namespace NetTopologySuite.Algorithm
             // A triangle has 3 unique vertices + a closing duplicate = 4 coordinates.
             if (_hull.NumPoints <= 4)
             {
-                return _hull;
+                return EnsureCcwHull();
             }
 
             // Rotating-calipers: one pass over hull edges, carrying a/b state.
@@ -137,6 +137,24 @@ namespace NetTopologySuite.Algorithm
             }
 
             return optimal;
+        }
+
+        /// <summary>
+        /// Returns the convex hull as a CCW-oriented polygon. NTS' <see cref="Geometry.ConvexHull"/>
+        /// preserves the input ring orientation, so a CW triangle input would
+        /// otherwise leak a CW shell out of the early-exit path and break the
+        /// "result shell is always CCW" public contract.
+        /// </summary>
+        private Geometry EnsureCcwHull()
+        {
+            var hullCoords = _hull.Coordinates;
+            if (Orientation.IsCCW(hullCoords))
+            {
+                return _hull;
+            }
+            var ccw = CoordinateArrays.CopyDeep(hullCoords);
+            CoordinateArrays.Reverse(ccw);
+            return _gf.CreatePolygon(ccw);
         }
 
         /// <summary>

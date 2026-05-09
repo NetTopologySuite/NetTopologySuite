@@ -43,6 +43,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [Test]
+        public void TestCWTriangleInput_EarlyExitStillReturnsCCW()
+        {
+            // CW input, exercises the early-exit path (NumPoints <= 4 → return _hull).
+            // Verifies the CCW contract holds even when the algorithm body never runs.
+            var input = Read("POLYGON ((0 0, 5 10, 10 0, 0 0))"); // CW (going up-left then right)
+            var triangle = (Polygon)new MinimumBoundingTriangle(input).GetTriangle();
+            Assert.That(Orientation.IsCCW(triangle.ExteriorRing.Coordinates), Is.True);
+        }
+
+        [Test]
         public void TestTriangleReturnsHull()
         {
             var input = Read("POLYGON ((0 0, 10 0, 5 10, 0 0))");
