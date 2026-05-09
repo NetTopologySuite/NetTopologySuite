@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Geometries
 {
@@ -396,7 +397,7 @@ namespace NetTopologySuite.Geometries
         {
             double dx = X - c.X;
             double dy = Y - c.Y;
-            return Math.Sqrt(dx * dx + dy * dy);
+            return MathUtil.Hypot(dx, dy);
         }
 
 #region System.Object overrides

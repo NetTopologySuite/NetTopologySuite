@@ -202,7 +202,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns></returns>
         public double Length()
         {
-            return System.Math.Sqrt(_x * _x + _y * _y);
+            return MathUtil.Hypot(_x, _y);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Mathematics
         {
             double delx = v._x - _x;
             double dely = v._y - _y;
-            return System.Math.Sqrt(delx * delx + dely * dely);
+            return MathUtil.Hypot(delx, dely);
         }
 
         /// <summary>

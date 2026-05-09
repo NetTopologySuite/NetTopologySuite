@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Geometries
 {
@@ -301,7 +302,7 @@ namespace NetTopologySuite.Geometries
 
                 double w = Width;
                 double h = Height;
-                return Math.Sqrt(w * w + h * h);
+                return MathUtil.Hypot(w, h);
             }
         }
 
@@ -771,7 +772,7 @@ namespace NetTopologySuite.Geometries
             if (dy == 0.0)
                 return dx;
 
-            return Math.Sqrt(dx * dx + dy * dy);
+            return MathUtil.Hypot(dx, dy);
         }
 
         /// <inheritdoc />

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
@@ -80,7 +81,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             double dx = p1.X - p0.Y;
             double dy = p1.Y - p0.Y;
-            double len = Math.Sqrt(dx * dx + dy * dy);
+            double len = MathUtil.Hypot(dx, dy);
             // u is the vector that is the length of the offset, in the direction of the segment
             double ux = offsetDistance * dx / len;
             double uy = offsetDistance * dy / len;

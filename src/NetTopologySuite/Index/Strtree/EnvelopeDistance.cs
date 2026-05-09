@@ -1,5 +1,6 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Index.Strtree
 {
@@ -32,7 +33,7 @@ namespace NetTopologySuite.Index.Strtree
         {
             double dx = x2 - x1;
             double dy = y2 - y1;
-            return Math.Sqrt(dx * dx + dy * dy);
+            return MathUtil.Hypot(dx, dy);
         }
 
         /// <summary>
