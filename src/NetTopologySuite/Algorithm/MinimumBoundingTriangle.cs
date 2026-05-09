@@ -90,10 +90,19 @@ namespace NetTopologySuite.Algorithm
         /// Computes a minimum-area triangle enclosing the convex hull of the input.
         /// </summary>
         /// <returns>
+        /// <para>
         /// A triangular <see cref="Polygon"/> of minimum area enclosing the hull.
         /// If the hull is itself a triangle (or degenerate to one), the hull
-        /// geometry is returned. Returns <c>null</c> if no valid triangle could
-        /// be constructed (e.g. degenerate configurations).
+        /// geometry is returned.
+        /// </para>
+        /// <para>
+        /// May return <c>null</c> in rare numerical-degeneracy configurations
+        /// where the rotating-calipers search cannot construct a valid triangle
+        /// for any flush base (e.g. parallel intermediate side intersections,
+        /// or optimality predicates that can't be satisfied within the adaptive
+        /// tolerance). The constructor pre-validates that the hull has
+        /// dimension &gt;= 2; this null path is purely numerical, not structural.
+        /// </para>
         /// </returns>
         public Geometry GetTriangle()
         {
@@ -446,7 +455,13 @@ namespace NetTopologySuite.Algorithm
                 }
             }
 
-            /// <summary>JTS: <c>private boolean onLeftChain(int b)</c>.</summary>
+            /// <summary>
+            /// JTS: <c>private boolean onLeftChain(int b)</c>. Returns <c>true</c>
+            /// while the next vertex is at least as far from the flush base as
+            /// the current — i.e. we have not yet crested the polygon's profile
+            /// onto the right (descending) chain. JTS name retained for
+            /// cross-referencing the source paper.
+            /// </summary>
             private bool OnLeftChain(int b)
             {
                 double dNext = Dist(FloorMod(b + 1, _n), _sideC);
@@ -482,6 +497,13 @@ namespace NetTopologySuite.Algorithm
             {
                 return Orientation.Index(a, b, c) == OrientationIndex.CounterClockwise;
             }
+
+            // High and Low are deliberately asymmetric: in High the `t1 == t2`
+            // branch returns the distance comparison and the else branch returns
+            // false; in Low the branches are swapped. This is the Klee/O'Rourke
+            // characterisation of "is gamma above (resp. below) the support
+            // vertex on the same side of the chord as the polygon", not a
+            // copy-paste error. See JTS MinimumBoundingTriangle for the source.
 
             /// <summary>JTS: <c>private boolean high(int b, Coordinate gammaB)</c>.</summary>
             private bool High(int b, Coordinate gammaB)
