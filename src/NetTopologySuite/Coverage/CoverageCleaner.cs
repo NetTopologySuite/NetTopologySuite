@@ -171,13 +171,25 @@ namespace NetTopologySuite.Coverage
 
         /// <summary>
         /// Create a new cleaner instance for a set of polygonal geometries.
+        /// Null entries and empty / non-polygonal elements are tolerated;
+        /// each produces an empty output in the corresponding result slot.
         /// </summary>
         /// <param name="coverage">An array of polygonal geometries to clean</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="coverage"/> itself is null.</exception>
         public CoverageCleaner(Geometry[] coverage)
         {
-            _coverage = coverage;
-            _geomFactory = coverage[0].Factory;
+            _coverage = coverage ?? throw new ArgumentNullException(nameof(coverage));
+            _geomFactory = FindFactory(coverage) ?? NtsGeometryServices.Instance.CreateGeometryFactory();
             _snappingDistance = ComputeDefaultSnappingDistance(coverage);
+        }
+
+        private static GeometryFactory FindFactory(Geometry[] coverage)
+        {
+            foreach (var g in coverage)
+            {
+                if (g != null) return g.Factory;
+            }
+            return null;
         }
 
         /// <summary>
@@ -267,6 +279,7 @@ namespace NetTopologySuite.Coverage
             var env = new Envelope();
             foreach (var geom in geoms)
             {
+                if (geom == null || geom.IsEmpty) continue;
                 env.ExpandToInclude(geom.EnvelopeInternal);
             }
             return env;
@@ -294,11 +307,19 @@ namespace NetTopologySuite.Coverage
 
         private void ComputeResultants(double tolerance)
         {
+            _cleanCov = new CleanCoverage(_coverage.Length);
+            _mergableGaps = new List<Polygon>();
+
             var nodedEdges = Node(_coverage, tolerance);
+            if (nodedEdges == null || nodedEdges.IsEmpty)
+            {
+                //-- Empty input, all-null input, or all-non-polygonal input: nothing to do.
+                _resultants = System.Array.Empty<Polygon>();
+                return;
+            }
+
             var cleanEdges = LineDissolver.Dissolve(nodedEdges);
             _resultants = Polygonize(cleanEdges);
-
-            _cleanCov = new CleanCoverage(_coverage.Length);
 
             CreateCoverageIndex();
             ClassifyResult(_resultants);
@@ -311,6 +332,7 @@ namespace NetTopologySuite.Coverage
             _covIndex = new STRtree<int>();
             for (int i = 0; i < _coverage.Length; i++)
             {
+                if (_coverage[i] == null || _coverage[i].IsEmpty) continue;
                 _covIndex.Insert(_coverage[i].EnvelopeInternal, i);
             }
         }
@@ -407,21 +429,31 @@ namespace NetTopologySuite.Coverage
 
         /// <summary>
         /// Snaps and nodes the linework of a set of polygonal geometries.
+        /// Null, empty, and non-polygonal elements are skipped.
+        /// Returns an empty MultiLineString if no polygonal linework remains.
         /// </summary>
         public static Geometry Node(Geometry[] coverage, double snapDistance)
         {
             var segs = new List<ISegmentString>();
+            GeometryFactory factory = null;
             foreach (var geom in coverage)
             {
+                if (geom == null) continue;
+                if (factory == null) factory = geom.Factory;
                 //-- skip non-polygonal and empty elements
                 if (!IsPolygonal(geom)) continue;
                 if (geom.IsEmpty) continue;
                 ExtractNodedSegmentStrings(geom, segs);
             }
+            if (factory == null) factory = NtsGeometryServices.Instance.CreateGeometryFactory();
+            if (segs.Count == 0)
+            {
+                return factory.CreateMultiLineString(System.Array.Empty<LineString>());
+            }
             var noder = new SnappingNoder(snapDistance);
             noder.ComputeNodes(segs);
             var nodedSegStrings = noder.GetNodedSubstrings();
-            return SegmentStringUtil.ToGeometry(nodedSegStrings, coverage[0].Factory);
+            return SegmentStringUtil.ToGeometry(nodedSegStrings, factory);
         }
 
         private static bool IsPolygonal(Geometry geom)
