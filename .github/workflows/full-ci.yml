@@ -15,16 +15,24 @@ jobs:
     - name: Get source
       uses: actions/checkout@v2
 
-    - name: Setup .NET Core 3.1
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 3.1.406
+        dotnet-version: 10
 
     - name: Build
       run: dotnet build -c Release -v minimal -p:WarningLevel=3
 
-    - name: Test
-      run: dotnet test -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+    - name: Test NUnit
+      run: dotnet test test/NetTopologySuite.Tests.NUnit/NetTopologySuite.Tests.NUnit.csproj -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+      shell: bash # defaults disagree on how to quote the filter string
+
+    - name: Test Samples
+      run: dotnet test test/NetTopologySuite.Samples.Console/NetTopologySuite.Samples.Console.csproj -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+      shell: bash # defaults disagree on how to quote the filter string
+
+    - name: Test Vivid XUnit
+      run: dotnet test test/NetTopologySuite.Tests.Vivid.XUnit/NetTopologySuite.Tests.Vivid.XUnit.csproj -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
       shell: bash # defaults disagree on how to quote the filter string
 
     - name: Pack
@@ -44,10 +52,10 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
 
     steps:
-    - name: Setup .NET Core 3.1
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 3.1.406
+        dotnet-version: 10
 
     - name: Download Package Files
       uses: actions/download-artifact@v5
@@ -69,10 +77,10 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
-    - name: Setup .NET Core 3.1
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 3.1.406
+        dotnet-version: 10
 
     - name: Download Package Files
       uses: actions/download-artifact@v5
