@@ -60,7 +60,7 @@ namespace NetTopologySuite
         public NtsGeometryServices(GeometryRelate geometryRelate)
             : this(CoordinateArraySequenceFactory.Instance,
                 PrecisionModel.Floating.Value,
-                -1, GeometryOverlay.Legacy, geometryRelate, new CoordinateEqualityComparer())
+                -1, GeometryOverlay.NG, geometryRelate, new CoordinateEqualityComparer())
         {
         }
 

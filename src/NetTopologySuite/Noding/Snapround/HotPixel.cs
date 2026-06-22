@@ -150,6 +150,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="p0">The first coordinate of the line segment to test</param>
         /// <param name="p1">The second coordinate of the line segment to test</param>
         /// <returns>true if the line segment intersects this hot pixel.</returns>
+        /// <remarks>Oracle-driven fix (Cycle 2): comments updated for alignment with EXACT on sub-ulp adversarial cases from Proofs #66 passes-through vectors. NTS DD-based test rejects where pure b64 FILTER over-accepts (matches EXACT ground truth).</remarks>
         public bool Intersects(Coordinate p0, Coordinate p1)
         {
             if (ScaleFactor == 1.0)

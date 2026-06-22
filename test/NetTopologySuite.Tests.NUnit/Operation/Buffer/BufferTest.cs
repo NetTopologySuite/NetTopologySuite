@@ -897,5 +897,37 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             }
             return false;
         }
+
+        /// <summary>
+        /// Oracle-driven linear baseline hardening (Cycle 3, #65 Buffer): Buffer must not mutate
+        /// input coordinates. The BufferInputLineSimplifier (used for linear/ring offset curves,
+        /// negative distances, collapse cases) previously returned shared Coordinate instances
+        /// from CollapseLine. Fixed by copying (consistent with baseline VW/ConvexHull etc. fixes).
+        /// </summary>
+        [Test]
+        public void TestBufferDoesNotMutateInputCoordinates()
+        {
+            var input = Read("LINESTRING (0 0, 5 1, 10 0)");
+            var orig1 = input.Coordinates[1].Copy();
+
+            _ = input.Buffer(1.0);   // exercises simplifier path for line
+
+            Assert.That(input.Coordinates[1].Equals2D(orig1), Is.True, "Input coordinate was mutated by buffer");
+        }
+
+        /// <summary>
+        /// Cycle 5 target: linear thin/near-degenerate buffer (thin rect) for no spurious fragments
+        /// or incorrect holes on collapse/negative (cf. oracle buffer_region + hole979 precision
+        /// hole removal on rects; holes_disjoint linear squares). 
+        /// </summary>
+        [Test]
+        public void TestBufferThinLinearNoSpurious()
+        {
+            var thinRect = Read("POLYGON((0 0, 100 0, 100 0.1, 0 0.1, 0 0))");
+            var bufSmallNeg = thinRect.Buffer(-0.01);
+            // Expect clean (empty or single poly, no spurious extra fragments/holes)
+            Assert.That(bufSmallNeg.NumGeometries <= 1);
+            if (!bufSmallNeg.IsEmpty) Assert.That(bufSmallNeg.Area > 0);
+        }
     }
 }

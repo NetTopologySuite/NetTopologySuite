@@ -735,5 +735,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckPrepared(a, b);
         }
 
+        // Oracle-driven pinning for area-rect regimes (Cycle 5 target from de9im_area_area_vectors.txt)
+        // NTS produces "full" exterior fill; oracle witnesses use minimal F forms for touch/overlap.
+        // Pinned current NTS behaviour for linear baseline.
+        [Test]
+        public void TestAreaRectTouchVertical_OracleWitness()
+        {
+            // From oracle: REGIME TOUCH RECT_A 0 0 1 1 , RECT_B 1 0 2 1 -> aa_matrix_touch_vertical
+            // Oracle witness: FFFF1FFF2 ; NTS: FF2F11212 (EE=2 etc for connected exterior)
+            var a = Read("POLYGON((0 0,1 0,1 1,0 1,0 0))");
+            var b = Read("POLYGON((1 0,2 0,2 1,1 1,1 0))");
+            var im = a.Relate(b);  // or RelateNG
+            Assert.That(im.ToString(), Is.EqualTo("FF2F11212"));  // current NTS full-exterior matrix
+            // Note: oracle witness FFFF1FFF2 (aa_matrix_touch_vertical) for proof regime.
+            // Touch is expressed via BB=1 + boundary predicates; "T********" does not hold for this matrix.
+        }
     }
 }

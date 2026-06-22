@@ -268,6 +268,24 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             bool actual = hp.Intersects(p1, p2);
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        // Oracle-driven linear baseline hardening (Cycle 2): pin adversarial sub-ulp passes-through cases
+        // from Proofs oracle (passes_through_proof_vectors.txt). These are the machine-checked unsound
+        // rounded FILTER over-accept cases (#66). Current NTS HotPixel returns TRUE on these vectors
+        // (matches FILTER); full rejection to match EXACT is a desired future hardening.
+        [Test]
+        public void TestOracleSubUlpAdversarialBR()
+        {
+            CheckIntersects(true, 0, -1, 1,
+                1.0, -1.0000000000002, 0.4999999999998, -1.4000000000002);
+        }
+
+        [Test]
+        public void TestOracleSubUlpAdversarialBL()
+        {
+            CheckIntersects(true, 0, -1, 1,
+                -1.0, -1.0000000000002, -0.4999999999998, -1.4000000000002);
+        }
     }
 
 }

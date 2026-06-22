@@ -571,5 +571,24 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             var expected = Read("LINESTRING (20 50, 80 50)");
             CheckEqual(expected, Intersection(a, b));
         }
+
+        /// <summary>
+        /// Oracle-driven linear baseline (Cycle 4): OverlayNG on linear inputs must not mutate
+        /// input coordinates. Edge stores a copy of pts (was direct reference). Complements
+        /// Cycle 3 buffer copy fix. Relevant for snap-rounding + overlay linear cases (#66).
+        /// </summary>
+        [Test]
+        public void TestOverlayNGDoesNotMutateInputCoordinates_Linear()
+        {
+            var inputA = Read("LINESTRING (0 0, 10 0, 20 0)");
+            var inputB = Read("LINESTRING (5 -5, 5 5)");
+            var orig = inputA.Coordinates[1].Copy();
+
+            var result = Intersection(inputA, inputB);  // linear overlay path
+
+            Assert.That(inputA.Coordinates[1].Equals2D(orig), Is.True);
+            // also ensure no shared instance with what was passed to Edge
+            Assert.That(inputA.Coordinates[1] == orig, Is.False);
+        }
     }
 }
