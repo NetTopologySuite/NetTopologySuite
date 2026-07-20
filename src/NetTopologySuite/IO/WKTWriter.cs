@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -530,6 +530,27 @@ namespace NetTopologySuite.IO
                     AppendMultiPolygonTaggedText(multiPolygon, outputOrdinates, useFormatting, level, writer, ordinateFormat);
                     break;
 
+                case Geometries.Curves.CircularString circularString:
+                    AppendCircularStringTaggedText(circularString, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
+                case Geometries.Curves.CompoundCurve compoundCurve:
+                    AppendCompoundCurveTaggedText(compoundCurve, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
+                case Geometries.Curves.CurvePolygon curvePolygon:
+                    AppendCurvePolygonTaggedText(curvePolygon, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
+                case Geometries.Curves.Triangle triangle:
+                    AppendTriangleTaggedText(triangle, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
+                // NB: Tin extends GeometryCollection, so this case must come first.
+                case Geometries.Curves.Tin tin:
+                    AppendTinTaggedText(tin, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
                 case GeometryCollection geometryCollection:
                     AppendGeometryCollectionTaggedText(geometryCollection, outputOrdinates, useFormatting, level, writer, ordinateFormat);
                     break;
@@ -967,6 +988,220 @@ namespace NetTopologySuite.IO
                 }
                 writer.Write(")");
             }
+        }
+
+        /// <summary>
+        /// Converts a <c>CircularString</c> to CircularString Tagged Text format, then
+        /// appends it to the writer.
+        /// </summary>
+        /// <param name="circularString">The <c>CircularString</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendCircularStringTaggedText(Geometries.Curves.CircularString circularString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            writer.Write($"{WKTConstants.CIRCULARSTRING} ");
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendSequenceText(circularString.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
+        }
+
+        /// <summary>
+        /// Converts a <c>CompoundCurve</c> to CompoundCurve Tagged Text format, then
+        /// appends it to the writer.
+        /// </summary>
+        /// <param name="compoundCurve">The <c>CompoundCurve</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendCompoundCurveTaggedText(Geometries.Curves.CompoundCurve compoundCurve, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            writer.Write($"{WKTConstants.COMPOUNDCURVE} ");
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendCompoundCurveText(compoundCurve, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+        }
+
+        /// <summary>
+        /// Converts a <c>CompoundCurve</c> to CompoundCurve Text format, then appends
+        /// it to the writer. <c>LineString</c> components are written as bare
+        /// coordinate lists, <c>CircularString</c> components with their tag.
+        /// </summary>
+        /// <param name="compoundCurve">The <c>CompoundCurve</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendCompoundCurveText(Geometries.Curves.CompoundCurve compoundCurve, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            if (compoundCurve.IsEmpty)
+            {
+                writer.Write(WKTConstants.EMPTY);
+                return;
+            }
+
+            writer.Write("(");
+            for (int i = 0; i < compoundCurve.Curves.Count; i++)
+            {
+                if (i > 0) writer.Write(", ");
+                var component = compoundCurve.Curves[i];
+                if (component is Geometries.Curves.CircularString circularString)
+                {
+                    writer.Write($"{WKTConstants.CIRCULARSTRING} ");
+                    AppendSequenceText(circularString.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
+                }
+                else
+                {
+                    AppendSequenceText(((LineString)component).CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
+                }
+            }
+            writer.Write(")");
+        }
+
+        /// <summary>
+        /// Converts a <c>CurvePolygon</c> to CurvePolygon Tagged Text format, then
+        /// appends it to the writer. <c>LineString</c> rings are written as bare
+        /// coordinate lists, <c>CircularString</c> and <c>CompoundCurve</c> rings
+        /// with their tags.
+        /// </summary>
+        /// <param name="curvePolygon">The <c>CurvePolygon</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendCurvePolygonTaggedText(Geometries.Curves.CurvePolygon curvePolygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            writer.Write($"{WKTConstants.CURVEPOLYGON} ");
+            AppendOrdinateText(outputOrdinates, writer);
+
+            if (curvePolygon.IsEmpty)
+            {
+                writer.Write(WKTConstants.EMPTY);
+                return;
+            }
+
+            writer.Write("(");
+            AppendCurveRingText(curvePolygon.ExteriorRing, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+            for (int i = 0; i < curvePolygon.NumInteriorRings; i++)
+            {
+                writer.Write(", ");
+                AppendCurveRingText(curvePolygon.GetInteriorRingN(i), outputOrdinates, useFormatting, level + 1, writer, ordinateFormat);
+            }
+            writer.Write(")");
+        }
+
+        /// <summary>
+        /// Converts a single ring of a <c>CurvePolygon</c> to Text format, then
+        /// appends it to the writer.
+        /// </summary>
+        /// <param name="ring">The ring to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendCurveRingText(Curve ring, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            switch (ring)
+            {
+                case Geometries.Curves.CircularString circularString:
+                    writer.Write($"{WKTConstants.CIRCULARSTRING} ");
+                    AppendSequenceText(circularString.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
+                    break;
+
+                case Geometries.Curves.CompoundCurve compoundCurve:
+                    writer.Write($"{WKTConstants.COMPOUNDCURVE} ");
+                    AppendCompoundCurveText(compoundCurve, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
+                default:
+                    AppendSequenceText(((LineString)ring).CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Converts a <c>Triangle</c> to Triangle Tagged Text format, then appends it
+        /// to the writer.
+        /// </summary>
+        /// <param name="triangle">The <c>Triangle</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendTriangleTaggedText(Geometries.Curves.Triangle triangle, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            writer.Write($"{WKTConstants.TRIANGLE} ");
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendTriangleText(triangle, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
+        }
+
+        /// <summary>
+        /// Converts a <c>Triangle</c> to Triangle Text format (a Polygon Text without
+        /// holes), then appends it to the writer.
+        /// </summary>
+        /// <param name="triangle">The <c>Triangle</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="indentFirst">flag indicating that the first <see cref="Coordinate"/> of the sequence should be indented for better visibility.</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendTriangleText(Geometries.Curves.Triangle triangle, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            if (triangle.IsEmpty)
+            {
+                writer.Write(WKTConstants.EMPTY);
+                return;
+            }
+
+            if (indentFirst) Indent(useFormatting, level, writer);
+            writer.Write("(");
+            AppendSequenceText(triangle.ExteriorRing.CoordinateSequence, outputOrdinates,
+                useFormatting, level, false, writer, ordinateFormat);
+            writer.Write(")");
+        }
+
+        /// <summary>
+        /// Converts a <c>Tin</c> to Tin Tagged Text format, then appends it to the
+        /// writer.
+        /// </summary>
+        /// <param name="tin">The <c>Tin</c> to process.</param>
+        /// <param name="outputOrdinates">A bit-pattern of ordinates to write.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
+        /// <param name="writer">The output writer to append to.</param>
+        /// <param name="ordinateFormat">The format to use for writing ordinate values.</param>
+        private void AppendTinTaggedText(Geometries.Curves.Tin tin, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            writer.Write($"{WKTConstants.TIN} ");
+            AppendOrdinateText(outputOrdinates, writer);
+
+            if (tin.IsEmpty)
+            {
+                writer.Write(WKTConstants.EMPTY);
+                return;
+            }
+
+            int level2 = level;
+            bool doIndent = false;
+            writer.Write("(");
+            for (int i = 0; i < tin.NumGeometries; i++)
+            {
+                if (i > 0)
+                {
+                    writer.Write(", ");
+                    level2 = level + 1;
+                    doIndent = true;
+                }
+                AppendTriangleText((Geometries.Curves.Triangle)tin.GetGeometryN(i), outputOrdinates, useFormatting, level2, doIndent, writer, ordinateFormat);
+            }
+            writer.Write(")");
         }
 
         private void IndentCoords(bool useFormatting, int coordIndex, int level, TextWriter writer)
