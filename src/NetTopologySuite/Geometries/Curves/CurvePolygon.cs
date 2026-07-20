@@ -71,7 +71,7 @@ namespace NetTopologySuite.Geometries.Curves
         {
             if (shell == null)
             {
-                shell = new CircularString(factory.CoordinateSequenceFactory.Create(0, 2), factory);
+                shell = new CircularString(factory.CoordinateSequenceFactory.Create(0, Ordinates.XY), factory);
             }
             if (holes == null)
             {

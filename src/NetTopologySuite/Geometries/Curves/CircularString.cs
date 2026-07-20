@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries.Curves
         {
             if (points == null)
             {
-                points = factory.CoordinateSequenceFactory.Create(0, 2);
+                points = factory.CoordinateSequenceFactory.Create(0, Ordinates.XY);
             }
             if (points.Count != 0)
             {

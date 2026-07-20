@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         [Test]
         public void EmptyCircularStringHasZeroPoints()
         {
-            var cs = new CircularString(_factory.CoordinateSequenceFactory.Create(0, 2), _factory);
+            var cs = new CircularString(_factory.CoordinateSequenceFactory.Create(0, Ordinates.XY), _factory);
             Assert.That(cs.IsEmpty, Is.True);
             Assert.That(cs.NumPoints, Is.EqualTo(0));
             Assert.That(cs.NumArcs, Is.EqualTo(0));
