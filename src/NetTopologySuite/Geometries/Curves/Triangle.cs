@@ -156,10 +156,8 @@ namespace NetTopologySuite.Geometries.Curves
         public override void Normalize() => _shell.Normalize();
 
         /// <inheritdoc/>
-        public override Geometry Reverse() => new Triangle((LinearRing)_shell.Reverse(), Factory);
-
-        /// <inheritdoc/>
-        protected override Geometry ReverseInternal() => Reverse();
+        protected override Geometry ReverseInternal() =>
+            new Triangle((LinearRing)_shell.Reverse(), Factory);
 
         /// <inheritdoc/>
         protected override bool IsEquivalentClass(Geometry other) => other is Triangle;

@@ -73,9 +73,16 @@ namespace NetTopologySuite.Geometries.Curves
             {
                 shell = new CircularString(factory.CoordinateSequenceFactory.Create(0, Ordinates.XY), factory);
             }
-            if (holes == null)
+            if (holes == null || holes.Length == 0)
             {
                 holes = new Curve[0];
+            }
+            else
+            {
+                // Defensive copy so callers cannot mutate the ring list after construction.
+                var holesCopy = new Curve[holes.Length];
+                Array.Copy(holes, holesCopy, holes.Length);
+                holes = holesCopy;
             }
             foreach (var hole in holes)
             {
@@ -324,7 +331,7 @@ namespace NetTopologySuite.Geometries.Curves
         }
 
         /// <inheritdoc/>
-        public override Geometry Reverse()
+        protected override Geometry ReverseInternal()
         {
             var holes = new Curve[_holes.Length];
             for (int i = 0; i < _holes.Length; i++)
@@ -333,9 +340,6 @@ namespace NetTopologySuite.Geometries.Curves
             }
             return new CurvePolygon((Curve)_shell.Reverse(), holes, Factory);
         }
-
-        /// <inheritdoc/>
-        protected override Geometry ReverseInternal() => Reverse();
 
         /// <inheritdoc/>
         protected override bool IsEquivalentClass(Geometry other) => other is CurvePolygon;

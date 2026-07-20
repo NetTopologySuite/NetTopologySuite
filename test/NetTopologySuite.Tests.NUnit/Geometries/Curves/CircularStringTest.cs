@@ -120,5 +120,54 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
             Assert.That(cs.EqualsExact(ls), Is.False,
                 "CircularString and LineString with the same coordinates should not be EqualsExact.");
         }
+
+        [Test]
+        public void EmptyStartAndEndPointsAreNullLikeLineString()
+        {
+            var cs = new CircularString(_factory.CoordinateSequenceFactory.Create(0, Ordinates.XY), _factory);
+            Assert.That(cs.StartPoint, Is.Null);
+            Assert.That(cs.EndPoint, Is.Null);
+        }
+
+        [Test]
+        public void OpenBoundaryIsEndpoints()
+        {
+            var cs = Make((1, 0), (0, 1), (-1, 0));
+            var boundary = cs.Boundary;
+            Assert.That(boundary.NumGeometries, Is.EqualTo(2));
+            Assert.That(boundary.GetGeometryN(0).Coordinate, Is.EqualTo(new Coordinate(1, 0)));
+            Assert.That(boundary.GetGeometryN(1).Coordinate, Is.EqualTo(new Coordinate(-1, 0)));
+        }
+
+        [Test]
+        public void ClosedBoundaryIsEmpty()
+        {
+            var cs = Make((1, 0), (0, 1), (-1, 0), (0, -1), (1, 0));
+            Assert.That(cs.IsClosed, Is.True);
+            Assert.That(cs.Boundary.IsEmpty, Is.True);
+        }
+
+        [Test]
+        public void EmptyBoundaryIsEmpty()
+        {
+            var cs = new CircularString(_factory.CoordinateSequenceFactory.Create(0, Ordinates.XY), _factory);
+            Assert.That(cs.Boundary.IsEmpty, Is.True);
+        }
+
+        [Test]
+        public void IsSimpleAndIsRingDoNotThrow()
+        {
+            var open = Make((1, 0), (0, 1), (-1, 0));
+            Assert.That(() => open.IsSimple, Throws.Nothing);
+            Assert.That(() => open.IsRing, Throws.Nothing);
+            Assert.That(open.IsSimple, Is.True);
+            Assert.That(open.IsRing, Is.False);
+
+            var closed = Make((1, 0), (0, 1), (-1, 0), (0, -1), (1, 0));
+            Assert.That(() => closed.IsSimple, Throws.Nothing);
+            Assert.That(() => closed.IsRing, Throws.Nothing);
+            Assert.That(closed.IsSimple, Is.True);
+            Assert.That(closed.IsRing, Is.True);
+        }
     }
 }

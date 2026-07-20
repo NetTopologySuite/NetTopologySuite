@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Operation;
 
 namespace NetTopologySuite.Geometries.Curves
 {
@@ -108,11 +107,11 @@ namespace NetTopologySuite.Geometries.Curves
 
         /// <inheritdoc cref="Curve.StartPoint"/>
         public override Point StartPoint =>
-            IsEmpty ? Point.Empty : Factory.CreatePoint(_points.GetCoordinate(0));
+            IsEmpty ? null : Factory.CreatePoint(_points.GetCoordinate(0));
 
         /// <inheritdoc cref="Curve.EndPoint"/>
         public override Point EndPoint =>
-            IsEmpty ? Point.Empty : Factory.CreatePoint(_points.GetCoordinate(_points.Count - 1));
+            IsEmpty ? null : Factory.CreatePoint(_points.GetCoordinate(_points.Count - 1));
 
         /// <inheritdoc cref="Curve.IsClosed"/>
         public override bool IsClosed
@@ -136,8 +135,27 @@ namespace NetTopologySuite.Geometries.Curves
         /// </summary>
         public override double Length => Algorithm.Length.OfLine(_points);
 
-        /// <inheritdoc cref="Geometry.Boundary"/>
-        public override Geometry Boundary => new BoundaryOp(this).GetBoundary();
+        /// <summary>
+        /// The boundary of a curve per the Mod-2 rule: empty when the curve is empty
+        /// or closed, otherwise the two end points.
+        /// </summary>
+        /// <remarks>
+        /// <c>BoundaryOp</c> only special-cases <see cref="LineString"/> and
+        /// <see cref="MultiLineString"/>; calling it for curve types recurses into
+        /// <see cref="Geometry.Boundary"/> and stack-overflows.  Mirror
+        /// <see cref="CompoundCurve.Boundary"/> until BoundaryOp learns about curves.
+        /// </remarks>
+        public override Geometry Boundary
+        {
+            get
+            {
+                if (IsEmpty || IsClosed)
+                {
+                    return Factory.CreateMultiPoint();
+                }
+                return Factory.CreateMultiPoint(new[] { StartPoint, EndPoint });
+            }
+        }
 
         /// <inheritdoc/>
         protected override Envelope ComputeEnvelopeInternal()
@@ -212,15 +230,12 @@ namespace NetTopologySuite.Geometries.Curves
         }
 
         /// <inheritdoc/>
-        public override Geometry Reverse()
+        protected override Geometry ReverseInternal()
         {
             var rev = _points.Copy();
             CoordinateSequences.Reverse(rev);
             return new CircularString(rev, Factory);
         }
-
-        /// <inheritdoc/>
-        protected override Geometry ReverseInternal() => Reverse();
 
         /// <inheritdoc/>
         protected override bool IsEquivalentClass(Geometry other) => other is CircularString;

@@ -145,6 +145,50 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         }
 
         [Test]
+        public void EmptyStartAndEndPointsAreNullLikeLineString()
+        {
+            var cc = new CompoundCurve(null, _factory);
+            Assert.That(cc.StartPoint, Is.Null);
+            Assert.That(cc.EndPoint, Is.Null);
+        }
+
+        [Test]
+        public void NormalizeDoesNotMutateCallerComponentArray()
+        {
+            var components = new Curve[]
+            {
+                Line((4, 0), (3, 0)),
+                Arc((3, 0), (2, 1), (1, 0))
+            };
+            var originalFirstStart = components[0].StartPoint.Coordinate.Copy();
+
+            var cc = new CompoundCurve(components, _factory);
+            cc.Normalize();
+
+            Assert.That(components[0].StartPoint.Coordinate, Is.EqualTo(originalFirstStart),
+                "Normalize must not reverse the caller's component array in place.");
+            Assert.That(cc.StartPoint.Coordinate.CompareTo(cc.EndPoint.Coordinate) <= 0);
+        }
+
+        [Test]
+        public void IsSimpleAndIsRingDoNotThrow()
+        {
+            var open = new CompoundCurve(
+                new Curve[] { Line((0, 0), (1, 0)), Arc((1, 0), (2, 1), (3, 0)) },
+                _factory);
+            Assert.That(() => open.IsSimple, Throws.Nothing);
+            Assert.That(() => open.IsRing, Throws.Nothing);
+            Assert.That(open.IsRing, Is.False);
+
+            var closed = new CompoundCurve(
+                new Curve[] { Arc((0, 0), (1, 1), (2, 0)), Line((2, 0), (0, 0)) },
+                _factory);
+            Assert.That(() => closed.IsSimple, Throws.Nothing);
+            Assert.That(() => closed.IsRing, Throws.Nothing);
+            Assert.That(closed.IsClosed, Is.True);
+        }
+
+        [Test]
         public void CopyProducesEqualButDistinctObjectAndPreservesSubtypes()
         {
             var cc = new CompoundCurve(

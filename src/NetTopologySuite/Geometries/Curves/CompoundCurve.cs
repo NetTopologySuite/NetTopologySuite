@@ -48,9 +48,10 @@ namespace NetTopologySuite.Geometries.Curves
         /// </exception>
         public CompoundCurve(Curve[] curves, GeometryFactory factory) : base(factory)
         {
-            if (curves == null)
+            if (curves == null || curves.Length == 0)
             {
-                curves = new Curve[0];
+                _curves = new Curve[0];
+                return;
             }
             for (int i = 0; i < curves.Length; i++)
             {
@@ -83,7 +84,9 @@ namespace NetTopologySuite.Geometries.Curves
                     }
                 }
             }
-            _curves = curves;
+            // Defensive copy: Normalize reverses and rewrites this array in place.
+            _curves = new Curve[curves.Length];
+            Array.Copy(curves, _curves, curves.Length);
         }
 
         /// <summary>
@@ -151,11 +154,11 @@ namespace NetTopologySuite.Geometries.Curves
 
         /// <inheritdoc cref="Curve.StartPoint"/>
         public override Point StartPoint =>
-            IsEmpty ? Point.Empty : _curves[0].StartPoint;
+            IsEmpty ? null : _curves[0].StartPoint;
 
         /// <inheritdoc cref="Curve.EndPoint"/>
         public override Point EndPoint =>
-            IsEmpty ? Point.Empty : _curves[_curves.Length - 1].EndPoint;
+            IsEmpty ? null : _curves[_curves.Length - 1].EndPoint;
 
         /// <inheritdoc cref="Curve.IsClosed"/>
         public override bool IsClosed
@@ -299,7 +302,7 @@ namespace NetTopologySuite.Geometries.Curves
         }
 
         /// <inheritdoc/>
-        public override Geometry Reverse()
+        protected override Geometry ReverseInternal()
         {
             var curves = new Curve[_curves.Length];
             for (int i = 0; i < _curves.Length; i++)
@@ -308,9 +311,6 @@ namespace NetTopologySuite.Geometries.Curves
             }
             return new CompoundCurve(curves, Factory);
         }
-
-        /// <inheritdoc/>
-        protected override Geometry ReverseInternal() => Reverse();
 
         /// <inheritdoc/>
         protected override bool IsEquivalentClass(Geometry other) => other is CompoundCurve;

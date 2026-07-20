@@ -273,7 +273,10 @@ namespace NetTopologySuite.Operation.Valid
             var segStrings = new List<ISegmentString>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
-                var line = (LineString)geom.GetGeometryN(i);
+                // Use Geometry (not LineString) so ILineal curve types such as
+                // CircularString / CompoundCurve can use the chord-based path
+                // without an InvalidCastException.
+                var line = geom.GetGeometryN(i);
                 var trimPts = TrimRepeatedPoints(line.Coordinates);
                 if (trimPts != null)
                 {
