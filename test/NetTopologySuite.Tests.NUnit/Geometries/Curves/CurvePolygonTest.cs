@@ -5,14 +5,15 @@
 // out-of-tree NetTopologySuite.Curve repository. They pin the F-CP (Structural
 // CurvePolygon) contract of the SFA Curve Awareness epic (locationtech/jts#1195,
 // Phase 1): rings are exposed as Curve and never collapse to LinearRing on
-// access or copy. Per NTS convention these stay in the codebase indefinitely as
-// a regression net. The out-of-tree sub-TAGs FCP-TL (linearization) and FCP-WKT
-// (round-trip) depend on facilities this prototype does not carry yet; they
-// come back with the linearization / IO follow-ups.
+// access, copy, or WKT round-trip. Per NTS convention these stay in the
+// codebase indefinitely as a regression net. The out-of-tree sub-TAG FCP-TL
+// (linearization) depends on facilities this prototype does not carry yet; it
+// comes back with the linearization follow-up.
 
 using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Curves;
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
@@ -130,6 +131,36 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
             Assert.That(copy.GetInteriorRingN(0), Is.InstanceOf<CircularString>(),
                 "FCP-CP: copied hole must remain a CircularString, got "
                 + copy.GetInteriorRingN(0).GetType().Name);
+        }
+
+        [Test]
+        public void FCP_WKT_roundtrip_preserves_compound_shell()
+        {
+            var cp = CompoundShellWithLinearHole();
+            string emitted = new WKTWriter().Write(cp);
+
+            Assert.That(emitted.ToUpperInvariant(), Does.Contain("COMPOUNDCURVE"),
+                "FCP-WKT: emitted WKT must contain the COMPOUNDCURVE tag, got: " + emitted);
+
+            var roundTripped = (CurvePolygon)new WKTReader().Read(emitted);
+            Assert.That(roundTripped.ExteriorRing, Is.InstanceOf<CompoundCurve>(),
+                "FCP-WKT: round-tripped shell must remain a CompoundCurve, got "
+                + roundTripped.ExteriorRing.GetType().Name);
+        }
+
+        [Test]
+        public void FCP_WKT_roundtrip_preserves_arc_shell()
+        {
+            var cp = new CurvePolygon(Arc((0, 0), (10, 0), (5, 5), (0, 5), (0, 0)), _factory);
+            string emitted = new WKTWriter().Write(cp);
+
+            Assert.That(emitted.ToUpperInvariant(), Does.Contain("CIRCULARSTRING"),
+                "FCP-WKT: emitted WKT must contain the CIRCULARSTRING tag, got: " + emitted);
+
+            var roundTripped = (CurvePolygon)new WKTReader().Read(emitted);
+            Assert.That(roundTripped.ExteriorRing, Is.InstanceOf<CircularString>(),
+                "FCP-WKT: round-tripped shell must remain a CircularString, got "
+                + roundTripped.ExteriorRing.GetType().Name);
         }
 
         [Test]
