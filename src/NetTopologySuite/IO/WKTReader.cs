@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -765,6 +765,16 @@ namespace NetTopologySuite.IO
                 returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
             else if (IsTypeName(tokens, type, WKTConstants.GEOMETRYCOLLECTION))
                 returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
+            else if (IsTypeName(tokens, type, WKTConstants.CIRCULARSTRING))
+                returned = ReadCircularStringText(tokens, factory, ordinateFlags);
+            else if (IsTypeName(tokens, type, WKTConstants.COMPOUNDCURVE))
+                returned = ReadCompoundCurveText(tokens, factory, ordinateFlags);
+            else if (IsTypeName(tokens, type, WKTConstants.CURVEPOLYGON))
+                returned = ReadCurvePolygonText(tokens, factory, ordinateFlags);
+            else if (IsTypeName(tokens, type, WKTConstants.TRIANGLE))
+                returned = ReadTriangleText(tokens, factory, ordinateFlags);
+            else if (IsTypeName(tokens, type, WKTConstants.TIN))
+                returned = ReadTinText(tokens, factory, ordinateFlags);
             else throw new ParseException("Unknown type: " + type);
 
             if (returned == null)
@@ -1013,6 +1023,169 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
             while (nextToken.Equals(","));
 
             return factory.CreateGeometryCollection(geometries.ToArray());
+        }
+
+        /// <summary>
+        /// Creates a <c>CircularString</c> using the next token in the stream.
+        /// </summary>
+        /// <param name="tokens">
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a CircularString Text.
+        /// </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
+        /// <returns>A <c>CircularString</c> specified by the next token in the stream.</returns>
+        private Geometries.Curves.CircularString ReadCircularStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags, 0, false);
+            return new Geometries.Curves.CircularString(sequence, factory);
+        }
+
+        /// <summary>
+        /// Creates a <c>Curve</c> using the next token in the stream: either a bare
+        /// coordinate list (a <c>LineString</c>), a tagged <c>CIRCULARSTRING</c>, or -- where
+        /// allowed -- a tagged <c>COMPOUNDCURVE</c>.
+        /// </summary>
+        /// <param name="tokens">
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a curve component.
+        /// </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
+        /// <param name="allowCompoundCurve">Whether a <c>COMPOUNDCURVE</c> is allowed at this position</param>
+        /// <returns>A <c>Curve</c> specified by the next token in the stream.</returns>
+        private Curve ReadCurveText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags, bool allowCompoundCurve)
+        {
+            string current = LookAheadWord(tokens);
+
+            if (current.Equals(WKTConstants.EMPTY) || current.Equals("("))
+            {
+                var sequence = GetCoordinateSequence(factory, tokens, ordinateFlags, 0, false);
+                return factory.CreateLineString(sequence);
+            }
+
+            if (current.StartsWith(WKTConstants.CIRCULARSTRING, StringComparison.OrdinalIgnoreCase))
+            {
+                GetNextWord(tokens);
+                return ReadCircularStringText(tokens, factory, ordinateFlags);
+            }
+
+            if (current.StartsWith(WKTConstants.COMPOUNDCURVE, StringComparison.OrdinalIgnoreCase))
+            {
+                if (!allowCompoundCurve)
+                    throw new ParseException("A COMPOUNDCURVE is not allowed as a component of another COMPOUNDCURVE");
+                GetNextWord(tokens);
+                return ReadCompoundCurveText(tokens, factory, ordinateFlags);
+            }
+
+            throw new ParseException("Unexpected token: " + current);
+        }
+
+        /// <summary>
+        /// Creates a <c>CompoundCurve</c> using the next token in the stream.
+        /// </summary>
+        /// <param name="tokens">
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a CompoundCurve Text.
+        /// </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
+        /// <returns>A <c>CompoundCurve</c> specified by the next token in the stream.</returns>
+        private Geometries.Curves.CompoundCurve ReadCompoundCurveText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            string nextToken = GetNextEmptyOrOpener(tokens);
+            if (nextToken.Equals(WKTConstants.EMPTY))
+                return new Geometries.Curves.CompoundCurve(null, factory);
+
+            var curves = new List<Curve>();
+            do
+            {
+                var curve = ReadCurveText(tokens, factory, ordinateFlags, false);
+                curves.Add(curve);
+                nextToken = GetNextCloserOrComma(tokens);
+            }
+            while (nextToken.Equals(","));
+
+            return new Geometries.Curves.CompoundCurve(curves.ToArray(), factory);
+        }
+
+        /// <summary>
+        /// Creates a <c>CurvePolygon</c> using the next token in the stream.
+        /// </summary>
+        /// <param name="tokens">
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a CurvePolygon Text.
+        /// </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
+        /// <returns>A <c>CurvePolygon</c> specified by the next token in the stream.</returns>
+        private Geometries.Curves.CurvePolygon ReadCurvePolygonText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            string nextToken = GetNextEmptyOrOpener(tokens);
+            if (nextToken.Equals(WKTConstants.EMPTY))
+                return new Geometries.Curves.CurvePolygon(null, factory);
+
+            var shell = ReadCurveText(tokens, factory, ordinateFlags, true);
+            var holes = new List<Curve>();
+            nextToken = GetNextCloserOrComma(tokens);
+            while (nextToken.Equals(","))
+            {
+                var hole = ReadCurveText(tokens, factory, ordinateFlags, true);
+                holes.Add(hole);
+                nextToken = GetNextCloserOrComma(tokens);
+            }
+            return new Geometries.Curves.CurvePolygon(shell, holes.ToArray(), factory);
+        }
+
+        /// <summary>
+        /// Creates a <c>Triangle</c> using the next token in the stream.
+        /// </summary>
+        /// <param name="tokens">
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a Triangle Text (a Polygon Text without holes).
+        /// </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
+        /// <returns>A <c>Triangle</c> specified by the next token in the stream.</returns>
+        private Geometries.Curves.Triangle ReadTriangleText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            var polygon = ReadPolygonText(tokens, factory, ordinateFlags);
+            if (polygon.IsEmpty)
+                return new Geometries.Curves.Triangle(null, factory);
+            if (polygon.NumInteriorRings != 0)
+                throw new ParseException("A TRIANGLE must not contain interior rings");
+            return new Geometries.Curves.Triangle((LinearRing)polygon.ExteriorRing, factory);
+        }
+
+        /// <summary>
+        /// Creates a <c>Tin</c> using the next token in the stream.
+        /// </summary>
+        /// <param name="tokens">
+        ///   Tokenizer over a stream of text in Well-known Text
+        ///   format. The next tokens must form a Tin Text (a MultiPolygon Text whose
+        ///   elements are hole-free triangles).
+        /// </param>
+        /// <param name="factory">The factory to create the geometry</param>
+        /// <param name="ordinateFlags">A flag indicating the ordinates to expect.</param>
+        /// <returns>A <c>Tin</c> specified by the next token in the stream.</returns>
+        private Geometries.Curves.Tin ReadTinText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            string nextToken = GetNextEmptyOrOpener(tokens);
+            if (nextToken.Equals(WKTConstants.EMPTY))
+                return new Geometries.Curves.Tin(null, factory);
+
+            var triangles = new List<Geometries.Curves.Triangle>();
+            do
+            {
+                var polygon = ReadPolygonText(tokens, factory, ordinateFlags);
+                if (polygon.NumInteriorRings != 0)
+                    throw new ParseException("A TRIANGLE within a TIN must not contain interior rings");
+                triangles.Add(new Geometries.Curves.Triangle((LinearRing)polygon.ExteriorRing, factory));
+                nextToken = GetNextCloserOrComma(tokens);
+            }
+            while (nextToken.Equals(","));
+
+            return new Geometries.Curves.Tin(triangles.ToArray(), factory);
         }
     }
 }
