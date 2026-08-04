@@ -141,7 +141,17 @@ namespace NetTopologySuite.Geometries
             /// <summary>Sort hierarchy value of a <see cref="MultiPolygon"/></summary>
             MultiPolygon = 6,
             /// <summary>Sort hierarchy value of a <see cref="GeometryCollection"/></summary>
-            GeometryCollection = 7
+            GeometryCollection = 7,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.CircularString"/></summary>
+            CircularString = 8,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.CompoundCurve"/></summary>
+            CompoundCurve = 9,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.CurvePolygon"/></summary>
+            CurvePolygon = 10,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.Triangle"/></summary>
+            Triangle = 11,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.Tin"/></summary>
+            Tin = 12
         }
 
         /// <summary>
