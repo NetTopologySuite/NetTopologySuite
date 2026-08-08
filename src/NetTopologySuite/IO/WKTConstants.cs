@@ -54,6 +54,14 @@ namespace NetTopologySuite.IO
         /// </summary>
         public const string CURVEPOLYGON = "CURVEPOLYGON";
         /// <summary>
+        /// Token text for <see cref="Geometries.Curves.MultiCurve"/> geometries (SQL/MM / GEOS)
+        /// </summary>
+        public const string MULTICURVE = "MULTICURVE";
+        /// <summary>
+        /// Token text for <see cref="Geometries.Curves.MultiSurface"/> geometries (SQL/MM / GEOS)
+        /// </summary>
+        public const string MULTISURFACE = "MULTISURFACE";
+        /// <summary>
         /// Token text for <see cref="Geometries.Curves.Triangle"/> geometries
         /// </summary>
         public const string TRIANGLE = "TRIANGLE";
