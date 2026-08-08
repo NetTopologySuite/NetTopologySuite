@@ -3,8 +3,8 @@
 // AI assistance disclosure: AI-drafted, human-reviewed.
 //   Assisted-by: Claude (Opus-4.7)
 //
-// Status: PRODUCTION -- OGC SFA-CA TIN as GeometryCollection of Triangle
-// (structure + WKT foundation).
+// Status: PRODUCTION (structure + WKT/WKB) — OGC SFA-CA TIN
+// (GeometryCollection of Triangle).
 
 using System;
 

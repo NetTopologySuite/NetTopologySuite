@@ -3,8 +3,7 @@
 // AI assistance disclosure: AI-drafted, human-reviewed.
 //   Assisted-by: Claude (Opus-4.7)
 //
-// Status: PRODUCTION -- OGC SFA Triangle first-class Geometry on Surface<T>
-// (structure + WKT foundation).
+// Status: PRODUCTION (structure + WKT/WKB) — OGC SFA Triangle on Surface<T>.
 
 using System;
 using System.Collections.Generic;

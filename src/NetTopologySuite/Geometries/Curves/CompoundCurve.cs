@@ -7,8 +7,9 @@
 //
 //   Assisted-by: Claude (Fable 5)
 //
-// Status: PRODUCTION -- SQL/MM CompoundCurve first-class Geometry type
-// (structure + WKT/WKB foundation). Arc-aware metrics follow CircularString RED hooks.
+// Status: PRODUCTION (structure + WKT/WKB) — GEOS 3.13-class foundation.
+// Not GEOS-current metric parity (Length/Envelope/Distance); see CircularString
+// and Category=Red CurveOracleRedTests.
 
 using System;
 using System.Collections.Generic;

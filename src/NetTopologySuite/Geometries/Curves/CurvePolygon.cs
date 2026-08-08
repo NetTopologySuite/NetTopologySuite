@@ -7,9 +7,9 @@
 //
 //   Assisted-by: Claude (Fable 5)
 //
-// Status: PRODUCTION -- SQL/MM CurvePolygon first-class Geometry type
-// (structure + WKT/WKB foundation). Rings are Curve, never collapsed to LinearRing
-// (F-CP structural contract). Arc-aware Area/Length/Distance follow RED hooks.
+// Status: PRODUCTION (structure + WKT/WKB) — GEOS 3.13-class foundation.
+// Rings are Curve, never collapsed to LinearRing (F-CP). Not GEOS-current metric
+// parity for Area/Length/Distance; see Category=Red CurveOracleRedTests.
 
 using System;
 using System.Collections.Generic;
@@ -317,7 +317,7 @@ namespace NetTopologySuite.Geometries.Curves
 
         /// <summary>
         /// Normalization of ring orientation and hole ordering requires orientation
-        /// of curved rings, which is gated by oracle RED tests.  This prototype
+        /// of curved rings, which is gated by oracle RED tests.  This type
         /// implementation does nothing.
         /// </summary>
         public override void Normalize()

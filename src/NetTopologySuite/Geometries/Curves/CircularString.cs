@@ -7,9 +7,10 @@
 //
 //   Assisted-by: Claude (Opus-4.7)
 //
-// Status: PRODUCTION -- SQL/MM / OGC CircularString first-class Geometry type
-// (structure + WKT/WKB foundation). Arc-aware Length / Distance / Envelope are
-// tracked by Category=Red oracle hooks (CurveOracleRedTests).
+// Status: PRODUCTION (structure + WKT/WKB) — GEOS 3.13-class foundation.
+// Not GEOS-current metric parity: Length is control-polyline, Envelope is
+// control-bbox only, DistanceOp does not yet visit curves (see Category=Red
+// CurveOracleRedTests). Arc-aware Length/Envelope/Distance = later work.
 
 using System;
 using System.Collections.Generic;
