@@ -148,10 +148,14 @@ namespace NetTopologySuite.Geometries
             CompoundCurve = 9,
             /// <summary>Sort hierarchy value of a <see cref="Curves.CurvePolygon"/></summary>
             CurvePolygon = 10,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.MultiCurve"/></summary>
+            MultiCurve = 11,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.MultiSurface"/></summary>
+            MultiSurface = 12,
             /// <summary>Sort hierarchy value of a <see cref="Curves.Triangle"/></summary>
-            Triangle = 11,
+            Triangle = 13,
             /// <summary>Sort hierarchy value of a <see cref="Curves.Tin"/></summary>
-            Tin = 12
+            Tin = 14
         }
 
         /// <summary>
@@ -186,6 +190,16 @@ namespace NetTopologySuite.Geometries
         /// The name of geometry collection geometries.
         /// </summary>
         public const string TypeNameGeometryCollection = "GeometryCollection";
+        /// <summary>The name of circular-string geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameCircularString = "CircularString";
+        /// <summary>The name of compound-curve geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameCompoundCurve = "CompoundCurve";
+        /// <summary>The name of curve-polygon geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameCurvePolygon = "CurvePolygon";
+        /// <summary>The name of multi-curve geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameMultiCurve = "MultiCurve";
+        /// <summary>The name of multi-surface geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameMultiSurface = "MultiSurface";
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ GeometryFactory _factory;

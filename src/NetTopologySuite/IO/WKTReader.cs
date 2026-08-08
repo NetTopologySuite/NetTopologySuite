@@ -771,6 +771,10 @@ namespace NetTopologySuite.IO
                 returned = ReadCompoundCurveText(tokens, factory, ordinateFlags);
             else if (IsTypeName(tokens, type, WKTConstants.CURVEPOLYGON))
                 returned = ReadCurvePolygonText(tokens, factory, ordinateFlags);
+            else if (IsTypeName(tokens, type, WKTConstants.MULTICURVE))
+                returned = ReadMultiCurveText(tokens, factory, ordinateFlags);
+            else if (IsTypeName(tokens, type, WKTConstants.MULTISURFACE))
+                returned = ReadMultiSurfaceText(tokens, factory, ordinateFlags);
             else if (IsTypeName(tokens, type, WKTConstants.TRIANGLE))
                 returned = ReadTriangleText(tokens, factory, ordinateFlags);
             else if (IsTypeName(tokens, type, WKTConstants.TIN))
@@ -1064,6 +1068,13 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
                 return factory.CreateLineString(sequence);
             }
 
+            // GEOS / PostGIS accept tagged LINESTRING inside COMPOUNDCURVE / CURVEPOLYGON
+            if (current.StartsWith(WKTConstants.LINESTRING, StringComparison.OrdinalIgnoreCase))
+            {
+                GetNextWord(tokens);
+                return ReadLineStringText(tokens, factory, ordinateFlags);
+            }
+
             if (current.StartsWith(WKTConstants.CIRCULARSTRING, StringComparison.OrdinalIgnoreCase))
             {
                 GetNextWord(tokens);
@@ -1079,6 +1090,61 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
             }
 
             throw new ParseException("Unexpected token: " + current);
+        }
+
+        /// <summary>
+        /// Creates a <c>MultiCurve</c> (GEOS / SQL/MM) using the next token in the stream.
+        /// </summary>
+        private Geometries.Curves.MultiCurve ReadMultiCurveText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            string nextToken = GetNextEmptyOrOpener(tokens);
+            if (nextToken.Equals(WKTConstants.EMPTY))
+                return new Geometries.Curves.MultiCurve(null, factory);
+
+            var curves = new List<Curve>();
+            do
+            {
+                curves.Add(ReadCurveText(tokens, factory, ordinateFlags, true));
+                nextToken = GetNextCloserOrComma(tokens);
+            }
+            while (nextToken.Equals(","));
+
+            return new Geometries.Curves.MultiCurve(curves.ToArray(), factory);
+        }
+
+        /// <summary>
+        /// Creates a <c>MultiSurface</c> (GEOS / SQL/MM) using the next token in the stream.
+        /// </summary>
+        private Geometries.Curves.MultiSurface ReadMultiSurfaceText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        {
+            string nextToken = GetNextEmptyOrOpener(tokens);
+            if (nextToken.Equals(WKTConstants.EMPTY))
+                return new Geometries.Curves.MultiSurface(null, factory);
+
+            var surfaces = new List<Geometry>();
+            do
+            {
+                string current = LookAheadWord(tokens);
+                if (current.StartsWith(WKTConstants.CURVEPOLYGON, StringComparison.OrdinalIgnoreCase))
+                {
+                    GetNextWord(tokens);
+                    surfaces.Add(ReadCurvePolygonText(tokens, factory, ordinateFlags));
+                }
+                else if (current.StartsWith(WKTConstants.POLYGON, StringComparison.OrdinalIgnoreCase)
+                         || current.Equals(WKTConstants.EMPTY) || current.Equals("("))
+                {
+                    if (current.StartsWith(WKTConstants.POLYGON, StringComparison.OrdinalIgnoreCase))
+                        GetNextWord(tokens);
+                    surfaces.Add(ReadPolygonText(tokens, factory, ordinateFlags));
+                }
+                else
+                    throw new ParseException("Expected POLYGON or CURVEPOLYGON in MULTISURFACE, got: " + current);
+
+                nextToken = GetNextCloserOrComma(tokens);
+            }
+            while (nextToken.Equals(","));
+
+            return new Geometries.Curves.MultiSurface(surfaces.ToArray(), factory);
         }
 
         /// <summary>

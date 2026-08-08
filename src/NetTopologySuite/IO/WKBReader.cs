@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Curves;
 
 namespace NetTopologySuite.IO
 {
@@ -226,6 +227,17 @@ namespace NetTopologySuite.IO
                     case WKBGeometryTypes.WKBGeometryCollectionM:
                     case WKBGeometryTypes.WKBGeometryCollectionZM:
                         return ReadGeometryCollection(reader, cs, srid);
+                    // SQL/MM curves (GEOS / ISO 13249-3)
+                    case WKBGeometryTypes.WKBCircularString:
+                        return ReadCircularString(reader, cs, srid);
+                    case WKBGeometryTypes.WKBCompoundCurve:
+                        return ReadCompoundCurve(reader, cs, srid);
+                    case WKBGeometryTypes.WKBCurvePolygon:
+                        return ReadCurvePolygon(reader, cs, srid);
+                    case WKBGeometryTypes.WKBMultiCurve:
+                        return ReadMultiCurve(reader, cs, srid);
+                    case WKBGeometryTypes.WKBMultiSurface:
+                        return ReadMultiSurface(reader, cs, srid);
                     default:
                         throw new ArgumentException("Geometry type not recognized. GeometryCode: " + geometryType);
                 }
@@ -646,6 +658,22 @@ namespace NetTopologySuite.IO
                         geometries[i] = ReadGeometryCollection(reader, cs2, srid2);
                         break;
 
+                    case WKBGeometryTypes.WKBCircularString:
+                        geometries[i] = ReadCircularString(reader, cs2, srid2);
+                        break;
+                    case WKBGeometryTypes.WKBCompoundCurve:
+                        geometries[i] = ReadCompoundCurve(reader, cs2, srid2);
+                        break;
+                    case WKBGeometryTypes.WKBCurvePolygon:
+                        geometries[i] = ReadCurvePolygon(reader, cs2, srid2);
+                        break;
+                    case WKBGeometryTypes.WKBMultiCurve:
+                        geometries[i] = ReadMultiCurve(reader, cs2, srid2);
+                        break;
+                    case WKBGeometryTypes.WKBMultiSurface:
+                        geometries[i] = ReadMultiSurface(reader, cs2, srid2);
+                        break;
+
                     default:
                         throw new ArgumentException("Should never reach here!");
                 }
@@ -706,6 +734,120 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="ordinate"></param>
         /// <returns></returns>
+
+        /// <summary>
+        /// Reads a SQL/MM CircularString (GEOS/ISO WKB type 8).
+        /// </summary>
+        protected Geometry ReadCircularString(BinaryReader reader, CoordinateSystem cs, int srid)
+        {
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            int numPoints = ReadNumField(reader, FieldNumCoords, ReasonableNumCoordinates(reader.BaseStream, cs));
+            var sequence = ReadCoordinateSequence(reader, numPoints, cs);
+            return new CircularString(sequence, factory);
+        }
+
+        /// <summary>
+        /// Reads a SQL/MM CompoundCurve (GEOS/ISO WKB type 9).
+        /// </summary>
+        protected Geometry ReadCompoundCurve(BinaryReader reader, CoordinateSystem cs, int srid)
+        {
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            int numCurves = ReadNumField(reader, FieldNumElements, ReasonableNumElements(reader.BaseStream));
+            var curves = new Curve[numCurves];
+            for (int i = 0; i < numCurves; i++)
+            {
+                curves[i] = ReadCurveMember(reader, srid);
+            }
+            return new CompoundCurve(curves, factory);
+        }
+
+        /// <summary>
+        /// Reads a SQL/MM CurvePolygon (GEOS/ISO WKB type 10).
+        /// </summary>
+        protected Geometry ReadCurvePolygon(BinaryReader reader, CoordinateSystem cs, int srid)
+        {
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            int numRings = ReadNumField(reader, FieldNumRings, ReasonableNumElements(reader.BaseStream));
+            if (numRings == 0)
+                return new CurvePolygon(null, factory);
+
+            var shell = ReadCurveMember(reader, srid);
+            var holes = new Curve[numRings - 1];
+            for (int i = 0; i < numRings - 1; i++)
+                holes[i] = ReadCurveMember(reader, srid);
+            return new CurvePolygon(shell, holes, factory);
+        }
+
+        /// <summary>
+        /// Reads a SQL/MM MultiCurve (GEOS/ISO WKB type 11).
+        /// </summary>
+        protected Geometry ReadMultiCurve(BinaryReader reader, CoordinateSystem cs, int srid)
+        {
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            int numGeometries = ReadNumField(reader, FieldNumElements, ReasonableNumElements(reader.BaseStream));
+            var curves = new Curve[numGeometries];
+            for (int i = 0; i < numGeometries; i++)
+                curves[i] = ReadCurveMember(reader, srid);
+            return new MultiCurve(curves, factory);
+        }
+
+        /// <summary>
+        /// Reads a SQL/MM MultiSurface (GEOS/ISO WKB type 12).
+        /// </summary>
+        protected Geometry ReadMultiSurface(BinaryReader reader, CoordinateSystem cs, int srid)
+        {
+            var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
+            int numGeometries = ReadNumField(reader, FieldNumElements, ReasonableNumElements(reader.BaseStream));
+            var surfaces = new Geometry[numGeometries];
+            for (int i = 0; i < numGeometries; i++)
+            {
+                ReadByteOrder(reader);
+                int srid2 = srid;
+                var geometryType = ReadGeometryType(reader, out var cs2, ref srid2);
+                if (srid2 < 0) srid2 = srid;
+                switch (geometryType)
+                {
+                    case WKBGeometryTypes.WKBPolygon:
+                    case WKBGeometryTypes.WKBPolygonZ:
+                    case WKBGeometryTypes.WKBPolygonM:
+                    case WKBGeometryTypes.WKBPolygonZM:
+                        surfaces[i] = ReadPolygon(reader, cs2, srid2);
+                        break;
+                    case WKBGeometryTypes.WKBCurvePolygon:
+                        surfaces[i] = ReadCurvePolygon(reader, cs2, srid2);
+                        break;
+                    default:
+                        throw new ArgumentException("Polygon or CurvePolygon feature expected for MultiSurface member");
+                }
+            }
+            return new MultiSurface(surfaces, factory);
+        }
+
+        /// <summary>
+        /// Reads a nested curve member (byte-order + type + body).
+        /// </summary>
+        private Curve ReadCurveMember(BinaryReader reader, int srid)
+        {
+            ReadByteOrder(reader);
+            int srid2 = srid;
+            var geometryType = ReadGeometryType(reader, out var cs2, ref srid2);
+            if (srid2 < 0) srid2 = srid;
+            switch (geometryType)
+            {
+                case WKBGeometryTypes.WKBLineString:
+                case WKBGeometryTypes.WKBLineStringZ:
+                case WKBGeometryTypes.WKBLineStringM:
+                case WKBGeometryTypes.WKBLineStringZM:
+                    return (Curve)ReadLineString(reader, cs2, srid2);
+                case WKBGeometryTypes.WKBCircularString:
+                    return (Curve)ReadCircularString(reader, cs2, srid2);
+                case WKBGeometryTypes.WKBCompoundCurve:
+                    return (Curve)ReadCompoundCurve(reader, cs2, srid2);
+                default:
+                    throw new ArgumentException("LineString, CircularString or CompoundCurve expected as curve member");
+            }
+        }
+
         private bool HandleOrdinate(Ordinate ordinate)
         {
             switch (ordinate)

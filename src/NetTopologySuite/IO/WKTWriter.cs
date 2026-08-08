@@ -546,9 +546,17 @@ namespace NetTopologySuite.IO
                     AppendTriangleTaggedText(triangle, outputOrdinates, useFormatting, level, writer, ordinateFormat);
                     break;
 
-                // NB: Tin extends GeometryCollection, so this case must come first.
+                // NB: Tin / MultiCurve / MultiSurface extend GeometryCollection — must come first.
                 case Geometries.Curves.Tin tin:
                     AppendTinTaggedText(tin, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
+                case Geometries.Curves.MultiCurve multiCurve:
+                    AppendMultiCurveTaggedText(multiCurve, outputOrdinates, useFormatting, level, writer, ordinateFormat);
+                    break;
+
+                case Geometries.Curves.MultiSurface multiSurface:
+                    AppendMultiSurfaceTaggedText(multiSurface, outputOrdinates, useFormatting, level, writer, ordinateFormat);
                     break;
 
                 case GeometryCollection geometryCollection:
@@ -1122,6 +1130,48 @@ namespace NetTopologySuite.IO
                     AppendSequenceText(((LineString)ring).CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, ordinateFormat);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiCurve</c> to MultiCurve Tagged Text (GEOS / SQL/MM).
+        /// </summary>
+        private void AppendMultiCurveTaggedText(Geometries.Curves.MultiCurve multiCurve, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            writer.Write($"{WKTConstants.MULTICURVE} ");
+            AppendOrdinateText(outputOrdinates, writer);
+            if (multiCurve.IsEmpty)
+            {
+                writer.Write(WKTConstants.EMPTY);
+                return;
+            }
+            writer.Write("(");
+            for (int i = 0; i < multiCurve.NumGeometries; i++)
+            {
+                if (i > 0) writer.Write(", ");
+                AppendGeometryTaggedText(multiCurve.GetGeometryN(i), outputOrdinates, useFormatting, level + 1, writer, ordinateFormat);
+            }
+            writer.Write(")");
+        }
+
+        /// <summary>
+        /// Converts a <c>MultiSurface</c> to MultiSurface Tagged Text (GEOS / SQL/MM).
+        /// </summary>
+        private void AppendMultiSurfaceTaggedText(Geometries.Curves.MultiSurface multiSurface, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, OrdinateFormat ordinateFormat)
+        {
+            writer.Write($"{WKTConstants.MULTISURFACE} ");
+            AppendOrdinateText(outputOrdinates, writer);
+            if (multiSurface.IsEmpty)
+            {
+                writer.Write(WKTConstants.EMPTY);
+                return;
+            }
+            writer.Write("(");
+            for (int i = 0; i < multiSurface.NumGeometries; i++)
+            {
+                if (i > 0) writer.Write(", ");
+                AppendGeometryTaggedText(multiSurface.GetGeometryN(i), outputOrdinates, useFormatting, level + 1, writer, ordinateFormat);
+            }
+            writer.Write(")");
         }
 
         /// <summary>
