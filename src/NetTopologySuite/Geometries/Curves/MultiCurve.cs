@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: BSD-3-Clause
-// Dovetailed with GEOS MultiCurve (libgeos/geos curve hierarchy).
-// Assisted-by: xAI Grok
+// Status: PRODUCTION -- SQL/MM MultiCurve (GEOS / ISO WKB type 11).
+// Dovetailed with GEOS MultiCurve. Assisted-by: xAI Grok
 
 using System;
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: BSD-3-Clause
-// Dovetailed with GEOS MultiSurface (libgeos/geos curve hierarchy).
-// Assisted-by: xAI Grok
+// Status: PRODUCTION -- SQL/MM MultiSurface (GEOS / ISO WKB type 12).
+// Dovetailed with GEOS MultiSurface. Assisted-by: xAI Grok
 
 using System;
 

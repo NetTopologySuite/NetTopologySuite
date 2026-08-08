@@ -7,10 +7,8 @@
 //
 //   Assisted-by: Claude (Fable 5)
 //
-// Status: PLAYGROUND -- in-tree port of the SQL/MM CompoundCurve prototype from
-// the out-of-tree NetTopologySuite.Curve repository, following the maintainer
-// discussion on the PR ("in-tree is the way to go"). Not for merge into develop
-// without further design discussion -- see the PR description.
+// Status: PRODUCTION -- SQL/MM CompoundCurve first-class Geometry type
+// (structure + WKT/WKB foundation). Arc-aware metrics follow CircularString RED hooks.
 
 using System;
 using System.Collections.Generic;
@@ -19,17 +17,16 @@ namespace NetTopologySuite.Geometries.Curves
 {
     /// <summary>
     /// A SQL/MM Spatial (ISO/IEC 13249-3) <c>CompoundCurve</c>: a single, contiguous
-    /// curve composed of a sequence of <see cref="Curve"/> components -- in this
-    /// prototype either <see cref="LineString"/>s or <see cref="CircularString"/>s --
-    /// where each component starts at the end point of its predecessor.
+    /// curve composed of a sequence of <see cref="Curve"/> components -- either
+    /// <see cref="LineString"/>s or <see cref="CircularString"/>s -- where each
+    /// component starts at the end point of its predecessor.
     /// </summary>
     /// <remarks>
     /// Nested <c>CompoundCurve</c> components are rejected, keeping the component
     /// list flat (matching SQL/MM and common implementations).
     /// <para/>
-    /// This is a prototype.  Like <see cref="CircularString"/>, metric properties
-    /// (<c>Length</c>, envelopes) fall back to the chord-based computations of the
-    /// components rather than analytical arc geometry.
+    /// Like <see cref="CircularString"/>, foundation <c>Length</c> / envelopes use
+    /// component chord (control) geometry until arc-aware measure lands.
     /// </remarks>
     [Serializable]
     public class CompoundCurve : Curve, ILinearizable<LineString>
@@ -179,7 +176,7 @@ namespace NetTopologySuite.Geometries.Curves
         /// <summary>
         /// Length approximated by summing component lengths.  For
         /// <see cref="CircularString"/> components this is the chord-based fallback;
-        /// analytical arc-length computation is tracked in the prototype roadmap.
+        /// analytical arc-length is gated by oracle RED tests (arc-aware measure).
         /// </summary>
         public override double Length
         {

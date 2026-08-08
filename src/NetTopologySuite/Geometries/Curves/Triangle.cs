@@ -3,8 +3,8 @@
 // AI assistance disclosure: AI-drafted, human-reviewed.
 //   Assisted-by: Claude (Opus-4.7)
 //
-// Status: PLAYGROUND -- prototype of OGC SFA Triangle on the enhancement/curved
-// foundational Surface<T> abstraction.  Not for merge.
+// Status: PRODUCTION -- OGC SFA Triangle first-class Geometry on Surface<T>
+// (structure + WKT foundation).
 
 using System;
 using System.Collections.Generic;
