@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
-// Status: PRODUCTION -- SQL/MM MultiSurface (GEOS / ISO WKB type 12).
-// Dovetailed with GEOS MultiSurface. Assisted-by: xAI Grok
+// Status: PRODUCTION (structure + WKT/WKB) — GEOS / ISO WKB type 12.
+// Type + I/O only; member metric behaviour follows component types.
+// Assisted-by: xAI Grok
 
 using System;
 
