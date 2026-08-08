@@ -7,13 +7,9 @@
 //
 //   Assisted-by: Claude (Fable 5)
 //
-// Status: PLAYGROUND -- in-tree port of the SQL/MM CurvePolygon prototype from
-// the out-of-tree NetTopologySuite.Curve repository, following the maintainer
-// discussion on the PR ("in-tree is the way to go"). This carries the F-CP
-// structural contract of the SFA Curve Awareness epic (locationtech/jts#1195,
-// Phase 1): rings are exposed as Curve, never collapsed to LinearRing.
-// Not for merge into develop without further design discussion -- see the PR
-// description.
+// Status: PRODUCTION -- SQL/MM CurvePolygon first-class Geometry type
+// (structure + WKT/WKB foundation). Rings are Curve, never collapsed to LinearRing
+// (F-CP structural contract). Arc-aware Area/Length/Distance follow RED hooks.
 
 using System;
 using System.Collections.Generic;
@@ -32,10 +28,8 @@ namespace NetTopologySuite.Geometries.Curves
     /// collapse a curved ring to a flat <see cref="LinearRing"/> (the F-CP
     /// structural contract).
     /// <para/>
-    /// This is a prototype.  <c>Area</c> and <c>Length</c> fall back to chord-based
-    /// computations that treat the control points of curved rings as polylines;
-    /// analytical arc geometry and linearization are tracked in the prototype
-    /// roadmap.
+    /// Foundation <c>Area</c> / <c>Length</c> use control-polyline (chord) geometry
+    /// on curved rings; analytical arc measure is gated by oracle RED tests.
     /// </remarks>
     [Serializable]
     public class CurvePolygon : Surface<Curve>, ILinearizable<Polygon>
@@ -188,7 +182,7 @@ namespace NetTopologySuite.Geometries.Curves
         /// Area approximated by treating the control points of the rings as polyline
         /// rings (chord-based, consistent with <see cref="CircularString"/>'s
         /// chord-based <c>Length</c>).  For curved rings the true area differs by the
-        /// circular segments; analytical arc area is tracked in the prototype roadmap.
+        /// circular segments; analytical arc area is gated by oracle RED tests.
         /// </summary>
         public override double Area
         {
@@ -224,7 +218,7 @@ namespace NetTopologySuite.Geometries.Curves
         /// <summary>
         /// The rings of this surface.  Returned as a <see cref="GeometryCollection"/>
         /// of <see cref="Curve"/>s for now -- a dedicated <c>MultiCurve</c> type is
-        /// part of the prototype roadmap.
+        /// gated by oracle RED tests.
         /// </summary>
         public override Geometry Boundary
         {
@@ -323,7 +317,7 @@ namespace NetTopologySuite.Geometries.Curves
 
         /// <summary>
         /// Normalization of ring orientation and hole ordering requires orientation
-        /// of curved rings, which is part of the prototype roadmap.  This prototype
+        /// of curved rings, which is gated by oracle RED tests.  This prototype
         /// implementation does nothing.
         /// </summary>
         public override void Normalize()

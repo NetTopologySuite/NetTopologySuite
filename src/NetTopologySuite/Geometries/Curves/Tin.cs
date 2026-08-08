@@ -3,9 +3,8 @@
 // AI assistance disclosure: AI-drafted, human-reviewed.
 //   Assisted-by: Claude (Opus-4.7)
 //
-// Status: PLAYGROUND -- prototype of OGC SFA-CA Triangulated Irregular
-// Network (TIN), modeled as a GeometryCollection of Triangle (also defined in
-// this Curves namespace).  Not for merge.
+// Status: PRODUCTION -- OGC SFA-CA TIN as GeometryCollection of Triangle
+// (structure + WKT foundation).
 
 using System;
 
@@ -15,7 +14,7 @@ namespace NetTopologySuite.Geometries.Curves
     /// An OGC SFA-CA Triangulated Irregular Network: a homogeneous collection of
     /// <see cref="Triangle"/>s.  Conceptually a piecewise-linear surface, but
     /// represented here as a <see cref="GeometryCollection"/> for tooling
-    /// compatibility on the prototype branch.
+    /// compatibility with collection tooling.
     /// </summary>
     /// <remarks>
     /// All elements are required to be <see cref="Triangle"/> instances; the
@@ -77,7 +76,7 @@ namespace NetTopologySuite.Geometries.Curves
 
         /// <summary>
         /// The total area of the TIN, computed as the sum of triangle areas.
-        /// Adjacent triangles that overlap will double-count; the prototype
+        /// Adjacent triangles that overlap will double-count; the current
         /// assumes a well-formed TIN.
         /// </summary>
         public override double Area

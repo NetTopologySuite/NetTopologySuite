@@ -7,10 +7,9 @@
 //
 //   Assisted-by: Claude (Opus-4.7)
 //
-// Status: PLAYGROUND -- prototype of OGC SFA-CA CircularString on top of the
-// foundational Curve/Surface abstractions already on enhancement/curved.
-// Not for merge into develop without further design discussion -- see the PR
-// description for scope, decisions, and open questions.
+// Status: PRODUCTION -- SQL/MM / OGC CircularString first-class Geometry type
+// (structure + WKT/WKB foundation). Arc-aware Length / Distance / Envelope are
+// tracked by Category=Red oracle hooks (CurveOracleRedTests).
 
 using System;
 using System.Collections.Generic;
@@ -27,10 +26,9 @@ namespace NetTopologySuite.Geometries.Curves
     /// with adjacent arcs sharing endpoints.  An empty <c>CircularString</c> has zero
     /// coordinates.
     /// <para/>
-    /// This is a prototype.  In particular, <c>Length</c> and <c>Boundary</c> currently
-    /// fall back to chord-based computations (treating the control points as a polyline)
-    /// rather than analytical arc geometry; the inherited <see cref="Curve.IsClosed"/>
-    /// semantics still apply (start equals end).
+    /// Foundation metrics: <c>Length</c> currently uses the control-point polyline
+    /// (not analytical arc length); arc-aware measure is gated by oracle RED tests.
+    /// The inherited <see cref="Curve.IsClosed"/> semantics apply (start equals end).
     /// </remarks>
     [Serializable]
     public class CircularString : Curve, ILinearizable<LineString>
@@ -131,7 +129,7 @@ namespace NetTopologySuite.Geometries.Curves
 
         /// <summary>
         /// Length approximated by summing arc-chord lengths.  Analytical arc-length
-        /// computation is tracked in the prototype roadmap.
+        /// is gated by oracle RED tests (arc-aware measure).
         /// </summary>
         public override double Length => Algorithm.Length.OfLine(_points);
 
