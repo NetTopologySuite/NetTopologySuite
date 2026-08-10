@@ -906,15 +906,14 @@ namespace NetTopologySuite.IO
             => GetRequiredBufferSize(geometry, true);
 
         /// <summary>
-        /// Computes the length of a buffer to write the <see cref="Point"/> <paramref name="geometry"/> in its WKB format.
+        /// Write a CircularString in its WKB format.
         /// </summary>
-        /// <param name="geometry">The geometry</param>
+        /// <param name="circularString">The CircularString</param>
+        /// <param name="writer">The writer</param>
         /// <param name="includeSRID">
         /// A flag indicting if SRID value is of possible interest.
         /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
         /// </param>
-        /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
-
         private void WriteCircularString(CircularString circularString, BinaryWriter writer, bool includeSRID)
         {
             WriteHeader(writer, circularString, includeSRID);
@@ -923,6 +922,15 @@ namespace NetTopologySuite.IO
 #pragma warning restore 618
         }
 
+        /// <summary>
+        /// Write a CompoundCurve in its WKB format.
+        /// </summary>
+        /// <param name="compoundCurve">The CompoundCurve</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
         private void WriteCompoundCurve(CompoundCurve compoundCurve, BinaryWriter writer, bool includeSRID)
         {
             WriteHeader(writer, compoundCurve, includeSRID);
@@ -933,6 +941,15 @@ namespace NetTopologySuite.IO
                 Write(curve, writer, curve.SRID != compoundCurve.SRID);
         }
 
+        /// <summary>
+        /// Write a CurvePolygon in its WKB format.
+        /// </summary>
+        /// <param name="curvePolygon">The CurvePolygon</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
         private void WriteCurvePolygon(CurvePolygon curvePolygon, BinaryWriter writer, bool includeSRID)
         {
             WriteHeader(writer, curvePolygon, includeSRID);
@@ -950,6 +967,15 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Write a MultiCurve in its WKB format.
+        /// </summary>
+        /// <param name="multiCurve">The MultiCurve</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
         private void WriteMultiCurve(MultiCurve multiCurve, BinaryWriter writer, bool includeSRID)
         {
             WriteHeader(writer, multiCurve, includeSRID);
@@ -961,6 +987,15 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Write a MultiSurface in its WKB format.
+        /// </summary>
+        /// <param name="multiSurface">The MultiSurface</param>
+        /// <param name="writer">The writer</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
         private void WriteMultiSurface(MultiSurface multiSurface, BinaryWriter writer, bool includeSRID)
         {
             WriteHeader(writer, multiSurface, includeSRID);
@@ -972,11 +1007,31 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Computes the length of a buffer to write the <see cref="CircularString"/>
+        /// <paramref name="circularString"/> in its WKB format.
+        /// </summary>
+        /// <param name="circularString">The CircularString</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
+        /// <returns>The number of bytes required to store the geometry in its WKB format.</returns>
         private int GetRequiredBufferSizeCurve(CircularString circularString, bool includeSRID)
         {
             return GetHeaderSize(includeSRID) + 4 + circularString.NumPoints * _coordinateSize;
         }
 
+        /// <summary>
+        /// Computes the length of a buffer to write the <see cref="CompoundCurve"/>
+        /// <paramref name="compoundCurve"/> in its WKB format.
+        /// </summary>
+        /// <param name="compoundCurve">The CompoundCurve</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
+        /// <returns>The number of bytes required to store the geometry in its WKB format.</returns>
         private int GetRequiredBufferSizeCurve(CompoundCurve compoundCurve, bool includeSRID)
         {
             int count = GetHeaderSize(includeSRID) + 4;
@@ -987,6 +1042,16 @@ namespace NetTopologySuite.IO
             return count;
         }
 
+        /// <summary>
+        /// Computes the length of a buffer to write the <see cref="CurvePolygon"/>
+        /// <paramref name="curvePolygon"/> in its WKB format.
+        /// </summary>
+        /// <param name="curvePolygon">The CurvePolygon</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
+        /// <returns>The number of bytes required to store the geometry in its WKB format.</returns>
         private int GetRequiredBufferSizeCurve(CurvePolygon curvePolygon, bool includeSRID)
         {
             int count = GetHeaderSize(includeSRID) + 4;
@@ -1000,6 +1065,16 @@ namespace NetTopologySuite.IO
             }
             return count;
         }
+
+        /// <summary>
+        /// Computes the length of a buffer to write the <see cref="Point"/> <paramref name="geometry"/> in its WKB format.
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <param name="includeSRID">
+        /// A flag indicting if SRID value is of possible interest.
+        /// The value is <c>&amp;&amp;</c>-combineed with <c>HandleSRID</c>.
+        /// </param>
+        /// <returns>The number of bytes required to store <paramref name="geometry"/> in its WKB format.</returns>
         private int GetRequiredBufferSize(Point geometry, bool includeSRID)
         {
             return GetHeaderSize(includeSRID) + _coordinateSize;
