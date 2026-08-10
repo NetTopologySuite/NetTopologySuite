@@ -10,7 +10,7 @@
 // Status: PRODUCTION (structure + WKT/WKB) — GEOS 3.13-class foundation.
 // Not GEOS-current metric parity: Length is control-polyline, Envelope is
 // control-bbox only, DistanceOp does not yet visit curves (see Category=Red
-// CurveOracleRedTests). Arc-aware Length/Envelope/Distance = later work.
+// CurveMetricsContractTests). Arc-aware Length/Envelope/Distance = later work.
 
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Geometries.Curves
     /// coordinates.
     /// <para/>
     /// Foundation metrics: <c>Length</c> currently uses the control-point polyline
-    /// (not analytical arc length); arc-aware measure is gated by oracle RED tests.
+    /// (not analytical arc length); arc-aware measure is gated by Category=Red CurveMetricsContractTests.
     /// The inherited <see cref="Curve.IsClosed"/> semantics apply (start equals end).
     /// </remarks>
     [Serializable]
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Geometries.Curves
 
         /// <summary>
         /// Length approximated by summing arc-chord lengths.  Analytical arc-length
-        /// is gated by oracle RED tests (arc-aware measure).
+        /// is gated by Category=Red CurveMetricsContractTests (arc-aware measure).
         /// </summary>
         public override double Length => Algorithm.Length.OfLine(_points);
 

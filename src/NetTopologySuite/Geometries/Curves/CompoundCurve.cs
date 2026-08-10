@@ -9,7 +9,7 @@
 //
 // Status: PRODUCTION (structure + WKT/WKB) — GEOS 3.13-class foundation.
 // Not GEOS-current metric parity (Length/Envelope/Distance); see CircularString
-// and Category=Red CurveOracleRedTests.
+// and Category=Red CurveMetricsContractTests.
 
 using System;
 using System.Collections.Generic;
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Geometries.Curves
         /// <summary>
         /// Length approximated by summing component lengths.  For
         /// <see cref="CircularString"/> components this is the chord-based fallback;
-        /// analytical arc-length is gated by oracle RED tests (arc-aware measure).
+        /// analytical arc-length is gated by Category=Red CurveMetricsContractTests (arc-aware measure).
         /// </summary>
         public override double Length
         {
