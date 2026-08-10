@@ -730,14 +730,12 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Function to determine whether an ordinate should be handled or not.
-        /// </summary>
-        /// <param name="ordinate"></param>
-        /// <returns></returns>
-
-        /// <summary>
         /// Reads a SQL/MM CircularString (GEOS/ISO WKB type 8).
         /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="cs">The coordinate system</param>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="CircularString"/> geometry</returns>
         protected Geometry ReadCircularString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -749,6 +747,10 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a SQL/MM CompoundCurve (GEOS/ISO WKB type 9).
         /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="cs">The coordinate system</param>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="CompoundCurve"/> geometry</returns>
         protected Geometry ReadCompoundCurve(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -764,6 +766,10 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a SQL/MM CurvePolygon (GEOS/ISO WKB type 10).
         /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="cs">The coordinate system</param>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="CurvePolygon"/> geometry</returns>
         protected Geometry ReadCurvePolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -781,6 +787,10 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a SQL/MM MultiCurve (GEOS/ISO WKB type 11).
         /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="cs">The coordinate system</param>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="MultiCurve"/> geometry</returns>
         protected Geometry ReadMultiCurve(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -794,6 +804,10 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a SQL/MM MultiSurface (GEOS/ISO WKB type 12).
         /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="cs">The coordinate system</param>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="MultiSurface"/> geometry</returns>
         protected Geometry ReadMultiSurface(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -826,6 +840,9 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a nested curve member (byte-order + type + body).
         /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="Curve"/> geometry</returns>
         private Curve ReadCurveMember(BinaryReader reader, int srid)
         {
             ReadByteOrder(reader);
@@ -848,6 +865,11 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Function to determine whether an ordinate should be handled or not.
+        /// </summary>
+        /// <param name="ordinate">The ordinate to check</param>
+        /// <returns><c>true</c> if the ordinate should be handled; otherwise <c>false</c></returns>
         private bool HandleOrdinate(Ordinate ordinate)
         {
             switch (ordinate)
