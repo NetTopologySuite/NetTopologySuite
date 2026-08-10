@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
-// RED hooks for arc-aware behaviour on the SQL/MM curve foundation.
-// Intentional fails until Distance / Length / Envelope leave the chord-stub path.
-//
-// Ground truth: NetTopologySuite.Proofs oracle modes ARC_DISTANCE / ARC_LENGTH
-// (docs/nts857-oracle-bug-hunt-2026-08.md). Keep this file small — one pin per gap.
+// Intentional-fail hooks for arc-aware Distance / Length / Envelope on the
+// SQL/MM curve foundation. These pin expected contracts and fail until the
+// metrics work leaves the control-polyline / control-bbox stubs.
 //
 // Assisted-by: xAI Grok
 
@@ -17,13 +15,15 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
 {
     /// <summary>
-    /// Oracle-backed RED tests for curve metrics.
-    /// These assert the SQL/MM / GEOS-quality contracts; they fail on the
-    /// current control-polyline stubs and are the product hook for Phase-2 work.
+    /// Intentional-fail contract tests for arc-aware curve metrics.
+    /// Assert SQL/MM / GEOS-quality Distance, Length, and Envelope behaviour;
+    /// they fail on the current control-polyline stubs and mark the Phase-2 hook.
+    /// Excluded from default CI via <c>FailureCase</c> (same pattern as other known-fail fixtures).
     /// </summary>
+    [Category("FailureCase")]
     [Category("Red")]
-    [Category("Curves.Oracle")]
-    public class CurveOracleRedTests
+    [Category("Curves.MetricsContract")]
+    public class CurveMetricsContractTests
     {
         private readonly GeometryFactory _factory = new GeometryFactory();
 
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         /// <summary>
         /// P0 — Distance to a curve must be finite and arc-correct.
         /// Today <see cref="DistanceOp"/> never visits CircularString segments and
-        /// returns <see cref="double.MaxValue"/> (oracle ARC_DISTANCE = 1 at centre).
+        /// returns <see cref="double.MaxValue"/> (expected distance at centre is 1).
         /// </summary>
         [Test]
         public void Red_Distance_PointToCircularString_CentreOfUnitSemicircle_IsRadius()
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
             Assert.That(double.IsFinite(d), Is.True,
                 "Distance must not leave the MaxValue sentinel for curve inputs.");
             Assert.That(d, Is.EqualTo(1.0).Within(1e-9),
-                "Oracle ARC_DISTANCE: centre of unit semicircle is at distance r = 1.");
+                "Expected arc-aware distance: centre of unit semicircle is at distance r = 1.");
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
 
         /// <summary>
         /// P1 — Length is arc measure r·θ, not the control-polyline.
-        /// Unit semicircle: oracle ARC_LENGTH = π.
+        /// Unit semicircle: expected length is π.
         /// </summary>
         [Test]
         public void Red_Length_UnitSemicircle_IsPi()
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
             var arc = UnitSemicircle();
 
             Assert.That(arc.Length, Is.EqualTo(Math.PI).Within(1e-9),
-                "Oracle ARC_LENGTH: unit semicircle length is π, not 2√2 control chords.");
+                "Expected arc-aware length: unit semicircle is π, not 2√2 control chords.");
         }
 
         /// <summary>
