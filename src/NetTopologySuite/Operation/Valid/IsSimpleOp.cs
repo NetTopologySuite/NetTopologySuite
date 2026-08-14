@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Curves;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
 
@@ -160,6 +161,8 @@ namespace NetTopologySuite.Operation.Valid
         private bool ComputeSimple(Geometry geom)
         {
             if (geom.IsEmpty) return true;
+            if (CurvedGeometry.IsCurvedType(geom))
+                throw CurvedGeometry.NotYetSupported(geom, "IsSimple");
             switch (geom)
             {
                 case Point _:
@@ -273,10 +276,7 @@ namespace NetTopologySuite.Operation.Valid
             var segStrings = new List<ISegmentString>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
-                // Use Geometry (not LineString) so ILineal curve types such as
-                // CircularString / CompoundCurve can use the chord-based path
-                // without an InvalidCastException.
-                var line = geom.GetGeometryN(i);
+                var line = (LineString)geom.GetGeometryN(i);
                 var trimPts = TrimRepeatedPoints(line.Coordinates);
                 if (trimPts != null)
                 {

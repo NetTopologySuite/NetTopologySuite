@@ -224,25 +224,36 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         }
 
         [Test]
-        public void ChordBasedAreaSubtractsHoles()
+        public void AreaAndLengthFailClosed()
         {
             var shell = Ring((0, 0), (10, 0), (10, 10), (0, 10), (0, 0));
             var hole = Ring((2, 2), (4, 2), (4, 4), (2, 4), (2, 2));
             var cp = new CurvePolygon(shell, new Curve[] { hole }, _factory);
 
-            Assert.That(cp.Area, Is.EqualTo(96).Within(1e-12));
-            Assert.That(cp.Length, Is.EqualTo(40 + 8).Within(1e-12));
+            Assert.That(() => cp.Area, Throws.TypeOf<NotSupportedException>(),
+                "Unconditional cut: all-linear CurvePolygon still throws.");
+            Assert.That(() => cp.Length, Throws.TypeOf<NotSupportedException>());
         }
 
         [Test]
-        public void EnvelopeIsShellEnvelope()
+        public void EnvelopeFailsClosedUntilArcAware()
         {
             var cp = CompoundShellWithLinearHole();
-            var env = cp.EnvelopeInternal;
-            Assert.That(env.MinX, Is.EqualTo(0));
-            Assert.That(env.MaxX, Is.EqualTo(10));
-            Assert.That(env.MinY, Is.EqualTo(-5));
-            Assert.That(env.MaxY, Is.EqualTo(5));
+            Assert.That(() => cp.EnvelopeInternal, Throws.TypeOf<NotSupportedException>());
+        }
+
+        [Test]
+        public void NormalizeFailsClosedWhenNotEmpty()
+        {
+            var cp = new CurvePolygon(Ring((0, 0), (10, 0), (10, 10), (0, 10), (0, 0)), _factory);
+            Assert.That(() => cp.Normalize(), Throws.TypeOf<NotSupportedException>());
+        }
+
+        [Test]
+        public void LinearizeWithToleranceFailsClosed()
+        {
+            var cp = FlatShellWithArcHole();
+            Assert.That(() => cp.Linearize(1.0), Throws.TypeOf<NotSupportedException>());
         }
 
         [Test]

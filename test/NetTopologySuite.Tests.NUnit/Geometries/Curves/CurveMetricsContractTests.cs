@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: BSD-3-Clause
 //
 // Intentional-fail hooks for arc-aware Distance / Length / Envelope on the
-// SQL/MM curve foundation. These pin expected contracts and fail until the
-// metrics work leaves the control-polyline / control-bbox stubs.
+// SQL/MM curve foundation. These pin expected contracts and stay red until
+// arc-aware metrics land; today the members throw NotSupportedException
+// instead of returning control-polyline / control-bbox stubs.
 //
 // Assisted-by: xAI Grok
 
@@ -17,7 +18,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
     /// <summary>
     /// Intentional-fail contract tests for arc-aware curve metrics.
     /// Assert SQL/MM / GEOS-quality Distance, Length, and Envelope behaviour;
-    /// they fail on the current control-polyline stubs and mark the Phase-2 hook.
+    /// they stay red until arc-aware metrics land (today they fail with
+    /// <see cref="NotSupportedException"/> rather than wrong chord values).
     /// Excluded from default CI via <c>FailureCase</c> (same pattern as other known-fail fixtures).
     /// </summary>
     [Category("FailureCase")]
@@ -59,8 +61,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
 
         /// <summary>
         /// P0 — Distance to a curve must be finite and arc-correct.
-        /// Today <see cref="DistanceOp"/> never visits CircularString segments and
-        /// returns <see cref="double.MaxValue"/> (expected distance at centre is 1).
+        /// Today <see cref="DistanceOp"/> fails closed with
+        /// <see cref="NotSupportedException"/> (expected distance at centre is 1).
         /// </summary>
         [Test]
         public void Red_Distance_PointToCircularString_CentreOfUnitSemicircle_IsRadius()
