@@ -51,6 +51,30 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestDimensionEmptyElement()
+        {
+            // an empty element still contributes its dimension, matching JTS semantics
+            // (see https://github.com/locationtech/jts/pull/1103)
+            var g = Read("GEOMETRYCOLLECTION (POLYGON EMPTY, LINESTRING (1 1, 5 4), POINT (6 5))");
+            Assert.That(g.Dimension, Is.EqualTo(Dimension.Surface));
+            Assert.That(g.HasDimension(Dimension.Surface), Is.True);
+            Assert.That(g.HasDimension(Dimension.Curve), Is.True);
+            Assert.That(g.HasDimension(Dimension.Point), Is.True);
+        }
+
+        [Test]
+        public void TestDimensionNestedCollection()
+        {
+            var g = Read("GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (POINT (1 1), LINESTRING (1 1, 5 4)), POLYGON ((1 9, 5 9, 5 5, 1 5, 1 9)))");
+            Assert.That(g.Dimension, Is.EqualTo(Dimension.Surface));
+            Assert.That(g.HasDimension(Dimension.Point), Is.True);
+            Assert.That(g.HasDimension(Dimension.Curve), Is.True);
+            Assert.That(g.HasDimension(Dimension.Surface), Is.True);
+        }
+
+
+
+        [Test]
         public void TestGetCoordinates()
         {
             var g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
