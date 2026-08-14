@@ -81,14 +81,24 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         }
 
         [Test]
-        public void EnvelopeEnclosesAllControlPoints()
+        public void EnvelopeFailsClosedUntilArcAware()
         {
             var cs = Make((0, 0), (5, 10), (10, 0));
-            var env = cs.EnvelopeInternal;
-            Assert.That(env.MinX, Is.EqualTo(0));
-            Assert.That(env.MaxX, Is.EqualTo(10));
-            Assert.That(env.MinY, Is.EqualTo(0));
-            Assert.That(env.MaxY, Is.EqualTo(10));
+            Assert.That(() => cs.EnvelopeInternal, Throws.TypeOf<NotSupportedException>());
+        }
+
+        [Test]
+        public void LengthFailsClosed()
+        {
+            var cs = Make((1, 0), (0, 1), (-1, 0));
+            Assert.That(() => cs.Length, Throws.TypeOf<NotSupportedException>());
+        }
+
+        [Test]
+        public void EmptyLengthIsZero()
+        {
+            var cs = new CircularString(_factory.CoordinateSequenceFactory.Create(0, Ordinates.XY), _factory);
+            Assert.That(cs.Length, Is.EqualTo(0d));
         }
 
         [Test]
@@ -155,19 +165,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         }
 
         [Test]
-        public void IsSimpleAndIsRingDoNotThrow()
+        public void IsSimpleAndIsRingFailClosed()
         {
             var open = Make((1, 0), (0, 1), (-1, 0));
-            Assert.That(() => open.IsSimple, Throws.Nothing);
-            Assert.That(() => open.IsRing, Throws.Nothing);
-            Assert.That(open.IsSimple, Is.True);
-            Assert.That(open.IsRing, Is.False);
+            Assert.That(() => open.IsSimple, Throws.TypeOf<NotSupportedException>());
+            Assert.That(() => open.IsRing, Throws.TypeOf<NotSupportedException>());
 
             var closed = Make((1, 0), (0, 1), (-1, 0), (0, -1), (1, 0));
-            Assert.That(() => closed.IsSimple, Throws.Nothing);
-            Assert.That(() => closed.IsRing, Throws.Nothing);
-            Assert.That(closed.IsSimple, Is.True);
-            Assert.That(closed.IsRing, Is.True);
+            Assert.That(() => closed.IsSimple, Throws.TypeOf<NotSupportedException>());
+            Assert.That(() => closed.IsRing, Throws.TypeOf<NotSupportedException>());
         }
 
         [Test]
@@ -181,7 +187,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
             Assert.That(line, Is.Not.InstanceOf<CircularString>());
             Assert.That(line.NumPoints, Is.EqualTo(3));
             Assert.That(line.Coordinates, Is.EqualTo(cs.Coordinates));
-            Assert.That(cs.Linearize(1.0).NumPoints, Is.EqualTo(3));
+            Assert.That(() => cs.Linearize(1.0), Throws.TypeOf<NotSupportedException>());
         }
 
         [Test]

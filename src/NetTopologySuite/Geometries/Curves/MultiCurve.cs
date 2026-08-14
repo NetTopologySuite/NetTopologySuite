@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Status: PRODUCTION (structure + WKT/WKB) — GEOS / ISO WKB type 11.
-// Type + I/O only; member metric behaviour follows component types.
+// Metrics and analytic ops (Length, Area, Envelope, IsSimple, Distance,
+// Centroid, InteriorPoint) fail closed with NotSupportedException until
+// arc-aware implementations land in a follow-up PR; Linearize() is the
+// explicit chord escape hatch.
 // Assisted-by: xAI Grok
 
 using System;
@@ -103,5 +106,39 @@ namespace NetTopologySuite.Geometries.Curves
                 copy[i] = (Curve)GetGeometryN(i).Copy();
             return new MultiCurve(copy, Factory);
         }
+
+        /// <summary>
+        /// Arc-aware length is not implemented yet. Empty is 0; otherwise throws,
+        /// including when every member is a <see cref="LineString"/>.
+        /// </summary>
+        public override double Length =>
+            IsEmpty ? 0d : throw CurvedGeometry.NotYetSupported(this, "Length");
+
+        /// <inheritdoc />
+        protected override Envelope ComputeEnvelopeInternal()
+        {
+            if (IsEmpty) return new Envelope();
+            throw CurvedGeometry.NotYetSupported(this, "Envelope");
+        }
+
+        /// <summary>
+        /// Arc-aware boundary is not implemented yet.
+        /// </summary>
+        /// <remarks>
+        /// The inherited <see cref="GeometryCollection.Boundary"/> asserts because
+        /// <see cref="OgcGeometryType"/> is not <c>GeometryCollection</c>.
+        /// </remarks>
+        public override Geometry Boundary =>
+            throw CurvedGeometry.NotYetSupported(this, "Boundary");
+
+        /// <summary>
+        /// Hashes a locally computed control-point envelope.
+        /// </summary>
+        /// <remarks>
+        /// Base <see cref="Geometry.GetHashCode"/> reads <c>EnvelopeInternal</c>,
+        /// which now throws for non-empty curve types. Hashing is identity, not a
+        /// geometric answer; control points are EqualsExact-consistent.
+        /// </remarks>
+        public override int GetHashCode() => CurvedGeometry.HashControlEnvelope(this);
     }
 }

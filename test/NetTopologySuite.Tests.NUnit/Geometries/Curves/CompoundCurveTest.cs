@@ -90,27 +90,26 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         }
 
         [Test]
-        public void LengthIsSumOfComponentLengths()
+        public void LengthFailsClosed()
         {
             var line = Line((0, 0), (1, 0));
             var arc = Arc((1, 0), (2, 1), (3, 0));
-            var cc = new CompoundCurve(new Curve[] { line, arc }, _factory);
+            var mixed = new CompoundCurve(new Curve[] { line, arc }, _factory);
+            Assert.That(() => mixed.Length, Throws.TypeOf<NotSupportedException>());
 
-            Assert.That(cc.Length, Is.EqualTo(line.Length + arc.Length).Within(1e-12));
+            var allLinear = new CompoundCurve(new Curve[] { Line((0, 0), (1, 0)), Line((1, 0), (2, 0)) }, _factory);
+            Assert.That(() => allLinear.Length, Throws.TypeOf<NotSupportedException>(),
+                "Unconditional cut: all-LineString CompoundCurve still throws.");
         }
 
         [Test]
-        public void EnvelopeIsUnionOfComponentEnvelopes()
+        public void EnvelopeFailsClosedUntilArcAware()
         {
             var cc = new CompoundCurve(
                 new Curve[] { Line((0, 0), (1, 0)), Arc((1, 0), (2, 5), (3, 0)) },
                 _factory);
 
-            var env = cc.EnvelopeInternal;
-            Assert.That(env.MinX, Is.EqualTo(0));
-            Assert.That(env.MaxX, Is.EqualTo(3));
-            Assert.That(env.MinY, Is.EqualTo(0));
-            Assert.That(env.MaxY, Is.EqualTo(5));
+            Assert.That(() => cc.EnvelopeInternal, Throws.TypeOf<NotSupportedException>());
         }
 
         [Test]
@@ -171,20 +170,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
         }
 
         [Test]
-        public void IsSimpleAndIsRingDoNotThrow()
+        public void IsSimpleAndIsRingFailClosed()
         {
             var open = new CompoundCurve(
                 new Curve[] { Line((0, 0), (1, 0)), Arc((1, 0), (2, 1), (3, 0)) },
                 _factory);
-            Assert.That(() => open.IsSimple, Throws.Nothing);
-            Assert.That(() => open.IsRing, Throws.Nothing);
-            Assert.That(open.IsRing, Is.False);
+            Assert.That(() => open.IsSimple, Throws.TypeOf<NotSupportedException>());
+            Assert.That(() => open.IsRing, Throws.TypeOf<NotSupportedException>());
 
             var closed = new CompoundCurve(
                 new Curve[] { Arc((0, 0), (1, 1), (2, 0)), Line((2, 0), (0, 0)) },
                 _factory);
-            Assert.That(() => closed.IsSimple, Throws.Nothing);
-            Assert.That(() => closed.IsRing, Throws.Nothing);
+            Assert.That(() => closed.IsSimple, Throws.TypeOf<NotSupportedException>());
+            Assert.That(() => closed.IsRing, Throws.TypeOf<NotSupportedException>());
             Assert.That(closed.IsClosed, Is.True);
         }
 
@@ -243,6 +241,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Curves
             Assert.That(line.NumPoints, Is.EqualTo(5));
             Assert.That(line.StartPoint.Coordinate, Is.EqualTo(new Coordinate(0, 0)));
             Assert.That(line.EndPoint.Coordinate, Is.EqualTo(new Coordinate(4, 0)));
+            Assert.That(() => cc.Linearize(1.0), Throws.TypeOf<NotSupportedException>());
         }
     }
 }

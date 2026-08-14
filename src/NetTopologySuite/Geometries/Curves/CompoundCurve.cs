@@ -8,8 +8,10 @@
 //   Assisted-by: Claude (Fable 5)
 //
 // Status: PRODUCTION (structure + WKT/WKB) — GEOS 3.13-class foundation.
-// Not GEOS-current metric parity (Length/Envelope/Distance); see CircularString
-// and Category=Red CurveMetricsContractTests.
+// Metrics and analytic ops (Length, Area, Envelope, IsSimple, Distance,
+// Centroid, InteriorPoint) fail closed with NotSupportedException until
+// arc-aware implementations land in a follow-up PR; Linearize() is the
+// explicit chord escape hatch.
 
 using System;
 using System.Collections.Generic;
@@ -26,8 +28,9 @@ namespace NetTopologySuite.Geometries.Curves
     /// Nested <c>CompoundCurve</c> components are rejected, keeping the component
     /// list flat (matching SQL/MM and common implementations).
     /// <para/>
-    /// Like <see cref="CircularString"/>, foundation <c>Length</c> / envelopes use
-    /// component chord (control) geometry until arc-aware measure lands.
+    /// Metrics and analytic ops fail closed with <see cref="NotSupportedException"/>
+    /// until arc-aware implementations land; <see cref="Linearize()"/> is the explicit
+    /// chord escape hatch.
     /// </remarks>
     [Serializable]
     public class CompoundCurve : Curve, ILinearizable<LineString>
@@ -175,22 +178,15 @@ namespace NetTopologySuite.Geometries.Curves
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.CompoundCurve;
 
         /// <summary>
-        /// Length approximated by summing component lengths.  For
-        /// <see cref="CircularString"/> components this is the chord-based fallback;
-        /// analytical arc-length is gated by Category=Red CurveMetricsContractTests (arc-aware measure).
+        /// Arc-aware length is not implemented yet. Empty is 0; otherwise throws,
+        /// including when every component is a <see cref="LineString"/>.
         /// </summary>
-        public override double Length
-        {
-            get
-            {
-                double length = 0d;
-                for (int i = 0; i < _curves.Length; i++)
-                {
-                    length += _curves[i].Length;
-                }
-                return length;
-            }
-        }
+        /// <exception cref="NotSupportedException">
+        /// When this geometry is not empty. Call <see cref="Linearize()"/> to opt in
+        /// to an explicit chord approximation.
+        /// </exception>
+        public override double Length =>
+            IsEmpty ? 0d : throw CurvedGeometry.NotYetSupported(this, "Length");
 
         /// <summary>
         /// The boundary of a curve per the Mod-2 rule: empty when the curve is empty
@@ -211,13 +207,19 @@ namespace NetTopologySuite.Geometries.Curves
         /// <inheritdoc/>
         protected override Envelope ComputeEnvelopeInternal()
         {
-            var env = new Envelope();
-            for (int i = 0; i < _curves.Length; i++)
-            {
-                env.ExpandToInclude(_curves[i].EnvelopeInternal);
-            }
-            return env;
+            if (IsEmpty) return new Envelope();
+            throw CurvedGeometry.NotYetSupported(this, "Envelope");
         }
+
+        /// <summary>
+        /// Hashes a locally computed control-point envelope.
+        /// </summary>
+        /// <remarks>
+        /// Base <see cref="Geometry.GetHashCode"/> reads <c>EnvelopeInternal</c>,
+        /// which now throws for non-empty curve types. Hashing is identity, not a
+        /// geometric answer; control points are EqualsExact-consistent.
+        /// </remarks>
+        public override int GetHashCode() => CurvedGeometry.HashControlEnvelope(Coordinates);
 
         /// <inheritdoc/>
         public override bool EqualsExact(Geometry other, double tolerance)
@@ -347,17 +349,7 @@ namespace NetTopologySuite.Geometries.Curves
         /// <see cref="LineString"/>, concatenating linearized components and
         /// collapsing shared join points.
         /// </summary>
-        public LineString Linearize() => Linearize(double.NaN);
-
-        /// <summary>
-        /// Returns a chord approximation of this compound curve as a single
-        /// <see cref="LineString"/>.
-        /// </summary>
-        /// <param name="arcSegmentLength">
-        /// Passed through to <see cref="CircularString"/> components when they
-        /// support densification; currently reserved (control chords).
-        /// </param>
-        public LineString Linearize(double arcSegmentLength)
+        public LineString Linearize()
         {
             if (IsEmpty)
             {
@@ -367,7 +359,7 @@ namespace NetTopologySuite.Geometries.Curves
             var coordinates = new List<Coordinate>();
             for (int i = 0; i < _curves.Length; i++)
             {
-                LineString componentLine = LinearizeComponent(_curves[i], arcSegmentLength);
+                LineString componentLine = LinearizeComponent(_curves[i]);
                 var componentCoordinates = componentLine.Coordinates;
                 for (int j = i == 0 ? 0 : 1; j < componentCoordinates.Length; j++)
                 {
@@ -377,12 +369,27 @@ namespace NetTopologySuite.Geometries.Curves
             return Factory.CreateLineString(coordinates.ToArray());
         }
 
-        private static LineString LinearizeComponent(Curve component, double arcSegmentLength)
+        /// <summary>
+        /// Tolerance-driven linearization is not implemented yet.
+        /// </summary>
+        /// <param name="arcSegmentLength">
+        /// Reserved for the maximum chord length along each arc.
+        /// </param>
+        /// <exception cref="NotSupportedException">
+        /// Always thrown until densification lands. Use <see cref="Linearize()"/>
+        /// for the explicit chord approximation.
+        /// </exception>
+        public LineString Linearize(double arcSegmentLength)
+        {
+            throw CurvedGeometry.ToleranceLinearizeNotSupported();
+        }
+
+        private static LineString LinearizeComponent(Curve component)
         {
             switch (component)
             {
                 case CircularString circularString:
-                    return circularString.Linearize(arcSegmentLength);
+                    return circularString.Linearize();
                 case LineString lineString:
                     return lineString;
                 default:
