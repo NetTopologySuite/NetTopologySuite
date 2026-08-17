@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - name: Get source
-      uses: actions/checkout@v2
+      uses: actions/checkout@v7
 
     - name: Setup .NET 10
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10
 
@@ -39,7 +39,7 @@ jobs:
       run: dotnet pack -c Release --no-build -o artifacts -p:NoWarn=NU5105
 
     - name: Upload
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: NuGet Package Files (${{ matrix.os }})
         path: artifacts
@@ -53,12 +53,12 @@ jobs:
 
     steps:
     - name: Setup .NET 10
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10
 
     - name: Download Package Files
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v8
       with:
         name: NuGet Package Files (ubuntu-latest)
         path: artifacts
@@ -78,12 +78,12 @@ jobs:
 
     steps:
     - name: Setup .NET 10
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-version: 10
 
     - name: Download Package Files
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v8
       with:
         name: NuGet Package Files (ubuntu-latest)
         path: artifacts
