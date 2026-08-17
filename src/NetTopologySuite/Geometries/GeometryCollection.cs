@@ -20,6 +20,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private Geometry[] _geometries;
 
+        private bool _dimCacheComputed;
+        private Dimension _cachedDimension;
+        private bool _hasP;
+        private bool _hasL;
+        private bool _hasA;
+
         /// <summary>
         ///
         /// </summary>
@@ -136,27 +142,46 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        private void InitDimCache()
+        {
+            if (_dimCacheComputed) return;
+            var dim = Dimension.False;
+            bool hasP = false, hasL = false, hasA = false;
+            foreach (var elem in new GeometryCollectionEnumerator(this))
+            {
+                if (elem is GeometryCollection) continue;
+                if (elem is Point) { hasP = true; if (dim < Dimension.Point) dim = Dimension.Point; }
+                else if (elem is LineString) { hasL = true; if (dim < Dimension.Curve) dim = Dimension.Curve; }
+                else if (elem is Polygon) { hasA = true; if (dim < Dimension.Surface) dim = Dimension.Surface; }
+            }
+            _hasP = hasP;
+            _hasL = hasL;
+            _hasA = hasA;
+            _cachedDimension = dim;
+            _dimCacheComputed = true;
+        }
+
         /// <inheritdoc cref="Geometry.Dimension"/>
         public override Dimension Dimension
         {
             get
             {
-                var dimension = Dimension.False;
-                for (int i = 0; i < _geometries.Length; i++)
-                    dimension = (Dimension) Math.Max((int)dimension, (int)_geometries[i].Dimension);
-                return dimension;
+                InitDimCache();
+                return _cachedDimension;
             }
         }
 
         /// <inheritdoc cref="Geometry.HasDimension(Dimension)"/>
         public override bool HasDimension(Dimension dim)
         {
-            for (int i = 0; i < _geometries.Length; i++)
+            InitDimCache();
+            switch (dim)
             {
-                if (_geometries[i].HasDimension(dim))
-                    return true;
+                case Dimension.Surface: return _hasA;
+                case Dimension.Curve: return _hasL;
+                case Dimension.Point: return _hasP;
+                default: return false;
             }
-            return false;
         }
 
         /// <inheritdoc cref="Geometry.BoundaryDimension"/>
