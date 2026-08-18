@@ -55,9 +55,7 @@ namespace NetTopologySuite.Operation.OverlayNG
 
         public Edge(Coordinate[] pts, EdgeSourceInfo info)
         {
-            // Oracle-driven fix (Cycle 4): deep copy coordinates to avoid aliasing input geometry
-            // in OverlayNG (especially linear + snap-rounding paths). Consistent with Cycle 3 buffer
-            // simplifier copy and baseline coordinate-copy hardening. Protects linear inputs for #66 snap/overlay.
+            // Deep copy so OverlayNG noding cannot alias caller coordinates.
             Coordinates = CoordinateArrays.CopyDeep(pts);
             CopyInfo(info);
         }

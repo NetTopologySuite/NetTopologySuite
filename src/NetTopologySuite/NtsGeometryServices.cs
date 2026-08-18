@@ -54,7 +54,10 @@ namespace NetTopologySuite
         /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/>
         /// as default and a <see cref="PrecisionModels.Floating"/> precision model.
-        /// No <see cref="DefaultSRID"/> is specified
+        /// No <see cref="DefaultSRID"/> is specified.
+        /// Pairs the supplied relate implementation with <see cref="GeometryOverlay.NG"/>.
+        /// Use the two-argument constructor to choose overlay independently.
+        /// The parameterless constructor still defaults to <see cref="GeometryOverlay.Legacy"/>.
         /// </summary>
         /// <param name="geometryRelate">The geometry relate function set to use.</param>
         public NtsGeometryServices(GeometryRelate geometryRelate)

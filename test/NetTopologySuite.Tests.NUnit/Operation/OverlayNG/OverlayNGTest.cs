@@ -573,9 +573,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         }
 
         /// <summary>
-        /// Oracle-driven linear baseline (Cycle 4): OverlayNG on linear inputs must not mutate
-        /// input coordinates. Edge stores a copy of pts (was direct reference). Complements
-        /// Cycle 3 buffer copy fix. Relevant for snap-rounding + overlay linear cases (#66).
+        /// OverlayNG must not mutate caller coordinates. Edge used to store
+        /// the incoming point array by reference.
         /// </summary>
         [Test]
         public void TestOverlayNGDoesNotMutateInputCoordinates_Linear()

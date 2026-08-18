@@ -163,9 +163,8 @@ namespace NetTopologySuite.Operation.Buffer
             for (int i = 0; i < _inputLine.Length; i++)
             {
                 if (!_isDeleted[i])
-                    // Oracle-driven fix (Cycle 3): copy coordinates to prevent aliasing/mutation of original input geometry.
-                    // Buffer linear/ring inputs go through this simplifier for offset/negative/collapse; matches coordinate-copy
-                    // hardening pattern from baseline (VW, ConvexHull, etc.). Pinned via oracle buffer vectors + #65.
+                    // Copy so the simplified list cannot alias caller coordinates
+                    // (same ownership rule as VWLineSimplifier / ConvexHull).
                     coordList.Add(_inputLine[i].Copy());
             }
             return coordList.ToCoordinateArray();

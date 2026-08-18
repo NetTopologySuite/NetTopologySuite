@@ -899,10 +899,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         }
 
         /// <summary>
-        /// Oracle-driven linear baseline hardening (Cycle 3, #65 Buffer): Buffer must not mutate
-        /// input coordinates. The BufferInputLineSimplifier (used for linear/ring offset curves,
-        /// negative distances, collapse cases) previously returned shared Coordinate instances
-        /// from CollapseLine. Fixed by copying (consistent with baseline VW/ConvexHull etc. fixes).
+        /// Buffer must not mutate caller coordinates. CollapseLine used to
+        /// return the same Coordinate instances as the input line.
         /// </summary>
         [Test]
         public void TestBufferDoesNotMutateInputCoordinates()
@@ -916,9 +914,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         }
 
         /// <summary>
-        /// Cycle 5 target: linear thin/near-degenerate buffer (thin rect) for no spurious fragments
-        /// or incorrect holes on collapse/negative (cf. oracle buffer_region + hole979 precision
-        /// hole removal on rects; holes_disjoint linear squares). 
+        /// A thin rectangle eroded by a small negative buffer should not
+        /// produce extra fragments or holes.
         /// </summary>
         [Test]
         public void TestBufferThinLinearNoSpurious()
