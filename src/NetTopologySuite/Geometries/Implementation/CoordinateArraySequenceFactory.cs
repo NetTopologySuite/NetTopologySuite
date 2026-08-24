@@ -25,6 +25,16 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(coordinates);
         }
 
+        /// <summary>
+        ///  Returns a CoordinateArraySequence based on the given span of coordinates (the values are copied).
+        /// </summary>
+        /// <param name="coordinates">the coordinates, which may not contain null elements.</param>
+        /// <returns></returns>
+        public override CoordinateSequence Create(ReadOnlySpan<Coordinate> coordinates)
+        {
+            return new CoordinateArraySequence(coordinates.ToArray());
+        }
+
         /// <inheritdoc cref="CoordinateSequenceFactory.Create(CoordinateSequence)"/>
         public override CoordinateSequence Create(CoordinateSequence coordSeq)
         {
