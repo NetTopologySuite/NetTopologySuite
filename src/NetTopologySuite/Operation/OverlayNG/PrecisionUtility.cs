@@ -274,7 +274,22 @@ namespace NetTopologySuite.Operation.OverlayNG
                     // https://github.com/dotnet/runtime/blob/cd4cc97e4c099f637061afe2b6c546483ffd3073/src/libraries/System.Private.CoreLib/src/System/Decimal.cs#L104-L108
                     // so we can rely on the scale living at the same spot:
                     // https://github.com/dotnet/runtime/blob/cd4cc97e4c099f637061afe2b6c546483ffd3073/src/libraries/System.Private.CoreLib/src/System/Decimal.cs#L70-L76
-                    return ((byte*)&valueAsDecimal)[BitConverter.IsLittleEndian ? 2 : 1];
+                    int scale = ((byte*)&valueAsDecimal)[BitConverter.IsLittleEndian ? 2 : 1];
+
+                    // The scale above is only an upper bound on the number of decimal places
+                    // actually needed to round-trip back to the same double: the conversion above
+                    // is not guaranteed to produce the minimal round-tripping scale even when one
+                    // exists (dotnet/runtime#42775), and .NET 11 changed double-to-decimal
+                    // conversions to favor exactness over brevity (dotnet/runtime#131135), which can
+                    // inflate the scale considerably for large-magnitude values. Trim off any
+                    // trailing digits that aren't actually needed for the round trip; this is a
+                    // no-op (0 extra iterations) for values whose initial scale was already minimal.
+                    while (scale > 0 && value == (double)Math.Round(valueAsDecimal, scale - 1))
+                    {
+                        scale--;
+                    }
+
+                    return scale;
                 }
             }
 
