@@ -571,5 +571,23 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             var expected = Read("LINESTRING (20 50, 80 50)");
             CheckEqual(expected, Intersection(a, b));
         }
+
+        /// <summary>
+        /// Tests that overlay produces stable (non-rotated) results,
+        /// i.e. that the ring's first point is not dropped/shifted by
+        /// <see cref="NetTopologySuite.Operation.OverlayNG.OverlayEdge.AddCoordinates"/>.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/52c5d988237367a01800f90b7f4ebbd9de60f8a9"/>
+        /// (JTS locationtech/jts#1187)
+        /// </remarks>
+        [Test]
+        public void TestRingsNonRotated_JTS1187()
+        {
+            var a = Read("POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))");
+            var actual = Intersection(a, a);
+            CheckEqualExact(a, actual);
+        }
     }
 }
