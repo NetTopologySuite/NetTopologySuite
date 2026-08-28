@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Index;
+using NetTopologySuite.Index.HPRtree;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.OverlayNG
@@ -177,13 +179,19 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <exception cref="TopologyException">If a hole cannot be assigned to a shell</exception>
         private void PlaceFreeHoles(IReadOnlyCollection<OverlayEdgeRing> shellList, IEnumerable<OverlayEdgeRing> freeHoleList)
         {
-            // TODO: use a spatial index to improve performance
+            var index = new HPRtree<OverlayEdgeRing>();
+            foreach (var shell in shellList)
+            {
+                index.Insert(shell.Ring.EnvelopeInternal, shell);
+            }
+
             foreach (var hole in freeHoleList)
             {
                 // only place this hole if it doesn't yet have a shell
                 if (hole.Shell == null)
                 {
-                    var shell = hole.FindEdgeRingContaining(shellList);
+                    var shellListOverlaps = index.Query(hole.Ring.EnvelopeInternal);
+                    var shell = hole.FindEdgeRingContaining(shellListOverlaps);
                     // only when building a polygon-valid result
                     if (_isEnforcePolygonal && shell == null)
                     {
