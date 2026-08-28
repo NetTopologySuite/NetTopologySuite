@@ -85,5 +85,39 @@ namespace NetTopologySuite.Noding
                     return 0;
             }
         }
+
+        /// <summary>
+        /// Tests whether this oriented coordinate array is equal to another,
+        /// i.e. represents the same coordinate sequence up to orientation.
+        /// This is consistent with <see cref="CompareTo"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare to</param>
+        /// <returns><c>true</c> if the arrays are equal (orientation-independently)</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is OrientedCoordinateArray other) || GetType() != obj.GetType()) return false;
+            return CompareTo(other) == 0;
+        }
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            // Walk the points in canonical orientation order (as CompareTo does),
+            // so an array and its reverse -- which are equal here -- hash equally.
+            int dir = _orientation ? 1 : -1;
+            int limit = _orientation ? _pts.Length : -1;
+            int i = _orientation ? 0 : _pts.Length - 1;
+            int result = 17;
+            unchecked
+            {
+                while (i != limit)
+                {
+                    result = 31 * result + _pts[i].GetHashCode();
+                    i += dir;
+                }
+            }
+            return result;
+        }
     }
 }

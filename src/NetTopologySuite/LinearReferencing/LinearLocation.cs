@@ -362,6 +362,32 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
+        /// Tests whether this location is equal to another,
+        /// i.e. has the same component index, segment index and segment fraction.
+        /// This is consistent with <see cref="CompareTo(LinearLocation)"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare to</param>
+        /// <returns><c>true</c> if the locations are equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is LinearLocation other) || GetType() != obj.GetType()) return false;
+            return CompareTo(other) == 0;
+        }
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = _componentIndex;
+                hashCode = (hashCode * 397) ^ _segmentIndex;
+                hashCode = (hashCode * 397) ^ _segmentFraction.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        /// <summary>
         /// Compares this object with the specified index values for order.
         /// </summary>
         /// <param name="componentIndex1">The component index.</param>

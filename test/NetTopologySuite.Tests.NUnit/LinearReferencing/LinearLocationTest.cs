@@ -23,6 +23,43 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc0.CompareTo(new LinearLocation(0, double.NaN)) == 0);
         }
 
+        /// <summary>
+        /// Tests that two locations that compare equal are also <see cref="LinearLocation.Equals"/>.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/d923a011c75c31d83428a7f63446e955788a9ad2"/>
+        /// (JTS locationtech/jts#1201, JTS #1184)
+        /// </remarks>
+        [Test]
+        public void TestEqualsValuesConsistentWithCompareTo_JTS1184()
+        {
+            var loc = new LinearLocation(1, 2, 0.5);
+            var locSame = new LinearLocation(1, 2, 0.5);
+            Assert.That(loc.CompareTo(locSame), Is.EqualTo(0));
+            Assert.That(loc, Is.EqualTo(locSame));
+        }
+
+        /// <summary>
+        /// Tests that equal locations report equal hash codes, and dedup in hash-based collections.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/d923a011c75c31d83428a7f63446e955788a9ad2"/>
+        /// (JTS locationtech/jts#1201, JTS #1184)
+        /// </remarks>
+        [Test]
+        public void TestEqualsHashCodeContract_JTS1184()
+        {
+            var loc = new LinearLocation(1, 2, 0.5);
+            var locSame = new LinearLocation(1, 2, 0.5);
+            Assert.That(loc.GetHashCode(), Is.EqualTo(locSame.GetHashCode()));
+            var set = new System.Collections.Generic.HashSet<LinearLocation>();
+            set.Add(loc);
+            set.Add(locSame);
+            Assert.That(set.Count, Is.EqualTo(1));
+        }
+
         [Test]
         public void TestRepeatedCoordsLineString()
         {
