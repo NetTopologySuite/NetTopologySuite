@@ -137,8 +137,43 @@ namespace NetTopologySuite.Operation.Buffer
                 return CreateEmptyResultGeometry();
             }
 
+            /*
+             * Heuristic to remove artifacts caused by topology robustness problems
+             * or buffer curve generation anomalies.
+             * Uses fact that for distance > 0 single-element inputs must create single element buffers.
+             * This does not hold if distance <= 0;
+             * distance = 0 can create multipolygon results due to topology collapse,
+             * and distance < 0 may erode polygons so they are disconnected.
+             */
+            if (distance > 0 && g.NumGeometries == 1 && resultPolyList.Count > 1)
+            {
+                resultPolyList = KeepLargestArea(resultPolyList);
+            }
+
             var resultGeom = _geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
+        }
+
+        private static IList<Geometry> KeepLargestArea(IList<Geometry> polyList)
+        {
+            var largest = FindLargestArea(polyList);
+            return new List<Geometry> { largest };
+        }
+
+        private static Geometry FindLargestArea(IList<Geometry> polyList)
+        {
+            double largestArea = 0;
+            Geometry largest = null;
+            foreach (var poly in polyList)
+            {
+                double polyArea = poly.Area;
+                if (largest == null || polyArea > largestArea)
+                {
+                    largest = poly;
+                    largestArea = polyArea;
+                }
+            }
+            return largest;
         }
 
         private INoder GetNoder(PrecisionModel precisionModel, ElevationModel em)
