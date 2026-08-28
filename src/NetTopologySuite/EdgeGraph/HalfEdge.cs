@@ -403,17 +403,13 @@ namespace NetTopologySuite.EdgeGraph
         /// </remarks>
         public int CompareAngularDirection(HalfEdge e)
         {
-            double dx = DirectionX;
-            double dy = DirectionY;
-            double dx2 = e.DirectionX;
-            double dy2 = e.DirectionY;
-
+            // assert: orig() == e.orig()
             // same vector
-            if (dx == dx2 && dy == dy2)
+            if (DirectionPt.Equals2D(e.DirectionPt))
                 return 0;
 
-            var quadrant = new Quadrant(dx, dy);
-            var quadrant2 = new Quadrant(dx2, dy2);
+            var quadrant = new Quadrant(Orig, DirectionPt);
+            var quadrant2 = new Quadrant(e.Orig, e.DirectionPt);
 
             /*
              * if the vectors are in different quadrants,
