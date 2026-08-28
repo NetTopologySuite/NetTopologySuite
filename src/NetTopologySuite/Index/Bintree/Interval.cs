@@ -5,7 +5,6 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary>
     /// Represents an (1-dimensional) closed interval on the Real number line.
     /// </summary>
-    [Serializable]
     public class Interval
     {
         private double _min;

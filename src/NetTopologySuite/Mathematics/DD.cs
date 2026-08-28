@@ -65,7 +65,6 @@ namespace NetTopologySuite.Mathematics
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-    [Serializable]
     public struct DD : IComparable, IComparable<DD> /*, IFormattable*/
     {
 
