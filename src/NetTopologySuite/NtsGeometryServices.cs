@@ -24,7 +24,6 @@ namespace NetTopologySuite
     {
         private static volatile NtsGeometryServices s_instance = new NtsGeometryServices();
 
-        [NonSerialized]
         private readonly ConcurrentDictionary<GeometryFactoryKey, GeometryFactory> m_factories = new ConcurrentDictionary<GeometryFactoryKey, GeometryFactory>();
 
         /// <summary>
