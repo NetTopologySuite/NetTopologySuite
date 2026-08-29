@@ -109,7 +109,7 @@
         }
 
         /// <summary>
-        /// Computes the maximum fo three values
+        /// Computes the maximum of three values
         /// </summary>
         /// <param name="v1">A number</param>
         /// <param name="v2">A number</param>
@@ -118,8 +118,8 @@
         public static double Max(double v1, double v2, double v3)
         {
             double max = v1;
-            if (v2 > v1) max = v2;
-            if (v2 > v3) max = v3;
+            if (v2 > max) max = v2;
+            if (v3 > max) max = v3;
             return max;
         }
 
@@ -141,7 +141,7 @@
         }
 
         /// <summary>
-        /// Computes the minimum of four values
+        /// Computes the minimum of three values
         /// </summary>
         /// <param name="v1">A number</param>
         /// <param name="v2">A number</param>
