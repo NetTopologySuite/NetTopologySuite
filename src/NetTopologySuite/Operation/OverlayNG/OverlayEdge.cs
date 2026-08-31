@@ -102,7 +102,8 @@ namespace NetTopologySuite.Operation.OverlayNG
         /// <param name="coords">The coordinate list to add to</param>
         public void AddCoordinates(CoordinateList coords)
         {
-            bool isFirstEdge = coords.Count > 0;
+            //-- fixes https://github.com/locationtech/jts/pull/1187 (JTS commit 52c5d9882)
+            bool isFirstEdge = coords.Count == 0;
             if (IsForward)
             {
                 int startIndex = 1;
