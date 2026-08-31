@@ -60,6 +60,74 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.That(set.Count, Is.EqualTo(1));
         }
 
+        /// <summary>
+        /// Regression test documenting a NaN-related bug found while reviewing JTS #1184
+        /// (NTS PR #872): because IEEE-754 comparisons involving <c>NaN</c> are always
+        /// <c>false</c>, <see cref="LinearLocation.CompareTo(LinearLocation)"/> falls through to
+        /// <c>return 0</c> whenever a <c>NaN</c> segment fraction is compared to <b>any</b> other
+        /// fraction (this NaN-tolerant branch is pre-existing NTS behavior exercised by
+        /// <see cref="TestZeroLengthLineString"/>, not introduced by PR #872). Since PR #872
+        /// defines <see cref="LinearLocation.Equals"/> as <c>CompareTo(other) == 0</c>, this
+        /// makes <c>Equals</c> non-transitive: this test does not assert that any particular pair
+        /// of locations <b>should</b> be equal, only that <c>Equals</c> must satisfy the
+        /// transitivity axiom of <see cref="object.Equals(object)"/> for whatever it does report.
+        /// </summary>
+        /// <remarks>
+        /// This test currently FAILS against PR #872 as submitted, for a <c>NaN</c>-fraction
+        /// location that today compares equal to both <c>0.0</c> and <c>0.5</c> fractions (which
+        /// are not equal to each other). It should pass once the NaN handling in
+        /// <c>CompareTo</c>/<c>Equals</c>/<c>GetHashCode</c> is made mutually consistent (e.g. by
+        /// giving <c>NaN</c> fractions an explicit, well-defined ordering), regardless of what
+        /// specific equality that fix settles on.
+        /// </remarks>
+        [Test]
+        public void TestNaNSegmentFractionBreaksEqualsTransitivity()
+        {
+            var zero = new LinearLocation(0, 0, 0.0);
+            var nan = new LinearLocation(0, 0, double.NaN);
+            var half = new LinearLocation(0, 0, 0.5);
+
+            bool zeroEqualsNan = zero.Equals(nan);
+            bool nanEqualsHalf = nan.Equals(half);
+            bool zeroEqualsHalf = zero.Equals(half);
+
+            // Transitivity: if zero == nan and nan == half, then zero == half must also hold.
+            // (If a future fix makes zero != nan or nan != half, this premise no longer applies
+            // and the test passes vacuously -- it only fails while the current bug's specific
+            // symptom, NaN comparing equal to unrelated fractions, is present.)
+            if (zeroEqualsNan && nanEqualsHalf)
+            {
+                Assert.That(zeroEqualsHalf, Is.True,
+                    "Equals violates transitivity: zero == nan and nan == half, but zero != half");
+            }
+        }
+
+        /// <summary>
+        /// Regression test documenting that the NaN-fraction bug described in
+        /// <see cref="TestNaNSegmentFractionBreaksEqualsTransitivity"/> also breaks the
+        /// <c>Equals</c>/<c>GetHashCode</c> contract directly: whenever
+        /// <see cref="LinearLocation.Equals"/> reports two locations as equal, their
+        /// <see cref="LinearLocation.GetHashCode"/> must also match.
+        /// </summary>
+        /// <remarks>
+        /// This test currently FAILS against PR #872 as submitted, for a <c>NaN</c>-fraction
+        /// location that today compares equal to an unrelated <c>0.7</c>-fraction location but
+        /// hashes differently. It should pass once the NaN handling is made mutually consistent.
+        /// </remarks>
+        [Test]
+        public void TestNaNSegmentFractionBreaksHashCodeContract()
+        {
+            var nan = new LinearLocation(0, 0, double.NaN);
+            var other = new LinearLocation(0, 0, 0.7);
+
+            // Equals/GetHashCode contract: equal objects must report equal hash codes.
+            if (nan.Equals(other))
+            {
+                Assert.That(nan.GetHashCode(), Is.EqualTo(other.GetHashCode()),
+                    "Equals/GetHashCode contract violated: nan.Equals(other) is true, but hash codes differ");
+            }
+        }
+
         [Test]
         public void TestRepeatedCoordsLineString()
         {
