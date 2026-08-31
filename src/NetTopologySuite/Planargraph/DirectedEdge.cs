@@ -63,9 +63,9 @@ namespace NetTopologySuite.Planargraph
             this.EdgeDirection = edgeDirection;
             p0 = from.Coordinate;
             p1 = directionPt;
+            _quadrant = new Quadrant(p0, p1);
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
-            _quadrant = new Quadrant(dx, dy);
             _angle = Math.Atan2(dy, dx);
         }
 

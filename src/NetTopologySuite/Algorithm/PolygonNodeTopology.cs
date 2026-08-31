@@ -133,8 +133,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns><c>true</c> if vector P has angle greater than Q</returns>
         private static bool IsAngleGreater(Coordinate origin, Coordinate p, Coordinate q)
         {
-            var quadrantP = Quadrant(origin, p);
-            var quadrantQ = Quadrant(origin, q);
+            var quadrantP = new Quadrant(origin, p);
+            var quadrantQ = new Quadrant(origin, q);
 
             /*
              * If the vectors are in different quadrants, 
@@ -163,8 +163,8 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static int CompareAngle(Coordinate origin, Coordinate p, Coordinate q)
         {
-            var quadrantP = Quadrant(origin, p);
-            var quadrantQ = Quadrant(origin, q);
+            var quadrantP = new Quadrant(origin, p);
+            var quadrantQ = new Quadrant(origin, q);
 
             /*
              * If the vectors are in different quadrants, 
@@ -183,14 +183,6 @@ namespace NetTopologySuite.Algorithm
                 case OrientationIndex.Clockwise: return -1;
                 default: return 0;
             }
-        }
-
-
-        private static Quadrant Quadrant(Coordinate origin, Coordinate p)
-        {
-            double dx = p.X - origin.X;
-            double dy = p.Y - origin.Y;
-            return new Quadrant(dx, dy);
         }
 
     }
