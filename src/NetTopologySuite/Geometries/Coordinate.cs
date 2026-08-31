@@ -400,10 +400,10 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Computes the 2-dimensional squared Euclidean distance to another location.
+        /// Computes the squared 2-dimensional Euclidean distance to another location.
         /// </summary>
         /// <param name="c">A <see cref="Coordinate"/> with which to do the distance comparison.</param>
-        /// <returns>the 2-dimensional squared Euclidean distance between the locations.</returns>
+        /// <returns>the squared 2-dimensional Euclidean distance between the locations.</returns>
         /// <remarks>The Z-ordinate is ignored.</remarks>
         public double DistanceSquared(Coordinate c)
         {
