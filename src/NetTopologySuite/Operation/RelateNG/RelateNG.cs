@@ -390,20 +390,25 @@ namespace NetTopologySuite.Operation.RelateNG
                 return false;
             }
 
-            bool hasExteriorIntersection = false;
+            //-- fixes https://github.com/locationtech/jts/issues/1175 (JTS commit e8de44d9f)
+            bool hasInteriorExteriorIntersection = false;
+            bool hasBoundaryExteriorIntersection = false;
             foreach(var elem in new GeometryCollectionEnumerator(geom.Geometry))
             {
                 if (elem.IsEmpty)
                     continue;
 
                 if (elem is LineString line) {
-                    //-- once an intersection with target exterior is recorded, skip further known-exterior points
-                    if (hasExteriorIntersection
+                    //-- once intersections with target exterior are recorded for both line-interior and line-boundary ends,
+                    //-- skip further known-exterior line components (optimization)
+                    if (hasInteriorExteriorIntersection && hasBoundaryExteriorIntersection
                         && elem.EnvelopeInternal.Disjoint(geomTarget.Envelope))
                         continue;
 
                     var e0 = line.CoordinateSequence.First;
-                    hasExteriorIntersection |= ComputeLineEnd(geom, isA, e0, geomTarget, topoComputer);
+                    var loc0 = ComputeLineEnd(geom, isA, e0, geomTarget, topoComputer);
+                    if (loc0 == Location.Interior) hasInteriorExteriorIntersection = true;
+                    else if (loc0 == Location.Boundary) hasBoundaryExteriorIntersection = true;
                     if (topoComputer.IsResultKnown)
                     {
                         return true;
@@ -412,7 +417,9 @@ namespace NetTopologySuite.Operation.RelateNG
                     if (!line.IsClosed)
                     {
                         var e1 = line.CoordinateSequence.Last;
-                        hasExteriorIntersection |= ComputeLineEnd(geom, isA, e1, geomTarget, topoComputer);
+                        var loc1 = ComputeLineEnd(geom, isA, e1, geomTarget, topoComputer);
+                        if (loc1 == Location.Interior) hasInteriorExteriorIntersection = true;
+                        else if (loc1 == Location.Boundary) hasBoundaryExteriorIntersection = true;
                         if (topoComputer.IsResultKnown)
                         {
                             return true;
@@ -426,7 +433,7 @@ namespace NetTopologySuite.Operation.RelateNG
 
         /// <summary>
         /// Compute the topology of a line endpoint.
-        /// Also reports if the line end is in the exterior of the target geometry,
+        /// Also reports the location of the line end if it is in the exterior of the target geometry,
         /// to optimize testing multiple exterior endpoints.
         /// </summary>
         /// <param name="geom"></param>
@@ -434,22 +441,27 @@ namespace NetTopologySuite.Operation.RelateNG
         /// <param name="pt"></param>
         /// <param name="geomTarget"></param>
         /// <param name="topoComputer"></param>
-        /// <returns><c>true</c> if the line endpoint is in the exterior of the target</returns>
-        private bool ComputeLineEnd(RelateGeometry geom, bool isA, Coordinate pt,
+        /// <returns>The location of the line endpoint (<see cref="Location.Interior"/> or <see cref="Location.Boundary"/>)
+        /// if it is in the exterior of the target, otherwise <see cref="Location.Null"/></returns>
+        private Location ComputeLineEnd(RelateGeometry geom, bool isA, Coordinate pt,
             RelateGeometry geomTarget, TopologyComputer topoComputer)
         {
             int locDimLineEnd = geom.LocateLineEndWithDim(pt);
             var dimLineEnd = DimensionLocation.Dimension(locDimLineEnd, topoComputer.GetDimension(isA));
             //-- skip line ends which are in a GC area
             if (dimLineEnd != Dimension.L)
-                return false;
+                return Location.Null;
             var locLineEnd = DimensionLocation.Location(locDimLineEnd);
 
             int locDimTarget = geomTarget.LocateWithDim(pt);
             var locTarget = DimensionLocation.Location(locDimTarget);
             var dimTarget = DimensionLocation.Dimension(locDimTarget, topoComputer.GetDimension(!isA));
             topoComputer.AddLineEndOnGeometry(isA, locLineEnd, locTarget, dimTarget, pt);
-            return locTarget == Location.Exterior;
+            if (locTarget == Location.Exterior)
+            {
+                return locLineEnd;
+            }
+            return Location.Null;
         }
 
         private bool ComputeAreaVertex(RelateGeometry geom, bool isA, RelateGeometry geomTarget, TopologyComputer topoComputer)

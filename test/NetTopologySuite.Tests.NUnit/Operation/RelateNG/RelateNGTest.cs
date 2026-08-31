@@ -320,6 +320,28 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckTouches(a, b, false);
         }
 
+        /// <summary>
+        /// Case from https://github.com/locationtech/jts/issues/1175
+        /// Tests that boundary points for disjoint line components are not skipped
+        /// by the exterior intersection optimization in ComputeLineEnds().
+        /// The optimization must track interior and boundary exterior intersections separately.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/e8de44d9fa36049ec165cc308cabaa66bf72957a"/>
+        /// </remarks>
+        [Test]
+        public void TestLineDisjointMultiLineWithBoundaryInExterior_JTS1175()
+        {
+            const string a = "LINESTRING(10 10,20 20)";
+            const string b = "MULTILINESTRING((0 0,1 0),(1 0,2 0),(-1 0,0 0))";
+            CheckRelate(a, b, "FF1FF0102");
+            CheckRelate(b, a, "FF1FF0102");
+            CheckIntersectsDisjoint(a, b, false);
+            CheckContainsWithin(a, b, false);
+            CheckTouches(a, b, false);
+        }
+
         [Test]
         public void TestLineSelfIntersectionCollinear()
         {
