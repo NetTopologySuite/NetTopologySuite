@@ -193,34 +193,34 @@ namespace NetTopologySuite.Operation.Buffer
                 if (geom is Point) return null;
                 if (geom is Polygon poly)
                 {
-                    return ComputePolygonCurve(poly, _parent._distance, _parent._bufferParams);
+                    return _parent.ComputePolygonCurve(poly, _parent._distance);
                 }
                 return _parent.ComputeCurve((LineString)geom, _parent._distance);
             }
+        }
 
-            private static Geometry ComputePolygonCurve(Polygon poly, double distance, BufferParameters bufferParams)
-            {
-                Geometry buffer;
-                if (bufferParams == null)
-                    buffer = BufferOp.Buffer(poly, distance);
-                else
-                    buffer = BufferOp.Buffer(poly, distance, bufferParams);
-                return ToLineString(buffer.Boundary);
-            }
+        private Geometry ComputePolygonCurve(Polygon poly, double distance)
+        {
+            Geometry buffer;
+            if (_bufferParams == null)
+                buffer = BufferOp.Buffer(poly, distance);
+            else
+                buffer = BufferOp.Buffer(poly, distance, _bufferParams);
+            return ToLineString(buffer.Boundary);
+        }
 
-            /// <summary>
-            /// Force LinearRings to be LineStrings.
-            /// </summary>
-            /// <param name="geom">A geometry, which may be a <c>LinearRing</c></param>
-            /// <returns>A geometry which will be a <c>LineString</c> or <c>MulitLineString</c></returns>
-            private static Geometry ToLineString(Geometry geom)
+        /// <summary>
+        /// Force LinearRings to be LineStrings.
+        /// </summary>
+        /// <param name="geom">A geometry, which may be a <c>LinearRing</c></param>
+        /// <returns>A geometry which will be a <c>LineString</c> or <c>MulitLineString</c></returns>
+        private static Geometry ToLineString(Geometry geom)
+        {
+            if (geom is LinearRing ring)
             {
-                if (geom is LinearRing ring)
-                {
-                    return geom.Factory.CreateLineString(ring.CoordinateSequence);
-                }
-                return geom;
+                return geom.Factory.CreateLineString(ring.CoordinateSequence);
             }
+            return geom;
         }
 
         /// <summary>
