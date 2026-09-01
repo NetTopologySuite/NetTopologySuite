@@ -119,13 +119,23 @@ namespace NetTopologySuite.Operation.RelateNG
         /// Self-noding is required for geometries which may self-cross
         /// - i.e.lines, and overlapping polygons in GeometryCollections.
         /// Self-noding is required for geometries which may
-        /// have self-crossing linework.
+        /// have self-crossing linework, or may have lines lying in the boundary of an area.
         /// This causes the coordinates of nodes created by
         /// crossing segments to be computed explicitly.
         /// This ensures that node locations match in situations
         /// where a self-crossing and mutual crossing occur at the same logical location.
         /// The canonical example is a self-crossing line tested against a single segment
         /// identical to one of the crossed segments.
+        /// <para/>
+        /// Currently, requiring self-noding prevents noder caching.
+        /// So it is important to limit the cases which require self-noding.
+        /// Currently self-noding is required for:
+        /// <list type="bullet">
+        /// <item><description>A geoms which require self-noding (lines or GCs, except for single-polygon GCs)</description></item>
+        /// <item><description>B geoms which are mixed A/L GCs</description></item>
+        /// </list>
+        /// Note that linear B inputs do not require self-noding in all cases.
+        /// In particular, if A is polygonal then predicates with linear B do not require self-noding.
         /// </summary>
         public bool IsSelfNodingRequired
         {
