@@ -182,7 +182,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         private double Magnitude()
         {
-            return (Math.Sqrt(_p.X*_p.X + _p.Y*_p.Y));
+            return (Mathematics.MathUtil.Hypot(_p.X, _p.Y));
         }
 
         /* returns k X v (cross product). this is a vector perpendicular to v */
