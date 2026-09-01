@@ -1,6 +1,7 @@
 ﻿using System;
 using NetTopologySuite.Algorithm.Construct;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Curves;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -92,6 +93,8 @@ namespace NetTopologySuite.Algorithm
         {
             if (geom.IsEmpty)
                 return;
+            if (CurvedGeometry.ContainsCurvedType(geom))
+                throw new NotSupportedException($"Centroid is not supported for {geom.GeometryType}.");
             if (geom is Point)
             {
                 AddPoint(geom.Coordinate);
@@ -112,6 +115,10 @@ namespace NetTopologySuite.Algorithm
                 {
                     Add(gc.GetGeometryN(i));
                 }
+            }
+            else
+            {
+                throw new NotSupportedException($"Centroid is not supported for {geom.GeometryType}.");
             }
         }
 

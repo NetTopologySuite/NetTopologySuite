@@ -1,6 +1,7 @@
 ﻿using System;
 using NetTopologySuite.Algorithm.Construct;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Curves;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -63,6 +64,8 @@ namespace NetTopologySuite.Algorithm
         {
             if (geom.IsEmpty)
                 return null;
+
+            CurvedGeometry.CheckNotCurved(geom, "InteriorPoint");
 
             Coordinate interiorPt;
             //var dim = geom.Dimension;
