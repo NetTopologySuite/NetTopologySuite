@@ -125,7 +125,7 @@ namespace NetTopologySuite.Mathematics
         /// Gets the y-ordinate value
         /// </summary>
         public double Y => _y;
-
+        
         /// <summary>
         /// Gets the ordinate values by index
         /// </summary>
@@ -436,7 +436,7 @@ namespace NetTopologySuite.Mathematics
             result = 37 * result + _y.GetHashCode();
             return result;
         }
-
+        
         /// <summary>
         /// Adds two vectors.
         /// </summary>
@@ -458,7 +458,7 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector2D(left.X * right.X, left.Y * right.Y);
         }
-
+        
         /// <summary>
         /// Subtracts two vectors.
         /// </summary>

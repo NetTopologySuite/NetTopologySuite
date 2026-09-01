@@ -436,14 +436,14 @@ namespace NetTopologySuite.Geometries.Utilities
         ///                 1
         /// inverse(A)  =  ---   x  adjoint(A)
         ///                det
-        ///
-        ///
+        /// 
+        /// 
         ///             =   1       |  m11  -m01   m01*m12-m02*m11  |
         ///                ---   x  | -m10   m00  -m00*m12+m10*m02  |
         ///                det      |  0     0     m00*m11-m10*m01  |
-        ///
-        ///
-        ///
+        /// 
+        /// 
+        /// 
         ///             = |  m11/det  -m01/det   m01*m12-m02*m11/det |
         ///               | -m10/det   m00/det  -m00*m12+m10*m02/det |
         ///               |   0           0          1               |

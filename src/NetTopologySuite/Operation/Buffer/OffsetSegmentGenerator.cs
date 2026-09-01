@@ -263,7 +263,7 @@ namespace NetTopologySuite.Operation.Buffer
              * use an endpoint as the single offset corner vertex.
              * This eliminates very short single-segment joins
              * and reduces the number of offset curve vertices.
-             * This also avoids robustness problems with computing mitre corners
+             * This also avoids robustness problems with computing mitre corners 
              * for nearly-parallel segments.
              */
             if (_offset0.P1.Distance(_offset1.P0) < _distance * OffsetSegmentSeparationFactor)
@@ -477,7 +477,7 @@ namespace NetTopologySuite.Operation.Buffer
              * First try a non-beveled join.
              * Compute the intersection point of the lines determined by the offsets.
              * Parallel or collinear lines will return a null point ==> need to be beveled
-             *
+             * 
              * Note: This computation is unstable if the offset segments are nearly collinear.
              * However, this situation should have been eliminated earlier by the check
              * for whether the offset segment endpoints are almost coincident

@@ -28,7 +28,7 @@ namespace NetTopologySuite.Algorithm
     /// </description></item></list>
     /// <para/>
     /// The class can also output a <see cref="Geometry"/> which approximates the
-    /// shape of the Minimum Bounding Circle (although as an approximation
+    /// shape of the Minimum Bounding Circle (although as an approximation 
     /// it is <b>not</b> guaranteed to <tt>cover</tt> all the input points.)
     /// <para/>
     /// The Maximum Diameter of the input point set can
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Algorithm
         /// They lie on the convex hull of the input.
         /// </summary>
         /// <returns>
-        /// The result is
+        /// The result is 
         /// <list type="Bullet">
         /// <item><description>a LineString between the two farthest points of the input</description></item>
         /// <item><description>a empty LineString if the input is empty</description></item>
