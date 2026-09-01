@@ -80,6 +80,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public override CoordinateSequence Create(Coordinate[] coordinates)
         {
+            return Create((ReadOnlySpan<Coordinate>)coordinates);
+        }
+
+        /// <summary>
+        /// Returns a CoordinateSequence based on the given span; whether or not the
+        /// values are copied is implementation-dependent.
+        /// </summary>
+        /// <param name="coordinates">A span of coordinates, which may not contain null elements</param>
+        /// <returns></returns>
+        public override CoordinateSequence Create(ReadOnlySpan<Coordinate> coordinates)
+        {
             // DEVIATION: JTS just uses the first coordinate, which can be lossy.
             (_, int dimension, int measures) = GetCommonSequenceParameters(coordinates);
             if (_type == PackedType.Double)
