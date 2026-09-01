@@ -399,6 +399,19 @@ namespace NetTopologySuite.Geometries
             return Mathematics.MathUtil.Hypot(dx, dy);
         }
 
+        /// <summary>
+        /// Computes the squared 2-dimensional Euclidean distance to another location.
+        /// </summary>
+        /// <param name="c">A <see cref="Coordinate"/> with which to do the distance comparison.</param>
+        /// <returns>the squared 2-dimensional Euclidean distance between the locations.</returns>
+        /// <remarks>The Z-ordinate is ignored.</remarks>
+        public double DistanceSquared(Coordinate c)
+        {
+            double dx = X - c.X;
+            double dy = Y - c.Y;
+            return dx * dx + dy * dy;
+        }
+
 #region System.Object overrides
         /// <summary>
         /// Returns <c>true</c> if <c>other</c> has the same values for the x and y ordinates.
