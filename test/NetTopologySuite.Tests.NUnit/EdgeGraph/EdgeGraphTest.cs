@@ -85,6 +85,35 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
             CheckNodeValid(e1);
         }
 
+        /// <summary>
+        /// Tests that <see cref="HalfEdge.CompareAngularDirection"/> is robust against
+        /// roundoff error when comparing near-collinear direction vectors, and that the
+        /// comparison is antisymmetric.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/a3927e635dfae12853f423db2ee137905f94f1a1"/>
+        /// (JTS locationtech/jts#1224)
+        /// </remarks>
+        [Test]
+        public void TestCompareRobust_JTS1224()
+        {
+            var graph = new NetTopologySuite.EdgeGraph.EdgeGraph();
+            var e1 = AddEdge(graph, 1, 1, 0, 0.5);
+            AddEdge(graph, 1, 1, 0, 0.49999999999999994);
+            AddEdge(graph, 1, 1, 0, 1);
+
+            var eUpper = FindEdge(graph, 1, 1, 0, 0.5);
+            var eLower = FindEdge(graph, 1, 1, 0, 0.49999999999999994);
+            Assert.That(eUpper.CompareTo(eLower), Is.Not.EqualTo(0),
+                "edges with distinct direction points must not compare equal");
+            Assert.That(eUpper.CompareTo(eLower), Is.EqualTo(-eLower.CompareTo(eUpper)),
+                "edge comparison must be antisymmetric");
+
+            CheckNodeValid(e1);
+            CheckNextPrev(graph);
+        }
+
         //==================================================
 
         private static void CheckEdgeRing(EGraph graph, Coordinate p, Coordinate[] dest)

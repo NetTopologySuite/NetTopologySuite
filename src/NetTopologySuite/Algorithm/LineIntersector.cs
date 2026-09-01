@@ -100,7 +100,7 @@ namespace NetTopologySuite.Algorithm
         {
             double dx = p.X - p1.X;
             double dy = p.Y - p1.Y;
-            double dist = Math.Sqrt(dx * dx + dy * dy);   // dummy value
+            double dist = Mathematics.MathUtil.Hypot(dx, dy);   // dummy value
             Assert.IsTrue(! (dist == 0.0 && ! p.Equals(p1)), "Invalid distance calculation");
             return dist;
         }

@@ -1,5 +1,5 @@
-﻿using System;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Algorithm
                 double dx = x1 - x0;
                 double dy = y1 - y0;
 
-                len += Math.Sqrt(dx * dx + dy * dy);
+                len += MathUtil.Hypot(dx, dy);
 
                 x0 = x1;
                 y0 = y1;

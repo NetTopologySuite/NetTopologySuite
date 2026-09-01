@@ -60,6 +60,10 @@ namespace NetTopologySuite.Geometries
         /// Creates a quadrant of a directed line segment (specified as x and y
         /// displacements, which cannot both be 0).
         /// </summary>
+        /// <remarks>
+        /// If the segment coordinates are available it is more robust
+        /// to use <see cref="Quadrant(Coordinate, Coordinate)"/>.
+        /// </remarks>
         /// <param name="dx"></param>
         /// <param name="dy"></param>
         /// <exception cref="ArgumentException">If the displacements are both 0</exception>
@@ -77,6 +81,10 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns the quadrant of a directed line segment from p0 to p1.
         /// </summary>
+        /// <remarks>
+        /// This method is more robust than <see cref="Quadrant(double, double)"/>
+        /// if using that requires subtractions to compute vector components.
+        /// </remarks>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <exception cref="ArgumentException"> if the points are equal</exception>

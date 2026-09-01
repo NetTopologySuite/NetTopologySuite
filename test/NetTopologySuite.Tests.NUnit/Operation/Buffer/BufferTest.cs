@@ -841,6 +841,98 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                 "POLYGON ((48267.2218198241 -49049.37231112561, 44430.1 -55696.500291383236, 44430.1 -55107.58561879013, 44506.96594366424 -54974.50014155032, 44507.05088958367 -54974.309530288774, 44507.09442572395 -54974.10543945913, 44507.09465615313 -54973.896756903174, 44507.05157083636 -54973.69257042533, 44506.96704607295 -54973.50177203271, 44430.1 -54839.73314639927, 44430.1 -51569.2, 44430.08071956347 -51569.00457958696, 44430.02362172434 -51568.81669475566, 44429.93090822513 -51568.64359050924, 44429.80615417933 -51568.49194189856, 42172.42282165639 -49317.178566110095, 48267.2218198241 -49049.37231112561))");
         }
 
+        /// <summary>
+        /// Buffering a single-element LineString can produce spurious small extra
+        /// polygons due to topology robustness problems or curve generation anomalies.
+        /// The result should still be a single polygon.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/727943b68cc36a9e395c28bfea9b40b720a4f971"/>
+        /// (JTS locationtech/jts#1161). See also https://github.com/libgeos/geos/issues/1321.
+        /// </remarks>
+        [Test]
+        public void TestArtifactsRemovedFromLineBuffer_JTS1161()
+        {
+            const string wkt = "LINESTRING (640734.77510795 216861.236982439, 640733.832969266 216862.938074642, 640732.814325629 216865.039674844, 640731.225095251 216869.012141189, 640729.979984761 216871.879095724, 640729.445974092 216873.02148841, 640729.002794006 216873.679857725, 640728.952197105 216873.745389857, 640728.676962154 216874.089814544)";
+            CheckBufferNumGeometries(wkt, 100, 1);
+        }
+
+        /// <inheritdoc cref="TestArtifactsRemovedFromLineBuffer_JTS1161"/>
+        /// <remarks>See also https://github.com/r-spatial/sf/issues/2552.</remarks>
+        [Test]
+        public void TestArtifactsRemovedFromLineBufferFlatEnd_JTS1161()
+        {
+            const string wkt = "LINESTRING (245184.6 6045650, 245193.3 6045649, 245201.7 6045651, 245204.3 6045653)";
+            var geom = Read(wkt);
+            var param = new BufferParameters { EndCapStyle = EndCapStyle.Flat };
+            var buf = BufferOp.Buffer(geom, 50, param);
+            Assert.That(buf.NumGeometries, Is.EqualTo(1));
+        }
+
+        /// <summary>
+        /// Buffering geometries whose coordinate list becomes empty after removing
+        /// invalid ordinates (NaN/Infinite) should produce an empty result,
+        /// instead of throwing or crashing.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/fc9ed7dcb8921e7262633674e817a4f08a4ace25"/>
+        /// (JTS locationtech/jts#1165)
+        /// </remarks>
+        [Test]
+        public void TestInvalidCoordPoint_JTS1165()
+        {
+            var geom = Read("POINT (NaN NaN)");
+            CheckBufferPolygonEmpty(geom, 1, true);
+        }
+
+        [Test]
+        public void TestInvalidCoordsLine_JTS1165()
+        {
+            var geom = Read("LINESTRING (NaN NaN, NaN NaN)");
+            CheckBufferPolygonEmpty(geom, 1, true);
+        }
+
+        [Test]
+        public void TestInvalidCoordShell_JTS1165()
+        {
+            // using Inf ordinates creates a valid ring with equal endpoints
+            var geom = GeometryFactory.CreatePolygon(InfCoords(5));
+            CheckBufferPolygonEmpty(geom, 1, true);
+        }
+
+        [Test]
+        public void TestInvalidCoordHole_JTS1165()
+        {
+            var poly = (Polygon)Read("POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9), (3 7, 7 7, 7 3, 3 3, 3 7))");
+
+            var shell = poly.Shell;
+            var hole = (LinearRing)poly.GetInteriorRingN(0);
+            var infHole = GeometryFactory.CreateLinearRing(InfCoords(5));
+            var polyInfHole = GeometryFactory.CreatePolygon(shell, new[] { hole, infHole });
+
+            var bufferOrig = poly.Buffer(1);
+            var bufferInf = polyInfHole.Buffer(1);
+            // buffers should be same since inf hole is skipped
+            CheckEqual(bufferOrig, bufferInf);
+        }
+
+        private static Coordinate[] InfCoords(int size)
+        {
+            var coords = new Coordinate[size];
+            for (int i = 0; i < size; i++)
+                coords[i] = new Coordinate(double.PositiveInfinity, double.PositiveInfinity);
+            return coords;
+        }
+
+        private void CheckBufferPolygonEmpty(Geometry geom, double dist, bool isEmptyExpected)
+        {
+            var result = geom.Buffer(dist);
+            Assert.That(result, Is.InstanceOf<Polygon>());
+            Assert.That(result.IsEmpty, Is.EqualTo(isEmptyExpected));
+        }
+
         //===================================================
 
         private static BufferParameters BufParamRoundMitre(double mitreLimit)

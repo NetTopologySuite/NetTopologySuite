@@ -332,7 +332,7 @@ namespace NetTopologySuite.Geometries
 
             double dx = _p1.X - _p0.X;
             double dy = _p1.Y - _p0.Y;
-            double len = Math.Sqrt(dx * dx + dy * dy);
+            double len = Mathematics.MathUtil.Hypot(dx, dy);
             double ux = 0.0;
             double uy = 0.0;
             if (offsetDistance != 0.0)

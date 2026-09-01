@@ -375,7 +375,7 @@ namespace NetTopologySuite.Algorithm
                 double dx = p.X - P.X;
                 double dy = p.Y - P.Y;
                 if (dy < 0) dy = -dy;
-                double len = Math.Sqrt(dx * dx + dy * dy);
+                double len = Mathematics.MathUtil.Hypot(dx, dy);
                 double sin = dy / len;
 
                 if (sin < minSin)

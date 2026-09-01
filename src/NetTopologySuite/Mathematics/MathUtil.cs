@@ -98,6 +98,28 @@
         }
 
         /// <summary>
+        /// Computes the length of the hypotenuse of a right triangle with sides
+        /// of length <paramref name="x"/> and <paramref name="y"/>, i.e. the
+        /// length of vector (<paramref name="x"/>, <paramref name="y"/>).
+        /// <para/>
+        /// This is the naive formula: <c>Sqrt(x² + y²)</c>. It is faster than
+        /// the overflow-safe scaled formula used by <c>java.lang.Math.hypot</c>
+        /// (the variant JTS replaces with this method). It does NOT guard
+        /// against intermediate overflow when |x| or |y| approaches
+        /// <c>sqrt(double.MaxValue)</c>; if your inputs may reach that
+        /// magnitude, prefer a scaled variant.
+        /// <para/>
+        /// JTS: <c>MathUtil.hypot</c> (added in JTS 1.21, locationtech/jts#1112).
+        /// </summary>
+        /// <param name="x">The x ordinate</param>
+        /// <param name="y">The y ordinate</param>
+        /// <returns>The length of vector (<paramref name="x"/>, <paramref name="y"/>)</returns>
+        public static double Hypot(double x, double y)
+        {
+            return System.Math.Sqrt(x * x + y * y);
+        }
+
+        /// <summary>
         /// Computes the average of two numbers.
         /// </summary>
         /// <param name="x1">A number</param>
