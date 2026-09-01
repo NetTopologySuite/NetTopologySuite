@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         /// <param name="offsetPts"></param>
         private void ComputeOffsetPoints(Coordinate p0, Coordinate p1, double offsetDistance, IList<Coordinate> offsetPts)
         {
-            double dx = p1.X - p0.Y;
+            double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
             double len = Mathematics.MathUtil.Hypot(dx, dy);
             // u is the vector that is the length of the offset, in the direction of the segment
