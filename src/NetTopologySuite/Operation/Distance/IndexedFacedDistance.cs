@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Index.Strtree;
 
 namespace NetTopologySuite.Operation.Distance
@@ -146,55 +147,52 @@ namespace NetTopologySuite.Operation.Distance
             return nearestPts;
         }
 
+        /// <summary>
+        /// Computes the nearest location on the target geometry to a point
+        /// (JTS <c>IndexedFacetDistance.nearestLocation</c>).
+        /// </summary>
+        public CoordinateSequenceLocation NearestLocation(Coordinate p)
+        {
+            var seq = new CoordinateArraySequence(new[] { p });
+            var fs = new FacetSequence(seq, 0);
+            var fsN = _cachedTree.NearestNeighbour(fs.Envelope, fs, FacetSeqDist);
+            return fsN.NearestLocation(p);
+        }
+
+        /// <summary>
+        /// Computes the nearest point on the target geometry to a point.
+        /// </summary>
+        public Coordinate NearestPoint(Coordinate p)
+        {
+            return NearestLocation(p).Coordinate;
+        }
+
+        /// <summary>
+        /// Computes the distance from the target geometry to a point.
+        /// </summary>
+        public double Distance(Coordinate p)
+        {
+            return p.Distance(NearestPoint(p));
+        }
+
+        /// <summary>
+        /// Computes the distance from the target geometry to a segment.
+        /// </summary>
+        public double Distance(Coordinate p0, Coordinate p1)
+        {
+            var seq = new CoordinateArraySequence(new[] { p0, p1 });
+            var fs2 = new FacetSequence(seq, 0, 2);
+            var fs1 = _cachedTree.NearestNeighbour(fs2.Envelope, fs2, FacetSeqDist);
+            var loc = fs1.NearestLocations(fs2);
+            return loc[0].Coordinate.Distance(loc[1].Coordinate);
+        }
+
         private static Coordinate[] ToPoints(GeometryLocation[] locations)
         {
             if (locations == null)
                 return null;
             var nearestPts = new [] {locations[0].Coordinate, locations[1].Coordinate};
             return nearestPts;
-        }
-
-        /// <summary>
-        /// Computes the distance from the base geometry to a single point.
-        /// </summary>
-        /// <param name="p">The query coordinate</param>
-        /// <returns>The distance to the nearest point on the base geometry</returns>
-        public double Distance(Coordinate p)
-        {
-            return Distance(_baseGeometry.Factory.CreatePoint(p));
-        }
-
-        /// <summary>
-        /// Computes the distance from the base geometry to a line segment defined by two points.
-        /// </summary>
-        /// <param name="p0">The first endpoint of the segment</param>
-        /// <param name="p1">The second endpoint of the segment</param>
-        /// <returns>The distance from the segment to the base geometry</returns>
-        public double Distance(Coordinate p0, Coordinate p1)
-        {
-            return Distance(_baseGeometry.Factory.CreateLineString(new[] { p0, p1 }));
-        }
-
-        /// <summary>
-        /// Computes the nearest point on the base geometry to a query coordinate.
-        /// </summary>
-        /// <param name="p">The query coordinate</param>
-        /// <returns>The nearest coordinate on the base geometry</returns>
-        public Coordinate NearestPoint(Coordinate p)
-        {
-            var pair = NearestPoints(_baseGeometry.Factory.CreatePoint(p));
-            return pair == null ? null : pair[0];
-        }
-
-        /// <summary>
-        /// Computes the nearest location on the base geometry to a query coordinate.
-        /// </summary>
-        /// <param name="p">The query coordinate</param>
-        /// <returns>The nearest <see cref="GeometryLocation"/> on the base geometry</returns>
-        public GeometryLocation NearestLocation(Coordinate p)
-        {
-            var locs = NearestLocations(_baseGeometry.Factory.CreatePoint(p));
-            return locs == null ? null : locs[0];
         }
 
         /// <summary>
