@@ -5,7 +5,6 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
-    [Serializable]
     public sealed class CoordinateArraySequenceFactory : CoordinateSequenceFactory
     {
         private CoordinateArraySequenceFactory() : base(Ordinates.XYZM) { }
