@@ -166,6 +166,11 @@ namespace NetTopologySuite.Operation.Buffer
             if (_curveBuilder.IsLineOffsetEmpty(_distance)) return;
 
             var coord = Clean(line.Coordinates);
+
+            // skip if no valid coordinates
+            if (coord.Length == 0)
+                return;
+
             /*
              * Rings (closed lines) are generated with a continuous curve, 
              * with no end arcs. This produces better quality linework, 
@@ -210,10 +215,16 @@ namespace NetTopologySuite.Operation.Buffer
 
             var shell = p.Shell;
             var shellCoord = Clean(shell.Coordinates);
+
+            // skip if no valid coordinates
+            if (shellCoord.Length == 0)
+                return;
+
             // optimization - don't compute buffer
             // if the polygon would be completely eroded
             if (_distance < 0.0 && IsRingFullyEroded(shellCoord, shell.EnvelopeInternal, false, _distance))
                 return;
+
             // don't attempt to buffer a polygon with too few distinct vertices
             if (_distance <= 0.0 && shellCoord.Length < 3)
                 return;
@@ -225,6 +236,10 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 var hole = (LinearRing)p.GetInteriorRingN(i);
                 var holeCoord = Clean(hole.Coordinates);
+
+                // skip if no valid coordinates
+                if (holeCoord.Length == 0)
+                    continue;
 
                 // optimization - don't compute buffer for this hole
                 // if the hole would be completely covered

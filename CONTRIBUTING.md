@@ -35,6 +35,7 @@ First of all don't be afraid to contribute. Most contributions are small but ver
   - All public or protected methods, functions and properties have sufficient code documentation
 - Verfiy that the code works as expected by providing adequate unit tests.
 - __Upon issueing a pull-request, you need to sign this [contributor license agreement](https://gist.github.com/FObermaier/2db0402438d23227ed66de0d2d4fbe78)__
+- If you use AI tools (e.g. Copilot, ChatGPT) to help write your contribution, see our [AI-assisted contribution policy](AI_POLICY.md) — disclosure and the usual quality/licensing rules apply.
 
 ## What can you do to help?
 

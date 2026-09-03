@@ -23,7 +23,32 @@ namespace NetTopologySuite.Tests.NUnit.Coverage
             var coverage = ToArray(covGeom);
             var actual = CoverageGapFinder.FindGaps(coverage, gapWidth);
             var expected = Read(wktExpected);
-            CheckEqual(expected, actual);
+            /*
+             * CoverageGapFinder returns gap rings as (closed) LineStrings.
+             * LineString.Normalized() does not rotate the ring to a canonical
+             * start point/orientation the way Polygon/LinearRing normalization
+             * does, so comparing rings directly as LineStrings is fragile with
+             * respect to which vertex happens to be first.
+             * Wrap them as polygons (test-only) for a robust, rotation- and
+             * orientation-invariant comparison. JTS made the equivalent fix to
+             * its own port of this test (see JTS commit e0bddb56e).
+             */
+            CheckEqual(RingsAsPolygons(expected), RingsAsPolygons(actual));
+        }
+
+        private static Geometry RingsAsPolygons(Geometry geom)
+        {
+            if (geom.IsEmpty)
+                return geom;
+
+            var polys = new Geometry[geom.NumGeometries];
+            for (int i = 0; i < geom.NumGeometries; i++)
+            {
+                var line = (LineString)geom.GetGeometryN(i);
+                var ring = line.Factory.CreateLinearRing(line.CoordinateSequence);
+                polys[i] = line.Factory.CreatePolygon(ring);
+            }
+            return geom.Factory.BuildGeometry(polys);
         }
 
         private static Geometry[] ToArray(Geometry geom)

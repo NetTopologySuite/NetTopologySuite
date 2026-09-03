@@ -301,7 +301,7 @@ namespace NetTopologySuite.Geometries
 
                 double w = Width;
                 double h = Height;
-                return Math.Sqrt(w * w + h * h);
+                return Mathematics.MathUtil.Hypot(w, h);
             }
         }
 
@@ -771,7 +771,7 @@ namespace NetTopologySuite.Geometries
             if (dy == 0.0)
                 return dx;
 
-            return Math.Sqrt(dx * dx + dy * dy);
+            return Mathematics.MathUtil.Hypot(dx, dy);
         }
 
         /// <inheritdoc />

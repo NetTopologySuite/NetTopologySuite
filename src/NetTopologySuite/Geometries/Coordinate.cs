@@ -396,7 +396,7 @@ namespace NetTopologySuite.Geometries
         {
             double dx = X - c.X;
             double dy = Y - c.Y;
-            return Math.Sqrt(dx * dx + dy * dy);
+            return Mathematics.MathUtil.Hypot(dx, dy);
         }
 
 #region System.Object overrides
