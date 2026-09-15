@@ -74,11 +74,7 @@ namespace NetTopologySuite.GeometriesGraph
                 return -1;
             if (_segmentIndex > segmentIndex)
                 return 1;
-            if (_distance < dist)
-                return -1;
-            if (_distance > dist)
-                return 1;
-            return 0;
+            return _distance.CompareTo(dist);
         }
 
         /// <summary>

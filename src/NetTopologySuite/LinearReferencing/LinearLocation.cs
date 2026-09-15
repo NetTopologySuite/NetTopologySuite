@@ -350,15 +350,7 @@ namespace NetTopologySuite.LinearReferencing
                 return 1;
 
             // same segment, so compare segment fraction
-            if (double.IsNaN(_segmentFraction) && double.IsNaN(other._segmentFraction))
-                return 0;
-            if (_segmentFraction < other.SegmentFraction)
-                return -1;
-            if (_segmentFraction > other.SegmentFraction)
-                return 1;
-
-            // same location
-            return 0;
+            return _segmentFraction.CompareTo(other.SegmentFraction);
         }
 
         /// <summary>
