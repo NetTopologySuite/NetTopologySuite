@@ -350,15 +350,33 @@ namespace NetTopologySuite.LinearReferencing
                 return 1;
 
             // same segment, so compare segment fraction
-            if (double.IsNaN(_segmentFraction) && double.IsNaN(other._segmentFraction))
-                return 0;
-            if (_segmentFraction < other.SegmentFraction)
-                return -1;
-            if (_segmentFraction > other.SegmentFraction)
-                return 1;
+            return _segmentFraction.CompareTo(other.SegmentFraction);
+        }
 
-            // same location
-            return 0;
+        /// <summary>
+        /// Tests whether this location is equal to another,
+        /// i.e. has the same component index, segment index and segment fraction.
+        /// This is consistent with <see cref="CompareTo(LinearLocation)"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare to</param>
+        /// <returns><c>true</c> if the locations are equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is LinearLocation other) || GetType() != obj.GetType()) return false;
+            return CompareTo(other) == 0;
+        }
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = _componentIndex;
+                hashCode = (hashCode * 397) ^ _segmentIndex;
+                hashCode = (hashCode * 397) ^ _segmentFraction.GetHashCode();
+                return hashCode;
+            }
         }
 
         /// <summary>

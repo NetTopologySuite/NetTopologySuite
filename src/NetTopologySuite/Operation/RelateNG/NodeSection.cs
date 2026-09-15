@@ -174,5 +174,36 @@ namespace NetTopologySuite.Operation.RelateNG
                 return 1;
             return v0.CompareTo(v1);
         }
+
+        /// <summary>
+        /// Tests whether this section is equal to another,
+        /// i.e. has the same parent geometry, dimension, element id, ring id
+        /// and edge vertices.
+        /// Like <see cref="CompareTo"/>, sections are assumed to be
+        /// at the same node point, and this is consistent with that ordering.
+        /// </summary>
+        /// <param name="obj">The object to compare to</param>
+        /// <returns><c>true</c> if the sections are equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (!(obj is NodeSection other) || GetType() != obj.GetType()) return false;
+            return CompareTo(other) == 0;
+        }
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = IsA.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)Dimension;
+                hashCode = (hashCode * 397) ^ Id;
+                hashCode = (hashCode * 397) ^ RingId;
+                hashCode = (hashCode * 397) ^ (_v0?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (_v1?.GetHashCode() ?? 0);
+                return hashCode;
+            }
+        }
     }
 }

@@ -74,11 +74,7 @@ namespace NetTopologySuite.GeometriesGraph
                 return -1;
             if (_segmentIndex > segmentIndex)
                 return 1;
-            if (_distance < dist)
-                return -1;
-            if (_distance > dist)
-                return 1;
-            return 0;
+            return _distance.CompareTo(dist);
         }
 
         /// <summary>
@@ -110,6 +106,29 @@ namespace NetTopologySuite.GeometriesGraph
         public override string ToString()
         {
             return _coordinate + " seg # = " + _segmentIndex + " dist = " + _distance;
+        }
+
+        /// <summary>
+        /// Tests whether this intersection is at the same location
+        /// (segment index and distance) as another.
+        /// This is consistent with <see cref="CompareTo"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare to</param>
+        /// <returns><c>true</c> if this intersection is at the same location as the argument</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj == null || GetType() != obj.GetType()) return false;
+            return CompareTo(obj) == 0;
+        }
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_segmentIndex * 397) ^ _distance.GetHashCode();
+            }
         }
 
     }
