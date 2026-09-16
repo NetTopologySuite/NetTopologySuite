@@ -74,6 +74,7 @@ namespace NetTopologySuite.GeometriesGraph
                 return -1;
             if (_segmentIndex > segmentIndex)
                 return 1;
+            // Use double.CompareTo to give NaN a consistent ordering.
             return _distance.CompareTo(dist);
         }
 
