@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Curves;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
 
@@ -160,6 +161,8 @@ namespace NetTopologySuite.Operation.Valid
         private bool ComputeSimple(Geometry geom)
         {
             if (geom.IsEmpty) return true;
+            if (CurvedGeometry.IsCurvedType(geom))
+                throw CurvedGeometry.NotYetSupported(geom, "IsSimple");
             switch (geom)
             {
                 case Point _:
