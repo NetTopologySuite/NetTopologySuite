@@ -466,6 +466,18 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void TestReadNestedGeometryCollectionDepth()
+        {
+            var wkt = "POINT (0 0)";
+            for (var i = 0; i <= WKTReader.MaxGeometryCollectionNestingDepth; i++)
+                wkt = $"GEOMETRYCOLLECTION ({wkt})";
+
+            Assert.That(() => readerXY.Read(wkt),
+                Throws.TypeOf<ParseException>()
+                    .With.Message.Contains("GeometryCollection nesting depth exceeds maximum"));
+        }
+
+        [Test]
         public void TestEmptyLineDimOldSyntax()
         {
             var wktReader = new WKTReader();

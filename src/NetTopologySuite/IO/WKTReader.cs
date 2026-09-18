@@ -60,6 +60,8 @@ namespace NetTopologySuite.IO
 
         private static readonly StreamTokenizerSettings TokenizerSettings = CreateDefaultStreamTokenizerSettings();
 
+        internal const int MaxGeometryCollectionNestingDepth = 1000;
+
         private NtsGeometryServices _ntsGeometryServices;
 
         private int? _overriddenDefaultSRID;
@@ -670,7 +672,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> specified by the next token
         /// in the stream.</returns>
-        internal Geometry ReadGeometryTaggedText(TokenStream tokens)
+        internal Geometry ReadGeometryTaggedText(TokenStream tokens, int nestingDepth = 0)
         {
             /*
              * A new different implementation by Marc Jacquin:
@@ -764,7 +766,7 @@ namespace NetTopologySuite.IO
             else if (IsTypeName(tokens, type, WKTConstants.MULTIPOLYGON))
                 returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
             else if (IsTypeName(tokens, type, WKTConstants.GEOMETRYCOLLECTION))
-                returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
+                returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags, nestingDepth);
             else throw new ParseException("Unknown type: " + type);
 
             if (returned == null)
@@ -997,8 +999,11 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
         /// <returns>
         /// A <c>GeometryCollection</c> specified by the
         /// next token in the stream.</returns>
-        private GeometryCollection ReadGeometryCollectionText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
+        private GeometryCollection ReadGeometryCollectionText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags, int nestingDepth)
         {
+            if (nestingDepth >= MaxGeometryCollectionNestingDepth)
+                throw new ParseException($"GeometryCollection nesting depth exceeds maximum of {MaxGeometryCollectionNestingDepth}");
+
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals(WKTConstants.EMPTY))
                 return factory.CreateGeometryCollection();
@@ -1006,7 +1011,7 @@ private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinat
             var geometries = new List<Geometry>();
             do
             {
-                var geometry = ReadGeometryTaggedText(tokens);
+                var geometry = ReadGeometryTaggedText(tokens, nestingDepth + 1);
                 geometries.Add(geometry);
                 nextToken = GetNextCloserOrComma(tokens);
             }

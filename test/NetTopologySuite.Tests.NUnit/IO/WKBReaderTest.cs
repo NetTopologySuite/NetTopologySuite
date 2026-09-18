@@ -23,6 +23,30 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
 
         [Test]
+        public void TestNestedGeometryCollectionDepth()
+        {
+            using var stream = new MemoryStream();
+            using (var writer = new BinaryWriter(stream, System.Text.Encoding.UTF8, true))
+            {
+                for (var i = 0; i <= WKBReader.MaxGeometryCollectionNestingDepth; i++)
+                {
+                    writer.Write((byte)1);
+                    writer.Write((uint)7);
+                    writer.Write(1);
+                }
+
+                writer.Write((byte)1);
+                writer.Write((uint)1);
+                writer.Write(0d);
+                writer.Write(0d);
+            }
+
+            Assert.That(() => new WKBReader().Read(stream.ToArray()),
+                Throws.TypeOf<ParseException>()
+                    .With.Message.Contains("GeometryCollection nesting depth exceeds maximum"));
+        }
+
+        [Test]
         public void TestShortPolygons()
         {
             // one point
