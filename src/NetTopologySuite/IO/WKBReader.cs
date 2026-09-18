@@ -91,6 +91,7 @@ namespace NetTopologySuite.IO
         private const string FieldNumCoords = "numCoords";
         private const string FieldNumRings = "numRings";
         private const string FieldNumElements = "numElements";
+        internal const int MaxGeometryCollectionNestingDepth = 1000;
 
 
         private readonly CoordinateSequenceFactory _sequenceFactory;
@@ -579,6 +580,14 @@ namespace NetTopologySuite.IO
         /// <returns>A <see cref="GeometryCollection"/> geometry</returns>
         protected Geometry ReadGeometryCollection(BinaryReader reader, CoordinateSystem cs, int srid)
         {
+            return ReadGeometryCollection(reader, cs, srid, 0);
+        }
+
+        private Geometry ReadGeometryCollection(BinaryReader reader, CoordinateSystem cs, int srid, int nestingDepth)
+        {
+            if (nestingDepth >= MaxGeometryCollectionNestingDepth)
+                throw new ParseException($"GeometryCollection nesting depth exceeds maximum of {MaxGeometryCollectionNestingDepth}");
+
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
 
             int numGeometries = ReadNumField(reader, FieldNumElements, ReasonableNumElements(reader.BaseStream));
@@ -643,7 +652,7 @@ namespace NetTopologySuite.IO
                     case WKBGeometryTypes.WKBGeometryCollectionZ:
                     case WKBGeometryTypes.WKBGeometryCollectionM:
                     case WKBGeometryTypes.WKBGeometryCollectionZM:
-                        geometries[i] = ReadGeometryCollection(reader, cs2, srid2);
+                        geometries[i] = ReadGeometryCollection(reader, cs2, srid2, nestingDepth + 1);
                         break;
 
                     default:
