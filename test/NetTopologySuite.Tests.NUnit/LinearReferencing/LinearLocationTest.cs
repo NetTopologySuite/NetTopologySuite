@@ -75,6 +75,20 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         [Test]
+        public void TestCompareToNaNOrdering()
+        {
+            var nan = new LinearLocation(0, 0, double.NaN);
+            var zero = new LinearLocation(0, 0, 0.0);
+            var half = new LinearLocation(0, 0, 0.5);
+
+            Assert.That(nan.CompareTo(zero), Is.LessThan(0));
+            Assert.That(zero.CompareTo(nan), Is.GreaterThan(0));
+            Assert.That(nan.CompareTo(new LinearLocation(0, 0, double.NaN)), Is.EqualTo(0));
+            Assert.That(zero.CompareTo(half), Is.LessThan(0));
+            Assert.That(half.CompareTo(zero), Is.GreaterThan(0));
+        }
+
+        [Test]
         public void TestRepeatedCoordsLineString()
         {
             var line = reader.Read("LINESTRING (10 0, 10 0, 20 0)");

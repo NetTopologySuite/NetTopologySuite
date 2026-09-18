@@ -52,5 +52,19 @@ namespace NetTopologySuite.Tests.NUnit.GeometriesGraph
             Assert.That(nan.GetHashCode(),
                 Is.EqualTo(new EdgeIntersection(new Coordinate(1, 2), 0, double.NaN).GetHashCode()));
         }
+
+        [Test]
+        public void TestCompareToNaNOrdering()
+        {
+            var nan = new EdgeIntersection(new Coordinate(1, 2), 0, double.NaN);
+            var zero = new EdgeIntersection(new Coordinate(1, 2), 0, 0.0);
+            var half = new EdgeIntersection(new Coordinate(1, 2), 0, 0.5);
+
+            Assert.That(nan.CompareTo(zero), Is.LessThan(0));
+            Assert.That(zero.CompareTo(nan), Is.GreaterThan(0));
+            Assert.That(nan.CompareTo(new EdgeIntersection(new Coordinate(1, 2), 0, double.NaN)), Is.EqualTo(0));
+            Assert.That(zero.CompareTo(half), Is.LessThan(0));
+            Assert.That(half.CompareTo(zero), Is.GreaterThan(0));
+        }
     }
 }

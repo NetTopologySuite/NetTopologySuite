@@ -350,6 +350,7 @@ namespace NetTopologySuite.LinearReferencing
                 return 1;
 
             // same segment, so compare segment fraction
+            // Use double.CompareTo to give NaN a consistent ordering.
             return _segmentFraction.CompareTo(other.SegmentFraction);
         }
 
