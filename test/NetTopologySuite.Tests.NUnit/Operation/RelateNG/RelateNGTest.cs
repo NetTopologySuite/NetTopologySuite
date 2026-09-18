@@ -723,7 +723,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
 
         //================  Repeated Points  ==============
         [Test]
-        public void TestEmptyEquals()
+        public void TestEmptyEmpty()
         {
             string[] empties = {
         "POINT EMPTY",
@@ -742,8 +742,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
                     string a = empties[i];
                     string b = empties[j];
                     CheckRelate(a, b, "FFFFFFFF2");
-                    //-- currently in JTS empty geometries do NOT test equal
-                    CheckEquals(a, b, false);
+                    //-- empty geometries are all topologically equal
+                    CheckEquals(a, b, true);
+
+                    CheckIntersectsDisjoint(a, b, false);
+                    CheckContainsWithin(a, b, false);
                 }
             }
         }

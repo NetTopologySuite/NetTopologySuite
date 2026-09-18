@@ -196,11 +196,6 @@ namespace NetTopologySuite.Operation.RelateNG
 
             var geomB = new RelateGeometry(b, _boundaryNodeRule);
 
-            if (_geomA.IsEmpty && geomB.IsEmpty)
-            {
-                //TODO: what if predicate is disjoint?  Perhaps use result on disjoint envs?
-                return FinishValue(predicate);
-            }
             var dimA = _geomA.DimensionReal;
             var dimB = geomB.DimensionReal;
 
