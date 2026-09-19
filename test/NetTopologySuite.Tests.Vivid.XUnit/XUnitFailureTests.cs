@@ -40,4 +40,39 @@ namespace NetTopologySuite.Tests.XUnit
     {
         public TestReducePrecisionFailure() : base("TestReducePrecisionFailure.xml") { }
     }
+
+    public class TestOverlayNGFailure : FailureXUnitRunner
+    {
+        public TestOverlayNGFailure() : base("TestOverlayNGFailure.xml") { }
+
+        [Test, Category("FailureCase")]
+        public override void Test00()
+        {
+            base.Test00();
+        }
+
+        [Test, Category("FailureCase")]
+        public override void Test01()
+        {
+            base.Test01();
+        }
+
+        [Test, Category("FailureCase")]
+        public override void Test02()
+        {
+            base.Test02();
+        }
+
+        [Test, Category("FailureCase")]
+        public override void Test03()
+        {
+            base.Test03();
+        }
+
+        [Test, Category("FailureCase")]
+        public override void Test04()
+        {
+            base.Test04();
+        }
+    }
 }
