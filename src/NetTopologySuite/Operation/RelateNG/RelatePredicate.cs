@@ -182,7 +182,6 @@ namespace NetTopologySuite.Operation.RelateNG
 
             public override bool ValueIM
                 => intMatrix.IsContains();
-            
         }
 
         /// <summary>
@@ -471,12 +470,22 @@ namespace NetTopologySuite.Operation.RelateNG
             public override void Init(Dimension dimA, Dimension dimB)
             {
                 base.Init(dimA, dimB);
-                Require(dimA == dimB);
+                //-- don't require equal dims, because EMPTY = EMPTY for all dims
+            }
+
+
+            public override bool RequireInteraction()
+            {
+                //-- allow EMPTY = EMPTY
+                return false;
             }
 
 
             public override void Init(Envelope envA, Envelope envB)
             {
+                //-- handle EMPTY = EMPTY cases
+                SetValueIf(true, envA.IsNull && envB.IsNull);
+
                 Require(envA.Equals(envB));
             }
 
