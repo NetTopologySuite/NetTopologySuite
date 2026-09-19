@@ -26,7 +26,6 @@ namespace NetTopologySuite.Index.Strtree
     /// Querying a tree is thread-safe. The building phase is done synchronously,
     /// and querying is stateless.
     /// </summary>
-    [Serializable]
     public class STRtree<TItem> : AbstractSTRtree<Envelope, TItem>, ISpatialIndex<TItem>
     {
         private static readonly AnonymousXComparerImpl XComparer = new AnonymousXComparerImpl();
@@ -50,7 +49,6 @@ namespace NetTopologySuite.Index.Strtree
             }
         }
 
-        [Serializable]
         private class AnonymousAbstractNodeImpl : AbstractNode<Envelope, TItem>
         {
             public AnonymousAbstractNodeImpl(int nodeCapacity) :

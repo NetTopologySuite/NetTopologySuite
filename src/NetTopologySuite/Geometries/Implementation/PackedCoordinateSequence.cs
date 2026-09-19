@@ -1,19 +1,16 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// </summary>
-    [Serializable]
     public abstract class PackedCoordinateSequence : CoordinateSequence
     {
         /// <summary>
         /// A soft reference to the Coordinate[] representation of this sequence.
         /// Makes repeated coordinate array accesses more efficient.
         /// </summary>
-        [NonSerialized]
         protected WeakReference CoordRef;
 
         /// <summary>
@@ -142,18 +139,11 @@ namespace NetTopologySuite.Geometries.Implementation
             (_, dimension, measures) = CoordinateSequenceFactory.GetCommonSequenceParameters(coords);
             return dimension;
         }
-
-        [OnDeserialized]
-        private void OnDeserialization(StreamingContext context)
-        {
-            CoordRef = null;
-        }
     }
 
     /// <summary>
     /// Packed coordinate sequence implementation based on doubles.
     /// </summary>
-    [Serializable]
     public class PackedDoubleCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>
@@ -375,7 +365,6 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// Packed coordinate sequence implementation based on floats.
     /// </summary>
-    [Serializable]
     public class PackedFloatCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
@@ -19,7 +18,6 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// Instances of this class are thread-safe.
     /// </remarks>
-    [Serializable]
     public class GeometryFactory
     {
         /// <summary>
@@ -88,7 +86,6 @@ namespace NetTopologySuite.Geometries
         }
 
 
-        [NonSerialized]
         private ElevationModel _elevationModel;
 
         /// <summary>
@@ -106,7 +103,6 @@ namespace NetTopologySuite.Geometries
             get { return GeometryServices.CoordinateEqualityComparer; }
         }
 
-        [NonSerialized]
         private NtsGeometryServices _services;
 
         /// <summary>
@@ -762,13 +758,6 @@ namespace NetTopologySuite.Geometries
         public override string ToString()
         {
             return $"{GetType().Name}[PM={PrecisionModel}, SRID={SRID}, CSFactory={CoordinateSequenceFactory.GetType().Name}, GeometryOverlay:{GeometryOverlay}]";
-        }
-
-        [OnDeserialized]
-        protected void OnDeserialized(StreamingContext context)
-        {
-            _services = NtsGeometryServices.Instance;
-            _elevationModel = NtsGeometryServices.Instance.DefaultElevationModel;
         }
     }
 }

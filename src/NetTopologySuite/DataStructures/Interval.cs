@@ -8,7 +8,6 @@ namespace NetTopologySuite.DataStructures
     /// <summary>
     /// Structure for a closed 1-dimensional &#x211d;-interval
     /// </summary>
-    [Serializable]
     public struct Interval : IEquatable<Interval>
     {
         /// <summary>

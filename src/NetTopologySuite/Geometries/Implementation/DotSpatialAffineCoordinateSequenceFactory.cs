@@ -5,7 +5,6 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// A coordinate sequence factory class that creates DotSpatial's Shape/ShapeRange like coordinate sequences.
     /// </summary>
-    [Serializable]
     public class DotSpatialAffineCoordinateSequenceFactory : CoordinateSequenceFactory
     {
         private DotSpatialAffineCoordinateSequenceFactory() : this(Ordinates.XYZM) { }

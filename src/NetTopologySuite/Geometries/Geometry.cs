@@ -113,7 +113,6 @@ namespace NetTopologySuite.Geometries
     /// Geometries can be used effectively in .Net collections.
     /// </para>
     /// </remarks>
-    [Serializable]
     public abstract class Geometry : IComparable, IComparable<Geometry>
     {
         /// <summary>

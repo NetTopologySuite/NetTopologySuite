@@ -53,7 +53,6 @@ namespace NetTopologySuite.Geometries
     /// provides 53 bits of precision. (Thus the maximum precisely representable
     /// <i>integer</i> is 9,007,199,254,740,992 - or almost 16 decimal digits of precision).
     /// </remarks>
-        [Serializable]
     public class PrecisionModel: IComparable, IComparable<PrecisionModel>
     {
         /// <summary>
