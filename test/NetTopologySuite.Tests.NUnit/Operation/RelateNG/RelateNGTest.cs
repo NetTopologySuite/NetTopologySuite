@@ -721,7 +721,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             CheckRelate(a, b, "212F01FF2");
         }
 
-        //================  Repeated Points  ==============
+        //================  EMPTY Points  ==============
         [Test]
         public void TestEmptyEmpty()
         {
