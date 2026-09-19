@@ -1,3 +1,4 @@
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Overlay.Snap
@@ -11,9 +12,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     public class LineStringSnapper
     {
         private readonly double _snapTolerance;
+        private readonly double _snapToleranceSq;
 
         private readonly Coordinate[] _srcPts;
-        private readonly LineSegment _seg = new LineSegment(); // for reuse during snapping
         private bool _allowSnappingToSourceVertices;
         private readonly bool _isClosed;
 
@@ -37,6 +38,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             _srcPts = srcPts;
             _isClosed = IsClosed(_srcPts);// srcPts[0].Equals2D(srcPts[srcPts.Length - 1]);
             _snapTolerance = snapTolerance;
+            _snapToleranceSq = snapTolerance * snapTolerance;
         }
 
         public bool AllowSnappingToSourceVertices
@@ -171,23 +173,23 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             int snapIndex = -1;
             for (int i = 0; i < srcCoords.Count - 1; i++)
             {
-                _seg.P0 = srcCoords[i];
-                _seg.P1 = srcCoords[i + 1];
+                var p0 = srcCoords[i];
+                var p1 = srcCoords[i + 1];
 
                 /*
                  * Check if the snap pt is equal to one of the segment endpoints.
                  *
                  * If the snap pt is already in the src list, don't snap at all.
                  */
-                if (_seg.P0.Equals2D(snapPt) || _seg.P1.Equals2D(snapPt))
+                if (p0.Equals2D(snapPt) || p1.Equals2D(snapPt))
                 {
                     if (_allowSnappingToSourceVertices)
                         continue;
                     return -1;
                 }
 
-                double dist = _seg.Distance(snapPt);
-                if (dist < _snapTolerance && dist < minDist)
+                double dist = DistanceComputer.PointToSegmentSquared(snapPt, p0, p1);
+                if (dist < _snapToleranceSq && dist < minDist)
                 {
                     minDist = dist;
                     snapIndex = i;
