@@ -918,6 +918,22 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             CheckEqual(bufferOrig, bufferInf);
         }
 
+        /// <summary>
+        /// Checks that a CCW ring generates a correct buffer.
+        /// </summary>
+        /// <remarks>
+        /// Ported from JTS commit
+        /// <see href="https://github.com/locationtech/jts/commit/6bdb50a046575a4dac20af0600a1de07ea5aa39f"/>
+        /// (see also https://github.com/libgeos/geos/issues/1236)
+        /// </remarks>
+        [Test]
+        public void TestRingCCW()
+        {
+            const string wkt = "LINEARRING (-0.25 0.25, -0.25 0.75, -0.75 0.75, -0.75 0.25, -0.25 0.25)";
+            CheckBuffer(wkt, 1,
+                "POLYGON ((0.73 0.05, 0.67 -0.13, 0.58 -0.31, 0.46 -0.46, 0.31 -0.58, 0.13 -0.67, -0.05 -0.73, -0.25 -0.75, -0.75 -0.75, -0.95 -0.73, -1.13 -0.67, -1.31 -0.58, -1.46 -0.46, -1.58 -0.31, -1.67 -0.13, -1.73 0.05, -1.75 0.25, -1.75 0.75, -1.73 0.95, -1.67 1.13, -1.58 1.31, -1.46 1.46, -1.31 1.58, -1.13 1.67, -0.95 1.73, -0.75 1.75, -0.25 1.75, -0.05 1.73, 0.13 1.67, 0.31 1.58, 0.46 1.46, 0.58 1.31, 0.67 1.13, 0.73 0.95, 0.75 0.75, 0.75 0.25, 0.73 0.05))");
+        }
+
         private static Coordinate[] InfCoords(int size)
         {
             var coords = new Coordinate[size];

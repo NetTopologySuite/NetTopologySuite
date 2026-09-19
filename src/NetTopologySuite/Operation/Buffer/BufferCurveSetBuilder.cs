@@ -181,7 +181,7 @@ namespace NetTopologySuite.Operation.Buffer
              */
             if (CoordinateArrays.IsRing(coord) && !_curveBuilder.BufferParameters.IsSingleSided)
             {
-                AddRingBothSides(coord, _distance);
+                AddLinearRingSides(coord, _distance);
             }
             else
             {
@@ -229,7 +229,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (_distance <= 0.0 && shellCoord.Length < 3)
                 return;
 
-            AddRingSide(shellCoord, offsetDistance, offsetSide,
+            AddPolygonRingSide(shellCoord, offsetDistance, offsetSide,
                            Location.Exterior, Location.Interior);
 
             for (int i = 0; i < p.NumInteriorRings; i++)
@@ -249,18 +249,55 @@ namespace NetTopologySuite.Operation.Buffer
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
-                AddRingSide(holeCoord, offsetDistance, offsetSide.Opposite,
+                AddPolygonRingSide(holeCoord, offsetDistance, offsetSide.Opposite,
                                Location.Interior, Location.Exterior);
             }
         }
 
-        private void AddRingBothSides(Coordinate[] coord, double distance)
+        /// <summary>
+        /// Adds an offset curve for one side of a polygon ring.
+        /// The side and left and right topological location arguments
+        /// are provided as if the ring is oriented CW.
+        /// If the ring is in the opposite orientation,
+        /// the left and right locations are interchanged and the side is flipped.
+        /// </summary>
+        /// <param name="coord">The coordinates of the ring (must not contain repeated points).</param>
+        /// <param name="offsetDistance">The distance at which to create the buffer.</param>
+        /// <param name="side">The side of the ring on which to construct the buffer line.</param>
+        /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
+        /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
+        private void AddPolygonRingSide(Coordinate[] coord, double offsetDistance,
+            Position side, Location cwLeftLoc, Location cwRightLoc)
+        {
+            // don't bother adding ring if it is "flat" and will disappear in the output
+            if (offsetDistance == 0.0 && coord.Length < LinearRing.MinimumValidSize)
+                return;
+
+            var leftLoc = cwLeftLoc;
+            var rightLoc = cwRightLoc;
+            bool isCCW = IsRingCCW(coord);
+            if (coord.Length >= LinearRing.MinimumValidSize && isCCW)
+            {
+                leftLoc = cwRightLoc;
+                rightLoc = cwLeftLoc;
+                side = side.Opposite;
+            }
+            AddRingSide(coord, offsetDistance, side, leftLoc, rightLoc);
+        }
+
+        /// <summary>
+        /// Adds both sides of a linear ring.
+        /// Checks for erosion of the hole side.
+        /// </summary>
+        /// <param name="coord">The ring vertices</param>
+        /// <param name="distance">The offset distance (must be non-zero positive)</param>
+        private void AddLinearRingSides(Coordinate[] coord, double distance)
         {
             /*
              * If the "hole" side will be eroded completely, avoid generating it.
              * This prevents hole artifacts (e.g. https://github.com/libgeos/geos/issues/1223)
              */
-            //-- distance is assumed positive, due to previous checks
+            //-- distance is assumed > 0, due to previous checks
             bool isHoleComputed = !IsRingFullyEroded(coord, new Envelope(coord), true, distance);
 
             bool isCCW = IsRingCCW(coord);
@@ -281,37 +318,10 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-
-        /// <summary>
-        /// Adds an offset curve for a polygon ring.
-        /// The side and left and right topological location arguments
-        /// assume that the ring is oriented CW.
-        /// If the ring is in the opposite orientation,
-        /// the left and right locations must be interchanged and the side flipped.
-        /// </summary>
-        /// <param name="coord">The coordinates of the ring (must not contain repeated points).</param>
-        /// <param name="offsetDistance">The distance at which to create the buffer.</param>
-        /// <param name="side">The side of the ring on which to construct the buffer line.</param>
-        /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
-        /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
         private void AddRingSide(Coordinate[] coord, double offsetDistance,
-            Position side, Location cwLeftLoc, Location cwRightLoc)
+            Position side, Location leftLoc, Location rightLoc)
         {
-            // don't bother adding ring if it is "flat" and will disappear in the output
-            if (offsetDistance == 0.0 && coord.Length < LinearRing.MinimumValidSize)
-                return;
-
-            var leftLoc = cwLeftLoc;
-            var rightLoc = cwRightLoc;
-            bool isCCW = IsRingCCW(coord);
-            if (coord.Length >= LinearRing.MinimumValidSize && isCCW)
-            {
-                leftLoc = cwRightLoc;
-                rightLoc = cwLeftLoc;
-                side = side.Opposite;
-            }
             var curve = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
-
             /*
              * If the offset curve has inverted completely it will produce
              * an unwanted artifact in the result, so skip it. 
