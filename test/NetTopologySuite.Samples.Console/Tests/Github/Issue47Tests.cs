@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             string content = doc.OuterXml;
             Assert.That(content, Is.Not.Null);
-            Assert.That(content.StartsWith("<gml:Point xmlns:gml=\"http://www.opengis.net/gml\""), Is.True);
+            Assert.That(content.StartsWith("<gml:Point srsName=\"EPSG:0\" xmlns:gml=\"http://www.opengis.net/gml\""), Is.True);
 
             var reader = new GMLReader();
             var actual = reader.Read(content);
