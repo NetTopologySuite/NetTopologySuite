@@ -183,11 +183,8 @@ namespace NetTopologySuite.Densify
 
             /// <summary>
             /// Creates a valid area geometry from one that possibly has bad topology
-            /// (i.e. self-intersections). Since buffer can handle invalid topology, but
-            /// always returns valid geometry, constructing a 0-width buffer "corrects"
-            /// the topology. Note this only works for area geometries, since buffer
-            /// always returns areas. This also may return empty geometries, if the input
-            /// has no actual area.
+            /// (i.e. self-intersections). GeometryFixer corrects the topology while
+            /// preserving as much of the input shape as possible.
             /// </summary>
             /// <param name="roughAreaGeom">An area geometry possibly containing self-intersections</param>
             /// <returns>A valid area geometry</returns>
@@ -195,7 +192,7 @@ namespace NetTopologySuite.Densify
             {
                 // if valid no need to process to make valid
                 if (!_validate || roughAreaGeom.IsValid) return roughAreaGeom;
-                return roughAreaGeom.Buffer(0.0);
+                return GeometryFixer.Fix(roughAreaGeom);
             }
         }
 
