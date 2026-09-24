@@ -68,6 +68,14 @@ namespace NetTopologySuite.Tests.NUnit.Densify
         }
 
         [Test]
+        public void TestInvalidPolygonFixed()
+        {
+            CheckDensify("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0), (20 20, 22 20, 22 22, 20 22, 20 20))",
+                100,
+                "MULTIPOLYGON (((0 0, 10 0, 10 10, 0 10, 0 0)), ((20 20, 22 20, 22 22, 20 22, 20 20)))");
+        }
+
+        [Test]
         public void TestLineDensify3D()
         {
             CheckDensifyXYZ("POLYGON Z((10 30 10, 30 30 10, 30 10 15, 10 10 10, 10 30 20))",
