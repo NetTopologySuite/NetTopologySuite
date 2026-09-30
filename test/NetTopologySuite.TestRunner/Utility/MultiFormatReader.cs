@@ -53,9 +53,15 @@ namespace Open.Topology.TestRunner.Utility
         /// <exception cref="ParseException"></exception>
         public Geometry Read(string geomStr)
         {
-            string trimStr = geomStr.Replace("\n", "").Trim();
-            if (IsHex(trimStr, MaxCharsToCheck))
-                return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _services);
+            string trimStr = geomStr.Trim();
+
+            // A hex string is split across lines in the corpus as often as WKT is, and the WKB
+            // reader wants it contiguous. WKT must keep its line breaks though: they separate
+            // tokens, and dropping them joins the ordinates on either side into one number.
+            string hexStr = trimStr.Replace("\r", string.Empty).Replace("\n", string.Empty);
+            if (IsHex(hexStr, MaxCharsToCheck))
+                return IOUtility.ReadGeometriesFromWkbHexString(hexStr, _services);
+
             return _wktReader.Read(trimStr);
         }
     }
