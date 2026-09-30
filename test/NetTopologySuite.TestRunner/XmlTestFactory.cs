@@ -43,18 +43,22 @@ namespace Open.Topology.TestRunner
             _pm = pm;
             //ObjGeometryFactory = gs.CreateGeometryFactory();
             _geometryOperation = geometryOperation;
-            _resultMatcher = resultMatcher;            
+            _resultMatcher = resultMatcher;
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
-            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
-                testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
-
             // Handle test type or name.
             string strTestType = testInfo.GetValue("name");
             if (string.IsNullOrEmpty(strTestType))
                 return null;
+
+            var geometryOperation = IsOverlayNG(strTestType)
+                ? new OverlayNGGeometryOperation(_geometryOperation)
+                : _geometryOperation;
+
+            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
+                testInfo.IsDefaultTarget(), tolerance, geometryOperation, _resultMatcher);
 
             try
             {
@@ -100,30 +104,32 @@ namespace Open.Topology.TestRunner
             return xmlTest;
         }
 
-        protected bool ParseType(string testType, XmlTest xmlTestItem)
+        /// <summary>
+        /// Whether the operation name carries the <c>NG</c> suffix, as in <c>unionNG</c>.
+        /// </summary>
+        private static bool IsOverlayNG(string testType)
         {
-            testType = testType.ToLower();
+            return testType.EndsWith("ng", StringComparison.OrdinalIgnoreCase);
+        }
 
-            NtsGeometryServices gs;
-            if (testType.EndsWith("ng"))
-            {                
-                gs = new NtsGeometryServices(
-                    CoordinateArraySequenceFactory.Instance,
-                    _pm,
-                    -1,
-                    GeometryOverlay.NG,
-                    new CoordinateEqualityComparer());
+        private bool ParseType(string testType, XmlTest xmlTestItem)
+        {
+            bool isOverlayNG = IsOverlayNG(testType);
+            testType = testType.ToLower();
+            if (isOverlayNG)
+            {
+                // The suffix only selects the engine, which OverlayNGGeometryOperation applies;
+                // what is left names the operation. Upstream leaves the factory alone too and
+                // lets the operation reach OverlayNG itself.
                 testType = testType.Substring(0, testType.Length - 2);
             }
-            else
-            {
-                gs = new NtsGeometryServices(
-                    CoordinateArraySequenceFactory.Instance,
-                    _pm,
-                    -1,
-                    GeometryOverlay.Legacy,
-                    new CoordinateEqualityComparer());
-            }
+
+            var gs = new NtsGeometryServices(
+                CoordinateArraySequenceFactory.Instance,
+                _pm,
+                -1,
+                GeometryOverlay.Legacy,
+                new CoordinateEqualityComparer());
             _objReader = new MultiFormatReader(gs);
 
             if (testType == "getarea")
