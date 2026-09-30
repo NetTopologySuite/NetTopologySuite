@@ -47,7 +47,7 @@ namespace NetTopologySuite.Index.Chain
         {
             var mcList = new List<MonotoneChain>();
             if (pts.Length == 0)
-                mcList.AsReadOnly();
+                return mcList.AsReadOnly();
 
             int chainStart = 0;
             do
