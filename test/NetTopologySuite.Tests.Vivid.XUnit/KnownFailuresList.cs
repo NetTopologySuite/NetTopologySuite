@@ -13,12 +13,6 @@
 using NetTopologySuite.Tests.XUnit;
 
 [assembly: KnownCorpusFailure(
-    "general/TestSimple.xml", 29,
-    "mL - with empty element",
-    "IsSimple throws IndexOutOfRangeException; fixed by #891, drop this entry once that lands",
-    "#891")]
-
-[assembly: KnownCorpusFailure(
     "robust/overlay/TestOverlay-pg-list.xml", 1,
     "http://postgis.refractions.net/pipermail/postgis-users/2006-March/011332.html 2",
     "intersection returns a geometry that does not match the expected result; not diagnosed yet",
