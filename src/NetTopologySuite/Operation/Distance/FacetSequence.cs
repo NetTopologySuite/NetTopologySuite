@@ -171,6 +171,58 @@ namespace NetTopologySuite.Operation.Distance
             return locs;
         }
 
+        /// <summary>
+        /// Computes the nearest location on this facet sequence to a point
+        /// (JTS <c>FacetSequence.nearestLocation</c>).
+        /// </summary>
+        public CoordinateSequenceLocation NearestLocation(Coordinate p)
+        {
+            if (IsPoint)
+            {
+                return new CoordinateSequenceLocation(_pts, _start, _pts.GetCoordinate(_start));
+            }
+            return NearestLocationOnLine(p);
+        }
+
+        private CoordinateSequenceLocation NearestLocationOnLine(Coordinate pt)
+        {
+            double minDistance = double.MaxValue;
+            int index = _start;
+            Coordinate nearestPt = null;
+
+            for (int i = _start; i < _end - 1; i++)
+            {
+                var q0 = _pts.GetCoordinate(i);
+                var q1 = _pts.GetCoordinate(i + 1);
+                double dist = DistanceComputer.PointToSegment(pt, q0, q1);
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    var seg = new LineSegment(q0, q1);
+                    nearestPt = seg.ClosestPoint(pt);
+                    index = i;
+                    // segments are half-open: 2nd endpoint belongs to the next
+                    // segment except for the last segment of a non-closed sequence
+                    if (dist == 0.0 && pt.Equals2D(q1))
+                    {
+                        if (index < _pts.Count - 1)
+                            index++;
+                        index = NormalizeRingIndex(_pts, index);
+                    }
+                    if (minDistance <= 0.0)
+                        break;
+                }
+            }
+            return new CoordinateSequenceLocation(_pts, index, nearestPt);
+        }
+
+        private static int NormalizeRingIndex(CoordinateSequence pts, int index)
+        {
+            if (CoordinateSequences.IsRing(pts) && index >= pts.Count - 1)
+                return 0;
+            return index;
+        }
+
         private double ComputeDistanceLineLine(FacetSequence facetSeq, GeometryLocation[] locs)
         {
             // both linear - compute minimum segment-segment distance
