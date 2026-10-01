@@ -24,6 +24,9 @@ bld/
 # Roslyn cache directories
 *.ide/
 
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*

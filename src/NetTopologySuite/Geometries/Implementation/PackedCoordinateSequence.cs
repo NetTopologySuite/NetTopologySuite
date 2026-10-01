@@ -242,12 +242,9 @@ namespace NetTopologySuite.Geometries.Implementation
             _coords = new double[size * Dimension];
         }
 
-        internal PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
-            : base(coords?.Length ?? 0, dimension, measures)
+        internal PackedDoubleCoordinateSequence(ReadOnlySpan<Coordinate> coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
+            : base(coords.Length, dimension, measures)
         {
-            if (coords == null)
-                coords = Array.Empty<Coordinate>();
-
             _coords = new double[coords.Length * Dimension];
             if (coords.Length == 0)
             {
@@ -464,12 +461,9 @@ namespace NetTopologySuite.Geometries.Implementation
             _coords = new float[size * Dimension];
         }
 
-        internal PackedFloatCoordinateSequence(Coordinate[] coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
-            : base(coords?.Length ?? 0, dimension, measures)
+        internal PackedFloatCoordinateSequence(ReadOnlySpan<Coordinate> coords, int dimension, int measures, bool dimensionAndMeasuresCameFromCoords)
+            : base(coords.Length, dimension, measures)
         {
-            if (coords == null)
-                coords = Array.Empty<Coordinate>();
-
             _coords = new float[coords.Length * Dimension];
             if (coords.Length == 0)
             {
