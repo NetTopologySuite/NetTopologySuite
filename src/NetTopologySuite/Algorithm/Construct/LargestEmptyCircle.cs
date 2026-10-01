@@ -42,6 +42,19 @@ namespace NetTopologySuite.Algorithm.Construct
     {
         /// <summary>
         /// Computes the center point of the Largest Empty Circle
+        /// interior-disjoint to a set of obstacles.
+        /// The obstacles may be any collection of points, lines and polygons.
+        /// The center of the LEC lies within the convex hull of the obstacles.
+        /// </summary>
+        /// <param name="obstacles">A geometry representing the obstacles</param>
+        /// <returns>The center point of the Largest Empty Circle</returns>
+        public static Point GetCenter(Geometry obstacles)
+        {
+            return GetCenter(obstacles, null, 0.0);
+        }
+
+        /// <summary>
+        /// Computes the center point of the Largest Empty Circle
         /// interior-disjoint to a set of obstacles,
         /// with accuracy to a given tolerance distance.
         /// The obstacles may be any collection of points, lines and polygons.
@@ -53,6 +66,20 @@ namespace NetTopologySuite.Algorithm.Construct
         public static Point GetCenter(Geometry obstacles, double tolerance)
         {
             return GetCenter(obstacles, null, tolerance);
+        }
+
+        /// <summary>
+        /// Computes the center point of the Largest Empty Circle
+        /// interior-disjoint to a set of obstacles and within a polygonal boundary.
+        /// The obstacles may be any collection of points, lines and polygons.
+        /// The center of the LEC lies within the given boundary.
+        /// </summary>
+        /// <param name="obstacles">A geometry representing the obstacles</param>
+        /// <param name="boundary">A polygonal geometry to contain the LEC center</param>
+        /// <returns>The center point of the Largest Empty Circle</returns>
+        public static Point GetCenter(Geometry obstacles, Geometry boundary)
+        {
+            return GetCenter(obstacles, boundary, 0.0);
         }
 
         /// <summary>
@@ -140,10 +167,27 @@ namespace NetTopologySuite.Algorithm.Construct
         /// The obstacles may be any collection of points, lines and polygons.
         /// If the boundary is null or empty the convex hull
         /// of the obstacles is used as the boundary.
+        /// The approximation tolerance is determined automatically.
+        /// </summary>
+        /// <param name="obstacles">A non-empty geometry representing the obstacles</param>
+        /// <param name="boundary">A polygonal geometry to contain the LEC center (may be null or empty)</param>
+        public LargestEmptyCircle(Geometry obstacles, Geometry boundary)
+            : this(obstacles, boundary, 0.0)
+        { }
+
+        /// <summary>
+        /// Creates a new instance of a Largest Empty Circle construction,
+        /// interior-disjoint to a set of obstacle geometries
+        /// and having its center within a polygonal boundary.
+        /// The obstacles may be any collection of points, lines and polygons.
+        /// If the boundary is null or empty the convex hull
+        /// of the obstacles is used as the boundary.
+        /// A zero tolerance automatically determines an approximation tolerance.
         /// </summary>
         /// <param name="obstacles">A non-empty geometry representing the obstacles (points and lines)</param>
         /// <param name="boundary">A polygonal geometry to contain the LEC center (may be null or empty)</param>
-        /// <param name="tolerance">The distance tolerance for computing the center point (a positive value)</param>
+        /// <param name="tolerance">The distance tolerance for computing the center point (a non-negative value).
+        /// A zero value triggers auto-tolerance.</param>
         public LargestEmptyCircle(Geometry obstacles, Geometry boundary, double tolerance)
         {
             if (obstacles == null || obstacles.IsEmpty)
@@ -153,9 +197,9 @@ namespace NetTopologySuite.Algorithm.Construct
             if (boundary != null && !(boundary is IPolygonal)) {
                 throw new ArgumentException("Boundary must be polygonal", nameof(boundary));
             }
-            if (tolerance <= 0)
+            if (tolerance < 0)
             {
-                throw new ArgumentException(string.Format("Accuracy tolerance is non-positive: {0:R}", tolerance), nameof(tolerance));
+                throw new ArgumentException(string.Format("Accuracy tolerance is negative: {0:R}", tolerance), nameof(tolerance));
             }
             _obstacles = obstacles;
             _boundary = boundary;
@@ -325,6 +369,9 @@ namespace NetTopologySuite.Algorithm.Construct
             _radiusPoint = _factory.CreatePoint(_radiusPt);
         }
 
+        //-- empirically determined to balance accuracy and speed (matches MaximumInscribedCircle)
+        private const double AutoToleranceFraction = 0.001;
+
         /// <summary>
         /// Tests whether a cell may contain the circle center,
         /// and thus should be refined (split into subcells
@@ -342,14 +389,24 @@ namespace NetTopologySuite.Algorithm.Construct
                 return false;
 
             /*
+             * The tolerance can be automatically determined
+             * as a fraction of the current farthest distance.
+             * For a very small actual LEC distance this may cause many iterations,
+             * but the iter limit prevents an infinite loop.
+             */
+            double requiredTol = _tolerance > 0
+                ? _tolerance
+                : _farthestCell.Distance * AutoToleranceFraction;
+
+            /*
              * The cell is outside, but overlaps the boundary
              * so it may contain a point which should be checked.
-             * This is only the case if the potential overlap distance 
+             * This is only the case if the potential overlap distance
              * is larger than the tolerance.
              */
             if (cell.IsOutside)
             {
-                bool isOverlapSignificant = cell.MaxDistance > _tolerance;
+                bool isOverlapSignificant = cell.MaxDistance > requiredTol;
                 return isOverlapSignificant;
             }
 
@@ -359,7 +416,7 @@ namespace NetTopologySuite.Algorithm.Construct
              * (up to tolerance).
              */
             double potentialIncrease = cell.MaxDistance - _farthestCell.Distance;
-            return potentialIncrease > _tolerance;
+            return potentialIncrease > requiredTol;
         }
 
         /// <summary>
