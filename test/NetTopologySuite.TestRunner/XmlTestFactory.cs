@@ -43,7 +43,7 @@ namespace Open.Topology.TestRunner
             _pm = pm;
             //ObjGeometryFactory = gs.CreateGeometryFactory();
             _geometryOperation = geometryOperation;
-            _resultMatcher = resultMatcher;
+            _resultMatcher = resultMatcher;            
         }
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
@@ -112,24 +112,30 @@ namespace Open.Topology.TestRunner
             return testType.EndsWith("ng", StringComparison.OrdinalIgnoreCase);
         }
 
-        private bool ParseType(string testType, XmlTest xmlTestItem)
+        protected bool ParseType(string testType, XmlTest xmlTestItem)
         {
-            bool isOverlayNG = IsOverlayNG(testType);
             testType = testType.ToLower();
-            if (isOverlayNG)
-            {
-                // The suffix only selects the engine, which OverlayNGGeometryOperation applies;
-                // what is left names the operation. Upstream leaves the factory alone too and
-                // lets the operation reach OverlayNG itself.
+
+            NtsGeometryServices gs;
+            if (testType.EndsWith("ng"))
+            {                
+                gs = new NtsGeometryServices(
+                    CoordinateArraySequenceFactory.Instance,
+                    _pm,
+                    -1,
+                    GeometryOverlay.NG,
+                    new CoordinateEqualityComparer());
                 testType = testType.Substring(0, testType.Length - 2);
             }
-
-            var gs = new NtsGeometryServices(
-                CoordinateArraySequenceFactory.Instance,
-                _pm,
-                -1,
-                GeometryOverlay.Legacy,
-                new CoordinateEqualityComparer());
+            else
+            {
+                gs = new NtsGeometryServices(
+                    CoordinateArraySequenceFactory.Instance,
+                    _pm,
+                    -1,
+                    GeometryOverlay.Legacy,
+                    new CoordinateEqualityComparer());
+            }
             _objReader = new MultiFormatReader(gs);
 
             if (testType == "getarea")
