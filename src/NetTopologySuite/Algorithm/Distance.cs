@@ -201,6 +201,59 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
+        /// Computes the squared distance from a point p to a line segment AB
+        /// <para/>
+        /// Note: NON-ROBUST!
+        /// </summary>
+        /// <param name="p">The point to compute the distance for</param>
+        /// <param name="A">The first point of the first line</param>
+        /// <param name="B">The second point of the first line (must be different to A)</param>
+        /// <returns>The squared distance from p to line segment AB</returns>
+        public static double PointToSegmentSquared(Coordinate p, Coordinate A,
+            Coordinate B)
+        {
+            // if start = end, then just compute distance to one of the endpoints
+            if (A.X == B.X && A.Y == B.Y)
+                return p.DistanceSquared(A);
+
+            // otherwise use comp.graphics.algorithms Frequently Asked Questions method
+            /*
+             * (1) r = AC dot AB
+             *         ---------
+             *         ||AB||^2
+             *
+             * r has the following meaning:
+             *   r=0 P = A
+             *   r=1 P = B
+             *   r<0 P is on the backward extension of AB
+             *   r>1 P is on the forward extension of AB
+             *   0<r<1 P is interior to AB
+             */
+
+            double len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y);
+            double r = ((p.X - A.X) * (B.X - A.X) + (p.Y - A.Y) * (B.Y - A.Y))
+                / len2;
+
+            if (r <= 0.0)
+                return p.DistanceSquared(A);
+            if (r >= 1.0)
+                return p.DistanceSquared(B);
+
+            /*
+             * (2) s = (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
+             *         -----------------------------
+             *                    L^2
+             *
+             * Then the distance from C to P = |s|*L.
+             *
+             * This is the same calculation as DistancePointLinePerpendicular.
+             * Unrolled here for performance.
+             */
+            double s = ((A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y)) / len2;
+            return s * s * len2;
+        }
+
+        /// <summary>
         /// Computes the perpendicular distance from a point p to the (infinite) line
         /// containing the points AB
         /// </summary>
