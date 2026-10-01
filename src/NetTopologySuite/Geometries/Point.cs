@@ -13,7 +13,6 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     ///
-    [Serializable]
     public class Point : Geometry, IPuntal
     {
         private static readonly Coordinate EmptyCoordinate = null;

@@ -21,7 +21,6 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
-    [Serializable]
     public class LineString : Geometry, ILineal
     {
         /// <summary>
