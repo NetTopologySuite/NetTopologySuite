@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using System.Runtime.CompilerServices;
     //using Xunit;
     using NUnit.Framework;
     using Open.Topology.TestRunner;
@@ -14,7 +13,7 @@
     [TestFixture]
     public abstract class XUnitRunner
     {
-        protected static readonly string TestRunnerDirectory = GetTestRunnerTestDirectory();
+        protected static readonly string TestRunnerDirectory = CorpusDirectory.Location;
 
         protected abstract string TestLocation { get; }
 
@@ -169,24 +168,6 @@
                 }
             }
             Assert.True(success, "Fixture failed");
-        }
-
-        private static string GetTestRunnerTestDirectory([CallerFilePath] string thisFilePath = null)
-        {
-            // Hack to debug test built on Windows using WSL
-            if (Environment.OSVersion.Platform == PlatformID.Unix && thisFilePath[1] == ':')
-            {
-                thisFilePath = thisFilePath.Replace('\\', '/');
-                thisFilePath = thisFilePath.Replace(thisFilePath.Substring(0, 2), $"/mnt/{thisFilePath.Substring(0, 1).ToLowerInvariant()}");
-            }
-
-            return new FileInfo(thisFilePath)                            // /test/NetTopologySuite.Tests.Vivid.XUnit/XUnitRunner.cs
-                .Directory                                               // /test/NetTopologySuite.Tests.Vivid.XUnit
-                .Parent                                                  // /test
-                .Parent                                                  // /
-                .GetDirectories("data")[0]                               // /data
-                .GetDirectories("NetTopologySuite.TestRunner.Tests")[0]  // /data/NetTopologySuite.TestRunner.Tests
-                .FullName;
         }
     }
 
