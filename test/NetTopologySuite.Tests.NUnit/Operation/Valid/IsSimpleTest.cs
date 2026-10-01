@@ -143,6 +143,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
                 "MULTIPOINT((50 20), (50 30), (1 2), (1 4), (1 5), (6 0), (3 6))");
         }
 
+        ///<summary>
+        /// An empty element contributes no segments, but it still reaches the noder, so the
+        /// chain builder has to return an empty chain list for it rather than fall through.
+        ///</summary>
+        [Test]
+        public void TestLinealWithEmptyElement()
+        {
+            CheckIsSimple("MULTILINESTRING ((0 0, 100 100), EMPTY)",
+                BoundaryNodeRules.Mod2BoundaryRule, true);
+            CheckIsSimple("MULTILINESTRING (EMPTY, (0 0, 100 100))",
+                BoundaryNodeRules.Mod2BoundaryRule, true);
+        }
+
 
 
         private void CheckIsSimple(string wkt, IBoundaryNodeRule bnRule, bool expectedResult)
