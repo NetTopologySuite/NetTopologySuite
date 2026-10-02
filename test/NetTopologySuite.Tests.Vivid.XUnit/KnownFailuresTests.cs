@@ -95,9 +95,11 @@ namespace NetTopologySuite.Tests.XUnit
                     if (tests[failure.Index].RunTest())
                         passing.Add($"{failure}: {failure.Reason}");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // Still failing, just loudly.
+                    // Still failing, just loudly - but say so, since a broken harness throws the
+                    // same way a genuinely failing case does.
+                    TestContext.Out.WriteLine($"{failure} threw {ex.GetType().Name}: {ex.Message}");
                 }
             }
 
@@ -110,7 +112,7 @@ namespace NetTopologySuite.Tests.XUnit
         /// Prints the list as a Markdown table, so the tracking issue can quote the list as it
         /// stands instead of keeping a second copy of it in step by hand.
         /// </summary>
-        [Test]
+        [Test, Explicit("Prints the list rather than checking anything.")]
         public void WriteTable()
         {
             var table = new StringBuilder()

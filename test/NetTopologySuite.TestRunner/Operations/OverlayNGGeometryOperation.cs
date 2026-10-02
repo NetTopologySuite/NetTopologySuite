@@ -20,6 +20,9 @@ namespace Open.Topology.TestRunner.Operations
     {
         private readonly IGeometryOperation _other;
 
+        /// <summary>
+        /// Creates an operation that runs the overlay operations through OverlayNG.
+        /// </summary>
         /// <param name="other">
         /// Handles the operations this one does not, if a case brings its own. A case that
         /// declares no operation never needs it: the name carrying the <c>NG</c> suffix is the
@@ -30,11 +33,18 @@ namespace Open.Topology.TestRunner.Operations
             _other = other;
         }
 
+        /// <summary>
+        /// The type an operation returns, which for the overlay ones is always a geometry.
+        /// </summary>
         public Type GetReturnType(XmlTestType opName)
         {
             return IsOverlay(opName) ? typeof(Geometry) : Other(opName).GetReturnType(opName);
         }
 
+        /// <summary>
+        /// Runs an overlay operation through <see cref="OverlayNG"/>, and hands anything else to
+        /// the operation this one was given.
+        /// </summary>
         public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
         {
             switch (opName)

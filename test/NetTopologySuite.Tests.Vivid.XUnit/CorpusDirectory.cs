@@ -19,7 +19,10 @@ namespace NetTopologySuite.Tests.XUnit
     /// </summary>
     internal static class CorpusDirectory
     {
-        internal static readonly string Location = Locate();
+        private static readonly Lazy<string> LazyLocation = new Lazy<string>(() => Locate());
+
+        /// <summary>The absolute path of the corpus directory.</summary>
+        internal static string Location => LazyLocation.Value;
 
         private static string Locate([CallerFilePath] string thisFilePath = null)
         {

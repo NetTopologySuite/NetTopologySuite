@@ -15,5 +15,5 @@ using NetTopologySuite.Tests.XUnit;
 [assembly: KnownCorpusFailure(
     "robust/overlay/TestOverlay-pg-list.xml", 1,
     "http://postgis.refractions.net/pipermail/postgis-users/2006-March/011332.html 2",
-    "intersection returns a geometry that does not match the expected result; not diagnosed yet",
-    "#890")]
+    "the result is correct within the declared tolerance, but the runner ignores tolerance unless the expected value is a GeometryCollection",
+    "#893")]

@@ -15,23 +15,20 @@ namespace NetTopologySuite.Tests.XUnit
     public abstract class XmlCorpusRunner
     {
         /// <summary>
-        /// Index standing in for a file that loaded but produced no case to run. Reported as
-        /// ignored: the runner not implementing an operation yet is a known limitation, not a
-        /// broken file.
+        /// Stands in for the case index when a file or directory has no case to point at, so
+        /// that it is reported rather than passed over in silence.
         /// </summary>
-        private const int NoCase = -1;
+        private enum Missing
+        {
+            /// <summary>The file loaded but produced no case: a limitation, reported as ignored.</summary>
+            NoCase = -1,
 
-        /// <summary>
-        /// Index standing in for a file that could not be read at all. Reported as a failure,
-        /// because a corpus file that does not parse is a defect rather than a limitation.
-        /// </summary>
-        private const int Unreadable = -2;
+            /// <summary>The file could not be read: a defect, reported as a failure.</summary>
+            Unreadable = -2,
 
-        /// <summary>
-        /// Index standing in for a corpus directory that holds nothing to run, which would
-        /// otherwise leave a fixture reporting success over an empty suite.
-        /// </summary>
-        private const int EmptyLocation = -3;
+            /// <summary>The directory is absent or holds no corpus file, reported as a failure.</summary>
+            EmptyLocation = -3,
+        }
 
         // XmlTestController reuses one XmlTestDocument, so loading a file invalidates the
         // collection returned for the previous one. Both discovery and execution walk the corpus
@@ -49,7 +46,7 @@ namespace NetTopologySuite.Tests.XUnit
             string directory = Path.Combine(CorpusDirectory.Location, Path.Combine(location.Split('/')));
             if (!Directory.Exists(directory))
             {
-                yield return new TestCaseData(directory, EmptyLocation)
+                yield return new TestCaseData(directory, (int)Missing.EmptyLocation)
                     .SetName($"{location} - directory not found");
                 yield break;
             }
@@ -77,8 +74,8 @@ namespace NetTopologySuite.Tests.XUnit
 
                 if (failure != null || descriptions == null)
                 {
-                    yield return new TestCaseData(file, Unreadable)
-                        .SetName(TestName(relative, Unreadable, failure ?? "the document could not be loaded"));
+                    yield return new TestCaseData(file, (int)Missing.Unreadable)
+                        .SetName(TestName(relative, (int)Missing.Unreadable, failure ?? "the document could not be loaded"));
                     continue;
                 }
 
@@ -87,8 +84,8 @@ namespace NetTopologySuite.Tests.XUnit
                 // silence at file level that this change removes at directory level.
                 if (descriptions.Length == 0)
                 {
-                    yield return new TestCaseData(file, NoCase)
-                        .SetName(TestName(relative, NoCase, "no runnable case"));
+                    yield return new TestCaseData(file, (int)Missing.NoCase)
+                        .SetName(TestName(relative, (int)Missing.NoCase, "no runnable case"));
                     continue;
                 }
 
@@ -108,20 +105,20 @@ namespace NetTopologySuite.Tests.XUnit
 
             if (!any)
             {
-                yield return new TestCaseData(directory, EmptyLocation)
+                yield return new TestCaseData(directory, (int)Missing.EmptyLocation)
                     .SetName($"{location} - no corpus file");
             }
         }
 
         protected static void RunCase(string file, int index)
         {
-            if (index == EmptyLocation)
+            if (index == (int)Missing.EmptyLocation)
                 Assert.Fail($"'{file}' holds no corpus file to run.");
 
-            if (index == Unreadable)
+            if (index == (int)Missing.Unreadable)
                 Assert.Fail($"'{Relative(file)}' could not be read.");
 
-            if (index == NoCase)
+            if (index == (int)Missing.NoCase)
                 Assert.Ignore($"'{Relative(file)}' loaded, but contributed no case to run.");
 
             var tests = Load(file);
@@ -177,9 +174,9 @@ namespace NetTopologySuite.Tests.XUnit
             string position;
             switch (index)
             {
-                case EmptyLocation: position = "empty"; break;
-                case Unreadable: position = "unreadable"; break;
-                case NoCase: position = "no-case"; break;
+                case (int)Missing.EmptyLocation: position = "empty"; break;
+                case (int)Missing.Unreadable: position = "unreadable"; break;
+                case (int)Missing.NoCase: position = "no-case"; break;
                 default: position = $"#{index}"; break;
             }
 
