@@ -48,13 +48,17 @@ namespace Open.Topology.TestRunner
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
-            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
-                testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
-
             // Handle test type or name.
             string strTestType = testInfo.GetValue("name");
             if (string.IsNullOrEmpty(strTestType))
                 return null;
+
+            var geometryOperation = IsOverlayNG(strTestType)
+                ? new OverlayNGGeometryOperation(_geometryOperation)
+                : _geometryOperation;
+
+            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
+                testInfo.IsDefaultTarget(), tolerance, geometryOperation, _resultMatcher);
 
             try
             {
@@ -98,6 +102,14 @@ namespace Open.Topology.TestRunner
             ParseResult(strResult, xmlTest);
 
             return xmlTest;
+        }
+
+        /// <summary>
+        /// Whether the operation name carries the <c>NG</c> suffix, as in <c>unionNG</c>.
+        /// </summary>
+        private static bool IsOverlayNG(string testType)
+        {
+            return testType.EndsWith("ng", StringComparison.OrdinalIgnoreCase);
         }
 
         protected bool ParseType(string testType, XmlTest xmlTestItem)
