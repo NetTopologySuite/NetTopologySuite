@@ -78,11 +78,15 @@ namespace NetTopologySuite.Tests.XUnit
         public void NoEntryHasStartedPassing()
         {
             var passing = new List<string>();
+            var unverified = new List<string>();
 
             foreach (var failure in KnownFailures.All)
             {
                 string path = Path.Combine(CorpusDirectory.Location,
                                            Path.Combine(failure.File.Split('/')));
+
+                // An entry that no longer points at a runnable case says nothing about whether
+                // that case passes, and EveryEntryStillPointsAtItsCase reports it already.
                 if (!File.Exists(path))
                     continue;
 
@@ -97,15 +101,25 @@ namespace NetTopologySuite.Tests.XUnit
                 }
                 catch (Exception ex)
                 {
-                    // Still failing, just loudly - but say so, since a broken harness throws the
-                    // same way a genuinely failing case does.
-                    TestContext.Out.WriteLine($"{failure} threw {ex.GetType().Name}: {ex.Message}");
+                    // A case that fails is answered with false and keeps its exception in
+                    // XmlTest.Thrown, so nothing the case itself raises arrives here. What does
+                    // comes from loading the file, and leaves the entry unverified rather than
+                    // confirmed - which is the one thing this test must not pass over.
+                    unverified.Add($"{failure}: {ex.GetType().Name}: {ex.Message}");
                 }
             }
 
-            Assert.That(passing, Is.Empty,
-                "These cases pass now, so their entries can go and the cases can rejoin CI:"
-                + Environment.NewLine + string.Join(Environment.NewLine, passing));
+            Assert.Multiple(() =>
+            {
+                Assert.That(unverified, Is.Empty,
+                    "These entries could not be checked at all, so nothing here says whether the "
+                    + "cases they exclude still fail:"
+                    + Environment.NewLine + string.Join(Environment.NewLine, unverified));
+
+                Assert.That(passing, Is.Empty,
+                    "These cases pass now, so their entries can go and the cases can rejoin CI:"
+                    + Environment.NewLine + string.Join(Environment.NewLine, passing));
+            });
         }
 
         /// <summary>
