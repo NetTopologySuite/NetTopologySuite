@@ -48,13 +48,17 @@ namespace Open.Topology.TestRunner
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
-            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
-                testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
-
             // Handle test type or name.
             string strTestType = testInfo.GetValue("name");
             if (string.IsNullOrEmpty(strTestType))
                 return null;
+
+            var geometryOperation = IsOverlayNG(strTestType)
+                ? new OverlayNGGeometryOperation(_geometryOperation)
+                : _geometryOperation;
+
+            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
+                testInfo.IsDefaultTarget(), tolerance, geometryOperation, _resultMatcher);
 
             try
             {
@@ -98,6 +102,21 @@ namespace Open.Topology.TestRunner
             ParseResult(strResult, xmlTest);
 
             return xmlTest;
+        }
+
+        /// <summary>
+        /// Whether the operation is one of the four <see cref="OverlayNGGeometryOperation"/> runs.
+        /// <para/>
+        /// They are matched by name rather than by the <c>NG</c> suffix that <see cref="ParseType"/>
+        /// strips, because an operation added later whose name merely ends in those letters would
+        /// be routed to an operation that has no way to run it.
+        /// </summary>
+        private static bool IsOverlayNG(string testType)
+        {
+            return testType.Equals("intersectionng", StringComparison.OrdinalIgnoreCase)
+                || testType.Equals("unionng", StringComparison.OrdinalIgnoreCase)
+                || testType.Equals("differenceng", StringComparison.OrdinalIgnoreCase)
+                || testType.Equals("symdifferenceng", StringComparison.OrdinalIgnoreCase);
         }
 
         protected bool ParseType(string testType, XmlTest xmlTestItem)
