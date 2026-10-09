@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Curves;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Operation.Distance
@@ -94,6 +95,8 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="terminateDistance">The distance on which to terminate the search.</param>
         public DistanceOp(Geometry g0, Geometry g1, double terminateDistance)
         {
+            CurvedGeometry.CheckNotCurved(g0, "Distance");
+            CurvedGeometry.CheckNotCurved(g1, "Distance");
             _geom = new[] { g0, g1 };
             _terminateDistance = terminateDistance;
         }
