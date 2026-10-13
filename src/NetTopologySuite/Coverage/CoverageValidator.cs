@@ -50,6 +50,19 @@ namespace NetTopologySuite.Coverage
         }
 
         /// <summary>
+        /// Tests whether a polygonal coverage is valid,
+        /// and contains no gaps narrower than a specified width.
+        /// </summary>
+        /// <param name="coverage">An array of polygons forming a coverage</param>
+        /// <param name="gapWidth">The maximum width of invalid gaps</param>
+        /// <returns><c>true</c> if the coverage is valid</returns>
+        public static bool IsValid(Geometry[] coverage, double gapWidth)
+        {
+            var v = new CoverageValidator(coverage) { GapWidth = gapWidth };
+            return !HasInvalidResult(v.Validate());
+        }
+
+        /// <summary>
         /// Tests if some element of an array of geometries is a coverage invalidity
         /// indicator.
         /// </summary>
