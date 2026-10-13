@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Index.Strtree;
 
 namespace NetTopologySuite.Operation.Distance
@@ -144,6 +145,46 @@ namespace NetTopologySuite.Operation.Distance
             var minDistanceLocation = NearestLocations(g);
             var nearestPts = ToPoints(minDistanceLocation);
             return nearestPts;
+        }
+
+        /// <summary>
+        /// Computes the nearest location on the target geometry to a point
+        /// (JTS <c>IndexedFacetDistance.nearestLocation</c>).
+        /// </summary>
+        public CoordinateSequenceLocation NearestLocation(Coordinate p)
+        {
+            var seq = new CoordinateArraySequence(new[] { p });
+            var fs = new FacetSequence(seq, 0);
+            var fsN = _cachedTree.NearestNeighbour(fs.Envelope, fs, FacetSeqDist);
+            return fsN.NearestLocation(p);
+        }
+
+        /// <summary>
+        /// Computes the nearest point on the target geometry to a point.
+        /// </summary>
+        public Coordinate NearestPoint(Coordinate p)
+        {
+            return NearestLocation(p).Coordinate;
+        }
+
+        /// <summary>
+        /// Computes the distance from the target geometry to a point.
+        /// </summary>
+        public double Distance(Coordinate p)
+        {
+            return p.Distance(NearestPoint(p));
+        }
+
+        /// <summary>
+        /// Computes the distance from the target geometry to a segment.
+        /// </summary>
+        public double Distance(Coordinate p0, Coordinate p1)
+        {
+            var seq = new CoordinateArraySequence(new[] { p0, p1 });
+            var fs2 = new FacetSequence(seq, 0, 2);
+            var fs1 = _cachedTree.NearestNeighbour(fs2.Envelope, fs2, FacetSeqDist);
+            var loc = fs1.NearestLocations(fs2);
+            return loc[0].Coordinate.Distance(loc[1].Coordinate);
         }
 
         private static Coordinate[] ToPoints(GeometryLocation[] locations)
