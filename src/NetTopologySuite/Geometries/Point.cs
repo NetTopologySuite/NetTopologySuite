@@ -328,6 +328,46 @@ namespace NetTopologySuite.Geometries
             : this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
 
         /// <summary>
+        /// Implicitly cast a tuple to a new <see cref="Point"/> as a copy of this instance.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator Point((double x, double y) value)
+            => new Point(value.x, value.y);
+
+        /// <summary>
+        /// Implicitly cast a tuple to a new <see cref="Point"/> as a copy of this instance.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator Point((double x, double y, double z) value)
+            => new Point(value.x, value.y, value.z);
+
+        /// <summary>
+        /// Deconstructs this <see cref="Point"/> into its components.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void Deconstruct(out double x, out double y)
+        {
+            x = X;
+            y = Y;
+        }
+
+        /// <summary>
+        /// Deconstructs this <see cref="Point"/> into its components.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        public void Deconstruct(out double x, out double y, out double z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+
+        /// <summary>
         ///
         /// </summary>
         public double Z
