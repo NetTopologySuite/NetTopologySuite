@@ -28,7 +28,6 @@ namespace NetTopologySuite.Geometries
     /// <seealso cref="Implementation.CoordinateArraySequenceFactory"/>
     ///// <seealso cref="NetTopologySuite.Geometries.Implementation.ExtendedCoordinateExample"/>
     /// <seealso cref="Implementation.PackedCoordinateSequenceFactory"/>
-    [Serializable]
     public abstract class CoordinateSequence
     {
         private readonly int _zIndex;
@@ -496,7 +495,6 @@ namespace NetTopologySuite.Geometries
             return false;
         }
 
-        [Serializable]
         private sealed class ReversedCoordinateSequence : CoordinateSequence
         {
             private readonly CoordinateSequence _inner;

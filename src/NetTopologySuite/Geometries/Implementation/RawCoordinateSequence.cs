@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 
 namespace NetTopologySuite.Geometries.Implementation
 {
@@ -9,8 +8,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// An implementation of <see cref="CoordinateSequence"/> that packs its contents in a way that
     /// can be customized by the creator.
     /// </summary>
-    [Serializable]
-    public sealed class RawCoordinateSequence : CoordinateSequence, ISerializable
+    public sealed class RawCoordinateSequence : CoordinateSequence
     {
         private readonly (Memory<double> Array, int DimensionCount)[] _rawData;
 
@@ -66,16 +64,6 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             _rawData = rawData;
             _dimensionMap = dimensionMap;
-        }
-
-        private RawCoordinateSequence(SerializationInfo info, StreamingContext context)
-            : this(
-                info.GetInt32("count"),
-                info.GetInt32("dimension"),
-                info.GetInt32("measures"),
-                Array.ConvertAll(((double[] Array, int DimensionCount)[])info.GetValue("rawData", typeof((double[] Array, int DimensionCount)[])), tup => (tup.Array.AsMemory(), tup.DimensionCount)),
-                ((int RawDataIndex, int DimensionIndex)[])info.GetValue("dimensionMap", typeof((int RawDataIndex, int DimensionIndex)[])))
-        {
         }
 
         /// <summary>
@@ -284,15 +272,6 @@ namespace NetTopologySuite.Geometries.Implementation
             }
 
             return result;
-        }
-
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("count", Count);
-            info.AddValue("dimension", Dimension);
-            info.AddValue("measures", Measures);
-            info.AddValue("rawData", Array.ConvertAll(_rawData, tup => (tup.Array.ToArray(), tup.DimensionCount)));
-            info.AddValue("dimensionMap", _dimensionMap);
         }
 
         private static int GetCountIfValid(Memory<double>[] rawData, (int RawDataIndex, int DimensionIndex)[] dimensionMap)

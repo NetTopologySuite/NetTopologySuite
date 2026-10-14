@@ -7,7 +7,6 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// A coordinate sequence that follows the dotspatial shape range
     /// </summary>
-    [Serializable]
     public class DotSpatialAffineCoordinateSequence :
         CoordinateSequence
         //IMeasuredCoordinateSequence
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Geometries.Implementation
         private readonly double[] _z;
         private readonly double[] _m;
 
-        [NonSerialized]
         private WeakReference<Coordinate[]> _coordinateArrayRef;
 
         /// <summary>

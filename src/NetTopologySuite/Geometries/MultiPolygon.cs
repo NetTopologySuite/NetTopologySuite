@@ -6,7 +6,6 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
-    [Serializable]
     public class MultiPolygon : GeometryCollection, IPolygonal
     {
         /// <summary>

@@ -9,7 +9,6 @@ namespace NetTopologySuite.Index.Quadtree
     /// It is centred at the origin,
     /// and does not have a defined extent.
     /// </summary>
-    [Serializable]
     public class Root<T> : NodeBase<T>
     {
         // the singleton root quad is centred at the origin.

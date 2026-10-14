@@ -5,7 +5,6 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Models a collection of <c>Point</c>s.
     /// </summary>
-    [Serializable]
     public class MultiPoint : GeometryCollection, IPuntal
     {
         /// <summary>

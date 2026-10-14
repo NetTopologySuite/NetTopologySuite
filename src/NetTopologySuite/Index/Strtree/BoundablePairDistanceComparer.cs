@@ -19,7 +19,6 @@ namespace NetTopologySuite.Index.Strtree
     /// The Class BoundablePairDistanceComparator. It implements .Net <see cref="IComparer{T}"/> and is used
     /// as a parameter to sort the BoundablePair list.
     /// </summary>
-    [System.Serializable]
     internal class BoundablePairDistanceComparer<TItem> : IComparer<BoundablePair<TItem>>
     {
 

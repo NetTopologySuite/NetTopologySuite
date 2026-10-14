@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Threading;
 using NetTopologySuite.Geometries;
 
@@ -10,7 +9,6 @@ namespace NetTopologySuite.Index.Quadtree
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
-    [Serializable]
     public abstract class NodeBase<T>
     {
         /// <summary>
@@ -318,12 +316,10 @@ namespace NetTopologySuite.Index.Quadtree
             }
         }
 
-        [Serializable]
-        private class SynchonizedList : IList<T>, ISerializable
+        private class SynchonizedList : IList<T>
         {
             private readonly IList<T> _items;
 
-            [NonSerialized]
             private readonly object _syncRoot;
 
             public SynchonizedList()
@@ -338,20 +334,6 @@ namespace NetTopologySuite.Index.Quadtree
             {
                 _items = items;
                 _syncRoot = new object();
-            }
-
-            internal SynchonizedList(SerializationInfo info, StreamingContext context)
-            {
-                string itemsTypeName = (string)info.GetValue("_itemsType", typeof(string));
-                var itemsType = Type.GetType(itemsTypeName);
-                _items = (IList<T>)info.GetValue("_items", itemsType);
-                _syncRoot = new object();
-            }
-
-            void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-            {
-                info.AddValue("_itemsType", _items.GetType().FullName);
-                info.AddValue("_items", _items);
             }
 
             public T this[int index]
