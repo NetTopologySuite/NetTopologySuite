@@ -42,6 +42,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestCreateLineStringFromSpan()
+        {
+            var coordinates = new[] { new Coordinate(0, 0), new Coordinate(10, 10) };
+
+            var fromArray = Factory.CreateLineString(coordinates);
+            var fromSpan = Factory.CreateLineString(new ReadOnlySpan<Coordinate>(coordinates));
+
+            Assert.That(fromSpan.EqualsExact(fromArray));
+            Assert.That(fromSpan.Factory, Is.SameAs(Factory));
+
+            Assert.That(Factory.CreateLineString(ReadOnlySpan<Coordinate>.Empty).IsEmpty);
+        }
+
+        [Test]
         public virtual void TestCreateGeometry()
         {
             CheckCreateGeometryExact("POINT EMPTY");

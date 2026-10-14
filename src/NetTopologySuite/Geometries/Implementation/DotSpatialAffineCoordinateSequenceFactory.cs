@@ -32,6 +32,16 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
+        ///  Returns a CoordinateArraySequence based on the given span of coordinates.
+        /// </summary>
+        /// <param name="coordinates">the coordinates, which may not contain null elements.</param>
+        /// <returns></returns>
+        public override CoordinateSequence Create(ReadOnlySpan<Coordinate> coordinates)
+        {
+            return new DotSpatialAffineCoordinateSequence(coordinates.ToArray(), Ordinates);
+        }
+
+        /// <summary>
         /// Creates a <see cref="CoordinateSequence" />  which is a copy
         /// of the given <see cref="CoordinateSequence" />.
         /// This method must handle null arguments by creating an empty sequence.

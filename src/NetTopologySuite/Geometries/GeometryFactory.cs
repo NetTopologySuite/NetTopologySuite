@@ -400,6 +400,17 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Creates a LineString using the given Coordinates.
+        /// An empty span creates an empty LineString.
+        /// </summary>
+        /// <param name="coordinates">A span of coordinates without null elements, or an empty span.</param>
+        /// <returns>A <see cref="LineString"/> object</returns>
+        public LineString CreateLineString(ReadOnlySpan<Coordinate> coordinates)
+        {
+            return CreateLineString(CoordinateSequenceFactory.Create(coordinates));
+        }
+
+        /// <summary>
         /// Creates a LineString using the given CoordinateSequence.
         /// A null or empty CoordinateSequence creates an empty LineString.
         /// </summary>
@@ -427,6 +438,19 @@ namespace NetTopologySuite.Geometries
         public LinearRing CreateLinearRing(Coordinate[] coordinates)
         {
             return CreateLinearRing(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
+        }
+
+        /// <summary>
+        /// Creates a <c>LinearRing</c> using the given <c>Coordinates</c>; an empty span
+        /// creates an empty LinearRing. The points must form a closed and simple
+        /// linestring. Consecutive points must not be equal.
+        /// </summary>
+        /// <param name="coordinates">A span of coordinates without null elements, or an empty span.</param>
+        /// <returns>A <see cref="LinearRing"/> object</returns>
+        /// <exception cref="ArgumentException"> If the ring is not closed, or has too few points</exception>
+        public LinearRing CreateLinearRing(ReadOnlySpan<Coordinate> coordinates)
+        {
+            return CreateLinearRing(CoordinateSequenceFactory.Create(coordinates));
         }
 
         /// <summary>
