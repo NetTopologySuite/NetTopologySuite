@@ -191,26 +191,36 @@ namespace NetTopologySuite.Operation.Buffer
             public Geometry Map(Geometry geom)
             {
                 if (geom is Point) return null;
-                if (geom is Polygon)
+                if (geom is Polygon poly)
                 {
-                    return ToLineString(geom.Buffer(_parent._distance).Boundary);
+                    return _parent.ComputePolygonCurve(poly, _parent._distance);
                 }
                 return _parent.ComputeCurve((LineString)geom, _parent._distance);
             }
+        }
 
-            /// <summary>
-            /// Force LinearRings to be LineStrings.
-            /// </summary>
-            /// <param name="geom">A geometry, which may be a <c>LinearRing</c></param>
-            /// <returns>A geometry which will be a <c>LineString</c> or <c>MulitLineString</c></returns>
-            private Geometry ToLineString(Geometry geom)
+        private Geometry ComputePolygonCurve(Polygon poly, double distance)
+        {
+            Geometry buffer;
+            if (_bufferParams == null)
+                buffer = BufferOp.Buffer(poly, distance);
+            else
+                buffer = BufferOp.Buffer(poly, distance, _bufferParams);
+            return ToLineString(buffer.Boundary);
+        }
+
+        /// <summary>
+        /// Force LinearRings to be LineStrings.
+        /// </summary>
+        /// <param name="geom">A geometry, which may be a <c>LinearRing</c></param>
+        /// <returns>A geometry which will be a <c>LineString</c> or <c>MulitLineString</c></returns>
+        private static Geometry ToLineString(Geometry geom)
+        {
+            if (geom is LinearRing ring)
             {
-                if (geom is LinearRing ring)
-                {
-                    return geom.Factory.CreateLineString(ring.CoordinateSequence);
-                }
-                return geom;
+                return geom.Factory.CreateLineString(ring.CoordinateSequence);
             }
+            return geom;
         }
 
         /// <summary>

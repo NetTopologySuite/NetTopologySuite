@@ -320,6 +320,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         }
 
+        [Test]
+        public void TestPolygonMitreJoin()
+        {
+            CheckOffsetCurve(
+                "POLYGON ((1 1, 1 7, 5 4, 8 8, 8 1, 1 1))",
+                1, 0, JoinStyle.Mitre, 5,
+                "LINESTRING (0 0, 0 9, 4.8 5.4, 9 11, 9 0, 0 0)",
+                0.0001);
+            CheckOffsetCurve(
+                "POLYGON ((1 1, 1 7, 5 4, 8 8, 8 1, 1 1))",
+                -1, 0, JoinStyle.Mitre, 5,
+                "LINESTRING (2 2, 2 5, 5.2 2.6, 7 5, 7 2, 2 2)",
+                0.0001);
+        }
+
         //-------------------------------------------------
 
         [Test]
