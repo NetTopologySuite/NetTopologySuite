@@ -1,9 +1,13 @@
-﻿namespace NetTopologySuite.Tests.XUnit
+﻿using System.Collections.Generic;
+using NUnit.Framework;
+
+namespace NetTopologySuite.Tests.XUnit
 {
-    class TestRobustOverlayTests : GeneralXUnitRunner
+    public class RobustOverlayCorpusTests : XmlCorpusRunner
     {
-        protected override string TestLocation => $"robust{System.IO.Path.DirectorySeparatorChar}overlay";
+        public static IEnumerable<TestCaseData> Cases => CasesIn("robust/overlay");
 
-
+        [TestCaseSource(nameof(Cases))]
+        public void Run(string file, int index) => RunCase(file, index);
     }
 }
