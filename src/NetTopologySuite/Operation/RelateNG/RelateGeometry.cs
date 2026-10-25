@@ -176,6 +176,8 @@ namespace NetTopologySuite.Operation.RelateNG
 
         public bool HasEdges { get => _hasLines || _hasAreas; }
 
+        public bool HasAreaAndLine => _hasAreas && _hasLines;
+
         private RelatePointLocator GetLocator()
         {
             if (_locator == null)
@@ -242,6 +244,10 @@ namespace NetTopologySuite.Operation.RelateNG
 
                 //-- a GC with a single polygon does not need noding
                 if (_hasAreas && _geom.NumGeometries == 1)
+                    return false;
+
+                //-- GCs with only points do not need noding
+                if (!_hasAreas && !_hasLines)
                     return false;
 
                 return true;

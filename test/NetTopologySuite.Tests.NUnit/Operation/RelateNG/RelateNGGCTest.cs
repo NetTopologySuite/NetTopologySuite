@@ -253,6 +253,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             const string a = "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))";
             const string b = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), LINESTRING (0 2, 0 5))";
             CheckEquals(a, b, true);
+            CheckContainsWithin(a, b, true);
+            CheckCoversCoveredBy(a, b, true);
+            CheckContainsWithin(b, a, true);
+            CheckCoversCoveredBy(b, a, true);
         }
 
         [Test]
@@ -261,6 +265,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.RelateNG
             const string a = "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))";
             const string b = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), LINESTRING (0 2, 0 5, 5 5))";
             CheckEquals(a, b, true);
+            CheckContainsWithin(a, b, true);
+            CheckCoversCoveredBy(a, b, true);
+            CheckContainsWithin(b, a, true);
+            CheckCoversCoveredBy(b, a, true);
         }
 
     }
