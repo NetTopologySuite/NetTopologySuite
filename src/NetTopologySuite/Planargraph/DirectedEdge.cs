@@ -147,7 +147,7 @@ namespace NetTopologySuite.Planargraph
         /// first compare the quadrants. If the quadrants are different, it it
         /// trivial to determine which vector is "greater".
         /// if the vectors lie in the same quadrant, the robust
-        /// <c>RobustCGAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
+        /// <see cref="Orientation.Index(Coordinate, Coordinate, Coordinate)"/>
         /// function can be used to decide the relative orientation of the vectors.
         /// </summary>
         /// <param name="obj"></param>
@@ -167,7 +167,7 @@ namespace NetTopologySuite.Planargraph
         /// first compare the quadrants. If the quadrants are different, it it
         /// trivial to determine which vector is "greater".
         /// if the vectors lie in the same quadrant, the robust
-        /// <c>RobustCGAlgorithms.ComputeOrientation(Coordinate, Coordinate, Coordinate)</c>
+        /// <see cref="Orientation.Index(Coordinate, Coordinate, Coordinate)"/>
         /// function can be used to decide the relative orientation of the vectors.
         /// </summary>
         /// <param name="e"></param>
