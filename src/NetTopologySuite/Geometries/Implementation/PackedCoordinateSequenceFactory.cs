@@ -117,7 +117,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
         /// <summary>
         /// Creates a packed coordinate sequence of type <see cref="Type"/> from the provided <c>double</c> array
-        /// using the provided dimension and a measure of <c>0</c>.
+        /// using the provided dimension and measure count.
         /// </summary>
         /// <param name="packedCoordinates">The array containing coordinate values</param>
         /// <param name="dimension">The coordinate dimension</param>
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
         /// <summary>
         /// Creates a packed coordinate sequence of type <see cref="Type"/> from the provided <c>float</c> array
-        /// using the provided dimension and a measure of <c>0</c>.
+        /// using the provided dimension and measure count.
         /// </summary>
         /// <param name="packedCoordinates">The array containing coordinate values</param>
         /// <param name="dimension">The coordinate dimension</param>
