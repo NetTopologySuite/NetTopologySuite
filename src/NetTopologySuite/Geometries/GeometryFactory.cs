@@ -305,7 +305,7 @@ namespace NetTopologySuite.Geometries
         /// <li>null returns an empty <see cref="Point"/></li>
         /// <li>a point returns a non-empty <see cref="Point"/></li>
         /// <li>a line returns a two-point <see cref="LineString"/></li>
-        /// <li>a rectangle returns a <see cref="Polygon"/> whose points are (minx, maxy), (minx, maxy), (maxx, maxy), (maxx, miny).</li>
+        /// <li>a rectangle returns a <see cref="Polygon"/> whose points are (minx, miny), (minx, maxy), (maxx, maxy), (maxx, miny), (minx, miny).</li>
         /// </ul>
         /// </para>
         /// </remarks>

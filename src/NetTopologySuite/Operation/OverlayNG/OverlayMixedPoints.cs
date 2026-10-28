@@ -15,10 +15,11 @@ namespace NetTopologySuite.Operation.OverlayNG
     /// Input semantics are:
     /// <list type="bullet">
     /// <item><description>Duplicates are removed from Point output</description></item>
-    /// <item><description>Non-point output is rounded and noded using the given precision model</description></item>
+    /// <item><description>Non-point input is rounded and noded using the given precision model</description></item>
     /// </list>
     /// Output semantics are:
     /// <list type="bullet">
+    /// <item><description>Points are rounded to the precision model (if present)</description></item>
     /// <item><description>An empty result is an empty atomic geometry
     /// with dimension determined by the inputs and the operation as per overlay semantics
     /// </description></item>
