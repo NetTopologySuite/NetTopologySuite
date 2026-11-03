@@ -79,7 +79,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// The obstacles may be any collection of points, lines and polygons.
         /// The center of the LEC lies within the convex hull of the obstacles.
         /// </summary>
-        /// <param name="obstacles">A geometry representing the obstacles (points and lines)</param>
+        /// <param name="obstacles">A geometry representing the obstacles</param>
         /// <param name="tolerance">The distance tolerance for computing the center point</param>
         /// <returns>A line from the center of the circle to a point on the edge</returns>
         public static LineString GetRadiusLine(Geometry obstacles, double tolerance)
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// The obstacles may be any collection of points, lines and polygons.
         /// The center of the LEC lies within the given boundary.
         /// </summary>
-        /// <param name="obstacles">A geometry representing the obstacles (points and lines)</param>
+        /// <param name="obstacles">A geometry representing the obstacles</param>
         /// <param name="boundary">A polygonal geometry to contain the LEC center</param>
         /// <param name="tolerance">The distance tolerance for computing the center point</param>
         /// <returns>A line from the center of the circle to a point on the edge</returns>
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// <summary>
         /// Creates a new instance of a Largest Empty Circle construction.
         /// </summary>
-        /// <param name="obstacles">A geometry representing the obstacles (points and lines)</param>
+        /// <param name="obstacles">A geometry representing the obstacles</param>
         /// <param name="tolerance">The distance tolerance for computing the center point</param>
         [Obsolete("Will be removed in a future version")]
         public LargestEmptyCircle(Geometry obstacles, double tolerance)
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Algorithm.Construct
         /// If the boundary is null or empty the convex hull
         /// of the obstacles is used as the boundary.
         /// </summary>
-        /// <param name="obstacles">A non-empty geometry representing the obstacles (points and lines)</param>
+        /// <param name="obstacles">A non-empty geometry representing the obstacles</param>
         /// <param name="boundary">A polygonal geometry to contain the LEC center (may be null or empty)</param>
         /// <param name="tolerance">The distance tolerance for computing the center point (a positive value)</param>
         public LargestEmptyCircle(Geometry obstacles, Geometry boundary, double tolerance)

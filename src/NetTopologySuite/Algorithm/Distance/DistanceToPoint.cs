@@ -6,7 +6,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="Geometry"/>.
     /// </summary>
     /// <remarks>
-    /// Also computes two points on the geometry which are separated by the distance found.
+    /// Also computes a point on the geometry which has the given distance to the coordinate.
     /// </remarks>
     public static class DistanceToPoint
     {
