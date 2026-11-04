@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<!--
+  CP0012 on LineString.IsClosed: the member changes from 'virtual' (newslot) to
+  'override' (reuseslot) because the abstract Curve base class now declares
+  IsClosed for all curves. Virtual dispatch through a LineString reference and
+  existing external overrides of LineString.IsClosed keep working - the slot is
+  resolved through the inheritance chain at JIT time - so the change is
+  binary-compatible in practice. It cannot be expressed differently: an
+  override cannot simultaneously create a new slot.
+-->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0012</DiagnosticId>
+    <Target>M:NetTopologySuite.Geometries.LineString.get_IsClosed</Target>
+    <Left>lib/netstandard2.0/NetTopologySuite.dll</Left>
+    <Right>lib/netstandard2.0/NetTopologySuite.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0012</DiagnosticId>
+    <Target>P:NetTopologySuite.Geometries.LineString.IsClosed</Target>
+    <Left>lib/netstandard2.0/NetTopologySuite.dll</Left>
+    <Right>lib/netstandard2.0/NetTopologySuite.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0012</DiagnosticId>
+    <Target>M:NetTopologySuite.Geometries.LineString.get_IsClosed</Target>
+    <Left>lib/netstandard2.1/NetTopologySuite.dll</Left>
+    <Right>lib/netstandard2.1/NetTopologySuite.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0012</DiagnosticId>
+    <Target>P:NetTopologySuite.Geometries.LineString.IsClosed</Target>
+    <Left>lib/netstandard2.1/NetTopologySuite.dll</Left>
+    <Right>lib/netstandard2.1/NetTopologySuite.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+</Suppressions>

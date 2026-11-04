@@ -141,7 +141,21 @@ namespace NetTopologySuite.Geometries
             /// <summary>Sort hierarchy value of a <see cref="MultiPolygon"/></summary>
             MultiPolygon = 6,
             /// <summary>Sort hierarchy value of a <see cref="GeometryCollection"/></summary>
-            GeometryCollection = 7
+            GeometryCollection = 7,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.CircularString"/></summary>
+            CircularString = 8,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.CompoundCurve"/></summary>
+            CompoundCurve = 9,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.CurvePolygon"/></summary>
+            CurvePolygon = 10,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.MultiCurve"/></summary>
+            MultiCurve = 11,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.MultiSurface"/></summary>
+            MultiSurface = 12,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.Triangle"/></summary>
+            Triangle = 13,
+            /// <summary>Sort hierarchy value of a <see cref="Curves.Tin"/></summary>
+            Tin = 14
         }
 
         /// <summary>
@@ -176,6 +190,16 @@ namespace NetTopologySuite.Geometries
         /// The name of geometry collection geometries.
         /// </summary>
         public const string TypeNameGeometryCollection = "GeometryCollection";
+        /// <summary>The name of circular-string geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameCircularString = "CircularString";
+        /// <summary>The name of compound-curve geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameCompoundCurve = "CompoundCurve";
+        /// <summary>The name of curve-polygon geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameCurvePolygon = "CurvePolygon";
+        /// <summary>The name of multi-curve geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameMultiCurve = "MultiCurve";
+        /// <summary>The name of multi-surface geometries (SQL/MM / GEOS).</summary>
+        public const string TypeNameMultiSurface = "MultiSurface";
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ GeometryFactory _factory;

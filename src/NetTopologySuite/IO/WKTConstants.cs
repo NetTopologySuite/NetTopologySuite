@@ -42,6 +42,35 @@ namespace NetTopologySuite.IO
         public const string POLYGON = "POLYGON";
 
         /// <summary>
+        /// Token text for <see cref="Geometries.Curves.CircularString"/> geometries
+        /// </summary>
+        public const string CIRCULARSTRING = "CIRCULARSTRING";
+        /// <summary>
+        /// Token text for <see cref="Geometries.Curves.CompoundCurve"/> geometries
+        /// </summary>
+        public const string COMPOUNDCURVE = "COMPOUNDCURVE";
+        /// <summary>
+        /// Token text for <see cref="Geometries.Curves.CurvePolygon"/> geometries
+        /// </summary>
+        public const string CURVEPOLYGON = "CURVEPOLYGON";
+        /// <summary>
+        /// Token text for <see cref="Geometries.Curves.MultiCurve"/> geometries (SQL/MM / GEOS)
+        /// </summary>
+        public const string MULTICURVE = "MULTICURVE";
+        /// <summary>
+        /// Token text for <see cref="Geometries.Curves.MultiSurface"/> geometries (SQL/MM / GEOS)
+        /// </summary>
+        public const string MULTISURFACE = "MULTISURFACE";
+        /// <summary>
+        /// Token text for <see cref="Geometries.Curves.Triangle"/> geometries
+        /// </summary>
+        public const string TRIANGLE = "TRIANGLE";
+        /// <summary>
+        /// Token text for <see cref="Geometries.Curves.Tin"/> geometries
+        /// </summary>
+        public const string TIN = "TIN";
+
+        /// <summary>
         /// Token text for empty geometries
         /// </summary>
         public const string EMPTY = "EMPTY";

@@ -87,7 +87,11 @@ namespace NetTopologySuite.Geometries
         TIN = 16,
 // ReSharper restore InconsistentNaming
 
-        
+        /// <summary>
+        /// Triangle (SFA-CA). A polygon with exactly three distinct vertices.
+        /// </summary>
+        Triangle = 17,
+
 
 
         /*

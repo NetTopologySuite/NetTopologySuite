@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// </remarks>
     [Serializable]
-    public class LineString : Geometry, ILineal
+    public class LineString : Curve
     {
         /// <summary>
         /// The minimum number of vertices allowed in a valid non-empty linestring.
@@ -152,26 +152,6 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Dimension Dimension => Dimension.Curve;
-
-        /// <summary>
-        ///
-        /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                if (IsClosed)
-                {
-                    return Dimension.False;
-                }
-                return Dimension.Point;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         public override bool IsEmpty => _points.Count == 0;
 
         /// <summary>
@@ -192,7 +172,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the start point of this <c>LINESTRING</c>
         /// </summary>
-        public Point StartPoint
+        public sealed override Point StartPoint
         {
             get
             {
@@ -205,7 +185,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the end point of this <c>LINESTRING</c>
         /// </summary>
-        public Point EndPoint
+        public sealed override Point EndPoint
         {
             get
             {
@@ -229,12 +209,7 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if this LineString is non-empty and closed;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool IsClosed => _points.IsClosed;
-
-        /// <summary>
-        /// Gets a value indicating if this <c>LINESTRING</c> forms a ring.
-        /// </summary>
-        public bool IsRing => IsClosed && IsSimple;
+        public override bool IsClosed => _points.IsClosed;
 
         /// <summary>
         /// Returns the name of this object's interface.
