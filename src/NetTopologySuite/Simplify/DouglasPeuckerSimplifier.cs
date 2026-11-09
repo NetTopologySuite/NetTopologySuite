@@ -175,14 +175,8 @@ namespace NetTopologySuite.Simplify
             /// <summary>
             /// Creates a valid area point from one that possibly has
             /// bad topology (i.e. self-intersections).
-            /// Since buffer can handle invalid topology, but always returns
-            /// valid point, constructing a 0-width buffer "corrects" the
-            /// topology.
-            /// Note this only works for area geometries, since buffer always returns
-            /// areas.  This also may return empty geometries, if the input
-            /// has no actual area.<br/>
-            /// If the input is empty or is not polygonal,
-            /// this ensures that POLYGON EMPTY is returned.
+            /// GeometryFixer corrects the topology while preserving as much
+            /// of the input geometry as possible.
             /// </summary>
             /// <param name="rawAreaGeom">An area point possibly containing self-intersections.</param>
             /// <returns>A valid area point.</returns>
@@ -191,7 +185,13 @@ namespace NetTopologySuite.Simplify
                 bool isValidArea = rawAreaGeom.Dimension == Dimension.A && rawAreaGeom.IsValid;
                 // if geometry is invalid then make it valid
                 if (_ensureValidTopology && !isValidArea)
-                    return rawAreaGeom.Buffer(0.0);
+                {
+                    var fixedGeom = GeometryFixer.Fix(rawAreaGeom);
+                    // Preserve the historical result type for collapsed polygonal output.
+                    if (fixedGeom.IsEmpty && rawAreaGeom.Dimension < Dimension.A)
+                        return rawAreaGeom.Factory.CreatePolygon();
+                    return fixedGeom;
+                }
                 return rawAreaGeom;
             }
         }
