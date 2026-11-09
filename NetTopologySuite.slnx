@@ -42,6 +42,7 @@
     <File Path="doc/overwrite/namespaces/NetTopologySuite.Utilities.md" />
   </Folder>
   <Folder Name="/NetTopologySuite.Tests/">
+    <Project Path="test/NetTopologySuite.Benchmark/NetTopologySuite.Benchmark.csproj" />
     <Project Path="test/NetTopologySuite.Samples.Console/NetTopologySuite.Samples.Console.csproj" />
     <Project Path="test/NetTopologySuite.TestRunner/NetTopologySuite.TestRunner.csproj" />
     <Project Path="test/NetTopologySuite.Tests.NUnit.Performance/NetTopologySuite.Tests.NUnit.Performance.csproj" />

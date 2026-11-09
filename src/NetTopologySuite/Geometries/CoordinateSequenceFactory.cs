@@ -38,36 +38,44 @@ namespace NetTopologySuite.Geometries
         /// <returns>A coordinate sequence.</returns>
         public virtual CoordinateSequence Create(Coordinate[] coordinates)
         {
+            return Create((ReadOnlySpan<Coordinate>)coordinates);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="CoordinateSequence" /> based on the given span of coordinates;
+        /// whether or not the values are copied is implementation-dependent.
+        /// </summary>
+        /// <param name="coordinates">A span of coordinates, which may not contain null elements</param>
+        /// <returns>A coordinate sequence.</returns>
+        public virtual CoordinateSequence Create(ReadOnlySpan<Coordinate> coordinates)
+        {
             (int count, int dimension, int measures) = GetCommonSequenceParameters(coordinates);
             var result = Create(count, dimension, measures);
-            if (coordinates != null)
+            int spatial = dimension - measures;
+            for (int i = 0; i < coordinates.Length; i++)
             {
-                int spatial = dimension - measures;
-                for (int i = 0; i < coordinates.Length; i++)
+                var coord = coordinates[i];
+                int coordDimension = Coordinates.Dimension(coord);
+                int coordMeasures = Coordinates.Measures(coord);
+                int coordSpatial = coordDimension - coordMeasures;
+                for (int dim = 0; dim < coordSpatial; dim++)
                 {
-                    var coord = coordinates[i];
-                    int coordDimension = Coordinates.Dimension(coord);
-                    int coordMeasures = Coordinates.Measures(coord);
-                    int coordSpatial = coordDimension - coordMeasures;
-                    for (int dim = 0; dim < coordSpatial; dim++)
-                    {
-                        result.SetOrdinate(i, dim, coord[dim]);
-                    }
+                    result.SetOrdinate(i, dim, coord[dim]);
+                }
 
-                    for (int dim = coordSpatial; dim < spatial; dim++)
-                    {
-                        result.SetOrdinate(i, dim, Coordinate.NullOrdinate);
-                    }
+                for (int dim = coordSpatial; dim < spatial; dim++)
+                {
+                    result.SetOrdinate(i, dim, Coordinate.NullOrdinate);
+                }
 
-                    for (int measure = 0; measure < coordMeasures; measure++)
-                    {
-                        result.SetOrdinate(i, spatial + measure, coord[coordSpatial + measure]);
-                    }
+                for (int measure = 0; measure < coordMeasures; measure++)
+                {
+                    result.SetOrdinate(i, spatial + measure, coord[coordSpatial + measure]);
+                }
 
-                    for (int measure = coordMeasures; measure < measures; measure++)
-                    {
-                        result.SetOrdinate(i, spatial + measure, Coordinate.NullOrdinate);
-                    }
+                for (int measure = coordMeasures; measure < measures; measure++)
+                {
+                    result.SetOrdinate(i, spatial + measure, Coordinate.NullOrdinate);
                 }
             }
 
@@ -156,11 +164,23 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public static (int Count, int Dimension, int Measures) GetCommonSequenceParameters(Coordinate[] coordinates)
         {
-            if (coordinates == null)
-            {
-                return (0, 2, 0);
-            }
+            return GetCommonSequenceParameters((ReadOnlySpan<Coordinate>)coordinates);
+        }
 
+        /// <summary>
+        /// Gets the three parameters needed to create any <see cref="CoordinateSequence"/> instance
+        /// (<see cref="CoordinateSequence.Count"/>, <see cref="CoordinateSequence.Dimension"/>, and
+        /// <see cref="CoordinateSequence.Measures"/>) such that the sequence can store all the data
+        /// from a given span of <see cref="Coordinate"/> instances.
+        /// </summary>
+        /// <param name="coordinates">
+        /// The span of <see cref="Coordinate"/> instances that the sequence will be created from.
+        /// </param>
+        /// <returns>
+        /// The values of the three parameters to use for creating the sequence.
+        /// </returns>
+        public static (int Count, int Dimension, int Measures) GetCommonSequenceParameters(ReadOnlySpan<Coordinate> coordinates)
+        {
             int count = coordinates.Length;
             int spatial = 2;
             int measures = 0;
