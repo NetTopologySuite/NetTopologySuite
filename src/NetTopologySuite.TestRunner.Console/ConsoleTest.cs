@@ -26,7 +26,7 @@ namespace ConsoleTestRunner
             Console.Write("Test Runner>>");
         }
 
-        static void RunInteractive(XmlTestType filter, bool verbose)
+        static void RunInteractive(string filter, bool verbose)
         {
             string fileName = string.Empty;
 
@@ -88,7 +88,7 @@ namespace ConsoleTestRunner
 
                         runner.PrintSimpleTestResult(listTests.Count);
 
-                        runner.SimpleTestReset(XmlTestType.None, verbose);
+                        runner.SimpleTestReset(null, verbose);
                     }
                     catch (Exception ex)
                     {
@@ -155,7 +155,7 @@ namespace ConsoleTestRunner
             if (args == null || args.Length == 0)
             {
                 XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);
-                RunInteractive(XmlTestType.None, true);
+                RunInteractive(null, true);
             }
             else
             {
@@ -190,7 +190,7 @@ namespace ConsoleTestRunner
                     else
                     {
                         XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);
-                        RunInteractive(XmlTestType.None, true);
+                        RunInteractive(null, true);
                     }
                 }
             }

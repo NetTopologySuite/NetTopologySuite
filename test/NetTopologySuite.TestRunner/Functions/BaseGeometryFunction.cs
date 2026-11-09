@@ -13,7 +13,7 @@ namespace Open.Topology.TestRunner.Functions
     /// actual function invocation.
     /// </summary>
     /// <author>Martin Davis</author>
-    public abstract class BaseGeometryFunction : IGeometryFunction, IComparable<IGeometryFunction>
+    public abstract class BaseGeometryFunction : IGeometryFunction, IComparable<IGeometryFunction>, IComparable
     {
         public static bool IsBinaryGeomFunction(IGeometryFunction func)
         {
@@ -94,6 +94,18 @@ namespace Open.Topology.TestRunner.Functions
         /// same signature (name, parameter types and return type).
         /// </summary>
         /// <returns>true if this object is the same as the <tt>obj</tt> argument</returns>
+        // Sorting a List<IGeometryFunction> reaches for the non-generic comparison: the list is
+        // typed to the interface, which does not declare the generic one, so the generic
+        // implementation below is never found. The upstream class implements the raw Comparable
+        // for the same reason.
+        int IComparable.CompareTo(object obj)
+        {
+            if (!(obj is IGeometryFunction other))
+                throw new ArgumentException($"Cannot compare a geometry function with '{obj}'.", nameof(obj));
+
+            return CompareTo(other);
+        }
+
         public int CompareTo(IGeometryFunction o)
         {
             int cmp = name.CompareTo(o.Name);

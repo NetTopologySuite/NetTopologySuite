@@ -43,42 +43,26 @@ namespace Open.Topology.TestRunner.Operations
         public static Type GetGeometryReturnType(string functionName)
         {
 
-            //MethodInfo[] methods = typeof(Geometry).GetMethods();
-            for (int i = 0; i < GeometryMethods.Length; i++)
+            foreach (var member in GeometryMemberLookup.Candidates(functionName))
             {
-                if (GeometryMethods[i].Name.Equals(functionName, StringComparison.InvariantCultureIgnoreCase))
+                var returnClass = member.ReturnType;
+                /**
+                 * Filter out only acceptable classes. (For instance, don't accept the
+                 * relate()=>IntersectionMatrix method)
+                 */
+                if (returnClass == typeof (bool)
+                    || typeof (Geometry).IsAssignableFrom(returnClass)
+                    || returnClass == typeof (double) || returnClass == typeof (int))
                 {
-                    var returnClass = GeometryMethods[i].ReturnType;
-                    /**
-                     * Filter out only acceptable classes. (For instance, don't accept the
-                     * relate()=>IntersectionMatrix method)
-                     */
-                    if (returnClass == typeof (bool)
-                        || typeof (Geometry).IsAssignableFrom(returnClass)
-                        || returnClass == typeof (double) || returnClass == typeof (int))
-                    {
-                        return returnClass;
-                    }
+                    return returnClass;
                 }
             }
             return null;
         }
 
-        private static readonly MethodInfo[] GeometryMethods = typeof (Geometry).GetMethods();
-
-        public Type GetReturnType(XmlTestType op)
-        {
-            return GetReturnType(op.ToString());
-        }
-
         public Type GetReturnType(string opName)
         {
             return GetGeometryReturnType(opName);
-        }
-
-        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
-        {
-            return Invoke(opName.ToString(), geometry, args);
         }
 
         public IResult Invoke(string opName, Geometry geometry, object[] args)
@@ -92,16 +76,11 @@ namespace Open.Topology.TestRunner.Operations
 
         private MethodInfo GetGeometryMethod(string opName, object[] args, object[] actualArgs)
         {
-            // could index methods by name for efficiency...
-            for (int i = 0; i < GeometryMethods.Length; i++)
+            foreach (var member in GeometryMemberLookup.Candidates(opName))
             {
-                if (!GeometryMethods[i].Name.Equals(opName, StringComparison.InvariantCultureIgnoreCase))
+                if (ConvertArgs(member.GetParameters(), args, actualArgs))
                 {
-                    continue;
-                }
-                if (ConvertArgs(GeometryMethods[i].GetParameters(), args, actualArgs))
-                {
-                    return GeometryMethods[i];
+                    return member;
                 }
             }
             return null;
@@ -118,19 +97,21 @@ namespace Open.Topology.TestRunner.Operations
             return count;
         }
 
-        private readonly object[] _convArg = new object[1];
-
         private bool ConvertArgs(ParameterInfo[] parameterTypes, object[] args, object[] actualArgs)
         {
             if (parameterTypes.Length != NonNullItemCount(args))
                 return false;
 
+            // Held here rather than on the instance: one operation is shared by every document,
+            // so scratch space belonging to a single conversion must not outlive the call.
+            object[] convArg = new object[1];
+
             for (int i = 0; i < args.Length; i++)
             {
-                bool isCompatible = ConvertArg(parameterTypes[i].ParameterType, args[i], _convArg);
+                bool isCompatible = ConvertArg(parameterTypes[i].ParameterType, args[i], convArg);
                 if (!isCompatible)
                     return false;
-                actualArgs[i] = _convArg[0];
+                actualArgs[i] = convArg[0];
             }
             return true;
         }

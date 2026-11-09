@@ -99,6 +99,12 @@ namespace NetTopologySuite.Tests.XUnit
                     if (KnownFailures.IsKnown(relative, i))
                         data.SetCategory("FailureCase");
 
+                    // A case slow enough to dominate the suite is held back the same way, under
+                    // the category the CI filter already excludes, so that a run without that
+                    // filter still executes it. See LongRunningCasesList.cs.
+                    if (LongRunningCases.IsLongRunning(relative, i))
+                        data.SetCategory("LongRunning");
+
                     yield return data;
                 }
             }
@@ -127,7 +133,13 @@ namespace NetTopologySuite.Tests.XUnit
                 $"'{Relative(file)}' holds {tests.Count} case(s), so index {index} is out of range.");
 
             var test = tests[index];
-            Assert.That(test.RunTest(), Is.True, $"Case failed: {test.Description}");
+            // The runner answers a case that threw with false and keeps the exception, so without
+            // it a case that could not run at all reads exactly like one that answered wrongly.
+            bool passed = test.RunTest();
+            Assert.That(passed, Is.True,
+                        test.Thrown == null
+                            ? $"Case failed: {test.Description}"
+                            : $"Case failed: {test.Description}{Environment.NewLine}{test.Thrown}");
         }
 
         private static XmlTestCollection Load(string file)

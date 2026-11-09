@@ -15,7 +15,7 @@ namespace Open.Topology.TestRunner.Functions
         public static StaticMethodGeometryFunction CreateFunction(MethodInfo method)
         {
             var pi = method.GetParameters();
-            Debug.Assert(typeof(Geometry).IsAssignableFrom(pi[0].GetType()));
+            Debug.Assert(typeof(Geometry).IsAssignableFrom(pi[0].ParameterType));
 
             var clz = method.DeclaringType;
 
@@ -38,7 +38,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             var pi = method.GetParameters();
             string[] name = new string[pi.Length - 1];
-            for (int i = 1; i < name.Length; i++)
+            for (int i = 0; i < name.Length; i++)
                 name[i] = "arg" + i;
             return name;
         }
@@ -115,7 +115,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             string jClassName = javaClass.Name;
             int lastDotPos = jClassName.LastIndexOf(".");
-            return jClassName.Substring(lastDotPos + 1, jClassName.Length);
+            return jClassName.Substring(lastDotPos + 1);
         }
     }
 }

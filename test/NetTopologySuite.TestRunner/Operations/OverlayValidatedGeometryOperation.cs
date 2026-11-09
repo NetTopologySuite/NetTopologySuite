@@ -24,11 +24,29 @@ namespace Open.Topology.TestRunner.Operations
     {
         public static SpatialFunction OverlayOpCode(string methodName)
         {
-            if (methodName.Equals("intersection", StringComparison.InvariantCultureIgnoreCase) ) return SpatialFunction.Intersection;
-            if (methodName.Equals("union", StringComparison.InvariantCultureIgnoreCase)) return SpatialFunction.Union;
-            if (methodName.Equals("difference", StringComparison.InvariantCultureIgnoreCase)) return SpatialFunction.Difference;
-            if (methodName.Equals("symDifference", StringComparison.InvariantCultureIgnoreCase)) return SpatialFunction.SymDifference;
-            throw new ArgumentOutOfRangeException("methodName");
+            if (TryOverlayOpCode(methodName, out var opCode))
+                return opCode;
+
+            throw new ArgumentOutOfRangeException(nameof(methodName));
+        }
+
+        /// <summary>
+        /// Whether <paramref name="methodName"/> names one of the four overlay operations.
+        /// </summary>
+        /// <remarks>
+        /// Asked rather than inferred from the code above, which reports a name it does not know
+        /// by throwing. A caller that wants to hand such a name on to another operation has no
+        /// value to test for.
+        /// </remarks>
+        private static bool TryOverlayOpCode(string methodName, out SpatialFunction opCode)
+        {
+            if (methodName.Equals("intersection", StringComparison.InvariantCultureIgnoreCase)) { opCode = SpatialFunction.Intersection; return true; }
+            if (methodName.Equals("union", StringComparison.InvariantCultureIgnoreCase)) { opCode = SpatialFunction.Union; return true; }
+            if (methodName.Equals("difference", StringComparison.InvariantCultureIgnoreCase)) { opCode = SpatialFunction.Difference; return true; }
+            if (methodName.Equals("symDifference", StringComparison.InvariantCultureIgnoreCase)) { opCode = SpatialFunction.SymDifference; return true; }
+
+            opCode = default;
+            return false;
         }
 
         private const bool ReturnEmptyGeometryCollection = true;
@@ -38,11 +56,6 @@ namespace Open.Topology.TestRunner.Operations
         public OverlayValidatedGeometryOperation()
         {
 
-        }
-
-        public Type GetReturnType(XmlTestType op)
-        {
-            return GetReturnType(op.ToString());
         }
 
         public Type GetReturnType(string opName)
@@ -68,17 +81,10 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <returns>The result</returns>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
-        {
-            return Invoke(opName.ToString(), geometry, args);
-        }
-
         public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
-            var opCode = OverlayOpCode(opName);
-
             // if not an overlay op, do the default
-            if (opCode < 0)
+            if (!TryOverlayOpCode(opName, out var opCode))
             {
                 return _chainOp.Invoke(opName, geometry, args);
             }
