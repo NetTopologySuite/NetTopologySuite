@@ -29,7 +29,6 @@ namespace NetTopologySuite.Geometries
     /// as appropriate for a <see cref="CoordinateSequence"/>. Use of <see cref="Z"/>
     /// and <see cref="Coordinate.M"/> setters or <see cref="P:NetTopologySuite.Geometries.CoordinateZ.this[int]" /> indexer are recommended.
     /// </remarks>
-    [Serializable]
 #pragma warning disable 612,618
     public class CoordinateZ : Coordinate
     {

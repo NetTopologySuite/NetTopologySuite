@@ -66,27 +66,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         }
 
         [Test]
-        public void TestSerialization()
-        {
-            var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };
-            tester.Init();
-
-            TestContext.WriteLine("\n\nTest with original data\n");
-            tester.Run();
-            var tree1 = (STRtree)tester.SpatialIndex;
-            // create the index before serialization
-            tree1.Query(new Envelope());
-            byte[] data = SerializationUtility.Serialize(tree1);
-            var tree2 = SerializationUtility.Deserialize<STRtree>(data);
-            tester.SpatialIndex = tree2;
-
-            TestContext.WriteLine("\n\nTest with deserialized data\n");
-            tester.Run();
-            tester.Run();
-            Assert.IsTrue(tester.IsSuccess);
-        }
-
-        [Test]
         public void TestEmptyTreeUsingListQuery()
         {
             var tree = new STRtree();

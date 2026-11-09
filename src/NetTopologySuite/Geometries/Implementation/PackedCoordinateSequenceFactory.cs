@@ -8,7 +8,6 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <c>double</c> or <c>float</c>,
     /// and defaults to <c>double</c>.
     /// </summary>
-    [Serializable]
     public class PackedCoordinateSequenceFactory : CoordinateSequenceFactory
     {
         /// <summary>

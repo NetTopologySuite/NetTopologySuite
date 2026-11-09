@@ -9,7 +9,6 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// Any collection of <c>LineString</c>s is a valid <c>MultiLineString</c>.
     /// </summary>
-    [Serializable]
     public class MultiLineString : GeometryCollection, ILineal
     {
         /// <summary>

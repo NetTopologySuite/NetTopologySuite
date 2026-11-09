@@ -7,7 +7,6 @@ namespace NetTopologySuite.Geometries
     // to quantify. It was originally created to let Coordinates.Create return a Coordinate that
     // behaves as requested instead of either silently deciding to give the user something that they
     // didn't ask for (JTS behavior) or throwing an exception (a perhaps-reasonable alternative).
-    [Serializable]
     internal sealed class ExtraDimensionalCoordinate : Coordinate
     {
         private readonly double[] _extraValues;
