@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
@@ -9,7 +9,8 @@ namespace NetTopologySuite.Algorithm.Construct
 {
     /// <summary>
     /// Constructs the Maximum Inscribed Circle for a
-    /// polygonal <see cref="Geometry"/>, up to a specified tolerance.
+    /// polygonal <see cref="Geometry"/>, up to a specified tolerance
+    /// (which can be specified or determined automatically).
     /// The Maximum Inscribed Circle is determined by a point in the interior of the area
     /// which has the farthest distance from the area boundary,
     /// along with a boundary point at that distance.
@@ -22,10 +23,18 @@ namespace NetTopologySuite.Algorithm.Construct
     /// The radius length of the Maximum Inscribed Circle is a
     /// measure of how "narrow" a polygon is. It is the
     /// distance at which the negative buffer becomes empty.
+    /// The class supports testing whether a polygon is "narrower"
+    /// than a specified distance via
+    /// <see cref="IsRadiusWithin(Geometry, double)"/> or <see cref="IsRadiusWithin(double)"/>.
+    /// Testing for the maximum radius is generally much faster
+    /// than computing the actual radius value, since short-circuiting
+    /// is used to limit the approximation iterations.
     /// <para/>
     /// The class supports polygons with holes and multipolygons.
     /// <para/>
-    /// The implementation uses a successive-approximation technique
+    /// For small polygons (currently triangles and convex quadrilaterals)
+    /// the MIC is determined exactly.
+    /// For other polygons the implementation uses a successive-approximation technique
     /// over a grid of square cells covering the area geometry.
     /// The grid is refined using a branch-and-bound algorithm.
     /// Point containment and distance are computed in a performant
@@ -43,6 +52,18 @@ namespace NetTopologySuite.Algorithm.Construct
     {
         /// <summary>
         /// Computes the center point of the Maximum Inscribed Circle
+        /// of a polygonal geometry.
+        /// </summary>
+        /// <param name="polygonal">A polygonal geometry</param>
+        /// <returns>The center point of the maximum inscribed circle</returns>
+        public static Point GetCenter(Geometry polygonal)
+        {
+            var mic = new MaximumInscribedCircle(polygonal);
+            return mic.GetCenter();
+        }
+
+        /// <summary>
+        /// Computes the center point of the Maximum Inscribed Circle
         /// of a polygonal geometry, up to a given tolerance distance.
         /// </summary>
         /// <param name="polygonal">A polygonal geometry</param>
@@ -52,6 +73,18 @@ namespace NetTopologySuite.Algorithm.Construct
         {
             var mic = new MaximumInscribedCircle(polygonal, tolerance);
             return mic.GetCenter();
+        }
+
+        /// <summary>
+        /// Computes a radius line of the Maximum Inscribed Circle
+        /// of a polygonal geometry.
+        /// </summary>
+        /// <param name="polygonal">A polygonal geometry</param>
+        /// <returns>A 2-point line from the center to a point on the circle</returns>
+        public static LineString GetRadiusLine(Geometry polygonal)
+        {
+            var mic = new MaximumInscribedCircle(polygonal);
+            return mic.GetRadiusLine();
         }
 
         /// <summary>
@@ -68,6 +101,21 @@ namespace NetTopologySuite.Algorithm.Construct
         }
 
         /// <summary>
+        /// Tests if the radius of the maximum inscribed circle
+        /// is no longer than the specified distance.
+        /// The approximation tolerance is determined automatically
+        /// as a fraction of the <paramref name="maxRadius"/> value.
+        /// </summary>
+        /// <param name="polygonal">A polygonal geometry</param>
+        /// <param name="maxRadius">The radius value to test</param>
+        /// <returns><c>true</c> if the max in-circle radius is no longer than <paramref name="maxRadius"/></returns>
+        public static bool IsRadiusWithin(Geometry polygonal, double maxRadius)
+        {
+            var mic = new MaximumInscribedCircle(polygonal, -1);
+            return mic.IsRadiusWithin(maxRadius);
+        }
+
+        /// <summary>
         /// Computes the maximum number of iterations allowed.
         /// Uses a heuristic based on the size of the input geometry
         /// and the tolerance distance.
@@ -75,44 +123,58 @@ namespace NetTopologySuite.Algorithm.Construct
         /// This is a rough heuristic, intended
         /// to prevent huge iterations for very thin geometries.
         /// </summary>
-        /// <param name="geom">The input geometry</param>
-        /// <param name="toleranceDist">The tolerance distance</param>
-        /// <returns>The maximum number of iterations allowed</returns>
         internal static long ComputeMaximumIterations(Geometry geom, double toleranceDist)
         {
             double diam = geom.EnvelopeInternal.Diameter;
-            double ncells = diam / toleranceDist;
+            double tolDist = toleranceDist <= 0 ? 0.5 * diam * AutoToleranceFraction : toleranceDist;
+            double ncells = diam / tolDist;
             //-- Using log of ncells allows control over number of iterations
             int factor = (int)Math.Log(ncells);
             if (factor < 1) factor = 1;
             return 2000 + 2000 * factor;
         }
 
+        //-- used for IsRadiusWithin
+        private const double MaxRadiusFraction = 0.0001;
+
+        //-- empirically determined to balance accuracy and speed
+        private const double AutoToleranceFraction = 0.001;
+
         private readonly Geometry _inputGeom;
-        private readonly double _tolerance;
+        private double _tolerance;
 
         private readonly GeometryFactory _factory;
-        private readonly IndexedPointInAreaLocator _ptLocater;
-        private readonly IndexedFacetDistance _indexedDistance;
+        private IndexedPointInAreaLocator _ptLocater;
+        private IndexedFacetDistance _indexedDistance;
         private Cell _centerCell;
         private Coordinate _centerPt;
         private Coordinate _radiusPt;
         private Point _centerPoint;
         private Point _radiusPoint;
+        private double _maximumRadius = -1;
 
         /// <summary>
         /// Creates a new instance of a Maximum Inscribed Circle computation.
+        /// The approximation tolerance is determined automatically.
         /// </summary>
         /// <param name="polygonal">An areal geometry</param>
-        /// <param name="tolerance">The distance tolerance for computing the centre point
-        /// (must be positive)</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if the tolerance is non-positive</exception>
-        /// <exception cref="ArgumentException">Thrown if the input geometry is non-polygonal or empty</exception>
+        /// <exception cref="ArgumentException">Thrown if the input geometry is non-polygonal or empty.</exception>
+        public MaximumInscribedCircle(Geometry polygonal)
+            : this(polygonal, 0.0)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of a Maximum Inscribed Circle computation,
+        /// with an approximation tolerance distance.
+        /// A zero tolerance automatically determines an approximation tolerance.
+        /// </summary>
+        /// <param name="polygonal">An areal geometry</param>
+        /// <param name="tolerance">The distance tolerance for computing the centre point.
+        /// A zero value triggers auto-tolerance. The value is validated when computation runs.</param>
+        /// <exception cref="ArgumentException">Thrown if the input geometry is non-polygonal or empty.</exception>
         public MaximumInscribedCircle(Geometry polygonal, double tolerance)
         {
-            if (tolerance <= 0)
-                throw new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be positive");
-
             if (!(polygonal is IPolygonal))
                 throw new ArgumentException("Input geometry must be a Polygon or MultiPolygon");
 
@@ -122,13 +184,45 @@ namespace NetTopologySuite.Algorithm.Construct
             _inputGeom = polygonal;
             _factory = polygonal.Factory;
             _tolerance = tolerance;
-            _ptLocater = new IndexedPointInAreaLocator(polygonal);
-            _indexedDistance = new IndexedFacetDistance(polygonal.Boundary);
+        }
+
+        /// <summary>
+        /// Tests if the radius of the maximum inscribed circle
+        /// is no longer than the specified distance.
+        /// This method determines the distance tolerance automatically
+        /// as a fraction of <paramref name="maxRadius"/>.
+        /// After this method is called, <see cref="GetCenter"/> and <see cref="GetRadiusPoint"/>
+        /// provide locations demonstrating where the radius exceeds the specified maximum.
+        /// </summary>
+        /// <param name="maxRadius">The (non-negative) radius value to test</param>
+        /// <returns><c>true</c> if the max in-circle radius is no longer than <paramref name="maxRadius"/></returns>
+        public bool IsRadiusWithin(double maxRadius)
+        {
+            if (maxRadius < 0)
+                throw new ArgumentOutOfRangeException(nameof(maxRadius), "Radius length must be non-negative");
+
+            //-- handle 0 corner case, to provide maximum domain
+            if (maxRadius == 0)
+                return false;
+
+            _maximumRadius = maxRadius;
+
+            //-- If the envelope is smaller than the diameter, the inscribed radius cannot exceed maxRadius.
+            var env = _inputGeom.EnvelopeInternal;
+            double maxDiam = 2 * _maximumRadius;
+            if (env.Width < maxDiam || env.Height < maxDiam)
+                return true;
+
+            _tolerance = maxRadius * MaxRadiusFraction;
+            Compute();
+            double radius = _centerPt.Distance(_radiusPt);
+            return radius <= _maximumRadius;
         }
 
         /// <summary>
         /// Gets the center point of the maximum inscribed circle
-        /// (up to the tolerance distance).</summary>
+        /// (up to the tolerance distance).
+        /// </summary>
         /// <returns>The center point of the maximum inscribed circle</returns>
         public Point GetCenter()
         {
@@ -152,30 +246,24 @@ namespace NetTopologySuite.Algorithm.Construct
         }
 
         /// <summary>
-        /// Gets a line representing a radius of the Largest Empty Circle.
+        /// Gets a line representing a radius of the Maximum Inscribed Circle.
         /// </summary>
         /// <returns>A line from the center of the circle to a point on the edge</returns>
         public LineString GetRadiusLine()
         {
             Compute();
-            var radiusLine = _factory.CreateLineString(new[] {_centerPt.Copy(), _radiusPt.Copy()});
-            return radiusLine;
+            return _factory.CreateLineString(new[] { _centerPt.Copy(), _radiusPt.Copy() });
         }
 
         /// <summary>
         /// Computes the signed distance from a point to the area boundary.
         /// Points outside the polygon are assigned a negative distance.
-        /// Their containing cells will be last in the priority queue
-        /// (but may still end up being tested since they may need to be refined).
         /// </summary>
-        /// <param name="p">The point to compute the distance for</param>
-        /// <returns>The signed distance to the area boundary (negative indicates outside the area)</returns>
         private double DistanceToBoundary(Point p)
         {
             double dist = _indexedDistance.Distance(p);
-            bool isOutide = Location.Exterior == _ptLocater.Locate(p.Coordinate);
-            if (isOutide) return -dist;
-            return dist;
+            bool isOutside = Location.Exterior == _ptLocater.Locate(p.Coordinate);
+            return isOutside ? -dist : dist;
         }
 
         private double DistanceToBoundary(double x, double y)
@@ -187,8 +275,43 @@ namespace NetTopologySuite.Algorithm.Construct
 
         private void Compute()
         {
-            // check if already computed
-            if (_centerCell != null) return;
+            //-- check if already computed
+            if (_centerPt != null) return;
+
+            //-- Handle flat geometries.
+            if (_inputGeom.Area == 0.0)
+            {
+                var c = _inputGeom.Coordinate.Copy();
+                CreateResult(c, c.Copy());
+                return;
+            }
+
+            //-- Optimization for small simple convex polygons.
+            if (ExactMaxInscribedCircle.IsSupported(_inputGeom))
+            {
+                var centreRadius = ExactMaxInscribedCircle.ComputeRadius((Polygon)_inputGeom);
+                CreateResult(centreRadius[0], centreRadius[1]);
+                return;
+            }
+
+            ComputeApproximation();
+        }
+
+        private void CreateResult(Coordinate c, Coordinate r)
+        {
+            _centerPt = c;
+            _radiusPt = r;
+            _centerPoint = _factory.CreatePoint(_centerPt);
+            _radiusPoint = _factory.CreatePoint(_radiusPt);
+        }
+
+        private void ComputeApproximation()
+        {
+            if (_tolerance < 0)
+                throw new ArgumentException("Tolerance must be non-negative");
+
+            _ptLocater = new IndexedPointInAreaLocator(_inputGeom);
+            _indexedDistance = new IndexedFacetDistance(_inputGeom.Boundary);
 
             // Priority queue of cells, ordered by maximum distance from boundary
             var cellQueue = new PriorityQueue<Cell>();
@@ -197,53 +320,62 @@ namespace NetTopologySuite.Algorithm.Construct
 
             // initial candidate center point
             var farthestCell = CreateInteriorPointCell(_inputGeom);
-            //int totalCells = cellQueue.size();
 
-            /*
-             * Carry out the branch-and-bound search
-             * of the cell space
-             */
+            //-- Carry out the branch-and-bound search of the cell space.
             long maxIter = ComputeMaximumIterations(_inputGeom, _tolerance);
             long iter = 0;
             while (!cellQueue.IsEmpty() && iter < maxIter)
             {
-                // Increase iteration counter
                 iter++;
-
                 // pick the most promising cell from the queue
                 var cell = cellQueue.Poll();
-                //Console.WriteLine(_factory.ToGeometry(cell.Envelope));
-                //Console.WriteLine($"{iter}] Dist: {cell.Distance} size: {cell.HSide}");
-
-                //-- if cell must be closer than furthest, terminate since all remaining cells in queue are even closer. 
-                if (cell.MaxDistance < farthestCell.Distance)
-                    break;
 
                 // update the circle center cell if the candidate is further from the boundary
                 if (cell.Distance > farthestCell.Distance)
                 {
                     farthestCell = cell;
                 }
+
+                //-- Search termination when checking IsRadiusWithin predicate.
+                if (_maximumRadius >= 0)
+                {
+                    //-- Found an inside point further than max radius.
+                    if (farthestCell.Distance > _maximumRadius)
+                        break;
+                    //-- No cells can have larger radius.
+                    if (cell.MaxDistance < _maximumRadius)
+                        break;
+                }
+
                 /*
                  * Refine this cell if the potential distance improvement
                  * is greater than the required tolerance.
                  * Otherwise the cell is pruned (not investigated further),
                  * since no point in it is further than
-                 * the current farthest distance.
+                 * the current farthest distance (up to tolerance).
+                 *
+                 * The tolerance can be automatically determined
+                 * as a fraction of the current farthest distance.
+                 * For a very small actual MIC distance this may cause many iterations,
+                 * but the iter limit prevents an infinite loop.
                  */
+                double requiredTol = _tolerance > 0
+                    ? _tolerance
+                    : farthestCell.Distance * AutoToleranceFraction;
+
                 double potentialIncrease = cell.MaxDistance - farthestCell.Distance;
-                if (potentialIncrease > _tolerance)
-                {
-                    // split the cell into four sub-cells
-                    double h2 = cell.HSide / 2;
-                    cellQueue.Add(CreateCell(cell.X - h2, cell.Y - h2, h2));
-                    cellQueue.Add(CreateCell(cell.X + h2, cell.Y - h2, h2));
-                    cellQueue.Add(CreateCell(cell.X - h2, cell.Y + h2, h2));
-                    cellQueue.Add(CreateCell(cell.X + h2, cell.Y + h2, h2));
-                    //totalCells += 4;
-                }
+                if (potentialIncrease < requiredTol)
+                    break;
+
+                // refine the cell into four sub-cells
+                double h2 = cell.HSide / 2;
+                cellQueue.Add(CreateCell(cell.X - h2, cell.Y - h2, h2));
+                cellQueue.Add(CreateCell(cell.X + h2, cell.Y - h2, h2));
+                cellQueue.Add(CreateCell(cell.X - h2, cell.Y + h2, h2));
+                cellQueue.Add(CreateCell(cell.X + h2, cell.Y + h2, h2));
             }
-            // the farthest cell is the best approximation to the MIC center
+
+            //-- the farthest cell is the best approximation to the MIC center
             _centerCell = farthestCell;
             _centerPt = new Coordinate(_centerCell.X, _centerCell.Y);
             _centerPoint = _factory.CreatePoint(_centerPt);
@@ -254,18 +386,14 @@ namespace NetTopologySuite.Algorithm.Construct
         }
 
         /// <summary>
-        /// Initializes the queue with a grid of cells covering
-        /// the extent of the area.
+        /// Initializes the queue with a cell covering the extent of the area.
         /// </summary>
-        /// <param name="env">The area extent to cover</param>
-        /// <param name="cellQueue">The queue to initialize</param>
         private void CreateInitialGrid(Envelope env, PriorityQueue<Cell> cellQueue)
         {
-            double cellSize = env.MaxExtent;
+            double cellSize = Math.Max(env.Width, env.Height);
             double hSide = cellSize / 2.0;
 
-            // Check for flat collapsed input and if so short-circuit
-            // Result will just be centroid
+            //-- Check for flat collapsed input and if so short-circuit. Result will just be centroid.
             if (cellSize == 0) return;
 
             var centre = env.Centre;
@@ -281,62 +409,48 @@ namespace NetTopologySuite.Algorithm.Construct
         private Cell CreateInteriorPointCell(Geometry geom)
         {
             var p = geom.InteriorPoint;
-            return new Cell(p.X, p.Y, 0, DistanceToBoundary(p));
+            double hSide = geom.EnvelopeInternal.Diameter;
+            return new Cell(p.X, p.Y, hSide, DistanceToBoundary(p));
         }
 
         /// <summary>
-        /// A square grid cell centered on a given point
-        /// with a given side half-length,
-        /// and having a given distance from the center point to the constraints.
+        /// A square grid cell centered on a given point,
+        /// with a given half-side size, and having a given distance
+        /// to the area boundary.
         /// The maximum possible distance from any point in the cell to the
-        /// constraints can be computed.
-        /// This is used as the ordering and upper-bound function in
-        /// the branch-and-bound algorithm. 
+        /// boundary can be computed, and is used
+        /// as the ordering and upper-bound function in
+        /// the branch-and-bound algorithm.
         /// </summary>
         private class Cell : IComparable<Cell>
         {
-
             private const double Sqrt2 = 1.4142135623730951;
 
-            public Cell(double x, double y, double hSide, double distanceToConstraints)
+            public Cell(double x, double y, double hSide, double distanceToBoundary)
             {
-                X = x; // cell center x
-                Y = y; // cell center y
-                HSide = hSide; // half the cell size
-
-                // the distance from cell center to constraints
-                Distance = distanceToConstraints;
-
-                /*
-                 * The maximum possible distance to the constraints for points in this cell
-                 * is the center distance plus the radius (half the diagonal length).
-                 */
-                MaxDistance = Distance + hSide * Sqrt2;
+                X = x;
+                Y = y;
+                HSide = hSide;
+                Distance = distanceToBoundary;
+                MaxDistance = distanceToBoundary + hSide * Sqrt2;
             }
 
-            public bool IsFullyOutside => MaxDistance < 0;
-
-            public bool IsOutside => Distance < 0;
-
             public double MaxDistance { get; }
-
             public double Distance { get; }
-
             public double HSide { get; }
-
             public double X { get; }
-
             public double Y { get; }
 
+            public Envelope GetEnvelope() => new Envelope(X - HSide, X + HSide, Y - HSide, Y + HSide);
+
             /// <summary>
-            /// For maximum efficieny sort the PriorityQueue with largest maxDistance at front.
-            /// Since AlternativePriorityQueue sorts least-first, need to invert the comparison
+            /// Inverts natural ordering so the largest <see cref="MaxDistance"/> is at the front of the queue.
             /// </summary>
             public int CompareTo(Cell o)
             {
+                if (o == null) return -1;
                 return -MaxDistance.CompareTo(o.MaxDistance);
             }
         }
-
     }
 }

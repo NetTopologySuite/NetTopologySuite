@@ -64,8 +64,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
         [Test]
         public void TestLinePointTriangle()
         {
-            CheckCircle("GEOMETRYCOLLECTION (LINESTRING (100 100, 300 100), POINT (250 200))",
-                0.01, 196.49, 164.31, 64.31);
+            string wkt = "GEOMETRYCOLLECTION (LINESTRING (100 100, 300 100), POINT (250 200))";
+            CheckCircle(wkt, 0.01, 196.49, 164.31, 64.31);
+            // Exercises the new no-tolerance constructor (JTS 1.21 auto-tolerance).
+            CheckCircleAutoTol(wkt, 0.1, 196.49, 164.31, 64.31);
         }
 
         [Test]
@@ -183,6 +185,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
             CheckCircle(Read(wktObstacles), null, tolerance, x, y, expectedRadius);
         }
 
+        private void CheckCircleAutoTol(string wktObstacles, double tolerance,
+            double x, double y, double expectedRadius)
+        {
+            // Exercises the new no-tolerance constructor and the auto-tolerance algorithm path.
+            var obstacles = Read(wktObstacles);
+            var lec = new LargestEmptyCircle(obstacles, null);
+            CheckLec(lec, tolerance, x, y, expectedRadius);
+        }
+
 
         private void CheckCircle(string wktObstacles, string wktBoundary, double tolerance,
             double x, double y, double expectedRadius)
@@ -194,6 +205,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Construct
             double x, double y, double expectedRadius)
         {
             var lec = new LargestEmptyCircle(geomObstacles, geomBoundary, tolerance);
+            CheckLec(lec, tolerance, x, y, expectedRadius);
+        }
+
+        private void CheckLec(LargestEmptyCircle lec, double tolerance,
+            double x, double y, double expectedRadius)
+        {
             Geometry centerPoint = lec.GetCenter();
             var centerPt = centerPoint.Coordinate;
             var expectedCenter = new Coordinate(x, y);
