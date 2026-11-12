@@ -194,5 +194,27 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var ringFromWKT = Read("LINEARRING (0 0, 10 10, 0 0)");
             CheckEqual(ring, ringFromWKT);
         }
+
+        [Test]
+        public void TestLineStringTupleConversions()
+        {
+            LineString line = new[] {(1d, 2d), (3d, 4d)};
+
+            Assert.AreEqual(1, line[0].X);
+            Assert.AreEqual(2, line[0].Y);
+            Assert.AreEqual(3, line[1].X);
+            Assert.AreEqual(4, line[1].Y);
+        }
+
+        [Test]
+        public void TestLinearRingTupleConversions()
+        {
+            LinearRing linearRing = new[] { (1d, 2d), (3d, 4d), (1, 2) };
+
+            Assert.AreEqual(1, linearRing[0].X);
+            Assert.AreEqual(2, linearRing[0].Y);
+            Assert.AreEqual(3, linearRing[1].X);
+            Assert.AreEqual(4, linearRing[1].Y);
+        }
     }
 }
