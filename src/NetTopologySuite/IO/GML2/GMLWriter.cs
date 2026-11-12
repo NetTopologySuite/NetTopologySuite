@@ -18,10 +18,13 @@ namespace NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLWriter
     {
+        private const string GmlSrsName = "srsName";
+
         private const int InitValue = 150;
         private const int CoordSize = 200;
         private readonly GMLVersion _gmlVersion;
         private readonly string _gmlNs;
+        private readonly bool _writeSrsNameAttribute;
 
         /// <summary>
         /// Formatter for double values of coordinates
@@ -32,13 +35,15 @@ namespace NetTopologySuite.IO.GML2
         /// Initializes a new instance of the <see cref="GMLWriter"/> class.
         /// </summary>
         public GMLWriter()
-            : this(GMLVersion.Two) // backwards compatibility.
+            : this(GMLVersion.Two, true) // backwards compatibility.
         {
         }
 
-        internal GMLWriter(GMLVersion gmlVersion)
+        internal GMLWriter(GMLVersion gmlVersion, bool writeSrsNameAttribute)
         {
             _gmlVersion = gmlVersion;
+            _writeSrsNameAttribute = writeSrsNameAttribute;
+
             switch (gmlVersion)
             {
                 case GMLVersion.Two:
@@ -213,6 +218,7 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(Point point, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "Point", _gmlNs);
+            WriteAttributeSrsName(point.Factory.SRID, writer);
             Write(point.Coordinate, writer);
             writer.WriteEndElement();
         }
@@ -225,6 +231,7 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(LineString lineString, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "LineString", _gmlNs);
+            WriteAttributeSrsName(lineString.Factory.SRID, writer);
             WriteCoordinates(lineString.CoordinateSequence, writer);
             writer.WriteEndElement();
         }
@@ -237,6 +244,7 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(LinearRing linearRing, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "LinearRing", _gmlNs);
+            WriteAttributeSrsName(linearRing.Factory.SRID, writer);
             WriteCoordinates(linearRing.CoordinateSequence, writer);
             writer.WriteEndElement();
         }
@@ -249,6 +257,7 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(Polygon polygon, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", _gmlNs);
+            WriteAttributeSrsName(polygon.Factory.SRID, writer);
             writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "outerBoundaryIs" : "exterior", _gmlNs);
             Write(polygon.ExteriorRing as LinearRing, writer);
             writer.WriteEndElement();
@@ -269,11 +278,8 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(MultiPoint multiPoint, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "MultiPoint", _gmlNs);
-            if (_gmlVersion == GMLVersion.Two)
-            {
-                // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsgCode(multiPoint.Factory.SRID));
-            }
+            WriteAttributeSrsName(multiPoint.Factory.SRID, writer);
+
             for (int i = 0; i < multiPoint.NumGeometries; i++)
             {
                 writer.WriteStartElement("pointMember", _gmlNs);
@@ -298,11 +304,8 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(MultiLineString multiLineString, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiLineString" : "MultiCurve", _gmlNs);
-            if (_gmlVersion == GMLVersion.Two)
-            {
-                // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsgCode(multiLineString.Factory.SRID));
-            }
+            WriteAttributeSrsName(multiLineString.Factory.SRID, writer);
+
             for (int i = 0; i < multiLineString.NumGeometries; i++)
             {
                 writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "lineStringMember" : "curveMember", _gmlNs);
@@ -327,11 +330,8 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(MultiPolygon multiPolygon, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, _gmlVersion == GMLVersion.Two ? "MultiPolygon" : "MultiSurface", _gmlNs);
-            if (_gmlVersion == GMLVersion.Two)
-            {
-                // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsgCode(multiPolygon.Factory.SRID));
-            }
+            WriteAttributeSrsName(multiPolygon.Factory.SRID, writer);
+
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "polygonMember" : "surfaceMember", _gmlNs);
@@ -356,11 +356,8 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(GeometryCollection geometryCollection, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "MultiGeometry", _gmlNs);
-            if (_gmlVersion == GMLVersion.Two)
-            {
-                // Required in version 2
-                writer.WriteAttributeString("srsName", GetEpsgCode(geometryCollection.Factory.SRID));
-            }
+            WriteAttributeSrsName(geometryCollection.Factory.SRID, writer);
+            
             for (int i = 0; i < geometryCollection.NumGeometries; i++)
             {
                 writer.WriteStartElement("geometryMember", _gmlNs);
@@ -499,11 +496,33 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// Provides the EPSG code exposing the SRID of the geometry
+        /// Writes the spatial reference name into the <c>srsName</c> attribute
         /// </summary>
-        /// <param name="srid">The SRID of the geometry</param>
-        /// <returns></returns>
-        protected virtual string GetEpsgCode(int srid) {
+        /// <param name="srid">The spatial reference id</param>
+        /// <param name="xmlWriter">The xml writer</param>
+        protected virtual void WriteAttributeSrsName(int srid, XmlWriter xmlWriter)
+        {
+            if(_writeSrsNameAttribute)
+                xmlWriter.WriteAttributeString(GmlSrsName, GetSrsName(srid));
+        }
+
+        /// <summary>
+        /// Provides the srsName expressed by a <see cref="Geometries.Geometry.SRID"/> value.
+        /// </summary>
+        /// <param name="srid">An SRID value</param>
+        /// <returns>The <see cref="GetEpsgCode(int)"/></returns>
+        protected virtual string GetSrsName(int srid)
+        {
+            return GetEpsgCode(srid);
+        }
+
+        /// <summary>
+        /// Provides the EPSG code for a  <see cref="Geometries.Geometry.SRID"/> value.
+        /// </summary>
+        /// <param name="srid">An SRID value</param>
+        /// <returns>The EPSG code</returns>
+        protected virtual string GetEpsgCode(int srid)
+        {
             return $"EPSG:{srid}";
         }
     }
