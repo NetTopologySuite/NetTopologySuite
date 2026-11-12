@@ -68,6 +68,26 @@ namespace NetTopologySuite.Algorithm.Construct
         }
 
         /// <summary>
+        /// Tests if the radius of the Maximum Inscribed Circle of a polygonal geometry
+        /// is no greater than the given maximum radius.
+        /// </summary>
+        /// <param name="polygonal">A polygonal geometry</param>
+        /// <param name="maxRadius">The radius value to test</param>
+        /// <returns><c>true</c> if the MIC radius is at most <paramref name="maxRadius"/></returns>
+        /// <remarks>
+        /// This is a slow-path fallback that computes the full MIC.
+        /// JTS 1.21 adds an early-termination fast path; porting that is tracked in
+        /// https://github.com/NetTopologySuite/NetTopologySuite/issues/813.
+        /// </remarks>
+        public static bool IsRadiusWithin(Geometry polygonal, double maxRadius)
+        {
+            double tolerance = polygonal.EnvelopeInternal.Diameter / 1000.0;
+            if (tolerance <= 0) tolerance = 1.0;
+            var mic = new MaximumInscribedCircle(polygonal, tolerance);
+            return mic.GetRadiusLine().Length <= maxRadius;
+        }
+
+        /// <summary>
         /// Computes the maximum number of iterations allowed.
         /// Uses a heuristic based on the size of the input geometry
         /// and the tolerance distance.
