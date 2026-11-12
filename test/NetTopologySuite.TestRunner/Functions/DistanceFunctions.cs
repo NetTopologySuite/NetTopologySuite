@@ -56,6 +56,33 @@ namespace Open.Topology.TestRunner.Functions
             return dist.OrientedDistance();
         }
 
+        /// <summary>
+        /// Locus directed Hausdorff distance h(A, B). Distinct from
+        /// <see cref="DiscreteHausdorffDistance"/>.
+        /// </summary>
+        public static double DirectedHausdorffDistance(Geometry a, Geometry b)
+        {
+            return NetTopologySuite.Algorithm.Distance.DirectedHausdorffDistance.Distance(a, b);
+        }
+
+        /// <summary>
+        /// Realizing segment for <see cref="DirectedHausdorffDistance(Geometry, Geometry)"/>.
+        /// </summary>
+        public static Geometry DirectedHausdorffLine(Geometry a, Geometry b)
+        {
+            var pts = NetTopologySuite.Algorithm.Distance.DirectedHausdorffDistance.DistancePoints(a, b);
+            return pts == null ? a.Factory.CreateLineString() : a.Factory.CreateLineString(pts);
+        }
+
+        /// <summary>
+        /// Realizing segment for the symmetric Hausdorff distance.
+        /// </summary>
+        public static Geometry HausdorffLine(Geometry a, Geometry b)
+        {
+            var pts = NetTopologySuite.Algorithm.Distance.DirectedHausdorffDistance.HausdorffDistancePoints(a, b);
+            return pts == null ? a.Factory.CreateLineString() : a.Factory.CreateLineString(pts);
+        }
+
         public static double DistanceIndexed(Geometry a, Geometry b)
         {
             return IndexedFacetDistance.Distance(a, b);
