@@ -1,78 +1,13 @@
-﻿using NUnit.Framework;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.XUnit
 {
-    public abstract class FailureXUnitRunner : XUnitRunner
+    public class FailureCorpusTests : XmlCorpusRunner
     {
-        protected FailureXUnitRunner(string testFile) : base(testFile) { }
+        public static IEnumerable<TestCaseData> Cases => CasesIn("failure");
 
-        protected override string TestLocation => "failure";
-    }
-
-    public class TestBigNastyBuffer : FailureXUnitRunner
-    {
-        public TestBigNastyBuffer() : base("TestBigNastyBuffer.xml") { }
-
-        [Test, Category("FailureCase")]
-        public override void Test00()
-        {
-            base.Test00();
-        }
-    }
-
-    public class TestBufferFailure : FailureXUnitRunner
-    {
-        public TestBufferFailure() : base("TestBufferFailure.xml") { }
-
-        [Test, Category("FailureCase")]
-        public override void Test01()
-        {
-            base.Test01();
-        }
-    }
-
-    public class TestBufferInsideNonEmpty : FailureXUnitRunner
-    {
-        public TestBufferInsideNonEmpty() : base("TestBufferInsideNonEmpty.xml") { }
-    }
-
-    public class TestReducePrecisionFailure : FailureXUnitRunner
-    {
-        public TestReducePrecisionFailure() : base("TestReducePrecisionFailure.xml") { }
-    }
-
-    public class TestOverlayNGFailure : FailureXUnitRunner
-    {
-        public TestOverlayNGFailure() : base("TestOverlayNGFailure.xml") { }
-
-        [Test, Category("FailureCase")]
-        public override void Test00()
-        {
-            base.Test00();
-        }
-
-        [Test, Category("FailureCase")]
-        public override void Test01()
-        {
-            base.Test01();
-        }
-
-        [Test, Category("FailureCase")]
-        public override void Test02()
-        {
-            base.Test02();
-        }
-
-        [Test, Category("FailureCase")]
-        public override void Test03()
-        {
-            base.Test03();
-        }
-
-        [Test, Category("FailureCase")]
-        public override void Test04()
-        {
-            base.Test04();
-        }
+        [TestCaseSource(nameof(Cases))]
+        public void Run(string file, int index) => RunCase(file, index);
     }
 }

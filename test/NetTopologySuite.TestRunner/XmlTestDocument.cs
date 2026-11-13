@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using NetTopologySuite.Geometries;
+using Open.Topology.TestRunner.Functions;
 using Open.Topology.TestRunner.Operations;
 using Open.Topology.TestRunner.Result;
 
@@ -67,6 +68,16 @@ namespace Open.Topology.TestRunner
         public XmlTestCollection CurrentTests => m_listCurTests;
 
         public ArrayList Tests => m_listarrTests;
+        // The operation every case runs unless its file names another, mirroring the default the
+        // upstream runner installs. Without it a case would have nothing to invoke, and the
+        // functions in TestCaseGeometryFunctions - which is where the corpus expects operations
+        // such as overlayAreaTest to live - would be unreachable.
+        private static readonly Lazy<IGeometryOperation> LazyDefaultGeometryOperation =
+            new Lazy<IGeometryOperation>(() => new GeometryFunctionOperation(
+                new GeometryFunctionRegistry(typeof(Operations.TestCaseGeometryFunctions))));
+
+        private static IGeometryOperation DefaultGeometryOperation => LazyDefaultGeometryOperation.Value;
+
 
         public bool LoadFile(string fileName)
         {
@@ -75,6 +86,11 @@ namespace Open.Topology.TestRunner
                 throw new ArgumentException(fileName,
                     "The file does not exits or the 'fileName' is not valid.");
             }
+
+            // Resolved before the try: failing to build the default operation is a defect in this
+            // assembly rather than an unreadable file, and the catch below would report it as the
+            // latter for every file in the corpus, naming no cause.
+            var defaultOperation = DefaultGeometryOperation;
 
             try
             {
@@ -183,7 +199,7 @@ namespace Open.Topology.TestRunner
                     pm = new PrecisionModel();
                 }
 
-                IGeometryOperation geometryOperation = null;
+                var geometryOperation = defaultOperation;
                 XmlNode go = root["geometryOperation"];
                 if (go != null)
                 {
@@ -331,6 +347,15 @@ namespace Open.Topology.TestRunner
                         string strDescNew = baseDesc + " - " + (i + 1).ToString();
 
                         testInfo.SetValue("desc", strDescNew);
+
+                        // Each test element brings its own operation and arguments, but they were
+                        // only ever overwritten when the attribute was present, so an argument
+                        // belonging to one operation stayed behind for the ones after it in the
+                        // same case.
+                        testInfo.SetValue("name", string.Empty);
+                        testInfo.SetValue("arg1", string.Empty);
+                        testInfo.SetValue("arg2", string.Empty);
+                        testInfo.SetValue("arg3", string.Empty);
 
                         var testElement = ((XmlElement)elemList[i])["op"];
                         testInfo.SetValue("result", testElement.InnerText);

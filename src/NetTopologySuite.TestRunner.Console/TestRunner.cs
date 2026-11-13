@@ -14,7 +14,7 @@ namespace ConsoleTestRunner
         private int m_nSimpleTestCount       = 0;
         private int m_nSimpleTestFailures    = 0;
         private int m_nSimpleTestExceptions  = 0;
-        private XmlTestType m_enumFilterType = XmlTestType.None;
+        private string m_strFilterType       = null;
         private bool m_bVerbose              = true;
 
         private readonly TestInfoCollection m_listTestInfo = null;
@@ -28,30 +28,30 @@ namespace ConsoleTestRunner
             m_listTestInfo = listTestInfo;
         }
 
-        public TestRunner(XmlTestType filter, bool verbose)
+        public TestRunner(string filter, bool verbose)
         {
-            m_enumFilterType = filter;
+            m_strFilterType = filter;
             m_bVerbose       = verbose;
         }
 
-        public void SimpleTestReset(XmlTestType filter, bool verbose)
+        public void SimpleTestReset(string filter, bool verbose)
         {
             m_nSimpleTestCount      = 0;
             m_nSimpleTestFailures   = 0;
             m_nSimpleTestExceptions = 0;
-            m_enumFilterType        = filter;
+            m_strFilterType         = filter;
             m_bVerbose              = verbose;
         }
 
         public void OnSimpleTest(object sender, XmlTestEventArgs args)
         {
-            if (m_enumFilterType == XmlTestType.None ||
-                args.Test.TestType == m_enumFilterType)
+            if (string.IsNullOrEmpty(m_strFilterType) ||
+                string.Equals(args.Test.Operation, m_strFilterType, StringComparison.OrdinalIgnoreCase))
             {
                 if (m_bVerbose)
                 {
                     Console.WriteLine("Test {0}, {1} ({2} : {3})",
-                        args.Index, args.Success, args.Test.TestType.ToString(),
+                        args.Index, args.Success, args.Test.Operation,
                         args.Test.Description);
                 }
 

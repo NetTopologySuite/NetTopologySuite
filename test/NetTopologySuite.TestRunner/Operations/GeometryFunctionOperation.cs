@@ -31,20 +31,30 @@ namespace Open.Topology.TestRunner.Operations
         /// </summary>
         /// <param name="op">The name of the operation</param>
         /// <returns>The return type of the operation</returns>
-        public Type GetReturnType(XmlTestType op)
+        public Type GetReturnType(string opName)
         {
-            string opName = op.ToString();
             var func = registry.Find(opName);
             if (func == null)
-                return defaultOp.GetReturnType(op);
+                return defaultOp.GetReturnType(opName);
             return func.ReturnType;
         }
 
-        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
+        public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
-            var func = registry.Find(opName.ToString(), args.Length);
-            if (func == null)
+            // Resolved by name first, as GetReturnType resolves it, so that the kind of result
+            // the caller was told to expect and the kind it gets come from the same function.
+            // Falling straight through to the default operation on an argument-count mismatch
+            // would answer from a different member, of a different type, without saying so.
+            if (registry.Find(opName) == null)
                 return defaultOp.Invoke(opName, geometry, args);
+
+            var func = registry.Find(opName, args.Length);
+            if (func == null)
+            {
+                throw new ArgumentException(
+                    $"'{opName}' is a known function, but not one taking {args.Length} argument(s).",
+                    nameof(args));
+            }
 
             return Invoke(func, geometry, args);
         }

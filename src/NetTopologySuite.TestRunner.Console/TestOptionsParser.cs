@@ -44,7 +44,7 @@ namespace ConsoleTestRunner
                     var element = elemList[i];
                     if (element != null)
                     {
-                        var filterType = XmlTestType.None;
+                        string filterType = null;
                         bool bDisplayException = true;
                         bool bVerbose          = true;
                         bool bInteractive      = false;
@@ -148,7 +148,7 @@ namespace ConsoleTestRunner
             }
 
             // 2. Handle the display filter option
-            var testType = XmlTestType.None;
+            string testType = null;
             if (commandLine["filter"] != null)
             {
                 testType = ParseXmlTestType(commandLine["filter"]);
@@ -237,136 +237,17 @@ namespace ConsoleTestRunner
             return collection;
         }
 
-        public XmlTestType ParseXmlTestType(string testType)
+        /// <summary>
+        /// The operation named on the command line, carried through as written.
+        /// </summary>
+        /// <remarks>
+        /// The runner resolves an operation by name, so there is no fixed set to map onto here:
+        /// a name nothing answers to simply matches no case.
+        /// </remarks>
+        public string ParseXmlTestType(string testType)
         {
-            string strTemp = testType.ToLower();
-
-            if (strTemp == "area")
-            {
-                return XmlTestType.Area;
-            }
-            else if (strTemp == "boundary")
-            {
-                return XmlTestType.Boundary;
-            }
-            else if (strTemp == "boundarydimension")
-            {
-                return XmlTestType.BoundaryDimension;
-            }
-            else if (strTemp == "buffer")
-            {
-                return XmlTestType.Buffer;
-            }
-            else if (strTemp == "centroid")
-            {
-                return XmlTestType.Centroid;
-            }
-            else if (strTemp == "contains")
-            {
-                return XmlTestType.Contains;
-            }
-            else if (strTemp == "convexhull")
-            {
-                return XmlTestType.ConvexHull;
-            }
-            else if (strTemp == "crosses")
-            {
-                return XmlTestType.Crosses;
-            }
-            else if (strTemp == "difference")
-            {
-                return XmlTestType.Difference;
-            }
-            else if (strTemp == "dimension")
-            {
-                return XmlTestType.Dimension;
-            }
-            else if (strTemp == "disjoint")
-            {
-                return XmlTestType.Disjoint;
-            }
-            else if (strTemp == "distance")
-            {
-                return XmlTestType.Distance;
-            }
-            else if (strTemp == "envelope")
-            {
-                return XmlTestType.Envelope;
-            }
-            else if (strTemp == "equals")
-            {
-                return XmlTestType.Equals;
-            }
-            else if (strTemp == "interiorpoint")
-            {
-                return XmlTestType.InteriorPoint;
-            }
-            else if (strTemp == "intersection")
-            {
-                return XmlTestType.Intersection;
-            }
-            else if (strTemp == "intersects")
-            {
-                return XmlTestType.Intersects;
-            }
-            else if (strTemp == "isempty")
-            {
-                return XmlTestType.IsEmpty;
-            }
-            else if (strTemp == "issimple")
-            {
-                return XmlTestType.IsSimple;
-            }
-            else if (strTemp == "isvalid")
-            {
-                return XmlTestType.IsValid;
-            }
-            else if (strTemp == "iswithindistance")
-            {
-                return XmlTestType.IsWithinDistance;
-            }
-            else if (strTemp == "length")
-            {
-                return XmlTestType.Length;
-            }
-            else if (strTemp == "numpoints")
-            {
-                return XmlTestType.NumPoints;
-            }
-            else if (strTemp == "overlaps")
-            {
-                return XmlTestType.Overlaps;
-            }
-            else if (strTemp == "relate")
-            {
-                return XmlTestType.Relate;
-            }
-            else if (strTemp == "srid")
-            {
-                return XmlTestType.SRID;
-            }
-            else if (strTemp == "symmetricdifference")
-            {
-                return XmlTestType.SymmetricDifference;
-            }
-            else if (strTemp == "symdifference")
-            {
-                return XmlTestType.SymmetricDifference;
-            }
-            else if (strTemp == "touches")
-            {
-                return XmlTestType.Touches;
-            }
-            else if (strTemp == "union")
-            {
-                return XmlTestType.Union;
-            }
-            else if (strTemp == "within")
-            {
-                return XmlTestType.Within;
-            }
-
-            return XmlTestType.None;
+            string trimmed = testType?.Trim();
+            return string.IsNullOrEmpty(trimmed) ? null : trimmed;
         }
     }
 }
