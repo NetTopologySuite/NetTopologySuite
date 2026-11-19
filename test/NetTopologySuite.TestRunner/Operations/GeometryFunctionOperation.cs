@@ -41,20 +41,9 @@ namespace Open.Topology.TestRunner.Operations
 
         public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
-            // Resolved by name first, as GetReturnType resolves it, so that the kind of result
-            // the caller was told to expect and the kind it gets come from the same function.
-            // Falling straight through to the default operation on an argument-count mismatch
-            // would answer from a different member, of a different type, without saying so.
-            if (registry.Find(opName) == null)
-                return defaultOp.Invoke(opName, geometry, args);
-
             var func = registry.Find(opName, args.Length);
             if (func == null)
-            {
-                throw new ArgumentException(
-                    $"'{opName}' is a known function, but not one taking {args.Length} argument(s).",
-                    nameof(args));
-            }
+                return defaultOp.Invoke(opName, geometry, args);
 
             return Invoke(func, geometry, args);
         }

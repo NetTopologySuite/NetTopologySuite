@@ -220,8 +220,10 @@ namespace Open.Topology.TestRunner
                             break;
 
                         default:
+                            // Reported and carried on with the geometry's own methods: a corpus
+                            // file naming an operation this switch does not know is a gap here,
+                            // not a reason to hold an unattended run waiting for a keypress.
                             Console.WriteLine(string.Format("\n *** {0} *** \n", go.Value));
-                            Console.ReadKey(true);
                             geometryOperation = new GeometryMethodOperation();
                             break;
                     }
