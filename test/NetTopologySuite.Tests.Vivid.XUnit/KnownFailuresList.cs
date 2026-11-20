@@ -7,7 +7,7 @@
 //
 // Most of these have never run before: the runner reached only a fraction of the corpus, so this
 // is the first time anyone has seen them. They are not regressions - no case that passed before
-// fails now. 134 of the 164 are a difference between the legacy implementations this library
+// fails now. 130 of the 160 are a difference between the legacy implementations this library
 // installs by default and the NG ones, not a defect in either; the two groups below say which.
 //
 // The index is the position of the case within the collection loaded for that file, which is the
@@ -17,15 +17,15 @@
 //
 using NetTopologySuite.Tests.XUnit;
 
-// ---- 108 cases: the relate implementation decides them -------------------------------------
+// ---- 104 cases: the relate implementation decides them -------------------------------------
 //
 // Every one of these passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy
-// the runner installs, which is this library's own default. All 108 are in one file,
+// the runner installs, which is this library's own default. All 104 are in one file,
 // misc/TestRelateGC.xml, which had never been executed here at all - no fixture was ever written
 // for it. Under the legacy relate they fail in three different ways, which is worth knowing when
 // reading them one by one but does not make them three different problems: 58 are rejected with
 // "Operation does not support GeometryCollection arguments", 29 throw a side location conflict,
-// and 21 simply answer differently.
+// and 17 simply answer differently.
 
 [assembly: KnownCorpusFailure(
     "misc/TestRelateGC.xml", 0,
@@ -155,16 +155,6 @@ using NetTopologySuite.Tests.XUnit;
 [assembly: KnownCorpusFailure(
     "misc/TestRelateGC.xml", 81,
     "P/GC:A - point on common boundaries of 2 adjacent polygons - 5",
-    "passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy the runner installs",
-    "#903")]
-[assembly: KnownCorpusFailure(
-    "misc/TestRelateGC.xml", 86,
-    "P/GC:A - point on common boundaries of 2 adjacent polygons - 10",
-    "passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy the runner installs",
-    "#903")]
-[assembly: KnownCorpusFailure(
-    "misc/TestRelateGC.xml", 87,
-    "P/GC:A - point on common boundaries of 2 adjacent polygons - 11",
     "passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy the runner installs",
     "#903")]
 [assembly: KnownCorpusFailure(
@@ -328,18 +318,8 @@ using NetTopologySuite.Tests.XUnit;
     "passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy the runner installs",
     "#903")]
 [assembly: KnownCorpusFailure(
-    "misc/TestRelateGC.xml", 177,
-    "GC:A/P - adjacent polygons contain point on interior edge - 2",
-    "passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy the runner installs",
-    "#903")]
-[assembly: KnownCorpusFailure(
     "misc/TestRelateGC.xml", 180,
     "GC:A/P - adjacent polygons contain point on interior edge - 5",
-    "passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy the runner installs",
-    "#903")]
-[assembly: KnownCorpusFailure(
-    "misc/TestRelateGC.xml", 185,
-    "GC:A/P - adjacent polygons contain point on interior edge - 10",
     "passes under GeometryRelate.NG and fails under the GeometryRelate.Legacy the runner installs",
     "#903")]
 [assembly: KnownCorpusFailure(
