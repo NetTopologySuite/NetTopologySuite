@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Algorithm;
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     [Serializable]
-    public class Polygon : Geometry, IPolygonal
+    public class Polygon : Surface<LineString>
     {
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
@@ -230,19 +230,6 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The topological dimensions of this geometry
         /// </returns>
-        public override Dimension Dimension => Dimension.Surface;
-
-        /// <summary>
-        /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
-        /// </summary>
-        /// <returns>
-        /// The dimension of the boundary of the class implementing this
-        /// interface, whether or not this object is the empty point. Returns
-        /// <c>Dimension.False</c> if the boundary is the empty point.
-        /// </returns>
-        /// NOTE: make abstract and remove setter
-        public override Dimension BoundaryDimension => Dimension.Curve;
-
         /// <summary>
         ///
         /// </summary>
@@ -251,12 +238,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public LineString ExteriorRing => _shell;
+        public override LineString ExteriorRing => _shell;
 
         /// <summary>
         ///
         /// </summary>
-        public int NumInteriorRings => _holes.Length;
+        public override int NumInteriorRings => _holes.Length;
 
         /// <summary>
         ///
@@ -268,7 +255,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public LineString GetInteriorRingN(int n)
+        public override LineString GetInteriorRingN(int n)
         {
             return _holes[n];
         }
