@@ -16,7 +16,6 @@ namespace NetTopologySuite.Geometries
     /// When Envelope objects are created or initialized,
     /// the supplied extent values are automatically sorted into the correct order.
     /// </remarks>
-    [Serializable]
 #pragma warning disable 612,618
     public class Envelope : IComparable<Envelope>, IIntersectable<Envelope>, IExpandable<Envelope>
 #pragma warning restore 612,618

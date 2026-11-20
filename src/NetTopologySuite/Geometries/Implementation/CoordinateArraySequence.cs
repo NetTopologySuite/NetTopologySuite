@@ -15,7 +15,6 @@ namespace NetTopologySuite.Geometries.Implementation
     /// The actual coordinates will always have 3 ordinates,
     /// but the dimension is useful as metadata in some situations.
     /// </summary>
-    [Serializable]
     public class CoordinateArraySequence : CoordinateSequence
     {
         /// <summary>

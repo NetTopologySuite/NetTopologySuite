@@ -21,7 +21,6 @@ namespace NetTopologySuite.Geometries
     /// and thus has a self-intersection. It is allowed to be constructed
     /// so that it can be represented, and repaired if needed.
     /// </remarks>
-    [Serializable]
     public class LinearRing : LineString
     {
         /// <summary>

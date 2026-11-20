@@ -7,7 +7,6 @@ namespace NetTopologySuite.Geometries
     /// <c>CoordinateSequence</c> from an array of Coordinates.
     /// </summary>
     /// <seealso cref="CoordinateSequence" />
-    [Serializable]
     public abstract class CoordinateSequenceFactory
     {
         /// <summary>

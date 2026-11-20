@@ -6,7 +6,6 @@ namespace NetTopologySuite.Index.Bintree
     /// <summary>
     /// A node of a <c>Bintree</c>.
     /// </summary>
-    [Serializable]
     public class Node<T> : NodeBase<T>
     {
         /// <summary>

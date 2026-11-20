@@ -79,17 +79,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(IsEqual(seq2, coords));
         }
 
-        [Test]
-        public void TestSerializable() {
-            var coords = CreateArray(Size);
-            var seq = CsFactory.Create(coords);
-            // throws exception if not serializable
-            byte[] data = SerializationUtility.Serialize(seq);
-            // check round-trip gives same data
-            var seq2 = SerializationUtility.Deserialize<CoordinateSequence>(data);
-            Assert.IsTrue(IsEqual(seq2, coords));
-        }
-
         [TestCase(2, 0)] // XY
         [TestCase(3, 0)] // XYZ
         [TestCase(3, 1)] // XYM
