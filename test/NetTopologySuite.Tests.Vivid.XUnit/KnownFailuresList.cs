@@ -707,163 +707,167 @@ using NetTopologySuite.Tests.XUnit;
 
 // ---- 30 cases: these fail under either implementation ---------------------------------------
 //
-// What is left once the two groups above are set aside, grouped by the exception each one
-// actually raises.
+// What is left once the two groups above are set aside. The maintainer ran all thirty through
+// JTS master in #904, which is where these reasons come from: none of them turns out to be
+// specific to this port.
 
-// 22 case(s) - no exception - the operation answered, and the answer is not the one the case declares
-[assembly: KnownCorpusFailure(
-    "failure/TestBufferFailure.xml", 1,
-    "http://lists.osgeo.org/pipermail/postgis-users/2013-January/036334.html Buffer r",
-    "the result differs from the one the case declares",
-    "#904")]
+// 14 case(s) - these fail in JTS too, under both its overlay and relate settings. Several come
+// from failure/, the corpus's own directory for cases that are expected to fail and which
+// upstream does not run.
+
 [assembly: KnownCorpusFailure(
     "failure/TestOverlayNGFailure.xml", 0,
     "TopologyException on union of valid geometries https://github.com/libgeos/geos/i",
-    "the result differs from the one the case declares",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "failure/TestOverlayNGFailure.xml", 1,
     "Incorrect intersection and difference results https://github.com/libgeos/geos/is",
-    "the result differs from the one the case declares",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "failure/TestOverlayNGFailure.xml", 2,
     "Incorrect result in union and intersection https://github.com/libgeos/geos/issue",
-    "the result differs from the one the case declares",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "failure/TestOverlayNGFailure.xml", 3,
     "Union produces incorrect result. https://github.com/shapely/shapely/issues/1871",
-    "the result differs from the one the case declares",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "failure/TestOverlayNGFailure.xml", 4,
     "Union and intersection produce incorrect result. https://github.com/JuliaGeo/Lib",
-    "the result differs from the one the case declares",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 20,
-    "#21 Polygon - gid: 2521",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 33,
-    "#34 Polygon - gid: 2534",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 38,
-    "#39 Polygon - gid: 2539",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 40,
-    "#41 Polygon - gid: 2541",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 41,
-    "#42 Polygon - gid: 2542",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 54,
-    "#55 Polygon - gid: 2555",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 76,
-    "#77 Polygon - gid: 2577",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 77,
-    "#78 Polygon - gid: 2578",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 81,
-    "#82 Polygon - gid: 2582",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 86,
-    "#87 Polygon - gid: 2587",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 91,
-    "#92 Polygon - gid: 2592",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 93,
-    "#94 Polygon - gid: 2594",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 94,
-    "#95 Polygon - gid: 2595",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 97,
-    "#98 Polygon - gid: 2598",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "misc/TestBufferExternal2.xml", 98,
-    "#99 Polygon - gid: 2599",
-    "the result differs from the one the case declares",
-    "#904")]
-[assembly: KnownCorpusFailure(
-    "robust/TestRobustRelateFloat.xml", 0,
-    "A/P - Point is on boundary of polygon. Orientation algorithms including CGAlgori",
-    "the result differs from the one the case declares",
-    "#904")]
-
-// 4 case(s) - ArgumentException: reduction failed, possible invalid input
 [assembly: KnownCorpusFailure(
     "failure/TestReducePrecisionFailure.xml", 1,
     "",
-    "ArgumentException: reduction failed, possible invalid input",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "failure/TestReducePrecisionFailure.xml", 2,
     "simplified version of #2",
-    "ArgumentException: reduction failed, possible invalid input",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "failure/TestReducePrecisionFailure.xml", 3,
     "",
-    "ArgumentException: reduction failed, possible invalid input",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "failure/TestReducePrecisionFailure.xml", 4,
     "Canonical version of #2",
-    "ArgumentException: reduction failed, possible invalid input",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
-
-// 3 case(s) - TopologyException: found non-noded intersection
+[assembly: KnownCorpusFailure(
+    "misc/TestOverlay.xml", 1,
+    "http://trac.osgeo.org/geos/ticket/488 TopologyException unioning two valid polyg",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
+    "#904")]
 [assembly: KnownCorpusFailure(
     "misc/TestOverlay.xml", 2,
     "https://trac.osgeo.org/geos/ticket/368",
-    "TopologyException: found non-noded intersection",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "misc/TestOverlay.xml", 3,
     "https://trac.osgeo.org/geos/ticket/522",
-    "TopologyException: found non-noded intersection",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 [assembly: KnownCorpusFailure(
     "misc/TestOverlay.xml", 4,
     "https://trac.osgeo.org/geos/ticket/737",
-    "TopologyException: found non-noded intersection",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "robust/TestRobustRelateFloat.xml", 0,
+    "A/P - Point is on boundary of polygon. Orientation algorithms including CGAlgori",
+    "fails the same way in JTS master, so not specific to this port; measured by the maintainer in #904",
     "#904")]
 
-// 1 case(s) - TopologyException: no outgoing dirEdge found
+// 16 case(s) - buffer. The output here is bit-identical to JTS on the same inputs, and JTS fails
+// the same cases once its copy of the files is made loadable. The expected values were generated
+// by an older JTS and later buffer work moved the results slightly, so the data is stale rather
+// than the algorithm wrong. Fixing these means regenerating or loosening the expected values.
+
 [assembly: KnownCorpusFailure(
-    "misc/TestOverlay.xml", 1,
-    "http://trac.osgeo.org/geos/ticket/488 TopologyException unioning two valid polyg",
-    "TopologyException: no outgoing dirEdge found",
+    "failure/TestBufferFailure.xml", 1,
+    "http://lists.osgeo.org/pipermail/postgis-users/2013-January/036334.html Buffer r",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 20,
+    "#21 Polygon - gid: 2521",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 33,
+    "#34 Polygon - gid: 2534",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 38,
+    "#39 Polygon - gid: 2539",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 40,
+    "#41 Polygon - gid: 2541",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 41,
+    "#42 Polygon - gid: 2542",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 54,
+    "#55 Polygon - gid: 2555",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 76,
+    "#77 Polygon - gid: 2577",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 77,
+    "#78 Polygon - gid: 2578",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 81,
+    "#82 Polygon - gid: 2582",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 86,
+    "#87 Polygon - gid: 2587",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 91,
+    "#92 Polygon - gid: 2592",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 93,
+    "#94 Polygon - gid: 2594",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 94,
+    "#95 Polygon - gid: 2595",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 97,
+    "#98 Polygon - gid: 2598",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
+    "#904")]
+[assembly: KnownCorpusFailure(
+    "misc/TestBufferExternal2.xml", 98,
+    "#99 Polygon - gid: 2599",
+    "the buffer output is bit-identical to JTS; the expected value in the corpus predates JTS buffer changes and is stale, measured by the maintainer in #904",
     "#904")]
