@@ -1,38 +1,13 @@
-﻿using NUnit.Framework;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.XUnit
 {
-    public abstract class RobustXUnitRunner : XUnitRunner
+    public class RobustCorpusTests : XmlCorpusRunner
     {
-        protected RobustXUnitRunner(string testFile) : base(testFile) { }
+        public static IEnumerable<TestCaseData> Cases => CasesIn("robust");
 
-        protected override string TestLocation => "robust";
-    }
-
-    // 1 expected exception thrown
-    public class TestMagnifyTopology : RobustXUnitRunner
-    {
-        public TestMagnifyTopology() : base("MagnifyTopology.xml") { }
-    }
-
-    public class TestBufferJagged2 : RobustXUnitRunner
-    {
-        public TestBufferJagged2() : base("TestBufferJagged.xml") { }
-    }
-
-    public class TestRobustRelate : RobustXUnitRunner
-    {
-        public TestRobustRelate() : base("TestRobustRelate.xml") { }
-    }
-
-    public class TestRobustRelateFloat : RobustXUnitRunner
-    {
-        public TestRobustRelateFloat() : base("TestRobustRelateFloat.xml") { }
-
-        [Test, Category("FailureCase")]
-        public override void Test00()
-        {
-            base.Test00();
-        }
+        [TestCaseSource(nameof(Cases))]
+        public void Run(string file, int index) => RunCase(file, index);
     }
 }

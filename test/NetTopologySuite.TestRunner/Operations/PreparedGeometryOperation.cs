@@ -23,11 +23,6 @@ namespace Open.Topology.TestRunner.Operations
         {
         }
 
-        public Type GetReturnType(XmlTestType op)
-        {
-            return GetReturnType(op.ToString());
-        }
-
         public Type GetReturnType(string opName)
         {
             if (IsPreparedOp(opName))
@@ -63,11 +58,6 @@ namespace Open.Topology.TestRunner.Operations
         /// <returns>The result</returns>
         /// <exception cref="Exception"></exception>
         /// <seealso cref="IGeometryOperation.Invoke"/>
-        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
-        {
-            return Invoke(opName.ToString(), geometry, args);
-        }
-
         public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
             if (! IsPreparedOp(opName))

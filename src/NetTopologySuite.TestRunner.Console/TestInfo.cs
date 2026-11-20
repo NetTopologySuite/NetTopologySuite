@@ -11,7 +11,7 @@ namespace ConsoleTestRunner
 
         private string m_strFileName     = null;
         private string m_strDirectory    = null;
-        private XmlTestType m_enumFilter = XmlTestType.None;
+        private string m_strFilter       = null;
         private bool m_bVerbose          = true;
         private bool m_bException        = true;
         private bool m_bInteractive      = false;
@@ -20,9 +20,9 @@ namespace ConsoleTestRunner
 
         #region Constructors and Destructor
 
-        public TestInfo(XmlTestType filter)
+        public TestInfo(string filter)
         {
-            m_enumFilter = filter;
+            m_strFilter = filter;
         }
 
         #endregion
@@ -43,11 +43,14 @@ namespace ConsoleTestRunner
             set => m_strDirectory = value;
         }
 
-        public XmlTestType Filter
+        /// <summary>
+        /// The name of the only operation to report on, or <c>null</c> to report on all of them.
+        /// </summary>
+        public string Filter
         {
-            get => m_enumFilter;
+            get => m_strFilter;
 
-            set => m_enumFilter = value;
+            set => m_strFilter = value;
         }
 
         public bool Verbose

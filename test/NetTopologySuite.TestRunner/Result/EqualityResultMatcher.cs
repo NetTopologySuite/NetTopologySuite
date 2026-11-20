@@ -20,9 +20,19 @@ namespace Open.Topology.TestRunner.Result
             return actualResult.Equals(expectedResult, tolerance);
         }
 
+        /// <inheritdoc/>
+        /// <remarks>
+        /// A result of a kind this matcher was not made for is not a match. The upstream matcher
+        /// is not generic and answers the same, because the comparison it delegates to rejects a
+        /// result it cannot read; here the cast has to be checked, or the answer becomes a
+        /// NullReferenceException on the line below.
+        /// </remarks>
         public bool IsMatch(Geometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
         {
-            return IsMatch(geom, opName, args, actualResult as TResult, expectedResult as TResult, tolerance);
+            if (!(actualResult is TResult actual))
+                return false;
+
+            return IsMatch(geom, opName, args, actual, expectedResult as TResult, tolerance);
         }
     }
 }

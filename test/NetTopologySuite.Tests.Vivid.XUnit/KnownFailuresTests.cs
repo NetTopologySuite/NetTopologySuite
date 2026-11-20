@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Open.Topology.TestRunner;
@@ -18,18 +19,31 @@ namespace NetTopologySuite.Tests.XUnit
     [TestFixture]
     public class KnownFailuresTests
     {
+        /// <summary>
+        /// Both lists point at cases by position, so one source of entries is as liable to drift
+        /// as the other and they are checked together.
+        /// </summary>
+        private static IEnumerable<(string File, int Index, string Description)> AllEntries()
+        {
+            foreach (var failure in KnownFailures.All)
+                yield return (failure.File, failure.Index, failure.Description);
+
+            foreach (var slow in LongRunningCases.All)
+                yield return (slow.File, slow.Index, slow.Description);
+        }
+
         [Test]
         public void EveryEntryStillPointsAtItsCase()
         {
             var stale = new List<string>();
 
-            foreach (var failure in KnownFailures.All)
+            foreach (var failure in AllEntries())
             {
                 string path = Path.Combine(CorpusDirectory.Location,
                                            Path.Combine(failure.File.Split('/')));
                 if (!File.Exists(path))
                 {
-                    stale.Add($"{failure}: no such file");
+                    stale.Add($"{Name(failure)}: no such file");
                     continue;
                 }
 
@@ -40,31 +54,61 @@ namespace NetTopologySuite.Tests.XUnit
                 }
                 catch (Exception ex)
                 {
-                    stale.Add($"{failure}: the file could not be read ({ex.Message})");
+                    stale.Add($"{Name(failure)}: the file could not be read ({ex.Message})");
                     continue;
                 }
 
                 if (descriptions == null)
                 {
-                    stale.Add($"{failure}: the file no longer loads");
+                    stale.Add($"{Name(failure)}: the file no longer loads");
                     continue;
                 }
 
                 if (failure.Index >= descriptions.Length)
                 {
-                    stale.Add($"{failure}: the file holds {descriptions.Length} case(s)");
+                    stale.Add($"{Name(failure)}: the file holds {descriptions.Length} case(s)");
                     continue;
                 }
 
                 string actual = XmlCorpusRunner.Summarize(descriptions[failure.Index]);
                 if (!string.Equals(actual, failure.Description, StringComparison.Ordinal))
-                    stale.Add($"{failure}: listed as '{failure.Description}' but now reads '{actual}'");
+                    stale.Add($"{Name(failure)}: listed as '{failure.Description}' but now reads '{actual}'");
             }
 
             Assert.That(stale, Is.Empty,
                 "The known-failure list no longer matches the corpus. Cases have probably been "
                 + "inserted or removed, which moves the ones listed below onto different cases:"
                 + Environment.NewLine + string.Join(Environment.NewLine, stale));
+        }
+
+        /// <summary>
+        /// Checks that every entry names the issue tracking it.
+        /// <para/>
+        /// The list is generated from a run, and the issue is the one field a generator cannot
+        /// fill in, so it is the one that reaches a branch still carrying a placeholder. Nothing
+        /// else looks at the field, which is why it needs looking at here.
+        /// </summary>
+        [Test]
+        public void EveryEntryNamesItsIssue()
+        {
+            var unnamed = new List<string>();
+
+            foreach (var failure in KnownFailures.All)
+            {
+                string issue = failure.Issue;
+                bool named = !string.IsNullOrWhiteSpace(issue)
+                             && issue.StartsWith("#", StringComparison.Ordinal)
+                             && issue.Length > 1
+                             && issue.Skip(1).All(char.IsDigit);
+
+                if (!named)
+                    unnamed.Add($"{failure}: '{issue}'");
+            }
+
+            Assert.That(unnamed, Is.Empty,
+                "These entries do not name the issue tracking them, so nothing says where the "
+                + "investigation lives:"
+                + Environment.NewLine + string.Join(Environment.NewLine, unnamed));
         }
 
         /// <summary>
@@ -142,6 +186,8 @@ namespace NetTopologySuite.Tests.XUnit
 
             TestContext.Out.Write(table.ToString());
         }
+
+        private static string Name((string File, int Index, string Description) entry) => $"{entry.File} #{entry.Index}";
 
         // A pipe anywhere in a cell would start a new column in the rendered table.
         private static string Cell(string value) => value?.Replace("|", "\\|");

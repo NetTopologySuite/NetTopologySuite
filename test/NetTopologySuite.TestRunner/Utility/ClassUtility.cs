@@ -11,7 +11,10 @@ namespace Open.Topology.TestRunner.Utility
             Debug.Assert(!string.IsNullOrEmpty(nClassName));
 
             int lastDotPos = nClassName.LastIndexOf(".");
-            return nClassName.Substring(lastDotPos + 1, nClassName.Length);
+            // Java's substring takes an end index where .NET's takes a length, and the port kept
+            // the second argument: for any type in a namespace that asks for more characters than
+            // are left and throws.
+            return nClassName.Substring(lastDotPos + 1);
         }
 
     }

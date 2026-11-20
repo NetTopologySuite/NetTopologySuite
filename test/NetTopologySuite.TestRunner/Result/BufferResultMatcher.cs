@@ -104,10 +104,19 @@ namespace Open.Topology.TestRunner.Result
             return true;
         }
 
+        /// <inheritdoc/>
+        /// <remarks>
+        /// A result of a kind this matcher cannot read is not a match. The buffer comparison
+        /// reads both results through <c>Value</c> and the delegated one through <c>Equals</c>,
+        /// so an unchecked cast answers with a NullReferenceException instead of an answer.
+        /// A file naming this matcher gets it for every case it holds, not only its buffer ones.
+        /// </remarks>
         public bool IsMatch(Geometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
         {
-            return IsMatch(geom, opName, args, actualResult as GeometryResult, expectedResult as GeometryResult,
-                           tolerance);
+            if (!(actualResult is GeometryResult actual) || !(expectedResult is GeometryResult expected))
+                return false;
+
+            return IsMatch(geom, opName, args, actual, expected, tolerance);
         }
     }
 }

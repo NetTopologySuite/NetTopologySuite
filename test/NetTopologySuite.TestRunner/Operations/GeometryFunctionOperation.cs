@@ -31,18 +31,17 @@ namespace Open.Topology.TestRunner.Operations
         /// </summary>
         /// <param name="op">The name of the operation</param>
         /// <returns>The return type of the operation</returns>
-        public Type GetReturnType(XmlTestType op)
+        public Type GetReturnType(string opName)
         {
-            string opName = op.ToString();
             var func = registry.Find(opName);
             if (func == null)
-                return defaultOp.GetReturnType(op);
+                return defaultOp.GetReturnType(opName);
             return func.ReturnType;
         }
 
-        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
+        public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
-            var func = registry.Find(opName.ToString(), args.Length);
+            var func = registry.Find(opName, args.Length);
             if (func == null)
                 return defaultOp.Invoke(opName, geometry, args);
 

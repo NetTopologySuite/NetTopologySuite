@@ -42,7 +42,12 @@ namespace Open.Topology.TestRunner
         {
             _pm = pm;
             //ObjGeometryFactory = gs.CreateGeometryFactory();
-            _geometryOperation = geometryOperation;
+
+            // Refused here rather than tolerated: without an operation there is nothing to ask
+            // for a return type, so every case would be dropped as unreadable and whole files
+            // would come back empty without a word about why.
+            _geometryOperation = geometryOperation
+                                 ?? throw new ArgumentNullException(nameof(geometryOperation));
             _resultMatcher = resultMatcher;            
         }
 
@@ -53,12 +58,8 @@ namespace Open.Topology.TestRunner
             if (string.IsNullOrEmpty(strTestType))
                 return null;
 
-            var geometryOperation = IsOverlayNG(strTestType)
-                ? new OverlayNGGeometryOperation(_geometryOperation)
-                : _geometryOperation;
-
             var xmlTest = new XmlTest(testInfo.GetValue("desc"),
-                testInfo.IsDefaultTarget(), tolerance, geometryOperation, _resultMatcher);
+                testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
 
             try
             {
@@ -95,287 +96,83 @@ namespace Open.Topology.TestRunner
             if (!string.IsNullOrEmpty(arg3))
                 xmlTest.Argument2 = arg3;
 
-            string strResult = testInfo.GetValue("result");
-            if (string.IsNullOrEmpty(strResult))
-                return null;
-
-            ParseResult(strResult, xmlTest);
+            // A case is allowed to state no expected result, and eight in the corpus do. Upstream
+            // keeps those: it runs the operation and counts the case as passed, which leaves them
+            // as a check that the operation does not throw. Dropping them here lost eight cases
+            // without a word.
+            string strResult = testInfo.GetValue("result")?.Trim();
+            if (!string.IsNullOrEmpty(strResult))
+            {
+                // A case whose expected value could not be read, or whose operation nothing
+                // answers to, has nothing to compare against: handing it back would report it
+                // later as a wrong answer rather than as a case this runner cannot run.
+                if (!ParseResult(strResult, xmlTest))
+                    return null;
+            }
 
             return xmlTest;
         }
 
         /// <summary>
-        /// Whether the operation is one of the four <see cref="OverlayNGGeometryOperation"/> runs.
+        /// Records the operation the case names, and prepares the reader its geometries are read
+        /// with.
         /// <para/>
-        /// They are matched by name rather than by the <c>NG</c> suffix that <see cref="ParseType"/>
-        /// strips, because an operation added later whose name merely ends in those letters would
-        /// be routed to an operation that has no way to run it.
+        /// The name is carried through as written: which member or function answers to it is the
+        /// operation's business, so a name nothing knows is reported when the case is built
+        /// rather than rejected here.
         /// </summary>
-        private static bool IsOverlayNG(string testType)
-        {
-            return testType.Equals("intersectionng", StringComparison.OrdinalIgnoreCase)
-                || testType.Equals("unionng", StringComparison.OrdinalIgnoreCase)
-                || testType.Equals("differenceng", StringComparison.OrdinalIgnoreCase)
-                || testType.Equals("symdifferenceng", StringComparison.OrdinalIgnoreCase);
-        }
-
         protected bool ParseType(string testType, XmlTest xmlTestItem)
         {
-            testType = testType.ToLower();
-
-            NtsGeometryServices gs;
-            if (testType.EndsWith("ng"))
-            {                
-                gs = new NtsGeometryServices(
-                    CoordinateArraySequenceFactory.Instance,
-                    _pm,
-                    -1,
-                    GeometryOverlay.NG,
-                    new CoordinateEqualityComparer());
-                testType = testType.Substring(0, testType.Length - 2);
-            }
-            else
-            {
-                gs = new NtsGeometryServices(
-                    CoordinateArraySequenceFactory.Instance,
-                    _pm,
-                    -1,
-                    GeometryOverlay.Legacy,
-                    new CoordinateEqualityComparer());
-            }
+            var gs = new NtsGeometryServices(
+                CoordinateArraySequenceFactory.Instance,
+                _pm,
+                -1,
+                GeometryOverlay.Legacy,
+                new CoordinateEqualityComparer());
             _objReader = new MultiFormatReader(gs);
 
-            if (testType == "getarea")
-                xmlTestItem.TestType = XmlTestType.Area;
-
-            else if (testType == "getboundary")
-                xmlTestItem.TestType = XmlTestType.Boundary;
-
-            else if (testType == "getboundarydimension")
-                xmlTestItem.TestType = XmlTestType.BoundaryDimension;
-
-            else if (testType == "buffer")
-                xmlTestItem.TestType = XmlTestType.Buffer;
-
-            else if (testType == "buffermitredjoin")
-                xmlTestItem.TestType = XmlTestType.BufferMitredJoin;
-
-            else if (testType == "getcentroid")
-                xmlTestItem.TestType = XmlTestType.Centroid;
-
-            else if (testType == "contains")
-                xmlTestItem.TestType = XmlTestType.Contains;
-
-            else if (testType == "convexhull")
-                xmlTestItem.TestType = XmlTestType.ConvexHull;
-
-            else if (testType == "crosses")
-                xmlTestItem.TestType = XmlTestType.Crosses;
-
-            else if (testType == "densify")
-                xmlTestItem.TestType = XmlTestType.Densify;
-
-            else if (testType == "difference")
-                xmlTestItem.TestType = XmlTestType.Difference;
-
-            else if (testType == "getdimension")
-                xmlTestItem.TestType = XmlTestType.Dimension;
-
-            else if (testType == "disjoint")
-                xmlTestItem.TestType = XmlTestType.Disjoint;
-
-            else if (testType == "distance")
-                xmlTestItem.TestType = XmlTestType.Distance;
-
-            else if (testType == "getenvelope")
-                xmlTestItem.TestType = XmlTestType.Envelope;
-
-            else if (testType == "equals")
-                xmlTestItem.TestType = XmlTestType.Equals;
-
-            else if (testType == "getinteriorpoint")
-                xmlTestItem.TestType = XmlTestType.InteriorPoint;
-
-            else if (testType == "intersection")
-                xmlTestItem.TestType = XmlTestType.Intersection;
-
-            else if (testType == "intersects")
-                xmlTestItem.TestType = XmlTestType.Intersects;
-
-            else if (testType == "isempty")
-                xmlTestItem.TestType = XmlTestType.IsEmpty;
-
-            else if (testType == "issimple")
-                xmlTestItem.TestType = XmlTestType.IsSimple;
-
-            else if (testType == "isvalid")
-                xmlTestItem.TestType = XmlTestType.IsValid;
-
-            else if (testType == "iswithindistance")
-                xmlTestItem.TestType = XmlTestType.IsWithinDistance;
-
-            else if (testType == "getlength")
-                xmlTestItem.TestType = XmlTestType.Length;
-
-            else if (testType == "getnumpoints")
-                xmlTestItem.TestType = XmlTestType.NumPoints;
-
-            else if (testType == "overlaps")
-                xmlTestItem.TestType = XmlTestType.Overlaps;
-
-            else if (testType == "relate")
-                xmlTestItem.TestType = XmlTestType.Relate;
-
-            else if (testType == "getsrid")
-                xmlTestItem.TestType = XmlTestType.SRID;
-
-            else if (testType == "symmetricdifference")
-                xmlTestItem.TestType = XmlTestType.SymmetricDifference;
-
-            else if (testType == "symdifference")
-                xmlTestItem.TestType = XmlTestType.SymmetricDifference;
-
-            else if (testType == "touches")
-                xmlTestItem.TestType = XmlTestType.Touches;
-
-            else if (testType == "union")
-                xmlTestItem.TestType = XmlTestType.Union;
-
-            else if (testType == "within")
-                xmlTestItem.TestType = XmlTestType.Within;
-
-            else if (testType == "covers")
-                xmlTestItem.TestType = XmlTestType.Covers;
-
-            else if (testType == "coveredby")
-                xmlTestItem.TestType = XmlTestType.CoveredBy;
-
-            else if (testType == "equalsexact")
-                xmlTestItem.TestType = XmlTestType.EqualsExact;
-
-            else if (testType == "equalsnorm")
-                xmlTestItem.TestType = XmlTestType.EqualsNorm;
-
-            else if (testType == "minclearance")
-                xmlTestItem.TestType = XmlTestType.MinClearance;
-
-            else if (testType == "minclearanceline")
-                xmlTestItem.TestType = XmlTestType.MinClearanceLine;
-
-            else if (testType == "equalstopo")
-                xmlTestItem.TestType = XmlTestType.EqualsTopo;
-
-            else
-            {
-                //System.Diagnostics.Debug.Assert(false);
-                throw new ArgumentException(string.Format("The operation type \"{0}\" is not valid: ", testType));
-            }
-
+            xmlTestItem.Operation = testType;
             return true;
         }
 
+        /// <summary>
+        /// Reads the value the case expects into a result of the shape the operation returns.
+        /// </summary>
+        /// <returns>
+        /// <c>false</c> when the value cannot be read, and when no operation answers to the name
+        /// the case gave, which is how a case the runner cannot run comes to contribute nothing.
+        /// </returns>
         protected bool ParseResult(string result, XmlTest xmlTestItem)
         {
-            switch (xmlTestItem.TestType)
+            var returnType = _geometryOperation.GetReturnType(xmlTestItem.Operation);
+            if (returnType == null)
             {
-                // Here we expect double
-                case XmlTestType.Area:
-                case XmlTestType.Distance:
-                case XmlTestType.Length:
-                case XmlTestType.MinClearance:
-                {
-                    try
-                    {
-                        xmlTestItem.Result = double.Parse(result, GetNumberFormatInfo());
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        XmlTestExceptionManager.Publish(ex);
-                        return false;
-                    }
-                }
+                // Nothing answers to this operation name, so there is no shape to read the
+                // expected value into. The case is still built and still run: the operation then
+                // reports itself missing when it is invoked, which is louder than the case
+                // vanishing from a file that goes on contributing its other cases.
+                return true;
+            }
 
-                // Here we expect integer
-                case XmlTestType.BoundaryDimension:
-                case XmlTestType.Dimension:
-                case XmlTestType.NumPoints:
-                case XmlTestType.SRID:
-                {
-                    try
-                    {
-                        xmlTestItem.Result = int.Parse(result);
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        XmlTestExceptionManager.Publish(ex);
-                        return false;
-                    }
-                }
+            try
+            {
+                if (returnType == typeof(bool))
+                    xmlTestItem.ExpectedResult = new BooleanResult(bool.Parse(result.Trim()));
+                else if (returnType == typeof(int))
+                    xmlTestItem.ExpectedResult = new IntegerResult(int.Parse(result.Trim()));
+                else if (returnType == typeof(double))
+                    xmlTestItem.ExpectedResult = new DoubleResult(double.Parse(result.Trim(), GetNumberFormatInfo()));
+                else if (typeof(Geometry).IsAssignableFrom(returnType))
+                    xmlTestItem.ExpectedResult = new GeometryResult(_objReader.Read(result));
+                else
+                    return false;
 
-                // Here we expect a point
-                case XmlTestType.Boundary:
-                case XmlTestType.Buffer:
-                case XmlTestType.BufferMitredJoin:
-                case XmlTestType.Centroid:
-                case XmlTestType.ConvexHull:
-                case XmlTestType.Densify:
-                case XmlTestType.Difference:
-                case XmlTestType.Envelope:
-                case XmlTestType.InteriorPoint:
-                case XmlTestType.Intersection:
-                case XmlTestType.SymmetricDifference:
-                case XmlTestType.Union:
-                case XmlTestType.MinClearanceLine:
-                {
-                    try
-                    {
-                        xmlTestItem.Result = _objReader.Read(result);
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        XmlTestExceptionManager.Publish(ex);
-                        return false;
-                    }
-                }
-
-                // Here we expect boolean
-                case XmlTestType.Contains:
-                case XmlTestType.Crosses:
-                case XmlTestType.Disjoint:
-                case XmlTestType.Equals:
-                case XmlTestType.Intersects:
-                case XmlTestType.IsEmpty:
-                case XmlTestType.IsSimple:
-                case XmlTestType.IsValid:
-                case XmlTestType.IsWithinDistance:
-                case XmlTestType.Overlaps:
-                case XmlTestType.Relate:
-                case XmlTestType.Touches:
-                case XmlTestType.Within:
-                case XmlTestType.Covers:
-                case XmlTestType.CoveredBy:
-                case XmlTestType.EqualsExact:
-                case XmlTestType.EqualsNorm:
-                case XmlTestType.EqualsTopo:
-                {
-                    try
-                    {
-                        xmlTestItem.Result = bool.Parse(result);
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        XmlTestExceptionManager.Publish(ex);
-                        return false;
-                    }
-                }
-
-                default:
-                    string format = string.Format("Test not implemented: {0}",  xmlTestItem.TestType);
-                    throw new NotImplementedException(format);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                XmlTestExceptionManager.Publish(ex);
+                return false;
             }
         }
 
