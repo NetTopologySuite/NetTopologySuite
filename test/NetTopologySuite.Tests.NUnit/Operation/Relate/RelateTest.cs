@@ -86,6 +86,36 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, "0FFFFF212");
         }
 
+        /// <summary>
+        /// A point on an edge shared by two polygons of a collection is in the interior
+        /// of the collection: the two boundaries cancel under the Mod-2 rule.
+        /// </summary>
+        [Test]
+        public void TestPointOnEdgeSharedByCollectionPolygons()
+        {
+            string a = "POINT (4 3)";
+            string b = "GEOMETRYCOLLECTION (POLYGON ((1 1, 1 6, 4 6, 4 1, 1 1)), POLYGON ((9 1, 4 1, 4 6, 9 6, 9 1)))";
+            RunRelateTest(a, b, "0FFFFF212");
+        }
+
+        [Test]
+        public void TestCollectionPolygonsSharingEdgeContainPoint()
+        {
+            string a = "GEOMETRYCOLLECTION (POLYGON ((5 5, 2 9, 9 9, 9 5, 5 5)), POLYGON ((3 1, 5 5, 9 5, 9 1, 3 1)), POLYGON ((1 9, 2 9, 5 5, 3 1, 1 1, 1 9)))";
+            string b = "POINT (7 5)";
+            RunRelateTest(a, b, "0F2FF1FF2");
+        }
+
+        [Test]
+        public void TestPredicatesPointOnEdgeSharedByCollectionPolygons()
+        {
+            var a = Read("POINT (4 3)");
+            var b = Read("GEOMETRYCOLLECTION (POLYGON ((1 1, 1 6, 4 6, 4 1, 1 1)), POLYGON ((9 1, 4 1, 4 6, 9 6, 9 1)))");
+            Assert.That(a.Within(b), Is.True);
+            Assert.That(b.Contains(a), Is.True);
+            Assert.That(a.Touches(b), Is.False);
+        }
+
         private void RunRelateTest(string wkt1, string wkt2, string expectedIM)
         {
             var g1 = Read(wkt1);

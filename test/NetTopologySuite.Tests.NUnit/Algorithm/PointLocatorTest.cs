@@ -60,6 +60,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             RunPtLocator(Location.Boundary, pt, wkt, BoundaryNodeRules.MultivalentEndpointBoundaryRule);
         }
 
+        /// <summary>
+        /// The default is the OGC SFS (Mod-2) rule, as in JTS: an edge shared by two
+        /// polygons of a collection is covered by two boundaries, which cancel out.
+        /// </summary>
+        [Test]
+        public void TestDefaultBoundaryNodeRuleSharedPolygonEdge()
+        {
+            string wkt = "GEOMETRYCOLLECTION (POLYGON ((1 1, 1 6, 4 6, 4 1, 1 1)), POLYGON ((9 1, 4 1, 4 6, 9 6, 9 1)))";
+            var pt = new Coordinate(4, 3);
+            RunPtLocator(Location.Interior, pt, wkt);
+            RunPtLocator(Location.Interior, pt, wkt, BoundaryNodeRules.Mod2BoundaryRule);
+            RunPtLocator(Location.Boundary, pt, wkt, BoundaryNodeRules.EndpointBoundaryRule);
+        }
+
         private void RunPtLocator(Location expected, Coordinate pt, string wkt)
         {
             var geom = reader.Read(wkt);
