@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
 
@@ -70,6 +71,23 @@ namespace NetTopologySuite.Geometries
             if (points.Count == 1)
                 throw new ArgumentException($"Invalid number of points in LineString (found {points.Count} - must be 0 or >= {MinimumValidSize})");
             _points = points;
+        }
+
+        /// <summary>
+        /// Implicitly cast a tuple to a new <see cref="LineString"/> as a copy of this instance.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static implicit operator LineString((double x, double y)[] value)
+            => new LineString(value.Select(v=>new Coordinate(v.x, v.y)).ToArray());
+
+        /// <summary>
+        /// Deconstructs this <see cref="LineString"/> into its components.
+        /// </summary>
+        /// <param name="values"></param>
+        public void Deconstruct(out (double x, double y)[] values)
+        {
+            values = _points.ToCoordinateArray().Select(c => (c.X, c.Y)).ToArray();
         }
 
         /// <summary>
